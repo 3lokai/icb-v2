@@ -1,0 +1,277 @@
+@layer components {
+  /* Surface layers: depth + material */
+  .surface-0 {
+    @apply bg-background;
+  }
+
+  .surface-1 {
+    @apply bg-card text-card-foreground border border-border/60 shadow-lg;
+  }
+
+  .surface-2 {
+    @apply bg-popover text-popover-foreground border border-border/70 shadow-xl;
+  }
+
+  /* Shell helpers */
+  .card-shell {
+    @apply bg-card text-card-foreground border border-border/60 shadow-lg rounded-lg;
+  }
+
+  .modal-shell {
+    @apply bg-popover text-popover-foreground border border-border/70 shadow-xl rounded-xl;
+  }
+
+  .nav-shell {
+    @apply bg-card text-card-foreground border border-border/60 shadow-lg backdrop-blur-sm;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-primary/90 backdrop-blur-sm text-primary-foreground hover:bg-primary px-4 py-2 rounded-md text-sm font-medium transition-all duration-300;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center bg-secondary/90 backdrop-blur-sm text-secondary-foreground hover:bg-secondary px-4 py-2 rounded-md text-sm font-medium transition-all duration-300;
+  }
+
+  .btn-icon {
+    @apply inline-flex items-center justify-center h-9 w-9 rounded-md text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground transition-all duration-300 backdrop-blur-sm;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-background/90 backdrop-blur-sm;
+  }
+
+  .badge-brown {
+    @apply bg-accent/90 backdrop-blur-sm text-accent-foreground;
+  }
+
+  .badge-outline {
+    @apply border border-accent bg-transparent text-foreground;
+  }
+
+  /* Cards */
+  .card-base {
+    @apply bg-card/80 backdrop-blur-sm text-card-foreground rounded-lg border border-border/50 shadow-lg;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:bg-card/90 hover:scale-[1.02];
+  }
+
+  .card-featured {
+    @apply border-2 border-primary;
+  }
+
+  .card-review {
+    @apply bg-muted/80 backdrop-blur-sm p-6 rounded-lg border border-border/50 shadow-lg;
+  }
+
+  /* Other Components */
+  .avatar-sm {
+    @apply h-8 w-8 rounded-full overflow-hidden;
+  }
+
+  .tag-list {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .breadcrumb {
+    @apply flex items-center gap-1 text-sm text-muted-foreground;
+  }
+
+  .pill-filter {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-sm bg-secondary/80 backdrop-blur-sm text-secondary-foreground hover:bg-secondary/90 transition-colors;
+  }
+
+  .search-wrapper {
+    @apply relative w-full max-w-2xl;
+  }
+
+  .rating-stars {
+    @apply flex text-chart-1;
+  }
+
+  /* Hero section specific */
+  .hero-wrapper {
+    @apply relative overflow-hidden bg-cover bg-center py-16 md:py-24 lg:py-32;
+  }
+
+  .hero-overlay {
+    @apply absolute inset-0 z-[1] bg-gradient-to-br from-black/60 via-black/20 to-black/70 backdrop-blur-sm;
+  }
+
+  .hero-content {
+    @apply relative z-10 text-center max-w-3xl mx-auto px-4;
+  }
+
+  /* Search components */
+  .search-input {
+    @apply w-full py-2 px-4 rounded-md border border-input/50 bg-background/50 backdrop-blur-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring text-base font-sans md:text-sm;
+  }
+
+  .search-button {
+    @apply absolute right-1 top-1 h-8 px-3 rounded-md bg-primary/90 backdrop-blur-sm text-primary-foreground hover:bg-primary;
+  }
+
+  .filter-tag {
+    @apply inline-block px-3 py-1 rounded-full text-xs font-medium bg-secondary/80 backdrop-blur-sm text-secondary-foreground hover:bg-secondary transition-colors;
+  }
+
+  /* Region card variations */
+  .region-card {
+    @apply relative overflow-hidden rounded-lg aspect-[4/3] border border-border/30 shadow-lg;
+  }
+
+  .region-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent;
+    backdrop-filter: blur(0px);
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.8) 30%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.1) 80%,
+      transparent 100%
+    );
+  }
+
+  .region-content {
+    @apply absolute bottom-0 left-0 p-4 text-white;
+  }
+
+  /* Price display */
+  .price-tag {
+    @apply text-lg font-bold text-accent-foreground;
+  }
+
+  /* Footer components */
+  .footer-heading {
+    @apply font-medium text-base mb-4 text-foreground/90;
+  }
+
+  .footer-link {
+    @apply text-sm text-muted-foreground/80 hover:text-foreground hover:bg-background/50 backdrop-blur-sm px-2 py-1 rounded transition-all duration-200;
+  }
+
+  .footer-section {
+    @apply flex flex-col space-y-2 bg-background/30 backdrop-blur-sm p-4 rounded-lg border border-border/20;
+  }
+
+  /* Newsletter */
+  .newsletter-wrapper {
+    @apply w-full max-w-md mx-auto;
+  }
+
+  .newsletter-input {
+    @apply w-full py-2 px-4 rounded-md border border-input/50 bg-background/80 backdrop-blur-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
+  }
+
+  /* Testimonial components */
+  .star-rating {
+    @apply flex text-chart-1;
+  }
+
+  .testimonial-card {
+    @apply bg-muted/80 backdrop-blur-sm rounded-lg p-6 border border-border/50 shadow-lg;
+  }
+
+  .testimonial-author {
+    @apply flex items-center mt-4 space-x-3;
+  }
+
+  /* Blog components */
+  .article-card {
+    @apply bg-card/80 backdrop-blur-sm rounded-lg overflow-hidden border border-border/50 shadow-lg;
+  }
+
+  .article-meta {
+    @apply flex items-center space-x-4 text-sm text-muted-foreground/80 bg-background/50 backdrop-blur-sm px-3 py-1 rounded;
+  }
+
+  .article-category {
+    @apply inline-block px-2 py-0.5 text-xs font-medium bg-muted/80 backdrop-blur-sm text-muted-foreground rounded border border-border/30;
+  }
+
+  /* Form Messages */
+  .form-message {
+    @apply p-3 rounded-md text-sm bg-background/90 backdrop-blur-sm border border-border/50;
+  }
+
+  /* Glossary Terms */
+  .glossary-term {
+    @apply cursor-help underline decoration-dotted decoration-accent/60 underline-offset-2 text-accent-foreground font-medium;
+    transition: all 0.2s ease;
+  }
+
+  .glossary-term:hover {
+    @apply decoration-accent decoration-2 bg-accent/10 px-1 -mx-1 rounded;
+  }
+
+  /* Responsive image */
+  .img-responsive {
+    @apply w-full h-auto object-cover;
+  }
+
+  /* Hover effects */
+  .hover-lift {
+    @apply transition-transform duration-200;
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-2 shadow-2xl;
+  }
+
+  /* Interaction States */
+  /* Dropdown transitions */
+  .dropdown-enter {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+
+  .dropdown-enter-active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transition: all 0.2s ease-out;
+  }
+
+  .dropdown-exit {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  .dropdown-exit-active {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+    transition: all 0.15s ease-in;
+  }
+
+  /* User menu enhancements */
+  .user-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  /* Hover zones for better UX */
+  .dropdown-hover-zone {
+    padding-top: 4px;
+    margin-top: -4px;
+  }
+
+  /* Badge animations */
+  .stats-badge {
+    transition: all 0.2s ease;
+  }
+
+  .stats-badge:hover {
+    transform: scale(1.05);
+  }
+
+  /* Logo text hiding in compact navbar */
+  .navbar-compact h1 {
+    display: none;
+  }
+}

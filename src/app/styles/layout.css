@@ -1,0 +1,78 @@
+@layer components {
+  /* Layout & Spacing */
+  .container-default {
+    @apply w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
+  }
+
+  .section-spacing {
+    @apply py-8 md:py-12 lg:py-16;
+  }
+
+  .stack-xs {
+    @apply flex flex-col gap-2;
+  }
+
+  .stack-sm {
+    @apply flex flex-col gap-3;
+  }
+
+  .stack-md {
+    @apply flex flex-col gap-6;
+  }
+
+  .stack-lg {
+    @apply flex flex-col gap-10;
+  }
+
+  .grid-cards {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .card-padding {
+    @apply p-4 md:p-6;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  /* Base image container */
+  .image-section {
+    @apply relative overflow-hidden rounded-lg;
+  }
+
+  /* Standard overlays */
+  .image-overlay-light {
+    @apply absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent backdrop-blur-sm;
+  }
+
+  .image-overlay-dark {
+    @apply absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 backdrop-blur-sm;
+  }
+
+  .image-overlay-glass {
+    @apply absolute inset-0 bg-gradient-to-br from-background/60 via-background/30 to-background/70 backdrop-blur-md;
+  }
+
+  /* Content positioning */
+  .image-content-center {
+    @apply absolute inset-0 flex items-center justify-center text-white z-10;
+  }
+
+  .image-content-bottom {
+    @apply absolute bottom-0 left-0 right-0 p-6 text-white z-10;
+  }
+
+  /* Hover effects */
+  .image-scale-hover {
+    @apply transition-transform duration-500 hover:scale-105;
+  }
+
+  .image-zoom-hover {
+    @apply transition-transform duration-700 hover:scale-110;
+  }
+}

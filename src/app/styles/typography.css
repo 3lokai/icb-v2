@@ -1,0 +1,34 @@
+@layer components {
+  /* Typography */
+  .text-display {
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+  }
+
+  .text-title {
+    @apply font-serif text-2xl md:text-3xl font-bold leading-tight;
+  }
+
+  .text-heading {
+    @apply font-serif text-xl md:text-2xl font-semibold leading-snug;
+  }
+
+  .text-subheading {
+    @apply font-serif text-lg md:text-xl font-semibold leading-snug;
+  }
+
+  .text-body {
+    @apply text-base leading-relaxed;
+  }
+
+  .text-body-muted {
+    @apply text-base leading-relaxed text-muted-foreground;
+  }
+
+  .text-caption {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .text-overline {
+    @apply text-xs uppercase font-medium tracking-wider;
+  }
+}
