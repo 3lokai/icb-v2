@@ -11,16 +11,19 @@ import type {
   RoastLevelEnum,
 } from "@/types/db-enums";
 
-type CoffeeFilterSidebarProps = {
+type CoffeeFilterContentProps = {
   filterMeta: CoffeeFilterMeta;
+  showHeader?: boolean;
 };
 
 /**
- * Coffee Filter Sidebar Component
- * Full filter UI with multi-selects, price range, and boolean toggles
- * URL sync is handled automatically by CoffeeDirectory component
+ * Coffee Filter Content Component
+ * Reusable filter content used in both sidebar and mobile drawer
  */
-export function CoffeeFilterSidebar({ filterMeta }: CoffeeFilterSidebarProps) {
+export function CoffeeFilterContent({
+  filterMeta,
+  showHeader = true,
+}: CoffeeFilterContentProps) {
   const { filters, updateFilters, resetFilters } = useCoffeeDirectoryStore();
 
   // Toggle array filter values
@@ -120,14 +123,16 @@ export function CoffeeFilterSidebar({ filterMeta }: CoffeeFilterSidebarProps) {
   };
 
   return (
-    <aside className="w-full space-y-6 md:w-64">
+    <div className="w-full space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="font-semibold text-lg">Filters</h2>
-        <Button onClick={() => resetFilters()} size="sm" variant="ghost">
-          Reset
-        </Button>
-      </div>
+      {showHeader && (
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold text-lg">Filters</h2>
+          <Button onClick={() => resetFilters()} size="sm" variant="ghost">
+            Reset
+          </Button>
+        </div>
+      )}
 
       {/* Search */}
       <div className="space-y-2">
@@ -326,6 +331,26 @@ export function CoffeeFilterSidebar({ filterMeta }: CoffeeFilterSidebarProps) {
           </label>
         </div>
       </div>
+    </div>
+  );
+}
+
+type CoffeeFilterSidebarProps = {
+  filterMeta: CoffeeFilterMeta;
+};
+
+/**
+ * Coffee Filter Sidebar Component
+ * Full filter UI with multi-selects, price range, and boolean toggles
+ * URL sync is handled automatically by CoffeeDirectory component
+ * Hidden on mobile, visible on desktop
+ */
+export function CoffeeFilterSidebar({
+  filterMeta,
+}: CoffeeFilterSidebarProps) {
+  return (
+    <aside className="hidden w-full space-y-6 md:block md:w-64">
+      <CoffeeFilterContent filterMeta={filterMeta} />
     </aside>
   );
 }

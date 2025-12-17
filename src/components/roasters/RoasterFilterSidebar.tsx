@@ -7,18 +7,17 @@ import { Switch } from "@/components/ui/switch";
 import { useRoasterDirectoryStore } from "@/store/zustand/roaster-directory-store";
 import type { RoasterFilterMeta } from "@/types/roaster-types";
 
-type RoasterFilterSidebarProps = {
+type RoasterFilterContentProps = {
   filterMeta: RoasterFilterMeta;
 };
 
 /**
- * Roaster Filter Sidebar Component
- * Full filter UI with dropdowns for location filters
- * URL sync is handled automatically by RoasterDirectory component
+ * Roaster Filter Content Component
+ * Reusable filter content used in both sidebar and mobile drawer
  */
-export function RoasterFilterSidebar({
+export function RoasterFilterContent({
   filterMeta,
-}: RoasterFilterSidebarProps) {
+}: RoasterFilterContentProps) {
   const { filters, updateFilters, resetFilters } = useRoasterDirectoryStore();
 
   const handleActiveOnlyChange = (checked: boolean) => {
@@ -94,7 +93,7 @@ export function RoasterFilterSidebar({
   };
 
   return (
-    <aside className="w-full flex-shrink-0 space-y-6 md:w-64">
+    <div className="w-full flex-shrink-0 space-y-6">
       {/* Search Input */}
       <div className="glass-card card-padding">
         <Label className="mb-2 block font-medium" htmlFor="search-query">
@@ -151,6 +150,26 @@ export function RoasterFilterSidebar({
       <Button className="w-full" onClick={resetFilters} variant="outline">
         Reset Filters
       </Button>
+    </div>
+  );
+}
+
+type RoasterFilterSidebarProps = {
+  filterMeta: RoasterFilterMeta;
+};
+
+/**
+ * Roaster Filter Sidebar Component
+ * Full filter UI with dropdowns for location filters
+ * URL sync is handled automatically by RoasterDirectory component
+ * Hidden on mobile, visible on desktop
+ */
+export function RoasterFilterSidebar({
+  filterMeta,
+}: RoasterFilterSidebarProps) {
+  return (
+    <aside className="hidden w-full flex-shrink-0 space-y-6 md:block md:w-64">
+      <RoasterFilterContent filterMeta={filterMeta} />
     </aside>
   );
 }

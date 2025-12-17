@@ -9,7 +9,6 @@ type FormModalProps = {
   formSubmitting: boolean;
   formSubmitted: boolean;
   formError: string | null;
-  showTurnstile: boolean;
   getButtonText: () => string;
 };
 
@@ -20,7 +19,6 @@ export function FormModal({
   formSubmitting,
   formSubmitted,
   formError,
-  showTurnstile,
   getButtonText,
 }: FormModalProps) {
   const getModalTitle = () => {
@@ -36,36 +34,21 @@ export function FormModal({
     return "";
   };
 
-  const renderTurnstile = () => {
-    if (showTurnstile) {
-      return (
-        <div className="flex justify-center">
-          <div
-            className="cf-turnstile"
-            data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-            data-size="compact"
-            data-theme="auto"
-          />
-        </div>
-      );
-    }
-    return (
-      <div className="flex justify-center rounded-md border border-blue-200 bg-blue-50 p-4">
-        <div className="flex items-center space-x-2">
-          <div className="h-2 w-2 rounded-full bg-blue-500" />
-          <span className="text-blue-700 text-sm">
-            🔧 Development: Captcha disabled
-          </span>
-        </div>
-      </div>
-    );
-  };
-
   const renderRoasterForm = () => (
     <form
       className="space-y-4"
       onSubmit={(e) => onSubmit(e, "roaster_submission")}
     >
+      {/* Honeypot field - hidden from users but visible to bots */}
+      <input
+        aria-hidden="true"
+        autoComplete="off"
+        className="pointer-events-none absolute opacity-0"
+        name="website_url"
+        style={{ position: "absolute", left: "-9999px" }}
+        tabIndex={-1}
+        type="text"
+      />
       <div>
         <label
           className="mb-1 block font-medium text-muted-foreground text-sm"
@@ -163,8 +146,6 @@ export function FormModal({
         </div>
       </div>
 
-      {renderTurnstile()}
-
       {formError && (
         <div className="form-message border border-destructive/30 bg-destructive/10 text-destructive">
           {formError}
@@ -190,6 +171,16 @@ export function FormModal({
 
   const renderSuggestionForm = () => (
     <form className="space-y-4" onSubmit={(e) => onSubmit(e, "suggestion")}>
+      {/* Honeypot field - hidden from users but visible to bots */}
+      <input
+        aria-hidden="true"
+        autoComplete="off"
+        className="pointer-events-none absolute opacity-0"
+        name="website"
+        style={{ position: "absolute", left: "-9999px" }}
+        tabIndex={-1}
+        type="text"
+      />
       <div>
         <label
           className="mb-1 block font-medium text-muted-foreground text-sm"
@@ -263,8 +254,6 @@ export function FormModal({
         </div>
       </div>
 
-      {renderTurnstile()}
-
       {formError && (
         <div className="form-message border border-destructive/30 bg-destructive/10 text-destructive">
           {formError}
@@ -293,6 +282,16 @@ export function FormModal({
       className="space-y-4"
       onSubmit={(e) => onSubmit(e, "professional_inquiry")}
     >
+      {/* Honeypot field - hidden from users but visible to bots */}
+      <input
+        aria-hidden="true"
+        autoComplete="off"
+        className="pointer-events-none absolute opacity-0"
+        name="website"
+        style={{ position: "absolute", left: "-9999px" }}
+        tabIndex={-1}
+        type="text"
+      />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label
@@ -381,8 +380,6 @@ export function FormModal({
         />
       </div>
 
-      {renderTurnstile()}
-
       {formError && (
         <div className="form-message border border-destructive/30 bg-destructive/10 text-destructive">
           {formError}
@@ -407,11 +404,11 @@ export function FormModal({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex-center bg-black/50 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex-center bg-background/80 p-4 backdrop-blur-sm">
       <div className="glass-modal max-h-[90vh] w-full max-w-lg overflow-auto rounded-lg shadow-xl">
         <div className="sticky top-0 rounded-t-lg bg-primary/90 p-4 text-primary-foreground backdrop-blur-sm">
           <div className="flex-between">
-            <h3 className="font-bold text-xl">{getModalTitle()}</h3>
+            <h3 className="text-heading">{getModalTitle()}</h3>
             <button
               className="rounded p-1 text-primary-foreground transition-colors duration-200 hover:text-primary-foreground/80"
               onClick={onClose}

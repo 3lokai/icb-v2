@@ -82,11 +82,6 @@ export default function ContactForms({
     return getProfessionalButtonText();
   };
 
-  const showTurnstile = !!(
-    process.env.NODE_ENV === "production" &&
-    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
-  );
-
   const handleFormSubmit = async (e: React.FormEvent, formType: string) => {
     e.preventDefault();
     setFormSubmitting(true);
@@ -160,7 +155,6 @@ export default function ContactForms({
           formSubmitting={formSubmitting}
           getButtonText={getNewsletterButtonText}
           onSubmit={(e) => handleFormSubmit(e, "newsletter")}
-          showTurnstile={showTurnstile}
         />
 
         {/* Action Cards - Clean approach */}
@@ -170,10 +164,10 @@ export default function ContactForms({
               <div className="mb-4 h-14 w-14 flex-center rounded-full bg-secondary transition-transform duration-300 group-hover:scale-110">
                 <Icon color="primary" name="Plus" size={28} />
               </div>
-              <h3 className="font-bold text-lg text-primary transition-colors duration-200 group-hover:text-accent">
+              <h3 className="text-heading text-primary transition-colors duration-200 group-hover:text-accent">
                 Submit a Roaster
               </h3>
-              <p className="mt-2 text-muted-foreground">
+              <p className="mt-2 text-caption text-foreground">
                 Know an amazing Indian coffee roaster that should be in our
                 directory? Help us expand our coverage.
               </p>
@@ -192,10 +186,10 @@ export default function ContactForms({
               <div className="mb-4 h-14 w-14 flex-center rounded-full bg-secondary transition-transform duration-300 group-hover:scale-110">
                 <Icon color="primary" name="PencilSimple" size={28} />
               </div>
-              <h3 className="font-bold text-lg text-primary transition-colors duration-200 group-hover:text-accent">
+              <h3 className="text-heading text-primary transition-colors duration-200 group-hover:text-accent">
                 Suggest Changes
               </h3>
-              <p className="mt-2 text-muted-foreground">
+              <p className="mt-2 text-caption text-foreground">
                 Spotted outdated information? Have ideas for new features or
                 improvements? We would love to hear from you.
               </p>
@@ -227,10 +221,10 @@ export default function ContactForms({
             </div>
 
             <div className="card-padding">
-              <h3 className="mb-4 font-bold text-primary text-xl">
+              <h3 className="mb-4 text-heading text-primary">
                 Claim Your Listing
               </h3>
-              <p className="mb-4 text-body">
+              <p className="mb-4 text-body text-foreground">
                 Already listed in our directory? Claim your roastery profile to:
               </p>
 
@@ -245,7 +239,7 @@ export default function ContactForms({
                     <div className="mr-3 h-5 w-5 flex-shrink-0 text-accent">
                       <Icon color="accent" name="Check" size={20} />
                     </div>
-                    <span>{item}</span>
+                    <span className="text-foreground">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -282,10 +276,10 @@ export default function ContactForms({
           <div className="relative z-10">
             <SectionHeader align="center" title="For Coffee Professionals" />
             <div className="mb-6">
-              <h3 className="mb-2 font-bold text-primary text-xl">
+              <h3 className="mb-2 text-heading text-primary">
                 Partner With Us
               </h3>
-              <p className="mx-auto max-w-2xl text-muted-foreground">
+              <p className="mx-auto max-w-2xl text-body text-muted-foreground">
                 We collaborate with coffee professionals across the industry to
                 enhance the Indian coffee ecosystem.
               </p>
@@ -313,7 +307,7 @@ export default function ContactForms({
                 },
               ].map((item) => (
                 <div
-                  className="glass-card group p-6 text-center"
+                  className="group p-6 text-center rounded-lg border border-border/30 bg-card/40"
                   key={item.title}
                 >
                   <div className="glass-button mx-auto mb-3 h-12 w-12 flex-center rounded-full transition-transform duration-300 group-hover:scale-110">
@@ -323,10 +317,10 @@ export default function ContactForms({
                       size={24}
                     />
                   </div>
-                  <h4 className="mb-2 font-bold text-primary transition-colors duration-200 group-hover:text-accent">
+                  <h4 className="mb-2 text-heading text-primary transition-colors duration-200 group-hover:text-accent">
                     {item.title}
                   </h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-caption leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -359,7 +353,6 @@ export default function ContactForms({
           getButtonText={getModalButtonText}
           onClose={() => setActiveForm("general")}
           onSubmit={handleFormSubmit}
-          showTurnstile={showTurnstile}
         />
       )}
     </div>

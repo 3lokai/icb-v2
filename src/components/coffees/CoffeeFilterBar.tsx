@@ -43,11 +43,12 @@ export function CoffeeFilterBar() {
 
   return (
     <div className="mb-6 space-y-4">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="font-medium text-muted-foreground text-sm">
+      <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-2">
+        <span className="shrink-0 font-medium text-muted-foreground text-sm">
           Quick filters:
         </span>
         <Button
+          className="shrink-0 text-xs sm:text-sm"
           onClick={() => handleQuickFilter("inStock")}
           size="sm"
           variant={filters.in_stock_only ? "default" : "outline"}
@@ -55,6 +56,7 @@ export function CoffeeFilterBar() {
           In Stock
         </Button>
         <Button
+          className="shrink-0 text-xs sm:text-sm"
           onClick={() => handleQuickFilter("has250g")}
           size="sm"
           variant={filters.has_250g_only ? "default" : "outline"}
@@ -62,6 +64,7 @@ export function CoffeeFilterBar() {
           Has 250g
         </Button>
         <Button
+          className="shrink-0 text-xs sm:text-sm"
           onClick={() => handleQuickFilter("under500")}
           size="sm"
           variant={filters.max_price === 500 ? "default" : "outline"}
@@ -71,10 +74,12 @@ export function CoffeeFilterBar() {
       </div>
 
       {hasActiveFilters && (
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-muted-foreground text-sm">Active filters:</span>
+        <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-2">
+          <span className="shrink-0 text-muted-foreground text-xs sm:text-sm">
+            Active filters:
+          </span>
           {filters.in_stock_only && (
-            <Badge className="gap-1" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
               In Stock
               <button
                 aria-label="Remove In Stock filter"
@@ -87,7 +92,7 @@ export function CoffeeFilterBar() {
             </Badge>
           )}
           {filters.has_250g_only && (
-            <Badge className="gap-1" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
               Has 250g
               <button
                 aria-label="Remove Has 250g filter"
@@ -100,7 +105,7 @@ export function CoffeeFilterBar() {
             </Badge>
           )}
           {filters.max_price && (
-            <Badge className="gap-1" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
               Under ₹{filters.max_price}
               <button
                 aria-label="Remove price filter"
@@ -113,7 +118,7 @@ export function CoffeeFilterBar() {
             </Badge>
           )}
           {filters.roast_levels && filters.roast_levels.length > 0 && (
-            <Badge className="gap-1" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
               {filters.roast_levels.length} Roast Level
               {filters.roast_levels.length > 1 ? "s" : ""}
               <button
@@ -127,7 +132,7 @@ export function CoffeeFilterBar() {
             </Badge>
           )}
           {filters.processes && filters.processes.length > 0 && (
-            <Badge className="gap-1" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
               {filters.processes.length} Process
               {filters.processes.length > 1 ? "es" : ""}
               <button
@@ -141,7 +146,7 @@ export function CoffeeFilterBar() {
             </Badge>
           )}
           {filters.flavor_keys && filters.flavor_keys.length > 0 && (
-            <Badge className="gap-1" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
               {filters.flavor_keys.length} Flavor
               {filters.flavor_keys.length > 1 ? "s" : ""}
               <button
@@ -154,7 +159,12 @@ export function CoffeeFilterBar() {
               </button>
             </Badge>
           )}
-          <Button onClick={() => resetFilters()} size="sm" variant="ghost">
+          <Button
+            className="shrink-0 text-xs sm:text-sm"
+            onClick={() => resetFilters()}
+            size="sm"
+            variant="ghost"
+          >
             Clear all
           </Button>
         </div>

@@ -34,6 +34,24 @@ function processRoasterSubmission(
   metadata: { ipAddress: string | null; userAgent: string | null },
   userId: string | null
 ): { success: false; error: string } | { success: true; data: SubmissionData } {
+  // Check honeypot - if filled, it's a bot
+  const honeypot = formData.get("website_url") as string;
+  if (honeypot) {
+    // Silently reject - don't let bots know they were caught
+    return {
+      success: true,
+      data: {
+        form_type: "roaster_submission",
+        email: "",
+        data: {},
+        ip_address: metadata.ipAddress,
+        user_agent: metadata.userAgent,
+        user_id: userId,
+        status: "pending",
+      },
+    };
+  }
+
   const roasterName = formData.get("roasterName") as string;
   const website = formData.get("website") as string;
   const location = formData.get("location") as string;
@@ -74,6 +92,24 @@ function processSuggestion(
   metadata: { ipAddress: string | null; userAgent: string | null },
   userId: string | null
 ): { success: false; error: string } | { success: true; data: SubmissionData } {
+  // Check honeypot - if filled, it's a bot
+  const honeypot = formData.get("website") as string;
+  if (honeypot) {
+    // Silently reject - don't let bots know they were caught
+    return {
+      success: true,
+      data: {
+        form_type: "suggestion",
+        email: "",
+        data: {},
+        ip_address: metadata.ipAddress,
+        user_agent: metadata.userAgent,
+        user_id: userId,
+        status: "pending",
+      },
+    };
+  }
+
   const suggestionType = formData.get("suggestionType") as string;
   const suggestionDetails = formData.get("suggestionDetails") as string;
   const suggesterName = formData.get("suggesterName") as string;
@@ -113,6 +149,24 @@ function processProfessionalInquiry(
   metadata: { ipAddress: string | null; userAgent: string | null },
   userId: string | null
 ): { success: false; error: string } | { success: true; data: SubmissionData } {
+  // Check honeypot - if filled, it's a bot
+  const honeypot = formData.get("website") as string;
+  if (honeypot) {
+    // Silently reject - don't let bots know they were caught
+    return {
+      success: true,
+      data: {
+        form_type: "professional_inquiry",
+        email: "",
+        data: {},
+        ip_address: metadata.ipAddress,
+        user_agent: metadata.userAgent,
+        user_id: userId,
+        status: "pending",
+      },
+    };
+  }
+
   const name = formData.get("name") as string;
   const organization = formData.get("organization") as string;
   const email = formData.get("email") as string;

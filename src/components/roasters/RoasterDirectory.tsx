@@ -1,7 +1,10 @@
 "use client";
 
+import { Filter } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { RoasterDirectoryFAQ } from "@/components/faqs/RoasterDirectoryFAQs";
 import { useRoasters } from "@/hooks/use-roasters";
 import {
@@ -16,6 +19,7 @@ import type {
   RoasterSort,
 } from "@/types/roaster-types";
 import { RoasterFilterBar } from "./RoasterFilterBar";
+import { MobileFilterDrawer } from "./MobileFilterDrawer";
 import { RoasterFilterSidebar } from "./RoasterFilterSidebar";
 import { RoasterGrid } from "./RoasterGrid";
 import { RoasterPagination } from "./RoasterPagination";
@@ -46,6 +50,17 @@ export function RoasterDirectory({
 
   // Get state from Zustand store
   const { filters, page, sort, limit, setAll } = useRoasterDirectoryStore();
+  
+  // Mobile drawer state
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  
+  // Calculate active filter count
+  const activeFilterCount =
+    (filters.active_only ? 1 : 0) +
+    (filters.cities?.length ?? 0) +
+    (filters.states?.length ?? 0) +
+    (filters.countries?.length ?? 0) +
+    (filters.q ? 1 : 0);
 
   // Initialize store from props (SSR data) on mount (only once)
   useEffect(() => {
@@ -139,8 +154,33 @@ export function RoasterDirectory({
         )}
       </div>
 
+      {/* Mobile Filter Toggle Button */}
+      <div className="mb-4 md:hidden">
+        <Button
+          aria-label="Open filters"
+          className="w-full justify-start"
+          onClick={() => setIsDrawerOpen(true)}
+          variant="outline"
+        >
+          <Filter className="mr-2 h-4 w-4" />
+          Filters
+          {activeFilterCount > 0 && (
+            <Badge className="ml-2" variant="secondary">
+              {activeFilterCount}
+            </Badge>
+          )}
+        </Button>
+      </div>
+
       {/* Filter Bar */}
       <RoasterFilterBar />
+
+      {/* Mobile Filter Drawer */}
+      <MobileFilterDrawer
+        filterMeta={filterMeta}
+        onOpenChange={setIsDrawerOpen}
+        open={isDrawerOpen}
+      />
 
       {/* Main Content Area */}
       <div className="flex flex-col gap-6 md:flex-row">

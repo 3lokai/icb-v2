@@ -8,7 +8,6 @@ type NewsletterSectionProps = {
   formSubmitting: boolean;
   formSubmitted: boolean;
   formError: string | null;
-  showTurnstile: boolean;
   getButtonText: () => string;
 };
 
@@ -17,17 +16,14 @@ export function NewsletterSection({
   formSubmitting,
   formSubmitted,
   formError,
-  showTurnstile,
   getButtonText,
 }: NewsletterSectionProps) {
   return (
     <div className="glass-panel mb-8 overflow-hidden rounded-2xl">
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="card-padding">
-          <h3 className="mb-4 font-bold text-primary text-xl">
-            Join Our Community
-          </h3>
-          <p className="mb-4 text-body">
+          <h3 className="mb-4 text-heading text-primary">Join Our Community</h3>
+          <p className="mb-4 text-body text-foreground">
             Connect with fellow coffee lovers, get early access to new features,
             and receive our curated newsletter featuring:
           </p>
@@ -43,12 +39,22 @@ export function NewsletterSection({
                 <div className="mr-3 h-5 w-5 flex-shrink-0 text-accent">
                   <Icon color="accent" name="Check" size={20} />
                 </div>
-                <span>{item}</span>
+                <span className="text-foreground">{item}</span>
               </li>
             ))}
           </ul>
 
           <form className="space-y-3" onSubmit={onSubmit}>
+            {/* Honeypot field - hidden from users but visible to bots */}
+            <input
+              aria-hidden="true"
+              autoComplete="off"
+              className="pointer-events-none absolute opacity-0"
+              name="website"
+              style={{ position: "absolute", left: "-9999px" }}
+              tabIndex={-1}
+              type="text"
+            />
             <div>
               <label
                 className="mb-1 block font-medium text-muted-foreground text-sm"
@@ -81,26 +87,6 @@ export function NewsletterSection({
                 unsubscribe at any time.
               </label>
             </div>
-
-            {showTurnstile ? (
-              <div className="flex justify-center">
-                <div
-                  className="cf-turnstile"
-                  data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-                  data-size="compact"
-                  data-theme="auto"
-                />
-              </div>
-            ) : (
-              <div className="flex justify-center rounded-md border border-blue-200 bg-blue-50 p-4">
-                <div className="flex items-center space-x-2">
-                  <div className="h-2 w-2 rounded-full bg-blue-500" />
-                  <span className="text-blue-700 text-sm">
-                    🔧 Development: Captcha disabled
-                  </span>
-                </div>
-              </div>
-            )}
 
             <button
               className={`btn-primary w-full ${formSubmitting ? "cursor-not-allowed opacity-70" : ""}`}

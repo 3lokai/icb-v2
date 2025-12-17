@@ -124,24 +124,36 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
       roasterOnlyId={roaster.id || null}
     >
       <Card
-        className="glass-card card-padding card-hover hover-lift h-full"
+        className={cn(
+          "group relative overflow-hidden",
+          "bg-card/70 backdrop-blur-sm border border-border/40",
+          "rounded-xl shadow-md hover:shadow-xl",
+          "transition-all duration-300 hover:bg-card/80 hover:-translate-y-1",
+          "h-full p-4 md:p-6"
+        )}
         itemScope
         itemType="https://schema.org/Organization"
       >
-        <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
+        {/* Accent bar */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-chart-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        <div className="relative h-40 w-full overflow-hidden rounded-t-lg group">
           <Image
             alt={roaster.name || "Coffee roaster image"}
-            className="object-cover"
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
             fill
             itemProp="logo"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={coffeeImagePresets.roasterCard(undefined)}
           />
+          {/* Gradient overlay for depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           {ribbon && (
             <div
               className={cn(
-                "absolute top-2 left-2 rounded-md px-2 py-1 font-medium text-xs",
+                "absolute top-3 left-3 rounded-md px-3 py-1.5 font-semibold text-xs uppercase tracking-wider",
+                "shadow-lg backdrop-blur-sm border border-white/20",
                 getRibbonStyles(ribbon)
               )}
             >
