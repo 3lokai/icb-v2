@@ -35,7 +35,7 @@ export function MobileFilterDrawer({
           <SheetTitle>Filters</SheetTitle>
         </SheetHeader>
         <div className="mt-6">
-          <RoasterFilterContent filterMeta={filterMeta} />
+          <RoasterFilterContent filterMeta={filterMeta} showHeader={false} />
         </div>
       </SheetContent>
     </Sheet>

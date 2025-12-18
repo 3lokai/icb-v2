@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useRoasterDirectoryStore } from "@/store/zustand/roaster-directory-store";
 import type { RoasterFilterMeta } from "@/types/roaster-types";
 
 type RoasterFilterContentProps = {
   filterMeta: RoasterFilterMeta;
+  showHeader?: boolean;
 };
 
 /**
@@ -17,12 +17,9 @@ type RoasterFilterContentProps = {
  */
 export function RoasterFilterContent({
   filterMeta,
+  showHeader = true,
 }: RoasterFilterContentProps) {
   const { filters, updateFilters, resetFilters } = useRoasterDirectoryStore();
-
-  const handleActiveOnlyChange = (checked: boolean) => {
-    updateFilters({ active_only: checked || undefined });
-  };
 
   // Toggle array filter values
   const toggleArrayFilter = (
@@ -61,14 +58,14 @@ export function RoasterFilterContent({
 
     return (
       <div className="space-y-2">
-        <Label className="font-medium text-sm" htmlFor={filterKey}>
+        <label className="font-medium text-sm" htmlFor={filterKey}>
           {title}
           {totalCount !== undefined && (
             <span className="ml-2 text-muted-foreground text-xs">
               ({totalCount})
             </span>
           )}
-        </Label>
+        </label>
         <div className="max-h-64 space-y-2 overflow-y-auto">
           {items.map((item) => (
             <label
@@ -93,63 +90,75 @@ export function RoasterFilterContent({
   };
 
   return (
-    <div className="w-full flex-shrink-0 space-y-6">
-      {/* Search Input */}
-      <div className="glass-card card-padding">
-        <Label className="mb-2 block font-medium" htmlFor="search-query">
-          Search Roasters
-        </Label>
+    <div className="w-full space-y-6">
+      {/* Header */}
+      {showHeader && (
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold text-lg">Filters</h2>
+          <Button onClick={() => resetFilters()} size="sm" variant="ghost">
+            Reset
+          </Button>
+        </div>
+      )}
+
+      {/* Search */}
+      <div className="space-y-2">
+        <label className="font-medium text-sm" htmlFor="search">
+          Search
+        </label>
         <Input
-          id="search-query"
-          onChange={(e) => updateFilters({ q: e.target.value || undefined })}
-          placeholder="Search by name..."
+          id="search"
+          onChange={(e) =>
+            updateFilters({ q: e.target.value.trim() || undefined })
+          }
+          placeholder="Search roasters..."
+          type="text"
           value={filters.q || ""}
         />
       </div>
 
-      {/* Location Filters */}
-      <div className="glass-card card-padding space-y-4">
-        <h3 className="mb-2 font-semibold text-lg">Location</h3>
+      {/* Countries */}
+      {renderFilterSection({
+        title: "Countries",
+        items: filterMeta.countries,
+        filterKey: "countries",
+        totalCount: filterMeta.totals.active_roasters,
+      })}
 
-        {/* Countries */}
-        {renderFilterSection({
-          title: "Country",
-          items: filterMeta.countries,
-          filterKey: "countries",
-          totalCount: filterMeta.totals.active_roasters,
-        })}
+      {/* States */}
+      {renderFilterSection({
+        title: "States",
+        items: filterMeta.states,
+        filterKey: "states",
+      })}
 
-        {/* States */}
-        {renderFilterSection({
-          title: "State",
-          items: filterMeta.states,
-          filterKey: "states",
-        })}
+      {/* Cities */}
+      {renderFilterSection({
+        title: "Cities",
+        items: filterMeta.cities,
+        filterKey: "cities",
+      })}
 
-        {/* Cities */}
-        {renderFilterSection({
-          title: "City",
-          items: filterMeta.cities,
-          filterKey: "cities",
-        })}
-      </div>
-
-      {/* Boolean Toggles */}
-      <div className="glass-card card-padding space-y-4">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="active-only">Active Only</Label>
-          <Switch
-            checked={filters.active_only ?? false}
-            id="active-only"
-            onCheckedChange={handleActiveOnlyChange}
-          />
+      {/* Boolean Filters */}
+      <div className="space-y-4">
+        <label className="font-medium text-sm" htmlFor="active_only">
+          Options
+        </label>
+        <div className="space-y-3">
+          <label
+            className="flex cursor-pointer items-center justify-between"
+            htmlFor="active_only"
+          >
+            <span className="text-sm">Active Only</span>
+            <Switch
+              checked={filters.active_only ?? false}
+              onCheckedChange={(checked) =>
+                updateFilters({ active_only: checked || undefined })
+              }
+            />
+          </label>
         </div>
       </div>
-
-      {/* Reset Filters Button */}
-      <Button className="w-full" onClick={resetFilters} variant="outline">
-        Reset Filters
-      </Button>
     </div>
   );
 }
@@ -168,7 +177,7 @@ export function RoasterFilterSidebar({
   filterMeta,
 }: RoasterFilterSidebarProps) {
   return (
-    <aside className="hidden w-full flex-shrink-0 space-y-6 md:block md:w-64">
+    <aside className="hidden w-full space-y-6 md:block md:w-64">
       <RoasterFilterContent filterMeta={filterMeta} />
     </aside>
   );

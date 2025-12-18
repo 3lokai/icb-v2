@@ -28,7 +28,7 @@ export const SOCIAL_CAMPAIGNS = {
 
 // UTM URL builders for different social platforms (HELPER TOOL)
 export class SocialMediaURLBuilder {
-  private baseUrl: string;
+  private readonly baseUrl: string;
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
@@ -118,23 +118,26 @@ export const trackInstagramInteraction = (
 ) => {
   markUserEngagement("link_click");
 
-  trackEventWithAttribution(
-    "instagram_interaction",
-    "social_engagement",
-    interactionType,
-    undefined,
-    {
+  let engagementQuality: "high" | "medium" | "standard";
+  if (interactionType === "dm_inquiry") {
+    engagementQuality = "high";
+  } else if (interactionType === "bio_click") {
+    engagementQuality = "medium";
+  } else {
+    engagementQuality = "standard";
+  }
+
+  trackEventWithAttribution({
+    action: "instagram_interaction",
+    category: "social_engagement",
+    label: interactionType,
+    customParams: {
       platform: "instagram",
       interaction_type: interactionType,
       content_id: content,
-      engagement_quality:
-        interactionType === "dm_inquiry"
-          ? "high"
-          : interactionType === "bio_click"
-            ? "medium"
-            : "standard",
-    }
-  );
+      engagement_quality: engagementQuality,
+    },
+  });
 };
 
 export const trackFacebookInteraction = (
@@ -147,23 +150,26 @@ export const trackFacebookInteraction = (
 ) => {
   markUserEngagement("link_click");
 
-  trackEventWithAttribution(
-    "facebook_interaction",
-    "social_engagement",
-    interactionType,
-    undefined,
-    {
+  let engagementQuality: "high" | "medium" | "standard";
+  if (interactionType === "page_message") {
+    engagementQuality = "high";
+  } else if (interactionType === "group_share") {
+    engagementQuality = "medium";
+  } else {
+    engagementQuality = "standard";
+  }
+
+  trackEventWithAttribution({
+    action: "facebook_interaction",
+    category: "social_engagement",
+    label: interactionType,
+    customParams: {
       platform: "facebook",
       interaction_type: interactionType,
       content_id: content,
-      engagement_quality:
-        interactionType === "page_message"
-          ? "high"
-          : interactionType === "group_share"
-            ? "medium"
-            : "standard",
-    }
-  );
+      engagement_quality: engagementQuality,
+    },
+  });
 };
 
 export const trackTwitterInteraction = (
@@ -176,27 +182,30 @@ export const trackTwitterInteraction = (
 ) => {
   markUserEngagement("link_click");
 
-  trackEventWithAttribution(
-    "twitter_interaction",
-    "social_engagement",
-    interactionType,
-    undefined,
-    {
+  let engagementQuality: "high" | "medium" | "standard";
+  if (interactionType === "dm_conversation") {
+    engagementQuality = "high";
+  } else if (interactionType === "thread_engagement") {
+    engagementQuality = "medium";
+  } else {
+    engagementQuality = "standard";
+  }
+
+  trackEventWithAttribution({
+    action: "twitter_interaction",
+    category: "social_engagement",
+    label: interactionType,
+    customParams: {
       platform: "twitter",
       interaction_type: interactionType,
       content_id: content,
-      engagement_quality:
-        interactionType === "dm_conversation"
-          ? "high"
-          : interactionType === "thread_engagement"
-            ? "medium"
-            : "standard",
-    }
-  );
+      engagement_quality: engagementQuality,
+    },
+  });
 };
 
 // REALISTIC roaster attribution report data
-export interface RoasterAttributionMetrics {
+export type RoasterAttributionMetrics = {
   // REAL Traffic Data
   total_profile_views: number;
   unique_visitors: number;
@@ -228,7 +237,7 @@ export interface RoasterAttributionMetrics {
   // HONEST Partnership Value
   estimated_monthly_value: number; // Based on industry standards
   partnership_potential: "high" | "medium" | "low"; // Based on engagement quality
-}
+};
 
 // Generate REALISTIC attribution report for roasters (NO FAKE DATA)
 export const generateRoasterAttributionReport = (
@@ -236,17 +245,16 @@ export const generateRoasterAttributionReport = (
   timeframe: "week" | "month" | "quarter"
 ): Promise<RoasterAttributionMetrics> => {
   // Track that a report was requested
-  trackEventWithAttribution(
-    "roaster_attribution_report_generated",
-    "business_intelligence",
-    roasterId,
-    undefined,
-    {
+  trackEventWithAttribution({
+    action: "roaster_attribution_report_generated",
+    category: "business_intelligence",
+    label: roasterId,
+    customParams: {
       roaster_id: roasterId,
       timeframe,
       report_type: "social_media_attribution",
-    }
-  );
+    },
+  });
 
   // This would integrate with your actual GA4 reporting API
   // For now, return a realistic structure that you'll populate with real data
@@ -295,24 +303,24 @@ export const trackContentPerformance = (
     view: 1, // Lowest engagement - passive consumption
   };
 
-  trackEventWithAttribution(
-    "social_content_performance",
-    "content_engagement",
-    platform,
-    engagementValue[engagementMetric],
-    {
+  const engagementValueNum = engagementValue[engagementMetric];
+  trackEventWithAttribution({
+    action: "social_content_performance",
+    category: "content_engagement",
+    label: platform,
+    value: engagementValueNum,
+    customParams: {
       platform,
       content_type: contentType,
       content_id: contentId,
       engagement_metric: engagementMetric,
-      engagement_value: engagementValue[engagementMetric],
+      engagement_value: engagementValueNum,
 
       // HONEST performance indicators
-      is_high_engagement: engagementValue[engagementMetric] >= 4,
-      content_effectiveness:
-        engagementValue[engagementMetric] >= 3 ? "effective" : "standard",
-    }
-  );
+      is_high_engagement: engagementValueNum >= 4,
+      content_effectiveness: engagementValueNum >= 3 ? "effective" : "standard",
+    },
+  });
 };
 
 // Helper function to get REALISTIC social media performance summary

@@ -31,14 +31,42 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protect routes that require authentication
-  if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  // Redirect old auth routes to unified auth page
+  if (request.nextUrl.pathname === "/login") {
+    return NextResponse.redirect(new URL("/auth?mode=login", request.url));
+  }
+  if (request.nextUrl.pathname === "/signup") {
+    return NextResponse.redirect(new URL("/auth?mode=signup", request.url));
   }
 
-  // Redirect authenticated users away from auth pages
-  if (request.nextUrl.pathname.startsWith("/login") && user) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  // Protect routes that require authentication
+  if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
+    return NextResponse.redirect(new URL("/auth?mode=login", request.url));
+  }
+
+  // Protect profile routes
+  if (request.nextUrl.pathname.startsWith("/profile") && !user) {
+    return NextResponse.redirect(
+      new URL(
+        `/auth?mode=login&from=${encodeURIComponent(request.nextUrl.pathname)}`,
+        request.url
+      )
+    );
+  }
+
+  // Redirect authenticated users away from auth pages (but allow callback and onboarding)
+  if (
+    (request.nextUrl.pathname.startsWith("/login") ||
+      request.nextUrl.pathname.startsWith("/signup") ||
+      (request.nextUrl.pathname.startsWith("/auth") &&
+        !request.nextUrl.pathname.startsWith("/auth/callback") &&
+        !request.nextUrl.pathname.startsWith("/auth/onboarding"))) &&
+    user
+  ) {
+    // Redirect to original destination or dashboard
+    const from = request.nextUrl.searchParams.get("from");
+    const redirectTo = from ? decodeURIComponent(from) : "/dashboard";
+    return NextResponse.redirect(new URL(redirectTo, request.url));
   }
 
   return response;

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRoasterDirectoryStore } from "@/store/zustand/roaster-directory-store";
@@ -85,7 +85,7 @@ export function RoasterPagination({ totalPages }: RoasterPaginationProps) {
         size="sm"
         variant="outline"
       >
-        <ChevronLeft className="h-4 w-4" />
+        <Icon name="CaretLeft" size={16} />
         <span className="hidden sm:inline">Previous</span>
       </Button>
 
@@ -117,7 +117,7 @@ export function RoasterPagination({ totalPages }: RoasterPaginationProps) {
         variant="outline"
       >
         <span className="hidden sm:inline">Next</span>
-        <ChevronRight className="h-4 w-4" />
+        <Icon name="CaretRight" size={16} />
       </Button>
     </div>
   );

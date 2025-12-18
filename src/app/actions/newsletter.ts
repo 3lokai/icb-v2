@@ -1,15 +1,33 @@
 "use server";
 
 import { headers } from "next/headers";
+import { z } from "zod";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 
+const newsletterSchema = z.object({
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please provide a valid email address")
+    .toLowerCase()
+    .trim(),
+  consent: z
+    .string()
+    .refine((val) => val === "true", {
+      message: "Please consent to receive newsletters.",
+    }),
+  website: z.string().optional(), // Honeypot field
+});
+
 export async function subscribeToNewsletter(formData: FormData) {
-  const email = formData.get("email") as string;
-  const consent = formData.get("consent") as string;
-  const honeypot = formData.get("website") as string; // Honeypot field
+  const rawData = {
+    email: formData.get("email") as string,
+    consent: formData.get("consent") as string,
+    website: formData.get("website") as string, // Honeypot field
+  };
 
   // Check honeypot - if filled, it's a bot
-  if (honeypot) {
+  if (rawData.website) {
     // Silently reject - don't let bots know they were caught
     return {
       success: true,
@@ -17,19 +35,18 @@ export async function subscribeToNewsletter(formData: FormData) {
     };
   }
 
-  if (!email?.includes("@")) {
+  // Validate with Zod
+  const validationResult = newsletterSchema.safeParse(rawData);
+
+  if (!validationResult.success) {
+    const firstError = validationResult.error.errors[0];
     return {
       success: false,
-      error: "Please provide a valid email address.",
+      error: firstError?.message || "Validation failed. Please check your input.",
     };
   }
 
-  if (consent !== "true") {
-    return {
-      success: false,
-      error: "Please consent to receive newsletters.",
-    };
-  }
+  const { email } = validationResult.data;
 
   try {
     // Get current user if authenticated (using regular client)
@@ -52,11 +69,11 @@ export async function subscribeToNewsletter(formData: FormData) {
     // Prepare form submission data
     const submissionData = {
       form_type: "newsletter" as const,
-      email: email.toLowerCase().trim(),
+      email,
       data: {
-        email: email.toLowerCase().trim(),
-        consent,
-        website: honeypot || "",
+        email,
+        consent: validationResult.data.consent,
+        website: rawData.website || "",
       },
       ip_address: ipAddress,
       user_agent: userAgent,

@@ -1,11 +1,12 @@
 "use client";
 
-import { Filter } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { PageHeader } from "@/components/common/PageHeader";
+import { RoasterDirectoryFAQ } from "@/components/faqs/RoasterDirectoryFAQs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { RoasterDirectoryFAQ } from "@/components/faqs/RoasterDirectoryFAQs";
 import { useRoasters } from "@/hooks/use-roasters";
 import {
   buildRoasterQueryString,
@@ -18,8 +19,8 @@ import type {
   RoasterListResponse,
   RoasterSort,
 } from "@/types/roaster-types";
-import { RoasterFilterBar } from "./RoasterFilterBar";
 import { MobileFilterDrawer } from "./MobileFilterDrawer";
+import { RoasterFilterBar } from "./RoasterFilterBar";
 import { RoasterFilterSidebar } from "./RoasterFilterSidebar";
 import { RoasterGrid } from "./RoasterGrid";
 import { RoasterPagination } from "./RoasterPagination";
@@ -50,10 +51,10 @@ export function RoasterDirectory({
 
   // Get state from Zustand store
   const { filters, page, sort, limit, setAll } = useRoasterDirectoryStore();
-  
+
   // Mobile drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  
+
   // Calculate active filter count
   const activeFilterCount =
     (filters.active_only ? 1 : 0) +
@@ -143,69 +144,78 @@ export function RoasterDirectory({
   const items = data?.items || [];
 
   return (
-    <div className="container mx-auto p-4">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="mb-2 font-bold text-3xl">Roaster Directory</h1>
-        {data && (
-          <p className="text-muted-foreground">
-            Showing {items.length} of {data.total} roasters
-          </p>
-        )}
-      </div>
-
-      {/* Mobile Filter Toggle Button */}
-      <div className="mb-4 md:hidden">
-        <Button
-          aria-label="Open filters"
-          className="w-full justify-start"
-          onClick={() => setIsDrawerOpen(true)}
-          variant="outline"
-        >
-          <Filter className="mr-2 h-4 w-4" />
-          Filters
-          {activeFilterCount > 0 && (
-            <Badge className="ml-2" variant="secondary">
-              {activeFilterCount}
-            </Badge>
-          )}
-        </Button>
-      </div>
-
-      {/* Filter Bar */}
-      <RoasterFilterBar />
-
-      {/* Mobile Filter Drawer */}
-      <MobileFilterDrawer
-        filterMeta={filterMeta}
-        onOpenChange={setIsDrawerOpen}
-        open={isDrawerOpen}
+    <>
+      {/* Page Header */}
+      <PageHeader
+        description="Discover specialty coffee roasters from across India and connect with passionate artisans"
+        icon="Storefront"
+        iconLabel="Specialty Roaster Directory"
+        title="Roaster Directory"
       />
 
-      {/* Main Content Area */}
-      <div className="flex flex-col gap-6 md:flex-row">
-        {/* Filter Sidebar */}
-        <RoasterFilterSidebar filterMeta={filterMeta} />
+      <div className="container mx-auto p-4">
+        {/* Results Count */}
+        {data && (
+          <div className="mb-6 text-center">
+            <p className="text-muted-foreground">
+              Showing {items.length} of {data.total} roasters
+            </p>
+          </div>
+        )}
 
-        {/* Roaster Grid */}
-        <div className="flex-1">
-          {isFetching && !data && (
-            <div className="py-12 text-center">
-              <p className="text-muted-foreground">Loading roasters...</p>
-            </div>
-          )}
-
-          <RoasterGrid isLoading={isFetching} items={items} />
-
-          {/* Pagination */}
-          {data && data.totalPages > 1 && (
-            <RoasterPagination totalPages={data.totalPages} />
-          )}
+        {/* Mobile Filter Toggle Button */}
+        <div className="mb-4 md:hidden">
+          <Button
+            aria-label="Open filters"
+            className="w-full justify-start"
+            onClick={() => setIsDrawerOpen(true)}
+            variant="outline"
+          >
+            <Icon className="mr-2" name="Funnel" size={16} />
+            Filters
+            {activeFilterCount > 0 && (
+              <Badge className="ml-2" variant="secondary">
+                {activeFilterCount}
+              </Badge>
+            )}
+          </Button>
         </div>
-      </div>
 
-      {/* FAQ Section */}
-      <RoasterDirectoryFAQ />
-    </div>
+        {/* Filter Bar */}
+        <RoasterFilterBar />
+
+        {/* Mobile Filter Drawer */}
+        <MobileFilterDrawer
+          filterMeta={filterMeta}
+          onOpenChange={setIsDrawerOpen}
+          open={isDrawerOpen}
+        />
+
+        {/* Main Content Area */}
+        <div className="flex flex-col gap-6 md:flex-row">
+          {/* Filter Sidebar */}
+          <RoasterFilterSidebar filterMeta={filterMeta} />
+
+          {/* Roaster Grid */}
+          <div className="flex-1">
+            {isFetching && !data && (
+              <div className="py-12 text-center">
+                <p className="text-muted-foreground">Loading roasters...</p>
+              </div>
+            )}
+
+            <RoasterGrid isLoading={isFetching} items={items} />
+
+            {/* Pagination */}
+            {data && data.totalPages > 1 && (
+              <RoasterPagination totalPages={data.totalPages} />
+            )}
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <RoasterDirectoryFAQ />
+      </div>
+    </>
   );
 }

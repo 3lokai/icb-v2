@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store";
 
@@ -87,7 +87,7 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
         size="sm"
         variant="outline"
       >
-        <ChevronLeft className="h-4 w-4" />
+        <Icon name="CaretLeft" size={16} />
         <span className="sr-only md:not-sr-only md:ml-1">Previous</span>
       </Button>
 
@@ -128,7 +128,7 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
         variant="outline"
       >
         <span className="sr-only md:not-sr-only md:mr-1">Next</span>
-        <ChevronRight className="h-4 w-4" />
+        <Icon name="CaretRight" size={16} />
       </Button>
 
       <div className="ml-4 text-muted-foreground text-sm">

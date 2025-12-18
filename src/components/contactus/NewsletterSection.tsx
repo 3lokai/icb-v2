@@ -8,7 +8,6 @@ type NewsletterSectionProps = {
   formSubmitting: boolean;
   formSubmitted: boolean;
   formError: string | null;
-  showTurnstile: boolean;
   getButtonText: () => string;
 };
 
@@ -17,7 +16,6 @@ export function NewsletterSection({
   formSubmitting,
   formSubmitted,
   formError,
-  showTurnstile,
   getButtonText,
 }: NewsletterSectionProps) {
   return (
@@ -91,17 +89,6 @@ export function NewsletterSection({
                 unsubscribe at any time.
               </label>
             </div>
-
-            {showTurnstile && (
-              <div className="flex justify-center">
-                <div
-                  className="cf-turnstile"
-                  data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-                  data-size="compact"
-                  data-theme="auto"
-                />
-              </div>
-            )}
 
             <button
               className={`btn-primary w-full ${formSubmitting ? "cursor-not-allowed opacity-70" : ""}`}

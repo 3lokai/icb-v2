@@ -14,7 +14,12 @@ type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (
+    email: string,
+    password: string,
+    metadata?: { full_name?: string }
+  ) => Promise<{ error: any }>;
+  signInWithOAuth: (provider: "google" | "facebook") => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
   refreshUser: () => Promise<void>;
 };
@@ -50,11 +55,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
-  const signUp = async (email: string, password: string) => {
-    const { error } = await auth.signUp(email, password);
+  const signUp = async (
+    email: string,
+    password: string,
+    metadata?: { full_name?: string }
+  ) => {
+    const { error } = await auth.signUp(email, password, metadata);
     if (!error) {
       await refreshUser();
     }
+    return { error };
+  };
+
+  const signInWithOAuth = async (provider: "google" | "facebook") => {
+    const { error } = await auth.signInWithOAuth(provider);
+    // OAuth redirects, so we don't need to refresh user here
     return { error };
   };
 
@@ -95,6 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isLoading,
     signIn,
     signUp,
+    signInWithOAuth,
     signOut,
     refreshUser,
   };

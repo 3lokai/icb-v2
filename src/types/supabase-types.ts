@@ -668,6 +668,44 @@ export type Database = {
           },
         ]
       }
+      rating_migrations: {
+        Row: {
+          coffee_ratings_migrated: number | null
+          id: string
+          ip_address: unknown
+          migration_date: string | null
+          migration_type: string | null
+          roaster_ratings_migrated: number | null
+          user_id: string | null
+        }
+        Insert: {
+          coffee_ratings_migrated?: number | null
+          id?: string
+          ip_address?: unknown
+          migration_date?: string | null
+          migration_type?: string | null
+          roaster_ratings_migrated?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          coffee_ratings_migrated?: number | null
+          id?: string
+          ip_address?: unknown
+          migration_date?: string | null
+          migration_type?: string | null
+          roaster_ratings_migrated?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rating_migrations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       regions: {
         Row: {
           country: string | null
@@ -1028,6 +1066,157 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_coffee_preferences: {
+        Row: {
+          decaf_only: boolean | null
+          flavor_profiles: string[] | null
+          id: string
+          organic_only: boolean | null
+          processing_methods: string[] | null
+          regions: string[] | null
+          roast_levels: string[] | null
+          updated_at: string | null
+          user_id: string | null
+          with_milk_preference: boolean | null
+        }
+        Insert: {
+          decaf_only?: boolean | null
+          flavor_profiles?: string[] | null
+          id?: string
+          organic_only?: boolean | null
+          processing_methods?: string[] | null
+          regions?: string[] | null
+          roast_levels?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+          with_milk_preference?: boolean | null
+        }
+        Update: {
+          decaf_only?: boolean | null
+          flavor_profiles?: string[] | null
+          id?: string
+          organic_only?: boolean | null
+          processing_methods?: string[] | null
+          regions?: string[] | null
+          roast_levels?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+          with_milk_preference?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_coffee_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_notification_preferences: {
+        Row: {
+          coffee_updates: boolean | null
+          email_frequency: string | null
+          id: string
+          new_roasters: boolean | null
+          newsletter: boolean | null
+          platform_updates: boolean | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          coffee_updates?: boolean | null
+          email_frequency?: string | null
+          id?: string
+          new_roasters?: boolean | null
+          newsletter?: boolean | null
+          platform_updates?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          coffee_updates?: boolean | null
+          email_frequency?: string | null
+          id?: string
+          new_roasters?: boolean | null
+          newsletter?: boolean | null
+          platform_updates?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_notification_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          city: string | null
+          country: string | null
+          created_at: string | null
+          email_verified: boolean | null
+          experience_level: string | null
+          full_name: string
+          gender: string | null
+          id: string
+          is_public_profile: boolean | null
+          newsletter_subscribed: boolean | null
+          onboarding_completed: boolean | null
+          preferred_brewing_methods: string[] | null
+          show_location: boolean | null
+          state: string | null
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          email_verified?: boolean | null
+          experience_level?: string | null
+          full_name: string
+          gender?: string | null
+          id: string
+          is_public_profile?: boolean | null
+          newsletter_subscribed?: boolean | null
+          onboarding_completed?: boolean | null
+          preferred_brewing_methods?: string[] | null
+          show_location?: boolean | null
+          state?: string | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          email_verified?: boolean | null
+          experience_level?: string | null
+          full_name?: string
+          gender?: string | null
+          id?: string
+          is_public_profile?: boolean | null
+          newsletter_subscribed?: boolean | null
+          onboarding_completed?: boolean | null
+          preferred_brewing_methods?: string[] | null
+          show_location?: boolean | null
+          state?: string | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
@@ -1624,7 +1813,13 @@ export type Database = {
         | "blend_chicory"
         | "filter_coffee_mix"
         | "excelsa"
-      user_role_enum: "admin" | "operator" | "user" | "viewer"
+      user_role_enum:
+        | "admin"
+        | "operator"
+        | "user"
+        | "viewer"
+        | "contributor"
+        | "roaster"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1828,7 +2023,14 @@ export const Constants = {
         "filter_coffee_mix",
         "excelsa",
       ],
-      user_role_enum: ["admin", "operator", "user", "viewer"],
+      user_role_enum: [
+        "admin",
+        "operator",
+        "user",
+        "viewer",
+        "contributor",
+        "roaster",
+      ],
     },
   },
 } as const

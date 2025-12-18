@@ -764,8 +764,8 @@ export const EXPERT_RECIPES: Record<ExpertKey, ExpertRecipe> = {
     water: 155, // ~75g concentrate + 50-55g hot bypass + 20-30g room temp bypass
     bypassWater: 80, // Combined bypass
     ratio: "1:8.6",
-    grind: "Medium (870 microns)",
-    temperature: "96°C + room temp bypass",
+    grind: "Medium",
+    temperature: "96°C + bypass",
     totalTime: "1:35",
 
     roastRecommendation: ["light", "medium"],

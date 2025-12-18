@@ -1,6 +1,6 @@
 "use client";
 
-import { CoffeeIcon, StoreIcon } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -15,7 +15,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSearch } from "@/hooks/use-search";
+import { useSearchContext } from "@/providers/SearchProvider";
 import type { SearchableItem } from "@/types/search";
 
 // Result limits per type
@@ -34,7 +34,7 @@ export function SearchCommand() {
     open,
     close,
     setQuery,
-  } = useSearch();
+  } = useSearchContext();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -182,9 +182,9 @@ function SearchResultItem({ item, onSelect }: SearchResultItemProps) {
         ) : null}
         <AvatarFallback className="bg-muted/80 text-popover-foreground">
           {item.type === "coffee" ? (
-            <CoffeeIcon className="size-6" />
+            <Icon className="size-6" name="Coffee" size={24} />
           ) : (
-            <StoreIcon className="size-6" />
+            <Icon className="size-6" name="Storefront" size={24} />
           )}
         </AvatarFallback>
       </Avatar>

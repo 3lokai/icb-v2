@@ -1,11 +1,12 @@
 "use client";
 
-import { Filter } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { PageHeader } from "@/components/common/PageHeader";
+import { CoffeeDirectoryFAQ } from "@/components/faqs/CoffeeDirectoryFAQs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CoffeeDirectoryFAQ } from "@/components/faqs/CoffeeDirectoryFAQs";
 import { useCoffees } from "@/hooks/use-coffees";
 import {
   buildCoffeeQueryString,
@@ -21,8 +22,8 @@ import type {
 import { CoffeeFilterBar } from "./CoffeeFilterBar";
 import { CoffeeFilterSidebar } from "./CoffeeFilterSidebar";
 import { CoffeeGrid } from "./CoffeeGrid";
-import { MobileFilterDrawer } from "./MobileFilterDrawer";
 import { CoffeePagination } from "./CoffeePagination";
+import { MobileFilterDrawer } from "./MobileFilterDrawer";
 
 type CoffeeDirectoryProps = {
   initialFilters: CoffeeFilters;
@@ -50,10 +51,10 @@ export function CoffeeDirectory({
 
   // Get state from Zustand store
   const { filters, page, sort, limit, setAll } = useCoffeeDirectoryStore();
-  
+
   // Mobile drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  
+
   // Calculate active filter count
   const activeFilterCount =
     (filters.in_stock_only ? 1 : 0) +
@@ -151,69 +152,78 @@ export function CoffeeDirectory({
   const items = data?.items || [];
 
   return (
-    <div className="container mx-auto p-4">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="mb-2 font-bold text-3xl">Coffee Directory</h1>
-        {data && (
-          <p className="text-muted-foreground">
-            Showing {items.length} of {data.total} coffees
-          </p>
-        )}
-      </div>
-
-      {/* Mobile Filter Toggle Button */}
-      <div className="mb-4 md:hidden">
-        <Button
-          aria-label="Open filters"
-          className="w-full justify-start"
-          onClick={() => setIsDrawerOpen(true)}
-          variant="outline"
-        >
-          <Filter className="mr-2 h-4 w-4" />
-          Filters
-          {activeFilterCount > 0 && (
-            <Badge className="ml-2" variant="secondary">
-              {activeFilterCount}
-            </Badge>
-          )}
-        </Button>
-      </div>
-
-      {/* Filter Bar */}
-      <CoffeeFilterBar />
-
-      {/* Mobile Filter Drawer */}
-      <MobileFilterDrawer
-        filterMeta={filterMeta}
-        onOpenChange={setIsDrawerOpen}
-        open={isDrawerOpen}
+    <>
+      {/* Page Header */}
+      <PageHeader
+        description="Explore exceptional Indian specialty coffee beans from roasters across the country"
+        icon="Coffee"
+        iconLabel="Specialty Coffee Directory"
+        title="Coffee Directory"
       />
 
-      {/* Main Content Area */}
-      <div className="flex flex-col gap-6 md:flex-row">
-        {/* Filter Sidebar */}
-        <CoffeeFilterSidebar filterMeta={filterMeta} />
+      <div className="container mx-auto p-4">
+        {/* Results Count */}
+        {data && (
+          <div className="mb-6 text-center">
+            <p className="text-muted-foreground">
+              Showing {items.length} of {data.total} coffees
+            </p>
+          </div>
+        )}
 
-        {/* Coffee Grid */}
-        <div className="flex-1">
-          {isFetching && !data && (
-            <div className="py-12 text-center">
-              <p className="text-muted-foreground">Loading coffees...</p>
-            </div>
-          )}
-
-          <CoffeeGrid isLoading={isFetching} items={items} />
-
-          {/* Pagination */}
-          {data && data.totalPages > 1 && (
-            <CoffeePagination totalPages={data.totalPages} />
-          )}
+        {/* Mobile Filter Toggle Button */}
+        <div className="mb-4 md:hidden">
+          <Button
+            aria-label="Open filters"
+            className="w-full justify-start"
+            onClick={() => setIsDrawerOpen(true)}
+            variant="outline"
+          >
+            <Icon className="mr-2" name="Funnel" size={16} />
+            Filters
+            {activeFilterCount > 0 && (
+              <Badge className="ml-2" variant="secondary">
+                {activeFilterCount}
+              </Badge>
+            )}
+          </Button>
         </div>
-      </div>
 
-      {/* FAQ Section */}
-      <CoffeeDirectoryFAQ />
-    </div>
+        {/* Filter Bar */}
+        <CoffeeFilterBar />
+
+        {/* Mobile Filter Drawer */}
+        <MobileFilterDrawer
+          filterMeta={filterMeta}
+          onOpenChange={setIsDrawerOpen}
+          open={isDrawerOpen}
+        />
+
+        {/* Main Content Area */}
+        <div className="flex flex-col gap-6 md:flex-row">
+          {/* Filter Sidebar */}
+          <CoffeeFilterSidebar filterMeta={filterMeta} />
+
+          {/* Coffee Grid */}
+          <div className="flex-1">
+            {isFetching && !data && (
+              <div className="py-12 text-center">
+                <p className="text-muted-foreground">Loading coffees...</p>
+              </div>
+            )}
+
+            <CoffeeGrid isLoading={isFetching} items={items} />
+
+            {/* Pagination */}
+            {data && data.totalPages > 1 && (
+              <CoffeePagination totalPages={data.totalPages} />
+            )}
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <CoffeeDirectoryFAQ />
+      </div>
+    </>
   );
 }

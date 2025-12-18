@@ -1,10 +1,10 @@
 // src/app/tools/coffee-calculator/page.tsx
 // Enhanced version with improved UX and micro-interactions
 
-import Image from "next/image";
 import Link from "next/link";
 import { FAQ } from "@/components/common/FAQ";
 import { Icon } from "@/components/common/Icon";
+import { PageHeader } from "@/components/common/PageHeader";
 import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeCalculatorContainer } from "@/components/tools/CoffeeCalculatorContainer";
 import { Button } from "@/components/ui/button";
@@ -135,67 +135,38 @@ export default function CoffeeCalculatorPage() {
       <StructuredData schema={calculatorFAQSchema} />
       <StructuredData schema={calculatorToolSchema} />
 
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-        {/* Enhanced Hero Section */}
-        <section className="hero-wrapper">
-          <Image
-            alt="Coffee brewing setup"
-            className="object-cover"
-            fill
-            priority
-            src="/mocks/images/hero-bg.png"
-          />
-          <div className="hero-overlay" />
-          <div className="hero-content">
-            {/* Hero badge - matching your LearnDirectoryHeader pattern */}
-            <div className="mb-8 inline-flex animate-fade-in-scale items-center">
-              <div className="rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm">
-                <div className="flex items-center gap-2 text-sm">
-                  <Icon className="text-accent" name="Calculator" size={16} />
-                  <span className="text-white/90">
-                    Perfect Coffee Ratios & Brewing Timer
-                  </span>
-                  <div className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-                </div>
-              </div>
-            </div>
+      <div>
+        {/* Page Header */}
+        <PageHeader
+          description="Master your brewing technique with our step-by-step guide and precision calculator. Get perfect ratios, timing, and expert tips for every method."
+          icon="Calculator"
+          iconLabel="Perfect Coffee Ratios & Brewing Timer"
+          title="Perfect Brew Calculator"
+        />
 
-            <h1 className="mb-6 animate-fade-in-scale text-display text-white delay-100">
-              Perfect Brew Calculator
-            </h1>
-
-            <p className="mb-8 max-w-2xl animate-fade-in-scale text-white/90 text-xl leading-relaxed delay-200">
-              Master your brewing technique with our step-by-step guide and
-              precision calculator. Get perfect ratios, timing, and expert tips
-              for every method.
-            </p>
-
-            {/* Feature highlights - using glass-panel properly */}
-            <div className="glass-panel mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl border border-white/20 p-6 delay-300">
+        {/* Feature highlights and action buttons */}
+        <section className="section-spacing bg-muted/20">
+          <div className="container-default">
+            {/* Feature highlights */}
+            <div className="glass-panel mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl border border-border/50 p-6">
               <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-                <div className="group flex items-center gap-2 text-white transition-colors hover:text-white/80">
+                <div className="group flex items-center gap-2 transition-colors hover:text-primary">
                   <div className="h-3 w-3 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                  <span className="font-medium drop-shadow-sm">
-                    11 Brewing Methods
-                  </span>
+                  <span className="font-medium">11 Brewing Methods</span>
                 </div>
-                <div className="group flex items-center gap-2 text-white transition-colors hover:text-white/80">
+                <div className="group flex items-center gap-2 transition-colors hover:text-accent">
                   <div className="h-3 w-3 rounded-full bg-accent shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                  <span className="font-medium drop-shadow-sm">
-                    Interactive Timer
-                  </span>
+                  <span className="font-medium">Interactive Timer</span>
                 </div>
-                <div className="group flex items-center gap-2 text-white transition-colors hover:text-white/80">
+                <div className="group flex items-center gap-2 transition-colors hover:text-chart-2">
                   <div className="h-3 w-3 rounded-full bg-chart-2 shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                  <span className="font-medium drop-shadow-sm">
-                    Expert Tips
-                  </span>
+                  <span className="font-medium">Expert Tips</span>
                 </div>
               </div>
             </div>
 
-            {/* Action buttons - matching your LearnDirectoryHeader pattern */}
-            <div className="flex animate-fade-in-scale flex-col items-center justify-center gap-4 delay-400 sm:flex-row">
+            {/* Action buttons */}
+            <div className="flex animate-fade-in-scale flex-col items-center justify-center gap-4 sm:flex-row">
               <Button
                 asChild
                 className="btn-primary hover-lift group"

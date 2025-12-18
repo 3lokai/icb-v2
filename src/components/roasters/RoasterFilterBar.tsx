@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useRoasterDirectoryStore } from "@/store/zustand/roaster-directory-store";
@@ -60,7 +60,7 @@ export function RoasterFilterBar() {
                 onClick={() => updateFilters({ active_only: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}
@@ -74,7 +74,7 @@ export function RoasterFilterBar() {
                 onClick={() => updateFilters({ cities: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}
@@ -88,7 +88,7 @@ export function RoasterFilterBar() {
                 onClick={() => updateFilters({ states: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}
@@ -102,7 +102,7 @@ export function RoasterFilterBar() {
                 onClick={() => updateFilters({ countries: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}
@@ -115,7 +115,7 @@ export function RoasterFilterBar() {
                 onClick={() => updateFilters({ q: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}

@@ -1,5 +1,5 @@
 "use client";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import {
   AnimatePresence,
   motion,
@@ -166,11 +166,13 @@ const NavItemComponent = ({
         />
       )}
       <span className="relative z-20">{item.name}</span>
-      <ChevronDown
+      <Icon
         className={cn(
-          "relative z-20 h-3 w-3 transition-transform",
+          "relative z-20 transition-transform",
           isDropdownOpen && "rotate-180"
         )}
+        name="CaretDown"
+        size={12}
       />
     </button>
   );
@@ -381,9 +383,9 @@ export const MobileNavToggle = ({
   onClick: () => void;
 }) =>
   isOpen ? (
-    <X className="text-foreground" onClick={onClick} />
+    <Icon className="text-foreground" name="X" onClick={onClick} size={20} />
   ) : (
-    <Menu className="text-foreground" onClick={onClick} />
+    <Icon className="text-foreground" name="List" onClick={onClick} size={20} />
   );
 
 type MobileNavDropdownProps = {
@@ -419,8 +421,10 @@ export const MobileNavDropdown = ({
         type="button"
       >
         <span>{item.name}</span>
-        <ChevronDown
-          className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")}
+        <Icon
+          className={cn("transition-transform", isOpen && "rotate-180")}
+          name="CaretDown"
+          size={16}
         />
       </button>
       <AnimatePresence>

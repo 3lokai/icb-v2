@@ -135,9 +135,9 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
         itemType="https://schema.org/Organization"
       >
         {/* Accent bar */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-chart-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        <div className="relative h-40 w-full overflow-hidden rounded-t-lg group">
+        <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
           <Image
             alt={roaster.name || "Coffee roaster image"}
             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -164,21 +164,21 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
 
         <CardHeader>
           <CardTitle
-            className="font-semibold text-lg md:text-xl"
+            className="font-semibold text-lg md:text-xl line-clamp-2 min-h-[3.5rem]"
             itemProp="name"
           >
             {roaster.name}
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-2">
+        <CardContent className="flex-1 flex flex-col gap-2">
           {address && (
-            <div className="text-caption" itemProp="address">
+            <div className="text-caption line-clamp-1" itemProp="address">
               {address}
             </div>
           )}
 
-          <TagList className="mt-2">
+          <TagList className="gap-2 mt-2">
             {roaster.coffee_count > 0 && (
               <Tag variant="outline">
                 {roaster.coffee_count}{" "}
@@ -188,7 +188,7 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
           </TagList>
         </CardContent>
 
-        <CardFooter>
+        <CardFooter className="flex justify-between items-center pt-4 border-t border-border/30">
           <div className="rating-stars">
             <RatingDisplay roaster={roaster} />
           </div>

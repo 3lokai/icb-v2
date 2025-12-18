@@ -1,9 +1,9 @@
 // src/app/tools/expert-recipes/page.tsx
 
-import Image from "next/image";
 import Link from "next/link";
 import { FAQ } from "@/components/common/FAQ";
 import { Icon } from "@/components/common/Icon";
+import { PageHeader } from "@/components/common/PageHeader";
 import StructuredData from "@/components/seo/StructuredData";
 import { ExpertRecipesClient } from "@/components/tools/RecipeClient";
 import { Badge } from "@/components/ui/badge";
@@ -151,67 +151,38 @@ export default function ExpertRecipesPage() {
       <StructuredData schema={expertRecipesFAQSchema} />
       <StructuredData schema={expertRecipesCollectionSchema} />
 
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-        {/* Hero Section - Enhanced with glassmorphism */}
-        <section className="hero-wrapper">
-          <Image
-            alt="Expert coffee brewing setup"
-            className="object-cover"
-            fill
-            priority
-            src="/mocks/images/hero-bg.png"
-          />
-          <div className="hero-overlay" />
-          <div className="hero-content">
-            {/* Hero badge - matching calculator pattern */}
-            <div className="mb-8 inline-flex animate-fade-in-scale items-center">
-              <div className="rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm">
-                <div className="flex items-center gap-2 text-sm">
-                  <Icon className="text-accent" name="Trophy" size={16} />
-                  <span className="text-white/90">
-                    Championship Brewing Techniques & Expert Recipes
-                  </span>
-                  <div className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-                </div>
-              </div>
-            </div>
+      <div>
+        {/* Page Header */}
+        <PageHeader
+          description="Learn from world champions and coffee experts. Master championship-winning techniques from James Hoffmann, Tetsu Kasuya, Scott Rao, and more."
+          icon="Trophy"
+          iconLabel="Championship Brewing Techniques & Expert Recipes"
+          title="Expert Coffee Recipes"
+        />
 
-            <h1 className="mb-6 animate-fade-in-scale text-display text-white delay-100">
-              Expert Coffee Recipes
-            </h1>
-
-            <p className="mb-8 max-w-2xl animate-fade-in-scale text-white/90 text-xl leading-relaxed delay-200">
-              Learn from world champions and coffee experts. Master
-              championship-winning techniques from James Hoffmann, Tetsu Kasuya,
-              Scott Rao, and more.
-            </p>
-
-            {/* Feature highlights - using glass-panel properly with better readability */}
-            <div className="glass-panel mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl border border-white/20 p-6 delay-300">
+        {/* Feature highlights and action buttons */}
+        <section className="section-spacing bg-muted/20">
+          <div className="container-default">
+            {/* Feature highlights */}
+            <div className="glass-panel mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl border border-border/50 p-6">
               <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-                <div className="group flex items-center gap-2 text-white transition-colors hover:text-white/80">
+                <div className="group flex items-center gap-2 transition-colors hover:text-primary">
                   <div className="h-3 w-3 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                  <span className="font-medium drop-shadow-sm">
-                    8 Championship Recipes
-                  </span>
+                  <span className="font-medium">8 Championship Recipes</span>
                 </div>
-                <div className="group flex items-center gap-2 text-white transition-colors hover:text-white/80">
+                <div className="group flex items-center gap-2 transition-colors hover:text-accent">
                   <div className="h-3 w-3 rounded-full bg-accent shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                  <span className="font-medium drop-shadow-sm">
-                    World-Class Experts
-                  </span>
+                  <span className="font-medium">World-Class Experts</span>
                 </div>
-                <div className="group flex items-center gap-2 text-white transition-colors hover:text-white/80">
+                <div className="group flex items-center gap-2 transition-colors hover:text-chart-2">
                   <div className="h-3 w-3 rounded-full bg-chart-2 shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                  <span className="font-medium drop-shadow-sm">
-                    Step-by-Step Guides
-                  </span>
+                  <span className="font-medium">Step-by-Step Guides</span>
                 </div>
               </div>
             </div>
 
-            {/* Action buttons - switched from calculator page */}
-            <div className="flex animate-fade-in-scale flex-col items-center justify-center gap-4 delay-400 sm:flex-row">
+            {/* Action buttons */}
+            <div className="flex animate-fade-in-scale flex-col items-center justify-center gap-4 sm:flex-row">
               <Button
                 asChild
                 className="btn-primary hover-lift group"
@@ -346,22 +317,6 @@ export default function ExpertRecipesPage() {
                     <p className="mb-4 text-muted-foreground text-sm leading-relaxed transition-colors group-hover:text-foreground">
                       {expert.description}
                     </p>
-
-                    <div className="space-y-1">
-                      <span className="font-medium text-muted-foreground text-xs">
-                        Recipes:
-                      </span>
-                      <div className="flex flex-wrap gap-1">
-                        {expert.recipes.map((recipe) => (
-                          <Badge
-                            className="badge bg-accent/90 text-accent-foreground text-xs"
-                            key={recipe}
-                          >
-                            {recipe}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
                   </div>
                 </div>
               ))}

@@ -1,10 +1,17 @@
 // Enhanced RecipeMainPanel.tsx - UI only changes
 import React, { useState } from "react";
 import { Icon } from "@/components/common/Icon";
+import Tag from "@/components/common/Tag";
 import { BrewingTimer } from "@/components/tools/BrewTimer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   BREWING_METHODS_ARRAY,
   calculateBrewRatio,
@@ -25,17 +32,9 @@ type RecipeCardProps = {
 };
 
 function RecipeCard({ recipe, isSelected, onSelect }: RecipeCardProps) {
-  const difficultyColors = {
-    Beginner: "bg-green-500",
-    Intermediate: "bg-yellow-500",
-    Advanced: "bg-red-500",
-  };
-
-  const useColors = {
-    everyday: "default",
-    competition: "destructive",
-    experiment: "secondary",
-  } as const;
+  const methodName =
+    BREWING_METHODS_ARRAY.find((m) => m.id === recipe.method)?.name ||
+    recipe.method;
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -45,128 +44,95 @@ function RecipeCard({ recipe, isSelected, onSelect }: RecipeCardProps) {
   };
 
   return (
-    // biome-ignore lint/a11y/useSemanticElements: Cannot use button element due to nested button constraint - inner element is decorative
-    <div
-      className={`glass-card card-padding hover-lift group relative w-full cursor-pointer overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
-        isSelected ? "border-primary/50 shadow-lg ring-2 ring-primary" : ""
-      }`}
+    <Card
+      className={cn(
+        "group relative cursor-pointer overflow-hidden",
+        "border border-border/40 bg-card/70 backdrop-blur-sm",
+        "rounded-xl shadow-md hover:shadow-xl",
+        "hover:-translate-y-1 transition-all duration-300 hover:bg-card/80",
+        "h-full p-4 md:p-6",
+        isSelected && "border-primary/50 ring-2 ring-primary"
+      )}
       onClick={onSelect}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
     >
-      {/* Decorative blur element */}
-      <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-primary/5 blur-xl" />
+      {/* Accent bar */}
+      <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-accent via-primary to-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-      <div className="relative z-10">
-        <div className="pb-3">
-          <div className="mb-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Icon
-                className="h-4 w-4 text-primary transition-transform group-hover:scale-110"
-                name="Coffee"
-              />
-              <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
-                {
-                  BREWING_METHODS_ARRAY.find((m) => m.id === recipe.method)
-                    ?.name
-                }
-              </Badge>
-            </div>
-            <div className="flex items-center gap-1">
-              <div
-                className={`h-3 w-3 rounded-full ${difficultyColors[recipe.difficulty]}`}
-              />
-              <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
-                {recipe.difficulty}
-              </Badge>
-            </div>
+      <CardHeader>
+        <div className="mb-2 flex items-center gap-2">
+          <Tag variant="filled">{methodName}</Tag>
+          <Tag className="bg-background/90" variant="outline">
+            {recipe.difficulty}
+          </Tag>
+          <Tag variant="outline">{recipe.recommendedUse}</Tag>
+        </div>
+        <CardTitle className="line-clamp-2 font-semibold text-lg leading-tight md:text-xl">
+          {recipe.title}
+        </CardTitle>
+        <div className="line-clamp-1 text-caption transition-colors hover:text-accent">
+          by {recipe.expert.name}
+          {recipe.expert.year && ` • ${recipe.expert.year}`}
+        </div>
+      </CardHeader>
+
+      <CardContent className="flex flex-1 flex-col gap-2">
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 gap-1.5 text-sm">
+          <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
+            <span className="text-muted-foreground">Ratio</span>
+            <span className="font-medium">{recipe.ratio}</span>
           </div>
-
-          <h3 className="mb-3 font-semibold text-lg leading-tight transition-colors group-hover:text-primary">
-            {recipe.title}
-          </h3>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-muted-foreground text-sm">
-              <span className="font-medium">{recipe.expert.name}</span>
-              {recipe.expert.year && (
-                <Badge className="badge bg-accent/90 text-accent-foreground text-xs">
-                  {recipe.expert.year}
-                </Badge>
-              )}
-            </div>
-            <Badge
-              className="text-xs"
-              variant={useColors[recipe.recommendedUse]}
-            >
-              {recipe.recommendedUse}
-            </Badge>
+          <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
+            <span className="text-muted-foreground">Time</span>
+            <span className="font-medium">{recipe.totalTime}</span>
+          </div>
+          <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
+            <span className="text-muted-foreground">Grind</span>
+            <span className="font-medium text-xs">{recipe.grind}</span>
+          </div>
+          <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
+            <span className="text-muted-foreground">Temp</span>
+            <span className="font-medium text-xs">{recipe.temperature}</span>
           </div>
         </div>
 
-        <div className="space-y-4">
-          {/* Quick Stats - Enhanced with glass treatment */}
-          <div className="glass-panel relative overflow-hidden rounded-lg p-3">
-            <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-accent/5 blur-lg" />
-            <div className="relative z-10 grid grid-cols-2 gap-3 text-sm">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Ratio</span>
-                <span className="font-medium">{recipe.ratio}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Time</span>
-                <span className="font-medium">{recipe.totalTime}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Grind</span>
-                <span className="font-medium text-xs">{recipe.grind}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Temp</span>
-                <span className="font-medium text-xs">
-                  {recipe.temperature}
-                </span>
-              </div>
-            </div>
+        {/* Key Technique Preview */}
+        <div className="mt-4 rounded-md bg-background/30 p-2">
+          <div className="mb-1 flex items-center gap-1.5">
+            <Icon className="h-3 w-3 text-accent" name="Lightbulb" />
+            <span className="font-medium text-accent text-xs uppercase tracking-wide">
+              Key Technique
+            </span>
           </div>
-
-          <Separator className="bg-border/50" />
-
-          {/* Key Technique Preview - Enhanced glass panel */}
-          <div className="glass-panel relative overflow-hidden rounded-lg p-3">
-            <div className="absolute top-0 right-0 h-6 w-6 rounded-full bg-accent/10 blur-lg" />
-            <div className="relative z-10">
-              <div className="mb-2 flex items-center gap-2">
-                <Icon className="h-3 w-3 text-accent" name="Lightbulb" />
-                <span className="font-medium text-accent text-xs uppercase tracking-wide">
-                  Key Technique
-                </span>
-              </div>
-              <p className="line-clamp-2 text-muted-foreground text-xs leading-relaxed">
-                {recipe.keyTechnique}
-              </p>
-            </div>
-          </div>
-
-          {/* Action */}
-          <div
-            className={cn(
-              "glass-button hover-lift group flex h-8 w-full items-center justify-center gap-1.5 rounded-md border px-3 font-medium text-sm transition-colors",
-              isSelected
-                ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                : "border-input bg-background hover:bg-accent hover:text-accent-foreground"
-            )}
-          >
-            {isSelected ? "Selected" : "View Full Recipe"}
-            <Icon
-              className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5"
-              name="ArrowRight"
-            />
-          </div>
+          <p className="line-clamp-2 text-muted-foreground text-xs leading-relaxed">
+            {recipe.keyTechnique}
+          </p>
         </div>
-      </div>
-    </div>
+      </CardContent>
+
+      <CardFooter className="flex items-center justify-between border-border/30 border-t pt-3">
+        <div className="text-caption text-muted-foreground">
+          {recipe.steps.length} step{recipe.steps.length !== 1 ? "s" : ""}
+        </div>
+        <div
+          className={cn(
+            "flex items-center gap-1.5 font-medium text-sm transition-colors",
+            isSelected
+              ? "text-primary"
+              : "text-muted-foreground group-hover:text-accent"
+          )}
+        >
+          {isSelected ? "Selected" : "View Recipe"}
+          <Icon
+            className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+            name="ArrowRight"
+          />
+        </div>
+      </CardFooter>
+    </Card>
   );
 }
 

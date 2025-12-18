@@ -61,7 +61,7 @@ export function NewsletterForm({
         type="text"
       />
       <input
-        className="w-full rounded-md border border-border bg-muted p-2 text-foreground"
+        className="w-full rounded-md border border-border bg-muted p-2 text-foreground font-sans"
         name="email"
         placeholder={placeholderText}
         required

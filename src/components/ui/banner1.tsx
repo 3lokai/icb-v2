@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -64,7 +64,7 @@ const Banner1 = ({
           size="icon"
           variant="ghost"
         >
-          <X className="h-4 w-4" />
+          <Icon name="X" size={16} />
         </Button>
       </div>
     </section>

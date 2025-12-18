@@ -12,11 +12,18 @@ export const auth = {
     return { data, error };
   },
 
-  async signUp(email: string, password: string) {
+  async signUp(
+    email: string,
+    password: string,
+    metadata?: { full_name?: string }
+  ) {
     const supabase = createBrowserClient();
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: metadata,
+      },
     });
     return { data, error };
   },
@@ -48,6 +55,21 @@ export const auth = {
   onAuthStateChange(callback: (event: string, session: any) => void) {
     const supabase = createBrowserClient();
     return supabase.auth.onAuthStateChange(callback);
+  },
+
+  async signInWithOAuth(provider: "google" | "facebook") {
+    const supabase = createBrowserClient();
+    const redirectTo =
+      typeof window !== "undefined"
+        ? `${window.location.origin}/auth/callback`
+        : "/auth/callback";
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo,
+      },
+    });
+    return { data, error };
   },
 };
 

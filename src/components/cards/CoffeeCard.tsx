@@ -89,9 +89,9 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
         itemType="https://schema.org/Product"
       >
         {/* Accent bar */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-chart-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        <div className="relative h-48 w-full overflow-hidden rounded-t-lg group">
+        <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
           <Image
             alt={coffee.name || "Coffee product image"}
             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -118,20 +118,20 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
 
         <CardHeader>
           <CardTitle
-            className="font-semibold text-lg md:text-xl"
+            className="font-semibold text-lg md:text-xl line-clamp-2 min-h-[3.5rem]"
             itemProp="name"
           >
             {coffee.name}
           </CardTitle>
           {coffee.roaster_name && (
-            <div className="text-caption" itemProp="brand">
+            <div className="text-caption hover:text-accent transition-colors line-clamp-1" itemProp="brand">
               by {coffee.roaster_name}
             </div>
           )}
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-2">
-          <TagList>
+        <CardContent className="flex-1 flex flex-col gap-2">
+          <TagList className="gap-2">
             {coffee.roast_level && (
               <Tag variant="outline">{coffee.roast_level}</Tag>
             )}
@@ -141,13 +141,13 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
           </TagList>
         </CardContent>
 
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex justify-between items-center pt-4 border-t border-border/30">
           <div className="rating-stars">
             {/* Placeholder for future ratings */}
           </div>
           {price && (
             <div
-              className="flex items-center gap-1.5 font-bold text-lg bg-accent/10 px-3 py-1.5 rounded-md border border-accent/20"
+              className="flex items-center gap-1 font-bold text-base bg-accent/10 px-2.5 py-1 rounded-md border border-accent/30"
               itemProp="offers"
               itemScope
               itemType="https://schema.org/Offer"

@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store";
@@ -87,7 +87,7 @@ export function CoffeeFilterBar() {
                 onClick={() => updateFilters({ in_stock_only: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}
@@ -100,7 +100,7 @@ export function CoffeeFilterBar() {
                 onClick={() => updateFilters({ has_250g_only: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}
@@ -113,7 +113,7 @@ export function CoffeeFilterBar() {
                 onClick={() => updateFilters({ max_price: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}
@@ -127,7 +127,7 @@ export function CoffeeFilterBar() {
                 onClick={() => updateFilters({ roast_levels: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}
@@ -141,7 +141,7 @@ export function CoffeeFilterBar() {
                 onClick={() => updateFilters({ processes: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}
@@ -155,7 +155,7 @@ export function CoffeeFilterBar() {
                 onClick={() => updateFilters({ flavor_keys: undefined })}
                 type="button"
               >
-                <X className="h-3 w-3" />
+                <Icon name="X" size={12} />
               </button>
             </Badge>
           )}

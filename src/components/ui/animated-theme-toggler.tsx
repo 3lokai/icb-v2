@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
@@ -72,7 +72,7 @@ export const AnimatedThemeToggler = ({
         aria-label="Toggle theme"
         disabled
       >
-        <Moon className="opacity-0" />
+        <Icon className="opacity-0" name="Moon" size={20} />
         <span className="sr-only">Toggle theme</span>
       </button>
     );
@@ -85,7 +85,7 @@ export const AnimatedThemeToggler = ({
       ref={buttonRef}
       {...props}
     >
-      {isDark ? <Sun /> : <Moon />}
+      {isDark ? <Icon name="Sun" size={20} /> : <Icon name="Moon" size={20} />}
       <span className="sr-only">Toggle theme</span>
     </button>
   );

@@ -307,7 +307,7 @@ export default function ContactForms({
                 },
               ].map((item) => (
                 <div
-                  className="group p-6 text-center rounded-lg border border-border/30 bg-card/40"
+                  className="group rounded-lg border border-border/30 bg-card/40 p-6 text-center"
                   key={item.title}
                 >
                   <div className="glass-button mx-auto mb-3 h-12 w-12 flex-center rounded-full transition-transform duration-300 group-hover:scale-110">

@@ -1,8 +1,8 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { SearchIcon } from "lucide-react";
 import type * as React from "react";
+import { Icon } from "@/components/common/Icon";
 import {
   Dialog,
   DialogContent,
@@ -73,7 +73,12 @@ function CommandInput({
       className="flex h-14 items-center gap-3 border-border/50 border-b px-4"
       data-slot="command-input-wrapper"
     >
-      <SearchIcon className="size-5 shrink-0 text-muted-foreground" />
+      <Icon
+        className="shrink-0"
+        color="muted"
+        name="MagnifyingGlass"
+        size={20}
+      />
       <CommandPrimitive.Input
         className={cn(
           "flex h-full w-full bg-transparent py-3 text-body text-popover-foreground outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",

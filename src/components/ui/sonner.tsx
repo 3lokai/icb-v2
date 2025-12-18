@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  CircleCheckIcon,
-  InfoIcon,
-  Loader2Icon,
-  OctagonXIcon,
-  TriangleAlertIcon,
-} from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
@@ -17,11 +11,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       className="toaster group"
       icons={{
-        success: <CircleCheckIcon className="size-4" />,
-        info: <InfoIcon className="size-4" />,
-        warning: <TriangleAlertIcon className="size-4" />,
-        error: <OctagonXIcon className="size-4" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />,
+        success: <Icon className="size-4" name="CheckCircle" size={16} />,
+        info: <Icon className="size-4" name="Info" size={16} />,
+        warning: <Icon className="size-4" name="Warning" size={16} />,
+        error: <Icon className="size-4" name="XCircle" size={16} />,
+        loading: <Icon className="size-4 animate-spin" name="Spinner" size={16} />,
       }}
       style={
         {

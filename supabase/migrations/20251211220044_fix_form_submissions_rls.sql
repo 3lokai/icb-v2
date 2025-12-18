@@ -12,3 +12,4 @@ CREATE POLICY "Allow public form submissions"
   TO anon, authenticated
   WITH CHECK (true);
 
+

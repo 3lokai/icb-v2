@@ -9,7 +9,6 @@ type FormModalProps = {
   formSubmitting: boolean;
   formSubmitted: boolean;
   formError: string | null;
-  showTurnstile: boolean;
   getButtonText: () => string;
 };
 
@@ -20,7 +19,6 @@ export function FormModal({
   formSubmitting,
   formSubmitted,
   formError,
-  showTurnstile,
   getButtonText,
 }: FormModalProps) {
   const getModalTitle = () => {
@@ -34,22 +32,6 @@ export function FormModal({
       return "Professional Inquiry";
     }
     return "";
-  };
-
-  const renderTurnstile = () => {
-    if (!showTurnstile) {
-      return null;
-    }
-    return (
-      <div className="flex justify-center">
-        <div
-          className="cf-turnstile"
-          data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-          data-size="compact"
-          data-theme="auto"
-        />
-      </div>
-    );
   };
 
   const renderRoasterForm = () => (
@@ -164,8 +146,6 @@ export function FormModal({
         </div>
       </div>
 
-      {renderTurnstile()}
-
       {formError && (
         <div className="form-message border border-destructive/30 bg-destructive/10 text-destructive">
           {formError}
@@ -273,8 +253,6 @@ export function FormModal({
           />
         </div>
       </div>
-
-      {renderTurnstile()}
 
       {formError && (
         <div className="form-message border border-destructive/30 bg-destructive/10 text-destructive">
@@ -401,8 +379,6 @@ export function FormModal({
           rows={4}
         />
       </div>
-
-      {renderTurnstile()}
 
       {formError && (
         <div className="form-message border border-destructive/30 bg-destructive/10 text-destructive">
