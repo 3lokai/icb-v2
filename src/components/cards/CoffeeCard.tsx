@@ -90,7 +90,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
       >
         {/* Accent bar */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
+
         <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
           <Image
             alt={coffee.name || "Coffee product image"}
@@ -106,7 +106,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
           {displayRibbon && (
             <div
               className={cn(
-                "absolute top-3 right-3 rounded-md px-3 py-1.5 font-semibold text-xs uppercase tracking-wider",
+                "absolute top-3 right-3 rounded-md px-3 py-1.5 font-semibold text-overline",
                 "shadow-lg backdrop-blur-sm border border-white/20",
                 getRibbonStyles(displayRibbon)
               )}
@@ -118,13 +118,16 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
 
         <CardHeader>
           <CardTitle
-            className="font-semibold text-lg md:text-xl line-clamp-2 min-h-[3.5rem]"
+            className="text-subheading line-clamp-2 min-h-[3.5rem]"
             itemProp="name"
           >
             {coffee.name}
           </CardTitle>
           {coffee.roaster_name && (
-            <div className="text-caption hover:text-accent transition-colors line-clamp-1" itemProp="brand">
+            <div
+              className="text-caption hover:text-accent transition-colors line-clamp-1"
+              itemProp="brand"
+            >
               by {coffee.roaster_name}
             </div>
           )}
@@ -147,12 +150,17 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
           </div>
           {price && (
             <div
-              className="flex items-center gap-1 font-bold text-base bg-accent/10 px-2.5 py-1 rounded-md border border-accent/30"
+              className="flex items-center gap-1 font-bold text-body bg-accent/10 px-2.5 py-1 rounded-md border border-accent/30"
               itemProp="offers"
               itemScope
               itemType="https://schema.org/Offer"
             >
-              <span className="text-xs text-muted-foreground font-normal" itemProp="priceCurrency">₹</span>
+              <span
+                className="text-overline text-muted-foreground font-normal"
+                itemProp="priceCurrency"
+              >
+                ₹
+              </span>
               <span className="text-accent-foreground" itemProp="price">
                 {formatPrice(price).replace(/₹/g, "").trim()}
               </span>

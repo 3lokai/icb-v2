@@ -58,10 +58,10 @@ export function RoasterFilterContent({
 
     return (
       <div className="space-y-2">
-        <label className="font-medium text-sm" htmlFor={filterKey}>
+        <label className="font-medium text-caption" htmlFor={filterKey}>
           {title}
           {totalCount !== undefined && (
-            <span className="ml-2 text-muted-foreground text-xs">
+            <span className="ml-2 text-muted-foreground text-overline">
               ({totalCount})
             </span>
           )}
@@ -78,7 +78,7 @@ export function RoasterFilterContent({
                 onChange={() => toggleArrayFilter(filterKey, item.value)}
                 type="checkbox"
               />
-              <span className="text-sm">
+              <span className="text-caption">
                 {item.label}{" "}
                 <span className="text-muted-foreground">({item.count})</span>
               </span>
@@ -94,7 +94,7 @@ export function RoasterFilterContent({
       {/* Header */}
       {showHeader && (
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-lg">Filters</h2>
+          <h2 className="text-subheading">Filters</h2>
           <Button onClick={() => resetFilters()} size="sm" variant="ghost">
             Reset
           </Button>
@@ -103,7 +103,7 @@ export function RoasterFilterContent({
 
       {/* Search */}
       <div className="space-y-2">
-        <label className="font-medium text-sm" htmlFor="search">
+        <label className="font-medium text-caption" htmlFor="search">
           Search
         </label>
         <Input
@@ -141,7 +141,7 @@ export function RoasterFilterContent({
 
       {/* Boolean Filters */}
       <div className="space-y-4">
-        <label className="font-medium text-sm" htmlFor="active_only">
+        <label className="font-medium text-caption" htmlFor="active_only">
           Options
         </label>
         <div className="space-y-3">
@@ -149,7 +149,7 @@ export function RoasterFilterContent({
             className="flex cursor-pointer items-center justify-between"
             htmlFor="active_only"
           >
-            <span className="text-sm">Active Only</span>
+            <span className="text-caption">Active Only</span>
             <Switch
               checked={filters.active_only ?? false}
               onCheckedChange={(checked) =>

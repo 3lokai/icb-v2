@@ -94,13 +94,13 @@ export function StrengthSelector({
               </div>
 
               <span
-                className={`font-medium text-sm transition-colors ${
+                className={`font-medium text-caption transition-colors ${
                   value === option.value ? "text-primary" : "text-foreground"
                 }`}
               >
                 {option.label}
               </span>
-              <span className="mt-1 text-center text-muted-foreground text-xs">
+              <span className="mt-1 text-center text-muted-foreground text-overline">
                 {option.description}
               </span>
             </Label>

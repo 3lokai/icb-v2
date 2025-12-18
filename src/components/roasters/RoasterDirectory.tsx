@@ -132,7 +132,7 @@ export function RoasterDirectory({
     return (
       <div className="container mx-auto p-4">
         <div className="py-12 text-center">
-          <h2 className="mb-4 font-bold text-2xl">Error loading roasters</h2>
+          <h2 className="mb-4 text-title">Error loading roasters</h2>
           <p className="text-muted-foreground">
             Please try refreshing the page.
           </p>

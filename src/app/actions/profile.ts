@@ -100,24 +100,50 @@ async function saveUserProfile(
   userId: string,
   profileData: ReturnType<typeof prepareProfileData>
 ) {
-  const { error } = await supabase.from("user_profiles").upsert(
-    {
-      id: userId,
-      ...profileData,
-    },
-    {
-      onConflict: "id",
-    }
-  );
+  console.log("🔍 Calling upsert_user_profile RPC with:", {
+    userId,
+    profileData,
+  });
+
+  // Use RPC function to safely upsert the profile
+  // The RPC returns an array, so we get the first element
+  const { data, error } = await supabase.rpc("upsert_user_profile", {
+    p_user_id: userId,
+    p_full_name: profileData.full_name,
+    p_city: profileData.city ?? null,
+    p_state: profileData.state ?? null,
+    p_country: profileData.country ?? null,
+    p_gender: profileData.gender ?? null,
+    p_experience_level: profileData.experience_level ?? null,
+    p_preferred_brewing_methods: profileData.preferred_brewing_methods ?? null,
+    p_onboarding_completed: profileData.onboarding_completed,
+    p_newsletter_subscribed: profileData.newsletter_subscribed ?? true,
+  });
+
+  // RPC returns an array, extract the first result
+  const profile = Array.isArray(data) ? data[0] : data;
 
   if (error) {
-    console.error("Profile update error:", error);
+    console.error("❌ Profile RPC error:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+
+    // In development, return the actual error message for debugging
+    const errorMessage =
+      process.env.NODE_ENV === "development"
+        ? `${error.message}${error.details ? ` (${error.details})` : ""}${error.hint ? ` - ${error.hint}` : ""}`
+        : "Failed to save profile. Please try again.";
+
     return {
       success: false,
-      error: "Failed to save profile. Please try again.",
+      error: errorMessage,
     };
   }
 
+  console.log("✅ Profile saved successfully via RPC:", profile);
   return { success: true };
 }
 
@@ -126,19 +152,33 @@ async function saveCoffeePreferences(
   userId: string,
   coffeePrefs: NonNullable<ReturnType<typeof prepareCoffeePreferences>>
 ) {
-  const { error } = await supabase.from("user_coffee_preferences").upsert(
-    {
-      user_id: userId,
-      ...coffeePrefs,
-    },
-    {
-      onConflict: "user_id",
-    }
-  );
+  console.log("🔍 Calling upsert_coffee_preferences RPC with:", {
+    userId,
+    coffeePrefs,
+  });
+
+  // Use RPC function to safely upsert coffee preferences
+  const { error } = await supabase.rpc("upsert_coffee_preferences", {
+    p_user_id: userId,
+    p_roast_levels: coffeePrefs.roast_levels ?? null,
+    p_flavor_profiles: coffeePrefs.flavor_profiles ?? null,
+    p_processing_methods: coffeePrefs.processing_methods ?? null,
+    p_regions: coffeePrefs.regions ?? null,
+    p_with_milk_preference: coffeePrefs.with_milk_preference ?? null,
+    p_decaf_only: coffeePrefs.decaf_only ?? false,
+    p_organic_only: coffeePrefs.organic_only ?? false,
+  });
 
   if (error) {
-    console.error("Coffee preferences error:", error);
+    console.error("❌ Coffee preferences RPC error:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
     // Don't fail the whole onboarding if preferences fail
+  } else {
+    console.log("✅ Coffee preferences saved via RPC");
   }
 }
 
@@ -149,19 +189,30 @@ async function saveNotificationPreferences(
     ReturnType<typeof prepareNotificationPreferences>
   >
 ) {
-  const { error } = await supabase.from("user_notification_preferences").upsert(
-    {
-      user_id: userId,
-      ...notificationPrefs,
-    },
-    {
-      onConflict: "user_id",
-    }
-  );
+  console.log("🔍 Calling upsert_notification_preferences RPC with:", {
+    userId,
+    notificationPrefs,
+  });
+
+  // Use RPC function to safely upsert notification preferences
+  const { error } = await supabase.rpc("upsert_notification_preferences", {
+    p_user_id: userId,
+    p_new_roasters: notificationPrefs.new_roasters ?? true,
+    p_coffee_updates: notificationPrefs.coffee_updates ?? true,
+    p_platform_updates: notificationPrefs.platform_updates ?? true,
+    p_email_frequency: notificationPrefs.email_frequency ?? "weekly",
+  });
 
   if (error) {
-    console.error("Notification preferences error:", error);
+    console.error("❌ Notification preferences RPC error:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
     // Don't fail the whole onboarding if preferences fail
+  } else {
+    console.log("✅ Notification preferences saved via RPC");
   }
 }
 
@@ -203,6 +254,9 @@ export async function saveOnboardingData(data: OnboardingData): Promise<{
 
     // Save user profile
     const profileData = prepareProfileData(validatedData);
+    console.log("Prepared profile data:", profileData);
+    console.log("Current user ID:", currentUser.id);
+
     const profileResult = await saveUserProfile(
       supabase,
       currentUser.id,
@@ -210,6 +264,7 @@ export async function saveOnboardingData(data: OnboardingData): Promise<{
     );
 
     if (!profileResult.success) {
+      console.error("Profile save failed:", profileResult.error);
       return profileResult;
     }
 

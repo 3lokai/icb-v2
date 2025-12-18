@@ -30,21 +30,21 @@ export function Footer() {
           </Link>
 
           {/* "Brewed with love" moved here */}
-          <p className="mb-3 font-medium text-primary/80 text-xs italic">
+          <p className="mb-3 font-medium text-primary/80 text-caption italic">
             Brewed with ♥ in India
           </p>
 
-          <p className="mb-3 text-sm leading-relaxed">
+          <p className="mb-3 text-body leading-relaxed">
             The definitive resource for discovering and exploring India&apos;s
             finest coffee beans and roasters.
           </p>
 
           <div className="space-y-2">
-            <p className="flex items-center gap-2 text-sm transition-colors hover:text-foreground">
+            <p className="flex items-center gap-2 text-body transition-colors hover:text-foreground">
               <Icon className="text-primary/70" name="Envelope" size={14} />
               contact@indiancoffeebeans.com
             </p>
-            <p className="flex items-center gap-2 text-sm transition-colors hover:text-foreground">
+            <p className="flex items-center gap-2 text-body transition-colors hover:text-foreground">
               <Icon className="text-primary/70" name="MapPin" size={14} />
               Hyderabad, Telangana, India
             </p>
@@ -143,7 +143,7 @@ export function Footer() {
             <Icon className="text-primary" name="EnvelopeSimple" size={16} />
             Stay Updated
           </h4>
-          <p className="mb-3 text-sm">
+          <p className="mb-3 text-body">
             Get the latest updates on Indian coffee, new roasters, and brewing
             guides.
           </p>
@@ -154,7 +154,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="container-default mt-10 flex flex-col items-center justify-between border-border border-t pt-6 text-muted-foreground text-xs md:flex-row">
+      <div className="container-default mt-10 flex flex-col items-center justify-between border-border border-t pt-6 text-muted-foreground text-caption md:flex-row">
         <p>© {currentYear} Indian Coffee Beans. All rights reserved.</p>
         <div className="mt-2 flex gap-4 md:mt-0">
           <Link className="footer-link" href="/privacy">

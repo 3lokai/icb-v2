@@ -5,6 +5,7 @@ import type { IconProps } from "@phosphor-icons/react";
 // Note: Dynamic access is required for this generic icon component pattern
 import * as PhosphorIcons from "@phosphor-icons/react/dist/ssr";
 import type { CSSProperties } from "react";
+import * as React from "react";
 
 export type IconName = keyof typeof PhosphorIcons;
 
@@ -15,13 +16,14 @@ type CustomIconProps = {
   size?: IconProps["size"];
   className?: string;
   color?: IconColor;
-};
+} & Omit<React.ComponentPropsWithoutRef<"svg">, "className" | "size">;
 
 export const Icon = ({
   name,
   size = 20,
   className = "inline-block",
   color = "primary",
+  ...props
 }: CustomIconProps) => {
   // Dynamic icon access is required for this generic component pattern
   // This allows users to pass icon names as strings/props
@@ -76,6 +78,7 @@ export const Icon = ({
       size={size}
       style={style}
       weight="duotone"
+      {...props}
     />
   );
 };

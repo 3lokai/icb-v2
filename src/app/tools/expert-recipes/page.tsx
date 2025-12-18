@@ -165,7 +165,7 @@ export default function ExpertRecipesPage() {
           <div className="container-default">
             {/* Feature highlights */}
             <div className="glass-panel mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl border border-border/50 p-6">
-              <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+              <div className="flex flex-wrap items-center justify-center gap-6 text-caption">
                 <div className="group flex items-center gap-2 transition-colors hover:text-primary">
                   <div className="h-3 w-3 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
                   <span className="font-medium">8 Championship Recipes</span>
@@ -304,17 +304,17 @@ export default function ExpertRecipesPage() {
                         <h3 className="font-semibold transition-colors group-hover:text-primary">
                           {expert.name}
                         </h3>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-muted-foreground text-caption">
                           {expert.title}
                         </p>
                       </div>
                     </div>
 
-                    <Badge className="badge mb-3 border-border/50 bg-background/90 text-foreground text-xs">
+                    <Badge className="badge mb-3 border-border/50 bg-background/90 text-foreground text-overline">
                       {expert.achievement}
                     </Badge>
 
-                    <p className="mb-4 text-muted-foreground text-sm leading-relaxed transition-colors group-hover:text-foreground">
+                    <p className="mb-4 text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
                       {expert.description}
                     </p>
                   </div>
@@ -346,12 +346,12 @@ export default function ExpertRecipesPage() {
                 <h3 className="mb-2 text-heading transition-colors group-hover:text-primary">
                   Everyday Brewing
                 </h3>
-                <p className="mb-4 text-muted-foreground text-sm transition-colors group-hover:text-foreground">
+                <p className="mb-4 text-muted-foreground text-caption transition-colors group-hover:text-foreground">
                   Reliable, approachable recipes perfect for daily coffee
                   routine. Forgiving techniques that produce consistently great
                   results.
                 </p>
-                <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
+                <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
                   4 Recipes
                 </Badge>
               </div>
@@ -365,11 +365,11 @@ export default function ExpertRecipesPage() {
                   <h3 className="mb-2 text-heading transition-colors group-hover:text-primary">
                     Competition Level
                   </h3>
-                  <p className="mb-4 text-muted-foreground text-sm leading-relaxed transition-colors group-hover:text-foreground">
+                  <p className="mb-4 text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
                     Championship-winning techniques requiring precision and
                     practice. Used in actual coffee competitions worldwide.
                   </p>
-                  <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
+                  <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
                     3 Recipes
                   </Badge>
                 </div>
@@ -384,11 +384,11 @@ export default function ExpertRecipesPage() {
                   <h3 className="mb-2 text-heading transition-colors group-hover:text-primary">
                     Experimental
                   </h3>
-                  <p className="mb-4 text-muted-foreground text-sm leading-relaxed transition-colors group-hover:text-foreground">
+                  <p className="mb-4 text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
                     Innovative techniques for exploring new flavor profiles and
                     pushing brewing boundaries. For adventurous coffee lovers.
                   </p>
-                  <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
+                  <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
                     1 Recipe
                   </Badge>
                 </div>

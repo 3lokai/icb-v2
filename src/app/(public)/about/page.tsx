@@ -27,10 +27,10 @@ export default function AboutPage() {
         <header className="relative mb-16 text-center">
           <div className="glass-overlay -z-10 absolute inset-0 rounded-3xl" />
           <div className="relative z-10 py-12">
-            <h1 className="mb-6 animate-fade-in-scale text-display text-primary">
+            <h1 className="mb-6 animate-fade-in-scale text-display text-primary text-balance">
               About IndianCoffeeBeans.com
             </h1>
-            <p className="mx-auto max-w-3xl text-lg text-muted-foreground leading-relaxed md:text-xl">
+            <p className="mx-auto max-w-3xl text-body-large text-muted-foreground leading-relaxed md:text-heading">
               India&apos;s first comprehensive, independent directory for
               specialty coffee
             </p>
@@ -176,7 +176,7 @@ export default function AboutPage() {
                   src="/images/about/indian-coffee-regions.png"
                 />
                 <div className="absolute bottom-4 left-4 z-20 text-foreground">
-                  <p className="rounded-full bg-background/80 px-3 py-1 font-medium text-sm backdrop-blur-sm border border-border/30">
+                  <p className="rounded-full bg-background/80 px-3 py-1 font-medium text-caption backdrop-blur-sm border border-border/30">
                     Coffee Growing Regions of India
                   </p>
                 </div>
@@ -342,8 +342,12 @@ export default function AboutPage() {
                       className="flex items-center justify-between border-border/30 border-b py-2 last:border-0"
                       key={fact.label}
                     >
-                      <span className="font-medium text-sm">{fact.label}:</span>
-                      <span className="text-accent text-sm">{fact.value}</span>
+                      <span className="font-medium text-caption">
+                        {fact.label}:
+                      </span>
+                      <span className="text-accent text-caption">
+                        {fact.value}
+                      </span>
                     </div>
                   ))}
                 </div>

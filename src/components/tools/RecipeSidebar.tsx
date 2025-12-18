@@ -32,7 +32,6 @@ export function RecipeSidebar({
   onUseChange,
   onExpertChange,
   onClearAll,
-  recipeCount,
   methodCounts,
   difficultyCounts,
   useCounts,
@@ -50,7 +49,11 @@ export function RecipeSidebar({
       label: "French Press",
       count: methodCounts.frenchpress ?? 0,
     },
-    { value: "chemex" as const, label: "Chemex", count: methodCounts.chemex ?? 0 },
+    {
+      value: "chemex" as const,
+      label: "Chemex",
+      count: methodCounts.chemex ?? 0,
+    },
     {
       value: "pourover" as const,
       label: "Pour Over",
@@ -117,7 +120,7 @@ export function RecipeSidebar({
 
     return (
       <div className="space-y-2">
-        <label className="font-medium text-sm" htmlFor={title}>
+        <label className="font-medium text-caption" htmlFor={title}>
           {title}
         </label>
         <div className="space-y-2">
@@ -132,7 +135,7 @@ export function RecipeSidebar({
                 onChange={() => toggleFilter(selected, item.value, onSelect)}
                 type="checkbox"
               />
-              <span className="text-sm">
+              <span className="text-caption">
                 {item.label}{" "}
                 {item.count !== undefined && (
                   <span className="text-muted-foreground">({item.count})</span>
@@ -149,7 +152,7 @@ export function RecipeSidebar({
     <div className="w-full space-y-6 md:w-64">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="font-semibold text-lg">Filters</h2>
+        <h2 className="text-subheading">Filters</h2>
         <Button onClick={onClearAll} size="sm" variant="ghost">
           Reset
         </Button>

@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setUser(authUser);
       }
-    } catch (_error) {
+    } catch {
       // Error refreshing user
       setUser(null);
     } finally {

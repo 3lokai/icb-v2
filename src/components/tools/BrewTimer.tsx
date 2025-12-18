@@ -1,7 +1,13 @@
 // Enhanced BrewingTimer.tsx with Glassmorphism
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  startTransition,
+  useRef,
+  useState,
+} from "react";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -35,7 +41,9 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
   // Check for vibration support on mount
   useEffect(() => {
     if ("vibrate" in navigator) {
-      setVibrationSupported(true);
+      startTransition(() => {
+        setVibrationSupported(true);
+      });
     }
   }, []);
 
@@ -46,7 +54,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
       if (soundEnabled) {
         try {
           // Create audio context for beep sound
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
           const AudioContext =
             window.AudioContext || (window as any).webkitAudioContext;
           const audioContext = new AudioContext();
@@ -212,10 +220,12 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
 
   // Update steps when results change
   useEffect(() => {
-    setSteps(getTimerSteps());
-    setCurrentTime(0);
-    setIsRunning(false);
-    setIsPaused(false);
+    startTransition(() => {
+      setSteps(getTimerSteps());
+      setCurrentTime(0);
+      setIsRunning(false);
+      setIsPaused(false);
+    });
   }, [getTimerSteps]);
 
   // Timer logic
@@ -301,11 +311,13 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
         <div className="relative z-10">
           <div className="mb-6 flex items-center gap-2">
             <Icon className="h-5 w-5 text-primary" name="Timer" />
-            <h3 className="font-semibold text-lg">Brewing Timer</h3>
+            <h3 className="text-subheading">Brewing Timer</h3>
           </div>
           <div className="py-8 text-center text-muted-foreground">
             <Icon className="mx-auto mb-3 h-12 w-12 opacity-50" name="Timer" />
-            <p className="text-sm">Select a brewing method to start timing</p>
+            <p className="text-caption">
+              Select a brewing method to start timing
+            </p>
           </div>
         </div>
       </div>
@@ -328,7 +340,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Icon className="h-5 w-5 text-primary" name="Timer" />
-            <h3 className="font-semibold text-lg">Brewing Timer</h3>
+            <h3 className="text-subheading">Brewing Timer</h3>
           </div>
 
           {/* Notification Controls - Enhanced glass treatment */}
@@ -374,14 +386,14 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
           <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-chart-2/10 blur-xl" />
           <div className="relative z-10">
             <div
-              className={`mb-4 font-bold font-mono text-4xl transition-all duration-300 ${
+              className={`mb-4 font-bold font-mono text-display transition-all duration-300 ${
                 isRunning ? "scale-110 text-primary" : "text-foreground"
               }`}
             >
               {formatTime(currentTime)}
             </div>
             <Progress className="mb-2 h-2 w-full" value={progressPercentage} />
-            <div className="text-muted-foreground text-sm">
+            <div className="text-muted-foreground text-caption">
               Total brew time: {formatTime(steps.at(-1)?.time || 0)}
             </div>
           </div>
@@ -433,16 +445,16 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
             <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-accent/20 blur-xl" />
             <div className="relative z-10">
               <div className="mb-3 flex items-center justify-between">
-                <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
+                <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
                   Step {completedSteps + 1} of {totalSteps}
                 </Badge>
-                <span className="font-medium text-muted-foreground text-xs">
+                <span className="font-medium text-muted-foreground text-overline">
                   {currentStep.time > currentTime
                     ? `In ${currentStep.time - currentTime}s`
                     : "Now"}
                 </span>
               </div>
-              <p className="font-medium text-sm leading-relaxed">
+              <p className="font-medium text-caption leading-relaxed">
                 {currentStep.instruction}
               </p>
             </div>
@@ -452,7 +464,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
         {/* All Steps - Enhanced glass cards */}
         <div className="space-y-4">
           <div>
-            <h4 className="mb-2 font-medium text-primary text-sm">
+            <h4 className="mb-2 font-medium text-primary text-caption">
               Brewing Steps
             </h4>
             <div className="h-1 w-16 rounded-full bg-accent" />
@@ -498,7 +510,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
                   <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-primary/5 blur-lg" />
                   <div className="relative z-10 flex items-center gap-3">
                     <div
-                      className={`flex h-8 w-8 items-center justify-center rounded-full font-medium text-xs transition-all duration-300 group-hover:scale-110 ${getStepBadgeClassName()}`}
+                      className={`flex h-8 w-8 items-center justify-center rounded-full font-medium text-overline transition-all duration-300 group-hover:scale-110 ${getStepBadgeClassName()}`}
                     >
                       {step.isCompleted ? (
                         <Icon className="h-3 w-3" name="Check" />
@@ -507,7 +519,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
                       )}
                     </div>
                     <span
-                      className={`flex-1 text-sm transition-colors ${getStepTextClassName()}`}
+                      className={`flex-1 text-caption transition-colors ${getStepTextClassName()}`}
                     >
                       {step.instruction}
                     </span>

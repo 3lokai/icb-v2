@@ -3,7 +3,7 @@
 
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, startTransition, useState } from "react";
 import CoffeeFact from "@/components/common/CoffeeFact";
 import { Button } from "@/components/ui/button";
 
@@ -12,7 +12,9 @@ export default function NotFound() {
 
   // Avoid hydration issues
   useEffect(() => {
-    setIsClient(true);
+    startTransition(() => {
+      setIsClient(true);
+    });
   }, []);
 
   // Return an empty div during SSR to avoid hydration mismatch
@@ -26,7 +28,7 @@ export default function NotFound() {
     <div className="flex min-h-[70vh] flex-col items-center justify-center bg-background/50 p-4 backdrop-blur-sm">
       <div className="mx-auto max-w-md text-center">
         <div className="relative mb-8">
-          <h1 className="flex items-center justify-center font-bold text-8xl text-accent">
+          <h1 className="flex items-center justify-center font-bold text-hero text-accent">
             4
             <div className="inline-block size-20">
               <DotLottieReact
@@ -43,7 +45,7 @@ export default function NotFound() {
           <div className="-bottom-4 -translate-x-1/2 absolute left-1/2 size-3 rounded-full bg-accent/20 blur-sm" />
         </div>
 
-        <h2 className="mb-4 font-bold text-2xl">Bean Not Found</h2>
+        <h2 className="mb-4 font-bold text-title">Bean Not Found</h2>
 
         <p className="mb-8 text-muted-foreground">
           We searched high and low, but it seems this coffee bean has gone

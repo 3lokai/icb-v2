@@ -53,7 +53,7 @@ export function FormModal({
       <div className="flex justify-center rounded-md border border-blue-200 bg-blue-50 p-4">
         <div className="flex items-center space-x-2">
           <div className="h-2 w-2 rounded-full bg-blue-500" />
-          <span className="text-blue-700 text-sm">
+          <span className="text-blue-700 text-caption">
             🔧 Development: Captcha disabled
           </span>
         </div>
@@ -68,7 +68,7 @@ export function FormModal({
     >
       <div>
         <label
-          className="mb-1 block font-medium text-muted-foreground text-sm"
+          className="mb-1 block font-medium text-muted-foreground text-caption"
           htmlFor="roasterName"
         >
           Roaster Name*
@@ -85,7 +85,7 @@ export function FormModal({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label
-            className="mb-1 block font-medium text-muted-foreground text-sm"
+            className="mb-1 block font-medium text-muted-foreground text-caption"
             htmlFor="website"
           >
             Website
@@ -100,7 +100,7 @@ export function FormModal({
 
         <div>
           <label
-            className="mb-1 block font-medium text-muted-foreground text-sm"
+            className="mb-1 block font-medium text-muted-foreground text-caption"
             htmlFor="location"
           >
             Location
@@ -116,7 +116,7 @@ export function FormModal({
 
       <div>
         <label
-          className="mb-1 block font-medium text-muted-foreground text-sm"
+          className="mb-1 block font-medium text-muted-foreground text-caption"
           htmlFor="description"
         >
           What makes this roaster special?
@@ -132,7 +132,7 @@ export function FormModal({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label
-            className="mb-1 block font-medium text-muted-foreground text-sm"
+            className="mb-1 block font-medium text-muted-foreground text-caption"
             htmlFor="yourName"
           >
             Your Name*
@@ -148,7 +148,7 @@ export function FormModal({
 
         <div>
           <label
-            className="mb-1 block font-medium text-muted-foreground text-sm"
+            className="mb-1 block font-medium text-muted-foreground text-caption"
             htmlFor="yourEmail"
           >
             Your Email*
@@ -192,7 +192,7 @@ export function FormModal({
     <form className="space-y-4" onSubmit={(e) => onSubmit(e, "suggestion")}>
       <div>
         <label
-          className="mb-1 block font-medium text-muted-foreground text-sm"
+          className="mb-1 block font-medium text-muted-foreground text-caption"
           htmlFor="suggestionType"
         >
           Type of Suggestion*
@@ -214,7 +214,7 @@ export function FormModal({
 
       <div>
         <label
-          className="mb-1 block font-medium text-muted-foreground text-sm"
+          className="mb-1 block font-medium text-muted-foreground text-caption"
           htmlFor="suggestionDetails"
         >
           Details*
@@ -232,7 +232,7 @@ export function FormModal({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label
-            className="mb-1 block font-medium text-muted-foreground text-sm"
+            className="mb-1 block font-medium text-muted-foreground text-caption"
             htmlFor="suggesterName"
           >
             Your Name*
@@ -248,7 +248,7 @@ export function FormModal({
 
         <div>
           <label
-            className="mb-1 block font-medium text-muted-foreground text-sm"
+            className="mb-1 block font-medium text-muted-foreground text-caption"
             htmlFor="suggesterEmail"
           >
             Your Email*
@@ -296,7 +296,7 @@ export function FormModal({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label
-            className="mb-1 block font-medium text-muted-foreground text-sm"
+            className="mb-1 block font-medium text-muted-foreground text-caption"
             htmlFor="proName"
           >
             Your Name*
@@ -312,7 +312,7 @@ export function FormModal({
 
         <div>
           <label
-            className="mb-1 block font-medium text-muted-foreground text-sm"
+            className="mb-1 block font-medium text-muted-foreground text-caption"
             htmlFor="organization"
           >
             Organization
@@ -328,7 +328,7 @@ export function FormModal({
 
       <div>
         <label
-          className="mb-1 block font-medium text-muted-foreground text-sm"
+          className="mb-1 block font-medium text-muted-foreground text-caption"
           htmlFor="proEmail"
         >
           Email*
@@ -344,7 +344,7 @@ export function FormModal({
 
       <div>
         <label
-          className="mb-1 block font-medium text-muted-foreground text-sm"
+          className="mb-1 block font-medium text-muted-foreground text-caption"
           htmlFor="collaborationType"
         >
           Collaboration Interest*
@@ -366,7 +366,7 @@ export function FormModal({
 
       <div>
         <label
-          className="mb-1 block font-medium text-muted-foreground text-sm"
+          className="mb-1 block font-medium text-muted-foreground text-caption"
           htmlFor="proMessage"
         >
           Tell Us More*
@@ -411,7 +411,7 @@ export function FormModal({
       <div className="glass-modal max-h-[90vh] w-full max-w-lg overflow-auto rounded-lg shadow-xl">
         <div className="sticky top-0 rounded-t-lg bg-primary/90 p-4 text-primary-foreground backdrop-blur-sm">
           <div className="flex-between">
-            <h3 className="font-bold text-xl">{getModalTitle()}</h3>
+            <h3 className="font-bold text-heading">{getModalTitle()}</h3>
             <button
               className="rounded p-1 text-primary-foreground transition-colors duration-200 hover:text-primary-foreground/80"
               onClick={onClose}

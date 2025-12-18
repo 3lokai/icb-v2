@@ -117,7 +117,7 @@ const TestimonialCard = ({
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Icon className="text-accent" name="ChatCircle" size={16} />
-          <span className="font-medium text-muted-foreground text-xs">
+          <span className="font-medium text-muted-foreground text-overline">
             from Reddit
           </span>
         </div>
@@ -131,7 +131,7 @@ const TestimonialCard = ({
 
       {/* Comment */}
       <blockquote
-        className="mb-6 text-foreground/90 text-sm leading-relaxed transition-colors duration-200 group-hover:text-foreground"
+        className="mb-6 text-foreground/90 text-caption leading-relaxed transition-colors duration-200 group-hover:text-foreground"
         itemProp="reviewBody"
       >
         &quot;{comment}&quot;
@@ -144,7 +144,7 @@ const TestimonialCard = ({
         itemScope
         itemType="https://schema.org/Person"
       >
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/20 font-medium text-accent text-xs ring-2 ring-border transition-colors duration-200 group-hover:ring-accent">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/20 font-medium text-accent text-overline ring-2 ring-border transition-colors duration-200 group-hover:ring-accent">
           {name
             .split(" ")
             .map((n) => n[0])
@@ -153,10 +153,13 @@ const TestimonialCard = ({
             .toUpperCase()}
         </div>
         <div>
-          <div className="font-medium text-foreground text-sm" itemProp="name">
+          <div
+            className="font-medium text-foreground text-caption"
+            itemProp="name"
+          >
             {name}
           </div>
-          <div className="text-muted-foreground text-xs">{username}</div>
+          <div className="text-muted-foreground text-overline">{username}</div>
         </div>
       </div>
 
@@ -206,7 +209,7 @@ export default function TestimonialsSection() {
 
         {/* CTA - keeping your exact styling */}
         <div className="mt-12 text-center">
-          <p className="mb-4 text-muted-foreground text-sm">
+          <p className="mb-4 text-muted-foreground text-caption">
             Have a story to share about your coffee journey?
           </p>
           <a

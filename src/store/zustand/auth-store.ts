@@ -40,7 +40,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       } else {
         set({ user: authUser, isLoading: false });
       }
-    } catch (_error) {
+    } catch {
       set({ user: null, isLoading: false });
     }
   },
@@ -101,4 +101,3 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     });
   },
 }));
-

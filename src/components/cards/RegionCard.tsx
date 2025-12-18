@@ -38,7 +38,7 @@ export default function RegionCard({ region }: RegionCardProps) {
         {region.ribbon && (
           <div
             className={cn(
-              "absolute top-2 left-2 rounded-md px-2 py-1 font-medium text-xs",
+              "absolute top-2 left-2 rounded-md px-2 py-1 font-medium text-overline",
               region.ribbon === "featured" && "bg-chart-1 text-white",
               region.ribbon === "popular" && "bg-chart-4 text-white"
             )}

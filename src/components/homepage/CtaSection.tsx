@@ -28,7 +28,7 @@ export default function CtaSection() {
                 Start Your Indian Coffee Journey Today
               </h2>
 
-              <p className="mx-auto mb-8 max-w-2xl text-lg text-white/80">
+              <p className="mx-auto mb-8 max-w-2xl text-body-large text-white/80">
                 Discover exceptional beans from India&apos;s most passionate
                 roasters and explore the rich heritage of Indian coffee culture.
               </p>

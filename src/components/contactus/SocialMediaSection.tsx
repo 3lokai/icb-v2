@@ -51,7 +51,7 @@ export function SocialMediaSection() {
               <span className="font-medium text-primary transition-colors duration-200 group-hover:text-accent">
                 {social.name}
               </span>
-              <span className="text-muted-foreground text-sm">
+              <span className="text-muted-foreground text-caption">
                 {social.handle}
               </span>
             </a>

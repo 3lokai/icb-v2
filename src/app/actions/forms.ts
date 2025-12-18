@@ -13,8 +13,16 @@ const roasterSubmissionSchema = z.object({
     .min(1, "Roaster name is required")
     .max(200, "Roaster name must be less than 200 characters")
     .trim(),
-  website: z.string().max(500, "Website URL must be less than 500 characters").trim().optional(),
-  location: z.string().max(200, "Location must be less than 200 characters").trim().optional(),
+  website: z
+    .string()
+    .max(500, "Website URL must be less than 500 characters")
+    .trim()
+    .optional(),
+  location: z
+    .string()
+    .max(200, "Location must be less than 200 characters")
+    .trim()
+    .optional(),
   description: z
     .string()
     .max(2000, "Description must be less than 2000 characters")
@@ -149,10 +157,11 @@ function processRoasterSubmission(
   const validationResult = roasterSubmissionSchema.safeParse(rawData);
 
   if (!validationResult.success) {
-    const firstError = validationResult.error.errors[0];
+    const firstError = validationResult.error.issues[0];
     return {
       success: false,
-      error: firstError?.message || "Validation failed. Please check your input.",
+      error:
+        firstError?.message || "Validation failed. Please check your input.",
     };
   }
 
@@ -213,10 +222,11 @@ function processSuggestion(
   const validationResult = suggestionSchema.safeParse(rawData);
 
   if (!validationResult.success) {
-    const firstError = validationResult.error.errors[0];
+    const firstError = validationResult.error.issues[0];
     return {
       success: false,
-      error: firstError?.message || "Validation failed. Please check your input.",
+      error:
+        firstError?.message || "Validation failed. Please check your input.",
     };
   }
 
@@ -276,10 +286,11 @@ function processProfessionalInquiry(
   const validationResult = professionalInquirySchema.safeParse(rawData);
 
   if (!validationResult.success) {
-    const firstError = validationResult.error.errors[0];
+    const firstError = validationResult.error.issues[0];
     return {
       success: false,
-      error: firstError?.message || "Validation failed. Please check your input.",
+      error:
+        firstError?.message || "Validation failed. Please check your input.",
     };
   }
 

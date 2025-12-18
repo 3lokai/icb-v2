@@ -498,7 +498,7 @@ export const trackToolsUsage = (
 };
 
 declare global {
-  // biome-ignore lint: Required for TypeScript global augmentation
+  // Required for TypeScript global augmentation
   interface Window {
     dataLayer: unknown[];
     gtag: (

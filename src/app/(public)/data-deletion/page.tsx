@@ -62,7 +62,7 @@ Thank you,
           <p className="mb-2 text-body">
             Send your deletion request to our privacy team at:
           </p>
-          <p className="font-semibold text-body text-xl">
+          <p className="font-semibold text-body text-heading">
             <a className="text-body underline" href={`mailto:${CONTACT_EMAIL}`}>
               {CONTACT_EMAIL}
             </a>
@@ -78,11 +78,11 @@ Thank you,
             needed to process your request:
           </p>
           <div className="card-base relative rounded-md p-4">
-            <pre className="whitespace-pre-wrap font-mono text-sm">
+            <pre className="whitespace-pre-wrap font-mono text-caption">
               {emailTemplate}
             </pre>
             <button
-              className="absolute top-2 right-2 rounded bg-muted px-3 py-1 font-semibold text-xs transition-colors hover:bg-muted/80"
+              className="absolute top-2 right-2 rounded bg-muted px-3 py-1 font-semibold text-overline transition-colors hover:bg-muted/80"
               onClick={() => navigator.clipboard.writeText(emailTemplate)}
               type="button"
             >
@@ -106,21 +106,21 @@ Thank you,
         <h2 className="mb-4 text-heading">Processing Timeline</h2>
         <div className="grid grid-cols-1 gap-6 text-center md:grid-cols-3">
           <div className="card-base rounded-lg border-l-4 border-l-primary p-6">
-            <h4 className="mb-2 font-bold text-primary text-xl">7 Days</h4>
+            <h4 className="mb-2 font-bold text-primary text-heading">7 Days</h4>
             <p className="font-semibold text-primary">Initial Response</p>
             <p className="text-caption">
               We&apos;ll acknowledge your request and verify your identity
             </p>
           </div>
           <div className="card-base rounded-lg border-l-4 border-l-accent p-6">
-            <h4 className="mb-2 font-bold text-accent text-xl">30 Days</h4>
+            <h4 className="mb-2 font-bold text-accent text-heading">30 Days</h4>
             <p className="font-semibold text-accent">Complete Deletion</p>
             <p className="text-caption">
               All your data will be permanently removed from our systems
             </p>
           </div>
           <div className="card-base rounded-lg border-l-4 border-l-muted-foreground p-6">
-            <h4 className="mb-2 font-bold text-muted-foreground text-xl">
+            <h4 className="mb-2 font-bold text-muted-foreground text-heading">
               Final
             </h4>
             <p className="font-semibold text-muted-foreground">Confirmation</p>

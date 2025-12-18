@@ -19,7 +19,7 @@ export default function Tag({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 font-medium text-xs transition-colors",
+        "inline-flex items-center rounded-full px-2.5 py-0.5 text-overline transition-colors",
         // Variant styles based on your mockup
         variant === "outline" &&
           "border border-border/60 bg-background/80 text-foreground shadow-sm backdrop-blur-sm",

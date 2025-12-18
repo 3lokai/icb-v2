@@ -135,7 +135,7 @@ export default function ContactForms({
       <header className="relative mb-16 text-center">
         <div className="glass-overlay -z-10 absolute inset-0 rounded-3xl" />
         <div className="relative z-10 py-12">
-          <h1 className="mb-6 animate-fade-in-scale text-display text-primary">
+          <h1 className="mb-6 animate-fade-in-scale text-balance text-display text-primary">
             Connect With Us
           </h1>
           <p className="mx-auto max-w-3xl text-body text-muted-foreground">
@@ -251,7 +251,7 @@ export default function ContactForms({
                 Claim Your Listing
               </Link>
 
-              <p className="text-center text-muted-foreground text-sm">
+              <p className="text-center text-muted-foreground text-caption">
                 Not listed yet?
                 <button
                   className="ml-1 text-accent transition-colors duration-200 hover:text-accent-foreground hover:underline"

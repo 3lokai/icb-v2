@@ -33,11 +33,11 @@ export function RoasterFilterBar() {
   return (
     <div className="mb-6 space-y-4">
       <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-2">
-        <span className="shrink-0 font-medium text-muted-foreground text-sm">
+        <span className="shrink-0 font-medium text-muted-foreground text-caption">
           Quick filters:
         </span>
         <Button
-          className="shrink-0 text-xs sm:text-sm"
+          className="shrink-0 text-overline"
           onClick={() => handleQuickFilter("active")}
           size="sm"
           variant={filters.active_only ? "default" : "outline"}
@@ -48,11 +48,11 @@ export function RoasterFilterBar() {
 
       {hasActiveFilters && (
         <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-2">
-          <span className="shrink-0 text-muted-foreground text-xs sm:text-sm">
+          <span className="shrink-0 text-muted-foreground text-overline">
             Active filters:
           </span>
           {filters.active_only && (
-            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-overline" variant="secondary">
               Active Only
               <button
                 aria-label="Remove Active Only filter"
@@ -65,7 +65,7 @@ export function RoasterFilterBar() {
             </Badge>
           )}
           {filters.cities && filters.cities.length > 0 && (
-            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-overline" variant="secondary">
               {filters.cities.length} Cit
               {filters.cities.length > 1 ? "ies" : "y"}
               <button
@@ -79,7 +79,7 @@ export function RoasterFilterBar() {
             </Badge>
           )}
           {filters.states && filters.states.length > 0 && (
-            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-overline" variant="secondary">
               {filters.states.length} State
               {filters.states.length > 1 ? "s" : ""}
               <button
@@ -93,7 +93,7 @@ export function RoasterFilterBar() {
             </Badge>
           )}
           {filters.countries && filters.countries.length > 0 && (
-            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-overline" variant="secondary">
               {filters.countries.length} Countr
               {filters.countries.length > 1 ? "ies" : "y"}
               <button
@@ -107,7 +107,7 @@ export function RoasterFilterBar() {
             </Badge>
           )}
           {filters.q && (
-            <Badge className="shrink-0 gap-1 text-xs sm:text-sm" variant="secondary">
+            <Badge className="shrink-0 gap-1 text-overline" variant="secondary">
               Search: {filters.q}
               <button
                 aria-label="Remove search filter"
@@ -120,7 +120,7 @@ export function RoasterFilterBar() {
             </Badge>
           )}
           <Button
-            className="shrink-0 text-xs sm:text-sm"
+            className="shrink-0 text-overline"
             onClick={() => resetFilters()}
             size="sm"
             variant="ghost"

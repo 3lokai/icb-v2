@@ -178,10 +178,14 @@ CREATE TRIGGER set_user_coffee_preferences_updated_at
 -- ============================================================================
 
 -- Function to automatically assign 'user' role when a profile is created
+-- SECURITY DEFINER allows this function to run with the privileges of the function owner
+-- This bypasses RLS, but we also need to ensure RLS policies don't cause recursion
 CREATE OR REPLACE FUNCTION public.handle_new_user_profile()
 RETURNS TRIGGER AS $$
 BEGIN
   -- Automatically assign 'user' role to new profile
+  -- SECURITY DEFINER should bypass RLS, but if policies cause recursion,
+  -- we need to ensure the policies are simple and don't query user_roles
   INSERT INTO public.user_roles (user_id, role, created_by)
   VALUES (NEW.id, 'user', NEW.id)
   ON CONFLICT (user_id, role) DO NOTHING;

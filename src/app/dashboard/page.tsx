@@ -32,7 +32,7 @@ export default function DashboardPage() {
         toast.success("Signed out successfully!");
         router.push("/");
       }
-    } catch (_error) {
+    } catch {
       toast.error("An unexpected error occurred");
     }
   };
@@ -55,8 +55,8 @@ export default function DashboardPage() {
       <PageShell>
         <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
           <div className="text-center">
-            <h2 className="font-semibold text-lg">Loading...</h2>
-            <p className="text-muted-foreground text-sm">Please wait</p>
+            <h2 className="text-subheading">Loading...</h2>
+            <p className="text-muted-foreground text-caption">Please wait</p>
           </div>
         </div>
       </PageShell>
@@ -68,8 +68,8 @@ export default function DashboardPage() {
       <PageShell>
         <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
           <div className="text-center">
-            <h2 className="font-semibold text-destructive text-lg">Error</h2>
-            <p className="text-muted-foreground text-sm">
+            <h2 className="text-subheading text-destructive">Error</h2>
+            <p className="text-muted-foreground text-caption">
               Failed to load user data. Please try again.
             </p>
             <Button
@@ -89,7 +89,7 @@ export default function DashboardPage() {
     <PageShell>
       <div className="space-y-6">
         <div>
-          <h1 className="font-bold text-3xl">Dashboard</h1>
+          <h1 className="font-bold text-title">Dashboard</h1>
           <p className="text-muted-foreground">Welcome back, {user?.email}!</p>
         </div>
 
@@ -102,7 +102,7 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-caption">
                 You can see this content because you're signed in.
               </p>
             </CardContent>
@@ -115,14 +115,14 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent className="space-y-2">
               <div>
-                <span className="font-medium text-sm">Email:</span>
-                <span className="ml-2 text-muted-foreground text-sm">
+                <span className="font-medium text-caption">Email:</span>
+                <span className="ml-2 text-muted-foreground text-caption">
                   {user?.email}
                 </span>
               </div>
               <div>
-                <span className="font-medium text-sm">User ID:</span>
-                <span className="ml-2 font-mono text-muted-foreground text-sm">
+                <span className="font-medium text-caption">User ID:</span>
+                <span className="ml-2 font-mono text-muted-foreground text-caption">
                   {user?.id}
                 </span>
               </div>

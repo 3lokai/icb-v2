@@ -41,7 +41,7 @@ export function PageHeader({
         {icon && iconLabel && (
           <div className="mb-4 inline-flex animate-fade-in-scale items-center">
             <div className="rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-2 text-caption">
                 <Icon className="text-accent" name={icon} size={16} />
                 <span className="text-white/90">{iconLabel}</span>
                 <div className="h-2 w-2 animate-pulse rounded-full bg-accent" />
@@ -51,13 +51,13 @@ export function PageHeader({
         )}
 
         {/* Title */}
-        <h1 className="mb-4 animate-fade-in-scale text-4xl font-bold text-white delay-100 md:text-5xl lg:text-6xl">
+        <h1 className="mb-4 animate-fade-in-scale text-display text-white text-balance delay-100">
           {title}
         </h1>
 
         {/* Description */}
         {description && (
-          <p className="mx-auto max-w-2xl animate-fade-in-scale text-white/90 text-lg leading-relaxed delay-200 md:text-xl">
+          <p className="mx-auto max-w-2xl animate-fade-in-scale text-white/90 text-body-large leading-relaxed delay-200">
             {description}
           </p>
         )}
@@ -65,4 +65,3 @@ export function PageHeader({
     </section>
   );
 }
-

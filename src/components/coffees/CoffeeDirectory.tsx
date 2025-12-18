@@ -139,7 +139,7 @@ export function CoffeeDirectory({
     return (
       <div className="container mx-auto p-4">
         <div className="py-12 text-center">
-          <h2 className="mb-4 font-bold text-2xl">Error loading coffees</h2>
+          <h2 className="mb-4 text-title">Error loading coffees</h2>
           <p className="text-muted-foreground">
             Please try refreshing the page.
           </p>

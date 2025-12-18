@@ -21,7 +21,7 @@ export function Logo({
     <div
       aria-label={ariaLabel}
       className={cn(
-        "group relative flex items-center justify-start gap-2 font-semibold text-xl",
+        "group relative flex items-center justify-start gap-2 font-semibold text-heading",
         className
       )}
       role="img"

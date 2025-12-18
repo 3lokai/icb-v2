@@ -27,11 +27,11 @@ export function SelectorBase({
       <fieldset>
         <legend className="sr-only">{legend}</legend>
         <Label
-          className="mb-3 flex items-center gap-2 font-medium text-sm"
+          className="mb-3 flex items-center gap-2 font-medium text-caption"
           htmlFor={labelId}
         >
           <span
-            className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full font-bold text-xs transition-all duration-300 ${
+            className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full font-bold text-overline transition-all duration-300 ${
               isCompleted
                 ? "bg-primary text-primary-foreground shadow-sm"
                 : "bg-muted/50 text-muted-foreground"

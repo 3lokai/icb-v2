@@ -61,7 +61,7 @@ export function Marquee({
             "hover:[animation-play-state:paused]": pauseOnHover,
             "[animation-direction:reverse]": reverse,
           })}
-          // biome-ignore lint/suspicious/noArrayIndexKey: <standard offering>
+          // eslint-disable-next-line react/no-array-index-key -- Standard offering pattern
           key={i}
           style={{
             animationDuration: "var(--duration, 40s)",

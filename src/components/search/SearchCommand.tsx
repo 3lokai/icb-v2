@@ -202,7 +202,7 @@ function SearchResultItem({ item, onSelect }: SearchResultItemProps) {
           <div className="flex flex-wrap gap-1.5">
             {item.flavorNotes?.slice(0, 2).map((note) => (
               <Badge
-                className="font-medium text-xs"
+                className="font-medium text-overline"
                 key={note}
                 variant="secondary"
               >
@@ -211,7 +211,7 @@ function SearchResultItem({ item, onSelect }: SearchResultItemProps) {
             ))}
             {displayTags.map((tag) => (
               <Badge
-                className="font-medium text-xs"
+                className="font-medium text-overline"
                 key={tag}
                 variant="outline"
               >
@@ -219,7 +219,7 @@ function SearchResultItem({ item, onSelect }: SearchResultItemProps) {
               </Badge>
             ))}
             {hasMoreTags && (
-              <Badge className="font-medium text-xs" variant="outline">
+              <Badge className="font-medium text-overline" variant="outline">
                 +{item.tags.length - 3}
               </Badge>
             )}

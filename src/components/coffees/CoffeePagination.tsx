@@ -131,7 +131,7 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
         <Icon name="CaretRight" size={16} />
       </Button>
 
-      <div className="ml-4 text-muted-foreground text-sm">
+      <div className="ml-4 text-muted-foreground text-caption">
         Page {page} of {totalPages}
       </div>
     </div>

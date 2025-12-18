@@ -90,7 +90,8 @@ export function AuthForm({
 
         if (signInError) {
           setError(
-            signInError.message || "Invalid email or password. Please try again."
+            signInError.message ||
+              "Invalid email or password. Please try again."
           );
           setIsLoading(false);
           return;
@@ -99,7 +100,7 @@ export function AuthForm({
         // Success - redirect to dashboard
         router.push("/dashboard");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
     }
@@ -121,9 +122,7 @@ export function AuthForm({
     setError(null);
     const { error } = await signInWithOAuth(provider);
     if (error) {
-      setError(
-        `Failed to sign in with ${provider}. Please try again.`
-      );
+      setError(`Failed to sign in with ${provider}. Please try again.`);
       setIsLoading(false);
     }
     // OAuth will redirect, so we don't need to handle success here
@@ -137,10 +136,10 @@ export function AuthForm({
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-title font-bold">
             {mode === "login" ? "Login to your account" : "Create your account"}
           </h1>
-          <p className="text-muted-foreground text-sm text-balance">
+          <p className="text-muted-foreground text-caption text-balance">
             {mode === "login"
               ? "Enter your email below to login to your account"
               : "Fill in the form below to create your account"}
@@ -148,7 +147,7 @@ export function AuthForm({
         </div>
 
         {error && (
-          <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-sm">
+          <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption">
             {error}
           </div>
         )}
@@ -191,7 +190,7 @@ export function AuthForm({
               <FieldLabel htmlFor="password">Password</FieldLabel>
               <a
                 href="#"
-                className="ml-auto text-sm underline-offset-4 hover:underline"
+                className="ml-auto text-caption underline-offset-4 hover:underline"
               >
                 Forgot your password?
               </a>
@@ -270,7 +269,9 @@ export function AuthForm({
                   fill="#EA4335"
                 />
               </svg>
-              {mode === "login" ? "Continue with Google" : "Sign up with Google"}
+              {mode === "login"
+                ? "Continue with Google"
+                : "Sign up with Google"}
             </Button>
             <Button
               variant="outline"
@@ -287,7 +288,9 @@ export function AuthForm({
               >
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
               </svg>
-              {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}
+              {mode === "login"
+                ? "Continue with Facebook"
+                : "Sign up with Facebook"}
             </Button>
           </div>
           <FieldDescription className="text-center">
@@ -320,4 +323,3 @@ export function AuthForm({
     </form>
   );
 }
-

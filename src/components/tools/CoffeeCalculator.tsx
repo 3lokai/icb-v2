@@ -2,7 +2,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, startTransition, useState } from "react";
 import { Icon } from "@/components/common/Icon";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 // Import calculation logic
@@ -64,7 +64,9 @@ export function CoffeeCalculator({
       initialMethodFromUrl &&
       !BREWING_METHODS_ARRAY.some((m) => m.id === initialMethodFromUrl)
     ) {
-      setMethod(null); // Reset if invalid method ID
+      startTransition(() => {
+        setMethod(null); // Reset if invalid method ID
+      });
     }
   }, [initialMethodFromUrl]);
 
@@ -75,7 +77,6 @@ export function CoffeeCalculator({
     }
 
     try {
-      setError(null);
       return calculateBrewRatio({
         method,
         volume: drinkSize, // User's desired drink size
@@ -83,15 +84,27 @@ export function CoffeeCalculator({
         roastLevel,
       });
     } catch {
-      setError("Unable to calculate recipe. Please check your inputs.");
       return null;
     }
   }, [method, drinkSize, strength, roastLevel]);
 
+  // Handle error state based on calculation result
+  useEffect(() => {
+    startTransition(() => {
+      if (method && !results) {
+        setError("Unable to calculate recipe. Please check your inputs.");
+      } else {
+        setError(null);
+      }
+    });
+  }, [method, results]);
+
   // Update method if initialMethod prop changes
   useEffect(() => {
     if (initialMethod) {
-      setMethod(initialMethod);
+      startTransition(() => {
+        setMethod(initialMethod);
+      });
     }
   }, [initialMethod]);
 
@@ -121,14 +134,14 @@ export function CoffeeCalculator({
 
           <div className="relative space-y-6">
             <div className="flex items-center justify-between">
-              <h3 className="flex items-center gap-2 font-semibold text-lg">
+              <h3 className="flex items-center gap-2 text-subheading">
                 <div className="h-2 w-2 animate-pulse rounded-full bg-primary" />
                 Brewing Parameters
               </h3>
               <div className="flex items-center gap-2">
                 {method && (
                   <button
-                    className="rounded px-2 py-1 text-muted-foreground text-xs transition-colors hover:bg-background/50 hover:text-foreground"
+                    className="rounded px-2 py-1 text-muted-foreground text-overline transition-colors hover:bg-background/50 hover:text-foreground"
                     onClick={handleReset}
                     type="button"
                   >
@@ -229,9 +242,11 @@ export function CoffeeCalculator({
 
                   <div className="relative z-10 flex items-start gap-3">
                     <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/90 text-primary-foreground shadow-sm transition-transform duration-300 group-hover:scale-110">
-                      <span className="font-medium text-xs">{index + 1}</span>
+                      <span className="font-medium text-overline">
+                        {index + 1}
+                      </span>
                     </div>
-                    <p className="text-muted-foreground text-sm leading-relaxed transition-colors group-hover:text-foreground">
+                    <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
                       {tip}
                     </p>
                   </div>

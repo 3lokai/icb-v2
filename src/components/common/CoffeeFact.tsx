@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, startTransition, useState } from "react";
 import { Icon } from "@/components/common/Icon";
 import { getRandomCoffeeFact } from "@/lib/coffee-facts";
 import { cn } from "@/lib/utils";
@@ -17,7 +17,9 @@ export default function CoffeeFact({ className = "" }: CoffeeFactProps) {
   } | null>(null);
 
   useEffect(() => {
-    setFact(getRandomCoffeeFact());
+    startTransition(() => {
+      setFact(getRandomCoffeeFact());
+    });
   }, []);
 
   if (!fact) {
@@ -38,10 +40,10 @@ export default function CoffeeFact({ className = "" }: CoffeeFactProps) {
           </div>
         </div>
         <div>
-          <h4 className="mb-1 font-semibold text-sm">{fact.title}</h4>
-          <p className="mb-2 text-muted-foreground text-sm">{fact.fact}</p>
+          <h4 className="mb-1 font-semibold text-caption">{fact.title}</h4>
+          <p className="mb-2 text-muted-foreground text-caption">{fact.fact}</p>
           {fact.source && (
-            <p className="text-muted-foreground/70 text-xs italic">
+            <p className="text-muted-foreground/70 text-overline italic">
               — {fact.source}
             </p>
           )}

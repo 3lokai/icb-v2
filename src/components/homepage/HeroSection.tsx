@@ -3,7 +3,13 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  startTransition,
+  useRef,
+  useState,
+} from "react";
 import { Icon } from "@/components/common/Icon";
 import {
   Announcement,
@@ -44,8 +50,10 @@ export default function HeroSection() {
         setSelectedIndex(-1);
       }, 300);
     } else {
-      setShowResults(false);
-      setQuery("");
+      startTransition(() => {
+        setShowResults(false);
+        setQuery("");
+      });
     }
 
     return () => {
@@ -194,10 +202,10 @@ export default function HeroSection() {
 
         {/* Main heading */}
         <div className="mb-8 animate-fade-in-scale delay-100">
-          <h1 className="mb-6 text-display text-white leading-tight">
+          <h1 className="mb-6 text-hero text-white text-balance">
             Discover India&apos;s Finest Coffee Beans
           </h1>
-          <p className="mx-auto max-w-3xl text-white/90 text-xl leading-relaxed">
+          <p className="mx-auto max-w-3xl text-white/90 text-body-large leading-relaxed">
             Explore exceptional Indian specialty coffee beans, roasters, and the
             stories behind each perfect cup.
           </p>
@@ -283,17 +291,17 @@ export default function HeroSection() {
                       </Avatar>
 
                       <div className="flex min-w-0 flex-1 flex-col gap-1">
-                        <div className="font-medium text-popover-foreground text-sm">
+                        <div className="font-medium text-popover-foreground text-caption">
                           {item.title}
                         </div>
-                        <div className="line-clamp-1 text-muted-foreground text-xs">
+                        <div className="line-clamp-1 text-muted-foreground text-overline">
                           {item.description}
                         </div>
                         {(item.tags.length > 0 || item.flavorNotes) && (
                           <div className="flex flex-wrap gap-1">
                             {item.flavorNotes?.slice(0, 2).map((note) => (
                               <Badge
-                                className="text-xs"
+                                className="text-overline"
                                 key={note}
                                 variant="secondary"
                               >
@@ -302,7 +310,7 @@ export default function HeroSection() {
                             ))}
                             {item.tags.slice(0, 2).map((tag) => (
                               <Badge
-                                className="text-xs"
+                                className="text-overline"
                                 key={tag}
                                 variant="outline"
                               >
@@ -314,13 +322,13 @@ export default function HeroSection() {
                       </div>
 
                       {item.metadata.coffee?.rating && (
-                        <div className="shrink-0 text-muted-foreground text-xs">
+                        <div className="shrink-0 text-muted-foreground text-overline">
                           ⭐ {item.metadata.coffee.rating.toFixed(1)}
                         </div>
                       )}
 
                       {item.metadata.roaster?.coffeeCount && (
-                        <div className="shrink-0 text-muted-foreground text-xs">
+                        <div className="shrink-0 text-muted-foreground text-overline">
                           {item.metadata.roaster.coffeeCount} coffees
                         </div>
                       )}
@@ -328,7 +336,7 @@ export default function HeroSection() {
                   ))}
                   {results.length > MAX_RESULTS && (
                     <button
-                      className="mt-2 w-full rounded-lg border border-border bg-accent/50 px-3 py-2 text-center text-popover-foreground text-sm transition-colors hover:bg-accent/70"
+                      className="mt-2 w-full rounded-lg border border-border bg-accent/50 px-3 py-2 text-center text-popover-foreground text-caption transition-colors hover:bg-accent/70"
                       onClick={handleSearch}
                       type="button"
                     >
@@ -342,7 +350,9 @@ export default function HeroSection() {
 
           {/* Popular searches - with proper spacing */}
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <span className="font-medium text-sm text-white/70">Popular:</span>
+            <span className="font-medium text-caption text-white/70">
+              Popular:
+            </span>
             {[
               "Monsooned Malabar",
               "Chikmagalur",
@@ -350,7 +360,7 @@ export default function HeroSection() {
               "Blue Tokai",
             ].map((term) => (
               <button
-                className="group rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-sm text-white/80 backdrop-blur-sm transition-all duration-300 hover:bg-white/15 hover:text-white"
+                className="group rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-caption text-white/80 backdrop-blur-sm transition-all duration-300 hover:bg-white/15 hover:text-white"
                 key={term}
                 onClick={() => {
                   openSearch(term);

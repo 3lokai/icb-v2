@@ -1,34 +1,69 @@
 @layer components {
-  /* Typography */
+  /* Typography Hierarchy */
+  
+  /* Hero/Display - For landing page heroes */
+  .text-hero {
+    @apply font-serif text-5xl md:text-6xl lg:text-7xl font-black leading-none tracking-tight;
+  }
+  
+  /* Display - For page headers */
   .text-display {
-    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight;
   }
 
+  /* Title - For section headers */
   .text-title {
     @apply font-serif text-2xl md:text-3xl font-bold leading-tight;
   }
 
+  /* Heading - For card headers, subsections */
   .text-heading {
     @apply font-serif text-xl md:text-2xl font-semibold leading-snug;
   }
 
+  /* Subheading - For smaller headers */
   .text-subheading {
     @apply font-serif text-lg md:text-xl font-semibold leading-snug;
   }
 
+  /* Body text variants */
   .text-body {
     @apply text-base leading-relaxed;
+  }
+
+  .text-body-large {
+    @apply text-lg leading-relaxed;
   }
 
   .text-body-muted {
     @apply text-base leading-relaxed text-muted-foreground;
   }
 
+  /* Small text */
   .text-caption {
     @apply text-sm text-muted-foreground;
   }
 
   .text-overline {
-    @apply text-xs uppercase font-medium tracking-wider;
+    @apply text-sm capitalize font-medium tracking-wider;
+  }
+
+  /* Micro text - For minimal background elements */
+  .text-micro {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+  }
+
+  /* Utility: Balanced text wrapping for titles */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Utility: Prevent orphans in paragraphs */
+  .text-pretty {
+    text-wrap: pretty;
   }
 }

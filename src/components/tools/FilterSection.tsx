@@ -52,7 +52,7 @@ export function FilterSection<T extends string>({
     <div className="glass-card card-padding relative space-y-4 overflow-hidden">
       <div className={blurClasses[blurPosition]} />
       <div className="relative z-10">
-        <h4 className="mb-4 flex items-center gap-2 font-medium text-base text-primary">
+        <h4 className="mb-4 flex items-center gap-2 font-medium text-body text-primary">
           <Icon className="h-4 w-4" name={icon} />
           {title}
         </h4>
@@ -84,11 +84,13 @@ export function FilterSection<T extends string>({
                   />
                 )}
                 <div className="flex flex-col items-start">
-                  <span className="font-medium text-sm transition-colors group-hover:text-inherit">
+                  <span className="font-medium text-caption transition-colors group-hover:text-inherit">
                     {item.label}
                   </span>
                   {item.metadata && (
-                    <span className="text-xs opacity-80">{item.metadata}</span>
+                    <span className="text-overline opacity-80">
+                      {item.metadata}
+                    </span>
                   )}
                 </div>
               </Button>

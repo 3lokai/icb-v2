@@ -37,15 +37,15 @@ const RegionalDiscoveryBackground = () => {
             key={region.name}
           >
             <div className="mb-2 flex items-center gap-2">
-              <Icon className="h-4 w-4 text-primary/70" name="MapPin" />
-              <div className="font-semibold text-primary/80 text-sm">
+              <Icon className="h-4 w-4 text-primary" name="MapPin" />
+              <div className="font-semibold text-primary text-caption">
                 {region.name}
               </div>
             </div>
-            <div className="text-muted-foreground/70 text-xs">
+            <div className="text-muted-foreground text-overline">
               {region.state}
             </div>
-            <div className="mt-1 font-medium text-accent/60 text-xs">
+            <div className="mt-1 font-medium text-accent text-overline">
               {region.altitude}
             </div>
           </div>
@@ -95,20 +95,20 @@ const ExpertShowcase = () => {
       setCurrentExpert((prev) => (prev + 1) % experts.length);
     }, 2500);
     return () => clearInterval(interval);
-  }, []);
+  }, [experts.length]);
 
   return (
     <div className="absolute top-4 right-4 z-0">
       <div className="glass-card min-w-[140px] animate-fade-in-scale p-3 text-center">
         <Icon className="mx-auto mb-1 h-5 w-5 text-accent" name="Trophy" />
-        <div className="mb-1 font-medium text-foreground text-xs">
+        <div className="mb-1 font-medium text-foreground text-overline">
           {experts[currentExpert].name}
         </div>
-        <div className="mb-1 text-accent text-xs">
+        <div className="mb-1 text-accent text-overline">
           {experts[currentExpert].year && `${experts[currentExpert].year} • `}
           {experts[currentExpert].method}
         </div>
-        <div className="text-muted-foreground text-xs opacity-80">
+        <div className="text-muted-foreground text-overline">
           {experts[currentExpert].achievement}
         </div>
       </div>
@@ -163,7 +163,7 @@ const FloatingSteps = () => (
       },
     ].map((step, i) => (
       <div
-        className="glass-card absolute animate-float p-2 text-xs opacity-50 transition-opacity hover:opacity-80"
+        className="glass-card absolute animate-float p-2 text-overline opacity-50 transition-opacity hover:opacity-80"
         key={step.time}
         style={{
           top: step.position.top,
@@ -173,8 +173,10 @@ const FloatingSteps = () => (
         }}
       >
         <div className="font-medium text-primary">{step.time}</div>
-        <div className="font-medium text-foreground text-xs">{step.text}</div>
-        <div className="text-muted-foreground text-xs">{step.detail}</div>
+        <div className="font-medium text-foreground text-overline">
+          {step.text}
+        </div>
+        <div className="text-muted-foreground text-overline">{step.detail}</div>
       </div>
     ))}
   </div>
@@ -236,10 +238,10 @@ const CoffeeProfileShowcase = () => {
               name={feature.icon}
             />
             <div className="min-w-0 flex-1">
-              <div className="truncate font-medium text-foreground text-xs">
+              <div className="truncate font-medium text-foreground text-overline">
                 {feature.title}
               </div>
-              <div className="truncate text-muted-foreground text-xs">
+              <div className="truncate text-muted-foreground text-overline">
                 {feature.description}
               </div>
             </div>
@@ -267,7 +269,7 @@ const SimpleFloatingRatings = () => {
         >
           <div className="flex items-center gap-1">
             <Icon className="h-3 w-3 fill-current text-chart-1" name="Star" />
-            <span className="font-medium text-xs">{rating}</span>
+            <span className="font-medium text-overline">{rating}</span>
           </div>
         </div>
       ))}

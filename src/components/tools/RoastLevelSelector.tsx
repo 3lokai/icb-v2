@@ -87,7 +87,7 @@ export function RoastLevelSelector({
                   />
                   <div className="flex flex-col items-start">
                     <span className="font-medium">{selectedRoast.label}</span>
-                    <span className="text-muted-foreground text-xs">
+                    <span className="text-muted-foreground text-overline">
                       {selectedRoast.temp}
                     </span>
                   </div>
@@ -127,11 +127,11 @@ export function RoastLevelSelector({
                   <div className="flex-1">
                     <div className="mb-1 flex items-center justify-between">
                       <span className="font-medium">{roast.label}</span>
-                      <span className="font-medium text-primary text-xs">
+                      <span className="font-medium text-primary text-overline">
                         {roast.temp}
                       </span>
                     </div>
-                    <span className="text-muted-foreground text-xs">
+                    <span className="text-muted-foreground text-overline">
                       {roast.description}
                     </span>
                   </div>

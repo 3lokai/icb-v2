@@ -54,7 +54,6 @@ const initialFormData: Partial<OnboardingFormData> = {
   emailFrequency: "weekly",
 };
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Multi-step form component with complex rendering logic
 export function OnboardingWizard() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
@@ -273,7 +272,7 @@ export function OnboardingWizard() {
     <div className="flex w-full flex-col gap-6">
       {/* Progress Bar */}
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center justify-between text-caption">
           <span className="text-muted-foreground">
             Step {currentStep} of {TOTAL_STEPS}
           </span>
@@ -284,7 +283,7 @@ export function OnboardingWizard() {
 
       {/* Error Message */}
       {error && (
-        <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-destructive text-sm">
+        <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-destructive text-caption">
           {error}
         </div>
       )}
@@ -294,10 +293,8 @@ export function OnboardingWizard() {
         {currentStep === 1 && (
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-1 text-center">
-              <h2 className="font-bold text-2xl">
-                Welcome! Let&apos;s get started
-              </h2>
-              <p className="text-balance text-muted-foreground text-sm">
+              <h2 className="text-title">Welcome! Let&apos;s get started</h2>
+              <p className="text-balance text-muted-foreground text-caption">
                 Tell us a bit about yourself
               </p>
             </div>
@@ -415,8 +412,8 @@ export function OnboardingWizard() {
         {currentStep === 2 && (
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-1 text-center">
-              <h2 className="font-bold text-2xl">Your Coffee Journey</h2>
-              <p className="text-balance text-muted-foreground text-sm">
+              <h2 className="text-title">Your Coffee Journey</h2>
+              <p className="text-balance text-muted-foreground text-caption">
                 Help us personalize your experience
               </p>
             </div>
@@ -496,8 +493,8 @@ export function OnboardingWizard() {
         {currentStep === 3 && (
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-1 text-center">
-              <h2 className="font-bold text-2xl">Coffee Preferences</h2>
-              <p className="text-balance text-muted-foreground text-sm">
+              <h2 className="text-title">Coffee Preferences</h2>
+              <p className="text-balance text-muted-foreground text-caption">
                 Optional - You can skip this step
               </p>
             </div>
@@ -670,8 +667,8 @@ export function OnboardingWizard() {
         {currentStep === 4 && (
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-1 text-center">
-              <h2 className="font-bold text-2xl">Notification Preferences</h2>
-              <p className="text-balance text-muted-foreground text-sm">
+              <h2 className="text-title">Notification Preferences</h2>
+              <p className="text-balance text-muted-foreground text-caption">
                 Optional - You can skip this step
               </p>
             </div>

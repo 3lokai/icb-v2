@@ -45,7 +45,7 @@ export default function EducationSection() {
                     name="BookOpen"
                     size={16}
                   />
-                  <span className="font-medium text-primary text-sm">
+                  <span className="font-medium text-primary text-caption">
                     Education Center
                   </span>
                 </div>
@@ -63,31 +63,28 @@ export default function EducationSection() {
               </div>
 
               <div className="mb-8 space-y-4">
-                {educationItems.map((item, index) => {
-                  const delayClasses = ["delay-0", "delay-100", "delay-200"];
-                  return (
-                    <div
-                      className={`glass-card card-padding card-hover group animate-fade-in-scale ${delayClasses[index] ?? "delay-0"}`}
-                      key={item.id}
-                    >
-                      <div className="flex items-start">
-                        <div className="mr-4 h-12 w-12 flex-center rounded-lg border border-primary/20 bg-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/15">
-                          <Icon
-                            className="text-primary"
-                            name={item.icon as IconName}
-                            size={20}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="mb-2 text-heading transition-colors duration-200 group-hover:text-accent">
-                            {item.title}
-                          </h3>
-                          <p className="text-caption">{item.description}</p>
-                        </div>
+                {educationItems.map((item, index) => (
+                  <div
+                    className={`glass-card card-padding card-hover group animate-fade-in-scale delay-${index * 100}`}
+                    key={item.id}
+                  >
+                    <div className="flex items-start">
+                      <div className="mr-4 h-12 w-12 flex-center rounded-lg border border-primary/20 bg-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/15">
+                        <Icon
+                          className="text-primary"
+                          name={item.icon as IconName}
+                          size={20}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="mb-2 text-heading transition-colors duration-200 group-hover:text-accent">
+                          {item.title}
+                        </h3>
+                        <p className="text-caption">{item.description}</p>
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
 
               <Link href="/learn">
@@ -126,10 +123,10 @@ export default function EducationSection() {
                         <Icon className="text-accent" name="Coffee" size={16} />
                       </div>
                       <div>
-                        <h4 className="mb-1 font-medium text-accent-foreground text-sm">
+                        <h4 className="mb-1 font-medium text-accent-foreground text-caption">
                           Did You Know?
                         </h4>
-                        <p className="text-muted-foreground text-xs leading-relaxed">
+                        <p className="text-muted-foreground text-overline leading-relaxed">
                           India&apos;s famed Monsooned Malabar coffee gets its
                           unique flavor from monsoon winds.
                         </p>

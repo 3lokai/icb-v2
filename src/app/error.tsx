@@ -29,7 +29,7 @@ export default function Error({
             useFrameInterpolation={true}
           />
         </div>
-        <h1 className="mb-2 font-bold text-2xl">Oops! Coffee Spill</h1>
+        <h1 className="mb-2 font-bold text-title">Oops! Coffee Spill</h1>
 
         <p className="mb-8 text-muted-foreground">
           Looks like we spilled the beans! Something went wrong while brewing

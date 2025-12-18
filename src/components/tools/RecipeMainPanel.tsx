@@ -69,7 +69,7 @@ function RecipeCard({ recipe, isSelected, onSelect }: RecipeCardProps) {
           </Tag>
           <Tag variant="outline">{recipe.recommendedUse}</Tag>
         </div>
-        <CardTitle className="line-clamp-2 font-semibold text-lg leading-tight md:text-xl">
+        <CardTitle className="line-clamp-2 text-subheading leading-tight">
           {recipe.title}
         </CardTitle>
         <div className="line-clamp-1 text-caption transition-colors hover:text-accent">
@@ -80,7 +80,7 @@ function RecipeCard({ recipe, isSelected, onSelect }: RecipeCardProps) {
 
       <CardContent className="flex flex-1 flex-col gap-2">
         {/* Quick Stats */}
-        <div className="grid grid-cols-2 gap-1.5 text-sm">
+        <div className="grid grid-cols-2 gap-1.5 text-caption">
           <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
             <span className="text-muted-foreground">Ratio</span>
             <span className="font-medium">{recipe.ratio}</span>
@@ -91,11 +91,13 @@ function RecipeCard({ recipe, isSelected, onSelect }: RecipeCardProps) {
           </div>
           <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
             <span className="text-muted-foreground">Grind</span>
-            <span className="font-medium text-xs">{recipe.grind}</span>
+            <span className="font-medium text-overline">{recipe.grind}</span>
           </div>
           <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
             <span className="text-muted-foreground">Temp</span>
-            <span className="font-medium text-xs">{recipe.temperature}</span>
+            <span className="font-medium text-overline">
+              {recipe.temperature}
+            </span>
           </div>
         </div>
 
@@ -103,11 +105,11 @@ function RecipeCard({ recipe, isSelected, onSelect }: RecipeCardProps) {
         <div className="mt-4 rounded-md bg-background/30 p-2">
           <div className="mb-1 flex items-center gap-1.5">
             <Icon className="h-3 w-3 text-accent" name="Lightbulb" />
-            <span className="font-medium text-accent text-xs uppercase tracking-wide">
+            <span className="font-medium text-accent text-overline">
               Key Technique
             </span>
           </div>
-          <p className="line-clamp-2 text-muted-foreground text-xs leading-relaxed">
+          <p className="line-clamp-2 text-muted-foreground text-caption leading-relaxed">
             {recipe.keyTechnique}
           </p>
         </div>
@@ -119,7 +121,7 @@ function RecipeCard({ recipe, isSelected, onSelect }: RecipeCardProps) {
         </div>
         <div
           className={cn(
-            "flex items-center gap-1.5 font-medium text-sm transition-colors",
+            "flex items-center gap-1.5 font-medium text-caption transition-colors",
             isSelected
               ? "text-primary"
               : "text-muted-foreground group-hover:text-accent"
@@ -195,9 +197,7 @@ From IndianCoffeeBeans.com Expert Recipes
         <div className="relative z-10">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <h2 className="mb-2 font-bold text-2xl text-primary">
-                {recipe.title}
-              </h2>
+              <h2 className="mb-2 text-title text-primary">{recipe.title}</h2>
               <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
               <div className="mb-6 flex items-center gap-3 text-muted-foreground">
                 <span className="font-medium">{recipe.expert.name}</span>
@@ -216,28 +216,36 @@ From IndianCoffeeBeans.com Expert Recipes
                 <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-accent/10 blur-xl" />
                 <div className="relative z-10 grid grid-cols-2 gap-4 md:grid-cols-4">
                   <div className="text-center">
-                    <div className="font-bold text-lg text-primary">
+                    <div className="font-bold text-subheading text-primary">
                       {recipe.coffee}g
                     </div>
-                    <div className="text-muted-foreground text-sm">Coffee</div>
+                    <div className="text-muted-foreground text-caption">
+                      Coffee
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-bold text-lg text-primary">
+                    <div className="font-bold text-subheading text-primary">
                       {recipe.water}ml
                     </div>
-                    <div className="text-muted-foreground text-sm">Water</div>
+                    <div className="text-muted-foreground text-caption">
+                      Water
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-bold text-lg text-primary">
+                    <div className="font-bold text-subheading text-primary">
                       {recipe.ratio}
                     </div>
-                    <div className="text-muted-foreground text-sm">Ratio</div>
+                    <div className="text-muted-foreground text-caption">
+                      Ratio
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-bold text-lg text-primary">
+                    <div className="font-bold text-subheading text-primary">
                       {recipe.totalTime}
                     </div>
-                    <div className="text-muted-foreground text-sm">Time</div>
+                    <div className="text-muted-foreground text-caption">
+                      Time
+                    </div>
                   </div>
                 </div>
               </div>
@@ -261,7 +269,7 @@ From IndianCoffeeBeans.com Expert Recipes
           <div className="glass-card card-padding relative overflow-hidden">
             <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
             <div className="relative z-10">
-              <h3 className="mb-4 flex items-center gap-2 font-semibold text-lg text-primary">
+              <h3 className="mb-4 flex items-center gap-2 text-subheading text-primary">
                 <Icon className="h-5 w-5" name="BookOpen" />
                 The Story
               </h3>
@@ -278,7 +286,7 @@ From IndianCoffeeBeans.com Expert Recipes
             <div className="relative z-10">
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg text-primary">
+                  <h3 className="flex items-center gap-2 text-subheading text-primary">
                     <Icon className="h-5 w-5" name="ListChecks" />
                     Brewing Steps
                   </h3>
@@ -303,25 +311,27 @@ From IndianCoffeeBeans.com Expert Recipes
                     <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-primary/5 blur-lg" />
                     <div className="relative z-10 flex items-start gap-3">
                       <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
-                        <span className="font-medium text-sm">{index + 1}</span>
+                        <span className="font-medium text-caption">
+                          {index + 1}
+                        </span>
                       </div>
                       <div className="flex-1">
                         <div className="mb-1 flex items-center gap-2">
-                          <span className="font-medium text-sm">
+                          <span className="font-medium text-caption">
                             {step.time}
                           </span>
                           {step.waterAmount && (
-                            <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
+                            <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
                               {step.waterAmount}ml
                             </Badge>
                           )}
                           {step.pourNumber && (
-                            <Badge className="badge bg-accent/90 text-accent-foreground text-xs">
+                            <Badge className="badge bg-accent/90 text-accent-foreground text-overline">
                               Pour #{step.pourNumber}
                             </Badge>
                           )}
                         </div>
-                        <p className="text-muted-foreground text-sm leading-relaxed">
+                        <p className="text-muted-foreground text-caption leading-relaxed">
                           {step.instruction}
                         </p>
                       </div>
@@ -346,7 +356,7 @@ From IndianCoffeeBeans.com Expert Recipes
           <div className="glass-card card-padding relative overflow-hidden">
             <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-accent/10 blur-xl" />
             <div className="relative z-10">
-              <h4 className="mb-4 flex items-center gap-2 font-medium text-base text-primary">
+              <h4 className="mb-4 flex items-center gap-2 font-medium text-body text-primary">
                 <Icon className="h-5 w-5" name="Lightbulb" />
                 Pro Tips
               </h4>
@@ -358,7 +368,7 @@ From IndianCoffeeBeans.com Expert Recipes
                     key={`tip-${tip.slice(0, 20)}-${index}`}
                   >
                     <div className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125" />
-                    <p className="text-muted-foreground text-sm leading-relaxed transition-colors group-hover:text-foreground">
+                    <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
                       {tip}
                     </p>
                   </div>
@@ -371,7 +381,7 @@ From IndianCoffeeBeans.com Expert Recipes
           <div className="glass-card card-padding relative overflow-hidden">
             <div className="absolute top-0 left-0 h-16 w-16 rounded-full bg-primary/10 blur-xl" />
             <div className="relative z-10">
-              <h4 className="mb-4 flex items-center gap-2 font-medium text-base text-primary">
+              <h4 className="mb-4 flex items-center gap-2 font-medium text-body text-primary">
                 <Icon className="h-5 w-5" name="Wrench" />
                 Equipment
               </h4>
@@ -386,7 +396,7 @@ From IndianCoffeeBeans.com Expert Recipes
                       className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary"
                       name="Coffee"
                     />
-                    <span className="text-sm transition-colors group-hover:text-foreground">
+                    <span className="text-caption transition-colors group-hover:text-foreground">
                       {equipment}
                     </span>
                   </div>
@@ -400,7 +410,7 @@ From IndianCoffeeBeans.com Expert Recipes
             <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-primary/20 blur-xl" />
             <div className="absolute bottom-0 left-0 h-8 w-8 rounded-full bg-accent/20 blur-lg" />
             <div className="relative z-10">
-              <h4 className="mb-4 font-medium text-base text-primary">
+              <h4 className="mb-4 font-medium text-body text-primary">
                 Save & Share
               </h4>
               <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
@@ -469,7 +479,7 @@ export function RecipeMainPanel({
       <div className="glass-panel relative overflow-hidden rounded-2xl p-6">
         <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/10 blur-2xl" />
         <div className="relative z-10">
-          <h2 className="mb-2 font-bold text-2xl text-primary">
+          <h2 className="mb-2 text-title text-primary">
             Expert Coffee Recipes
           </h2>
           <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
@@ -487,7 +497,7 @@ export function RecipeMainPanel({
               className="mx-auto mb-4 h-12 w-12 text-muted-foreground opacity-50"
               name="Coffee"
             />
-            <h3 className="mb-2 font-semibold text-lg">No recipes found</h3>
+            <h3 className="mb-2 text-subheading">No recipes found</h3>
             <p className="text-muted-foreground">
               Try adjusting your filters to see more recipes
             </p>

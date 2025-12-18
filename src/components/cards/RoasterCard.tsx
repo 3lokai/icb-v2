@@ -136,7 +136,7 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
       >
         {/* Accent bar */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
+
         <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
           <Image
             alt={roaster.name || "Coffee roaster image"}
@@ -152,7 +152,7 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
           {ribbon && (
             <div
               className={cn(
-                "absolute top-3 left-3 rounded-md px-3 py-1.5 font-semibold text-xs uppercase tracking-wider",
+                "absolute top-3 left-3 rounded-md px-3 py-1.5 font-semibold text-overline",
                 "shadow-lg backdrop-blur-sm border border-white/20",
                 getRibbonStyles(ribbon)
               )}
@@ -164,7 +164,7 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
 
         <CardHeader>
           <CardTitle
-            className="font-semibold text-lg md:text-xl line-clamp-2 min-h-[3.5rem]"
+            className="text-subheading line-clamp-2 min-h-[3.5rem]"
             itemProp="name"
           >
             {roaster.name}

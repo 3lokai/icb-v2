@@ -15,14 +15,16 @@ import { SearchProvider } from "@/providers/SearchProvider";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400", "500", "600", "700", "800", "900"], // Add the heavy weights
   variable: "--font-display",
+  display: "swap", // Add this for better performance
 });
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
   variable: "--font-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -40,7 +42,11 @@ export const metadata: Metadata = {
       { url: "/favicon/favicon.ico", sizes: "any" },
     ],
     apple: [
-      { url: "/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      {
+        url: "/favicon/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
     ],
     other: [
       {

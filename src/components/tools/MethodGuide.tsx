@@ -51,16 +51,16 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
               className="h-5 w-5 text-primary transition-transform duration-300 group-hover:scale-110"
               name="Coffee"
             />
-            <h3 className="font-semibold text-lg transition-colors group-hover:text-primary">
+            <h3 className="text-subheading transition-colors group-hover:text-primary">
               {method.name}
             </h3>
           </div>
-          <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
+          <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
             {method.brewTime}
           </Badge>
         </div>
 
-        <p className="text-muted-foreground text-sm leading-relaxed transition-colors group-hover:text-foreground">
+        <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
           {method.description}
         </p>
 
@@ -70,11 +70,11 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
           <div className="relative z-10">
             <div className="mb-1 flex items-center gap-2">
               <Icon className="h-3 w-3 text-accent" name="Palette" />
-              <span className="font-medium text-accent text-xs uppercase tracking-wide">
+              <span className="font-medium text-accent text-overline">
                 Flavor Profile
               </span>
             </div>
-            <p className="text-muted-foreground text-xs italic leading-relaxed">
+            <p className="text-muted-foreground text-caption italic leading-relaxed">
               {method.flavorProfile}
             </p>
           </div>
@@ -83,7 +83,7 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
         {/* Quick Stats Grid - Enhanced with glass treatment */}
         <div className="glass-panel relative overflow-hidden rounded-lg p-3">
           <div className="absolute right-0 bottom-0 h-6 w-6 rounded-full bg-primary/5 blur-sm" />
-          <div className="relative z-10 grid grid-cols-2 gap-3 text-sm">
+          <div className="relative z-10 grid grid-cols-2 gap-3 text-caption">
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Ratio</span>
               <span className="font-medium text-primary">
@@ -93,19 +93,23 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
 
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Grind</span>
-              <span className="font-medium text-xs">{method.grindSize}</span>
+              <span className="font-medium text-overline">
+                {method.grindSize}
+              </span>
             </div>
 
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Temp</span>
-              <span className="font-medium text-xs">
+              <span className="font-medium text-overline">
                 {method.temperatures.medium}
               </span>
             </div>
 
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Time</span>
-              <span className="font-medium text-xs">{method.brewTime}</span>
+              <span className="font-medium text-overline">
+                {method.brewTime}
+              </span>
             </div>
           </div>
         </div>
@@ -114,30 +118,30 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
 
         {/* Strength Options - Enhanced */}
         <div>
-          <h5 className="mb-3 font-medium text-muted-foreground text-xs uppercase tracking-wide">
+          <h5 className="mb-3 font-medium text-muted-foreground text-overline">
             Strength Ratios
           </h5>
           <div className="flex items-center justify-between">
             <div className="text-center">
               <div className="mx-auto mb-1 h-2 w-2 rounded-full bg-amber-500" />
-              <span className="font-medium text-amber-600 text-xs">
+              <span className="font-medium text-amber-600 text-overline">
                 1:{method.ratios.mild}
               </span>
-              <div className="text-muted-foreground text-xs">Mild</div>
+              <div className="text-muted-foreground text-overline">Mild</div>
             </div>
             <div className="text-center">
               <div className="mx-auto mb-1 h-2 w-2 rounded-full bg-orange-500" />
-              <span className="font-bold text-orange-600 text-xs">
+              <span className="font-bold text-orange-600 text-overline">
                 1:{method.ratios.average}
               </span>
-              <div className="text-muted-foreground text-xs">Perfect</div>
+              <div className="text-muted-foreground text-overline">Perfect</div>
             </div>
             <div className="text-center">
               <div className="mx-auto mb-1 h-2 w-2 rounded-full bg-red-500" />
-              <span className="font-medium text-red-600 text-xs">
+              <span className="font-medium text-red-600 text-overline">
                 1:{method.ratios.robust}
               </span>
-              <div className="text-muted-foreground text-xs">Strong</div>
+              <div className="text-muted-foreground text-overline">Strong</div>
             </div>
           </div>
         </div>
@@ -189,10 +193,8 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
           <div className="relative z-10">
             <div className="mb-4 flex items-center gap-3">
               <Icon className="h-6 w-6 text-primary" name="Coffee" />
-              <h2 className="font-bold text-2xl text-primary">
-                Popular Methods
-              </h2>
-              <Badge className="badge bg-accent/90 text-accent-foreground text-xs">
+              <h2 className="text-title text-primary">Popular Methods</h2>
+              <Badge className="badge bg-accent/90 text-accent-foreground text-overline">
                 Most Used
               </Badge>
             </div>
@@ -218,10 +220,8 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
           <div className="relative z-10">
             <div className="mb-4 flex items-center gap-3">
               <Icon className="h-6 w-6 text-accent" name="Gear" />
-              <h2 className="font-bold text-2xl text-primary">
-                Espresso & Pressure
-              </h2>
-              <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
+              <h2 className="text-title text-primary">Espresso & Pressure</h2>
+              <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
                 High Intensity
               </Badge>
             </div>
@@ -247,10 +247,10 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
           <div className="relative z-10">
             <div className="mb-4 flex items-center gap-3">
               <Icon className="h-6 w-6 text-chart-2" name="Drop" />
-              <h2 className="font-bold text-2xl text-primary">
+              <h2 className="text-title text-primary">
                 Specialty & Traditional
               </h2>
-              <Badge className="badge border-border/50 bg-background/90 text-foreground text-xs">
+              <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
                 Unique Techniques
               </Badge>
             </div>
@@ -277,9 +277,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
             <div className="relative z-10">
               <div className="mb-4 flex items-center gap-3">
                 <Icon className="h-6 w-6 text-muted-foreground" name="Coffee" />
-                <h2 className="font-bold text-2xl text-primary">
-                  Other Methods
-                </h2>
+                <h2 className="text-title text-primary">Other Methods</h2>
               </div>
               <div className="h-1 w-16 rounded-full bg-accent" />
             </div>
@@ -309,7 +307,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
             <div className="mb-8 text-center">
               <div className="mb-4 flex items-center justify-center gap-3">
                 <Icon className="h-8 w-8 text-accent" name="Lightbulb" />
-                <h2 className="font-bold text-2xl text-primary">Pro Tips</h2>
+                <h2 className="text-title text-primary">Pro Tips</h2>
               </div>
               <div className="mx-auto h-1 w-16 rounded-full bg-accent" />
             </div>
@@ -323,7 +321,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
                     <Icon className="h-4 w-4 text-chart-2" name="Drop" />
                     Water Quality Matters
                   </h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-caption leading-relaxed">
                     Use filtered water with 150-300 TDS for optimal extraction.
                     Water temperature should be 90-96°C. If water tastes good to
                     drink, it's good for coffee.
@@ -339,7 +337,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
                     <Icon className="h-4 w-4 text-primary" name="Coffee" />
                     Fresh Coffee is Key
                   </h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-caption leading-relaxed">
                     Use coffee beans roasted 7-30 days ago. Grind just before
                     brewing for best results. Store beans in airtight container
                     away from light and heat.
@@ -358,7 +356,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
                     />
                     Consistent Grind Size
                   </h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-caption leading-relaxed">
                     Invest in a quality burr grinder for consistent particle
                     size. Adjust grind size if brew time is too fast (coarser)
                     or slow (finer).
@@ -377,7 +375,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
                     />
                     Precise Measurements
                   </h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-caption leading-relaxed">
                     Use a scale for accuracy. Start with 1:15-1:17 ratios and
                     adjust to taste. Weaker coffee? Increase ratio. Bitter? Try
                     coarser grind or cooler water.
@@ -393,7 +391,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               <h4 className="mb-6 text-center font-semibold text-primary">
                 Quick Ratio Reference
               </h4>
-              <div className="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
+              <div className="grid grid-cols-2 gap-4 text-caption md:grid-cols-4">
                 <div className="glass-card card-padding group text-center transition-all duration-300 hover:scale-[1.02]">
                   <div className="mb-1 font-medium transition-colors group-hover:text-primary">
                     Mild

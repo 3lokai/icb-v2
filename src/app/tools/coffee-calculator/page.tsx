@@ -149,7 +149,7 @@ export default function CoffeeCalculatorPage() {
           <div className="container-default">
             {/* Feature highlights */}
             <div className="glass-panel mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl border border-border/50 p-6">
-              <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+              <div className="flex flex-wrap items-center justify-center gap-6 text-caption">
                 <div className="group flex items-center gap-2 transition-colors hover:text-primary">
                   <div className="h-3 w-3 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
                   <span className="font-medium">11 Brewing Methods</span>
@@ -256,7 +256,7 @@ export default function CoffeeCalculatorPage() {
                   <h3 className="mb-2 text-heading transition-colors group-hover:text-accent">
                     Precise Calculations
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-caption leading-relaxed">
                     Get exact coffee and water measurements based on your
                     preferred strength and brewing method with real-time
                     adjustments.
@@ -273,7 +273,7 @@ export default function CoffeeCalculatorPage() {
                   <h3 className="mb-2 text-heading transition-colors group-hover:text-accent">
                     Method Guides
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-caption leading-relaxed">
                     Learn the nuances of 11 brewing methods including flavor
                     profiles, recommended roast levels, and traditional South
                     Indian filter coffee.
@@ -290,7 +290,7 @@ export default function CoffeeCalculatorPage() {
                   <h3 className="mb-2 text-heading transition-colors group-hover:text-accent">
                     Interactive Timer
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-caption leading-relaxed">
                     Follow along with method-specific brewing timers, audio
                     notifications, and vibration alerts for perfect extraction
                     timing.
@@ -344,7 +344,7 @@ export default function CoffeeCalculatorPage() {
                     className="mx-auto mb-2 h-6 w-6 text-primary transition-all duration-300 group-hover:scale-110 group-hover:text-accent"
                     name="Coffee"
                   />
-                  <span className="font-medium text-sm transition-colors group-hover:text-accent">
+                  <span className="font-medium text-caption transition-colors group-hover:text-accent">
                     {method.name}
                   </span>
                 </div>

@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, startTransition, useState } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "@/components/common/Icon";
 import { Switch } from "@/components/ui/switch";
@@ -24,7 +24,9 @@ export function CookieNotice() {
   });
 
   useEffect(() => {
-    setMounted(true);
+    startTransition(() => {
+      setMounted(true);
+    });
 
     return () => {
       // Cleanup container on unmount
@@ -75,7 +77,7 @@ export function CookieNotice() {
     >
       <div className="container-default px-6 py-6">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="flex items-center gap-2 font-semibold text-lg">
+          <h3 className="flex items-center gap-2 text-subheading">
             <Icon
               className="text-accent"
               color="accent"
@@ -100,7 +102,7 @@ export function CookieNotice() {
           <div className="flex items-center justify-between rounded-md border border-border p-3">
             <div>
               <p className="font-medium">Necessary Cookies</p>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-caption">
                 Required for the website to function. Cannot be disabled.
               </p>
             </div>
@@ -109,7 +111,7 @@ export function CookieNotice() {
           <div className="flex items-center justify-between rounded-md border border-border p-3">
             <div>
               <p className="font-medium">Analytics Cookies</p>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-caption">
                 Help us understand how visitors interact with our website.
               </p>
             </div>
@@ -126,14 +128,14 @@ export function CookieNotice() {
         </div>
         <div className="flex justify-end gap-2">
           <button
-            className="btn-secondary px-4 py-2 text-sm"
+            className="btn-secondary px-4 py-2 text-caption"
             onClick={() => setShowManage(false)}
             type="button"
           >
             Cancel
           </button>
           <button
-            className="btn-primary px-4 py-2 text-sm"
+            className="btn-primary px-4 py-2 text-caption"
             onClick={savePreferences}
             type="button"
           >
@@ -155,7 +157,7 @@ export function CookieNotice() {
             name="Cookie"
             size={24}
           />
-          <p className="max-w-3xl text-foreground text-sm">
+          <p className="max-w-3xl text-foreground text-caption">
             We use cookies to brew up a better experience. Essential cookies are
             always active. By clicking &quot;Accept All&quot;, you agree to the
             storing of cookies on your device to enhance navigation and analyze
@@ -168,14 +170,14 @@ export function CookieNotice() {
         </div>
         <div className="flex gap-2 whitespace-nowrap">
           <button
-            className="btn-secondary px-4 py-2 text-sm"
+            className="btn-secondary px-4 py-2 text-caption"
             onClick={() => setShowManage(true)}
             type="button"
           >
             Manage Cookies
           </button>
           <button
-            className="btn-primary px-4 py-2 text-sm"
+            className="btn-primary px-4 py-2 text-caption"
             onClick={acceptAllCookies}
             type="button"
           >

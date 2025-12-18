@@ -140,7 +140,7 @@ export function Header() {
                           alt={displayName}
                           src={avatarUrl ?? undefined}
                         />
-                        <AvatarFallback className="bg-primary font-medium text-primary-foreground text-xs">
+                        <AvatarFallback className="bg-primary font-medium text-primary-foreground text-overline">
                           {initials}
                         </AvatarFallback>
                       </Avatar>
@@ -149,11 +149,11 @@ export function Header() {
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="font-medium text-sm leading-none">
+                        <p className="font-medium text-caption leading-none">
                           {displayName}
                         </p>
                         {user.email && (
-                          <p className="text-muted-foreground text-xs leading-none">
+                          <p className="text-muted-foreground text-overline leading-none">
                             {user.email}
                           </p>
                         )}
@@ -259,7 +259,7 @@ export function Header() {
               />
             ) : (
               <Link
-                className="font-medium text-neutral-600 text-sm transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+                className="font-medium text-neutral-600 text-caption transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
                 href={item.link}
                 key={item.link}
                 onClick={closeMobileMenu}
@@ -283,35 +283,37 @@ export function Header() {
                         alt={displayName}
                         src={avatarUrl ?? undefined}
                       />
-                      <AvatarFallback className="bg-primary font-medium text-primary-foreground text-sm">
+                      <AvatarFallback className="bg-primary font-medium text-primary-foreground text-caption">
                         {initials}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-1 flex-col">
-                      <span className="font-medium text-sm">{displayName}</span>
+                      <span className="font-medium text-caption">
+                        {displayName}
+                      </span>
                       {user.email && (
-                        <span className="text-muted-foreground text-xs">
+                        <span className="text-muted-foreground text-overline">
                           {user.email}
                         </span>
                       )}
                     </div>
                   </div>
                   <Link
-                    className="font-medium text-neutral-600 text-sm transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+                    className="font-medium text-neutral-600 text-caption transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
                     href="/profile"
                     onClick={closeMobileMenu}
                   >
                     Profile
                   </Link>
                   <Link
-                    className="font-medium text-neutral-600 text-sm transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+                    className="font-medium text-neutral-600 text-caption transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
                     href="/dashboard"
                     onClick={closeMobileMenu}
                   >
                     Dashboard
                   </Link>
                   <button
-                    className="font-medium text-destructive text-sm transition-colors hover:text-destructive/80"
+                    className="font-medium text-destructive text-caption transition-colors hover:text-destructive/80"
                     onClick={() => {
                       closeMobileMenu();
                       handleSignOut();

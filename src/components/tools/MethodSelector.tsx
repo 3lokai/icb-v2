@@ -87,7 +87,7 @@ export function MethodSelector({
                     <Icon className="h-4 w-4 text-primary" name="Coffee" />
                     <div className="flex flex-col">
                       <span className="font-medium">{method.name}</span>
-                      <span className="text-muted-foreground text-xs">
+                      <span className="text-muted-foreground text-overline">
                         {method.flavorProfile} • {method.grindSize} •{" "}
                         {method.brewTime}
                       </span>

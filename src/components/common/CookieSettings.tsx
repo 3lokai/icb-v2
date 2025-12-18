@@ -1,7 +1,7 @@
 // components/common/CookieSettings.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, startTransition, useState } from "react";
 import { Icon } from "@/components/common/Icon";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -24,11 +24,13 @@ export function CookieSettings() {
     const hasConsent = localStorage.getItem(STORAGE_KEY) !== null;
 
     // Only show if no consent has been given yet
-    if (hasConsent) {
-      setPreferences(stored);
-    } else {
-      setIsOpen(true);
-    }
+    startTransition(() => {
+      if (hasConsent) {
+        setPreferences(stored);
+      } else {
+        setIsOpen(true);
+      }
+    });
   }, []);
 
   const savePreferences = () => {
@@ -45,7 +47,7 @@ export function CookieSettings() {
       <div className="mx-auto max-h-[90vh] w-full max-w-4xl overflow-auto rounded-lg border border-border bg-card shadow-xl">
         <div className="p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 font-semibold text-lg">
+            <h3 className="flex items-center gap-2 text-subheading">
               <Icon
                 className="text-accent"
                 color="accent"
@@ -72,7 +74,7 @@ export function CookieSettings() {
             <div className="flex items-center justify-between rounded-md border border-border p-3">
               <div>
                 <p className="font-medium">Necessary Cookies</p>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-caption">
                   Required for the website to function. Cannot be disabled.
                 </p>
               </div>
@@ -82,7 +84,7 @@ export function CookieSettings() {
             <div className="flex items-center justify-between rounded-md border border-border p-3">
               <div>
                 <p className="font-medium">Analytics Cookies</p>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-caption">
                   Help us understand how visitors interact with our website.
                 </p>
               </div>
@@ -100,14 +102,14 @@ export function CookieSettings() {
 
           <div className="flex justify-end gap-2">
             <button
-              className="btn-secondary px-4 py-2 text-sm"
+              className="btn-secondary px-4 py-2 text-caption"
               onClick={() => setIsOpen(false)}
               type="button"
             >
               Cancel
             </button>
             <button
-              className="btn-primary px-4 py-2 text-sm"
+              className="btn-primary px-4 py-2 text-caption"
               onClick={savePreferences}
               type="button"
             >
@@ -126,7 +128,7 @@ export function CookieSettingsButton() {
   return (
     <>
       <button
-        className="text-muted-foreground text-xs hover:text-foreground hover:underline"
+        className="text-muted-foreground text-overline hover:text-foreground hover:underline"
         onClick={() => setIsOpen(true)}
         type="button"
       >

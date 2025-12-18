@@ -11,11 +11,9 @@ const newsletterSchema = z.object({
     .email("Please provide a valid email address")
     .toLowerCase()
     .trim(),
-  consent: z
-    .string()
-    .refine((val) => val === "true", {
-      message: "Please consent to receive newsletters.",
-    }),
+  consent: z.string().refine((val) => val === "true", {
+    message: "Please consent to receive newsletters.",
+  }),
   website: z.string().optional(), // Honeypot field
 });
 
@@ -39,10 +37,11 @@ export async function subscribeToNewsletter(formData: FormData) {
   const validationResult = newsletterSchema.safeParse(rawData);
 
   if (!validationResult.success) {
-    const firstError = validationResult.error.errors[0];
+    const firstError = validationResult.error.issues[0];
     return {
       success: false,
-      error: firstError?.message || "Validation failed. Please check your input.",
+      error:
+        firstError?.message || "Validation failed. Please check your input.",
     };
   }
 

@@ -2,7 +2,7 @@
 "use client";
 
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { useEffect, useState } from "react";
+import { useEffect, startTransition, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type LoadingSpinnerProps = {
@@ -20,7 +20,9 @@ export const LoadingSpinner = ({
 
   // Avoid hydration issues
   useEffect(() => {
-    setIsClient(true);
+    startTransition(() => {
+      setIsClient(true);
+    });
   }, []);
 
   const sizeClasses = {
@@ -50,7 +52,7 @@ export const LoadingSpinner = ({
           useFrameInterpolation={true} // Smoother animation
         />
       </div>
-      {text && <p className="font-medium text-accent text-sm">{text}</p>}
+      {text && <p className="font-medium text-accent text-caption">{text}</p>}
     </div>
   );
 };

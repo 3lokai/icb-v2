@@ -84,11 +84,11 @@ export function DrinkSizeInput({
               Step 2 of 4: Select Drink Volume
             </legend>
             <Label
-              className="flex items-center gap-2 font-medium text-sm"
+              className="flex items-center gap-2 font-medium text-caption"
               htmlFor="drink-size"
             >
               <span
-                className={`flex h-6 w-6 items-center justify-center rounded-full font-bold text-xs transition-all duration-300 ${
+                className={`flex h-6 w-6 items-center justify-center rounded-full font-bold text-overline transition-all duration-300 ${
                   isCompleted
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : "bg-muted/50 text-muted-foreground"
@@ -105,7 +105,7 @@ export function DrinkSizeInput({
             <div className="flex gap-1">
               {Object.keys(VOLUME_UNITS).map((unit) => (
                 <Button
-                  className={`h-7 px-3 text-xs transition-all duration-300 ${
+                  className={`h-7 px-3 text-overline transition-all duration-300 ${
                     drinkUnit === unit
                       ? "scale-[1.02] bg-primary text-primary-foreground shadow-sm"
                       : "hover:scale-[1.02] hover:bg-background/50"
@@ -124,7 +124,7 @@ export function DrinkSizeInput({
 
         <div className="relative mb-2">
           <Input
-            className={`h-12 border pr-16 pl-10 text-center font-medium text-lg backdrop-blur-sm transition-all duration-300 ${getInputClassName()}`}
+            className={`h-12 border pr-16 pl-10 text-center font-medium text-subheading backdrop-blur-sm transition-all duration-300 ${getInputClassName()}`}
             id="drink-size"
             max="2000"
             min="50"
@@ -140,14 +140,14 @@ export function DrinkSizeInput({
             className={`-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transition-colors ${getIconClassName()}`}
             name="Coffee"
           />
-          <span className="-translate-y-1/2 absolute top-1/2 right-3 font-medium text-muted-foreground text-sm">
+          <span className="-translate-y-1/2 absolute top-1/2 right-3 font-medium text-muted-foreground text-caption">
             {VOLUME_UNITS[drinkUnit].abbreviation}
           </span>
         </div>
 
         {/* Validation Error Message */}
         {validationError && (
-          <div className="mb-3 flex items-start gap-2 rounded-lg bg-destructive/10 p-2 text-destructive text-sm backdrop-blur-sm">
+          <div className="mb-3 flex items-start gap-2 rounded-lg bg-destructive/10 p-2 text-destructive text-caption backdrop-blur-sm">
             <Icon className="mt-0.5 h-4 w-4 flex-shrink-0" name="Warning" />
             <p>{validationError}</p>
           </div>
@@ -155,7 +155,7 @@ export function DrinkSizeInput({
 
         {/* Helper Text */}
         {!validationError && (
-          <p className="mb-3 text-center text-muted-foreground text-xs">
+          <p className="mb-3 text-center text-muted-foreground text-overline">
             Valid range: {convertVolume(MIN_SIZE_ML, "ml", drinkUnit)}-
             {convertVolume(MAX_SIZE_ML, "ml", drinkUnit)}{" "}
             {VOLUME_UNITS[drinkUnit].abbreviation}
@@ -202,7 +202,7 @@ export function DrinkSizeInput({
 
               return (
                 <Badge
-                  className={`cursor-pointer justify-center border px-3 py-2 text-xs backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] ${
+                  className={`cursor-pointer justify-center border px-3 py-2 text-overline backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] ${
                     isActive
                       ? "border-primary/30 bg-primary/10 text-primary shadow-sm"
                       : "border-border/50 bg-background/30 hover:bg-background/50"

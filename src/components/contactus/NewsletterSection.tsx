@@ -22,7 +22,7 @@ export function NewsletterSection({
     <div className="glass-panel mb-8 overflow-hidden rounded-2xl">
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="card-padding">
-          <h3 className="mb-4 font-bold text-primary text-xl">
+          <h3 className="mb-4 font-bold text-primary text-heading">
             Join Our Community
           </h3>
           <p className="mb-4 text-body">
@@ -59,7 +59,7 @@ export function NewsletterSection({
             />
             <div>
               <label
-                className="mb-1 block font-medium text-muted-foreground text-sm"
+                className="mb-1 block font-medium text-muted-foreground text-caption"
                 htmlFor="email"
               >
                 Email Address*
@@ -82,7 +82,7 @@ export function NewsletterSection({
                 type="checkbox"
               />
               <label
-                className="text-muted-foreground text-sm"
+                className="text-muted-foreground text-caption"
                 htmlFor="consent"
               >
                 I agree to receive the IndianCoffeeBeans.com newsletter. You can

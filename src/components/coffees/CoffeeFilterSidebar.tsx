@@ -91,10 +91,10 @@ export function CoffeeFilterContent({
 
     return (
       <div className="space-y-2">
-        <label className="font-medium text-sm" htmlFor={filterKey}>
+        <label className="font-medium text-caption" htmlFor={filterKey}>
           {title}
           {totalCount !== undefined && (
-            <span className="ml-2 text-muted-foreground text-xs">
+            <span className="ml-2 text-muted-foreground text-overline">
               ({totalCount})
             </span>
           )}
@@ -111,7 +111,7 @@ export function CoffeeFilterContent({
                 onChange={() => toggleArrayFilter(filterKey, getValue(item))}
                 type="checkbox"
               />
-              <span className="text-sm">
+              <span className="text-caption">
                 {item.label}{" "}
                 <span className="text-muted-foreground">({item.count})</span>
               </span>
@@ -127,7 +127,7 @@ export function CoffeeFilterContent({
       {/* Header */}
       {showHeader && (
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-lg">Filters</h2>
+          <h2 className="text-subheading">Filters</h2>
           <Button onClick={() => resetFilters()} size="sm" variant="ghost">
             Reset
           </Button>
@@ -136,7 +136,7 @@ export function CoffeeFilterContent({
 
       {/* Search */}
       <div className="space-y-2">
-        <label className="font-medium text-sm" htmlFor="search">
+        <label className="font-medium text-caption" htmlFor="search">
           Search
         </label>
         <Input
@@ -177,7 +177,7 @@ export function CoffeeFilterContent({
 
       {/* Roast Levels */}
       <div className="space-y-2">
-        <label className="font-medium text-sm" htmlFor="roast_levels">
+        <label className="font-medium text-caption" htmlFor="roast_levels">
           Roast Level
         </label>
         <div className="space-y-2">
@@ -192,7 +192,7 @@ export function CoffeeFilterContent({
                 onChange={() => toggleArrayFilter("roast_levels", roast.value)}
                 type="checkbox"
               />
-              <span className="text-sm">
+              <span className="text-caption">
                 {roast.label}{" "}
                 <span className="text-muted-foreground">({roast.count})</span>
               </span>
@@ -203,7 +203,7 @@ export function CoffeeFilterContent({
 
       {/* Processing Methods */}
       <div className="space-y-2">
-        <label className="font-medium text-sm" htmlFor="processes">
+        <label className="font-medium text-caption" htmlFor="processes">
           Processing Method
         </label>
         <div className="space-y-2">
@@ -218,7 +218,7 @@ export function CoffeeFilterContent({
                 onChange={() => toggleArrayFilter("processes", process.value)}
                 type="checkbox"
               />
-              <span className="text-sm">
+              <span className="text-caption">
                 {process.label}{" "}
                 <span className="text-muted-foreground">({process.count})</span>
               </span>
@@ -229,7 +229,7 @@ export function CoffeeFilterContent({
 
       {/* Status */}
       <div className="space-y-2">
-        <label className="font-medium text-sm" htmlFor="status">
+        <label className="font-medium text-caption" htmlFor="status">
           Status
         </label>
         <div className="space-y-2">
@@ -246,7 +246,7 @@ export function CoffeeFilterContent({
                   onChange={() => toggleArrayFilter("status", status.value)}
                   type="checkbox"
                 />
-                <span className="text-sm">
+                <span className="text-caption">
                   {status.label}{" "}
                   <span className="text-muted-foreground">
                     ({status.count})
@@ -279,7 +279,7 @@ export function CoffeeFilterContent({
 
       {/* Price Range */}
       <div className="space-y-2">
-        <label className="font-medium text-sm" htmlFor="maxPrice">
+        <label className="font-medium text-caption" htmlFor="maxPrice">
           Max Price (₹)
         </label>
         <Input
@@ -301,7 +301,7 @@ export function CoffeeFilterContent({
 
       {/* Boolean Filters */}
       <div className="space-y-4">
-        <label className="font-medium text-sm" htmlFor="in_stock_only">
+        <label className="font-medium text-caption" htmlFor="in_stock_only">
           Options
         </label>
         <div className="space-y-3">
@@ -309,7 +309,7 @@ export function CoffeeFilterContent({
             className="flex cursor-pointer items-center justify-between"
             htmlFor="in_stock_only"
           >
-            <span className="text-sm">In Stock Only</span>
+            <span className="text-caption">In Stock Only</span>
             <Switch
               checked={filters.in_stock_only ?? false}
               onCheckedChange={(checked) =>
@@ -321,7 +321,7 @@ export function CoffeeFilterContent({
             className="flex cursor-pointer items-center justify-between"
             htmlFor="has_250g_only"
           >
-            <span className="text-sm">Has 250g Option</span>
+            <span className="text-caption">Has 250g Option</span>
             <Switch
               checked={filters.has_250g_only ?? false}
               onCheckedChange={(checked) =>
@@ -345,9 +345,7 @@ type CoffeeFilterSidebarProps = {
  * URL sync is handled automatically by CoffeeDirectory component
  * Hidden on mobile, visible on desktop
  */
-export function CoffeeFilterSidebar({
-  filterMeta,
-}: CoffeeFilterSidebarProps) {
+export function CoffeeFilterSidebar({ filterMeta }: CoffeeFilterSidebarProps) {
   return (
     <aside className="hidden w-full space-y-6 md:block md:w-64">
       <CoffeeFilterContent filterMeta={filterMeta} />
