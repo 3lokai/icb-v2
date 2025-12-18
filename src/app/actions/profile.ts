@@ -7,25 +7,50 @@ import {
   type OnboardingFormData,
   onboardingSchema,
 } from "@/lib/validations/onboarding";
+import {
+  type ProfileUpdateFormData,
+  profileUpdateSchema,
+  type CoffeePreferencesUpdateFormData,
+  coffeePreferencesUpdateSchema,
+  type NotificationPreferencesUpdateFormData,
+  notificationPreferencesUpdateSchema,
+  type PrivacySettingsFormData,
+  privacySettingsSchema,
+} from "@/lib/validations/profile";
 
 type OnboardingData = OnboardingFormData;
 
-function prepareProfileData(data: OnboardingData) {
+function prepareProfileData(
+  data: OnboardingData | ProfileUpdateFormData,
+  includeOnboarding = false
+) {
   const profileData: {
     full_name: string;
-    city?: string;
-    state?: string;
-    country?: string;
-    gender?: string;
-    experience_level?: string;
-    preferred_brewing_methods?: string[];
-    onboarding_completed: boolean;
-    newsletter_subscribed?: boolean;
+    username?: string | null;
+    bio?: string | null;
+    city?: string | null;
+    state?: string | null;
+    country?: string | null;
+    gender?: string | null;
+    experience_level?: string | null;
+    preferred_brewing_methods?: string[] | null;
+    onboarding_completed?: boolean | null;
+    is_public_profile?: boolean | null;
+    show_location?: boolean | null;
   } = {
     full_name: data.fullName,
-    onboarding_completed: true,
   };
 
+  if (includeOnboarding) {
+    profileData.onboarding_completed = true;
+  }
+
+  if ("username" in data && data.username) {
+    profileData.username = data.username;
+  }
+  if ("bio" in data && data.bio) {
+    profileData.bio = data.bio;
+  }
   if (data.city) {
     profileData.city = data.city;
   }
@@ -44,55 +69,22 @@ function prepareProfileData(data: OnboardingData) {
   if (data.preferredBrewingMethods) {
     profileData.preferred_brewing_methods = data.preferredBrewingMethods;
   }
-  if (data.newsletterSubscribed !== undefined) {
-    profileData.newsletter_subscribed = data.newsletterSubscribed;
+  if (
+    "isPublicProfile" in data &&
+    data.isPublicProfile !== undefined &&
+    typeof data.isPublicProfile === "boolean"
+  ) {
+    profileData.is_public_profile = data.isPublicProfile;
+  }
+  if (
+    "showLocation" in data &&
+    data.showLocation !== undefined &&
+    typeof data.showLocation === "boolean"
+  ) {
+    profileData.show_location = data.showLocation;
   }
 
   return profileData;
-}
-
-function prepareCoffeePreferences(data: OnboardingData) {
-  const hasCoffeePrefs =
-    data.roastLevels ||
-    data.flavorProfiles ||
-    data.processingMethods ||
-    data.regions ||
-    data.withMilkPreference !== undefined ||
-    data.decafOnly !== undefined ||
-    data.organicOnly !== undefined;
-
-  if (!hasCoffeePrefs) {
-    return null;
-  }
-
-  return {
-    roast_levels: data.roastLevels,
-    flavor_profiles: data.flavorProfiles,
-    processing_methods: data.processingMethods,
-    regions: data.regions,
-    with_milk_preference: data.withMilkPreference,
-    decaf_only: data.decafOnly,
-    organic_only: data.organicOnly,
-  };
-}
-
-function prepareNotificationPreferences(data: OnboardingData) {
-  const hasNotificationPrefs =
-    data.newRoasters !== undefined ||
-    data.coffeeUpdates !== undefined ||
-    data.platformUpdates !== undefined ||
-    data.emailFrequency;
-
-  if (!hasNotificationPrefs) {
-    return null;
-  }
-
-  return {
-    new_roasters: data.newRoasters,
-    coffee_updates: data.coffeeUpdates,
-    platform_updates: data.platformUpdates,
-    email_frequency: data.emailFrequency,
-  };
 }
 
 async function saveUserProfile(
@@ -117,7 +109,7 @@ async function saveUserProfile(
     p_experience_level: profileData.experience_level ?? null,
     p_preferred_brewing_methods: profileData.preferred_brewing_methods ?? null,
     p_onboarding_completed: profileData.onboarding_completed,
-    p_newsletter_subscribed: profileData.newsletter_subscribed ?? true,
+    p_newsletter_subscribed: true,
   });
 
   // RPC returns an array, extract the first result
@@ -145,6 +137,50 @@ async function saveUserProfile(
 
   console.log("✅ Profile saved successfully via RPC:", profile);
   return { success: true };
+}
+
+function prepareCoffeePreferences(
+  data: OnboardingData | CoffeePreferencesUpdateFormData
+): {
+  roast_levels: string[] | null;
+  flavor_profiles: string[] | null;
+  processing_methods: string[] | null;
+  regions: string[] | null;
+  with_milk_preference: boolean | null;
+  decaf_only: boolean;
+  organic_only: boolean;
+} | null {
+  const hasCoffeePrefs =
+    ("withMilkPreference" in data && data.withMilkPreference !== undefined) ||
+    ("decafOnly" in data && data.decafOnly !== undefined) ||
+    ("organicOnly" in data && data.organicOnly !== undefined) ||
+    ("roastLevels" in data &&
+      data.roastLevels &&
+      data.roastLevels.length > 0) ||
+    ("flavorProfiles" in data &&
+      data.flavorProfiles &&
+      data.flavorProfiles.length > 0) ||
+    ("processingMethods" in data &&
+      data.processingMethods &&
+      data.processingMethods.length > 0) ||
+    ("regions" in data && data.regions && data.regions.length > 0);
+
+  if (!hasCoffeePrefs) {
+    return null;
+  }
+
+  return {
+    roast_levels: "roastLevels" in data ? (data.roastLevels ?? null) : null,
+    flavor_profiles:
+      "flavorProfiles" in data ? (data.flavorProfiles ?? null) : null,
+    processing_methods:
+      "processingMethods" in data ? (data.processingMethods ?? null) : null,
+    regions: "regions" in data ? (data.regions ?? null) : null,
+    with_milk_preference:
+      "withMilkPreference" in data ? (data.withMilkPreference ?? null) : null,
+    decaf_only: "decafOnly" in data ? (data.decafOnly ?? false) : false,
+    organic_only: "organicOnly" in data ? (data.organicOnly ?? false) : false,
+  };
 }
 
 async function saveCoffeePreferences(
@@ -176,10 +212,43 @@ async function saveCoffeePreferences(
       details: error.details,
       hint: error.hint,
     });
-    // Don't fail the whole onboarding if preferences fail
-  } else {
-    console.log("✅ Coffee preferences saved via RPC");
+    return {
+      success: false,
+      error:
+        process.env.NODE_ENV === "development"
+          ? `${error.message}${error.details ? ` (${error.details})` : ""}${error.hint ? ` - ${error.hint}` : ""}`
+          : "Failed to save coffee preferences. Please try again.",
+    };
   }
+
+  console.log("✅ Coffee preferences saved via RPC");
+  return { success: true };
+}
+
+function prepareNotificationPreferences(
+  data: OnboardingData | NotificationPreferencesUpdateFormData
+) {
+  const hasNotificationPrefs =
+    ("newRoasters" in data && data.newRoasters !== undefined) ||
+    ("coffeeUpdates" in data && data.coffeeUpdates !== undefined) ||
+    ("newsletter" in data && data.newsletter !== undefined) ||
+    ("platformUpdates" in data && data.platformUpdates !== undefined) ||
+    ("emailFrequency" in data && data.emailFrequency !== undefined);
+
+  if (!hasNotificationPrefs) {
+    return null;
+  }
+
+  return {
+    new_roasters: "newRoasters" in data ? (data.newRoasters ?? true) : true,
+    coffee_updates:
+      "coffeeUpdates" in data ? (data.coffeeUpdates ?? true) : true,
+    newsletter: "newsletter" in data ? (data.newsletter ?? true) : true,
+    platform_updates:
+      "platformUpdates" in data ? (data.platformUpdates ?? true) : true,
+    email_frequency:
+      "emailFrequency" in data ? (data.emailFrequency ?? "weekly") : "weekly",
+  };
 }
 
 async function saveNotificationPreferences(
@@ -194,11 +263,11 @@ async function saveNotificationPreferences(
     notificationPrefs,
   });
 
-  // Use RPC function to safely upsert notification preferences
   const { error } = await supabase.rpc("upsert_notification_preferences", {
     p_user_id: userId,
     p_new_roasters: notificationPrefs.new_roasters ?? true,
     p_coffee_updates: notificationPrefs.coffee_updates ?? true,
+    p_newsletter: notificationPrefs.newsletter ?? true,
     p_platform_updates: notificationPrefs.platform_updates ?? true,
     p_email_frequency: notificationPrefs.email_frequency ?? "weekly",
   });
@@ -210,10 +279,17 @@ async function saveNotificationPreferences(
       details: error.details,
       hint: error.hint,
     });
-    // Don't fail the whole onboarding if preferences fail
-  } else {
-    console.log("✅ Notification preferences saved via RPC");
+    return {
+      success: false,
+      error:
+        process.env.NODE_ENV === "development"
+          ? `${error.message}${error.details ? ` (${error.details})` : ""}${error.hint ? ` - ${error.hint}` : ""}`
+          : "Failed to save notification preferences. Please try again.",
+    };
   }
+
+  console.log("✅ Notification preferences saved via RPC");
+  return { success: true };
 }
 
 export async function saveOnboardingData(data: OnboardingData): Promise<{
@@ -271,17 +347,29 @@ export async function saveOnboardingData(data: OnboardingData): Promise<{
     // Save coffee preferences if provided
     const coffeePrefs = prepareCoffeePreferences(validatedData);
     if (coffeePrefs) {
-      await saveCoffeePreferences(supabase, currentUser.id, coffeePrefs);
+      const result = await saveCoffeePreferences(
+        supabase,
+        currentUser.id,
+        coffeePrefs
+      );
+      if (!result.success) {
+        // Don't fail onboarding if preferences fail, but log it
+        console.warn("Coffee preferences save failed:", result.error);
+      }
     }
 
-    // Save notification preferences if provided
+    // Save notification preferences if provided (from onboarding step 4)
     const notificationPrefs = prepareNotificationPreferences(validatedData);
     if (notificationPrefs) {
-      await saveNotificationPreferences(
+      const result = await saveNotificationPreferences(
         supabase,
         currentUser.id,
         notificationPrefs
       );
+      if (!result.success) {
+        // Don't fail onboarding if notification prefs fail, but log it
+        console.warn("Notification preferences save failed:", result.error);
+      }
     }
 
     // Revalidate profile pages
@@ -291,6 +379,280 @@ export async function saveOnboardingData(data: OnboardingData): Promise<{
     return { success: true };
   } catch (error) {
     console.error("Onboarding save error:", error);
+    return {
+      success: false,
+      error: "An unexpected error occurred. Please try again.",
+    };
+  }
+}
+
+// Update profile action
+export async function updateProfile(data: ProfileUpdateFormData): Promise<{
+  success: boolean;
+  error?: string;
+  fieldErrors?: Record<string, string>;
+}> {
+  try {
+    const validationResult = profileUpdateSchema.safeParse(data);
+
+    if (!validationResult.success) {
+      const fieldErrors: Record<string, string> = {};
+      validationResult.error.issues.forEach((issue) => {
+        const path = issue.path.join(".");
+        fieldErrors[path] = issue.message;
+      });
+
+      return {
+        success: false,
+        error: "Please correct the errors in the form.",
+        fieldErrors,
+      };
+    }
+
+    const validatedData = validationResult.data;
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return {
+        success: false,
+        error: "You must be logged in to update your profile.",
+      };
+    }
+
+    const supabase = await createClient();
+    const profileData = prepareProfileData(validatedData, false);
+
+    const profileResult = await saveUserProfile(
+      supabase,
+      currentUser.id,
+      profileData as ReturnType<typeof prepareProfileData>
+    );
+
+    if (!profileResult.success) {
+      return profileResult;
+    }
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/profile");
+    revalidatePath("/profile");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Profile update error:", error);
+    return {
+      success: false,
+      error: "An unexpected error occurred. Please try again.",
+    };
+  }
+}
+
+// Update coffee preferences action
+export async function updateCoffeePreferences(
+  data: CoffeePreferencesUpdateFormData
+): Promise<{
+  success: boolean;
+  error?: string;
+  fieldErrors?: Record<string, string>;
+}> {
+  try {
+    const validationResult = coffeePreferencesUpdateSchema.safeParse(data);
+
+    if (!validationResult.success) {
+      const fieldErrors: Record<string, string> = {};
+      validationResult.error.issues.forEach((issue) => {
+        const path = issue.path.join(".");
+        fieldErrors[path] = issue.message;
+      });
+
+      return {
+        success: false,
+        error: "Please correct the errors in the form.",
+        fieldErrors,
+      };
+    }
+
+    const validatedData = validationResult.data;
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return {
+        success: false,
+        error: "You must be logged in to update preferences.",
+      };
+    }
+
+    const supabase = await createClient();
+    const coffeePrefs = prepareCoffeePreferences(validatedData);
+
+    if (coffeePrefs) {
+      const result = await saveCoffeePreferences(
+        supabase,
+        currentUser.id,
+        coffeePrefs
+      );
+
+      if (!result.success) {
+        return result;
+      }
+    }
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/preferences");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Coffee preferences update error:", error);
+    return {
+      success: false,
+      error: "An unexpected error occurred. Please try again.",
+    };
+  }
+}
+
+// Update notification preferences action
+export async function updateNotificationPreferences(
+  data: NotificationPreferencesUpdateFormData
+): Promise<{
+  success: boolean;
+  error?: string;
+  fieldErrors?: Record<string, string>;
+}> {
+  try {
+    const validationResult =
+      notificationPreferencesUpdateSchema.safeParse(data);
+
+    if (!validationResult.success) {
+      const fieldErrors: Record<string, string> = {};
+      validationResult.error.issues.forEach((issue) => {
+        const path = issue.path.join(".");
+        fieldErrors[path] = issue.message;
+      });
+
+      return {
+        success: false,
+        error: "Please correct the errors in the form.",
+        fieldErrors,
+      };
+    }
+
+    const validatedData = validationResult.data;
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return {
+        success: false,
+        error: "You must be logged in to update notification preferences.",
+      };
+    }
+
+    const supabase = await createClient();
+    const notificationPrefs = prepareNotificationPreferences(validatedData);
+
+    if (notificationPrefs) {
+      const result = await saveNotificationPreferences(
+        supabase,
+        currentUser.id,
+        notificationPrefs
+      );
+
+      if (!result.success) {
+        return result;
+      }
+    }
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/notifications");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Notification preferences update error:", error);
+    return {
+      success: false,
+      error: "An unexpected error occurred. Please try again.",
+    };
+  }
+}
+
+// Update privacy settings action
+export async function updatePrivacySettings(
+  data: PrivacySettingsFormData
+): Promise<{
+  success: boolean;
+  error?: string;
+  fieldErrors?: Record<string, string>;
+}> {
+  try {
+    const validationResult = privacySettingsSchema.safeParse(data);
+
+    if (!validationResult.success) {
+      const fieldErrors: Record<string, string> = {};
+      validationResult.error.issues.forEach((issue) => {
+        const path = issue.path.join(".");
+        fieldErrors[path] = issue.message;
+      });
+
+      return {
+        success: false,
+        error: "Please correct the errors in the form.",
+        fieldErrors,
+      };
+    }
+
+    const validatedData = validationResult.data;
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return {
+        success: false,
+        error: "You must be logged in to update privacy settings.",
+      };
+    }
+
+    const supabase = await createClient();
+    const profileData = prepareProfileData(
+      {
+        fullName: "", // Required but won't be used
+        isPublicProfile: validatedData.isPublicProfile,
+        showLocation: validatedData.showLocation,
+      } as ProfileUpdateFormData,
+      false
+    );
+
+    // Update only privacy fields via RPC
+    const { error } = await supabase.rpc("upsert_user_profile", {
+      p_user_id: currentUser.id,
+      p_full_name: null, // Don't update name
+      p_username: null,
+      p_bio: null,
+      p_city: null,
+      p_state: null,
+      p_country: null,
+      p_gender: null,
+      p_experience_level: null,
+      p_preferred_brewing_methods: null,
+      p_onboarding_completed: null,
+      p_newsletter_subscribed: null,
+      p_is_public_profile: profileData.is_public_profile ?? null,
+      p_show_location: profileData.show_location ?? null,
+    });
+
+    if (error) {
+      console.error("❌ Privacy settings RPC error:", error);
+      return {
+        success: false,
+        error:
+          process.env.NODE_ENV === "development"
+            ? `${error.message}${error.details ? ` (${error.details})` : ""}${error.hint ? ` - ${error.hint}` : ""}`
+            : "Failed to update privacy settings. Please try again.",
+      };
+    }
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/privacy");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Privacy settings update error:", error);
     return {
       success: false,
       error: "An unexpected error occurred. Please try again.",

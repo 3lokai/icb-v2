@@ -38,7 +38,7 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
           quality={90}
           src="/images/login_screen.jpg"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent/5" />
       </div>
     </div>
   );

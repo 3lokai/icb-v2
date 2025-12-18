@@ -22,6 +22,15 @@ export const queryKeys = {
     settings: (id: string) => ["user", "settings", id] as const,
   },
 
+  // Profile-related queries
+  profile: {
+    all: ["profile"] as const,
+    current: ["profile", "current"] as const,
+    coffeePreferences: ["profile", "coffee-preferences"] as const,
+    notifications: ["profile", "notifications"] as const,
+    privacy: ["profile", "privacy"] as const,
+  },
+
   // Posts (example)
   posts: {
     all: ["posts"] as const,

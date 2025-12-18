@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
         hostname: "via.placeholder.com", // For fallback images
       },
     ],
+    qualities: [75, 80, 85, 90],
   },
 };
 

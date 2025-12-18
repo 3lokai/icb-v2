@@ -161,7 +161,21 @@ export function Header() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link className="flex items-center" href="/profile">
+                      <Link className="flex items-center" href="/dashboard">
+                        <Icon
+                          className="mr-2"
+                          color="muted"
+                          name="SquaresFour"
+                          size={16}
+                        />
+                        Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link
+                        className="flex items-center"
+                        href="/dashboard/profile"
+                      >
                         <Icon
                           className="mr-2"
                           color="muted"
@@ -172,14 +186,45 @@ export function Header() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link className="flex items-center" href="/dashboard">
+                      <Link
+                        className="flex items-center"
+                        href="/dashboard/preferences"
+                      >
                         <Icon
                           className="mr-2"
                           color="muted"
-                          name="Gear"
+                          name="Coffee"
                           size={16}
                         />
-                        Dashboard
+                        Coffee Preferences
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link
+                        className="flex items-center"
+                        href="/dashboard/notifications"
+                      >
+                        <Icon
+                          className="mr-2"
+                          color="muted"
+                          name="Bell"
+                          size={16}
+                        />
+                        Notifications
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link
+                        className="flex items-center"
+                        href="/dashboard/privacy"
+                      >
+                        <Icon
+                          className="mr-2"
+                          color="muted"
+                          name="Shield"
+                          size={16}
+                        />
+                        Privacy & Data
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
@@ -300,17 +345,38 @@ export function Header() {
                   </div>
                   <Link
                     className="font-medium text-neutral-600 text-caption transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
-                    href="/profile"
+                    href="/dashboard"
+                    onClick={closeMobileMenu}
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    className="font-medium text-neutral-600 text-caption transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+                    href="/dashboard/profile"
                     onClick={closeMobileMenu}
                   >
                     Profile
                   </Link>
                   <Link
                     className="font-medium text-neutral-600 text-caption transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
-                    href="/dashboard"
+                    href="/dashboard/preferences"
                     onClick={closeMobileMenu}
                   >
-                    Dashboard
+                    Coffee Preferences
+                  </Link>
+                  <Link
+                    className="font-medium text-neutral-600 text-caption transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+                    href="/dashboard/notifications"
+                    onClick={closeMobileMenu}
+                  >
+                    Notifications
+                  </Link>
+                  <Link
+                    className="font-medium text-neutral-600 text-caption transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+                    href="/dashboard/privacy"
+                    onClick={closeMobileMenu}
+                  >
+                    Privacy & Data
                   </Link>
                   <button
                     className="font-medium text-destructive text-caption transition-colors hover:text-destructive/80"

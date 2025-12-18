@@ -3,7 +3,7 @@ import { NewsletterForm } from "../common/NewsletterForm";
 
 export default function NewsletterSection() {
   return (
-    <section className="section-spacing bg-muted/50 backdrop-blur-sm">
+    <section className="section-spacing">
       <div className="container-default">
         <div className="mx-auto max-w-xl text-center">
           <h2 className="mb-3 text-title" id="newsletter-heading">

@@ -357,7 +357,7 @@ const features = [
 
 export default function FeaturesBentoGrid() {
   return (
-    <section className={"mb-20 bg-muted/30 py-16"}>
+    <section className="mb-20 py-16">
       <div className="container-default">
         {/* Section Header */}
         <div className="mb-12 text-center">

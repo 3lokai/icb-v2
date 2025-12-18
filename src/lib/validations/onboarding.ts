@@ -32,36 +32,9 @@ export const onboardingSchema = z.object({
     .array(z.string())
     .max(20, "Please select up to 20 brewing methods")
     .optional(),
-
-  // Step 3: Coffee Preferences (optional)
-  roastLevels: z
-    .array(z.string())
-    .max(10, "Please select up to 10 roast levels")
-    .optional(),
-  flavorProfiles: z
-    .array(z.string())
-    .max(20, "Please select up to 20 flavor profiles")
-    .optional(),
-  processingMethods: z
-    .array(z.string())
-    .max(15, "Please select up to 15 processing methods")
-    .optional(),
-  regions: z
-    .array(z.string())
-    .max(20, "Please select up to 20 regions")
-    .optional(),
   withMilkPreference: z.boolean().optional(),
   decafOnly: z.boolean().optional(),
   organicOnly: z.boolean().optional(),
-
-  // Step 4: Notification Preferences (optional)
-  newsletterSubscribed: z.boolean().optional(),
-  newRoasters: z.boolean().optional(),
-  coffeeUpdates: z.boolean().optional(),
-  platformUpdates: z.boolean().optional(),
-  emailFrequency: z
-    .enum(["immediately", "daily", "weekly", "monthly", "never"])
-    .optional(),
 });
 
 export type OnboardingFormData = z.infer<typeof onboardingSchema>;
@@ -78,22 +51,7 @@ export const step1Schema = onboardingSchema.pick({
 export const step2Schema = onboardingSchema.pick({
   experienceLevel: true,
   preferredBrewingMethods: true,
-});
-
-export const step3Schema = onboardingSchema.pick({
-  roastLevels: true,
-  flavorProfiles: true,
-  processingMethods: true,
-  regions: true,
   withMilkPreference: true,
   decafOnly: true,
   organicOnly: true,
-});
-
-export const step4Schema = onboardingSchema.pick({
-  newsletterSubscribed: true,
-  newRoasters: true,
-  coffeeUpdates: true,
-  platformUpdates: true,
-  emailFrequency: true,
 });

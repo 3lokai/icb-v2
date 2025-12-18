@@ -172,7 +172,7 @@ const TestimonialCard = ({
 
 export default function TestimonialsSection() {
   return (
-    <section className="mb-20 bg-muted/30 py-16">
+    <section className="mb-20 py-16">
       <div className="container-default">
         {/* Header - keeping your exact styling */}
         <div className="mb-12 text-center">

@@ -1,13 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { toast } from "sonner";
+import { Country, State, City } from "country-state-city";
 import { saveOnboardingData } from "@/app/actions/profile";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
-  Field,
   FieldDescription,
   FieldError,
   FieldGroup,
@@ -16,23 +15,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
-  PROCESSING_METHODS,
-  popularBrewingMethods,
-  popularFlavorProfiles,
-  popularRegions,
-  ROAST_LEVELS,
-} from "@/lib/utils/coffee-constants";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { TagsInput } from "@/components/ui/tags-input";
+import { Icon } from "@/components/common/Icon";
+import { popularBrewingMethods } from "@/lib/utils/coffee-constants";
 import {
   type OnboardingFormData,
   step1Schema,
   step2Schema,
-  step3Schema,
-  step4Schema,
 } from "@/lib/validations/onboarding";
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 2;
 
 const initialFormData: Partial<OnboardingFormData> = {
   fullName: "",
@@ -40,18 +41,9 @@ const initialFormData: Partial<OnboardingFormData> = {
   state: "",
   country: "India",
   preferredBrewingMethods: [],
-  roastLevels: [],
-  flavorProfiles: [],
-  processingMethods: [],
-  regions: [],
   withMilkPreference: false,
   decafOnly: false,
   organicOnly: false,
-  newsletterSubscribed: true,
-  newRoasters: true,
-  coffeeUpdates: true,
-  platformUpdates: true,
-  emailFrequency: "weekly",
 };
 
 export function OnboardingWizard() {
@@ -62,8 +54,40 @@ export function OnboardingWizard() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("IN");
+  const [selectedStateCode, setSelectedStateCode] = useState<string>("");
+  const [cityInputValue, setCityInputValue] = useState<string>(
+    initialFormData.city || ""
+  );
+  const [showCityDropdown, setShowCityDropdown] = useState<boolean>(false);
 
   const progress = (currentStep / TOTAL_STEPS) * 100;
+
+  // Country-State-City data
+  const countries = useMemo(() => Country.getAllCountries(), []);
+  const states = useMemo(
+    () =>
+      selectedCountryCode ? State.getStatesOfCountry(selectedCountryCode) : [],
+    [selectedCountryCode]
+  );
+  const cities = useMemo(
+    () =>
+      selectedCountryCode && selectedStateCode
+        ? City.getCitiesOfState(selectedCountryCode, selectedStateCode)
+        : [],
+    [selectedCountryCode, selectedStateCode]
+  );
+
+  // Filter cities based on input
+  const filteredCities = useMemo(() => {
+    if (!cityInputValue.trim()) {
+      return cities.slice(0, 10); // Show first 10 when empty
+    }
+    const searchTerm = cityInputValue.toLowerCase().trim();
+    return cities
+      .filter((city) => city.name.toLowerCase().includes(searchTerm))
+      .slice(0, 10); // Limit to 10 results
+  }, [cities, cityInputValue]);
 
   const updateFormData = <K extends keyof OnboardingFormData>(
     key: K,
@@ -79,17 +103,6 @@ export function OnboardingWizard() {
         return updated;
       });
     }
-  };
-
-  const toggleArrayItem = (key: keyof OnboardingFormData, value: string) => {
-    setFormData((prev) => {
-      const current = (prev[key] as string[] | undefined) ?? [];
-      const updated = current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value];
-      return { ...prev, [key]: updated as OnboardingFormData[typeof key] };
-    });
-    setError(null);
   };
 
   const getStepSchemaAndData = (step: number) => {
@@ -111,30 +124,9 @@ export function OnboardingWizard() {
           stepData: {
             experienceLevel: formData.experienceLevel,
             preferredBrewingMethods: formData.preferredBrewingMethods,
-          },
-        };
-      case 3:
-        return {
-          schema: step3Schema,
-          stepData: {
-            roastLevels: formData.roastLevels,
-            flavorProfiles: formData.flavorProfiles,
-            processingMethods: formData.processingMethods,
-            regions: formData.regions,
             withMilkPreference: formData.withMilkPreference,
             decafOnly: formData.decafOnly,
             organicOnly: formData.organicOnly,
-          },
-        };
-      case 4:
-        return {
-          schema: step4Schema,
-          stepData: {
-            newsletterSubscribed: formData.newsletterSubscribed,
-            newRoasters: formData.newRoasters,
-            coffeeUpdates: formData.coffeeUpdates,
-            platformUpdates: formData.platformUpdates,
-            emailFrequency: formData.emailFrequency,
           },
         };
       default:
@@ -185,15 +177,6 @@ export function OnboardingWizard() {
     }
   };
 
-  const handleSkip = () => {
-    if (currentStep < TOTAL_STEPS) {
-      setCurrentStep((prev) => prev + 1);
-      setError(null);
-    } else {
-      handleSubmit();
-    }
-  };
-
   const toOptionalArray = (arr: string[] | undefined) =>
     arr && arr.length > 0 ? arr : undefined;
 
@@ -212,18 +195,9 @@ export function OnboardingWizard() {
       preferredBrewingMethods: toOptionalArray(
         formData.preferredBrewingMethods
       ),
-      roastLevels: toOptionalArray(formData.roastLevels),
-      flavorProfiles: toOptionalArray(formData.flavorProfiles),
-      processingMethods: toOptionalArray(formData.processingMethods),
-      regions: toOptionalArray(formData.regions),
       withMilkPreference: formData.withMilkPreference || undefined,
       decafOnly: formData.decafOnly || undefined,
       organicOnly: formData.organicOnly || undefined,
-      newsletterSubscribed: formData.newsletterSubscribed,
-      newRoasters: formData.newRoasters,
-      coffeeUpdates: formData.coffeeUpdates,
-      platformUpdates: formData.platformUpdates,
-      emailFrequency: formData.emailFrequency,
     };
   };
 
@@ -257,11 +231,11 @@ export function OnboardingWizard() {
         return;
       }
 
-      // Success - show toast and redirect to profile
+      // Success - show toast and redirect to dashboard
       toast.success("Welcome to IndianCoffeeBeans!", {
         description: "Your profile has been set up successfully.",
       });
-      router.push("/profile");
+      router.push("/dashboard");
     } catch {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
@@ -272,11 +246,10 @@ export function OnboardingWizard() {
     <div className="flex w-full flex-col gap-6">
       {/* Progress Bar */}
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between text-caption">
+        <div className="flex items-center justify-center text-caption">
           <span className="text-muted-foreground">
             Step {currentStep} of {TOTAL_STEPS}
           </span>
-          <span className="font-medium">{Math.round(progress)}% Complete</span>
         </div>
         <Progress value={progress} />
       </div>
@@ -291,7 +264,7 @@ export function OnboardingWizard() {
       {/* Step Content */}
       <FieldGroup>
         {currentStep === 1 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <div className="flex flex-col items-center gap-1 text-center">
               <h2 className="text-title">Welcome! Let&apos;s get started</h2>
               <p className="text-balance text-muted-foreground text-caption">
@@ -299,118 +272,210 @@ export function OnboardingWizard() {
               </p>
             </div>
 
-            <Field data-invalid={!!fieldErrors.fullName}>
-              <FieldLabel htmlFor="fullName">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8">
+              <FieldLabel htmlFor="fullName" className="md:pt-2">
                 Full Name <span className="text-destructive">*</span>
               </FieldLabel>
-              <Input
-                id="fullName"
-                onChange={(e) => updateFormData("fullName", e.target.value)}
-                placeholder="John Doe"
-                required
-                type="text"
-                value={formData.fullName || ""}
-              />
-              {fieldErrors.fullName && (
-                <FieldError>{fieldErrors.fullName}</FieldError>
-              )}
-            </Field>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <Field data-invalid={!!fieldErrors.city}>
-                <FieldLabel htmlFor="city">City</FieldLabel>
+              <div className="flex flex-col gap-2">
                 <Input
-                  id="city"
-                  onChange={(e) => updateFormData("city", e.target.value)}
-                  placeholder="Mumbai"
+                  data-invalid={!!fieldErrors.fullName}
+                  id="fullName"
+                  onChange={(e) => updateFormData("fullName", e.target.value)}
+                  placeholder="John Doe"
+                  required
                   type="text"
-                  value={formData.city || ""}
+                  value={formData.fullName || ""}
                 />
-                {fieldErrors.city && (
-                  <FieldError>{fieldErrors.city}</FieldError>
+                {fieldErrors.fullName && (
+                  <FieldError>{fieldErrors.fullName}</FieldError>
                 )}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.state}>
-                <FieldLabel htmlFor="state">State</FieldLabel>
-                <Input
-                  id="state"
-                  onChange={(e) => updateFormData("state", e.target.value)}
-                  placeholder="Maharashtra"
-                  type="text"
-                  value={formData.state || ""}
-                />
-                {fieldErrors.state && (
-                  <FieldError>{fieldErrors.state}</FieldError>
-                )}
-              </Field>
+              </div>
             </div>
 
-            <Field data-invalid={!!fieldErrors.country}>
-              <FieldLabel htmlFor="country">Country</FieldLabel>
-              <Input
-                id="country"
-                onChange={(e) => updateFormData("country", e.target.value)}
-                placeholder="India"
-                type="text"
-                value={formData.country || ""}
-              />
-              <FieldDescription>
-                Defaults to India, but you can change it
-              </FieldDescription>
-              {fieldErrors.country && (
-                <FieldError>{fieldErrors.country}</FieldError>
-              )}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.gender}>
-              <FieldLabel>Gender (Optional)</FieldLabel>
-              <RadioGroup
-                onValueChange={(value) =>
-                  updateFormData(
-                    "gender",
-                    value as OnboardingFormData["gender"]
-                  )
-                }
-                value={formData.gender || ""}
-              >
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="gender-male" value="male" />
-                  <Label className="font-normal" htmlFor="gender-male">
-                    Male
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="gender-female" value="female" />
-                  <Label className="font-normal" htmlFor="gender-female">
-                    Female
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="gender-non-binary" value="non-binary" />
-                  <Label className="font-normal" htmlFor="gender-non-binary">
-                    Non-binary
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem
-                    id="gender-prefer-not-to-say"
-                    value="prefer-not-to-say"
-                  />
-                  <Label
-                    className="font-normal"
-                    htmlFor="gender-prefer-not-to-say"
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8">
+              <div className="flex flex-col gap-1 md:pt-2">
+                <FieldLabel>Location</FieldLabel>
+                <FieldDescription>Defaults to India</FieldDescription>
+              </div>
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                <div className="flex flex-col gap-2">
+                  <Select
+                    onValueChange={(value) => {
+                      const country = countries.find(
+                        (c) => c.isoCode === value
+                      );
+                      setSelectedCountryCode(value);
+                      setSelectedStateCode("");
+                      updateFormData("country", country?.name || "");
+                      updateFormData("state", undefined);
+                      updateFormData("city", undefined);
+                    }}
+                    value={
+                      countries.find((c) => c.name === formData.country)
+                        ?.isoCode || selectedCountryCode
+                    }
                   >
-                    Prefer not to say
-                  </Label>
+                    <SelectTrigger
+                      className="w-full"
+                      data-invalid={!!fieldErrors.country}
+                      id="country"
+                    >
+                      <SelectValue placeholder="Select country" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {countries.map((country) => (
+                        <SelectItem
+                          key={country.isoCode}
+                          value={country.isoCode}
+                        >
+                          {country.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldErrors.country && (
+                    <FieldError>{fieldErrors.country}</FieldError>
+                  )}
                 </div>
-              </RadioGroup>
-            </Field>
+
+                <div className="flex flex-col gap-2">
+                  <Select
+                    disabled={!selectedCountryCode}
+                    onValueChange={(value) => {
+                      const state = states.find((s) => s.isoCode === value);
+                      setSelectedStateCode(value);
+                      updateFormData("state", state?.name || "");
+                      updateFormData("city", undefined);
+                      setCityInputValue("");
+                      setShowCityDropdown(false);
+                    }}
+                    value={
+                      states.find((s) => s.name === formData.state)?.isoCode ||
+                      ""
+                    }
+                  >
+                    <SelectTrigger
+                      className="w-full"
+                      data-invalid={!!fieldErrors.state}
+                      id="state"
+                    >
+                      <SelectValue placeholder="Select state" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {states.map((state) => (
+                        <SelectItem key={state.isoCode} value={state.isoCode}>
+                          {state.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldErrors.state && (
+                    <FieldError>{fieldErrors.state}</FieldError>
+                  )}
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <div className="relative">
+                    <Input
+                      data-invalid={!!fieldErrors.city}
+                      disabled={!selectedStateCode}
+                      id="city"
+                      onBlur={() => {
+                        // Delay hiding dropdown to allow click on option
+                        setTimeout(() => setShowCityDropdown(false), 200);
+                      }}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setCityInputValue(value);
+                        setShowCityDropdown(true);
+                        updateFormData("city", value);
+                      }}
+                      onFocus={() => {
+                        if (selectedStateCode) {
+                          setShowCityDropdown(true);
+                        }
+                      }}
+                      placeholder="Start typing city name..."
+                      type="text"
+                      value={cityInputValue}
+                    />
+                    {showCityDropdown &&
+                      selectedStateCode &&
+                      filteredCities.length > 0 && (
+                        <div className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-popover shadow-md">
+                          {filteredCities.map((city) => (
+                            <button
+                              className="w-full px-3 py-2 text-left text-caption hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
+                              key={city.name}
+                              onClick={() => {
+                                setCityInputValue(city.name);
+                                updateFormData("city", city.name);
+                                setShowCityDropdown(false);
+                              }}
+                              type="button"
+                            >
+                              {city.name}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                  </div>
+                  {fieldErrors.city && (
+                    <FieldError>{fieldErrors.city}</FieldError>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8">
+              <div className="flex flex-col gap-1 md:pt-2">
+                <FieldLabel>Gender</FieldLabel>
+                <FieldDescription>
+                  Skip if you prefer not sharing
+                </FieldDescription>
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-3">
+                  <Button
+                    className="flex-1"
+                    onClick={() => updateFormData("gender", "male")}
+                    type="button"
+                    variant={formData.gender === "male" ? "default" : "ghost"}
+                  >
+                    <Icon name="GenderMale" size={20} />
+                    <span>Male</span>
+                  </Button>
+                  <Button
+                    className="flex-1"
+                    onClick={() => updateFormData("gender", "female")}
+                    type="button"
+                    variant={formData.gender === "female" ? "default" : "ghost"}
+                  >
+                    <Icon name="GenderFemale" size={20} />
+                    <span>Female</span>
+                  </Button>
+                  <Button
+                    className="flex-1"
+                    onClick={() => updateFormData("gender", "non-binary")}
+                    type="button"
+                    variant={
+                      formData.gender === "non-binary" ? "default" : "ghost"
+                    }
+                  >
+                    <Icon name="GenderIntersex" size={20} />
+                    <span>Non-binary</span>
+                  </Button>
+                </div>
+                {fieldErrors.gender && (
+                  <FieldError>{fieldErrors.gender}</FieldError>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
         {currentStep === 2 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <div className="flex flex-col items-center gap-1 text-center">
               <h2 className="text-title">Your Coffee Journey</h2>
               <p className="text-balance text-muted-foreground text-caption">
@@ -418,364 +483,125 @@ export function OnboardingWizard() {
               </p>
             </div>
 
-            <Field data-invalid={!!fieldErrors.experienceLevel}>
-              <FieldLabel>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8">
+              <FieldLabel className="md:pt-2">
                 Experience Level <span className="text-destructive">*</span>
               </FieldLabel>
-              <RadioGroup
-                onValueChange={(value) =>
-                  updateFormData(
-                    "experienceLevel",
-                    value as OnboardingFormData["experienceLevel"]
-                  )
-                }
-                value={formData.experienceLevel || ""}
-              >
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="exp-beginner" value="beginner" />
-                  <Label className="font-normal" htmlFor="exp-beginner">
-                    Beginner
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="exp-enthusiast" value="enthusiast" />
-                  <Label className="font-normal" htmlFor="exp-enthusiast">
-                    Enthusiast
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="exp-expert" value="expert" />
-                  <Label className="font-normal" htmlFor="exp-expert">
-                    Expert
-                  </Label>
-                </div>
-              </RadioGroup>
-              {fieldErrors.experienceLevel && (
-                <FieldError>{fieldErrors.experienceLevel}</FieldError>
-              )}
-            </Field>
-
-            <Field>
-              <FieldLabel>Preferred Brewing Methods</FieldLabel>
-              <FieldDescription>
-                Select all that apply (optional)
-              </FieldDescription>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {popularBrewingMethods.map((method) => (
-                  <div className="flex items-center gap-2" key={method}>
-                    <Checkbox
-                      checked={
-                        formData.preferredBrewingMethods?.includes(method) ??
-                        false
-                      }
-                      id={`method-${method}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("preferredBrewingMethods", method);
-                        } else {
-                          toggleArrayItem("preferredBrewingMethods", method);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`method-${method}`}
-                    >
-                      {method}
-                    </Label>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-4">
+                  <Slider
+                    max={2}
+                    min={0}
+                    onValueChange={(value) => {
+                      const levels = ["beginner", "enthusiast", "expert"];
+                      updateFormData(
+                        "experienceLevel",
+                        levels[
+                          value[0] ?? 0
+                        ] as OnboardingFormData["experienceLevel"]
+                      );
+                    }}
+                    step={1}
+                    value={
+                      formData.experienceLevel
+                        ? [
+                            ["beginner", "enthusiast", "expert"].indexOf(
+                              formData.experienceLevel
+                            ),
+                          ]
+                        : [0]
+                    }
+                  />
+                  <div className="relative flex text-caption text-muted-foreground">
+                    <span className="absolute left-0">Beginner</span>
+                    <span className="absolute left-1/2 -translate-x-1/2">
+                      Enthusiast
+                    </span>
+                    <span className="absolute right-0">Expert</span>
                   </div>
-                ))}
+                </div>
+                {fieldErrors.experienceLevel && (
+                  <FieldError>{fieldErrors.experienceLevel}</FieldError>
+                )}
               </div>
-            </Field>
-          </div>
-        )}
-
-        {currentStep === 3 && (
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col items-center gap-1 text-center">
-              <h2 className="text-title">Coffee Preferences</h2>
-              <p className="text-balance text-muted-foreground text-caption">
-                Optional - You can skip this step
-              </p>
             </div>
 
-            <Field>
-              <FieldLabel>Preferred Roast Levels</FieldLabel>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {ROAST_LEVELS.map((roast) => (
-                  <div className="flex items-center gap-2" key={roast.value}>
-                    <Checkbox
-                      checked={
-                        formData.roastLevels?.includes(roast.value) ?? false
-                      }
-                      id={`roast-${roast.value}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("roastLevels", roast.value);
-                        } else {
-                          toggleArrayItem("roastLevels", roast.value);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`roast-${roast.value}`}
-                    >
-                      {roast.label}
-                    </Label>
-                  </div>
-                ))}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8">
+              <div className="flex flex-col gap-1 md:pt-2">
+                <FieldLabel>Preferred Brewing Methods</FieldLabel>
+                <FieldDescription>
+                  Select all that apply (optional)
+                </FieldDescription>
               </div>
-            </Field>
-
-            <Field>
-              <FieldLabel>Flavor Profiles</FieldLabel>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {popularFlavorProfiles.map((flavor) => (
-                  <div className="flex items-center gap-2" key={flavor}>
-                    <Checkbox
-                      checked={
-                        formData.flavorProfiles?.includes(flavor) ?? false
-                      }
-                      id={`flavor-${flavor}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("flavorProfiles", flavor);
-                        } else {
-                          toggleArrayItem("flavorProfiles", flavor);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`flavor-${flavor}`}
-                    >
-                      {flavor}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            </Field>
-
-            <Field>
-              <FieldLabel>Processing Methods</FieldLabel>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {PROCESSING_METHODS.slice(0, 9).map((method) => (
-                  <div className="flex items-center gap-2" key={method.value}>
-                    <Checkbox
-                      checked={
-                        formData.processingMethods?.includes(method.value) ??
-                        false
-                      }
-                      id={`process-${method.value}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("processingMethods", method.value);
-                        } else {
-                          toggleArrayItem("processingMethods", method.value);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`process-${method.value}`}
-                    >
-                      {method.label}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            </Field>
-
-            <Field>
-              <FieldLabel>Preferred Regions</FieldLabel>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {popularRegions.map((region) => (
-                  <div className="flex items-center gap-2" key={region}>
-                    <Checkbox
-                      checked={formData.regions?.includes(region) ?? false}
-                      id={`region-${region}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("regions", region);
-                        } else {
-                          toggleArrayItem("regions", region);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`region-${region}`}
-                    >
-                      {region}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            </Field>
-
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  checked={formData.withMilkPreference}
-                  id="with-milk"
-                  onCheckedChange={(checked) =>
-                    updateFormData("withMilkPreference", checked === true)
-                  }
+              <div className="flex flex-col gap-2">
+                <TagsInput
+                  disabled={false}
+                  maxTags={20}
+                  onChange={(value) => {
+                    updateFormData("preferredBrewingMethods", value);
+                  }}
+                  placeholder="Type to add brewing methods..."
+                  popularSuggestions={popularBrewingMethods}
+                  value={formData.preferredBrewingMethods || []}
                 />
-                <Label
-                  className="cursor-pointer font-normal"
-                  htmlFor="with-milk"
-                >
-                  I prefer coffee with milk
-                </Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  checked={formData.decafOnly}
-                  id="decaf-only"
-                  onCheckedChange={(checked) =>
-                    updateFormData("decafOnly", checked === true)
-                  }
-                />
-                <Label
-                  className="cursor-pointer font-normal"
-                  htmlFor="decaf-only"
-                >
-                  Decaf only
-                </Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  checked={formData.organicOnly}
-                  id="organic-only"
-                  onCheckedChange={(checked) =>
-                    updateFormData("organicOnly", checked === true)
-                  }
-                />
-                <Label
-                  className="cursor-pointer font-normal"
-                  htmlFor="organic-only"
-                >
-                  Organic only
-                </Label>
               </div>
             </div>
-          </div>
-        )}
 
-        {currentStep === 4 && (
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col items-center gap-1 text-center">
-              <h2 className="text-title">Notification Preferences</h2>
-              <p className="text-balance text-muted-foreground text-caption">
-                Optional - You can skip this step
-              </p>
-            </div>
-
-            <Field>
-              <FieldLabel>Email Notifications</FieldLabel>
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    checked={formData.newsletterSubscribed}
-                    id="newsletter"
-                    onCheckedChange={(checked) =>
-                      updateFormData("newsletterSubscribed", checked === true)
-                    }
-                  />
-                  <Label
-                    className="cursor-pointer font-normal"
-                    htmlFor="newsletter"
-                  >
-                    Subscribe to newsletter
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    checked={formData.newRoasters}
-                    id="new-roasters"
-                    onCheckedChange={(checked) =>
-                      updateFormData("newRoasters", checked === true)
-                    }
-                  />
-                  <Label
-                    className="cursor-pointer font-normal"
-                    htmlFor="new-roasters"
-                  >
-                    New roasters added
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    checked={formData.coffeeUpdates}
-                    id="coffee-updates"
-                    onCheckedChange={(checked) =>
-                      updateFormData("coffeeUpdates", checked === true)
-                    }
-                  />
-                  <Label
-                    className="cursor-pointer font-normal"
-                    htmlFor="coffee-updates"
-                  >
-                    Coffee updates
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    checked={formData.platformUpdates}
-                    id="platform-updates"
-                    onCheckedChange={(checked) =>
-                      updateFormData("platformUpdates", checked === true)
-                    }
-                  />
-                  <Label
-                    className="cursor-pointer font-normal"
-                    htmlFor="platform-updates"
-                  >
-                    Platform updates
-                  </Label>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8">
+              <div className="flex flex-col gap-1 md:pt-2">
+                <FieldLabel>Brew Preferences</FieldLabel>
+                <FieldDescription>Optional preferences</FieldDescription>
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <Label
+                      className="cursor-pointer font-normal"
+                      htmlFor="with-milk"
+                    >
+                      I prefer coffee with milk
+                    </Label>
+                    <Switch
+                      checked={formData.withMilkPreference ?? false}
+                      id="with-milk"
+                      onCheckedChange={(checked) =>
+                        updateFormData("withMilkPreference", checked)
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label
+                      className="cursor-pointer font-normal"
+                      htmlFor="decaf-only"
+                    >
+                      Decaf only
+                    </Label>
+                    <Switch
+                      checked={formData.decafOnly ?? false}
+                      id="decaf-only"
+                      onCheckedChange={(checked) =>
+                        updateFormData("decafOnly", checked)
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label
+                      className="cursor-pointer font-normal"
+                      htmlFor="organic-only"
+                    >
+                      Organic only
+                    </Label>
+                    <Switch
+                      checked={formData.organicOnly ?? false}
+                      id="organic-only"
+                      onCheckedChange={(checked) =>
+                        updateFormData("organicOnly", checked)
+                      }
+                    />
+                  </div>
                 </div>
               </div>
-            </Field>
-
-            <Field>
-              <FieldLabel>Email Frequency</FieldLabel>
-              <RadioGroup
-                onValueChange={(value) =>
-                  updateFormData(
-                    "emailFrequency",
-                    value as OnboardingFormData["emailFrequency"]
-                  )
-                }
-                value={formData.emailFrequency}
-              >
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="freq-immediately" value="immediately" />
-                  <Label className="font-normal" htmlFor="freq-immediately">
-                    Immediately
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="freq-daily" value="daily" />
-                  <Label className="font-normal" htmlFor="freq-daily">
-                    Daily
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="freq-weekly" value="weekly" />
-                  <Label className="font-normal" htmlFor="freq-weekly">
-                    Weekly
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem id="freq-monthly" value="monthly" />
-                  <Label className="font-normal" htmlFor="freq-monthly">
-                    Monthly
-                  </Label>
-                </div>
-              </RadioGroup>
-            </Field>
+            </div>
           </div>
         )}
 
@@ -795,16 +621,6 @@ export function OnboardingWizard() {
           </div>
 
           <div className="flex items-center gap-2">
-            {(currentStep === 3 || currentStep === 4) && (
-              <Button
-                disabled={isLoading}
-                onClick={handleSkip}
-                type="button"
-                variant="ghost"
-              >
-                Skip
-              </Button>
-            )}
             {currentStep < TOTAL_STEPS ? (
               <Button disabled={isLoading} onClick={handleNext} type="button">
                 Next
