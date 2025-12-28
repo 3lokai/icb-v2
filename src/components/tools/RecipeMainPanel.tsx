@@ -191,8 +191,8 @@ From IndianCoffeeBeans.com Expert Recipes
 
   return (
     <div className="space-y-6">
-      {/* Header - Enhanced with glass treatment */}
-      <div className="glass-panel relative overflow-hidden rounded-2xl p-6">
+      {/* Header - Enhanced with surface treatment */}
+      <div className="surface-1 relative overflow-hidden rounded-2xl p-6">
         <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
         <div className="relative z-10">
           <div className="flex items-start justify-between">
@@ -211,8 +211,8 @@ From IndianCoffeeBeans.com Expert Recipes
                 )}
               </div>
 
-              {/* Recipe Summary - Enhanced glass treatment */}
-              <div className="glass-card relative overflow-hidden rounded-lg p-4">
+              {/* Recipe Summary - Enhanced surface treatment */}
+              <div className="surface-1 relative overflow-hidden rounded-lg p-4">
                 <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-accent/10 blur-xl" />
                 <div className="relative z-10 grid grid-cols-2 gap-4 md:grid-cols-4">
                   <div className="text-center">
@@ -265,8 +265,8 @@ From IndianCoffeeBeans.com Expert Recipes
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Main Content */}
         <div className="space-y-6 lg:col-span-2">
-          {/* Story - Glass card treatment */}
-          <div className="glass-card card-padding relative overflow-hidden">
+          {/* Story - Surface card treatment */}
+          <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
             <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
             <div className="relative z-10">
               <h3 className="mb-4 flex items-center gap-2 text-subheading text-primary">
@@ -280,8 +280,8 @@ From IndianCoffeeBeans.com Expert Recipes
             </div>
           </div>
 
-          {/* Steps - Glass card treatment */}
-          <div className="glass-card card-padding relative overflow-hidden">
+          {/* Steps - Surface card treatment */}
+          <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
             <div className="absolute top-0 left-0 h-20 w-20 rounded-full bg-accent/5 blur-2xl" />
             <div className="relative z-10">
               <div className="mb-4 flex items-center justify-between">
@@ -293,7 +293,7 @@ From IndianCoffeeBeans.com Expert Recipes
                   <div className="mt-2 h-1 w-16 rounded-full bg-accent" />
                 </div>
                 <Button
-                  className="glass-button flex items-center gap-2"
+                  className="flex items-center gap-2"
                   onClick={() => setShowTimer(!showTimer)}
                   size="sm"
                   variant="outline"
@@ -305,7 +305,7 @@ From IndianCoffeeBeans.com Expert Recipes
               <div className="mt-6 space-y-3">
                 {recipe.steps.map((step, index) => (
                   <div
-                    className="glass-card card-padding group relative overflow-hidden transition-all duration-300 hover:scale-[1.02]"
+                    className="surface-1 card-padding card-hover group relative overflow-hidden rounded-lg"
                     key={`step-${step.time}-${index}`}
                   >
                     <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-primary/5 blur-lg" />
@@ -344,7 +344,7 @@ From IndianCoffeeBeans.com Expert Recipes
 
           {/* Timer */}
           {showTimer && timerResults && (
-            <div className="glass-panel card-padding rounded-2xl">
+            <div className="surface-1 card-padding rounded-2xl">
               <BrewingTimer results={timerResults} />
             </div>
           )}
@@ -352,8 +352,8 @@ From IndianCoffeeBeans.com Expert Recipes
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Tips - Enhanced glass card */}
-          <div className="glass-card card-padding relative overflow-hidden">
+          {/* Tips - Enhanced surface card */}
+          <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
             <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-accent/10 blur-xl" />
             <div className="relative z-10">
               <h4 className="mb-4 flex items-center gap-2 font-medium text-body text-primary">
@@ -377,8 +377,8 @@ From IndianCoffeeBeans.com Expert Recipes
             </div>
           </div>
 
-          {/* Equipment - Enhanced glass card */}
-          <div className="glass-card card-padding relative overflow-hidden">
+          {/* Equipment - Enhanced surface card */}
+          <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
             <div className="absolute top-0 left-0 h-16 w-16 rounded-full bg-primary/10 blur-xl" />
             <div className="relative z-10">
               <h4 className="mb-4 flex items-center gap-2 font-medium text-body text-primary">
@@ -405,8 +405,8 @@ From IndianCoffeeBeans.com Expert Recipes
             </div>
           </div>
 
-          {/* Actions - Enhanced glass modal for conversion focus */}
-          <div className="glass-modal card-padding relative overflow-hidden rounded-2xl">
+          {/* Actions - Enhanced surface modal for conversion focus */}
+          <div className="surface-2 card-padding relative overflow-hidden rounded-2xl">
             <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-primary/20 blur-xl" />
             <div className="absolute bottom-0 left-0 h-8 w-8 rounded-full bg-accent/20 blur-lg" />
             <div className="relative z-10">
@@ -416,7 +416,7 @@ From IndianCoffeeBeans.com Expert Recipes
               <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
               <div className="space-y-2">
                 <Button
-                  className="glass-button hover-lift group w-full"
+                  className="hover-lift group w-full"
                   onClick={handleCopyRecipe}
                   size="sm"
                   variant="outline"
@@ -431,7 +431,7 @@ From IndianCoffeeBeans.com Expert Recipes
                 {recipe.youtubeUrl && (
                   <Button
                     asChild
-                    className="glass-button hover-lift group w-full"
+                    className="hover-lift group w-full"
                     size="sm"
                     variant="outline"
                   >
@@ -475,8 +475,8 @@ export function RecipeMainPanel({
 
   return (
     <div className="space-y-6">
-      {/* Header - Enhanced with glass treatment */}
-      <div className="glass-panel relative overflow-hidden rounded-2xl p-6">
+      {/* Header - Enhanced with surface treatment */}
+      <div className="surface-1 relative overflow-hidden rounded-2xl p-6">
         <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/10 blur-2xl" />
         <div className="relative z-10">
           <h2 className="mb-2 text-title text-primary">
@@ -490,7 +490,7 @@ export function RecipeMainPanel({
       </div>
 
       {recipes.length === 0 ? (
-        <div className="glass-card card-padding relative overflow-hidden py-12 text-center">
+        <div className="surface-1 card-padding relative overflow-hidden rounded-lg py-12 text-center">
           <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-muted/10 blur-2xl" />
           <div className="relative z-10">
             <Icon

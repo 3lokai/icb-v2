@@ -20,7 +20,7 @@ export default function RegionCard({ region }: RegionCardProps) {
       href={`/regions/${region.slug}`}
     >
       <Card
-        className={cn("region-card glass-card hover-lift card-hover")}
+        className={cn("region-card surface-1 hover-lift card-hover")}
         itemScope
         itemType="https://schema.org/Place"
       >

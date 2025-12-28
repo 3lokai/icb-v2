@@ -1,50 +1,47 @@
 @layer components {
   /* Surface layers: depth + material */
+  /* Depth is expressed using surfaces, not blur */
   .surface-0 {
     @apply bg-background;
   }
 
   .surface-1 {
-    @apply bg-card text-card-foreground border border-border/60 shadow-lg;
+    @apply bg-card text-card-foreground border border-border/60;
   }
 
   .surface-2 {
-    @apply bg-popover text-popover-foreground border border-border/70 shadow-xl;
+    @apply bg-popover text-popover-foreground border border-border/70;
   }
 
   /* Shell helpers */
   .card-shell {
-    @apply bg-card text-card-foreground border border-border/60 shadow-lg rounded-lg;
+    @apply bg-card text-card-foreground border border-border/60 rounded-lg;
   }
 
   .modal-shell {
-    @apply bg-popover text-popover-foreground border border-border/70 shadow-xl rounded-xl;
+    @apply bg-popover text-popover-foreground border border-border/70 rounded-lg;
   }
 
   .nav-shell {
-    @apply bg-card text-card-foreground border border-border/60 shadow-lg backdrop-blur-sm;
+    @apply bg-card text-card-foreground border-b border-border/60;
   }
 
   /* Buttons */
   .btn-primary {
-    @apply inline-flex items-center justify-center bg-primary/90 backdrop-blur-sm text-primary-foreground hover:bg-primary px-4 py-2 rounded-md text-sm font-medium transition-all duration-300;
+    @apply inline-flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-500;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center bg-secondary/90 backdrop-blur-sm text-secondary-foreground hover:bg-secondary px-4 py-2 rounded-md text-sm font-medium transition-all duration-300;
+    @apply inline-flex items-center justify-center bg-secondary text-secondary-foreground hover:bg-secondary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-500;
   }
 
   .btn-icon {
-    @apply inline-flex items-center justify-center h-9 w-9 rounded-md text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground transition-all duration-300 backdrop-blur-sm;
+    @apply inline-flex items-center justify-center h-9 w-9 rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors duration-300;
   }
 
   /* Badges */
   .badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-background/90 backdrop-blur-sm;
-  }
-
-  .badge-brown {
-    @apply bg-accent/90 backdrop-blur-sm text-accent-foreground;
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-muted text-foreground;
   }
 
   .badge-outline {
@@ -53,11 +50,11 @@
 
   /* Cards */
   .card-base {
-    @apply bg-card/80 backdrop-blur-sm text-card-foreground rounded-lg border border-border/50 shadow-lg;
+    @apply bg-card text-card-foreground border border-border/60 rounded-lg;
   }
 
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-xl hover:bg-card/90 hover:scale-[1.02];
+    @apply transition-colors duration-500 hover:border-border;
   }
 
   .card-featured {
@@ -65,7 +62,7 @@
   }
 
   .card-review {
-    @apply bg-muted/80 backdrop-blur-sm p-6 rounded-lg border border-border/50 shadow-lg;
+    @apply bg-muted text-foreground p-6 rounded-lg;
   }
 
   /* Other Components */
@@ -82,7 +79,7 @@
   }
 
   .pill-filter {
-    @apply inline-flex items-center rounded-full px-3 py-1 text-sm bg-secondary/80 backdrop-blur-sm text-secondary-foreground hover:bg-secondary/90 transition-colors;
+    @apply inline-flex items-center rounded-full px-3 py-1 text-sm bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors;
   }
 
   .search-wrapper {
@@ -98,43 +95,30 @@
     @apply relative overflow-hidden bg-cover bg-center py-16 md:py-24 lg:py-32;
   }
 
-  .hero-overlay {
-    @apply absolute inset-0 z-[1] bg-gradient-to-br from-black/60 via-black/20 to-black/70 backdrop-blur-sm;
-  }
-
   .hero-content {
     @apply relative z-10 text-center max-w-3xl mx-auto px-4;
   }
 
   /* Search components */
   .search-input {
-    @apply w-full py-2 px-4 rounded-md border border-input/50 bg-background/50 backdrop-blur-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring text-base font-sans md:text-sm;
+    @apply w-full py-2 px-4 rounded-md border border-input bg-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring text-base font-sans md:text-sm;
   }
 
   .search-button {
-    @apply absolute right-1 top-1 h-8 px-3 rounded-md bg-primary/90 backdrop-blur-sm text-primary-foreground hover:bg-primary;
+    @apply absolute right-1 top-1 h-8 px-3 rounded-md bg-primary text-primary-foreground hover:bg-primary/90;
   }
 
   .filter-tag {
-    @apply inline-block px-3 py-1 rounded-full text-xs font-medium bg-secondary/80 backdrop-blur-sm text-secondary-foreground hover:bg-secondary transition-colors;
+    @apply inline-block px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors;
   }
 
   /* Region card variations */
   .region-card {
-    @apply relative overflow-hidden rounded-lg aspect-[4/3] border border-border/30 shadow-lg;
+    @apply relative overflow-hidden rounded-sm aspect-[5/6] border border-border/60;
   }
 
   .region-overlay {
-    @apply absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent;
-    backdrop-filter: blur(0px);
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 0.8) 30%,
-      rgba(0, 0, 0, 0.3) 50%,
-      rgba(0, 0, 0, 0.1) 80%,
-      transparent 100%
-    );
+    @apply absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent;
   }
 
   .region-content {
@@ -152,11 +136,11 @@
   }
 
   .footer-link {
-    @apply text-sm text-muted-foreground/80 hover:text-foreground hover:bg-background/50 backdrop-blur-sm px-2 py-1 rounded transition-all duration-200;
+    @apply text-sm text-muted-foreground hover:text-foreground hover:bg-muted px-2 py-1 rounded transition-all duration-200;
   }
 
   .footer-section {
-    @apply flex flex-col space-y-2 bg-background/30 backdrop-blur-sm p-4 rounded-lg border border-border/20;
+    @apply flex flex-col space-y-2 bg-muted/50 p-4 rounded-lg;
   }
 
   /* Newsletter */
@@ -165,7 +149,7 @@
   }
 
   .newsletter-input {
-    @apply w-full py-2 px-4 rounded-md border border-input/50 bg-background/80 backdrop-blur-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
+    @apply w-full py-2 px-4 rounded-md border border-input bg-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
   }
 
   /* Testimonial components */
@@ -174,7 +158,7 @@
   }
 
   .testimonial-card {
-    @apply bg-muted/80 backdrop-blur-sm rounded-lg p-6 border border-border/50 shadow-lg;
+    @apply bg-muted text-foreground rounded-lg p-6;
   }
 
   .testimonial-author {
@@ -183,20 +167,21 @@
 
   /* Blog components */
   .article-card {
-    @apply bg-card/80 backdrop-blur-sm rounded-lg overflow-hidden border border-border/50 shadow-lg;
+    @apply bg-card text-card-foreground border border-border/60 rounded-lg overflow-hidden;
+    @apply hover:border-border transition-colors duration-500;
   }
 
   .article-meta {
-    @apply flex items-center space-x-4 text-sm text-muted-foreground/80 bg-background/50 backdrop-blur-sm px-3 py-1 rounded;
+    @apply flex items-center space-x-4 text-sm text-muted-foreground bg-muted/50 px-3 py-1 rounded;
   }
 
   .article-category {
-    @apply inline-block px-2 py-0.5 text-xs font-medium bg-muted/80 backdrop-blur-sm text-muted-foreground rounded border border-border/30;
+    @apply inline-block px-2 py-0.5 text-xs font-medium bg-muted text-muted-foreground rounded;
   }
 
   /* Form Messages */
   .form-message {
-    @apply p-3 rounded-md text-sm bg-background/90 backdrop-blur-sm border border-border/50;
+    @apply p-3 rounded-md text-sm bg-muted border border-border;
   }
 
   /* Glossary Terms */
@@ -212,15 +197,6 @@
   /* Responsive image */
   .img-responsive {
     @apply w-full h-auto object-cover;
-  }
-
-  /* Hover effects */
-  .hover-lift {
-    @apply transition-transform duration-200;
-  }
-
-  .hover-lift:hover {
-    @apply -translate-y-2 shadow-2xl;
   }
 
   /* Interaction States */
@@ -259,15 +235,6 @@
   .dropdown-hover-zone {
     padding-top: 4px;
     margin-top: -4px;
-  }
-
-  /* Badge animations */
-  .stats-badge {
-    transition: all 0.2s ease;
-  }
-
-  .stats-badge:hover {
-    transform: scale(1.05);
   }
 
   /* Logo text hiding in compact navbar */

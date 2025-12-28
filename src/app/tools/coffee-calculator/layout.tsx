@@ -1,5 +1,5 @@
 // src/app/tools/coffee-calculator/layout.tsx
-import { PageShell } from "@/components/page-shell";
+import { PageShell } from "@/components/primitives/page-shell";
 
 export default function CoffeeCalculatorLayout({
   children,

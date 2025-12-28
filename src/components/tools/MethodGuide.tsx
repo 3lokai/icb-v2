@@ -34,7 +34,7 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
 
   return (
     <button
-      className="glass-card card-padding hover-lift group relative w-full cursor-pointer overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+      className="surface-1 card-padding card-hover hover-lift group relative w-full cursor-pointer overflow-hidden rounded-lg text-left"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       type="button"
@@ -64,8 +64,8 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
           {method.description}
         </p>
 
-        {/* Flavor Profile - Enhanced glass panel */}
-        <div className="glass-panel relative overflow-hidden rounded-lg p-3">
+        {/* Flavor Profile - Enhanced surface panel */}
+        <div className="surface-1 relative overflow-hidden rounded-lg p-3">
           <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-accent/10 blur-lg" />
           <div className="relative z-10">
             <div className="mb-1 flex items-center gap-2">
@@ -80,8 +80,8 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
           </div>
         </div>
 
-        {/* Quick Stats Grid - Enhanced with glass treatment */}
-        <div className="glass-panel relative overflow-hidden rounded-lg p-3">
+        {/* Quick Stats Grid - Enhanced with surface treatment */}
+        <div className="surface-1 relative overflow-hidden rounded-lg p-3">
           <div className="absolute right-0 bottom-0 h-6 w-6 rounded-full bg-primary/5 blur-sm" />
           <div className="relative z-10 grid grid-cols-2 gap-3 text-caption">
             <div className="flex items-center justify-between">
@@ -147,7 +147,7 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
         </div>
 
         {/* Action Button */}
-        <Button className="glass-button hover-lift group w-full" size="sm">
+        <Button className="hover-lift group w-full" size="sm">
           Use This Method
           <Icon
             className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5"
@@ -188,7 +188,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
     <div className={className}>
       {/* Popular Methods */}
       <section className="mb-16" id="popular">
-        <div className="glass-panel relative mb-8 overflow-hidden rounded-2xl p-6">
+        <div className="surface-1 relative mb-8 overflow-hidden rounded-2xl p-6">
           <div className="absolute top-0 right-0 h-20 w-20 animate-float rounded-full bg-primary/10 blur-2xl" />
           <div className="relative z-10">
             <div className="mb-4 flex items-center gap-3">
@@ -215,7 +215,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
 
       {/* Espresso Methods */}
       <section className="mb-16" id="espresso">
-        <div className="glass-panel relative mb-8 overflow-hidden rounded-2xl p-6">
+        <div className="surface-1 relative mb-8 overflow-hidden rounded-2xl p-6">
           <div className="absolute top-0 left-0 h-20 w-20 animate-float rounded-full bg-accent/10 blur-2xl delay-300" />
           <div className="relative z-10">
             <div className="mb-4 flex items-center gap-3">
@@ -242,7 +242,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
 
       {/* Specialty Methods */}
       <section className="mb-16" id="specialty">
-        <div className="glass-panel relative mb-8 overflow-hidden rounded-2xl p-6">
+        <div className="surface-1 relative mb-8 overflow-hidden rounded-2xl p-6">
           <div className="absolute right-0 bottom-0 h-20 w-20 animate-float rounded-full bg-chart-2/10 blur-2xl delay-700" />
           <div className="relative z-10">
             <div className="mb-4 flex items-center gap-3">
@@ -272,7 +272,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
       {/* Other Methods */}
       {otherMethods.length > 0 && (
         <section className="mb-16" id="other">
-          <div className="glass-panel relative mb-8 overflow-hidden rounded-2xl p-6">
+          <div className="surface-1 relative mb-8 overflow-hidden rounded-2xl p-6">
             <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-muted/10 blur-xl" />
             <div className="relative z-10">
               <div className="mb-4 flex items-center gap-3">
@@ -297,7 +297,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
 
       {/* Pro Tips Section - Enhanced glass modal */}
       <section>
-        <div className="glass-modal card-padding relative overflow-hidden rounded-3xl">
+        <div className="surface-2 card-padding relative overflow-hidden rounded-3xl">
           {/* Enhanced decorative elements */}
           <div className="absolute top-0 right-0 h-32 w-32 animate-float rounded-full bg-accent/20 blur-3xl" />
           <div className="absolute bottom-0 left-0 h-24 w-24 animate-float rounded-full bg-primary/20 blur-2xl delay-500" />
@@ -314,7 +314,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
 
             <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2">
               {/* Water Quality */}
-              <div className="glass-card card-padding relative overflow-hidden">
+              <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
                 <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-chart-2/10 blur-lg" />
                 <div className="relative z-10">
                   <h4 className="mb-3 flex items-center gap-2 font-semibold text-primary">
@@ -330,7 +330,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               </div>
 
               {/* Coffee Freshness */}
-              <div className="glass-card card-padding relative overflow-hidden">
+              <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
                 <div className="absolute top-0 left-0 h-12 w-12 rounded-full bg-primary/10 blur-lg" />
                 <div className="relative z-10">
                   <h4 className="mb-3 flex items-center gap-2 font-semibold text-primary">
@@ -346,7 +346,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               </div>
 
               {/* Grind Consistency */}
-              <div className="glass-card card-padding relative overflow-hidden">
+              <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
                 <div className="absolute right-0 bottom-0 h-10 w-10 rounded-full bg-accent/10 blur-sm" />
                 <div className="relative z-10">
                   <h4 className="mb-3 flex items-center gap-2 font-semibold text-primary">
@@ -365,7 +365,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               </div>
 
               {/* Timing & Ratios */}
-              <div className="glass-card card-padding relative overflow-hidden">
+              <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
                 <div className="absolute top-0 right-0 h-10 w-10 rounded-full bg-chart-4/10 blur-sm" />
                 <div className="relative z-10">
                   <h4 className="mb-3 flex items-center gap-2 font-semibold text-primary">
@@ -392,28 +392,28 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
                 Quick Ratio Reference
               </h4>
               <div className="grid grid-cols-2 gap-4 text-caption md:grid-cols-4">
-                <div className="glass-card card-padding group text-center transition-all duration-300 hover:scale-[1.02]">
+                <div className="surface-1 card-padding card-hover group text-center rounded-lg">
                   <div className="mb-1 font-medium transition-colors group-hover:text-primary">
                     Mild
                   </div>
                   <div className="text-muted-foreground">1:16 - 1:18</div>
                   <div className="mx-auto mt-2 h-1 w-4 rounded-full bg-amber-500" />
                 </div>
-                <div className="glass-card card-padding group text-center transition-all duration-300 hover:scale-[1.02]">
+                <div className="surface-1 card-padding card-hover group text-center rounded-lg">
                   <div className="mb-1 font-medium transition-colors group-hover:text-primary">
                     Balanced
                   </div>
                   <div className="text-muted-foreground">1:15 - 1:16</div>
                   <div className="mx-auto mt-2 h-1 w-4 rounded-full bg-orange-500" />
                 </div>
-                <div className="glass-card card-padding group text-center transition-all duration-300 hover:scale-[1.02]">
+                <div className="surface-1 card-padding card-hover group text-center rounded-lg">
                   <div className="mb-1 font-medium transition-colors group-hover:text-primary">
                     Strong
                   </div>
                   <div className="text-muted-foreground">1:12 - 1:15</div>
                   <div className="mx-auto mt-2 h-1 w-4 rounded-full bg-red-500" />
                 </div>
-                <div className="glass-card card-padding group text-center transition-all duration-300 hover:scale-[1.02]">
+                <div className="surface-1 card-padding card-hover group text-center rounded-lg">
                   <div className="mb-1 font-medium transition-colors group-hover:text-primary">
                     Espresso
                   </div>

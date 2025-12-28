@@ -405,7 +405,7 @@ export function FormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex-center bg-black/50 p-4 backdrop-blur-sm">
-      <div className="glass-modal max-h-[90vh] w-full max-w-lg overflow-auto rounded-lg">
+      <div className="surface-2 max-h-[90vh] w-full max-w-lg overflow-auto rounded-lg">
         <div className="sticky top-0 rounded-t-lg bg-primary/90 p-4 text-primary-foreground backdrop-blur-sm">
           <div className="flex-between">
             <h3 className="font-bold text-heading">{getModalTitle()}</h3>

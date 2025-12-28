@@ -29,10 +29,10 @@ const RegionalDiscoveryBackground = () => {
         {indianRegions.map((region) => (
           <div
             className={cn(
-              "relative mx-3 w-32 cursor-pointer overflow-hidden rounded-xl border p-4",
+              "relative mx-3 w-32 cursor-pointer overflow-hidden rounded-xl p-4",
               "border-primary/20 bg-primary/5 hover:bg-primary/10",
-              "transform-gpu blur-[0.5px] transition-all duration-300 ease-out hover:blur-none",
-              "glass-card"
+              "transform-gpu transition-all duration-300 ease-out",
+              "surface-1"
             )}
             key={region.name}
           >
@@ -45,7 +45,7 @@ const RegionalDiscoveryBackground = () => {
             <div className="text-muted-foreground text-overline">
               {region.state}
             </div>
-            <div className="mt-1 font-medium text-accent text-overline">
+            <div className="mt-1 font-medium text-accent text-micro">
               {region.altitude}
             </div>
           </div>
@@ -99,16 +99,16 @@ const ExpertShowcase = () => {
 
   return (
     <div className="absolute top-4 right-4 z-0">
-      <div className="glass-card min-w-[140px] animate-fade-in-scale p-3 text-center">
+      <div className="surface-1 min-w-[140px] animate-fade-in-scale p-3 text-center rounded-lg">
         <Icon className="mx-auto mb-1 h-5 w-5 text-accent" name="Trophy" />
         <div className="mb-1 font-medium text-foreground text-overline">
           {experts[currentExpert].name}
         </div>
-        <div className="mb-1 text-accent text-overline">
+        <div className="mb-1 text-accent text-micro">
           {experts[currentExpert].year && `${experts[currentExpert].year} • `}
           {experts[currentExpert].method}
         </div>
-        <div className="text-muted-foreground text-overline">
+        <div className="text-muted-foreground text-micro">
           {experts[currentExpert].achievement}
         </div>
       </div>
@@ -163,7 +163,7 @@ const FloatingSteps = () => (
       },
     ].map((step, i) => (
       <div
-        className="glass-card absolute animate-float p-2 text-overline opacity-50 transition-opacity hover:opacity-80"
+        className="surface-1 absolute animate-float p-2 text-overline opacity-50 transition-opacity hover:opacity-80 rounded-lg"
         key={step.time}
         style={{
           top: step.position.top,
@@ -172,11 +172,11 @@ const FloatingSteps = () => (
           animationDuration: `${3 + i * 0.2}s`,
         }}
       >
-        <div className="font-medium text-primary">{step.time}</div>
+        <div className="font-medium text-primary text-micro">{step.time}</div>
         <div className="font-medium text-foreground text-overline">
           {step.text}
         </div>
-        <div className="text-muted-foreground text-overline">{step.detail}</div>
+        <div className="text-muted-foreground text-micro">{step.detail}</div>
       </div>
     ))}
   </div>
@@ -229,7 +229,7 @@ const CoffeeProfileShowcase = () => {
     >
       {profileFeatures.map((feature) => (
         <div
-          className="glass-card mx-auto w-full max-w-[250px] p-3 transition-all duration-300 hover:scale-[1.02]"
+          className="surface-1 mx-auto w-full max-w-[250px] p-3 card-hover rounded-lg"
           key={feature.title}
         >
           <div className="flex items-center gap-3">
@@ -259,7 +259,7 @@ const SimpleFloatingRatings = () => {
     <>
       {ratings.map((rating, i) => (
         <div
-          className="glass-card absolute animate-float p-2 opacity-30"
+          className="surface-1 absolute animate-float p-2 opacity-30 rounded-lg"
           key={rating}
           style={{
             animationDelay: `${i * 1.5}s`,
@@ -269,7 +269,7 @@ const SimpleFloatingRatings = () => {
         >
           <div className="flex items-center gap-1">
             <Icon className="h-3 w-3 fill-current text-chart-1" name="Star" />
-            <span className="font-medium text-overline">{rating}</span>
+            <span className="font-medium text-micro">{rating}</span>
           </div>
         </div>
       ))}

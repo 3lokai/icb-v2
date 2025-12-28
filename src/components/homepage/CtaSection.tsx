@@ -18,7 +18,7 @@ export default function CtaSection() {
             <div className="relative px-6 py-12 text-center md:px-12 md:py-16">
               <div
                 aria-hidden="true"
-                className="glass-panel mb-6 inline-flex items-center justify-center rounded-full p-2"
+                className="surface-1 mb-6 inline-flex items-center justify-center rounded-full p-2"
               >
                 <Icon className="h-6 w-6" color="accent" name="Coffee" />
                 <Icon className="ml-2 h-6 w-6" color="muted" name="MapPin" />

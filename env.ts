@@ -2,10 +2,15 @@ import { z } from "zod";
 
 const envSchema = z.object({
   // Supabase
-  NEXT_PUBLIC_SUPABASE_URL: z.url("Invalid Supabase URL"),
+  NEXT_PUBLIC_SUPABASE_URL: z
+    .string()
+    .min(1, "NEXT_PUBLIC_SUPABASE_URL is required")
+    .url(
+      "NEXT_PUBLIC_SUPABASE_URL must be a valid URL (e.g., https://your-project.supabase.co)"
+    ),
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z
     .string()
-    .min(1, "Supabase publishable key is required"),
+    .min(1, "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY is required"),
 
   // Optional Supabase secret key (server-side only)
   SUPABASE_SECRET_KEY: z.string().optional(),
@@ -25,6 +30,23 @@ const envSchema = z.object({
     .default("development"),
 });
 
-export const env = envSchema.parse(process.env);
+const parsed = envSchema.safeParse(process.env);
+
+if (!parsed.success) {
+  console.error("❌ Environment variable validation failed:\n");
+  parsed.error.errors.forEach((err) => {
+    const path = err.path.join(".");
+    console.error(`  • ${path}: ${err.message}`);
+  });
+  console.error(
+    "\n💡 Make sure your .env.local file has valid values for all required variables."
+  );
+  console.error(
+    "   Get your Supabase credentials from: https://supabase.com/dashboard → Your Project → Settings → API\n"
+  );
+  throw new Error("Invalid environment variables");
+}
+
+export const env = parsed.data;
 
 export type Env = z.infer<typeof envSchema>;

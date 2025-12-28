@@ -112,7 +112,7 @@ export function isImageKitConfigured(): boolean {
 export const coffeeImagePresets = {
   /**
    * CoffeeCard preset
-   * Size: 400x192px (h-48 in Tailwind)
+   * Size: 400x224px (h-56 in Tailwind)
    * Crop: Force
    * Quality: 80
    */
@@ -122,7 +122,7 @@ export const coffeeImagePresets = {
     }
     return getImageKitUrl(imagePath, {
       width: 400,
-      height: 192,
+      height: 224,
       crop: "force",
       quality: 80,
     });
@@ -200,6 +200,107 @@ export const coffeeImagePresets = {
       height: 225,
       crop: "force",
       quality: 78,
+    });
+  },
+
+  /**
+   * Coffee detail page main carousel preset
+   * Size: 800x600px (4:3 aspect)
+   * Crop: Force
+   * Quality: 90
+   */
+  coffeeDetail: (imagePath: string | null | undefined): string => {
+    if (!imagePath) {
+      return getPlaceholderImage("coffee");
+    }
+    return getImageKitUrl(imagePath, {
+      width: 800,
+      height: 600,
+      crop: "force",
+      quality: 90,
+    });
+  },
+
+  /**
+   * Coffee detail page thumbnail preset
+   * Size: 150x150px (square)
+   * Crop: Force
+   * Quality: 75
+   */
+  coffeeThumbnail: (imagePath: string | null | undefined): string => {
+    if (!imagePath) {
+      return getPlaceholderImage("coffee");
+    }
+    return getImageKitUrl(imagePath, {
+      width: 150,
+      height: 150,
+      crop: "force",
+      quality: 75,
+    });
+  },
+
+  /**
+   * Open Graph image preset
+   * Size: 1200x630px (OG standard)
+   * Crop: Force, center focus
+   * Quality: 85
+   * Progressive: Enabled
+   */
+  coffeeOG: (imagePath: string | null | undefined): string => {
+    if (!imagePath) {
+      return getPlaceholderImage("coffee");
+    }
+    return getImageKitUrl(imagePath, {
+      width: 1200,
+      height: 630,
+      crop: "force",
+      quality: 85,
+      progressive: true,
+      focus: "center",
+    });
+  },
+};
+
+/**
+ * Roaster-specific image presets
+ */
+export const roasterImagePresets = {
+  /**
+   * Roaster logo preset
+   * Size: 300x300px (square)
+   * Crop: Maintain ratio (don't distort logos)
+   * Quality: 85
+   */
+  roasterLogo: (imagePath: string | null | undefined): string => {
+    if (!imagePath) {
+      return getPlaceholderImage("roaster");
+    }
+    return getImageKitUrl(imagePath, {
+      width: 300,
+      height: 300,
+      crop: "maintain_ratio",
+      quality: 85,
+    });
+  },
+
+  /**
+   * Roaster Open Graph image preset
+   * Size: 1200x630px (OG standard)
+   * Crop: Force, center focus
+   * Quality: 85
+   * Progressive: Enabled
+   */
+  roasterOG: (imagePath: string | null | undefined): string => {
+    if (!imagePath) {
+      return getPlaceholderImage("roaster");
+    }
+    return getImageKitUrl(imagePath, {
+      width: 1200,
+      height: 630,
+      crop: "force",
+      quality: 85,
+      progressive: true,
+      focus: "center",
     });
   },
 };

@@ -305,7 +305,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
   if (!results) {
     return (
       <div
-        className={`glass-card card-padding relative overflow-hidden ${className}`}
+        className={`surface-1 card-padding relative overflow-hidden rounded-lg ${className}`}
       >
         <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
         <div className="relative z-10">
@@ -326,7 +326,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
 
   return (
     <div
-      className={`glass-card card-padding relative overflow-hidden ${className}`}
+      className={`surface-1 card-padding relative overflow-hidden rounded-lg ${className}`}
     >
       {/* Enhanced decorative elements */}
       <div className="absolute top-0 right-0 h-24 w-24 animate-float rounded-full bg-primary/10 blur-2xl" />
@@ -343,8 +343,8 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
             <h3 className="text-subheading">Brewing Timer</h3>
           </div>
 
-          {/* Notification Controls - Enhanced glass treatment */}
-          <div className="glass-panel rounded-lg p-1">
+          {/* Notification Controls - Enhanced surface treatment */}
+          <div className="surface-1 rounded-lg p-1">
             <div className="flex gap-1">
               <Button
                 className={`h-8 w-8 p-0 transition-all duration-300 hover:scale-110 ${
@@ -381,8 +381,8 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
           </div>
         </div>
 
-        {/* Timer Display - Enhanced glass panel */}
-        <div className="glass-panel relative overflow-hidden rounded-2xl p-6 text-center">
+        {/* Timer Display - Enhanced surface panel */}
+        <div className="surface-1 relative overflow-hidden rounded-2xl p-6 text-center">
           <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-chart-2/10 blur-xl" />
           <div className="relative z-10">
             <div
@@ -403,7 +403,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
         <div className="flex justify-center gap-3">
           {isRunning ? (
             <Button
-              className="glass-button hover-lift group px-6"
+              className="hover-lift group px-6"
               onClick={pauseTimer}
               variant="outline"
             >
@@ -414,10 +414,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
               {isPaused ? "Resume" : "Pause"}
             </Button>
           ) : (
-            <Button
-              className="glass-button hover-lift group px-6"
-              onClick={startTimer}
-            >
+            <Button className="hover-lift group px-6" onClick={startTimer}>
               <Icon
                 className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
                 name="Play"
@@ -427,7 +424,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
           )}
 
           <Button
-            className="glass-button hover-lift group px-6"
+            className="hover-lift group px-6"
             onClick={resetTimer}
             variant="outline"
           >
@@ -439,9 +436,9 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
           </Button>
         </div>
 
-        {/* Current Step - Enhanced glass modal for emphasis */}
+        {/* Current Step - Enhanced surface modal for emphasis */}
         {currentStep && (
-          <div className="glass-modal relative overflow-hidden rounded-2xl p-4">
+          <div className="surface-2 relative overflow-hidden rounded-2xl p-4">
             <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-accent/20 blur-xl" />
             <div className="relative z-10">
               <div className="mb-3 flex items-center justify-between">
@@ -504,7 +501,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
 
               return (
                 <div
-                  className={`glass-card card-padding group relative overflow-hidden transition-all duration-300 hover:scale-[1.02] ${getStepCardClassName()}`}
+                  className={`surface-1 card-padding card-hover group relative overflow-hidden rounded-lg ${getStepCardClassName()}`}
                   key={`step-${step.time}-${step.instruction.slice(0, 10)}-${index}`}
                 >
                   <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-primary/5 blur-lg" />

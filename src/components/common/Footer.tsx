@@ -138,7 +138,7 @@ export function Footer() {
         </div>
 
         {/* Column 4: Newsletter */}
-        <div className="glass-card rounded-lg p-4">
+        <div className="surface-1 rounded-lg p-4">
           <h4 className="footer-heading flex items-center gap-2">
             <Icon className="text-primary" name="EnvelopeSimple" size={16} />
             Stay Updated

@@ -62,7 +62,7 @@ export function CoffeeCalculatorContainer({
     <div className={className}>
       {/* Glassmorphed Tab Navigation */}
       <div className="mb-8 flex justify-center">
-        <div className="glass-panel rounded-2xl p-2">
+        <div className="surface-1 rounded-2xl p-2">
           <div className="flex gap-2">
             <Button
               className={`group flex items-center gap-2 rounded-xl px-6 py-3 transition-all duration-300 ${

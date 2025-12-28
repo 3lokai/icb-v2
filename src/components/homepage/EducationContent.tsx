@@ -65,7 +65,7 @@ export default function EducationSection() {
               <div className="mb-8 space-y-4">
                 {educationItems.map((item, index) => (
                   <div
-                    className={`glass-card card-padding card-hover group animate-fade-in-scale delay-${index * 100}`}
+                    className={`surface-1 card-padding card-hover group animate-fade-in-scale rounded-lg delay-${index * 100}`}
                     key={item.id}
                   >
                     <div className="flex items-start">
@@ -117,7 +117,7 @@ export default function EducationSection() {
 
                 {/* Floating "Did You Know" Card */}
                 <div className="-top-4 -right-4 absolute z-20 hidden max-w-xs animate-float rounded-2xl lg:block">
-                  <div className="glass-card card-padding shadow-xl">
+                  <div className="surface-1 card-padding shadow-xl rounded-lg">
                     <div className="flex items-start gap-3">
                       <div className="h-8 w-8 flex-center flex-shrink-0 rounded-full border border-accent/30 bg-accent/20">
                         <Icon className="text-accent" name="Coffee" size={16} />

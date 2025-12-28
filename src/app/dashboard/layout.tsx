@@ -1,4 +1,4 @@
-import { PageShell } from "@/components/page-shell";
+import { PageShell } from "@/components/primitives/page-shell";
 import { DashboardLayoutContent } from "@/components/dashboard/DashboardLayoutContent";
 
 export default function DashboardLayout({

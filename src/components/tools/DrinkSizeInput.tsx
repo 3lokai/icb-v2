@@ -100,8 +100,8 @@ export function DrinkSizeInput({
             </Label>
           </fieldset>
 
-          {/* Enhanced unit switcher with glass treatment */}
-          <div className="glass-panel rounded-lg p-1">
+          {/* Enhanced unit switcher with surface treatment */}
+          <div className="surface-1 rounded-lg p-1">
             <div className="flex gap-1">
               {Object.keys(VOLUME_UNITS).map((unit) => (
                 <Button

@@ -3,6 +3,8 @@ import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { CookieNotice } from "@/components/common/CookieNotice";
+import { Footer } from "@/components/common/Footer";
+import { Header } from "@/components/header";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -98,6 +100,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
+        <div className="bg-noise" />
         <StructuredData schema={organizationSchema} />
         <StructuredData schema={websiteSchema} />
         <Script
@@ -114,7 +117,11 @@ export default function RootLayout({
             <AuthProvider>
               <SearchProvider>
                 <ModalProvider>
-                  {children}
+                  <div className="surface-0 flex min-h-screen flex-col">
+                    <Header />
+                    <main className="flex-1">{children}</main>
+                    <Footer />
+                  </div>
                   <SearchCommand />
                   <Toaster />
                   <CookieNotice />

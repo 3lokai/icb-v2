@@ -19,7 +19,7 @@ export function NewsletterSection({
   getButtonText,
 }: NewsletterSectionProps) {
   return (
-    <div className="glass-panel mb-8 overflow-hidden rounded-2xl">
+    <div className="surface-1 mb-8 overflow-hidden rounded-2xl">
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="card-padding">
           <h3 className="mb-4 text-heading text-primary">Join Our Community</h3>

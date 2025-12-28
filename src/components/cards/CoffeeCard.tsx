@@ -91,7 +91,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
         {/* Accent bar */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+        <div className="relative h-56 w-full overflow-hidden rounded-t-lg">
           <Image
             alt={coffee.name || "Coffee product image"}
             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -144,7 +144,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
           </TagList>
         </CardContent>
 
-        <CardFooter className="flex justify-between items-center pt-4 border-t border-border/30">
+        <CardFooter className="flex justify-between items-center pt-2 border-t border-border/30">
           <div className="rating-stars">
             {/* Placeholder for future ratings */}
           </div>

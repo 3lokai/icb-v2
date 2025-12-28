@@ -164,7 +164,7 @@ export default function ExpertRecipesPage() {
         <section className="section-spacing bg-muted/20">
           <div className="container-default">
             {/* Feature highlights */}
-            <div className="glass-panel mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl border border-border/50 p-6">
+            <div className="surface-1 mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl p-6">
               <div className="flex flex-wrap items-center justify-center gap-6 text-caption">
                 <div className="group flex items-center gap-2 transition-colors hover:text-primary">
                   <div className="h-3 w-3 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
@@ -291,7 +291,7 @@ export default function ExpertRecipesPage() {
                 },
               ].map((expert) => (
                 <div
-                  className="glass-card card-padding hover-lift group relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+                  className="surface-1 card-padding hover-lift group relative overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
                   key={expert.name}
                 >
                   <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-primary/5 blur-xl" />
@@ -339,7 +339,7 @@ export default function ExpertRecipesPage() {
             </div>
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              <div className="glass-card card-padding hover-lift group text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+              <div className="surface-1 card-padding hover-lift group text-center rounded-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-500/20 text-green-600 transition-transform duration-300 group-hover:scale-110">
                   <Icon className="h-6 w-6" name="Coffee" />
                 </div>
@@ -356,7 +356,7 @@ export default function ExpertRecipesPage() {
                 </Badge>
               </div>
 
-              <div className="glass-card card-padding hover-lift group relative overflow-hidden text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+              <div className="surface-1 card-padding hover-lift group relative overflow-hidden rounded-lg text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
                 <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-red-500/5 blur-xl" />
                 <div className="relative z-10">
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20 text-red-600 transition-transform duration-300 group-hover:scale-110">
@@ -375,7 +375,7 @@ export default function ExpertRecipesPage() {
                 </div>
               </div>
 
-              <div className="glass-card card-padding hover-lift group relative overflow-hidden text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+              <div className="surface-1 card-padding hover-lift group relative overflow-hidden rounded-lg text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
                 <div className="absolute top-0 left-0 h-12 w-12 rounded-full bg-blue-500/5 blur-xl" />
                 <div className="relative z-10">
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/20 text-blue-600 transition-transform duration-300 group-hover:scale-110">
@@ -450,7 +450,7 @@ export default function ExpertRecipesPage() {
         {/* CTA Section */}
         <section className="section-spacing">
           <div className="container-default">
-            <div className="glass-modal card-padding relative overflow-hidden rounded-3xl">
+            <div className="surface-2 card-padding relative overflow-hidden rounded-3xl">
               <div className="absolute top-0 right-0 h-32 w-32 animate-float rounded-full bg-primary/20 blur-3xl" />
               <div className="absolute bottom-0 left-0 h-24 w-24 animate-float rounded-full bg-accent/20 blur-2xl delay-700" />
 
@@ -465,11 +465,7 @@ export default function ExpertRecipesPage() {
                   techniques.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button
-                    asChild
-                    className="glass-button hover-lift group"
-                    size="lg"
-                  >
+                  <Button asChild className="hover-lift group" size="lg">
                     <Link href="/tools/coffee-calculator">
                       <Icon
                         className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
@@ -480,7 +476,7 @@ export default function ExpertRecipesPage() {
                   </Button>
                   <Button
                     asChild
-                    className="glass-button hover-lift group"
+                    className="hover-lift group"
                     size="lg"
                     variant="outline"
                   >

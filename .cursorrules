@@ -1,0 +1,289 @@
+# Design System Rules - Indian Coffee Base
+
+## Core Philosophy
+**Depth through surfaces, not effects.**
+Clean, systematic, coffee-focused design with minimal visual noise.
+
+---
+
+## 1. Surface System (Non-Negotiable)
+
+### Three Surfaces Only
+```css
+surface-0  → Page background (no shadow)
+surface-1  → Cards/panels (shadow-lg, border)
+surface-2  → Modals/dropdowns (shadow-xl, border)
+```
+
+### Shell Helpers
+```css
+card-shell  → surface-1 + rounded-lg
+modal-shell → surface-2 + rounded-xl
+nav-shell   → surface-1 + border-b + shadow-sm
+```
+
+**Rule:** Use shells instead of manual utility stacks.
+
+---
+
+## 2. Typography Scale (Locked)
+
+```
+.text-hero       → 5xl/6xl/7xl (landing pages only)
+.text-display    → 4xl/5xl/6xl (page headers)
+.text-title      → 2xl/3xl (section headers)
+.text-heading    → xl/2xl (card headers)
+.text-subheading → lg/xl (subsections)
+.text-body       → base (default)
+.text-body-large → lg
+.text-body-muted → base + muted color
+.text-caption    → sm + muted color
+.text-micro      → 12px (minimal background text)
+```
+
+**Font families:**
+- Display/Title: `font-serif`
+- Headings: `font-sans`
+- Body: `font-sans` (default)
+
+**Rule:** No custom font sizes. Ever.
+
+---
+
+## 3. Spacing System (Locked)
+
+### Vertical Spacing (Stacks)
+```
+.stack-xs → gap-2  (8px)
+.stack-sm → gap-3  (12px)
+.stack-md → gap-6  (24px)
+.stack-lg → gap-10 (40px)
+```
+
+### Section/Container Spacing
+```
+.section-spacing   → py-8/12/16 (responsive)
+.container-default → max-w-7xl + responsive padding
+.card-padding      → p-4/6 (responsive)
+```
+
+**Rule:** No arbitrary gaps, padding, or margins. Use defined utilities only.
+
+---
+
+## 4. Shadow System (Simplified)
+
+**Allowed shadows:**
+```
+shadow-sm  → Nav, subtle elements
+shadow-lg  → Cards (surface-1)
+shadow-xl  → Modals (surface-2)
+```
+
+**Special shadows (rare use):**
+```
+shadow-premium → Featured cards, hero CTAs
+shadow-glow    → Accent elements, hover states
+```
+
+**Rule:** Shadows are built into surfaces. Don't add manually.
+
+---
+
+## 5. Radius System
+
+```
+rounded-sm   → Small buttons, inputs
+rounded-md   → Standard buttons
+rounded-lg   → Cards (default)
+rounded-xl   → Modals
+rounded-full → Badges, pills, avatars
+```
+
+**Rule:** No arbitrary radius values like `rounded-[8px]`.
+
+---
+
+## 6. Color System
+
+### Use CSS Variables ONLY
+```
+--background, --foreground
+--card, --card-foreground
+--primary, --primary-foreground
+--secondary, --secondary-foreground
+--muted, --muted-foreground
+--accent, --accent-foreground
+--border, --input, --ring
+```
+
+**Tailwind utilities:**
+```
+bg-background, bg-card, bg-primary
+text-foreground, text-muted-foreground
+border-border
+```
+
+**Rule:** Never hardcode colors. All colors via CSS variables.
+
+---
+
+## 7. Forbidden Patterns
+
+**NEVER use these:**
+```css
+❌ backdrop-blur-*        (no blur for depth)
+❌ bg-card/80             (no opacity backgrounds for depth)
+❌ bg-card/60             (use proper surfaces instead)
+❌ shadow-[custom]        (use defined shadows)
+❌ text-[20px]            (use typography scale)
+❌ gap-[15px]             (use spacing system)
+❌ rounded-[12px]         (use radius system)
+❌ Arbitrary z-index      (use defined hierarchy)
+```
+
+**Allowed - Decorative Gradients:**
+```css
+✅ bg-gradient-*          (decorative gradients for visual interest)
+✅ Gradient text          (bg-gradient-to-r + bg-clip-text)
+✅ Gradient buttons/CTAs   (decorative, not for depth)
+✅ Gradient backgrounds   (visual interest, not depth)
+✅ Image overlays         (bg-gradient-to-t from-black/90 via-black/30)
+```
+
+**Rule:** Decorative gradients are fine. Only opacity/blur for DEPTH is forbidden (use surfaces instead).
+
+---
+
+## 8. Component Class Naming
+
+### Conventions
+```
+Prefix by type:  .card-*, .btn-*, .badge-*
+Use kebab-case:  .hero-content, not .heroContent
+Be semantic:     .search-input, not .input-lg
+```
+
+### Before Creating New Classes
+1. Check `src/app/styles/*.css` for existing utilities
+2. If used only once → use Tailwind directly
+3. If used 2-3+ times → create reusable class in appropriate file
+
+### File Organization
+```
+globals.css     → Theme, variables, base styles, noise texture
+layout.css      → Container, spacing, grid utilities
+typography.css  → Text scale, font families
+components.css  → Buttons, cards, badges, shells
+effects.css     → Animations, transitions, keyframes
+```
+
+**Rule:** All custom classes in `@layer components`.
+
+---
+
+## 9. Animation System
+
+### Use Existing Animations
+Check `effects.css` for available keyframes:
+```
+cardFadeIn, fade-in-scale, float, shimmer
+slideDown, marquee, marquee-vertical
+```
+
+### Animation Delays
+```
+.delay-0 through .delay-450 (50ms increments)
+```
+
+**Rule:** Don't create new animations without checking existing ones first.
+
+---
+
+## 10. Z-Index Hierarchy
+
+**Fixed levels (DO NOT deviate):**
+```
+z-100  → .header-dropdown (highest)
+z-50   → .announcement-bar
+z-45   → .mobile-menu
+z-40   → .sticky-header
+z-0-30 → Regular content, overlays
+```
+
+**Rule:** Use defined z-index classes. No arbitrary values.
+
+---
+
+## 11. Responsive Design
+
+### Breakpoints
+```
+sm:  640px
+md:  768px
+lg:  1024px
+xl:  1280px
+2xl: 1400px
+```
+
+**Use Tailwind prefixes:**
+```
+class="text-2xl md:text-3xl lg:text-4xl"
+class="p-4 md:p-6"
+```
+
+---
+
+## 12. Dark Mode
+
+**Theme switching:** `.dark` class on parent
+**Rule:** All colors auto-adapt via CSS variables. Don't manually create dark variants unless absolutely necessary.
+
+---
+
+## Quick Reference
+
+### Good Patterns ✅
+```jsx
+<div className="card-shell card-padding">
+<h2 className="text-heading">Title</h2>
+<div className="stack-sm">
+  <p className="text-body">Content</p>
+  <p className="text-body-muted">Meta</p>
+</div>
+</div>
+```
+
+### Bad Patterns ❌
+```jsx
+{/* Using opacity/blur for depth instead of surfaces */}
+<div className="bg-card/80 backdrop-blur-md p-[18px] rounded-[14px]">
+<h2 className="text-[22px] font-bold">Title</h2>
+<div className="flex flex-col gap-[14px]">
+  <p className="text-base">Content</p>
+</div>
+</div>
+
+{/* Decorative gradients are fine! ✅ */}
+<div className="bg-gradient-to-r from-primary to-accent">
+  <h2 className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+    Decorative gradient text
+  </h2>
+</div>
+```
+
+---
+
+## Before Shipping Code
+
+**Checklist:**
+- [ ] Using defined surfaces/shells (not manual utility stacks)
+- [ ] Using typography scale (no custom sizes)
+- [ ] Using spacing system (no arbitrary gaps)
+- [ ] Colors via CSS variables only
+- [ ] No forbidden patterns (blur, opacity, arbitrary values)
+- [ ] Tested in light AND dark mode
+
+---
+
+**Remember:** Constraints breed consistency. When in doubt, use less.

@@ -136,7 +136,7 @@ function applySortingToQuery(query: any, sort: CoffeeSort): any {
  * Helper to fetch coffee images (first image per coffee based on sort_order)
  * Used for list/card views where only the first image is needed
  */
-async function fetchCoffeeImages(
+export async function fetchCoffeeImages(
   supabase: any,
   coffeeIds: string[]
 ): Promise<Map<string, string>> {

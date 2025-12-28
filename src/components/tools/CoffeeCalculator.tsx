@@ -127,8 +127,8 @@ export function CoffeeCalculator({
   return (
     <div className={className}>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Left Column - Brewing Parameters (Glass Card) */}
-        <div className="glass-card card-padding relative [isolation:auto]">
+        {/* Left Column - Brewing Parameters (Surface Card) */}
+        <div className="surface-1 card-padding relative rounded-lg [isolation:auto]">
           {/* Subtle decorative element */}
           <div className="-z-10 pointer-events-none absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
 
@@ -209,15 +209,15 @@ export function CoffeeCalculator({
       {/* Glassmorphed Brewing Timer */}
       {results && (
         <div className="mt-6">
-          <div className="glass-panel card-padding rounded-2xl">
+          <div className="surface-1 card-padding rounded-2xl">
             <BrewingTimer results={results} />
           </div>
         </div>
       )}
 
-      {/* Glassmorphed Method Tips (Full Width) */}
+      {/* Method Tips (Full Width) */}
       {results?.method.tips && results.method.tips.length > 0 && (
-        <div className="glass-panel card-padding relative mt-6 overflow-hidden rounded-2xl">
+        <div className="surface-1 card-padding relative mt-6 overflow-hidden rounded-2xl">
           {/* Enhanced decorative blur elements */}
           <div className="absolute top-0 left-0 h-24 w-24 animate-float rounded-full bg-accent/10 blur-2xl" />
           <div className="absolute right-0 bottom-0 h-20 w-20 animate-float rounded-full bg-primary/10 blur-xl delay-700" />
@@ -234,7 +234,7 @@ export function CoffeeCalculator({
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {results.method.tips.map((tip, index) => (
                 <div
-                  className="glass-card card-padding group relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                  className="surface-1 card-padding card-hover group relative overflow-hidden rounded-lg"
                   key={`tip-${tip.slice(0, 20)}-${index}`}
                 >
                   {/* Subtle tip card decoration */}

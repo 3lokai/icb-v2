@@ -148,7 +148,7 @@ export default function CoffeeCalculatorPage() {
         <section className="section-spacing bg-muted/20">
           <div className="container-default">
             {/* Feature highlights */}
-            <div className="glass-panel mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl border border-border/50 p-6">
+            <div className="surface-1 mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl p-6">
               <div className="flex flex-wrap items-center justify-center gap-6 text-caption">
                 <div className="group flex items-center gap-2 transition-colors hover:text-primary">
                   <div className="h-3 w-3 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
@@ -207,7 +207,7 @@ export default function CoffeeCalculatorPage() {
         <section className="section-spacing" id="calculator">
           <div className="container-default">
             {/* Enhanced glass modal with better visual hierarchy */}
-            <div className="glass-panel card-padding relative rounded-3xl">
+            <div className="surface-1 card-padding relative rounded-3xl">
               {/* More sophisticated decorative elements */}
               <div className="-z-10 pointer-events-none absolute top-0 right-0 h-32 w-32 rounded-full bg-accent/10 blur-3xl" />
               <div className="-z-10 pointer-events-none absolute bottom-0 left-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
@@ -244,9 +244,9 @@ export default function CoffeeCalculatorPage() {
               </p>
             </div>
 
-            <div className="glass-panel card-padding rounded-2xl">
+            <div className="surface-1 card-padding rounded-2xl">
               <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-                <div className="glass-card card-padding card-hover group text-center">
+                <div className="surface-1 card-padding card-hover group text-center rounded-lg">
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/20">
                     <Icon
                       className="h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110"
@@ -263,7 +263,7 @@ export default function CoffeeCalculatorPage() {
                   </p>
                 </div>
 
-                <div className="glass-card card-padding card-hover group text-center">
+                <div className="surface-1 card-padding card-hover group text-center rounded-lg">
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-accent/20">
                     <Icon
                       className="h-6 w-6 text-accent transition-transform duration-300 group-hover:scale-110"
@@ -280,7 +280,7 @@ export default function CoffeeCalculatorPage() {
                   </p>
                 </div>
 
-                <div className="glass-card card-padding card-hover group text-center">
+                <div className="surface-1 card-padding card-hover group text-center rounded-lg">
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-chart-2/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-chart-2/20">
                     <Icon
                       className="h-6 w-6 text-chart-2 transition-transform duration-300 group-hover:scale-110"
@@ -330,7 +330,7 @@ export default function CoffeeCalculatorPage() {
                 { name: "Auto Drip", popular: false },
               ].map((method) => (
                 <div
-                  className={`glass-card card-padding card-hover group relative text-center ${
+                  className={`surface-1 card-padding card-hover group relative text-center rounded-lg ${
                     method.popular ? "border-primary/30" : ""
                   }`}
                   key={method.name}
@@ -404,7 +404,7 @@ export default function CoffeeCalculatorPage() {
         {/* Enhanced CTA Section */}
         <section className="section-spacing">
           <div className="container-default">
-            <div className="glass-modal card-padding relative overflow-hidden rounded-3xl">
+            <div className="surface-2 card-padding relative overflow-hidden rounded-3xl">
               {/* Enhanced decorative elements */}
               <div className="absolute top-0 right-0 h-40 w-40 animate-float rounded-full bg-primary/20 blur-3xl" />
               <div className="absolute bottom-0 left-0 h-32 w-32 animate-float rounded-full bg-accent/20 blur-2xl delay-700" />
@@ -420,11 +420,7 @@ export default function CoffeeCalculatorPage() {
                   perfect beans to use with your new brewing skills.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button
-                    asChild
-                    className="glass-button hover-lift group"
-                    size="lg"
-                  >
+                  <Button asChild className="hover-lift group" size="lg">
                     <Link className="flex items-center gap-2" href="/roasters">
                       <Icon
                         className="h-4 w-4 transition-transform group-hover:scale-110"

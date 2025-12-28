@@ -55,7 +55,7 @@ Made with IndianCoffeeBeans.com
   if (!results) {
     return (
       <div
-        className={`glass-card card-padding relative overflow-hidden ${className}`}
+        className={`surface-1 card-padding relative overflow-hidden rounded-lg ${className}`}
       >
         <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
         <div className="relative z-10">
@@ -76,7 +76,7 @@ Made with IndianCoffeeBeans.com
 
   return (
     <div
-      className={`glass-card card-padding relative overflow-hidden ${className}`}
+      className={`surface-1 card-padding relative overflow-hidden rounded-lg ${className}`}
     >
       {/* Enhanced decorative elements */}
       <div className="absolute top-0 right-0 h-20 w-20 animate-float rounded-full bg-primary/10 blur-2xl" />
@@ -96,7 +96,7 @@ Made with IndianCoffeeBeans.com
 
         {/* Main Recipe Amounts - Enhanced glass cards */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="glass-card card-padding group text-center transition-all duration-300 hover:scale-[1.02]">
+          <div className="surface-1 card-padding card-hover group text-center rounded-lg">
             <div className="mb-1 text-title text-primary transition-transform duration-300 group-hover:scale-110">
               {Math.round(results.coffeeAmount * 10) / 10}g
             </div>
@@ -108,7 +108,7 @@ Made with IndianCoffeeBeans.com
             </div>
           </div>
 
-          <div className="glass-card card-padding group text-center transition-all duration-300 hover:scale-[1.02]">
+          <div className="surface-1 card-padding card-hover group text-center rounded-lg">
             <div className="mb-1 text-title text-primary transition-transform duration-300 group-hover:scale-110">
               {Math.round(results.waterAmount)}ml
             </div>
@@ -158,8 +158,8 @@ Made with IndianCoffeeBeans.com
 
         <Separator className="bg-border/50" />
 
-        {/* Method Info - Enhanced glass panel */}
-        <div className="glass-panel relative overflow-hidden rounded-lg p-4">
+        {/* Method Info - Enhanced surface panel */}
+        <div className="surface-1 relative overflow-hidden rounded-lg p-4">
           <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-accent/10 blur-lg" />
           <div className="relative z-10">
             <div className="mb-2 flex items-center gap-2">
@@ -180,7 +180,7 @@ Made with IndianCoffeeBeans.com
         {/* Action Buttons - Enhanced with glass treatment */}
         <div className="flex gap-2">
           <Button
-            className="flex-1 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:bg-background/80"
+            className="flex-1 transition-all duration-300 hover:scale-[1.02]"
             onClick={handleCopyRecipe}
             size="sm"
             variant="outline"

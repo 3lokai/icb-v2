@@ -5,7 +5,7 @@ A modern, production-ready Next.js starter template with TypeScript, Tailwind CS
 ## 🚀 Tech Stack
 
 ### Frontend
-- **Next.js 15** - React framework with App Router
+- **Next.js 16** - React framework with App Router
 - **React 19** - Latest React features
 - **TypeScript** - Type-safe development
 - **Tailwind CSS v4** - Utility-first CSS framework with CSS-first approach

@@ -45,7 +45,7 @@ const BentoCard = ({
     className={cn(
       "group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl",
       // light styles
-      "border border-border/50 bg-card/80 shadow-lg backdrop-blur-sm",
+      "border border-border/50 bg-card",
       // dark styles
       "transform-gpu dark:border-border/30 dark:bg-card/60",
       className

@@ -133,7 +133,7 @@ export default function ContactForms({
     <div>
       {/* Hero Header - Glass treatment for impact */}
       <header className="relative mb-16 text-center">
-        <div className="glass-overlay -z-10 absolute inset-0 rounded-3xl" />
+        <div className="surface-0 -z-10 absolute inset-0 rounded-3xl" />
         <div className="relative z-10 py-12">
           <h1 className="mb-6 animate-fade-in-scale text-balance text-display text-primary">
             Connect With Us
@@ -268,7 +268,7 @@ export default function ContactForms({
 
       {/* For Professionals Section - Glass treatment for emphasis */}
       <section className="mb-20">
-        <div className="glass-modal card-padding relative overflow-hidden rounded-3xl">
+        <div className="surface-2 card-padding relative overflow-hidden rounded-3xl">
           {/* Decorative elements */}
           <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-accent/10 blur-3xl" />
           <div className="absolute bottom-0 left-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
@@ -310,7 +310,7 @@ export default function ContactForms({
                   className="group rounded-lg border border-border/30 bg-card/40 p-6 text-center"
                   key={item.title}
                 >
-                  <div className="glass-button mx-auto mb-3 h-12 w-12 flex-center rounded-full transition-transform duration-300 group-hover:scale-110">
+                  <div className="mx-auto mb-3 h-12 w-12 flex-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
                     <Icon
                       color="primary"
                       name={item.icon as IconName}

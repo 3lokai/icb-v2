@@ -1,55 +1,4 @@
 @layer components {
-  /* Glassmorphism Utilities */
-  .glass-panel {
-    @apply bg-background/80 backdrop-blur-md border border-border/50 shadow-lg;
-  }
-
-  .glass-card {
-    @apply bg-card/70 backdrop-blur-sm border border-border/40 shadow-md hover:bg-card/80 transition-all duration-300;
-  }
-
-  .glass-overlay {
-    @apply bg-gradient-to-br from-background/90 via-background/80 to-background/70 backdrop-blur-lg;
-    transform: translateZ(0);
-  }
-
-  .glass-button {
-    @apply bg-primary/90 backdrop-blur-sm hover:bg-primary border border-primary/50 transition-all duration-200;
-  }
-
-  .glass-sidebar {
-    @apply bg-card/60 backdrop-blur-md border border-border/30 shadow-xl;
-  }
-
-  .glass-modal {
-    @apply bg-background/95 backdrop-blur-xl border border-border/20 shadow-2xl;
-    transform: translateZ(0);
-  }
-
-  .dark .glass-panel {
-    @apply bg-background/60 border-border/30;
-  }
-
-  .dark .glass-card {
-    @apply bg-card/50 border-border/20;
-  }
-
-  .dark .glass-sidebar {
-    @apply bg-card/40 border-border/20;
-  }
-
-  .dark .glass-overlay {
-    @apply bg-gradient-to-br from-background/80 via-background/60 to-background/70;
-  }
-
-  .dark .glass-button {
-    @apply bg-primary/80 border-primary/40;
-  }
-
-  .dark .glass-modal {
-    @apply bg-background/90 border-border/15;
-  }
-
   /* Animation Utilities */
   .card-fade-in {
     animation: cardFadeIn 0.5s ease-in-out;
@@ -475,6 +424,40 @@
   }
   to {
     transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  20% {
+    transform: translate(-15%, 5%);
+  }
+  30% {
+    transform: translate(7%, -25%);
+  }
+  40% {
+    transform: translate(-5%, 25%);
+  }
+  50% {
+    transform: translate(-15%, 10%);
+  }
+  60% {
+    transform: translate(15%, 0%);
+  }
+  70% {
+    transform: translate(0%, 15%);
+  }
+  80% {
+    transform: translate(3%, 35%);
+  }
+  90% {
+    transform: translate(-10%, 10%);
   }
 }
 

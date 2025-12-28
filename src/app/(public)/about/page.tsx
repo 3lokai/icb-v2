@@ -25,7 +25,7 @@ export default function AboutPage() {
       <div>
         {/* Hero Header - Glass effect for impact */}
         <header className="relative mb-16 text-center">
-          <div className="glass-overlay -z-10 absolute inset-0 rounded-3xl" />
+          <div className="surface-0 -z-10 absolute inset-0 rounded-3xl" />
           <div className="relative z-10 py-12">
             <h1 className="mb-6 animate-fade-in-scale text-display text-primary text-balance">
               About IndianCoffeeBeans.com
@@ -91,7 +91,7 @@ export default function AboutPage() {
 
         {/* Mission Section - KEY section gets full glass treatment */}
         <section className="mb-20">
-          <div className="glass-modal card-padding relative overflow-hidden rounded-3xl">
+          <div className="surface-2 card-padding relative overflow-hidden rounded-3xl">
             {/* Decorative background elements */}
             <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-accent/10 blur-3xl" />
             <div className="absolute bottom-0 left-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
@@ -133,7 +133,7 @@ export default function AboutPage() {
                     key={item.title}
                   >
                     <div className="flex-center flex-col space-y-4 text-center">
-                      <div className="glass-button h-16 w-16 flex-center rounded-2xl transition-transform duration-300 group-hover:scale-110">
+                      <div className="h-16 w-16 flex-center rounded-2xl bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
                         <Icon
                           color="primary"
                           name={item.icon as IconName}
@@ -395,9 +395,9 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* CTA Section - Strong glass effect for conversion focus */}
+        {/* CTA Section - Strong surface effect for conversion focus */}
         <section className="mb-16">
-          <div className="glass-modal card-padding relative overflow-hidden rounded-3xl text-center">
+          <div className="surface-2 card-padding relative overflow-hidden rounded-3xl text-center">
             {/* Decorative elements */}
             <div className="absolute top-0 left-1/4 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
             <div className="absolute right-1/4 bottom-0 h-24 w-24 rounded-full bg-accent/10 blur-2xl" />
