@@ -1317,7 +1317,6 @@ export default function TermsPage() {
         {/* Simple Footer CTA */}
         <Section contained={true} className="pb-24">
           <Cluster
-            justify="between"
             align="center"
             gap="8"
             className="rounded-[2rem] bg-accent/5 border border-accent/10 p-12"
