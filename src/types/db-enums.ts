@@ -19,6 +19,9 @@ export type SensorySourceEnum =
 export type UserRoleEnum = Database["public"]["Enums"]["user_role_enum"];
 export type RunStatusEnum = Database["public"]["Enums"]["run_status_enum"];
 export type RunTypeEnum = Database["public"]["Enums"]["run_type_enum"];
+export type ReviewEntityTypeEnum =
+  Database["public"]["Enums"]["review_entity_type"];
+export type ReviewStatusEnum = Database["public"]["Enums"]["review_status"];
 
 // ============================================================================
 // JSON TYPE

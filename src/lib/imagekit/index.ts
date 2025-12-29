@@ -4,7 +4,7 @@
 type ImageKitTransform = {
   width?: number;
   height?: number;
-  crop?: "force" | "maintain_ratio" | "at_least" | "at_max";
+  crop?: "force" | "maintain_ratio" | "at_least" | "at_max" | "at_max_enlarge";
   quality?: number;
   format?: "webp" | "avif" | "jpg" | "png";
   progressive?: boolean;
@@ -206,7 +206,7 @@ export const coffeeImagePresets = {
   /**
    * Coffee detail page main carousel preset
    * Size: 800x600px (4:3 aspect)
-   * Crop: Force
+   * Crop: At max enlarge (fit within dimensions without cropping, allows enlargement)
    * Quality: 90
    */
   coffeeDetail: (imagePath: string | null | undefined): string => {
@@ -216,7 +216,7 @@ export const coffeeImagePresets = {
     return getImageKitUrl(imagePath, {
       width: 800,
       height: 600,
-      crop: "force",
+      crop: "at_max_enlarge",
       quality: 90,
     });
   },
@@ -224,7 +224,7 @@ export const coffeeImagePresets = {
   /**
    * Coffee detail page thumbnail preset
    * Size: 150x150px (square)
-   * Crop: Force
+   * Crop: At max enlarge (fit within dimensions without cropping, allows enlargement)
    * Quality: 75
    */
   coffeeThumbnail: (imagePath: string | null | undefined): string => {
@@ -234,7 +234,7 @@ export const coffeeImagePresets = {
     return getImageKitUrl(imagePath, {
       width: 150,
       height: 150,
-      crop: "force",
+      crop: "at_max_enlarge",
       quality: 75,
     });
   },

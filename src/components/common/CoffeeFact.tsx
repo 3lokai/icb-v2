@@ -29,21 +29,25 @@ export default function CoffeeFact({ className = "" }: CoffeeFactProps) {
   return (
     <div
       className={cn(
-        "rounded-lg border border-muted/50 bg-background/90 p-4 shadow-lg backdrop-blur-sm",
+        "rounded-xl border border-accent/20 border-l-4 border-l-accent bg-accent/5 p-6 md:p-8",
         className
       )}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-4">
         <div className="mt-1 shrink-0">
-          <div className="rounded-full bg-accent/10 p-2">
-            <Icon className="text-accent" name="Coffee" size={18} />
+          <div className="rounded-xl bg-accent/10 p-2.5">
+            <Icon className="text-accent" name="Coffee" size={24} />
           </div>
         </div>
         <div>
-          <h4 className="mb-1 font-semibold text-caption">{fact.title}</h4>
-          <p className="mb-2 text-muted-foreground text-caption">{fact.fact}</p>
+          <h4 className="mb-2 text-heading text-primary font-serif italic">
+            {fact.title}
+          </h4>
+          <p className="mb-4 text-muted-foreground leading-relaxed italic">
+            &quot;{fact.fact}&quot;
+          </p>
           {fact.source && (
-            <p className="text-muted-foreground/70 text-overline italic">
+            <p className="text-micro font-bold uppercase tracking-widest text-accent/70">
               — {fact.source}
             </p>
           )}

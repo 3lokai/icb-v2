@@ -2,8 +2,7 @@
 import type { Metadata } from "next";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
-import { Cluster } from "@/components/primitives/cluster";
-import { Icon, IconName } from "@/components/common/Icon";
+import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateMetadata } from "@/lib/seo/metadata";

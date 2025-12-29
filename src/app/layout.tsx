@@ -3,8 +3,7 @@ import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { CookieNotice } from "@/components/common/CookieNotice";
-import { Footer } from "@/components/common/Footer";
-import { Header } from "@/components/header";
+import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -117,11 +116,7 @@ export default function RootLayout({
             <AuthProvider>
               <SearchProvider>
                 <ModalProvider>
-                  <div className="surface-0 flex min-h-screen flex-col">
-                    <Header />
-                    <main className="flex-1">{children}</main>
-                    <Footer />
-                  </div>
+                  <ConditionalLayout>{children}</ConditionalLayout>
                   <SearchCommand />
                   <Toaster />
                   <CookieNotice />

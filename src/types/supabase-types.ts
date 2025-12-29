@@ -730,6 +730,57 @@ export type Database = {
         };
         Relationships: [];
       };
+      reviews: {
+        Row: {
+          anon_id: string | null;
+          brew_method: Database["public"]["Enums"]["grind_enum"] | null;
+          comment: string | null;
+          created_at: string;
+          entity_id: string;
+          entity_type: Database["public"]["Enums"]["review_entity_type"];
+          id: string;
+          rating: number | null;
+          recommend: boolean | null;
+          status: Database["public"]["Enums"]["review_status"];
+          updated_at: string;
+          user_id: string | null;
+          value_for_money: boolean | null;
+          works_with_milk: boolean | null;
+        };
+        Insert: {
+          anon_id?: string | null;
+          brew_method?: Database["public"]["Enums"]["grind_enum"] | null;
+          comment?: string | null;
+          created_at?: string;
+          entity_id: string;
+          entity_type: Database["public"]["Enums"]["review_entity_type"];
+          id?: string;
+          rating?: number | null;
+          recommend?: boolean | null;
+          status?: Database["public"]["Enums"]["review_status"];
+          updated_at?: string;
+          user_id?: string | null;
+          value_for_money?: boolean | null;
+          works_with_milk?: boolean | null;
+        };
+        Update: {
+          anon_id?: string | null;
+          brew_method?: Database["public"]["Enums"]["grind_enum"] | null;
+          comment?: string | null;
+          created_at?: string;
+          entity_id?: string;
+          entity_type?: Database["public"]["Enums"]["review_entity_type"];
+          id?: string;
+          rating?: number | null;
+          recommend?: boolean | null;
+          status?: Database["public"]["Enums"]["review_status"];
+          updated_at?: string;
+          user_id?: string | null;
+          value_for_money?: boolean | null;
+          works_with_milk?: boolean | null;
+        };
+        Relationships: [];
+      };
       roasters: {
         Row: {
           alert_price_delta_pct: number | null;
@@ -1364,6 +1415,19 @@ export type Database = {
           },
         ];
       };
+      entity_review_stats: {
+        Row: {
+          avg_rating: number | null;
+          entity_id: string | null;
+          entity_type: Database["public"]["Enums"]["review_entity_type"] | null;
+          last_review_at: string | null;
+          rating_count: number | null;
+          recommend_pct: number | null;
+          review_count: number | null;
+          updated_at: string | null;
+        };
+        Relationships: [];
+      };
       firecrawl_usage_tracking: {
         Row: {
           active_firecrawl_roasters: number | null;
@@ -1375,6 +1439,26 @@ export type Database = {
           platform: Database["public"]["Enums"]["platform_enum"] | null;
           total_budget_allocated: number | null;
           total_roasters: number | null;
+        };
+        Relationships: [];
+      };
+      latest_reviews_per_identity: {
+        Row: {
+          anon_id: string | null;
+          brew_method: Database["public"]["Enums"]["grind_enum"] | null;
+          comment: string | null;
+          created_at: string | null;
+          entity_id: string | null;
+          entity_type: Database["public"]["Enums"]["review_entity_type"] | null;
+          id: string | null;
+          identity_key: string | null;
+          rating: number | null;
+          recommend: boolean | null;
+          status: Database["public"]["Enums"]["review_status"] | null;
+          updated_at: string | null;
+          user_id: string | null;
+          value_for_money: boolean | null;
+          works_with_milk: boolean | null;
         };
         Relationships: [];
       };
@@ -1747,6 +1831,14 @@ export type Database = {
         };
         Returns: string;
       };
+      update_coffee_ratings_for_entity: {
+        Args: { p_entity_id: string };
+        Returns: undefined;
+      };
+      update_roaster_ratings_for_entity: {
+        Args: { p_entity_id: string };
+        Returns: undefined;
+      };
       upsert_coffee_preferences: {
         Args: {
           p_decaf_only?: boolean;
@@ -1844,6 +1936,8 @@ export type Database = {
         | "experimental"
         | "other"
         | "washed_natural";
+      review_entity_type: "coffee" | "roaster";
+      review_status: "active" | "deleted" | "flagged";
       roast_level_enum:
         | "light"
         | "light_medium"
@@ -2054,6 +2148,8 @@ export const Constants = {
         "other",
         "washed_natural",
       ],
+      review_entity_type: ["coffee", "roaster"],
+      review_status: ["active", "deleted", "flagged"],
       roast_level_enum: [
         "light",
         "light_medium",

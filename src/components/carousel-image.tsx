@@ -113,7 +113,7 @@ export default function CoffeeImageCarousel({
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
                   <Image
                     alt={altText}
-                    className="object-cover"
+                    className="object-contain"
                     fill
                     priority={index === 0}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
@@ -150,7 +150,7 @@ export default function CoffeeImageCarousel({
                 <CarouselItem
                   key={image.id}
                   className={cn(
-                    "basis-1/4 cursor-pointer",
+                    "basis-1/6 cursor-pointer",
                     isActive ? "opacity-100" : "opacity-50 hover:opacity-75"
                   )}
                   onClick={() => handleThumbClick(index)}
@@ -172,7 +172,7 @@ export default function CoffeeImageCarousel({
                         className="object-cover"
                         fill
                         loading="lazy"
-                        sizes="150px"
+                        sizes="100px"
                         src={coffeeImagePresets.coffeeThumbnail(imageUrl)}
                       />
                     </CardContent>
@@ -181,8 +181,6 @@ export default function CoffeeImageCarousel({
               );
             })}
           </CarouselContent>
-          <CarouselPrevious aria-label="Previous thumbnails" />
-          <CarouselNext aria-label="Next thumbnails" />
         </Carousel>
       )}
     </div>

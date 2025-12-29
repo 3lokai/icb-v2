@@ -3,10 +3,19 @@
 import Link from "next/link";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import CoffeeImageCarousel from "@/components/carousel-image";
-import { CoffeeCoreDetails } from "./CoffeeCoreDetails";
-import { CoffeePricing } from "./CoffeePricing";
-import { CoffeeBuyButton } from "./CoffeeBuyButton";
-import { cn } from "@/lib/utils";
+import { Icon } from "@/components/common/Icon";
+import Tag, { TagList } from "@/components/common/Tag";
+import { Cluster } from "@/components/primitives/cluster";
+import { PageShell } from "@/components/primitives/page-shell";
+import { Stack } from "@/components/primitives/stack";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { cn, capitalizeFirstLetter } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils/coffee-utils";
+import { CoffeeSensoryProfile } from "./CoffeeSensoryProfile";
+import { ReviewSection } from "@/components/reviews";
 
 type CoffeeDetailPageProps = {
   coffee: CoffeeDetail;
@@ -14,47 +23,362 @@ type CoffeeDetailPageProps = {
 };
 
 export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
+  const hasStock = (coffee.summary.in_stock_count ?? 0) > 0;
+  const minPrice = coffee.summary.min_price_in_stock;
+
+  // Group variants by weight
+  const variantsByWeight = coffee.variants.reduce(
+    (acc, variant) => {
+      const weight = variant.weight_g;
+      if (!acc[weight]) {
+        acc[weight] = [];
+      }
+      acc[weight].push(variant);
+      return acc;
+    },
+    {} as Record<number, typeof coffee.variants>
+  );
+
   return (
-    <div className={cn("w-full", className)}>
-      {/* Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className="mb-6">
-        <ol className="flex items-center gap-2 text-caption text-muted-foreground">
-          <li>
-            <Link href="/" className="hover:text-foreground transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li>
-            <Link
-              href="/coffees"
-              className="hover:text-foreground transition-colors"
-            >
-              Coffees
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-foreground">{coffee.name}</li>
-        </ol>
-      </nav>
+    <div className={cn("w-full bg-background", className)}>
+      <PageShell maxWidth="7xl">
+        <div className="py-8 md:py-12">
+          {/* Breadcrumbs */}
+          <nav aria-label="Breadcrumb" className="mb-8">
+            <Cluster gap="2" align="center" className="text-caption">
+              <Link
+                href="/"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Home
+              </Link>
+              <span className="text-muted-foreground/40">/</span>
+              <Link
+                href="/coffees"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Coffees
+              </Link>
+              <span className="text-muted-foreground/40">/</span>
+              <span className="text-foreground font-medium">{coffee.name}</span>
+            </Cluster>
+          </nav>
 
-      {/* Main Content - Amazon-like layout */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        {/* Left: Image Carousel */}
-        <div>
-          <CoffeeImageCarousel
-            coffeeName={coffee.name}
-            images={coffee.images}
-          />
-        </div>
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 gap-16 lg:grid-cols-7">
+            {/* Left Column: Image & Flavor Profile */}
+            <div className="lg:col-span-3">
+              <div className="sticky top-24">
+                <Stack gap="8">
+                  <CoffeeImageCarousel
+                    coffeeName={coffee.name}
+                    images={coffee.images}
+                  />
+                  <CoffeeSensoryProfile coffee={coffee} />
+                </Stack>
+              </div>
+            </div>
 
-        {/* Right: Product Details */}
-        <div className="stack-lg">
-          <CoffeeCoreDetails coffee={coffee} />
-          <CoffeePricing coffee={coffee} />
-          <CoffeeBuyButton coffee={coffee} />
+            {/* Right Column: Details */}
+            <div className="lg:col-span-4">
+              <Stack gap="8">
+                {/* Header Section */}
+                <Stack gap="6">
+                  {/* Eyebrow with badges */}
+                  <Cluster gap="2" align="center">
+                    {coffee.bean_species && (
+                      <div className="inline-flex items-center gap-2">
+                        <span className="h-px w-8 bg-accent/60" />
+                        <span className="text-label">
+                          {coffee.bean_species}
+                        </span>
+                      </div>
+                    )}
+                    {coffee.decaf && (
+                      <Badge variant="secondary" className="text-label">
+                        Decaf
+                      </Badge>
+                    )}
+                    {coffee.is_limited && (
+                      <Badge variant="default" className="text-label">
+                        <Icon name="Lightning" size={12} className="mr-1" />
+                        Limited
+                      </Badge>
+                    )}
+                  </Cluster>
+
+                  {/* Title */}
+                  <Stack gap="3">
+                    <h1 className="text-display text-balance leading-[1.1] tracking-tight">
+                      {coffee.name}
+                    </h1>
+                    {coffee.roaster && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-body text-muted-foreground">
+                          Roasted by
+                        </span>
+                        <Link
+                          href={`/roasters/${coffee.roaster.slug}`}
+                          className="group inline-flex items-center gap-2 text-body font-medium text-primary hover:text-primary/80 transition-colors"
+                        >
+                          <Icon name="Storefront" size={16} />
+                          {coffee.roaster.name}
+                          <Icon
+                            name="ArrowRight"
+                            size={14}
+                            className="transition-transform group-hover:translate-x-0.5"
+                          />
+                        </Link>
+                      </div>
+                    )}
+                  </Stack>
+
+                  {/* Rating */}
+                  {coffee.rating_avg && coffee.rating_count > 0 && (
+                    <Cluster gap="3" align="center">
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Icon
+                            key={i}
+                            name="Star"
+                            size={16}
+                            className={cn(
+                              i < Math.round(coffee.rating_avg || 0)
+                                ? "text-amber-500 fill-amber-500"
+                                : "text-muted-foreground/30"
+                            )}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-body font-medium">
+                        {coffee.rating_avg.toFixed(1)}
+                      </span>
+                      <span className="text-caption text-muted-foreground">
+                        ({coffee.rating_count} reviews)
+                      </span>
+                    </Cluster>
+                  )}
+                </Stack>
+
+                <Separator />
+
+                {/* Core Details Card */}
+                <Card>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-4">
+                      {(coffee.roast_level_raw ||
+                        coffee.roast_style_raw ||
+                        coffee.roast_level) && (
+                        <div className="stack-xs">
+                          <span className="text-caption text-muted-foreground font-medium">
+                            Roast Level
+                          </span>
+                          <span className="text-body">
+                            {capitalizeFirstLetter(
+                              coffee.roast_level_raw ||
+                                coffee.roast_style_raw ||
+                                coffee.roast_level
+                            )}
+                          </span>
+                        </div>
+                      )}
+                      {(coffee.process_raw || coffee.process) && (
+                        <div className="stack-xs">
+                          <span className="text-caption text-muted-foreground font-medium">
+                            Process
+                          </span>
+                          <span className="text-body">
+                            {capitalizeFirstLetter(
+                              coffee.process_raw || coffee.process
+                            )}
+                          </span>
+                        </div>
+                      )}
+                      {coffee.crop_year && (
+                        <div className="stack-xs">
+                          <span className="text-caption text-muted-foreground font-medium">
+                            Crop Year
+                          </span>
+                          <span className="text-body">{coffee.crop_year}</span>
+                        </div>
+                      )}
+                    </div>
+                    {coffee.brew_methods.length > 0 && (
+                      <div className="mt-4 pt-4 border-t">
+                        <div className="stack-xs">
+                          <span className="text-caption text-muted-foreground font-medium">
+                            Best For
+                          </span>
+                          <TagList>
+                            {coffee.brew_methods.map((method) => (
+                              <Tag
+                                key={method.id}
+                                variant="outline"
+                                className="text-body"
+                              >
+                                {method.label}
+                              </Tag>
+                            ))}
+                          </TagList>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Description */}
+                {(coffee.description_md || coffee.summary.seo_desc) && (
+                  <Stack gap="4">
+                    <div className="flex items-center gap-2">
+                      <Icon name="Note" size={18} className="text-accent" />
+                      <h2 className="text-title">About This Coffee</h2>
+                    </div>
+                    {coffee.description_md ? (
+                      <div className="prose prose-sm dark:prose-invert max-w-none">
+                        <p className="text-body text-muted-foreground leading-relaxed whitespace-pre-line">
+                          {coffee.description_md}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-body text-muted-foreground leading-relaxed">
+                        {coffee.summary.seo_desc}
+                      </p>
+                    )}
+                  </Stack>
+                )}
+
+                {/* CTA Buttons */}
+                {coffee.direct_buy_url && (
+                  <Button asChild size="lg" className="w-full hover-lift">
+                    <a
+                      href={coffee.direct_buy_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon name="ShoppingCart" size={18} className="mr-2" />
+                      Buy Now
+                      <Icon name="ArrowRight" size={14} className="ml-2" />
+                    </a>
+                  </Button>
+                )}
+
+                <Separator />
+
+                {/* Pricing Section */}
+                {coffee.variants.length > 0 && (
+                  <Stack gap="6">
+                    <Stack gap="4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Icon
+                            name="CurrencyDollar"
+                            size={18}
+                            className="text-accent"
+                          />
+                          <h2 className="text-title">Pricing & Variants</h2>
+                        </div>
+                        {hasStock ? (
+                          <Badge variant="default" className="bg-green-600">
+                            <Icon name="Check" size={12} className="mr-1" />
+                            In Stock
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary">Out of Stock</Badge>
+                        )}
+                      </div>
+
+                      {/* Price Range */}
+                      {minPrice && (
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-title font-bold">
+                            {formatPrice(minPrice)}
+                          </span>
+                          {coffee.summary.best_normalized_250g && (
+                            <span className="text-caption text-muted-foreground">
+                              (
+                              {formatPrice(coffee.summary.best_normalized_250g)}
+                              / 250g)
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </Stack>
+
+                    {/* Variants by Weight */}
+                    <Stack gap="3">
+                      {Object.entries(variantsByWeight)
+                        .sort(([a], [b]) => Number(a) - Number(b))
+                        .map(([weight, variants]) => {
+                          // Get the minimum price for this weight group
+                          const prices = variants
+                            .map((v) => v.price_current)
+                            .filter((p): p is number => p !== null);
+                          const minPrice =
+                            prices.length > 0 ? Math.min(...prices) : null;
+                          const hasStock = variants.some((v) => v.in_stock);
+
+                          return (
+                            <Card key={weight} className="border-muted">
+                              <CardContent className="p-4">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-body font-semibold">
+                                    {Number(weight) >= 1000
+                                      ? `${Number(weight) / 1000}kg`
+                                      : `${weight}g`}
+                                  </span>
+                                  <div className="flex items-center gap-3">
+                                    {hasStock && (
+                                      <Badge
+                                        variant="secondary"
+                                        className="text-label"
+                                      >
+                                        Available
+                                      </Badge>
+                                    )}
+                                    {minPrice ? (
+                                      <span className="text-body font-bold">
+                                        {formatPrice(minPrice)}
+                                      </span>
+                                    ) : (
+                                      <span className="text-body text-muted-foreground">
+                                        Price N/A
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
+                    </Stack>
+                  </Stack>
+                )}
+
+                {/* Additional Tags */}
+                {coffee.tags && coffee.tags.length > 0 && (
+                  <Stack gap="3">
+                    <span className="text-caption text-muted-foreground font-medium">
+                      Tags
+                    </span>
+                    <TagList>
+                      {coffee.tags.map((tag, index) => (
+                        <Tag key={index} variant="outline">
+                          {tag}
+                        </Tag>
+                      ))}
+                    </TagList>
+                  </Stack>
+                )}
+              </Stack>
+            </div>
+          </div>
+
+          {/* Reviews Section */}
+          <div className="mt-16">
+            <ReviewSection entityType="coffee" entityId={coffee.id} />
+          </div>
         </div>
-      </div>
+      </PageShell>
     </div>
   );
 }

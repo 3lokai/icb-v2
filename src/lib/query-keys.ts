@@ -73,6 +73,17 @@ export const queryKeys = {
       sort: string
     ) => ["roasters", "list", { filters, page, limit, sort }] as const,
   },
+
+  // Review-related queries
+  reviews: {
+    all: ["reviews"] as const,
+    byEntity: (entityType: string, entityId: string) =>
+      ["reviews", "byEntity", entityType, entityId] as const,
+    stats: (entityType: string, entityId: string) =>
+      ["reviews", "stats", entityType, entityId] as const,
+    latest: (entityType: string, entityId: string) =>
+      ["reviews", "latest", entityType, entityId] as const,
+  },
 } as const;
 
 // Type helper for query keys

@@ -62,7 +62,7 @@ export async function fetchCoffeeBySlug(
 
     // Fetch variants
     supabase
-      .from("coffee_variants")
+      .from("variants")
       .select("*")
       .eq("coffee_id", coffeeId)
       .order("weight_g", { ascending: true }),
@@ -72,7 +72,7 @@ export async function fetchCoffeeBySlug(
 
     // Fetch sensory data
     supabase
-      .from("coffee_sensory")
+      .from("sensory_params")
       .select("*")
       .eq("coffee_id", coffeeId)
       .maybeSingle(),
