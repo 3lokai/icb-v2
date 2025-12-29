@@ -42,16 +42,16 @@ export default function NewArrivalsSection() {
   return (
     <section className="mb-20 py-16">
       <div className="container-default">
-        <div className="mb-8 text-center">
-          <h2 className="mb-4 text-heading text-primary">New Arrivals</h2>
-          <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
-          <p className="mx-auto max-w-2xl text-body text-muted-foreground">
-            The latest additions to our roster of exceptional Indian coffee
-            beans, featuring freshly roasted delights.
-          </p>
-        </div>
-        <div className="mb-8 text-center">
-          <Link href="/coffees">
+        <div className="mb-8 flex-between">
+          <div>
+            <h2 className="mb-4 text-heading text-primary">New Arrivals</h2>
+            <div className="mb-6 h-1 w-16 rounded-full bg-accent" />
+            <p className="text-body text-muted-foreground">
+              The latest additions to our roster of exceptional Indian coffee
+              beans, featuring freshly roasted delights.
+            </p>
+          </div>
+          <Link className="hidden md:block" href="/coffees">
             <Button className="group" variant="outline">
               Browse All Coffees
               <Icon
@@ -66,6 +66,18 @@ export default function NewArrivalsSection() {
           {coffees.map((coffee) => (
             <CoffeeCard coffee={coffee} key={coffee.slug || coffee.coffee_id} />
           ))}
+        </div>
+
+        <div className="mt-8 text-center md:hidden">
+          <Link href="/coffees">
+            <Button className="group w-full sm:w-auto" variant="outline">
+              Browse All Coffees
+              <Icon
+                className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                name="ArrowRight"
+              />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

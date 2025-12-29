@@ -1,50 +1,64 @@
-# Next.js Starter
+# ☕ Indian Coffee Beans Directory (ICB v2)
 
-A modern, production-ready Next.js starter template with TypeScript, Tailwind CSS v4, shadcn/ui, Supabase, and comprehensive tooling.
+A comprehensive directory website for discovering Indian specialty coffee beans and roasters. Built with Next.js 15, React 19, TypeScript, and Supabase.
+
+## 🎯 Project Overview
+
+Indian Coffee Beans Directory is a modern web platform that helps coffee enthusiasts discover, compare, and learn about Indian specialty coffee. The platform features:
+
+- **Coffee Directory** - Browse and filter hundreds of Indian coffee beans
+- **Roaster Profiles** - Detailed profiles of Indian coffee roasters
+- **Advanced Filtering** - Filter by region, process, roast level, flavor notes, and more
+- **Search System** - Unified search across coffees, roasters, and articles
+- **Coffee Tools** - Brewing calculator and expert recipes
+- **Educational Content** - Learn about Indian coffee regions, processing methods, and brewing
+- **User Profiles** - Personalized experience with preferences and ratings
+
+**Status:** 90% Complete - Awaiting Data Migration & Final Bug Fixes
 
 ## 🚀 Tech Stack
 
 ### Frontend
-- **Next.js 16** - React framework with App Router
-- **React 19** - Latest React features
-- **TypeScript** - Type-safe development
-- **Tailwind CSS v4** - Utility-first CSS framework with CSS-first approach
-- **shadcn/ui** - Beautiful, accessible UI components
+- **Next.js 16** - React framework with App Router and Turbopack
+- **React 19** - Latest React features with Server Components
+- **TypeScript** - Strict type safety throughout
+- **Tailwind CSS v4** - Utility-first CSS with CSS-first approach
+- **shadcn/ui** - Accessible component library built on Radix UI
+- **Motion** - Smooth animations and transitions
+- **Fuse.js** - Client-side fuzzy search
 
 ### Backend & Database
-- **Supabase** - Backend-as-a-Service with PostgreSQL
-- **Authentication** - Built-in auth with multiple providers
-- **Real-time** - Live data synchronization
-- **Storage** - File upload and management
-- **Row Level Security (RLS)** - Database security policies
+- **Supabase** - PostgreSQL database with real-time capabilities
+- **Row Level Security (RLS)** - Database-level security policies
+- **Authentication** - Email/password and OAuth (Google) support
+- **ImageKit** - CDN for optimized image delivery
 
-### State Management & UI
-- **Auth Provider** - Centralized authentication state management
-- **Modal Provider** - Global modal system with shadcn Dialog
-- **Query Provider** - TanStack Query for server state management
-- **Theme Provider** - Dark/light mode with next-themes
-- **Toast Notifications** - Sonner for user feedback
+### State Management & Data Fetching
+- **Zustand** - Lightweight state management for filters and UI state
+- **TanStack Query** - Server state management with caching
+- **React Hook Form** - Form state management
+- **Zod** - Runtime validation and type inference
 
 ### Development Tools
-- **Biome** - Fast linter and formatter (replaces ESLint/Prettier)
-- **Ultracite** - AI-ready code quality tools
+- **ESLint** - Code linting with Next.js and TypeScript rules
+- **Prettier** - Code formatting
 - **Husky** - Git hooks for code quality
-- **next-themes** - Dark/light mode support
-- **Zod** - Runtime environment validation
-- **GitHub Actions** - CI/CD pipeline
+- **TypeScript** - Strict mode with path aliases
 
 ## 🛠️ Getting Started
 
 ### Prerequisites
-- **Node.js 20.11.0 LTS** (pinned in `.nvmrc`)
+- **Node.js 20.11.0+** (LTS recommended)
 - npm, yarn, pnpm, or bun
+- Supabase account and project
+- ImageKit account (optional, for image optimization)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
    git clone <your-repo-url>
-   cd nextjs-starter-gt
+   cd icb-v2
    ```
 
 2. **Install dependencies**
@@ -52,113 +66,155 @@ A modern, production-ready Next.js starter template with TypeScript, Tailwind CS
    npm install
    ```
 
-3. **Set up Git hooks**
-   ```bash
-   npm run prepare
-   ```
-
-4. **Set up environment variables**
+3. **Set up environment variables**
    ```bash
    cp .env.local.example .env.local
    ```
    
-   Update `.env.local` with your Supabase credentials:
+   Update `.env.local` with your credentials:
    ```env
+   # Supabase
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+   SUPABASE_SECRET_KEY=your_supabase_secret_key
+   
+   # App Configuration
+   NEXT_PUBLIC_APP_NAME=Indian Coffee Beans
+   NEXT_PUBLIC_APP_URL=https://your-domain.com
+   
+   # ImageKit (optional)
+   NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=your_imagekit_url
+   NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
+   IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
    ```
 
-5. **Start the development server**
+4. **Set up Git hooks**
+   ```bash
+   npm run prepare
+   ```
+
+5. **Set up Supabase database**
+   ```bash
+   # Link to your Supabase project
+   npx supabase link --project-ref your-project-ref
+   
+   # Run migrations
+   npm run supabase:migration:up
+   
+   # Generate TypeScript types
+   npm run supabase:types
+   ```
+
+6. **Start the development server**
    ```bash
    npm run dev
    ```
 
-6. **Open your browser**
+7. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📁 Project Structure
 
 ```
-nextjs-starter-gt/
-├── .github/
-│   └── workflows/
-│       └── ci.yml         # GitHub Actions CI/CD
-├── .husky/
-│   └── pre-commit         # Git hooks
-├── .vscode/
-│   └── settings.json      # VS Code configuration
+icb-v2/
 ├── src/
-│   ├── app/               # Next.js App Router
-│   │   ├── api/
-│   │   │   ├── health/    # Health check endpoint
-│   │   │   └── og/        # Open Graph image generator
-│   │   ├── dashboard/     # Protected route example
-│   │   │   ├── layout.tsx # Dashboard metadata
-│   │   │   └── page.tsx   # Dashboard page
-│   │   ├── login/         # Auth page example
-│   │   │   ├── layout.tsx # Login metadata
-│   │   │   └── page.tsx   # Login page
-│   │   ├── error.tsx      # Error boundary
-│   │   ├── loading.tsx    # Loading UI
-│   │   ├── not-found.tsx  # 404 page
-│   │   ├── layout.tsx     # Root layout
-│   │   ├── page.tsx       # Homepage
-│   │   ├── robots.ts      # SEO robots configuration
-│   │   └── sitemap.ts     # XML sitemap generation
-│   ├── components/        # React components
-│   │   ├── providers/     # Context providers
-│   │   │   ├── auth-provider.tsx    # Authentication state
-│   │   │   ├── modal-provider.tsx   # Global modal system
-│   │   │   ├── query-provider.tsx   # TanStack Query setup
-│   │   │   └── theme-provider.tsx   # Dark/light mode
-│   │   ├── ui/            # shadcn/ui components
-│   │   │   ├── button.tsx
-│   │   │   ├── dialog.tsx
-│   │   │   ├── input.tsx
-│   │   │   └── ...        # Other UI components
-│   │   ├── header.tsx     # Site header with theme toggle
-│   │   └── page-shell.tsx # Layout wrapper
-│   ├── hooks/             # Custom React hooks
-│   │   ├── use-user.ts           # User data query
+│   ├── app/                    # Next.js App Router
+│   │   ├── (public)/          # Public routes (about, contact, privacy, etc.)
+│   │   ├── actions/           # Server actions
+│   │   ├── api/               # API routes
+│   │   ├── auth/              # Authentication pages
+│   │   ├── coffees/           # Coffee directory pages
+│   │   ├── dashboard/         # User dashboard (protected)
+│   │   ├── learn/             # Educational content
+│   │   ├── roasters/          # Roaster directory pages
+│   │   └── tools/              # Coffee tools (calculator, recipes)
+│   ├── components/            # React components
+│   │   ├── cards/             # Card components
+│   │   ├── coffees/           # Coffee-specific components
+│   │   ├── common/            # Shared components
+│   │   ├── homepage/          # Homepage sections
+│   │   ├── providers/         # Context providers
+│   │   ├── roasters/          # Roaster-specific components
+│   │   ├── search/            # Search components
+│   │   ├── tools/             # Tool components
+│   │   └── ui/                # shadcn/ui components
+│   ├── hooks/                 # Custom React hooks
+│   │   ├── use-auth.ts        # Authentication hook
+│   │   ├── use-coffees.ts     # Coffee data fetching
+│   │   ├── use-roasters.ts    # Roaster data fetching
+│   │   ├── use-search.ts      # Search functionality
 │   │   └── use-supabase-query.ts # Supabase query utilities
-│   ├── lib/
-│   │   ├── supabase/      # Supabase configuration
-│   │   │   ├── client.ts  # Browser client
-│   │   │   ├── server.ts  # Server client
-│   │   │   └── auth-helpers.ts # Auth utilities
-│   │   └── utils.ts       # Utility functions
-│   └── types/
-│       └── supabase-types.ts    # TypeScript types
-├── .editorconfig          # Editor configuration
-├── .gitattributes         # Git line ending config
-├── .nvmrc                 # Node version
-├── env.ts                 # Environment validation
-├── middleware.ts          # Auth middleware
-├── biome.json             # Biome configuration
-├── components.json        # shadcn/ui config
-├── package.json           # Dependencies & scripts
-├── tailwind.config.ts     # Tailwind CSS v4 config
-├── next.config.ts         # Next.js configuration
-├── tsconfig.json          # TypeScript config
-├── LICENSE                # MIT License
-├── SECURITY.md            # Security policy
-├── CODE_OF_CONDUCT.md     # Code of conduct
-└── README.md              # This file
+│   ├── lib/                   # Utility libraries
+│   │   ├── analytics/         # Analytics helpers
+│   │   ├── filters/          # Filter logic
+│   │   ├── search/           # Search index and utilities
+│   │   ├── seo/              # SEO helpers
+│   │   ├── supabase/         # Supabase clients
+│   │   └── utils.ts          # General utilities
+│   ├── store/                 # Zustand stores
+│   │   └── zustand/          # State management
+│   └── types/                # TypeScript type definitions
+│       ├── coffee-types.ts   # Coffee-related types
+│       ├── roaster-types.ts  # Roaster-related types
+│       └── supabase-types.ts # Generated Supabase types
+├── supabase/
+│   └── migrations/           # Database migrations
+├── public/                   # Static assets
+│   ├── animations/           # Lottie animations
+│   ├── images/              # Image assets
+│   └── videos/              # Video assets
+├── ai_docs/                  # Project documentation
+├── scripts/                  # Utility scripts
+├── env.ts                    # Environment validation
+├── next.config.ts            # Next.js configuration
+├── tsconfig.json             # TypeScript configuration
+└── package.json              # Dependencies & scripts
 ```
 
-## 🎨 Available Components
+## 🎨 Key Features
 
-This starter includes pre-configured shadcn/ui components:
+### Coffee Directory
+- Browse hundreds of Indian coffee beans
+- Advanced filtering by:
+  - Region (Karnataka, Kerala, Tamil Nadu, etc.)
+  - Processing method (Washed, Natural, Honey, Anaerobic)
+  - Roast level (Light, Medium, Dark)
+  - Flavor notes (Chocolate, Fruity, Nutty, etc.)
+  - Roaster
+  - Price range
+- URL-synchronized filter state
+- Detailed coffee profiles with tasting notes
 
-- **Button** - Various styles and sizes
-- **Card** - Content containers
-- **Input** - Form inputs
-- **Separator** - Visual dividers
-- **Progress** - Progress indicators
-- **Alert** - Notifications and alerts
-- **Switch** - Toggle switches
-- **Toggle** - Toggle buttons
-- **Sonner** - Toast notifications
+### Roaster Directory
+- Comprehensive roaster profiles
+- Location and contact information
+- Coffee catalog per roaster
+- Verification badges
+- Social media links
+
+### Search System
+- Unified search across coffees, roasters, and articles
+- Fuzzy matching with Fuse.js
+- Keyboard shortcuts (Cmd+K / Ctrl+K)
+- Instant results with client-side indexing
+
+### Coffee Tools
+- **Brewing Calculator** - Calculate coffee-to-water ratios
+- **Expert Recipes** - Curated brewing recipes
+- Support for multiple brewing methods
+
+### User Features
+- Authentication (Email/Password, Google OAuth)
+- User profiles with preferences
+- Coffee journey tracking
+- Rating system (IP-based, auth-ready)
+- Dashboard for managing preferences
+
+### Educational Content
+- Coffee glossary
+- Regional information
+- Processing method guides
+- Brewing tutorials
 
 ## 🔧 Available Scripts
 
@@ -168,396 +224,125 @@ npm run dev          # Start development server with Turbopack
 npm run build        # Build for production
 npm run start        # Start production server
 
-# Code Quality & Type Checking
+# Code Quality
 npm run type-check   # TypeScript type checking
-npm run check        # Run Ultracite checks (linting)
-npm run format       # Format code with Ultracite
-npm run fix          # Fix issues automatically
+npm run lint         # Run ESLint
+npm run lint:fix      # Fix ESLint issues
+npm run format       # Format code with Prettier
+npm run format:check # Check code formatting
 
-# Supabase (when configured)
-npm run supabase:types  # Generate TypeScript types
+# Supabase
+npm run supabase:types           # Generate TypeScript types from schema
+npm run supabase:migration:new   # Create a new migration
+npm run supabase:migration:list   # List all migrations
+npm run supabase:migration:up     # Apply pending migrations
+npm run supabase:migration:down   # Rollback last migration
+npm run supabase:db:pull         # Pull schema from Supabase
+npm run supabase:db:push         # Push local schema to Supabase
 ```
 
-## 🌙 Theme Support
+## 🗄️ Database Schema
 
-The starter includes dark/light mode support using `next-themes`:
+The project uses Supabase (PostgreSQL) with the following main entities:
 
-- System preference detection
-- Manual theme switching
-- Persistent theme selection
-- Tailwind CSS dark mode classes
-- ThemeProvider and Toaster wired in `layout.tsx`
+- **coffees** - Coffee bean listings
+- **roasters** - Roaster profiles
+- **coffee_flavor_profiles** - Flavor notes and tasting profiles
+- **regions** - Indian coffee growing regions
+- **user_profiles** - User account information
+- **ratings** - Coffee ratings (IP-based)
 
-## 🔐 Supabase Setup
+See `supabase/migrations/` for the complete schema.
 
-> **📢 Migration Notice**: This starter now uses Supabase's new `publishable` key instead of the legacy `anon` key. If you're migrating from an older version, update your environment variables accordingly.
+## 🔐 Authentication
 
-1. **Create a Supabase project** at [supabase.com](https://supabase.com)
+The project supports multiple authentication methods:
 
-2. **Get your project credentials**
-   - Project URL
-   - Publishable key
+- **Email/Password** - Traditional email authentication
+- **Google OAuth** - Social authentication
+- **Role-based access** - Admin, Operator, User, Viewer, Contributor, Roaster
 
-3. **Update environment variables**
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your_project_url
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_publishable_key
-   ```
+Protected routes are handled via Next.js middleware. User profiles include:
+- Coffee preferences
+- Notification settings
+- Privacy controls
+- Account management
 
-4. **Generate TypeScript types** (optional)
-   ```bash
-   npm run supabase:types
-   ```
-   
-   **Note**: `src/types/supabase-types.ts` is generated automatically - do not edit manually.
+## 🎯 Filter System
 
-5. **Enable Row Level Security (RLS)**
-   ⚠️ **Important**: Production requires RLS policies on all tables. See [Supabase RLS documentation](https://supabase.com/docs/guides/auth/row-level-security).
+The filter system uses Zustand for state management and synchronizes with URL parameters:
 
-## 🎯 Features
+- **State Management** - Zustand store for filter state
+- **URL Sync** - Filters reflected in URL for sharing/bookmarking
+- **Persistence** - Filter state persists across navigation
+- **Performance** - Optimized queries with TanStack Query caching
 
-### Core Framework
-- ✅ **Next.js 15** with App Router and Turbopack
-- ✅ **React 19** with latest features
-- ✅ **TypeScript** strict mode with path aliases
-- ✅ **Tailwind CSS v4** with CSS-first approach (no PostCSS config)
-- ✅ **shadcn/ui** components with Radix UI primitives
+## 🔍 Search Implementation
 
-### Backend & Database
-- ✅ **Supabase** integration with SSR support
-- ✅ **Authentication** with centralized state management
-- ✅ **Real-time** data synchronization
-- ✅ **Row Level Security (RLS)** for database security
+The search system uses Fuse.js for client-side fuzzy search:
 
-### State Management & UI
-- ✅ **Auth Provider** - Centralized authentication with React Context
-- ✅ **Modal Provider** - Global modal system with shadcn Dialog
-- ✅ **Query Provider** - TanStack Query for server state management
-- ✅ **Theme Provider** - Dark/light mode with next-themes
-- ✅ **Toast Notifications** - Sonner for user feedback
+- **Unified Index** - Single search across all content types
+- **Denormalized Data** - Pre-joined data for fast searching
+- **Semantic Matching** - Finds related terms and synonyms
+- **Keyboard Navigation** - Full keyboard support
 
-### Development & Quality
-- ✅ **Biome** linting and formatting (replaces ESLint/Prettier)
-- ✅ **Ultracite** AI-ready code quality tools
-- ✅ **Husky** pre-commit hooks with lint-staged
-- ✅ **GitHub Actions** CI/CD pipeline
-- ✅ **Environment validation** with Zod
+## 📊 SEO & Performance
 
-### Production Ready
-- ✅ **Error boundaries** (`error.tsx`, `not-found.tsx`, `loading.tsx`)
-- ✅ **Health check** API endpoint (`/api/health`)
-- ✅ **Auth middleware** for protected routes (`/dashboard/*`)
-- ✅ **Responsive design** with mobile-first approach
-- ✅ **Accessibility** features (WCAG compliant)
-- ✅ **Production-ready** configuration
+- **Metadata** - Comprehensive meta tags per page
+- **Open Graph** - Social sharing optimization
+- **Sitemap** - Auto-generated XML sitemap
+- **Robots.txt** - Search engine configuration
+- **Image Optimization** - ImageKit CDN with Next.js Image
+- **Server Components** - Optimized rendering
 
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 1. Push your code to GitHub
 2. Connect your repository to Vercel
 3. Add environment variables in Vercel dashboard
 4. Deploy!
 
-### Other Platforms
-This starter works with any platform that supports Next.js:
-- Netlify
-- Railway
-- DigitalOcean App Platform
-- AWS Amplify
+### Environment Variables for Production
 
-## 🎯 Using the Providers
+Ensure all required environment variables are set:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_SECRET_KEY` (server-side only)
+- `NEXT_PUBLIC_APP_URL`
+- ImageKit credentials (if using)
 
-### Auth Provider
-The `AuthProvider` provides centralized authentication state management:
+## 🧪 Development Guidelines
 
-```tsx
-import { useAuth } from "@/components/providers/auth-provider";
+### Code Quality Standards
+- **TypeScript Strict Mode** - All code must be type-safe
+- **Server Components First** - Prefer server components over client
+- **Accessibility** - WCAG compliant components
+- **Error Handling** - Comprehensive error boundaries
+- **Loading States** - Proper loading UI for async operations
 
-function MyComponent() {
-  const { user, isLoading, signIn, signOut } = useAuth();
-  
-  if (isLoading) return <div>Loading...</div>;
-  
-  return (
-    <div>
-      {user ? (
-        <div>
-          <p>Welcome, {user.email}!</p>
-          <button onClick={signOut}>Sign Out</button>
-        </div>
-      ) : (
-        <button onClick={() => signIn(email, password)}>Sign In</button>
-      )}
-    </div>
-  );
-}
-```
+### Component Patterns
+- Use Zustand for complex state, `useState` for simple state
+- Prefer TanStack Query for data fetching
+- Use server actions for mutations
+- Follow existing patterns in `src/components/`
 
-### Modal Provider
-The `ModalProvider` provides a global modal system:
-
-```tsx
-import { useModal } from "@/components/providers/modal-provider";
-
-function MyComponent() {
-  const { openModal } = useModal();
-  
-  const showConfirmation = () => {
-    openModal({
-      type: "confirmation",
-      title: "Confirm Action",
-      description: "Are you sure you want to continue?",
-      confirmText: "Yes, continue",
-      cancelText: "Cancel",
-      onConfirm: () => {
-        console.log("Confirmed!");
-      },
-    });
-  };
-  
-  return <button onClick={showConfirmation}>Show Modal</button>;
-}
-```
-
-### Query Provider (TanStack Query)
-The `QueryProvider` provides powerful data fetching and caching:
-
-```tsx
-import { useUser } from "@/hooks/use-user";
-import { useSupabaseQuery, useSupabaseMutation } from "@/hooks/use-supabase-query";
-
-function MyComponent() {
-  // Use the built-in user query
-  const { data: user, isLoading, error } = useUser();
-  
-  // Custom Supabase query
-  const { data: posts, isLoading: postsLoading } = useSupabaseQuery(
-    ["posts"],
-    async () => {
-      const supabase = createClient();
-      const { data, error } = await supabase.from("posts").select("*");
-      if (error) throw error;
-      return data;
-    }
-  );
-  
-  // Mutation with automatic cache invalidation
-  const createPost = useSupabaseMutation(
-    async (postData) => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("posts")
-        .insert([postData])
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    },
-    {
-      invalidateQueries: [["posts"]], // Refetch posts after creating
-    }
-  );
-  
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  
-  return (
-    <div>
-      <h1>Welcome, {user?.email}!</h1>
-      <button onClick={() => createPost.mutate({ title: "New Post" })}>
-        Create Post
-      </button>
-    </div>
-  );
-}
-```
-
-## 🤖 AI Development Tools
-
-This starter includes AI-powered development tools:
-
-- **`.cursor/`** - Cursor AI editor configuration and rules
-- **`.kilocode/`** - Kilocode AI tooling for enhanced development
-- **`.rules`** - AI coding rules and guidelines for consistent code generation
-
-These artifacts help maintain code quality and consistency when using AI assistants. They're safe to commit and share with your team.
-
-## 🚀 Common Tasks
-
-### Adding a New Page
-```bash
-# Create a new page
-mkdir src/app/your-page
-touch src/app/your-page/page.tsx
-```
-
-### Adding a Protected Route
-1. Create your page in `src/app/protected-route/`
-2. The middleware will automatically protect it
-3. Users will be redirected to `/login` if not authenticated
-
-### Adding a shadcn/ui Component
-```bash
-# Add a new component (installs to src/components/ui/)
-npx shadcn@latest add [component-name]
-
-# Example: Add a dialog component
-npx shadcn@latest add dialog
-```
-
-### Generating Supabase Types
-```bash
-# Generate TypeScript types from your Supabase schema
-npm run supabase:types
-```
-
-### Code Quality Commands
-```bash
-# Check for issues
-npm run check
-
-# Format code
-npm run format
-
-# Fix issues automatically
-npm run fix
-
-# Type check
-npm run type-check
-```
-
-### Environment Variables
-The project includes Zod validation for environment variables in `env.ts`. Add new variables there and update `.env.local.example`:
-
-```typescript
-// env.ts
-const envSchema = z.object({
-  NEXT_PUBLIC_SUPABASE_URL: z.string().min(1).url(),
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1),
-  // Add your new variables here
-  NEXT_PUBLIC_APP_NAME: z.string().default("Next.js Starter"),
-});
-```
-
-### Migrating from Legacy Supabase Keys
-
-If you're updating from a project using the legacy `anon` key, follow these steps:
-
-1. **Update your environment variables**:
-   ```bash
-   # Old (legacy)
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-   
-   # New (current)
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_publishable_key
-   ```
-
-2. **Get your new publishable key** from your Supabase dashboard:
-   - Go to your project settings
-   - Navigate to API settings
-   - Copy the new "Publishable" key (starts with `sb_publishable_...`)
-
-3. **Update your deployment environment** (Vercel, Netlify, etc.) with the new environment variable name.
-
-**Note**: The new publishable key provides the same functionality as the legacy anon key but with enhanced security and better key management.
-
-**Note**: Store secrets in your deployment platform (Vercel/Actions secrets), not in `.env.local`.
-
-### Error Boundaries & UX
-The starter includes built-in error handling:
-- `error.tsx` - Catches JavaScript errors in route segments
-- `not-found.tsx` - 404 page for unknown routes  
-- `loading.tsx` - Loading UI for async operations
-- `/api/health` - Health check endpoint (returns status, version, environment)
-- `/api/og` - Dynamic Open Graph image generator for social sharing
-- `/robots.txt` - SEO robots configuration
-- `/sitemap.xml` - XML sitemap for search engines
-
-### Open Graph Image Generator
-Generate dynamic OG images for social sharing:
-
-```bash
-# Basic OG image
-curl "http://localhost:3000/api/og?title=My%20Page&description=This%20is%20my%20page"
-
-# With custom theme
-curl "http://localhost:3000/api/og?title=My%20Page&description=This%20is%20my%20page&theme=dark"
-```
-
-**Parameters:**
-- `title` - Page title (default: "Next.js Starter")
-- `description` - Page description
-- `theme` - "light" or "dark" (default: "light")
-
-### SEO & Metadata
-The starter includes comprehensive SEO features:
-
-- **Title templates** - Automatic page titles with site name
-- **Open Graph** - Dynamic OG images for social sharing
-- **Twitter Cards** - Optimized for Twitter sharing
-- **Robots.txt** - Search engine crawling rules
-- **Sitemap.xml** - Automatic XML sitemap generation
-- **Canonical URLs** - Proper URL canonicalization
-- **Meta tags** - Keywords, descriptions, and author info
-
-**Example page metadata:**
-```tsx
-export const metadata: Metadata = {
-  title: "My Page",
-  description: "Page description",
-  openGraph: {
-    title: "My Page",
-    description: "Page description",
-    images: ["/api/og?title=My%20Page&description=Page%20description"],
-  },
-};
-```
-
-### Health Check Endpoint
-Test the health endpoint:
-```bash
-curl http://localhost:3000/api/health
-# Returns: {"status":"ok","timestamp":"...","version":"1.0.0","environment":"development"}
-```
-
-### Why Biome/Ultracite (No ESLint/Prettier)?
-
-- **Faster**: Single tool for linting and formatting
-- **Zero Config**: Works out of the box with sensible defaults
-- **AI-Ready**: Optimized for modern development workflows
-- **TypeScript First**: Better TypeScript support than ESLint
-- **Consistent**: Unified rules and formatting across the project
-
-## 🔧 VS Code Setup
-
-### Recommended Extensions
-Install these VS Code extensions for the best experience:
-
-```json
-{
-  "recommendations": [
-    "biomejs.biome",
-    "bradlc.vscode-tailwindcss",
-    "ms-vscode.vscode-typescript-next"
-  ]
-}
-```
-
-The project includes `.vscode/settings.json` with:
-- Biome as default formatter
-- Format on save enabled
-- Tailwind IntelliSense configured
-- ESLint disabled (using Biome instead)
+### Database Patterns
+- Use `useSupabaseQuery` hook for data fetching
+- Zod schemas for validation
+- TanStack Query for caching
+- Custom hooks in `src/hooks/`
 
 ## 📚 Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS v4](https://tailwindcss.com/docs)
-- [shadcn/ui Documentation](https://ui.shadcn.com)
+- [React 19 Documentation](https://react.dev)
 - [Supabase Documentation](https://supabase.com/docs)
-- [Biome Documentation](https://biomejs.dev)
-- [Ultracite Documentation](https://ultracite.dev)
+- [TanStack Query](https://tanstack.com/query/latest)
+- [Zustand](https://zustand-demo.pmnd.rs)
+- [shadcn/ui](https://ui.shadcn.com)
+- [Tailwind CSS v4](https://tailwindcss.com/docs)
 
 ## 🤝 Contributing
 
@@ -574,7 +359,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - [Next.js](https://nextjs.org) team for the amazing framework
-- [Tailwind CSS](https://tailwindcss.com) for the utility-first CSS
-- [shadcn](https://ui.shadcn.com) for the beautiful components
 - [Supabase](https://supabase.com) for the backend platform
+- [shadcn](https://ui.shadcn.com) for the beautiful components
 - [Vercel](https://vercel.com) for the deployment platform
+- The Indian specialty coffee community for inspiration
+
+---
+
+**Built with ☕ and ❤️ for the Indian coffee community**

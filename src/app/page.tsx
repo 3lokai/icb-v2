@@ -25,7 +25,7 @@ export default async function Home() {
           linkUrl={announcement.link || undefined}
         />
       )}
-      <main className="flex-1">
+      <main className="flex-1 bg-muted/30">
         <HeroSection />
         <NewArrivalsSection />
         <FeaturesBentoGrid />

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function CtaSection() {
   return (
-    <section className="section-spacing">
+    <section className="section-spacing glass-overlay">
       <div className="container-default">
         <div className="overflow-hidden rounded-lg shadow-xl">
           <div className="relative bg-gradient-to-r from-primary to-accent">

@@ -48,16 +48,18 @@ export default function FeaturedRoastersSection() {
   return (
     <section className="mb-20 py-16">
       <div className="container-default">
-        <div className="mb-8 text-center">
-          <h2 className="mb-4 text-heading text-primary">Featured Roasters</h2>
-          <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
-          <p className="mx-auto max-w-2xl text-body text-muted-foreground">
-            Discover India&apos;s finest specialty coffee roasters, each
-            bringing a unique perspective and passion to their craft.
-          </p>
-        </div>
-        <div className="mb-8 text-center">
-          <Link href="/roasters">
+        <div className="mb-8 flex-between">
+          <div>
+            <h2 className="mb-4 text-heading text-primary">
+              Featured Roasters
+            </h2>
+            <div className="mb-6 h-1 w-16 rounded-full bg-accent" />
+            <p className="text-body text-muted-foreground">
+              Discover India&apos;s finest specialty coffee roasters, each
+              bringing a unique perspective and passion to their craft.
+            </p>
+          </div>
+          <Link className="hidden md:block" href="/roasters">
             <Button className="group" variant="outline">
               View All Roasters
               <Icon
@@ -72,6 +74,18 @@ export default function FeaturedRoastersSection() {
           {roasters.map((roaster) => (
             <RoasterCard key={roaster.id} roaster={roaster} />
           ))}
+        </div>
+
+        <div className="mt-8 text-center md:hidden">
+          <Link href="/roasters">
+            <Button className="group w-full sm:w-auto" variant="outline">
+              View All Roasters
+              <Icon
+                className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                name="ArrowRight"
+              />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

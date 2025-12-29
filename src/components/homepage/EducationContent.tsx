@@ -32,12 +32,12 @@ const educationItems = [
 export default function EducationSection() {
   return (
     <section className="mb-20">
-      <div className="card-padding rounded-2xl">
+      <div className="glass-panel card-padding rounded-2xl">
         <div className="container-default">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Left Column: Content */}
             <div className="order-2 lg:order-1">
-              <div className="mb-8 text-center lg:text-left">
+              <div className="mb-8 text-left">
                 <div className="mb-6 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5">
                   <Icon
                     className="mr-2"
@@ -53,9 +53,9 @@ export default function EducationSection() {
                 <h2 className="mb-4 text-heading text-primary">
                   Unlock the World of Indian Coffee
                 </h2>
-                <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent lg:mx-0" />
+                <div className="mb-6 h-1 w-16 rounded-full bg-accent" />
 
-                <p className="mx-auto max-w-2xl text-body text-muted-foreground lg:mx-0">
+                <p className="text-body text-muted-foreground">
                   Dive into India&apos;s rich coffee heritage, from cultivation
                   techniques in the Western Ghats to traditional brewing methods
                   that enhance the unique flavors of Indian beans.
