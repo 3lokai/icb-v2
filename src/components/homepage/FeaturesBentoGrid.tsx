@@ -3,6 +3,8 @@
 
 import { useEffect, useState } from "react";
 import { Icon, IconName } from "@/components/common/Icon";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
 import { cn } from "@/lib/utils";
 import { AnimatedList } from "../ui/animated-list";
@@ -20,33 +22,30 @@ const RegionalDiscoveryBackground = () => {
   ];
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <Marquee
-        className="absolute top-4 right-4 z-0 [--duration:25s] [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)]"
+        className="absolute top-4 right-4 z-0 [--duration:35s] [mask-image:linear-gradient(to_bottom,transparent,white_20%,white_80%,transparent)]"
         pauseOnHover
         vertical
       >
         {indianRegions.map((region) => (
           <div
             className={cn(
-              "relative mx-3 w-32 cursor-pointer overflow-hidden rounded-xl p-4",
-              "border-primary/20 bg-primary/5 hover:bg-primary/10",
+              "relative mx-3 w-32 overflow-hidden rounded-xl p-3",
+              "border border-border/40 bg-card/50 backdrop-blur-[2px]",
               "transform-gpu transition-all duration-300 ease-out",
-              "surface-1"
+              "group-hover:border-accent/20"
             )}
             key={region.name}
           >
             <div className="mb-2 flex items-center gap-2">
-              <Icon className="h-4 w-4 text-primary" name="MapPin" />
-              <div className="font-semibold text-primary text-caption">
+              <Icon className="h-3.5 w-3.5 text-accent/60" name="MapPin" />
+              <div className="font-semibold text-foreground text-overline uppercase tracking-wider">
                 {region.name}
               </div>
             </div>
-            <div className="text-muted-foreground text-overline">
+            <div className="text-muted-foreground text-overline uppercase tracking-widest">
               {region.state}
-            </div>
-            <div className="mt-1 font-medium text-accent text-micro">
-              {region.altitude}
             </div>
           </div>
         ))}
@@ -98,17 +97,19 @@ const ExpertShowcase = () => {
   }, [experts.length]);
 
   return (
-    <div className="absolute top-4 right-4 z-0">
-      <div className="surface-1 min-w-[140px] animate-fade-in-scale p-3 text-center rounded-lg">
-        <Icon className="mx-auto mb-1 h-5 w-5 text-accent" name="Trophy" />
-        <div className="mb-1 font-medium text-foreground text-overline">
+    <div className="absolute top-6 right-6 z-0 pointer-events-none">
+      <div className="relative overflow-hidden rounded-xl border border-border/50 bg-background/60 p-3 text-center shadow-sm backdrop-blur-[2px] transition-all duration-500 group-hover:border-accent/30 group-hover:bg-background/80">
+        <Icon
+          className="mx-auto mb-1.5 h-3.5 w-3.5 text-accent/40"
+          name="Trophy"
+        />
+        <div className="mb-0.5 font-serif text-body text-foreground tracking-tight leading-tight">
           {experts[currentExpert].name}
         </div>
-        <div className="mb-1 text-accent text-micro">
-          {experts[currentExpert].year && `${experts[currentExpert].year} • `}
+        <div className="mb-1 text-accent text-overline uppercase tracking-[0.2em] font-bold">
           {experts[currentExpert].method}
         </div>
-        <div className="text-muted-foreground text-micro">
+        <div className="text-muted-foreground text-micro italic leading-tight">
           {experts[currentExpert].achievement}
         </div>
       </div>
@@ -117,66 +118,43 @@ const ExpertShowcase = () => {
 };
 
 const FloatingSteps = () => (
-  <div className="absolute inset-0 z-0 overflow-hidden">
+  <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
     {[
       {
         time: "0:00",
         text: "Bloom",
-        detail: "60ml",
         delay: "0s",
-        position: { top: "15%", right: "10%" },
+        position: { top: "15%", right: "12%" },
       },
       {
         time: "0:45",
-        text: "Pour 1",
-        detail: "240ml",
-        delay: "0.5s",
-        position: { top: "15%", right: "25%" },
-      },
-      {
-        time: "2:30",
-        text: "Drawdown",
-        detail: "V60",
-        delay: "2s",
-        position: { top: "55%", right: "5%" },
+        text: "Extraction",
+        delay: "1s",
+        position: { top: "35%", right: "28%" },
       },
       {
         time: "3:30",
-        text: "Complete",
-        detail: "500ml",
-        delay: "2.5s",
-        position: { top: "45%", right: "35%" },
-      },
-      {
-        time: "1:20",
-        text: "Press",
-        detail: "AeroPress",
-        delay: "3s",
-        position: { top: "10%", right: "40%" },
-      },
-      {
-        time: "4:00",
-        text: "Steep",
-        detail: "French Press",
-        delay: "3.5s",
-        position: { top: "65%", right: "20%" },
+        text: "Enjoy",
+        delay: "2s",
+        position: { top: "55%", right: "8%" },
       },
     ].map((step, i) => (
       <div
-        className="surface-1 absolute animate-float p-2 text-overline opacity-50 transition-opacity hover:opacity-80 rounded-lg"
+        className="absolute animate-float rounded-lg border border-border/40 bg-background/40 p-3 shadow-sm backdrop-blur-[2px] opacity-40 transition-all duration-500 group-hover:opacity-100"
         key={step.time}
         style={{
           top: step.position.top,
           right: step.position.right,
           animationDelay: step.delay,
-          animationDuration: `${3 + i * 0.2}s`,
+          animationDuration: `${4 + i * 0.5}s`,
         }}
       >
-        <div className="font-medium text-primary text-micro">{step.time}</div>
-        <div className="font-medium text-foreground text-overline">
+        <div className="text-overline font-bold text-accent/60 uppercase tracking-widest">
+          {step.time}
+        </div>
+        <div className="font-medium text-foreground text-caption">
           {step.text}
         </div>
-        <div className="text-muted-foreground text-micro">{step.detail}</div>
       </div>
     ))}
   </div>
@@ -186,94 +164,75 @@ const CoffeeProfileShowcase = () => {
   const profileFeatures = [
     {
       icon: "Camera" as IconName,
-      title: "Coffee Station Photos",
-      description: "Showcase your setup",
+      title: "Station Photos",
       color: "text-primary",
     },
     {
       icon: "ListChecks" as IconName,
       title: "Equipment Collection",
-      description: "Grinders, brewers, scales",
-      color: "text-accent",
+      color: "text-primary",
     },
     {
       icon: "Heart" as IconName,
       title: "Coffee Wishlist",
-      description: "Beans you want to try",
-      color: "text-chart-1",
+      color: "text-accent",
     },
     {
       icon: "Star" as IconName,
       title: "Top Recommendations",
-      description: "Your favorite picks",
-      color: "text-chart-2",
-    },
-    {
-      icon: "ChartBar" as IconName,
-      title: "Brewing Stats",
-      description: "Methods & preferences",
-      color: "text-chart-3",
-    },
-    {
-      icon: "Trophy" as IconName,
-      title: "Achievement Badges",
-      description: "Coffee milestones",
-      color: "text-chart-4",
+      color: "text-accent",
     },
   ];
 
   return (
-    <AnimatedList
-      className="absolute top-4 right-2 h-[300px] w-full max-w-[280px] border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105"
-      delay={1200}
-    >
-      {profileFeatures.map((feature) => (
-        <div
-          className="surface-1 mx-auto w-full max-w-[250px] p-3 card-hover rounded-lg"
-          key={feature.title}
-        >
-          <div className="flex items-center gap-3">
-            <Icon
-              className={`h-4 w-4 ${feature.color} flex-shrink-0`}
-              name={feature.icon}
-            />
-            <div className="min-w-0 flex-1">
-              <div className="truncate font-medium text-foreground text-overline">
+    <div className="absolute top-4 right-4 h-[280px] w-full max-w-[240px] pointer-events-none [mask-image:linear-gradient(to_bottom,white_40%,transparent)]">
+      <AnimatedList delay={1500} maxItems={3}>
+        {profileFeatures.map((feature) => (
+          <div
+            className="mb-3 rounded-xl border border-border/40 bg-background/40 p-3 shadow-sm backdrop-blur-[2px] transition-all duration-500 group-hover:bg-background/60"
+            key={feature.title}
+          >
+            <div className="flex items-center gap-3">
+              <Icon
+                className={`h-4 w-4 ${feature.color}`}
+                name={feature.icon}
+              />
+              <div className="text-caption font-medium tracking-tight text-foreground">
                 {feature.title}
-              </div>
-              <div className="truncate text-muted-foreground text-overline">
-                {feature.description}
               </div>
             </div>
           </div>
-        </div>
-      ))}
-    </AnimatedList>
+        ))}
+      </AnimatedList>
+    </div>
   );
 };
 
 const SimpleFloatingRatings = () => {
-  const ratings = [4.5, 3.8, 4.9];
+  const ratings = [4.8, 4.2, 4.9];
 
   return (
-    <>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {ratings.map((rating, i) => (
         <div
-          className="surface-1 absolute animate-float p-2 opacity-30 rounded-lg"
+          className="absolute animate-float rounded-full border border-border/40 bg-background/60 px-3 py-1.5 shadow-sm backdrop-blur-[2px] opacity-40 transition-all duration-500 group-hover:opacity-100"
           key={rating}
           style={{
             animationDelay: `${i * 1.5}s`,
             top: `${20 + i * 20}%`,
-            right: `${10 + i * 15}%`,
+            right: `${15 + i * 12}%`,
+            animationDuration: `${5 + i}s`,
           }}
         >
-          <div className="flex items-center gap-1">
-            <Icon className="h-3 w-3 fill-current text-chart-1" name="Star" />
-            <span className="font-medium text-micro">{rating}</span>
+          <div className="flex items-center gap-1.5">
+            <Icon className="h-3 w-3 fill-accent text-accent" name="Star" />
+            <span className="text-overline font-bold tabular-nums">
+              {rating}
+            </span>
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
@@ -317,10 +276,12 @@ const features = [
     cta: "Explore Recipes",
     className: "col-span-3 lg:col-span-1",
     background: (
-      <>
+      <div className="absolute inset-0">
         <ExpertShowcase />
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent/5" />
-      </>
+        {/* Subtle blur overlay for content legibility */}
+        <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-background/60 via-background/20 to-transparent backdrop-blur-[2px] [mask-image:linear-gradient(to_top,black_30%,transparent)]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent" />
+      </div>
     ),
   },
   {
@@ -357,18 +318,38 @@ const features = [
 
 export default function FeaturesBentoGrid() {
   return (
-    <section className="mb-20 py-16">
-      <div className="container-default">
-        {/* Section Header */}
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-heading text-primary">
-            Discover. Brew. Perfect.
-          </h2>
-          <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
-          <p className="mx-auto max-w-2xl text-body text-muted-foreground">
-            From precision brewing tools to community reviews, everything you
-            need to elevate your coffee experience.
-          </p>
+    <Section spacing="default">
+      <Stack gap="12">
+        {/* Section Header - Editorial Style */}
+        <div className="mx-auto max-w-6xl w-full">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+            <div className="md:col-span-8">
+              <Stack gap="6">
+                <div className="inline-flex items-center gap-4">
+                  <span className="h-px w-8 md:w-12 bg-accent/60" />
+                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                    The Ecosystem
+                  </span>
+                </div>
+                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                  Discover. Brew.{" "}
+                  <span className="text-accent italic">Perfect.</span>
+                </h2>
+                <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
+                  From precision brewing tools to community-verified data,
+                  everything you need to navigate India&apos;s specialty coffee
+                  landscape.
+                </p>
+              </Stack>
+            </div>
+            <div className="md:col-span-4 flex md:justify-end pb-2">
+              <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
+                <span className="h-1 w-1 rounded-full bg-accent/40" />
+                Community Driven
+                <span className="h-1 w-1 rounded-full bg-accent/40" />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Bento Grid */}
@@ -377,7 +358,7 @@ export default function FeaturesBentoGrid() {
             <BentoCard key={feature.name} {...feature} />
           ))}
         </BentoGrid>
-      </div>
-    </section>
+      </Stack>
+    </Section>
   );
 }

@@ -3,6 +3,7 @@
 import { FormEvent, useRef, useState } from "react";
 import { toast } from "sonner";
 import { subscribeToNewsletter } from "@/app/actions/newsletter";
+import { Button } from "../ui/button";
 
 type NewsletterFormProps = {
   className?: string;
@@ -68,13 +69,14 @@ export function NewsletterForm({
         type="email"
       />
 
-      <button
-        className={`btn-primary w-full ${loading ? "opacity-70" : ""}`}
+      <Button
+        className="w-full"
         disabled={loading}
         type="submit"
+        variant="default"
       >
         {loading ? "Subscribing..." : buttonText}
-      </button>
+      </Button>
     </form>
   );
 }

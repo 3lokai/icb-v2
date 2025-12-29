@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Coffee, Calendar, User, Bell } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -79,7 +79,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5" />
+              <Icon name="User" size={20} className="h-5 w-5" />
               Profile Status
             </CardTitle>
             <CardDescription>Your profile completion</CardDescription>
@@ -99,7 +99,7 @@ export default function DashboardPage() {
             </div>
             {profile.onboarding_completed ? (
               <Badge variant="default" className="w-fit">
-                <CheckCircle2 className="h-3 w-3 mr-1" />
+                <Icon name="CheckCircle" size={12} className="h-3 w-3 mr-1" />
                 Onboarding Complete
               </Badge>
             ) : (
@@ -113,7 +113,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Coffee className="h-5 w-5" />
+              <Icon name="Coffee" size={20} className="h-5 w-5" />
               Coffee Preferences
             </CardTitle>
             <CardDescription>Your coffee preferences</CardDescription>
@@ -149,7 +149,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
+              <Icon name="Calendar" size={20} className="h-5 w-5" />
               Account Info
             </CardTitle>
             <CardDescription>Your account details</CardDescription>
@@ -176,19 +176,19 @@ export default function DashboardPage() {
           <CardContent className="space-y-2">
             <Button asChild variant="outline" className="w-full justify-start">
               <Link href="/dashboard/profile">
-                <User className="h-4 w-4 mr-2" />
+                <Icon name="User" size={16} className="h-4 w-4 mr-2" />
                 Edit Profile
               </Link>
             </Button>
             <Button asChild variant="outline" className="w-full justify-start">
               <Link href="/dashboard/preferences">
-                <Coffee className="h-4 w-4 mr-2" />
+                <Icon name="Coffee" size={16} className="h-4 w-4 mr-2" />
                 Coffee Preferences
               </Link>
             </Button>
             <Button asChild variant="outline" className="w-full justify-start">
               <Link href="/dashboard/notifications">
-                <Bell className="h-4 w-4 mr-2" />
+                <Icon name="Bell" size={16} className="h-4 w-4 mr-2" />
                 Notifications
               </Link>
             </Button>

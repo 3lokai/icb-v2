@@ -1,8 +1,12 @@
 // src/components/home/TestimonialsSection.tsx
 
 import { Icon } from "@/components/common/Icon";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
 import { Marquee } from "@/components/ui/marquee";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 type Testimonial = {
   id: number;
@@ -172,18 +176,46 @@ const TestimonialCard = ({
 
 export default function TestimonialsSection() {
   return (
-    <section className="mb-20 py-16">
-      <div className="container-default">
-        {/* Header - keeping your exact styling */}
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-heading text-primary">
-            What Coffee Lovers Say
-          </h2>
-          <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
-          <p className="mx-auto max-w-2xl text-body text-muted-foreground">
-            Join the community of coffee enthusiasts discovering the rich world
-            of Indian coffee beans through our directory.
-          </p>
+    <Section spacing="default">
+      <Stack gap="12">
+        {/* Header */}
+        <div className="mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+            <div className="md:col-span-8">
+              <Stack gap="6">
+                <div className="inline-flex items-center gap-4">
+                  <span className="h-px w-8 md:w-12 bg-accent/60" />
+                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                    Community Voice
+                  </span>
+                </div>
+                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                  What Coffee{" "}
+                  <span className="text-accent italic">Lovers Say.</span>
+                </h2>
+                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                  Join the community of coffee enthusiasts discovering the rich
+                  world of Indian coffee beans through our directory.
+                </p>
+              </Stack>
+            </div>
+            <div className="md:col-span-4 flex md:justify-end pb-2">
+              <Link className="hidden md:block" href="/reviews">
+                <Button className="group" variant="outline">
+                  View All Reviews
+                  <Icon
+                    className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                    name="ArrowRight"
+                  />
+                </Button>
+              </Link>
+              <div className="flex md:hidden items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
+                <span className="h-1 w-1 rounded-full bg-accent/40" />
+                Verified Feedback
+                <span className="h-1 w-1 rounded-full bg-accent/40" />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Dual Marquee Rows */}
@@ -207,24 +239,18 @@ export default function TestimonialsSection() {
           <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-muted/30" />
         </div>
 
-        {/* CTA - keeping your exact styling */}
-        <div className="mt-12 text-center">
-          <p className="mb-4 text-muted-foreground text-caption">
-            Have a story to share about your coffee journey?
-          </p>
-          <a
-            className="group inline-flex items-center font-medium text-accent transition-colors duration-200 hover:text-accent-foreground"
-            href="/contact"
-          >
-            Share Your Experience
-            <Icon
-              className="ml-2 transition-transform duration-200 group-hover:translate-x-1"
-              name="ArrowRight"
-              size={16}
-            />
-          </a>
+        <div className="mt-8 text-center md:hidden">
+          <Link href="/reviews">
+            <Button className="group w-full sm:w-auto" variant="outline">
+              View All Reviews
+              <Icon
+                className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                name="ArrowRight"
+              />
+            </Button>
+          </Link>
         </div>
-      </div>
-    </section>
+      </Stack>
+    </Section>
   );
 }

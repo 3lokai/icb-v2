@@ -11,7 +11,13 @@ import {
   STORAGE_KEY,
 } from "@/hooks/use-cookie-consent";
 
-export function CookieSettings() {
+export function CookieSettings({
+  forceOpen = false,
+  onClose,
+}: {
+  forceOpen?: boolean;
+  onClose?: () => void;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true,
@@ -23,19 +29,27 @@ export function CookieSettings() {
     const stored = getStoredPreferences();
     const hasConsent = localStorage.getItem(STORAGE_KEY) !== null;
 
-    // Only show if no consent has been given yet
+    // Only show if no consent has been given yet, or if forceOpen is true
     startTransition(() => {
       if (hasConsent) {
         setPreferences(stored);
+        if (forceOpen) {
+          setIsOpen(true);
+        }
       } else {
         setIsOpen(true);
       }
     });
-  }, []);
+  }, [forceOpen]);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    onClose?.();
+  };
 
   const savePreferences = () => {
     persistPreferences(preferences);
-    setIsOpen(false);
+    handleClose();
   };
 
   if (!isOpen) {
@@ -58,7 +72,7 @@ export function CookieSettings() {
             </h3>
             <button
               className="text-muted-foreground hover:text-foreground"
-              onClick={() => setIsOpen(false)}
+              onClick={handleClose}
               type="button"
             >
               <Icon name="X" size={18} />
@@ -103,7 +117,7 @@ export function CookieSettings() {
           <div className="flex justify-end gap-2">
             <button
               className="btn-secondary px-4 py-2 text-caption"
-              onClick={() => setIsOpen(false)}
+              onClick={handleClose}
               type="button"
             >
               Cancel
@@ -128,13 +142,15 @@ export function CookieSettingsButton() {
   return (
     <>
       <button
-        className="text-muted-foreground text-overline hover:text-foreground hover:underline"
+        className="text-micro text-muted-foreground/60 uppercase tracking-widest font-medium transition-colors hover:text-accent"
         onClick={() => setIsOpen(true)}
         type="button"
       >
         Cookie Settings
       </button>
-      {isOpen && <CookieSettings />}
+      {isOpen && (
+        <CookieSettings forceOpen={true} onClose={() => setIsOpen(false)} />
+      )}
     </>
   );
 }

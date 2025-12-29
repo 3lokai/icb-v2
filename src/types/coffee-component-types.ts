@@ -186,4 +186,5 @@ export type CoffeeSummaryData = {
   weights_available: number[] | null;
   sensory_public: Json | null;
   sensory_updated_at: string | null;
+  seo_desc: string | null;
 };

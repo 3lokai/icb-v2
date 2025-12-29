@@ -1,7 +1,7 @@
 "use client";
 
 import type { RoasterDetail } from "@/types/roaster-types";
-import { ExternalLink } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 
 type RoasterSocialLinksProps = {
   roaster: RoasterDetail;
@@ -78,7 +78,7 @@ export function RoasterSocialLinks({ roaster }: RoasterSocialLinksProps) {
           >
             {link.icon && <span>{link.icon}</span>}
             <span>{link.label}</span>
-            <ExternalLink className="h-3 w-3" />
+            <Icon name="ArrowSquareOut" size={12} className="h-3 w-3" />
           </a>
         ))}
       </div>

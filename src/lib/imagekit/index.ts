@@ -276,10 +276,9 @@ export const roasterImagePresets = {
       return getPlaceholderImage("roaster");
     }
     return getImageKitUrl(imagePath, {
-      width: 300,
-      height: 300,
-      crop: "maintain_ratio",
-      quality: 85,
+      width: 320, // control size
+      quality: 90, // logos benefit from higher quality
+      format: "png", // keep transparency intact
     });
   },
 

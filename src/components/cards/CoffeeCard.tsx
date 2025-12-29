@@ -1,18 +1,13 @@
 // src/components/cards/CoffeeCard.tsx
 import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { coffeeImagePresets } from "@/lib/imagekit";
 import { computeCoffeeRibbon, formatPrice } from "@/lib/utils/coffee-utils";
 import type { CoffeeSummary } from "@/types/coffee-types";
-import { cn } from "../../lib/utils";
-import Tag, { TagList } from "../common/Tag";
+import { cn, capitalizeFirstLetter } from "../../lib/utils";
 import { CoffeeTrackingLink } from "../common/TrackingLink";
+import { Stack } from "../primitives/stack";
+import { Icon } from "../common/Icon";
 
 type CoffeeCardProps = {
   coffee: CoffeeSummary;
@@ -38,16 +33,16 @@ function getRibbonLabel(
 
 function getRibbonStyles(ribbon: ReturnType<typeof computeCoffeeRibbon>) {
   if (ribbon === "featured") {
-    return "bg-chart-1 text-white";
+    return "bg-primary text-primary-foreground border-border";
   }
   if (ribbon === "new") {
-    return "bg-chart-2 text-white";
+    return "bg-accent text-accent-foreground border-border";
   }
   if (ribbon === "editors-pick") {
-    return "bg-chart-3 text-white";
+    return "bg-foreground text-background border-border";
   }
   if (ribbon === "seasonal") {
-    return "bg-accent text-accent-foreground";
+    return "bg-secondary text-secondary-foreground border-border";
   }
   return "";
 }
@@ -80,94 +75,152 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
       <Card
         className={cn(
           "group relative overflow-hidden",
-          "bg-card/70 backdrop-blur-sm border border-border/40",
-          "rounded-xl shadow-md hover:shadow-xl",
-          "transition-all duration-300 hover:bg-card/80 hover:-translate-y-1",
-          "h-full p-4 md:p-6"
+          "bg-card border border-border",
+          "rounded-[1.5rem] shadow-sm hover:shadow-md",
+          "transition-all duration-500 hover:-translate-y-1",
+          "h-full flex flex-col"
         )}
         itemScope
         itemType="https://schema.org/Product"
       >
-        {/* Accent bar */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        {/* Magazine Accent: Subtle top stripe */}
+        <div className="absolute top-0 left-0 right-0 h-1 md:h-1.5 bg-gradient-to-r from-primary/60 via-accent to-primary/40 opacity-55 z-10" />
 
-        <div className="relative h-56 w-full overflow-hidden rounded-t-lg">
+        {/* Thumbnail Layer */}
+        <div className="relative aspect-[4/3] w-full overflow-hidden">
           <Image
             alt={coffee.name || "Coffee product image"}
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             fill
             itemProp="image"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={coffeeImagePresets.coffeeCard(coffee.image_url)}
           />
-          {/* Gradient overlay for depth */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
+          {/* Top image-integrated selector fade */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-background/70 via-background/30 to-transparent"
+          />
+
+          {/* Ribbon / selector */}
           {displayRibbon && (
             <div
               className={cn(
-                "absolute top-3 right-3 rounded-md px-3 py-1.5 font-semibold text-overline",
-                "shadow-lg backdrop-blur-sm border border-white/20",
+                "absolute top-3 right-3 rounded-full px-3 py-1 shadow-sm border backdrop-blur-[1px]",
                 getRibbonStyles(displayRibbon)
               )}
             >
-              {getRibbonLabel(displayRibbon)}
+              <span className="text-overline uppercase font-bold">
+                {getRibbonLabel(displayRibbon)}
+              </span>
             </div>
           )}
         </div>
 
-        <CardHeader>
-          <CardTitle
-            className="text-subheading line-clamp-2 min-h-[3.5rem]"
-            itemProp="name"
-          >
-            {coffee.name}
-          </CardTitle>
-          {coffee.roaster_name && (
-            <div
-              className="text-caption hover:text-accent transition-colors line-clamp-1"
-              itemProp="brand"
-            >
-              by {coffee.roaster_name}
-            </div>
-          )}
-        </CardHeader>
-
-        <CardContent className="flex-1 flex flex-col gap-2">
-          <TagList className="gap-2">
-            {coffee.roast_level && (
-              <Tag variant="outline">{coffee.roast_level}</Tag>
-            )}
-            {coffee.process && <Tag variant="outline">{coffee.process}</Tag>}
-            {coffee.decaf && <Tag variant="outline">Decaf</Tag>}
-            {coffee.is_limited && <Tag variant="outline">Limited</Tag>}
-          </TagList>
-        </CardContent>
-
-        <CardFooter className="flex justify-between items-center pt-2 border-t border-border/30">
-          <div className="rating-stars">
-            {/* Placeholder for future ratings */}
-          </div>
-          {price && (
-            <div
-              className="flex items-center gap-1 font-bold text-body bg-accent/10 px-2.5 py-1 rounded-md border border-accent/30"
-              itemProp="offers"
-              itemScope
-              itemType="https://schema.org/Offer"
-            >
-              <span
-                className="text-overline text-muted-foreground font-normal"
-                itemProp="priceCurrency"
+        {/* Editorial Content */}
+        <div className="relative flex-1 p-5 md:p-6">
+          <Stack gap="4" className="relative">
+            <Stack gap="1">
+              <CardTitle
+                className="text-heading text-balance line-clamp-2 leading-tight"
+                itemProp="name"
               >
-                ₹
-              </span>
-              <span className="text-accent-foreground" itemProp="price">
-                {formatPrice(price).replace(/₹/g, "").trim()}
-              </span>
-              <link href="https://schema.org/InStock" itemProp="availability" />
+                {coffee.name}
+              </CardTitle>
+
+              {coffee.roaster_name && (
+                <div className="flex items-center gap-1.5 group/roaster">
+                  <span className="text-caption text-muted-foreground/60 italic">
+                    by
+                  </span>
+                  <span
+                    className="text-caption font-semibold text-foreground group-hover/roaster:text-primary transition-colors cursor-pointer"
+                    itemProp="brand"
+                  >
+                    {coffee.roaster_name}
+                  </span>
+                </div>
+              )}
+            </Stack>
+
+            {/* Metadata Grid - Institutional style */}
+            <div className="grid grid-cols-2 gap-3 pt-2">
+              <div className="flex flex-col gap-0.5 border-l-2 border-accent/20 pl-3">
+                <span className="text-overline uppercase font-bold text-muted-foreground/60">
+                  Roast
+                </span>
+                <span className="text-caption font-medium line-clamp-1">
+                  {capitalizeFirstLetter(
+                    coffee.roast_level_raw ||
+                      coffee.roast_style_raw ||
+                      coffee.roast_level
+                  ) || "—"}
+                </span>
+              </div>
+              <div className="flex flex-col gap-0.5 border-l-2 border-accent/20 pl-3">
+                <span className="text-overline uppercase font-bold text-muted-foreground/60">
+                  Process
+                </span>
+                <span className="text-caption font-medium line-clamp-1">
+                  {capitalizeFirstLetter(
+                    coffee.process_raw || coffee.process
+                  ) || "—"}
+                </span>
+              </div>
             </div>
-          )}
-        </CardFooter>
+          </Stack>
+        </div>
+
+        {/* Action / Price Floor */}
+        <div className="relative mt-auto px-5 md:px-6 pb-4 md:pb-5 pt-4 border-t border-border/40">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <span className="text-overline uppercase font-bold text-muted-foreground/60">
+                Starting Price
+              </span>
+              {price ? (
+                <div
+                  className="flex items-center gap-1.5 mt-0.5"
+                  itemProp="offers"
+                  itemScope
+                  itemType="https://schema.org/Offer"
+                >
+                  <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-accent/10 border border-accent/20">
+                    <span className="text-caption font-bold text-accent">
+                      ₹
+                    </span>
+                    <span
+                      className="text-caption font-black text-accent"
+                      itemProp="price"
+                    >
+                      {formatPrice(price).replace(/₹/g, "").trim()}
+                    </span>
+                  </div>
+                  <span className="text-overline text-muted-foreground/60 italic">
+                    / 250g
+                  </span>
+                  <link
+                    href="https://schema.org/InStock"
+                    itemProp="availability"
+                  />
+                </div>
+              ) : (
+                <span className="text-caption text-muted-foreground mt-0.5 italic">
+                  Contact Roaster
+                </span>
+              )}
+            </div>
+
+            <div
+              className="h-8 w-8 rounded-full border border-border flex items-center justify-center transition-all group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary shrink-0"
+              aria-hidden="true"
+            >
+              <Icon name="ArrowRight" size={16} />
+            </div>
+          </div>
+        </div>
+
         <meta
           content={`https://indiancoffeebeans.com/coffees/${coffee.slug}`}
           itemProp="url"

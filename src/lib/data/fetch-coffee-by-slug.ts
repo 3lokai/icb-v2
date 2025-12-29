@@ -292,6 +292,7 @@ export async function fetchCoffeeBySlug(
         weights_available: summaryData.weights_available,
         sensory_public: summaryData.sensory_public,
         sensory_updated_at: summaryData.sensory_updated_at,
+        seo_desc: summaryData.seo_desc ?? null,
       }
     : {
         coffee_id: coffeeId,
@@ -311,6 +312,7 @@ export async function fetchCoffeeBySlug(
         weights_available: null,
         sensory_public: null,
         sensory_updated_at: null,
+        seo_desc: coffeeData.seo_desc ?? null,
       };
 
   // Build CoffeeDetail object

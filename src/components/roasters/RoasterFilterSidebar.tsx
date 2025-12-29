@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { Stack } from "@/components/primitives/stack";
+import { Cluster } from "@/components/primitives/cluster";
 import { useRoasterDirectoryStore } from "@/store/zustand/roaster-directory-store";
 import type { RoasterFilterMeta } from "@/types/roaster-types";
 
@@ -57,65 +59,82 @@ export function RoasterFilterContent({
     }
 
     return (
-      <div className="space-y-2">
-        <label className="font-medium text-caption" htmlFor={filterKey}>
+      <Stack gap="3">
+        <label
+          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+          htmlFor={filterKey}
+        >
           {title}
           {totalCount !== undefined && (
-            <span className="ml-2 text-muted-foreground text-overline">
-              ({totalCount})
-            </span>
+            <span className="ml-2 font-normal">({totalCount})</span>
           )}
         </label>
-        <div className="max-h-64 space-y-2 overflow-y-auto">
+        <Stack
+          gap="1"
+          className="max-h-64 overflow-y-auto pr-2 custom-scrollbar"
+        >
           {items.map((item) => (
             <label
-              className="flex cursor-pointer items-center gap-2 rounded-md p-2 transition-colors hover:bg-accent/50"
+              className="group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors hover:text-accent"
               key={item.value}
             >
               <input
                 checked={isFilterSelected(filterKey, item.value)}
-                className="h-4 w-4 rounded border-input"
+                className="h-3.5 w-3.5 rounded border-border/60 text-accent focus:ring-accent/30"
                 onChange={() => toggleArrayFilter(filterKey, item.value)}
                 type="checkbox"
               />
-              <span className="text-caption">
+              <span className="text-caption font-medium transition-colors">
                 {item.label}{" "}
-                <span className="text-muted-foreground">({item.count})</span>
+                <span className="text-muted-foreground/50 font-normal">
+                  ({item.count})
+                </span>
               </span>
             </label>
           ))}
-        </div>
-      </div>
+        </Stack>
+      </Stack>
     );
   };
 
   return (
-    <div className="w-full space-y-6">
+    <Stack gap="8" className="w-full">
       {/* Header */}
       {showHeader && (
-        <div className="flex items-center justify-between">
-          <h2 className="text-subheading">Filters</h2>
-          <Button onClick={() => resetFilters()} size="sm" variant="ghost">
+        <div className="flex items-center justify-between pb-4 border-b border-border/40">
+          <h2 className="text-subheading font-bold uppercase tracking-widest text-foreground/80">
+            Filters
+          </h2>
+          <Button
+            onClick={() => resetFilters()}
+            size="sm"
+            variant="ghost"
+            className="h-auto p-0 text-micro font-bold uppercase tracking-widest hover:text-accent"
+          >
             Reset
           </Button>
         </div>
       )}
 
       {/* Search */}
-      <div className="space-y-2">
-        <label className="font-medium text-caption" htmlFor="search">
-          Search
+      <Stack gap="3">
+        <label
+          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+          htmlFor="search"
+        >
+          Filter by Name
         </label>
         <Input
           id="search"
+          className="h-10 border-border/60 focus:border-accent/40"
           onChange={(e) =>
             updateFilters({ q: e.target.value.trim() || undefined })
           }
-          placeholder="Search roasters..."
+          placeholder="Type to search..."
           type="text"
           value={filters.q || ""}
         />
-      </div>
+      </Stack>
 
       {/* Countries */}
       {renderFilterSection({
@@ -140,26 +159,29 @@ export function RoasterFilterContent({
       })}
 
       {/* Boolean Filters */}
-      <div className="space-y-4">
-        <label className="font-medium text-caption" htmlFor="active_only">
+      <Stack gap="4">
+        <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
           Options
         </label>
-        <div className="space-y-3">
+        <Stack gap="3">
           <label
-            className="flex cursor-pointer items-center justify-between"
+            className="group flex cursor-pointer items-center justify-between"
             htmlFor="active_only"
           >
-            <span className="text-caption">Active Only</span>
+            <span className="text-caption font-medium transition-colors group-hover:text-accent">
+              Active Only
+            </span>
             <Switch
+              id="active_only"
               checked={filters.active_only ?? false}
               onCheckedChange={(checked) =>
                 updateFilters({ active_only: checked || undefined })
               }
             />
           </label>
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 }
 
@@ -177,7 +199,7 @@ export function RoasterFilterSidebar({
   filterMeta,
 }: RoasterFilterSidebarProps) {
   return (
-    <aside className="hidden w-full space-y-6 md:block md:w-64">
+    <aside className="hidden w-full md:block md:w-64">
       <RoasterFilterContent filterMeta={filterMeta} />
     </aside>
   );

@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { Icon, IconName } from "../common/Icon";
 
@@ -31,72 +33,86 @@ const educationItems = [
 
 export default function EducationSection() {
   return (
-    <section className="mb-20">
+    <Section spacing="default" contained={false}>
       <div className="glass-panel card-padding rounded-2xl">
-        <div className="container-default">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Left Column: Content */}
             <div className="order-2 lg:order-1">
-              <div className="mb-8 text-left">
-                <div className="mb-6 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5">
-                  <Icon
-                    className="mr-2"
-                    color="primary"
-                    name="BookOpen"
-                    size={16}
-                  />
-                  <span className="font-medium text-primary text-caption">
-                    Education Center
-                  </span>
-                </div>
-
-                <h2 className="mb-4 text-heading text-primary">
-                  Unlock the World of Indian Coffee
-                </h2>
-                <div className="mb-6 h-1 w-16 rounded-full bg-accent" />
-
-                <p className="text-body text-muted-foreground">
-                  Dive into India&apos;s rich coffee heritage, from cultivation
-                  techniques in the Western Ghats to traditional brewing methods
-                  that enhance the unique flavors of Indian beans.
-                </p>
-              </div>
-
-              <div className="mb-8 space-y-4">
-                {educationItems.map((item, index) => (
-                  <div
-                    className={`surface-1 card-padding card-hover group animate-fade-in-scale rounded-lg delay-${index * 100}`}
-                    key={item.id}
-                  >
-                    <div className="flex items-start">
-                      <div className="mr-4 h-12 w-12 flex-center rounded-lg border border-primary/20 bg-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/15">
-                        <Icon
-                          className="text-primary"
-                          name={item.icon as IconName}
-                          size={20}
-                        />
+              <Stack gap="8">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
+                  <div className="md:col-span-8">
+                    <Stack gap="6">
+                      <div className="inline-flex items-center gap-4">
+                        <span className="h-px w-8 md:w-12 bg-accent/60" />
+                        <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                          Knowledge Base
+                        </span>
                       </div>
-                      <div className="flex-1">
-                        <h3 className="mb-2 text-heading transition-colors duration-200 group-hover:text-accent">
-                          {item.title}
-                        </h3>
-                        <p className="text-caption">{item.description}</p>
-                      </div>
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                        Unlock the World of{" "}
+                        <span className="text-accent italic">
+                          Indian Coffee.
+                        </span>
+                      </h2>
+                      <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                        Dive into India&apos;s rich coffee heritage, from
+                        cultivation techniques in the Western Ghats to
+                        traditional brewing methods that enhance the unique
+                        flavors of Indian beans.
+                      </p>
+                    </Stack>
+                  </div>
+                  <div className="md:col-span-4 flex md:justify-end pb-2">
+                    <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
+                      <span className="h-1 w-1 rounded-full bg-accent/40" />
+                      Heritage & Craft
+                      <span className="h-1 w-1 rounded-full bg-accent/40" />
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
 
-              <Link href="/learn">
-                <Button className="hover-lift group" size="lg">
-                  Explore Educational Content
-                  <Icon
-                    className="ml-2 transition-transform group-hover:translate-x-1"
-                    name="ArrowRight"
-                    size={16}
-                  />
+                <Stack gap="4">
+                  {educationItems.map((item, index) => (
+                    <div
+                      className={`surface-1 card-padding card-hover group animate-fade-in-scale rounded-lg delay-${index * 100}`}
+                      key={item.id}
+                    >
+                      <div className="flex items-start">
+                        <div className="mr-4 h-12 w-12 flex-center rounded-lg border border-primary/20 bg-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/15">
+                          <Icon
+                            className="text-primary"
+                            name={item.icon as IconName}
+                            size={20}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="mb-2 text-heading transition-colors duration-200 group-hover:text-accent">
+                            {item.title}
+                          </h3>
+                          <p className="text-caption">{item.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </Stack>
+
+                <Button
+                  asChild
+                  className="hover-lift group"
+                  size="lg"
+                  variant="default"
+                >
+                  <Link href="/learn">
+                    Explore Educational Content
+                    <Icon
+                      className="ml-2 transition-transform group-hover:translate-x-1"
+                      name="ArrowRight"
+                      size={16}
+                    />
+                  </Link>
                 </Button>
-              </Link>
+              </Stack>
             </div>
 
             {/* Right Column: Image with floating fact card */}
@@ -143,6 +159,6 @@ export default function EducationSection() {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

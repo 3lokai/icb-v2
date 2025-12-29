@@ -2,36 +2,36 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, User, Coffee, Bell, Shield } from "lucide-react";
+import { Icon, type IconName } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
-    icon: LayoutDashboard,
+    icon: "SquaresFour",
   },
   {
     title: "Profile",
     url: "/dashboard/profile",
-    icon: User,
+    icon: "User",
   },
   {
     title: "Coffee Preferences",
     url: "/dashboard/preferences",
-    icon: Coffee,
+    icon: "Coffee",
   },
   {
     title: "Notifications",
     url: "/dashboard/notifications",
-    icon: Bell,
+    icon: "Bell",
   },
   {
     title: "Privacy & Data",
     url: "/dashboard/privacy",
-    icon: Shield,
+    icon: "Shield",
   },
-];
+] as const;
 
 /**
  * Dashboard Sidebar Content Component
@@ -45,7 +45,6 @@ export function DashboardSidebarContent() {
       <h2 className="font-semibold text-subheading">Dashboard</h2>
       <nav className="space-y-1">
         {menuItems.map((item) => {
-          const Icon = item.icon;
           const isActive =
             pathname === item.url ||
             (item.url !== "/dashboard" && pathname.startsWith(item.url));
@@ -62,7 +61,11 @@ export function DashboardSidebarContent() {
                   : "text-muted-foreground"
               )}
             >
-              <Icon className="h-4 w-4" />
+              <Icon
+                name={item.icon as IconName}
+                size={16}
+                className="h-4 w-4"
+              />
               <span>{item.title}</span>
             </Link>
           );

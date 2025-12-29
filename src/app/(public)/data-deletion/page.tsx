@@ -1,4 +1,8 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
+import { toast } from "sonner";
 
 const CONTACT_EMAIL = "gta3lok.ai@gmail.com";
 
@@ -24,184 +28,226 @@ Please confirm when deletion is complete.
 Thank you,
 [Your name]`;
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(emailTemplate);
+    toast.success("Template Copied!", {
+      description: "You can now paste it into your email client.",
+    });
+  };
+
   return (
-    <div className="mx-auto max-w-4xl">
-      <div className="mb-8 text-caption">Last Updated: June 6, 2025</div>
+    <Stack gap="12" className="pb-20">
+      {/* Hero Header */}
+      <header className="relative pt-12 text-center">
+        <Section spacing="tight">
+          <Stack gap="6" className="items-center">
+            <div className="flex items-center gap-4">
+              <span className="h-px w-12 bg-accent/60" />
+              <span className="text-micro font-bold uppercase tracking-[0.3em] text-accent">
+                Compliance
+              </span>
+              <span className="h-px w-12 bg-accent/60" />
+            </div>
+            <h1 className="animate-fade-in-scale text-display text-primary text-balance leading-none">
+              Data <span className="text-accent italic">Deletion.</span>
+            </h1>
+            <div className="text-caption font-bold uppercase tracking-widest text-muted-foreground/60 italic">
+              Last Updated: June 6, 2025
+            </div>
+          </Stack>
+        </Section>
+      </header>
 
-      <section className="mb-8">
-        <h2 className="mb-4 text-heading">What Data We Collect</h2>
-        <h3 className="mb-2 text-subheading">From Facebook Login Users:</h3>
-        <ul className="mb-4 list-disc space-y-2 pl-6">
-          <li className="text-body">
-            <strong>Name:</strong> Your display name from Facebook to
-            personalize your experience
-          </li>
-          <li className="text-body">
-            <strong>Email Address:</strong> Used for account management and
-            communication
-          </li>
-          <li className="text-body">
-            <strong>Profile Picture:</strong> Displayed on your account and
-            reviews (optional)
-          </li>
-        </ul>
-        <p className="text-body italic">
-          <strong>Note:</strong> We only collect basic profile information
-          necessary for account functionality. We do not access your Facebook
-          posts, friends list, or other private information.
-        </p>
-      </section>
+      <Section spacing="default">
+        <div className="mx-auto max-w-3xl">
+          <Stack
+            gap="16"
+            className="text-body-large text-muted-foreground leading-relaxed"
+          >
+            {/* Intro */}
+            <Stack gap="6">
+              <h2 className="text-title text-primary font-serif italic text-pretty leading-tight">
+                What Data We Collect
+              </h2>
+              <Stack gap="4">
+                <p>
+                  We only collect basic profile information necessary for
+                  account functionality. For Facebook Login Users, this includes
+                  your display name, email, and optional profile picture.
+                </p>
+                <div className="p-6 rounded-2xl border border-accent/20 bg-accent/5 italic text-accent font-medium">
+                  &quot;We do not access your Facebook posts, friends list, or
+                  other private information beyond your basic profile.&quot;
+                </div>
+              </Stack>
+            </Stack>
 
-      <section className="mb-8">
-        <h2 className="mb-4 text-heading">How to Request Data Deletion</h2>
+            {/* How to Request */}
+            <Stack gap="8">
+              <h2 className="text-title text-primary font-serif italic text-pretty leading-tight">
+                How to Request Deletion
+              </h2>
 
-        <div className="mb-6">
-          <h3 className="mb-2 text-subheading">
-            Step 1: Send an Email Request
-          </h3>
-          <p className="mb-2 text-body">
-            Send your deletion request to our privacy team at:
-          </p>
-          <p className="font-semibold text-body text-heading">
-            <a className="text-body underline" href={`mailto:${CONTACT_EMAIL}`}>
-              {CONTACT_EMAIL}
-            </a>
-          </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <Stack
+                  gap="4"
+                  className="p-8 rounded-[2rem] border border-border/40 bg-muted/5"
+                >
+                  <span className="text-micro font-bold uppercase tracking-widest text-accent">
+                    Step 01
+                  </span>
+                  <h3 className="font-serif italic text-heading text-primary">
+                    Email Request
+                  </h3>
+                  <p className="text-caption">
+                    Send your request to our privacy team at:
+                  </p>
+                  <a
+                    className="text-accent font-bold underline-offset-4 hover:underline"
+                    href={`mailto:${CONTACT_EMAIL}`}
+                  >
+                    {CONTACT_EMAIL}
+                  </a>
+                </Stack>
+
+                <Stack
+                  gap="4"
+                  className="p-8 rounded-[2rem] border border-border/40 bg-muted/5"
+                >
+                  <span className="text-micro font-bold uppercase tracking-widest text-accent">
+                    Step 02
+                  </span>
+                  <h3 className="font-serif italic text-heading text-primary">
+                    Confirmation
+                  </h3>
+                  <p className="text-caption">
+                    We&apos;ll send you a confirmation email within 7 days
+                    acknowledging your request.
+                  </p>
+                </Stack>
+              </div>
+
+              <Stack gap="4" className="pt-4">
+                <h3 className="text-micro font-bold uppercase tracking-widest text-muted-foreground">
+                  Using The Template
+                </h3>
+                <div className="relative group overflow-hidden rounded-[2rem] border border-border/40 bg-card/5 transition-all">
+                  <div className="p-8 font-mono text-caption whitespace-pre-wrap leading-relaxed">
+                    {emailTemplate}
+                  </div>
+                  <div className="absolute top-4 right-4">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="bg-background border-border shadow-sm group-hover:scale-105 transition-transform"
+                      onClick={handleCopy}
+                    >
+                      Copy Template
+                    </Button>
+                  </div>
+                </div>
+              </Stack>
+            </Stack>
+
+            {/* Timeline */}
+            <Stack gap="6">
+              <h2 className="text-title text-primary font-serif italic text-pretty leading-tight text-center">
+                Processing Timeline
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[
+                  {
+                    days: "07 Days",
+                    label: "Initial Response",
+                    desc: "Identity verification and acknowledgement.",
+                  },
+                  {
+                    days: "30 Days",
+                    label: "Full Deletion",
+                    desc: "Data permanently removed from all systems.",
+                  },
+                  {
+                    days: "Final",
+                    label: "Confirmation",
+                    desc: "Receipt of completion confirmation.",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className="text-center p-8 rounded-[2rem] border border-border/20 bg-background/50"
+                  >
+                    <div className="text-title font-serif italic text-accent mb-2">
+                      {item.days}
+                    </div>
+                    <div className="text-micro font-bold uppercase tracking-widest text-primary mb-3">
+                      {item.label}
+                    </div>
+                    <p className="text-caption leading-tight text-muted-foreground/80">
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Stack>
+
+            {/* Impacts */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-12 border-t border-border/20">
+              <Stack gap="6">
+                <h3 className="font-serif italic text-heading text-primary">
+                  Permanently Deleted
+                </h3>
+                <ul className="space-y-4">
+                  {[
+                    "Your name and email address",
+                    "Profile picture and personal info",
+                    "Account preferences and settings",
+                    "Login credentials and session data",
+                  ].map((item) => (
+                    <li className="flex items-start gap-3" key={item}>
+                      <div className="h-1.5 w-1.5 rounded-full bg-accent mt-2.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Stack>
+
+              <Stack gap="6">
+                <h3 className="font-serif italic text-heading text-primary">
+                  Anonymized Contributions
+                </h3>
+                <ul className="space-y-4">
+                  {[
+                    "Coffee ratings you submitted",
+                    "Reviews and comments",
+                    "Community contributions",
+                  ].map((item) => (
+                    <li className="flex items-start gap-3" key={item}>
+                      <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40 mt-2.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-caption italic opacity-80">
+                  Your ratings help other coffee lovers make decisions. They
+                  remain but show &quot;Anonymous User&quot;.
+                </p>
+              </Stack>
+            </div>
+
+            {/* Final Help */}
+            <Stack gap="6" className="pt-12 border-t border-border/20">
+              <h2 className="text-heading text-primary font-serif italic">
+                Need Assistance?
+              </h2>
+              <p>
+                If you have any questions about data deletion, please contact
+                our privacy team at:{" "}
+                <span className="text-accent font-medium">{CONTACT_EMAIL}</span>
+              </p>
+            </Stack>
+          </Stack>
         </div>
-
-        <div className="mb-6">
-          <h3 className="mb-2 text-subheading">
-            Step 2: Use This Email Template
-          </h3>
-          <p className="mb-2 text-body">
-            Copy and paste this template to ensure we have all the information
-            needed to process your request:
-          </p>
-          <div className="card-base relative rounded-md p-4">
-            <pre className="whitespace-pre-wrap font-mono text-caption">
-              {emailTemplate}
-            </pre>
-            <button
-              className="absolute top-2 right-2 rounded bg-muted px-3 py-1 font-semibold text-overline transition-colors hover:bg-muted/80"
-              onClick={() => navigator.clipboard.writeText(emailTemplate)}
-              type="button"
-            >
-              Copy
-            </button>
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <h3 className="mb-2 text-subheading">
-            Step 3: Wait for Confirmation
-          </h3>
-          <p className="text-body">
-            We&apos;ll send you a confirmation email within 7 days acknowledging
-            your request and providing a timeline for completion.
-          </p>
-        </div>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="mb-4 text-heading">Processing Timeline</h2>
-        <div className="grid grid-cols-1 gap-6 text-center md:grid-cols-3">
-          <div className="card-base rounded-lg border-l-4 border-l-primary p-6">
-            <h4 className="mb-2 font-bold text-primary text-heading">7 Days</h4>
-            <p className="font-semibold text-primary">Initial Response</p>
-            <p className="text-caption">
-              We&apos;ll acknowledge your request and verify your identity
-            </p>
-          </div>
-          <div className="card-base rounded-lg border-l-4 border-l-accent p-6">
-            <h4 className="mb-2 font-bold text-accent text-heading">30 Days</h4>
-            <p className="font-semibold text-accent">Complete Deletion</p>
-            <p className="text-caption">
-              All your data will be permanently removed from our systems
-            </p>
-          </div>
-          <div className="card-base rounded-lg border-l-4 border-l-muted-foreground p-6">
-            <h4 className="mb-2 font-bold text-muted-foreground text-heading">
-              Final
-            </h4>
-            <p className="font-semibold text-muted-foreground">Confirmation</p>
-            <p className="text-caption">
-              You&apos;ll receive confirmation once deletion is complete
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="mb-4 text-heading">What Happens to Your Data</h2>
-        <div className="mb-4">
-          <h3 className="mb-2 text-subheading">
-            <span className="text-primary">✅</span> Permanently Deleted:
-          </h3>
-          <ul className="list-disc space-y-2 pl-6">
-            <li className="text-body">Your name and email address</li>
-            <li className="text-body">Profile picture and personal info</li>
-            <li className="text-body">Account preferences and settings</li>
-            <li className="text-body">Login credentials and session data</li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="mb-2 text-subheading">
-            <span className="text-accent">⚠️</span> Anonymized (Stays on Site):
-          </h3>
-          <ul className="mb-4 list-disc space-y-2 pl-6">
-            <li className="text-body">Coffee ratings you submitted</li>
-            <li className="text-body">Reviews and comments you wrote</li>
-            <li className="text-body">Community contributions</li>
-          </ul>
-          <p className="text-body italic">
-            <strong>Why?</strong> Your ratings help other coffee lovers make
-            better decisions. They remain on the site but show &quot;Anonymous
-            User&quot; instead of your name.
-          </p>
-        </div>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="mb-4 text-heading">Important Notes</h2>
-        <div className="mb-4">
-          <h3 className="mb-2 text-subheading">Cannot Be Recovered:</h3>
-          <p className="text-body">
-            Once your personal data is deleted, it cannot be recovered.
-            You&apos;ll need to create a new account if you wish to use
-            IndianCoffeeBeans again in the future.
-          </p>
-        </div>
-        <div>
-          <h3 className="mb-2 text-subheading">Alternative Options:</h3>
-          <p className="text-body">
-            If you&apos;re concerned about privacy but don&apos;t want to delete
-            your account entirely, you can update your privacy settings or
-            temporarily deactivate your account instead.
-          </p>
-        </div>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="mb-4 text-heading">Need Help?</h2>
-        <p className="mb-2 text-body">
-          If you have questions about data deletion or need assistance with your
-          request, contact our privacy team:
-        </p>
-        <ul className="list-disc space-y-2 pl-6">
-          <li className="text-body">
-            <strong>Privacy Team:</strong>{" "}
-            <a className="text-body underline" href={`mailto:${CONTACT_EMAIL}`}>
-              {CONTACT_EMAIL}
-            </a>
-          </li>
-          <li className="text-body">
-            <strong>General Support:</strong>{" "}
-            <a className="text-body underline" href={`mailto:${CONTACT_EMAIL}`}>
-              {CONTACT_EMAIL}
-            </a>
-          </li>
-        </ul>
-      </section>
-    </div>
+      </Section>
+    </Stack>
   );
 }

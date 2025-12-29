@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/common/Icon";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -12,6 +13,9 @@ import {
   buildCoffeeQueryString,
   parseCoffeeSearchParams,
 } from "@/lib/filters/coffee-url";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
+import { Cluster } from "@/components/primitives/cluster";
 import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store";
 import type {
   CoffeeFilterMeta,
@@ -153,15 +157,58 @@ export function CoffeeDirectory({
 
   return (
     <>
-      {/* Page Header */}
-      <PageHeader
-        description="Explore exceptional Indian specialty coffee beans from roasters across the country"
-        icon="Coffee"
-        iconLabel="Specialty Coffee Directory"
-        title="Coffee Directory"
-      />
+      {/* Editorial Page Header with Background */}
+      <section className="relative -mx-4 -mt-8 flex min-h-[50vh] items-center justify-center overflow-hidden md:-mx-6 md:-mt-12 lg:-mx-8 lg:-mt-16 md:min-h-[65vh]">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            alt="Coffee beans background"
+            className="object-cover"
+            fill
+            priority
+            src="/images/hero-bg.png"
+          />
+        </div>
 
-      <div className="container mx-auto p-4">
+        {/* Overlay */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+
+        <div className="container relative z-20 mx-auto px-4 py-12 md:py-20">
+          <div className="mx-auto max-w-6xl w-full">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+              <div className="md:col-span-8">
+                <Stack gap="6">
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 md:w-12 bg-accent/60" />
+                    <span className="text-overline text-white/70 tracking-[0.15em]">
+                      Specialty Coffee Directory
+                    </span>
+                  </div>
+                  <h1 className="text-hero text-white text-balance leading-[1.1] tracking-tight">
+                    Explore India&apos;s{" "}
+                    <span className="text-accent italic">Exceptional</span>{" "}
+                    Beans.
+                  </h1>
+                  <p className="max-w-2xl text-pretty text-body-large text-white/80 leading-relaxed">
+                    Discover over hundreds of specialty coffee beans from
+                    roasters across India. Verified data, verified roasters,
+                    verified taste.
+                  </p>
+                </Stack>
+              </div>
+              <div className="md:col-span-4 flex md:justify-end pb-2">
+                <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-widest font-medium">
+                  <span className="h-1 w-1 rounded-full bg-accent/40" />
+                  Updated Regularly
+                  <span className="h-1 w-1 rounded-full bg-accent/40" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="container mx-auto p-4 pt-16 md:pt-24">
         {/* Results Count */}
         {data && (
           <div className="mb-6 text-center">
@@ -200,24 +247,26 @@ export function CoffeeDirectory({
         />
 
         {/* Main Content Area */}
-        <div className="flex flex-col gap-6 md:flex-row">
+        <div className="flex flex-col gap-12 md:flex-row md:gap-16">
           {/* Filter Sidebar */}
           <CoffeeFilterSidebar filterMeta={filterMeta} />
 
           {/* Coffee Grid */}
           <div className="flex-1">
-            {isFetching && !data && (
-              <div className="py-12 text-center">
-                <p className="text-muted-foreground">Loading coffees...</p>
-              </div>
-            )}
+            <Stack gap="8">
+              {isFetching && !data && (
+                <div className="py-12 text-center">
+                  <p className="text-muted-foreground">Loading coffees...</p>
+                </div>
+              )}
 
-            <CoffeeGrid isLoading={isFetching} items={items} />
+              <CoffeeGrid isLoading={isFetching} items={items} />
 
-            {/* Pagination */}
-            {data && data.totalPages > 1 && (
-              <CoffeePagination totalPages={data.totalPages} />
-            )}
+              {/* Pagination */}
+              {data && data.totalPages > 1 && (
+                <CoffeePagination totalPages={data.totalPages} />
+              )}
+            </Stack>
           </div>
         </div>
 

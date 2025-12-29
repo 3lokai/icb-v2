@@ -178,16 +178,18 @@ export function useUpdateCoffeePreferences() {
       );
 
       // Optimistically update
-      queryClient.setQueryData(queryKeys.profile.coffeePreferences, {
-        ...previous,
-        roast_levels: newData.roastLevels || null,
-        flavor_profiles: newData.flavorProfiles || null,
-        processing_methods: newData.processingMethods || null,
-        regions: newData.regions || null,
-        with_milk_preference: newData.withMilkPreference ?? undefined,
-        decaf_only: newData.decafOnly ?? false,
-        organic_only: newData.organicOnly ?? false,
-      });
+      if (previous) {
+        queryClient.setQueryData(queryKeys.profile.coffeePreferences, {
+          ...previous,
+          roast_levels: newData.roastLevels || null,
+          flavor_profiles: newData.flavorProfiles || null,
+          processing_methods: newData.processingMethods || null,
+          regions: newData.regions || null,
+          with_milk_preference: newData.withMilkPreference ?? undefined,
+          decaf_only: newData.decafOnly ?? false,
+          organic_only: newData.organicOnly ?? false,
+        });
+      }
 
       return { previous };
     },
@@ -262,14 +264,16 @@ export function useUpdateNotificationPreferences() {
       );
 
       // Optimistically update
-      queryClient.setQueryData(queryKeys.profile.notifications, {
-        ...previous,
-        new_roasters: newData.newRoasters ?? true,
-        coffee_updates: newData.coffeeUpdates ?? true,
-        newsletter: newData.newsletter ?? true,
-        platform_updates: newData.platformUpdates ?? true,
-        email_frequency: newData.emailFrequency ?? "weekly",
-      });
+      if (previous) {
+        queryClient.setQueryData(queryKeys.profile.notifications, {
+          ...previous,
+          new_roasters: newData.newRoasters ?? true,
+          coffee_updates: newData.coffeeUpdates ?? true,
+          newsletter: newData.newsletter ?? true,
+          platform_updates: newData.platformUpdates ?? true,
+          email_frequency: newData.emailFrequency ?? "weekly",
+        });
+      }
 
       return { previous };
     },

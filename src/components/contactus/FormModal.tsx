@@ -1,6 +1,8 @@
-"use client";
-
-import { Icon } from "@/components/common/Icon";
+// src/components/contactus/FormModal.tsx
+import { Button } from "../ui/button";
+import { Stack } from "../primitives/stack";
+import { Icon } from "../common/Icon";
+import { cn } from "@/lib/utils";
 
 type FormModalProps = {
   activeForm: "roaster" | "suggestion" | "professional";
@@ -22,24 +24,22 @@ export function FormModal({
   getButtonText,
 }: FormModalProps) {
   const getModalTitle = () => {
-    if (activeForm === "roaster") {
-      return "Submit a Roaster";
-    }
-    if (activeForm === "suggestion") {
-      return "Suggest Changes";
-    }
-    if (activeForm === "professional") {
-      return "Professional Inquiry";
-    }
+    if (activeForm === "roaster") return "Submit a Roaster";
+    if (activeForm === "suggestion") return "Suggest Changes";
+    if (activeForm === "professional") return "Professional Inquiry";
     return "";
   };
 
+  const inputClasses =
+    "w-full px-5 py-3.5 rounded-xl border border-border bg-muted/5 text-body focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all outline-none";
+  const labelClasses =
+    "text-micro font-bold uppercase tracking-widest text-muted-foreground/60 mb-2 block";
+
   const renderRoasterForm = () => (
     <form
-      className="space-y-4"
+      className="space-y-8"
       onSubmit={(e) => onSubmit(e, "roaster_submission")}
     >
-      {/* Honeypot field - hidden from users but visible to bots */}
       <input
         aria-hidden="true"
         autoComplete="off"
@@ -49,129 +49,118 @@ export function FormModal({
         tabIndex={-1}
         type="text"
       />
-      <div>
-        <label
-          className="mb-1 block font-medium text-muted-foreground text-caption"
-          htmlFor="roasterName"
-        >
+
+      <Stack gap="3">
+        <label className={labelClasses} htmlFor="roasterName">
           Roaster Name*
         </label>
         <input
-          className="search-input"
+          className={inputClasses}
           id="roasterName"
           name="roasterName"
+          placeholder="e.g. Blue Tokai Coffee Roasters"
           required
           type="text"
         />
-      </div>
+      </Stack>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label
-            className="mb-1 block font-medium text-muted-foreground text-caption"
-            htmlFor="website"
-          >
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+        <Stack gap="3">
+          <label className={labelClasses} htmlFor="website">
             Website
           </label>
           <input
-            className="search-input"
+            className={inputClasses}
             id="website"
             name="website"
+            placeholder="https://..."
             type="url"
           />
-        </div>
+        </Stack>
 
-        <div>
-          <label
-            className="mb-1 block font-medium text-muted-foreground text-caption"
-            htmlFor="location"
-          >
-            Location
+        <Stack gap="3">
+          <label className={labelClasses} htmlFor="location">
+            Primary Location
           </label>
           <input
-            className="search-input"
+            className={inputClasses}
             id="location"
             name="location"
+            placeholder="e.g. Gurgaon, Haryana"
             type="text"
           />
-        </div>
+        </Stack>
       </div>
 
-      <div>
-        <label
-          className="mb-1 block font-medium text-muted-foreground text-caption"
-          htmlFor="description"
-        >
+      <Stack gap="3">
+        <label className={labelClasses} htmlFor="description">
           What makes this roaster special?
         </label>
         <textarea
-          className="search-input"
+          className={cn(inputClasses, "resize-none")}
           id="description"
           name="description"
-          rows={3}
+          placeholder="Tell us about their roasting style, unique offerings..."
+          rows={4}
         />
-      </div>
+      </Stack>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label
-            className="mb-1 block font-medium text-muted-foreground text-caption"
-            htmlFor="yourName"
-          >
-            Your Name*
-          </label>
-          <input
-            className="search-input"
-            id="yourName"
-            name="yourName"
-            required
-            type="text"
-          />
-        </div>
+      <div className="pt-4 border-t border-border/40">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+          <Stack gap="3">
+            <label className={labelClasses} htmlFor="yourName">
+              Your Name*
+            </label>
+            <input
+              className={inputClasses}
+              id="yourName"
+              name="yourName"
+              required
+              type="text"
+            />
+          </Stack>
 
-        <div>
-          <label
-            className="mb-1 block font-medium text-muted-foreground text-caption"
-            htmlFor="yourEmail"
-          >
-            Your Email*
-          </label>
-          <input
-            className="search-input"
-            id="yourEmail"
-            name="yourEmail"
-            required
-            type="email"
-          />
+          <Stack gap="3">
+            <label className={labelClasses} htmlFor="yourEmail">
+              Your Email*
+            </label>
+            <input
+              className={inputClasses}
+              id="yourEmail"
+              name="yourEmail"
+              required
+              type="email"
+            />
+          </Stack>
         </div>
       </div>
 
-      {formError && (
-        <div className="form-message border border-destructive/30 bg-destructive/10 text-destructive">
-          {formError}
-        </div>
-      )}
+      <Stack gap="4">
+        <Button
+          className="w-full h-14 text-body font-bold uppercase tracking-widest hover-lift shadow-xl shadow-accent/5"
+          disabled={formSubmitting || formSubmitted}
+          type="submit"
+        >
+          {getButtonText()}
+        </Button>
 
-      <button
-        className={`btn-primary w-full ${formSubmitting ? "cursor-not-allowed opacity-70" : ""}`}
-        disabled={formSubmitting || formSubmitted}
-        type="submit"
-      >
-        {getButtonText()}
-      </button>
+        {formError && (
+          <div className="p-4 rounded-xl border border-destructive/20 bg-destructive/5 text-destructive text-caption">
+            {formError}
+          </div>
+        )}
 
-      {formSubmitted && (
-        <div className="form-message border border-border bg-secondary text-muted-foreground">
-          Thanks for the submission! We will review the information and add it
-          to our directory soon.
-        </div>
-      )}
+        {formSubmitted && (
+          <div className="p-4 rounded-xl border border-accent/20 bg-accent/5 text-accent font-medium text-caption text-center">
+            Thanks! We&apos;ll review the submission soon.
+          </div>
+        )}
+      </Stack>
     </form>
   );
 
   const renderSuggestionForm = () => (
-    <form className="space-y-4" onSubmit={(e) => onSubmit(e, "suggestion")}>
-      {/* Honeypot field - hidden from users but visible to bots */}
+    <form className="space-y-8" onSubmit={(e) => onSubmit(e, "suggestion")}>
       <input
         aria-hidden="true"
         autoComplete="off"
@@ -181,15 +170,16 @@ export function FormModal({
         tabIndex={-1}
         type="text"
       />
-      <div>
-        <label
-          className="mb-1 block font-medium text-muted-foreground text-caption"
-          htmlFor="suggestionType"
-        >
-          Type of Suggestion*
+
+      <Stack gap="3">
+        <label className={labelClasses} htmlFor="suggestionType">
+          Nature of Suggestion*
         </label>
         <select
-          className="search-input"
+          className={cn(
+            inputClasses,
+            "appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M7%207l3%203%203-3%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_1rem_center] bg-[length:1.25em_1.25em] bg-no-repeat"
+          )}
           id="suggestionType"
           name="suggestionType"
           required
@@ -201,88 +191,81 @@ export function FormModal({
           <option value="content">Content Suggestion</option>
           <option value="other">Other</option>
         </select>
-      </div>
+      </Stack>
 
-      <div>
-        <label
-          className="mb-1 block font-medium text-muted-foreground text-caption"
-          htmlFor="suggestionDetails"
-        >
+      <Stack gap="3">
+        <label className={labelClasses} htmlFor="suggestionDetails">
           Details*
         </label>
         <textarea
-          className="search-input"
+          className={cn(inputClasses, "resize-none")}
           id="suggestionDetails"
           name="suggestionDetails"
-          placeholder="Please describe your suggestion in detail..."
+          placeholder="How can we make things better?"
           required
-          rows={4}
+          rows={5}
         />
-      </div>
+      </Stack>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label
-            className="mb-1 block font-medium text-muted-foreground text-caption"
-            htmlFor="suggesterName"
-          >
-            Your Name*
-          </label>
-          <input
-            className="search-input"
-            id="suggesterName"
-            name="suggesterName"
-            required
-            type="text"
-          />
-        </div>
+      <div className="pt-4 border-t border-border/40">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+          <Stack gap="3">
+            <label className={labelClasses} htmlFor="suggesterName">
+              Your Name*
+            </label>
+            <input
+              className={inputClasses}
+              id="suggesterName"
+              name="suggesterName"
+              required
+              type="text"
+            />
+          </Stack>
 
-        <div>
-          <label
-            className="mb-1 block font-medium text-muted-foreground text-caption"
-            htmlFor="suggesterEmail"
-          >
-            Your Email*
-          </label>
-          <input
-            className="search-input"
-            id="suggesterEmail"
-            name="suggesterEmail"
-            required
-            type="email"
-          />
+          <Stack gap="3">
+            <label className={labelClasses} htmlFor="suggesterEmail">
+              Your Email*
+            </label>
+            <input
+              className={inputClasses}
+              id="suggesterEmail"
+              name="suggesterEmail"
+              required
+              type="email"
+            />
+          </Stack>
         </div>
       </div>
 
-      {formError && (
-        <div className="form-message border border-destructive/30 bg-destructive/10 text-destructive">
-          {formError}
-        </div>
-      )}
+      <Stack gap="4">
+        <Button
+          className="w-full h-14 text-body font-bold uppercase tracking-widest hover-lift shadow-xl shadow-accent/5"
+          disabled={formSubmitting || formSubmitted}
+          type="submit"
+        >
+          {getButtonText()}
+        </Button>
 
-      <button
-        className={`btn-primary w-full ${formSubmitting ? "cursor-not-allowed opacity-70" : ""}`}
-        disabled={formSubmitting || formSubmitted}
-        type="submit"
-      >
-        {getButtonText()}
-      </button>
+        {formError && (
+          <div className="p-4 rounded-xl border border-destructive/20 bg-destructive/5 text-destructive text-caption">
+            {formError}
+          </div>
+        )}
 
-      {formSubmitted && (
-        <div className="form-message border border-border bg-secondary text-muted-foreground">
-          Thanks for your suggestion! We appreciate your feedback and will
-          review it soon.
-        </div>
-      )}
+        {formSubmitted && (
+          <div className="p-4 rounded-xl border border-accent/20 bg-accent/5 text-accent font-medium text-caption text-center">
+            Appreciate the feedback! We&apos;ll look into it.
+          </div>
+        )}
+      </Stack>
     </form>
   );
 
   const renderProfessionalForm = () => (
     <form
-      className="space-y-4"
+      className="space-y-8"
       onSubmit={(e) => onSubmit(e, "professional_inquiry")}
     >
-      {/* Honeypot field - hidden from users but visible to bots */}
       <input
         aria-hidden="true"
         autoComplete="off"
@@ -292,134 +275,132 @@ export function FormModal({
         tabIndex={-1}
         type="text"
       />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label
-            className="mb-1 block font-medium text-muted-foreground text-caption"
-            htmlFor="proName"
-          >
-            Your Name*
+
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+        <Stack gap="3">
+          <label className={labelClasses} htmlFor="proName">
+            Full Name*
           </label>
           <input
-            className="search-input"
+            className={inputClasses}
             id="proName"
             name="name"
             required
             type="text"
           />
-        </div>
+        </Stack>
 
-        <div>
-          <label
-            className="mb-1 block font-medium text-muted-foreground text-caption"
-            htmlFor="organization"
-          >
+        <Stack gap="3">
+          <label className={labelClasses} htmlFor="organization">
             Organization
           </label>
           <input
-            className="search-input"
+            className={inputClasses}
             id="organization"
             name="organization"
+            placeholder="Company or Collective"
             type="text"
           />
-        </div>
+        </Stack>
       </div>
 
-      <div>
-        <label
-          className="mb-1 block font-medium text-muted-foreground text-caption"
-          htmlFor="proEmail"
-        >
-          Email*
+      <Stack gap="3">
+        <label className={labelClasses} htmlFor="proEmail">
+          Work Email*
         </label>
         <input
-          className="search-input"
+          className={inputClasses}
           id="proEmail"
           name="email"
           required
           type="email"
         />
-      </div>
+      </Stack>
 
-      <div>
-        <label
-          className="mb-1 block font-medium text-muted-foreground text-caption"
-          htmlFor="collaborationType"
-        >
-          Collaboration Interest*
+      <Stack gap="3">
+        <label className={labelClasses} htmlFor="collaborationType">
+          Area of Interest*
         </label>
         <select
-          className="search-input"
+          className={cn(
+            inputClasses,
+            "appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M7%207l3%203%203-3%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_1rem_center] bg-[length:1.25em_1.25em] bg-no-repeat"
+          )}
           id="collaborationType"
           name="collaborationType"
           required
         >
           <option value="">Select an option</option>
-          <option value="content">Guest Articles/Content</option>
-          <option value="research">Research Collaboration</option>
-          <option value="education">Educational Content</option>
-          <option value="partnership">Strategic Partnership</option>
+          <option value="content">Guest Articles / Research</option>
+          <option value="education">Educational Partnerships</option>
+          <option value="business">Business Inquiries</option>
           <option value="other">Other</option>
         </select>
-      </div>
+      </Stack>
 
-      <div>
-        <label
-          className="mb-1 block font-medium text-muted-foreground text-caption"
-          htmlFor="proMessage"
-        >
-          Tell Us More*
+      <Stack gap="3">
+        <label className={labelClasses} htmlFor="proMessage">
+          Inquiry Details*
         </label>
         <textarea
-          className="search-input"
+          className={cn(inputClasses, "resize-none")}
           id="proMessage"
           name="message"
-          placeholder="Please describe your collaboration idea or inquiry..."
+          placeholder="How can we collaborate?"
           required
-          rows={4}
+          rows={5}
         />
-      </div>
+      </Stack>
 
-      {formError && (
-        <div className="form-message border border-destructive/30 bg-destructive/10 text-destructive">
-          {formError}
-        </div>
-      )}
+      <Stack gap="4">
+        <Button
+          className="w-full h-14 text-body font-bold uppercase tracking-widest hover-lift shadow-xl shadow-accent/5"
+          disabled={formSubmitting || formSubmitted}
+          type="submit"
+        >
+          {getButtonText()}
+        </Button>
 
-      <button
-        className={`btn-primary w-full ${formSubmitting ? "cursor-not-allowed opacity-70" : ""}`}
-        disabled={formSubmitting || formSubmitted}
-        type="submit"
-      >
-        {getButtonText()}
-      </button>
+        {formError && (
+          <div className="p-4 rounded-xl border border-destructive/20 bg-destructive/5 text-destructive text-caption">
+            {formError}
+          </div>
+        )}
 
-      {formSubmitted && (
-        <div className="form-message border border-border bg-secondary text-muted-foreground">
-          Thanks for reaching out! We will get back to you soon to discuss
-          collaboration opportunities.
-        </div>
-      )}
+        {formSubmitted && (
+          <div className="p-4 rounded-xl border border-accent/20 bg-accent/5 text-accent font-medium text-caption text-center">
+            Message received! We will be in touch shortly.
+          </div>
+        )}
+      </Stack>
     </form>
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex-center bg-black/50 p-4 backdrop-blur-sm">
-      <div className="surface-2 max-h-[90vh] w-full max-w-lg overflow-auto rounded-lg">
-        <div className="sticky top-0 rounded-t-lg bg-primary/90 p-4 text-primary-foreground backdrop-blur-sm">
-          <div className="flex-between">
-            <h3 className="font-bold text-heading">{getModalTitle()}</h3>
-            <button
-              className="rounded p-1 text-primary-foreground transition-colors duration-200 hover:text-primary-foreground/80"
-              onClick={onClose}
-              type="button"
-            >
-              <Icon name="X" size={24} />
-            </button>
-          </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-fade-in sm:p-6">
+      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col rounded-[2.5rem] border border-border bg-card shadow-2xl animate-in fade-in zoom-in duration-300">
+        {/* Decorative stripe */}
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60 rounded-t-[2.5rem]" />
+
+        <div className="sticky top-0 z-20 flex items-center justify-between p-8 md:p-10 border-b border-border/10 bg-card/95 backdrop-blur-md rounded-t-[2.5rem]">
+          <Stack gap="2">
+            <h3 className="font-serif italic text-title text-primary leading-none">
+              {getModalTitle()}
+            </h3>
+            <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/40">
+              {activeForm === "roaster" ? "Spread the word" : "Get in touch"}
+            </p>
+          </Stack>
+          <button
+            className="p-3 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+            onClick={onClose}
+            type="button"
+          >
+            <Icon name="X" size={24} />
+          </button>
         </div>
 
-        <div className="card-padding">
+        <div className="flex-1 p-8 md:p-10 overflow-y-auto">
           {activeForm === "roaster" && renderRoasterForm()}
           {activeForm === "suggestion" && renderSuggestionForm()}
           {activeForm === "professional" && renderProfessionalForm()}

@@ -1,6 +1,5 @@
 // components/faqs/HomePageFAQ.tsx
-import { FAQ } from "@/components/common/FAQ";
-import StructuredData from "@/components/seo/StructuredData";
+import { FAQSection } from "@/components/common/FAQ";
 
 const homepageFAQs = [
   {
@@ -36,32 +35,18 @@ const homepageFAQs = [
 ];
 
 export function HomepageFAQ() {
-  // Generate FAQ schema
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: homepageFAQs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-
   return (
-    <section className="section-spacing bg-background/50 backdrop-blur-sm">
-      <div className="container-default">
-        <StructuredData schema={faqSchema} />
-        <div className="mb-8">
-          <h2 className="text-title">Frequently Asked Questions</h2>
-          <p className="mt-2 text-body text-muted-foreground">
-            Find answers to common questions about IndianCoffeeBeans.com.
-          </p>
-        </div>
-        <FAQ className="my-0" items={homepageFAQs} />
-      </div>
-    </section>
+    <FAQSection
+      badge="Help & Support"
+      description="Find answers to common questions about IndianCoffeeBeans.com and how we help you navigate the landscape."
+      items={homepageFAQs}
+      overline="The Details"
+      title={
+        <>
+          Frequently Asked{" "}
+          <span className="text-accent italic">Questions.</span>
+        </>
+      }
+    />
   );
 }

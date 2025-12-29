@@ -25,9 +25,9 @@ export function Section({
   className,
 }: SectionProps) {
   const spacingClasses = {
-    tight: "py-8 md:py-12 lg:py-16",
-    default: "py-12 md:py-16 lg:py-24",
-    loose: "py-16 md:py-24 lg:py-32",
+    tight: "py-6 md:py-10 lg:py-14",
+    default: "py-10 md:py-14 lg:py-20",
+    loose: "py-14 md:py-20 lg:py-28",
   };
 
   const content = (

@@ -34,7 +34,7 @@ const parsed = envSchema.safeParse(process.env);
 
 if (!parsed.success) {
   console.error("❌ Environment variable validation failed:\n");
-  parsed.error.errors.forEach((err) => {
+  parsed.error.issues.forEach((err) => {
     const path = err.path.join(".");
     console.error(`  • ${path}: ${err.message}`);
   });

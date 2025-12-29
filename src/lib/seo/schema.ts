@@ -196,6 +196,33 @@ export const aboutPageSchema = {
   url: "https://indiancoffeebeans.com/about",
 };
 
+export const privacyPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Privacy Policy - IndianCoffeeBeans.com",
+  description:
+    "How IndianCoffeeBeans.com collects, uses, and protects your personal information.",
+  url: "https://indiancoffeebeans.com/privacy",
+};
+
+export const dataDeletionPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Data Deletion Instructions - IndianCoffeeBeans.com",
+  description:
+    "How to request deletion of your personal data from IndianCoffeeBeans.com.",
+  url: "https://indiancoffeebeans.com/data-deletion",
+};
+
+export const termsPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Terms of Service - IndianCoffeeBeans.com",
+  description:
+    "Terms and conditions for using IndianCoffeeBeans.com directory and services.",
+  url: "https://indiancoffeebeans.com/terms",
+};
+
 // Organization Schema for root layout
 export const organizationSchema = {
   "@context": "https://schema.org",

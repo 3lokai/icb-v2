@@ -78,6 +78,9 @@ export type CoffeeDetail = {
 
   // Summary from coffee_summary view
   summary: CoffeeSummaryData;
+
+  // Reviews array
+  reviews?: CoffeeReview[];
 };
 
 // ----------------------------------------------------------------------------
@@ -223,6 +226,33 @@ export type CoffeeCardData = {
 // ----------------------------------------------------------------------------
 // 4. Coffee List Response Type
 // ----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
+// 5. Coffee Review Types
+// ----------------------------------------------------------------------------
+
+export type CoffeeReview = {
+  id: string;
+  coffee_id: string;
+  user_id: string;
+  rating: number;
+  content: string | null;
+  brew_method_id: string | null;
+  is_verified_purchase: boolean;
+  created_at: string;
+  updated_at: string;
+
+  // Optional expanded data
+  user_profile?: {
+    full_name: string;
+    avatar_url: string | null;
+    username: string | null;
+  };
+  brew_method?: {
+    label: string;
+    key: string;
+  };
+};
 
 export type CoffeeListResponse = {
   items: CoffeeSummary[];

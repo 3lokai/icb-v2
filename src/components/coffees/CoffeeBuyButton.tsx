@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
+import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { CoffeeDetail } from "@/types/coffee-types";
@@ -53,7 +53,7 @@ export function CoffeeBuyButton({ coffee, className }: CoffeeBuyButtonProps) {
       type="button"
     >
       Buy Now
-      <ExternalLink className="ml-2 h-4 w-4" />
+      <Icon name="ArrowSquareOut" size={16} className="ml-2 h-4 w-4" />
     </Button>
   );
 }

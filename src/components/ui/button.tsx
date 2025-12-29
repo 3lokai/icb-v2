@@ -19,6 +19,13 @@ const buttonVariants = cva(
         ghost:
           "text-foreground hover:bg-accent hover:text-accent-foreground dark:text-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
+
+        // ✅ NEW: for buttons on video / image backgrounds (no blur, just scrim)
+        onMedia:
+          "border border-white/20 bg-black/25 text-white hover:bg-black/35 hover:text-white focus-visible:ring-white/40",
+
+        // ✅ NEW: pill chips (popular searches, filters)
+        chip: "rounded-full border border-white/20 bg-black/20 text-white/90 hover:bg-black/30 hover:text-white focus-visible:ring-white/40",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

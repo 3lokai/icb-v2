@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import Tag, { TagList } from "@/components/common/Tag";
-import { cn } from "@/lib/utils";
+import { cn, capitalizeFirstLetter } from "@/lib/utils";
 
 type CoffeeCoreDetailsProps = {
   coffee: CoffeeDetail;
@@ -34,23 +34,29 @@ export function CoffeeCoreDetails({
       <div className="stack-sm">
         <h2 className="text-subheading">Details</h2>
         <div className="flex flex-wrap gap-3">
-          {coffee.roast_level && (
+          {(coffee.roast_level_raw ||
+            coffee.roast_style_raw ||
+            coffee.roast_level) && (
             <div>
               <span className="text-caption text-muted-foreground">
                 Roast:{" "}
               </span>
               <span className="text-body">
-                {coffee.roast_level_raw || coffee.roast_level}
+                {capitalizeFirstLetter(
+                  coffee.roast_level_raw ||
+                    coffee.roast_style_raw ||
+                    coffee.roast_level
+                )}
               </span>
             </div>
           )}
-          {coffee.process && (
+          {(coffee.process_raw || coffee.process) && (
             <div>
               <span className="text-caption text-muted-foreground">
                 Process:{" "}
               </span>
               <span className="text-body">
-                {coffee.process_raw || coffee.process}
+                {capitalizeFirstLetter(coffee.process_raw || coffee.process)}
               </span>
             </div>
           )}
