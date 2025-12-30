@@ -12,7 +12,6 @@ import { Stack } from "@/components/primitives/stack";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { cn, capitalizeFirstLetter } from "@/lib/utils";
 import { formatPrice } from "@/lib/utils/coffee-utils";
 import { CoffeeSensoryProfile } from "./CoffeeSensoryProfile";
@@ -68,20 +67,23 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-7">
             {/* Left Column: Image & Flavor Profile */}
-            <div className="lg:col-span-3">
-              <div className="sticky top-24">
+            <div className="order-1 lg:col-span-3">
+              <div className="lg:sticky lg:top-24">
                 <Stack gap="8">
                   <CoffeeImageCarousel
                     coffeeName={coffee.name}
                     images={coffee.images}
                   />
-                  <CoffeeSensoryProfile coffee={coffee} />
+                  {/* Sensory Profile - Desktop only */}
+                  <div className="hidden lg:block">
+                    <CoffeeSensoryProfile coffee={coffee} />
+                  </div>
                 </Stack>
               </div>
             </div>
 
             {/* Right Column: Details */}
-            <div className="lg:col-span-4">
+            <div className="order-2 lg:col-span-4">
               <Stack gap="8">
                 {/* Header Section */}
                 <Stack gap="6">
@@ -100,7 +102,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                         </Badge>
                       )}
                       {coffee.is_limited && (
-                        <Badge variant="default" className="text-label">
+                        <Badge variant="outline" className="text-label">
                           <Icon name="Lightning" size={12} className="mr-1" />
                           Limited
                         </Badge>
@@ -133,35 +135,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                       </div>
                     )}
                   </Stack>
-
-                  {/* Rating */}
-                  {coffee.rating_avg && coffee.rating_count > 0 && (
-                    <Cluster gap="3" align="center">
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Icon
-                            key={i}
-                            name="Star"
-                            size={16}
-                            className={cn(
-                              i < Math.round(coffee.rating_avg || 0)
-                                ? "text-amber-500 fill-amber-500"
-                                : "text-muted-foreground/30"
-                            )}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-body font-medium">
-                        {coffee.rating_avg.toFixed(1)}
-                      </span>
-                      <span className="text-caption text-muted-foreground">
-                        ({coffee.rating_count} reviews)
-                      </span>
-                    </Cluster>
-                  )}
                 </Stack>
-
-                <Separator />
 
                 {/* Core Details Card */}
                 <Card>
@@ -195,14 +169,33 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                           </span>
                         </div>
                       )}
-                      {coffee.crop_year && (
+                      {coffee.estates && coffee.estates.length > 0 && (
                         <div className="stack-xs">
                           <span className="text-caption text-muted-foreground font-medium">
-                            Crop Year
+                            Source
                           </span>
-                          <span className="text-body">{coffee.crop_year}</span>
+                          <span className="text-body">
+                            {coffee.estates
+                              .map((estate) => estate.name)
+                              .join(", ")}
+                          </span>
                         </div>
                       )}
+                      {coffee.regions &&
+                        coffee.regions.length > 0 &&
+                        coffee.regions[0]?.display_name && (
+                          <div className="stack-xs">
+                            <span className="text-caption text-muted-foreground font-medium">
+                              Region
+                            </span>
+                            <span className="text-body">
+                              {coffee.regions
+                                .map((region) => region.display_name)
+                                .filter((name): name is string => name !== null)
+                                .join(", ")}
+                            </span>
+                          </div>
+                        )}
                     </div>
                     {coffee.brew_methods.length > 0 && (
                       <div className="mt-4 pt-4 border-t">
@@ -267,7 +260,10 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                   </Button>
                 )}
 
-                <Separator />
+                {/* Sensory Profile - Mobile only (appears before pricing) */}
+                <div className="lg:hidden">
+                  <CoffeeSensoryProfile coffee={coffee} />
+                </div>
 
                 {/* Pricing Section */}
                 {coffee.variants.length > 0 && (
@@ -367,7 +363,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                       Tags
                     </span>
                     <TagList>
-                      {coffee.tags.map((tag, index) => (
+                      {coffee.tags.slice(0, 8).map((tag, index) => (
                         <Tag
                           key={index}
                           variant="outline"

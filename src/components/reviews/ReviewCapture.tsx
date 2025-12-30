@@ -441,9 +441,10 @@ export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
           </Stack>
 
           {/* Stage 2: Rating & Comment (auto-expand after recommend) */}
+          {/* Note: Rating input is identical for both coffee and roaster entity types */}
           {(expanded || formData.recommend !== null) && (
             <Stack gap="4">
-              {/* Rating */}
+              {/* Rating - Same for coffee and roaster */}
               <Stack gap="3">
                 <label className="text-caption font-medium text-foreground">
                   Overall rating (optional)
@@ -489,11 +490,11 @@ export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
                   onBlur={handleCommentBlur}
                   disabled={isLoading || isDeleting}
                   className="min-h-[100px] resize-none border-border/60 focus:border-primary/50 transition-colors"
-                  maxLength={5000}
+                  maxLength={1000}
                 />
                 {formData.comment && formData.comment.length > 0 && (
                   <p className="text-caption text-muted-foreground text-right">
-                    {formData.comment.length.toLocaleString()}/5,000
+                    {formData.comment.length.toLocaleString()}/1,000
                   </p>
                 )}
               </Stack>
@@ -636,11 +637,11 @@ export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
                         Brew method used
                       </label>
                       <Select
-                        value={formData.brew_method ?? ""}
+                        value={formData.brew_method ?? "none"}
                         onValueChange={(value) =>
                           handleDetailChange(
                             "brew_method",
-                            value === "" ? null : (value as any)
+                            value === "none" ? null : (value as any)
                           )
                         }
                         disabled={isLoading || isDeleting}
@@ -649,7 +650,7 @@ export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
                           <SelectValue placeholder="Select method (optional)" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">None</SelectItem>
+                          <SelectItem value="none">None</SelectItem>
                           {GRIND_TYPES.map((grind) => (
                             <SelectItem key={grind.value} value={grind.value}>
                               {grind.label}

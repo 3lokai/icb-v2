@@ -137,13 +137,13 @@ export function isValidRating(rating: number | null | undefined): boolean {
 }
 
 /**
- * Validate comment length (optional, max 5000 chars)
+ * Validate comment length (optional, max 1000 chars)
  */
 export function isValidComment(comment: string | null | undefined): boolean {
   if (comment === null || comment === undefined || comment === "") {
     return true; // null/empty is valid (optional field)
   }
-  return comment.length <= 5000;
+  return comment.length <= 1000;
 }
 
 // ============================================================================
