@@ -1,11 +1,15 @@
 // src/app/tools/expert-recipes/page.tsx
 
 import Link from "next/link";
-import { FAQ } from "@/components/common/FAQ";
+import {
+  ExpertRecipesFAQ,
+  expertRecipesFAQs,
+} from "@/components/faqs/ExpertRecipesFAQs";
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/common/PageHeader";
 import StructuredData from "@/components/seo/StructuredData";
 import { ExpertRecipesClient } from "@/components/tools/RecipeClient";
+import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { generateMetadata } from "@/lib/seo/metadata";
@@ -80,35 +84,7 @@ const expertRecipesHowToSchema = generateHowToSchema({
   ],
 });
 
-const expertRecipesFAQSchema = generateFAQSchema([
-  {
-    question:
-      "What makes these expert recipes different from regular coffee recipes?",
-    answer:
-      "These are championship-winning recipes used in international competitions by world barista champions and coffee experts. They've been tested under pressure and refined for exceptional flavor extraction.",
-  },
-  {
-    question: "Do I need special equipment to follow expert recipes?",
-    answer:
-      "While basic brewing equipment works, expert recipes often require precision tools like accurate scales (0.1g), gooseneck kettles, and quality grinders. Some recipes specify particular filters or brewing devices.",
-  },
-  {
-    question: "What is the Tetsu Kasuya 4:6 method?",
-    answer:
-      "The 4:6 method divides brewing water into phases: first 40% controls sweetness/acidity balance, remaining 60% controls strength. This systematic approach won the 2016 World Brewers Cup Championship.",
-  },
-  {
-    question:
-      "How do I choose between beginner, intermediate, and advanced recipes?",
-    answer:
-      "Beginner recipes are forgiving with simple techniques. Intermediate recipes require attention to timing and pour technique. Advanced recipes demand precision, specific equipment, and practiced movements.",
-  },
-  {
-    question: "Can I modify expert recipes for my taste preferences?",
-    answer:
-      "Start by following recipes exactly to understand the intended flavor. Then make small adjustments: grind size for extraction, ratio for strength, or temperature for balance. Document changes for consistency.",
-  },
-]);
+const expertRecipesFAQSchema = generateFAQSchema(expertRecipesFAQs);
 
 const expertRecipesCollectionSchema = {
   "@context": "https://schema.org",
@@ -154,9 +130,10 @@ export default function ExpertRecipesPage() {
       <div>
         {/* Page Header */}
         <PageHeader
+          backgroundImage="/images/hero-bg.png"
+          backgroundImageAlt="Coffee beans background"
           description="Learn from world champions and coffee experts. Master championship-winning techniques from James Hoffmann, Tetsu Kasuya, Scott Rao, and more."
-          icon="Trophy"
-          iconLabel="Championship Brewing Techniques & Expert Recipes"
+          overline="Championship Brewing Techniques & Expert Recipes"
           title="Expert Coffee Recipes"
         />
 
@@ -398,101 +375,10 @@ export default function ExpertRecipesPage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="section-spacing">
-          <div className="container-default">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 text-primary text-title">
-                Frequently Asked Questions
-              </h2>
-              <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
-              <p className="mx-auto max-w-2xl text-muted-foreground">
-                Common questions about expert recipes, championship techniques,
-                and brewing mastery.
-              </p>
-            </div>
-
-            <FAQ
-              items={[
-                {
-                  question:
-                    "What makes these expert recipes different from regular coffee recipes?",
-                  answer:
-                    "These are championship-winning recipes used in international competitions by world barista champions and coffee experts. They've been tested under pressure and refined for exceptional flavor extraction.",
-                },
-                {
-                  question:
-                    "Do I need special equipment to follow expert recipes?",
-                  answer:
-                    "While basic brewing equipment works, expert recipes often require precision tools like accurate scales (0.1g), gooseneck kettles, and quality grinders. Some recipes specify particular filters or brewing devices.",
-                },
-                {
-                  question: "What is the Tetsu Kasuya 4:6 method?",
-                  answer:
-                    "The 4:6 method divides brewing water into phases: first 40% controls sweetness/acidity balance, remaining 60% controls strength. This systematic approach won the 2016 World Brewers Cup Championship.",
-                },
-                {
-                  question:
-                    "How do I choose between beginner, intermediate, and advanced recipes?",
-                  answer:
-                    "Beginner recipes are forgiving with simple techniques. Intermediate recipes require attention to timing and pour technique. Advanced recipes demand precision, specific equipment, and practiced movements.",
-                },
-                {
-                  question:
-                    "Can I modify expert recipes for my taste preferences?",
-                  answer:
-                    "Start by following recipes exactly to understand the intended flavor. Then make small adjustments: grind size for extraction, ratio for strength, or temperature for balance. Document changes for consistency.",
-                },
-              ]}
-            />
-          </div>
-        </section>
+        <ExpertRecipesFAQ />
 
         {/* CTA Section */}
-        <section className="section-spacing">
-          <div className="container-default">
-            <div className="surface-2 card-padding relative overflow-hidden rounded-3xl">
-              <div className="absolute top-0 right-0 h-32 w-32 animate-float rounded-full bg-primary/20 blur-3xl" />
-              <div className="absolute bottom-0 left-0 h-24 w-24 animate-float rounded-full bg-accent/20 blur-2xl delay-700" />
-
-              <div className="relative z-10 py-8 text-center">
-                <h2 className="mb-4 text-title">
-                  Ready to Master Expert Techniques?
-                </h2>
-                <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
-                <p className="mx-auto mb-8 max-w-2xl text-muted-foreground leading-relaxed">
-                  Combine expert recipes with our precision calculator and find
-                  the perfect Indian coffee beans to showcase these championship
-                  techniques.
-                </p>
-                <div className="flex flex-wrap justify-center gap-4">
-                  <Button asChild className="hover-lift group" size="lg">
-                    <Link href="/tools/coffee-calculator">
-                      <Icon
-                        className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
-                        name="Calculator"
-                      />
-                      Try the Calculator
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    className="hover-lift group"
-                    size="lg"
-                    variant="outline"
-                  >
-                    <Link href="/coffees">
-                      <Icon
-                        className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
-                        name="Coffee"
-                      />
-                      Shop Coffee Beans
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ExpertRecipesCta />
       </div>
     </>
   );

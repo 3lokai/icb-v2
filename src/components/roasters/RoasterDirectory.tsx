@@ -1,14 +1,13 @@
 "use client";
 
 import { Icon } from "@/components/common/Icon";
-import Image from "next/image";
+import { PageHeader } from "@/components/common/PageHeader";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { RoasterDirectoryFAQ } from "@/components/faqs/RoasterDirectoryFAQs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/primitives/stack";
-import { Cluster } from "@/components/primitives/cluster";
 import { useRoasters } from "@/hooks/use-roasters";
 import {
   buildRoasterQueryString,
@@ -147,56 +146,25 @@ export function RoasterDirectory({
 
   return (
     <>
-      {/* Editorial Page Header with Background */}
-      <section className="relative -mx-4 -mt-8 flex min-h-[50vh] items-center justify-center overflow-hidden md:-mx-6 md:-mt-12 lg:-mx-8 lg:-mt-16 md:min-h-[65vh]">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            alt="Roastery background"
-            className="object-cover"
-            fill
-            priority
-            src="/images/hero-bg.png"
-          />
-        </div>
-
-        {/* Overlay */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
-
-        <div className="container relative z-20 mx-auto px-4 py-12 md:py-20">
-          <div className="mx-auto max-w-6xl w-full">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-              <div className="md:col-span-8">
-                <Stack gap="6">
-                  <div className="inline-flex items-center gap-4">
-                    <span className="h-px w-8 md:w-12 bg-accent/60" />
-                    <span className="text-overline text-white/70 tracking-[0.15em]">
-                      Artisan Roaster Directory
-                    </span>
-                  </div>
-                  <h1 className="text-hero text-white text-balance leading-[1.1] tracking-tight">
-                    India&apos;s{" "}
-                    <span className="text-accent italic">Passionate</span>{" "}
-                    Roasters.
-                  </h1>
-                  <p className="max-w-2xl text-pretty text-body-large text-white/80 leading-relaxed">
-                    Discover specialty coffee roasters from across India.
-                    Connect with the artisans dedicated to bringing out the best
-                    in every bean.
-                  </p>
-                </Stack>
-              </div>
-              <div className="md:col-span-4 flex md:justify-end pb-2">
-                <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-widest font-medium">
-                  <span className="h-1 w-1 rounded-full bg-accent/40" />
-                  Manually Reviewed
-                  <span className="h-1 w-1 rounded-full bg-accent/40" />
-                </div>
-              </div>
-            </div>
+      <PageHeader
+        backgroundImage="/images/hero-bg.png"
+        backgroundImageAlt="Roastery background"
+        description="Discover specialty coffee roasters from across India. Connect with the artisans dedicated to bringing out the best in every bean."
+        overline="Artisan Roaster Directory"
+        rightSideContent={
+          <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-widest font-medium">
+            <span className="h-1 w-1 rounded-full bg-accent/40" />
+            Manually Reviewed
+            <span className="h-1 w-1 rounded-full bg-accent/40" />
           </div>
-        </div>
-      </section>
+        }
+        title={
+          <>
+            India&apos;s <span className="text-accent italic">Passionate</span>{" "}
+            Roasters.
+          </>
+        }
+      />
 
       <div className="container mx-auto p-4 pt-16 md:pt-24">
         {/* Results Count */}

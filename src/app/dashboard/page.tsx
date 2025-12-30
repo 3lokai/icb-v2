@@ -12,6 +12,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/common/Icon";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -19,38 +21,38 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-64" />
-          <Skeleton className="h-4 w-96" />
-        </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
-        </div>
-      </div>
+      <Section spacing="default" contained={false}>
+        <Stack gap="6">
+          <Stack gap="2">
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-4 w-96" />
+          </Stack>
+          <div className="grid gap-6 md:grid-cols-2">
+            <Skeleton className="h-32" />
+            <Skeleton className="h-32" />
+            <Skeleton className="h-32" />
+            <Skeleton className="h-32" />
+          </div>
+        </Stack>
+      </Section>
     );
   }
 
   if (error || !profile) {
     return (
-      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-subheading text-destructive">Error</h2>
-          <p className="text-muted-foreground text-caption">
-            Failed to load profile data. Please try again.
-          </p>
-          <Button
-            className="mt-4"
-            onClick={() => window.location.reload()}
-            variant="outline"
-          >
-            Retry
-          </Button>
+      <Section spacing="default" contained={false}>
+        <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
+          <Stack gap="4" className="text-center">
+            <h2 className="text-subheading text-destructive">Error</h2>
+            <p className="text-muted-foreground text-caption">
+              Failed to load profile data. Please try again.
+            </p>
+            <Button onClick={() => window.location.reload()} variant="outline">
+              Retry
+            </Button>
+          </Stack>
         </div>
-      </div>
+      </Section>
     );
   }
 
@@ -67,134 +69,170 @@ export default function DashboardPage() {
   const completionPercentage = Math.round((profileCompletion / 3) * 100);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-bold text-title">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back, {profile.full_name || profile.email}!
-        </p>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="User" size={20} className="h-5 w-5" />
-              Profile Status
-            </CardTitle>
-            <CardDescription>Your profile completion</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-caption">
-                <span>Completion</span>
-                <span className="font-medium">{completionPercentage}%</span>
-              </div>
-              <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary transition-all"
-                  style={{ width: `${completionPercentage}%` }}
-                />
-              </div>
-            </div>
-            {profile.onboarding_completed ? (
-              <Badge variant="default" className="w-fit">
-                <Icon name="CheckCircle" size={12} className="h-3 w-3 mr-1" />
-                Onboarding Complete
-              </Badge>
-            ) : (
-              <Button asChild size="sm">
-                <Link href="/auth/onboarding">Complete Onboarding</Link>
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="Coffee" size={20} className="h-5 w-5" />
-              Coffee Preferences
-            </CardTitle>
-            <CardDescription>Your coffee preferences</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {profile.preferred_brewing_methods &&
-            profile.preferred_brewing_methods.length > 0 ? (
-              <div className="space-y-2">
-                <p className="text-caption text-muted-foreground">
-                  {profile.preferred_brewing_methods.length} brewing method
-                  {profile.preferred_brewing_methods.length !== 1
-                    ? "s"
-                    : ""}{" "}
-                  configured
-                </p>
-                <Button asChild variant="outline" size="sm">
-                  <Link href="/dashboard/preferences">Update Preferences</Link>
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <p className="text-caption text-muted-foreground">
-                  No preferences set yet
-                </p>
-                <Button asChild size="sm">
-                  <Link href="/dashboard/preferences">Set Preferences</Link>
-                </Button>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="Calendar" size={20} className="h-5 w-5" />
-              Account Info
-            </CardTitle>
-            <CardDescription>Your account details</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="text-caption">
-              <span className="font-medium">Joined:</span>
-              <span className="ml-2 text-muted-foreground">{joinedDate}</span>
-            </div>
-            <div className="text-caption">
-              <span className="font-medium">Experience Level:</span>
-              <span className="ml-2 text-muted-foreground capitalize">
-                {profile.experience_level || "Not set"}
+    <Section spacing="default" contained={false}>
+      <Stack gap="8">
+        {/* Magazine-style header */}
+        <Stack gap="3">
+          <div>
+            <div className="inline-flex items-center gap-4 mb-3">
+              <span className="h-px w-8 md:w-12 bg-accent/60" />
+              <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                Your Dashboard
               </span>
             </div>
-          </CardContent>
-        </Card>
+            <h1 className="text-display text-balance leading-[1.1] tracking-tight">
+              Welcome back, {profile.full_name || profile.email}!
+            </h1>
+          </div>
+        </Stack>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Common tasks</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button asChild variant="outline" className="w-full justify-start">
-              <Link href="/dashboard/profile">
-                <Icon name="User" size={16} className="h-4 w-4 mr-2" />
-                Edit Profile
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="w-full justify-start">
-              <Link href="/dashboard/preferences">
-                <Icon name="Coffee" size={16} className="h-4 w-4 mr-2" />
+        <div className="grid gap-6 md:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-heading">
+                <Icon name="User" size={20} className="h-5 w-5" />
+                Profile Status
+              </CardTitle>
+              <CardDescription>Your profile completion</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Stack gap="4">
+                <Stack gap="2">
+                  <div className="flex items-center justify-between text-caption">
+                    <span>Completion</span>
+                    <span className="font-medium">{completionPercentage}%</span>
+                  </div>
+                  <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-primary transition-all"
+                      style={{ width: `${completionPercentage}%` }}
+                    />
+                  </div>
+                </Stack>
+                {profile.onboarding_completed ? (
+                  <Badge variant="default" className="w-fit">
+                    <Icon
+                      name="CheckCircle"
+                      size={12}
+                      className="h-3 w-3 mr-1"
+                    />
+                    Onboarding Complete
+                  </Badge>
+                ) : (
+                  <Button asChild size="sm">
+                    <Link href="/auth/onboarding">Complete Onboarding</Link>
+                  </Button>
+                )}
+              </Stack>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-heading">
+                <Icon name="Coffee" size={20} className="h-5 w-5" />
                 Coffee Preferences
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="w-full justify-start">
-              <Link href="/dashboard/notifications">
-                <Icon name="Bell" size={16} className="h-4 w-4 mr-2" />
-                Notifications
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+              </CardTitle>
+              <CardDescription>Your coffee preferences</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {profile.preferred_brewing_methods &&
+              profile.preferred_brewing_methods.length > 0 ? (
+                <Stack gap="2">
+                  <p className="text-caption text-muted-foreground">
+                    {profile.preferred_brewing_methods.length} brewing method
+                    {profile.preferred_brewing_methods.length !== 1
+                      ? "s"
+                      : ""}{" "}
+                    configured
+                  </p>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href="/dashboard/preferences">
+                      Update Preferences
+                    </Link>
+                  </Button>
+                </Stack>
+              ) : (
+                <Stack gap="2">
+                  <p className="text-caption text-muted-foreground">
+                    No preferences set yet
+                  </p>
+                  <Button asChild size="sm">
+                    <Link href="/dashboard/preferences">Set Preferences</Link>
+                  </Button>
+                </Stack>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-heading">
+                <Icon name="Calendar" size={20} className="h-5 w-5" />
+                Account Info
+              </CardTitle>
+              <CardDescription>Your account details</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Stack gap="2">
+                <div className="text-caption">
+                  <span className="font-medium">Joined:</span>
+                  <span className="ml-2 text-muted-foreground">
+                    {joinedDate}
+                  </span>
+                </div>
+                <div className="text-caption">
+                  <span className="font-medium">Experience Level:</span>
+                  <span className="ml-2 text-muted-foreground capitalize">
+                    {profile.experience_level || "Not set"}
+                  </span>
+                </div>
+              </Stack>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-heading">Quick Actions</CardTitle>
+              <CardDescription>Common tasks</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Stack gap="2">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full justify-start"
+                >
+                  <Link href="/dashboard/profile">
+                    <Icon name="User" size={16} className="h-4 w-4 mr-2" />
+                    Edit Profile
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full justify-start"
+                >
+                  <Link href="/dashboard/preferences">
+                    <Icon name="Coffee" size={16} className="h-4 w-4 mr-2" />
+                    Coffee Preferences
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full justify-start"
+                >
+                  <Link href="/dashboard/notifications">
+                    <Icon name="Bell" size={16} className="h-4 w-4 mr-2" />
+                    Notifications
+                  </Link>
+                </Button>
+              </Stack>
+            </CardContent>
+          </Card>
+        </div>
+      </Stack>
+    </Section>
   );
 }

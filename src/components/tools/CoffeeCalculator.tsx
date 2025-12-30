@@ -4,6 +4,8 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, startTransition, useState } from "react";
 import { Icon } from "@/components/common/Icon";
+import { Cluster } from "@/components/primitives/cluster";
+import { Stack } from "@/components/primitives/stack";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 // Import calculation logic
 import {
@@ -125,23 +127,20 @@ export function CoffeeCalculator({
   };
 
   return (
-    <div className={className}>
+    <Stack gap="8" className={className}>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Left Column - Brewing Parameters (Surface Card) */}
-        <div className="surface-1 card-padding relative rounded-lg [isolation:auto]">
-          {/* Subtle decorative element */}
-          <div className="-z-10 pointer-events-none absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
-
-          <div className="relative space-y-6">
+        <div className="card-bordered rounded-xl bg-background p-6">
+          <Stack gap="6">
             <div className="flex items-center justify-between">
               <h3 className="flex items-center gap-2 text-subheading">
-                <div className="h-2 w-2 animate-pulse rounded-full bg-primary" />
+                <div className="h-2 w-2 rounded-full bg-primary" />
                 Brewing Parameters
               </h3>
               <div className="flex items-center gap-2">
                 {method && (
                   <button
-                    className="rounded px-2 py-1 text-muted-foreground text-overline transition-colors hover:bg-background/50 hover:text-foreground"
+                    className="rounded px-2 py-1 text-muted-foreground text-overline transition-colors hover:bg-muted hover:text-foreground"
                     onClick={handleReset}
                     type="button"
                   >
@@ -192,24 +191,24 @@ export function CoffeeCalculator({
             {/* Error Display */}
             {error && (
               <Alert
-                className="border-destructive/20 bg-destructive/10 backdrop-blur-sm"
+                className="border-destructive/20 bg-destructive/10"
                 variant="destructive"
               >
                 <Icon className="h-4 w-4" name="Warning" />
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-          </div>
+          </Stack>
         </div>
 
         {/* Right Column - Recipe Display (Enhanced) */}
         <RecipeDisplay results={results} strength={strength} />
       </div>
 
-      {/* Glassmorphed Brewing Timer */}
+      {/* Brewing Timer */}
       {results && (
-        <div className="mt-6">
-          <div className="surface-1 card-padding rounded-2xl">
+        <div className="mt-2">
+          <div className="card-bordered rounded-xl bg-background px-6 py-8 shadow-sm">
             <BrewingTimer results={results} />
           </div>
         </div>
@@ -217,34 +216,36 @@ export function CoffeeCalculator({
 
       {/* Method Tips (Full Width) */}
       {results?.method.tips && results.method.tips.length > 0 && (
-        <div className="surface-1 card-padding relative mt-6 overflow-hidden rounded-2xl">
-          {/* Enhanced decorative blur elements */}
-          <div className="absolute top-0 left-0 h-24 w-24 animate-float rounded-full bg-accent/10 blur-2xl" />
-          <div className="absolute right-0 bottom-0 h-20 w-20 animate-float rounded-full bg-primary/10 blur-xl delay-700" />
-
-          <div className="relative z-10">
-            <div className="mb-6 text-center">
-              <h3 className="mb-4 flex items-center justify-center gap-2 text-heading text-primary">
-                <Icon className="h-5 w-5 text-accent" name="Lightbulb" />
-                Pro Tips for {results.method.name}
-              </h3>
-              <div className="mx-auto h-1 w-16 rounded-full bg-accent" />
+        <div className="card-bordered overflow-hidden rounded-2xl bg-muted/30 p-8">
+          <Stack gap="8">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
+              <div className="md:col-span-8">
+                <Stack gap="4">
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 bg-accent/60" />
+                    <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                      Expert Advice
+                    </span>
+                  </div>
+                  <h3 className="text-heading text-balance leading-[1.1] tracking-tight">
+                    Pro Tips for{" "}
+                    <span className="text-accent italic">
+                      {results.method.name}
+                    </span>
+                  </h3>
+                </Stack>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {results.method.tips.map((tip, index) => (
                 <div
-                  className="surface-1 card-padding card-hover group relative overflow-hidden rounded-lg"
+                  className="card-bordered card-hover group relative overflow-hidden rounded-lg bg-background p-5 hover:border-primary/30"
                   key={`tip-${tip.slice(0, 20)}-${index}`}
                 >
-                  {/* Subtle tip card decoration */}
-                  <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-primary/5 blur-lg" />
-
-                  <div className="relative z-10 flex items-start gap-3">
-                    <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/90 text-primary-foreground shadow-sm transition-transform duration-300 group-hover:scale-110">
-                      <span className="font-medium text-overline">
-                        {index + 1}
-                      </span>
+                  <div className="flex items-start gap-4">
+                    <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-medium text-overline group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                      {index + 1}
                     </div>
                     <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
                       {tip}
@@ -253,9 +254,9 @@ export function CoffeeCalculator({
                 </div>
               ))}
             </div>
-          </div>
+          </Stack>
         </div>
       )}
-    </div>
+    </Stack>
   );
 }

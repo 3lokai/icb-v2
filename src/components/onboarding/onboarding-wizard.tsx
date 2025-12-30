@@ -5,6 +5,7 @@ import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { Country, State, City } from "country-state-city";
 import { saveOnboardingData } from "@/app/actions/profile";
+import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import {
   FieldDescription,
@@ -245,14 +246,14 @@ export function OnboardingWizard() {
   return (
     <div className="flex w-full flex-col gap-6">
       {/* Progress Bar */}
-      <div className="flex flex-col gap-2">
+      <Stack gap="2">
         <div className="flex items-center justify-center text-caption">
           <span className="text-muted-foreground">
             Step {currentStep} of {TOTAL_STEPS}
           </span>
         </div>
         <Progress value={progress} />
-      </div>
+      </Stack>
 
       {/* Error Message */}
       {error && (
@@ -264,9 +265,11 @@ export function OnboardingWizard() {
       {/* Step Content */}
       <FieldGroup>
         {currentStep === 1 && (
-          <div className="flex flex-col gap-8">
+          <Stack gap="8">
             <div className="flex flex-col items-center gap-1 text-center">
-              <h2 className="text-title">Welcome! Let&apos;s get started</h2>
+              <h2 className="text-title font-bold">
+                Welcome! Let&apos;s get started
+              </h2>
               <p className="text-balance text-muted-foreground text-caption">
                 Tell us a bit about yourself
               </p>
@@ -471,13 +474,13 @@ export function OnboardingWizard() {
                 )}
               </div>
             </div>
-          </div>
+          </Stack>
         )}
 
         {currentStep === 2 && (
-          <div className="flex flex-col gap-8">
+          <Stack gap="8">
             <div className="flex flex-col items-center gap-1 text-center">
-              <h2 className="text-title">Your Coffee Journey</h2>
+              <h2 className="text-title font-bold">Your Coffee Journey</h2>
               <p className="text-balance text-muted-foreground text-caption">
                 Help us personalize your experience
               </p>
@@ -602,7 +605,7 @@ export function OnboardingWizard() {
                 </div>
               </div>
             </div>
-          </div>
+          </Stack>
         )}
 
         {/* Navigation Buttons */}

@@ -51,10 +51,18 @@ export function ReviewList({ entityType, reviews }: ReviewListProps) {
 
   return (
     <Stack gap="6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-end justify-between">
         <div>
-          <h3 className="text-title">What others are saying</h3>
-          <p className="text-caption text-muted-foreground mt-1">
+          <div className="inline-flex items-center gap-4 mb-3">
+            <span className="h-px w-8 md:w-12 bg-accent/60" />
+            <span className="text-overline text-muted-foreground tracking-[0.15em]">
+              Community Voices
+            </span>
+          </div>
+          <h3 className="text-title text-balance leading-[1.1] tracking-tight">
+            What Others Are <span className="text-accent italic">Saying.</span>
+          </h3>
+          <p className="text-caption text-muted-foreground mt-2">
             {reviews.length} {reviews.length === 1 ? "review" : "reviews"}
           </p>
         </div>

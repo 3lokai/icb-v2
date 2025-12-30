@@ -17,6 +17,7 @@ type DashboardMobileDrawerProps = {
  * Dashboard Mobile Drawer Component
  * Sheet drawer for mobile dashboard sidebar
  * Only visible on mobile devices (< 768px)
+ * Matches filter sidebar design patterns
  */
 export function DashboardMobileDrawer({
   open,
@@ -26,10 +27,10 @@ export function DashboardMobileDrawer({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="overflow-y-auto md:hidden" side="left">
         <SheetHeader>
-          <SheetTitle>Dashboard</SheetTitle>
+          <SheetTitle>Navigation</SheetTitle>
         </SheetHeader>
         <div className="mt-6">
-          <DashboardSidebarContent />
+          <DashboardSidebarContent showHeader={false} />
         </div>
       </SheetContent>
     </Sheet>

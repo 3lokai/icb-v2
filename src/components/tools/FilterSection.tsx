@@ -52,7 +52,7 @@ export function FilterSection<T extends string>({
     <div className="surface-1 card-padding relative space-y-4 overflow-hidden rounded-lg">
       <div className={blurClasses[blurPosition]} />
       <div className="relative z-10">
-        <h4 className="mb-4 flex items-center gap-2 font-medium text-body text-primary">
+        <h4 className="mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
           <Icon className="h-4 w-4" name={icon} />
           {title}
         </h4>

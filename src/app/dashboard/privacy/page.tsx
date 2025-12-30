@@ -12,6 +12,9 @@ import {
 } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
+import { Rule } from "@/components/primitives/rule";
 import { privacySettingsSchema } from "@/lib/validations/profile";
 import type { PrivacySettingsFormData } from "@/lib/validations/profile";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -107,147 +110,169 @@ export default function PrivacyPage() {
 
   if (isLoading) {
     return (
-      <div className="container-default p-6 space-y-6">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-96" />
-      </div>
+      <Section spacing="default" contained={false}>
+        <Stack gap="6">
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-96" />
+        </Stack>
+      </Section>
     );
   }
 
   return (
-    <div className="container-default p-6">
-      <div className="mb-6">
-        <h1 className="font-bold text-title">Privacy & Data</h1>
-        <p className="text-muted-foreground text-caption">
-          Manage your privacy settings and account data
-        </p>
-      </div>
-
-      <div className="flex w-full flex-col gap-6">
-        {error && (
-          <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-destructive text-caption">
-            {error}
+    <Section spacing="default" contained={false}>
+      <Stack gap="8">
+        {/* Magazine-style header */}
+        <Stack gap="3">
+          <div>
+            <div className="inline-flex items-center gap-4 mb-3">
+              <span className="h-px w-8 md:w-12 bg-accent/60" />
+              <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                Security & Privacy
+              </span>
+            </div>
+            <h1 className="text-display text-balance leading-[1.1] tracking-tight">
+              Privacy & Data
+            </h1>
+            <p className="text-muted-foreground text-caption mt-2">
+              Manage your privacy settings and account data
+            </p>
           </div>
-        )}
+        </Stack>
 
-        <FieldGroup>
-          <div className="flex flex-col gap-6">
-            <Field>
-              <FieldLabel>Privacy Settings</FieldLabel>
-              <FieldDescription>
-                Control what information is visible to others
-              </FieldDescription>
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor="public-profile"
-                    >
-                      Public profile
-                    </Label>
-                    <p className="text-muted-foreground text-caption">
-                      Allow others to view your profile
-                    </p>
+        <Stack gap="6">
+          {error && (
+            <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-destructive text-caption">
+              {error}
+            </div>
+          )}
+
+          <FieldGroup>
+            <Stack gap="6">
+              <Field>
+                <FieldLabel>Privacy Settings</FieldLabel>
+                <FieldDescription>
+                  Control what information is visible to others
+                </FieldDescription>
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor="public-profile"
+                      >
+                        Public profile
+                      </Label>
+                      <p className="text-muted-foreground text-caption">
+                        Allow others to view your profile
+                      </p>
+                    </div>
+                    <Switch
+                      checked={formData.isPublicProfile ?? true}
+                      id="public-profile"
+                      onCheckedChange={(checked) =>
+                        updateFormData("isPublicProfile", checked)
+                      }
+                    />
                   </div>
-                  <Switch
-                    checked={formData.isPublicProfile ?? true}
-                    id="public-profile"
-                    onCheckedChange={(checked) =>
-                      updateFormData("isPublicProfile", checked)
-                    }
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor="show-location"
-                    >
-                      Show location
-                    </Label>
-                    <p className="text-muted-foreground text-caption">
-                      Display your city and state on your profile
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor="show-location"
+                      >
+                        Show location
+                      </Label>
+                      <p className="text-muted-foreground text-caption">
+                        Display your city and state on your profile
+                      </p>
+                    </div>
+                    <Switch
+                      checked={formData.showLocation ?? true}
+                      id="show-location"
+                      onCheckedChange={(checked) =>
+                        updateFormData("showLocation", checked)
+                      }
+                    />
                   </div>
-                  <Switch
-                    checked={formData.showLocation ?? true}
-                    id="show-location"
-                    onCheckedChange={(checked) =>
-                      updateFormData("showLocation", checked)
-                    }
-                  />
                 </div>
+              </Field>
+
+              <div className="flex items-center justify-end gap-4 pt-4">
+                <Button
+                  disabled={isSaving}
+                  onClick={handleSubmit}
+                  type="button"
+                >
+                  {isSaving ? "Saving..." : "Save Settings"}
+                </Button>
               </div>
-            </Field>
+            </Stack>
+          </FieldGroup>
 
-            <div className="flex items-center justify-end gap-4 pt-4">
-              <Button disabled={isSaving} onClick={handleSubmit} type="button">
-                {isSaving ? "Saving..." : "Save Settings"}
-              </Button>
-            </div>
-          </div>
-        </FieldGroup>
+          <Rule spacing="default" />
 
-        <div className="border-t pt-6">
-          <h2 className="font-semibold text-subheading mb-4">
-            Account Actions
-          </h2>
-          <div className="space-y-4">
-            <div className="rounded-md border border-border p-4">
-              <h3 className="font-medium text-body mb-2">Export Data</h3>
-              <p className="text-muted-foreground text-caption mb-4">
-                Download a copy of your account data
-              </p>
-              <Button variant="outline" disabled>
-                Export Data (Coming Soon)
-              </Button>
-            </div>
+          <Stack gap="6">
+            <h2 className="text-title">Account Actions</h2>
+            <Stack gap="4">
+              <div className="rounded-md border border-border p-4">
+                <h3 className="font-medium text-body mb-2">Export Data</h3>
+                <p className="text-muted-foreground text-caption mb-4">
+                  Download a copy of your account data
+                </p>
+                <Button variant="outline" disabled>
+                  Export Data (Coming Soon)
+                </Button>
+              </div>
 
-            <div className="rounded-md border border-destructive/20 bg-destructive/5 p-4">
-              <h3 className="font-medium text-body mb-2 text-destructive">
-                Delete Account
-              </h3>
-              <p className="text-muted-foreground text-caption mb-4">
-                Permanently delete your account and all associated data. This
-                action cannot be undone.
-              </p>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="destructive">Delete Account</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Are you absolutely sure?</DialogTitle>
-                    <DialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove all your data from our servers.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        // Close dialog - handled by Dialog component
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={() => {
-                        toast.error("Account deletion is not yet implemented");
-                      }}
-                    >
-                      Delete Account
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              <div className="rounded-md border border-destructive/20 bg-destructive/5 p-4">
+                <h3 className="font-medium text-body mb-2 text-destructive">
+                  Delete Account
+                </h3>
+                <p className="text-muted-foreground text-caption mb-4">
+                  Permanently delete your account and all associated data. This
+                  action cannot be undone.
+                </p>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="destructive">Delete Account</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you absolutely sure?</DialogTitle>
+                      <DialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your account and remove all your data from our
+                        servers.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          // Close dialog - handled by Dialog component
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() => {
+                          toast.error(
+                            "Account deletion is not yet implemented"
+                          );
+                        }}
+                      >
+                        Delete Account
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Section>
   );
 }

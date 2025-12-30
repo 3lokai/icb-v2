@@ -26,6 +26,8 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 import { Icon } from "@/components/common/Icon";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
 import { popularBrewingMethods } from "@/lib/utils/coffee-constants";
 import { profileUpdateSchema } from "@/lib/validations/profile";
 import type { ProfileUpdateFormData } from "@/lib/validations/profile";
@@ -182,306 +184,327 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="container-default p-6 space-y-6">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-96" />
-      </div>
+      <Section spacing="default" contained={false}>
+        <Stack gap="6">
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-96" />
+        </Stack>
+      </Section>
     );
   }
 
   if (!profile) {
     return (
-      <div className="container-default p-6">
-        <div className="text-center">
+      <Section spacing="default" contained={false}>
+        <Stack gap="4" className="text-center">
           <h2 className="text-subheading text-destructive">Error</h2>
           <p className="text-muted-foreground text-caption">
             Failed to load profile. Please try again.
           </p>
-        </div>
-      </div>
+        </Stack>
+      </Section>
     );
   }
 
   return (
-    <div className="container-default p-6">
-      <div className="mb-6">
-        <h1 className="font-bold text-title">Profile</h1>
-        <p className="text-muted-foreground text-caption">
-          Manage your profile information
-        </p>
-      </div>
-
-      <div className="flex w-full flex-col gap-6">
-        {error && (
-          <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-destructive text-caption">
-            {error}
-          </div>
-        )}
-
-        <FieldGroup>
-          <div className="flex flex-col gap-6">
-            <Field data-invalid={!!fieldErrors.fullName}>
-              <FieldLabel htmlFor="fullName">
-                Full Name <span className="text-destructive">*</span>
-              </FieldLabel>
-              <Input
-                id="fullName"
-                onChange={(e) => updateFormData("fullName", e.target.value)}
-                placeholder="John Doe"
-                required
-                type="text"
-                value={formData.fullName || ""}
-              />
-              {fieldErrors.fullName && (
-                <FieldError>{fieldErrors.fullName}</FieldError>
-              )}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.username}>
-              <FieldLabel htmlFor="username">Username</FieldLabel>
-              <Input
-                id="username"
-                onChange={(e) => updateFormData("username", e.target.value)}
-                placeholder="johndoe"
-                type="text"
-                value={formData.username || ""}
-              />
-              <FieldDescription>
-                Optional. 3-50 characters, letters, numbers, and underscores
-                only.
-              </FieldDescription>
-              {fieldErrors.username && (
-                <FieldError>{fieldErrors.username}</FieldError>
-              )}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.bio}>
-              <FieldLabel htmlFor="bio">Bio</FieldLabel>
-              <Textarea
-                id="bio"
-                onChange={(e) => updateFormData("bio", e.target.value)}
-                placeholder="Tell us about yourself..."
-                rows={4}
-                value={formData.bio || ""}
-              />
-              <FieldDescription>
-                Optional. Maximum 500 characters.
-              </FieldDescription>
-              {fieldErrors.bio && <FieldError>{fieldErrors.bio}</FieldError>}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.country}>
-              <FieldLabel htmlFor="country">Country</FieldLabel>
-              <Select
-                onValueChange={(value) => {
-                  const country = countries.find((c) => c.isoCode === value);
-                  setSelectedCountryCode(value);
-                  setSelectedStateCode("");
-                  updateFormData("country", country?.name || "");
-                  updateFormData("state", undefined);
-                  updateFormData("city", undefined);
-                }}
-                value={
-                  countries.find((c) => c.name === formData.country)?.isoCode ||
-                  selectedCountryCode
-                }
-              >
-                <SelectTrigger id="country" className="w-full">
-                  <SelectValue placeholder="Select country" />
-                </SelectTrigger>
-                <SelectContent>
-                  {countries.map((country) => (
-                    <SelectItem key={country.isoCode} value={country.isoCode}>
-                      {country.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FieldDescription>Defaults to India</FieldDescription>
-              {fieldErrors.country && (
-                <FieldError>{fieldErrors.country}</FieldError>
-              )}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.state}>
-              <FieldLabel htmlFor="state">State</FieldLabel>
-              <Select
-                disabled={!selectedCountryCode}
-                onValueChange={(value) => {
-                  const state = states.find((s) => s.isoCode === value);
-                  setSelectedStateCode(value);
-                  updateFormData("state", state?.name || "");
-                  updateFormData("city", undefined);
-                }}
-                value={
-                  states.find((s) => s.name === formData.state)?.isoCode || ""
-                }
-              >
-                <SelectTrigger id="state" className="w-full">
-                  <SelectValue placeholder="Select state" />
-                </SelectTrigger>
-                <SelectContent>
-                  {states.map((state) => (
-                    <SelectItem key={state.isoCode} value={state.isoCode}>
-                      {state.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {fieldErrors.state && (
-                <FieldError>{fieldErrors.state}</FieldError>
-              )}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.city}>
-              <FieldLabel htmlFor="city">City</FieldLabel>
-              <Select
-                disabled={!selectedStateCode}
-                onValueChange={(value) => {
-                  const city = cities.find((c) => c.name === value);
-                  updateFormData("city", city?.name || "");
-                }}
-                value={formData.city || ""}
-              >
-                <SelectTrigger id="city" className="w-full">
-                  <SelectValue placeholder="Select city" />
-                </SelectTrigger>
-                <SelectContent>
-                  {cities.map((city) => (
-                    <SelectItem key={city.name} value={city.name}>
-                      {city.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {fieldErrors.city && <FieldError>{fieldErrors.city}</FieldError>}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.gender}>
-              <FieldLabel>Gender</FieldLabel>
-              <FieldDescription>
-                Skip if you prefer not sharing
-              </FieldDescription>
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  className="flex-1 min-w-[120px]"
-                  onClick={() => updateFormData("gender", "male")}
-                  type="button"
-                  variant={formData.gender === "male" ? "default" : "ghost"}
-                >
-                  <Icon name="GenderMale" size={20} />
-                  <span>Male</span>
-                </Button>
-                <Button
-                  className="flex-1 min-w-[120px]"
-                  onClick={() => updateFormData("gender", "female")}
-                  type="button"
-                  variant={formData.gender === "female" ? "default" : "ghost"}
-                >
-                  <Icon name="GenderFemale" size={20} />
-                  <span>Female</span>
-                </Button>
-                <Button
-                  className="flex-1 min-w-[120px]"
-                  onClick={() => updateFormData("gender", "non-binary")}
-                  type="button"
-                  variant={
-                    formData.gender === "non-binary" ? "default" : "ghost"
-                  }
-                >
-                  <Icon name="GenderIntersex" size={20} />
-                  <span>Non-binary</span>
-                </Button>
-              </div>
-              {fieldErrors.gender && (
-                <FieldError>{fieldErrors.gender}</FieldError>
-              )}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.experienceLevel}>
-              <FieldLabel>Experience Level</FieldLabel>
-              <div className="flex flex-col gap-4">
-                <Slider
-                  max={2}
-                  min={0}
-                  onValueChange={(value) => {
-                    const levels = ["beginner", "enthusiast", "expert"];
-                    updateFormData(
-                      "experienceLevel",
-                      levels[
-                        value[0] ?? 0
-                      ] as ProfileUpdateFormData["experienceLevel"]
-                    );
-                  }}
-                  step={1}
-                  value={
-                    formData.experienceLevel
-                      ? [
-                          ["beginner", "enthusiast", "expert"].indexOf(
-                            formData.experienceLevel
-                          ),
-                        ]
-                      : [0]
-                  }
-                />
-                <div className="flex items-center justify-between text-caption text-muted-foreground">
-                  <span>Beginner</span>
-                  <span>Enthusiast</span>
-                  <span>Expert</span>
-                </div>
-                <div className="text-center text-caption font-medium">
-                  {formData.experienceLevel
-                    ? formData.experienceLevel.charAt(0).toUpperCase() +
-                      formData.experienceLevel.slice(1)
-                    : "Beginner"}
-                </div>
-              </div>
-              {fieldErrors.experienceLevel && (
-                <FieldError>{fieldErrors.experienceLevel}</FieldError>
-              )}
-            </Field>
-
-            <Field>
-              <FieldLabel>Preferred Brewing Methods</FieldLabel>
-              <FieldDescription>
-                Select all that apply (optional)
-              </FieldDescription>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {popularBrewingMethods.map((method) => (
-                  <div className="flex items-center gap-2" key={method}>
-                    <Checkbox
-                      checked={
-                        formData.preferredBrewingMethods?.includes(method) ??
-                        false
-                      }
-                      id={`method-${method}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("preferredBrewingMethods", method);
-                        } else {
-                          toggleArrayItem("preferredBrewingMethods", method);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`method-${method}`}
-                    >
-                      {method}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            </Field>
-
-            <div className="flex items-center justify-end gap-4 pt-4">
-              <Button disabled={isSaving} onClick={handleSubmit} type="button">
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
+    <Section spacing="default" contained={false}>
+      <Stack gap="8">
+        {/* Magazine-style header */}
+        <Stack gap="3">
+          <div>
+            <div className="inline-flex items-center gap-4 mb-3">
+              <span className="h-px w-8 md:w-12 bg-accent/60" />
+              <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                Account Settings
+              </span>
             </div>
+            <h1 className="text-display text-balance leading-[1.1] tracking-tight">
+              Profile
+            </h1>
+            <p className="text-muted-foreground text-caption mt-2">
+              Manage your profile information
+            </p>
           </div>
-        </FieldGroup>
-      </div>
-    </div>
+        </Stack>
+
+        <Stack gap="6">
+          {error && (
+            <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-destructive text-caption">
+              {error}
+            </div>
+          )}
+
+          <FieldGroup>
+            <Stack gap="6">
+              <Field data-invalid={!!fieldErrors.fullName}>
+                <FieldLabel htmlFor="fullName">
+                  Full Name <span className="text-destructive">*</span>
+                </FieldLabel>
+                <Input
+                  id="fullName"
+                  onChange={(e) => updateFormData("fullName", e.target.value)}
+                  placeholder="John Doe"
+                  required
+                  type="text"
+                  value={formData.fullName || ""}
+                />
+                {fieldErrors.fullName && (
+                  <FieldError>{fieldErrors.fullName}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.username}>
+                <FieldLabel htmlFor="username">Username</FieldLabel>
+                <Input
+                  id="username"
+                  onChange={(e) => updateFormData("username", e.target.value)}
+                  placeholder="johndoe"
+                  type="text"
+                  value={formData.username || ""}
+                />
+                <FieldDescription>
+                  Optional. 3-50 characters, letters, numbers, and underscores
+                  only.
+                </FieldDescription>
+                {fieldErrors.username && (
+                  <FieldError>{fieldErrors.username}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.bio}>
+                <FieldLabel htmlFor="bio">Bio</FieldLabel>
+                <Textarea
+                  id="bio"
+                  onChange={(e) => updateFormData("bio", e.target.value)}
+                  placeholder="Tell us about yourself..."
+                  rows={4}
+                  value={formData.bio || ""}
+                />
+                <FieldDescription>
+                  Optional. Maximum 500 characters.
+                </FieldDescription>
+                {fieldErrors.bio && <FieldError>{fieldErrors.bio}</FieldError>}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.country}>
+                <FieldLabel htmlFor="country">Country</FieldLabel>
+                <Select
+                  onValueChange={(value) => {
+                    const country = countries.find((c) => c.isoCode === value);
+                    setSelectedCountryCode(value);
+                    setSelectedStateCode("");
+                    updateFormData("country", country?.name || "");
+                    updateFormData("state", undefined);
+                    updateFormData("city", undefined);
+                  }}
+                  value={
+                    countries.find((c) => c.name === formData.country)
+                      ?.isoCode || selectedCountryCode
+                  }
+                >
+                  <SelectTrigger id="country" className="w-full">
+                    <SelectValue placeholder="Select country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {countries.map((country) => (
+                      <SelectItem key={country.isoCode} value={country.isoCode}>
+                        {country.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FieldDescription>Defaults to India</FieldDescription>
+                {fieldErrors.country && (
+                  <FieldError>{fieldErrors.country}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.state}>
+                <FieldLabel htmlFor="state">State</FieldLabel>
+                <Select
+                  disabled={!selectedCountryCode}
+                  onValueChange={(value) => {
+                    const state = states.find((s) => s.isoCode === value);
+                    setSelectedStateCode(value);
+                    updateFormData("state", state?.name || "");
+                    updateFormData("city", undefined);
+                  }}
+                  value={
+                    states.find((s) => s.name === formData.state)?.isoCode || ""
+                  }
+                >
+                  <SelectTrigger id="state" className="w-full">
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {states.map((state) => (
+                      <SelectItem key={state.isoCode} value={state.isoCode}>
+                        {state.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {fieldErrors.state && (
+                  <FieldError>{fieldErrors.state}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.city}>
+                <FieldLabel htmlFor="city">City</FieldLabel>
+                <Select
+                  disabled={!selectedStateCode}
+                  onValueChange={(value) => {
+                    const city = cities.find((c) => c.name === value);
+                    updateFormData("city", city?.name || "");
+                  }}
+                  value={formData.city || ""}
+                >
+                  <SelectTrigger id="city" className="w-full">
+                    <SelectValue placeholder="Select city" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities.map((city) => (
+                      <SelectItem key={city.name} value={city.name}>
+                        {city.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {fieldErrors.city && (
+                  <FieldError>{fieldErrors.city}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.gender}>
+                <FieldLabel>Gender</FieldLabel>
+                <FieldDescription>
+                  Skip if you prefer not sharing
+                </FieldDescription>
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    className="flex-1 min-w-[120px]"
+                    onClick={() => updateFormData("gender", "male")}
+                    type="button"
+                    variant={formData.gender === "male" ? "default" : "ghost"}
+                  >
+                    <Icon name="GenderMale" size={20} />
+                    <span>Male</span>
+                  </Button>
+                  <Button
+                    className="flex-1 min-w-[120px]"
+                    onClick={() => updateFormData("gender", "female")}
+                    type="button"
+                    variant={formData.gender === "female" ? "default" : "ghost"}
+                  >
+                    <Icon name="GenderFemale" size={20} />
+                    <span>Female</span>
+                  </Button>
+                  <Button
+                    className="flex-1 min-w-[120px]"
+                    onClick={() => updateFormData("gender", "non-binary")}
+                    type="button"
+                    variant={
+                      formData.gender === "non-binary" ? "default" : "ghost"
+                    }
+                  >
+                    <Icon name="GenderIntersex" size={20} />
+                    <span>Non-binary</span>
+                  </Button>
+                </div>
+                {fieldErrors.gender && (
+                  <FieldError>{fieldErrors.gender}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.experienceLevel}>
+                <FieldLabel>Experience Level</FieldLabel>
+                <div className="flex flex-col gap-4">
+                  <Slider
+                    max={2}
+                    min={0}
+                    onValueChange={(value) => {
+                      const levels = ["beginner", "enthusiast", "expert"];
+                      updateFormData(
+                        "experienceLevel",
+                        levels[
+                          value[0] ?? 0
+                        ] as ProfileUpdateFormData["experienceLevel"]
+                      );
+                    }}
+                    step={1}
+                    value={
+                      formData.experienceLevel
+                        ? [
+                            ["beginner", "enthusiast", "expert"].indexOf(
+                              formData.experienceLevel
+                            ),
+                          ]
+                        : [0]
+                    }
+                  />
+                  <div className="flex items-center justify-between text-caption text-muted-foreground">
+                    <span>Beginner</span>
+                    <span>Enthusiast</span>
+                    <span>Expert</span>
+                  </div>
+                  <div className="text-center text-caption font-medium">
+                    {formData.experienceLevel
+                      ? formData.experienceLevel.charAt(0).toUpperCase() +
+                        formData.experienceLevel.slice(1)
+                      : "Beginner"}
+                  </div>
+                </div>
+                {fieldErrors.experienceLevel && (
+                  <FieldError>{fieldErrors.experienceLevel}</FieldError>
+                )}
+              </Field>
+
+              <Field>
+                <FieldLabel>Preferred Brewing Methods</FieldLabel>
+                <FieldDescription>
+                  Select all that apply (optional)
+                </FieldDescription>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                  {popularBrewingMethods.map((method) => (
+                    <div className="flex items-center gap-2" key={method}>
+                      <Checkbox
+                        checked={
+                          formData.preferredBrewingMethods?.includes(method) ??
+                          false
+                        }
+                        id={`method-${method}`}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            toggleArrayItem("preferredBrewingMethods", method);
+                          } else {
+                            toggleArrayItem("preferredBrewingMethods", method);
+                          }
+                        }}
+                      />
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor={`method-${method}`}
+                      >
+                        {method}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </Field>
+
+              <div className="flex items-center justify-end gap-4 pt-4">
+                <Button
+                  disabled={isSaving}
+                  onClick={handleSubmit}
+                  type="button"
+                >
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
+            </Stack>
+          </FieldGroup>
+        </Stack>
+      </Stack>
+    </Section>
   );
 }

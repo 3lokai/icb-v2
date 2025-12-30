@@ -28,10 +28,17 @@ export function CoffeeSensoryProfile({
 
   return (
     <div className={cn("w-full", className)}>
-      <Stack gap="4">
-        <div className="flex items-center gap-2">
-          <Icon name="SparkleIcon" size={18} className="text-accent" />
-          <h2 className="text-subheading">Flavor Profile</h2>
+      <Stack gap="6">
+        <div>
+          <div className="inline-flex items-center gap-4 mb-3">
+            <span className="h-px w-8 md:w-12 bg-accent/60" />
+            <span className="text-overline text-muted-foreground tracking-[0.15em]">
+              Taste Experience
+            </span>
+          </div>
+          <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+            Flavor <span className="text-accent italic">Profile.</span>
+          </h2>
         </div>
 
         <Stack gap="8">
@@ -59,24 +66,30 @@ export function CoffeeSensoryProfile({
 
           {/* Flavor Notes */}
           <div className="flex flex-col gap-6">
-            <Stack gap="3">
-              <span className="text-caption text-muted-foreground font-medium">
-                Flavor Notes
-              </span>
-              {hasFlavorNotes ? (
-                <TagList>
-                  {coffee.flavor_notes.map((note) => (
-                    <Tag key={note.id} variant="outline" className="text-body">
-                      {note.label}
-                    </Tag>
-                  ))}
-                </TagList>
-              ) : (
-                <span className="text-body text-muted-foreground">
-                  Flavor notes not available
+            <div>
+              <div className="inline-flex items-center gap-4 mb-3">
+                <span className="h-px w-8 md:w-12 bg-accent/60" />
+                <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                  Tasting Notes
                 </span>
-              )}
-            </Stack>
+              </div>
+              <h3 className="text-title text-balance leading-[1.1] tracking-tight">
+                Flavor <span className="text-accent italic">Notes.</span>
+              </h3>
+            </div>
+            {hasFlavorNotes ? (
+              <TagList>
+                {coffee.flavor_notes.map((note) => (
+                  <Tag key={note.id} variant="outline">
+                    {note.label}
+                  </Tag>
+                ))}
+              </TagList>
+            ) : (
+              <span className="text-body text-muted-foreground">
+                Flavor notes not available
+              </span>
+            )}
           </div>
         </Stack>
       </Stack>

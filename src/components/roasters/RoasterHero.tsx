@@ -28,7 +28,7 @@ export function RoasterHero({ roaster }: RoasterHeroProps) {
       <div className="flex flex-col gap-6 md:flex-row md:items-start">
         {/* Logo */}
         <div className="flex-shrink-0">
-          {roaster.logo_url ? (
+          {roaster.slug ? (
             <div className="relative h-32 w-32 overflow-hidden rounded-lg bg-muted md:h-40 md:w-40">
               <Image
                 alt={`${roaster.name} logo`}
@@ -36,7 +36,9 @@ export function RoasterHero({ roaster }: RoasterHeroProps) {
                 fill
                 priority
                 sizes="(max-width: 768px) 128px, 160px"
-                src={roasterImagePresets.roasterLogo(roaster.logo_url)}
+                src={roasterImagePresets.roasterLogo(
+                  `roasters/${roaster.slug}-logo`
+                )}
               />
             </div>
           ) : (

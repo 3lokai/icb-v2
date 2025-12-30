@@ -15,7 +15,17 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
 
   return (
     <div>
-      <h2 className="text-title mb-5">Ratings & Reviews</h2>
+      <div className="mb-6">
+        <div className="inline-flex items-center gap-4 mb-3">
+          <span className="h-px w-8 md:w-12 bg-accent/60" />
+          <span className="text-overline text-muted-foreground tracking-[0.15em]">
+            Community Feedback
+          </span>
+        </div>
+        <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+          Ratings & <span className="text-accent italic">Reviews.</span>
+        </h2>
+      </div>
       <Cluster gap="4" align="center" className="flex-wrap">
         {/* Star Rating */}
         {avg_rating !== null && (

@@ -1,66 +1,75 @@
 import Image from "next/image";
-import { Icon, type IconName } from "@/components/common/Icon";
+import { Stack } from "@/components/primitives/stack";
 
 type PageHeaderProps = {
-  title: string;
+  title: React.ReactNode;
   description?: string;
-  icon?: IconName;
-  iconLabel?: string;
+  overline?: string;
+  rightSideContent?: React.ReactNode;
+  backgroundImage?: string;
+  backgroundImageAlt?: string;
 };
 
 /**
  * Page Header Component
- * A smaller, less prominent version of the homepage hero section
+ * Editorial page header with background image and overlay
  * Used for directory pages and other content pages
+ * Follows the format from CoffeeDirectory header
  */
 export function PageHeader({
   title,
   description,
-  icon,
-  iconLabel,
+  overline,
+  rightSideContent,
+  backgroundImage = "/images/hero-bg.png",
+  backgroundImageAlt = "Coffee beans background",
 }: PageHeaderProps) {
   return (
-    <section className="relative -mx-4 -mt-8 flex min-h-[40vh] items-center justify-center overflow-hidden md:-mx-6 md:-mt-12 lg:-mx-8 lg:-mt-16 md:min-h-[50vh]">
+    <section className="relative -mx-4 -mt-8 flex min-h-[50vh] items-center justify-center overflow-hidden md:-mx-6 md:-mt-12 lg:-mx-8 lg:-mt-16 md:min-h-[65vh]">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          alt="Coffee beans background"
+          alt={backgroundImageAlt}
           className="object-cover"
           fill
           priority
-          src="/images/hero-bg.png"
+          src={backgroundImage}
         />
       </div>
 
       {/* Overlay */}
-      <div className="hero-overlay" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
 
-      {/* Content */}
-      <div className="hero-content">
-        {/* Optional badge */}
-        {icon && iconLabel && (
-          <div className="mb-4 inline-flex animate-fade-in-scale items-center">
-            <div className="rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-caption">
-                <Icon className="text-accent" name={icon} size={16} />
-                <span className="text-white/90">{iconLabel}</span>
-                <div className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-              </div>
+      <div className="container relative z-20 mx-auto px-4 py-12 md:py-20">
+        <div className="mx-auto max-w-6xl w-full">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+            <div className="md:col-span-8">
+              <Stack gap="6">
+                {overline && (
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 md:w-12 bg-accent/60" />
+                    <span className="text-overline text-white/70 tracking-[0.15em]">
+                      {overline}
+                    </span>
+                  </div>
+                )}
+                <h1 className="text-hero text-white text-balance leading-[1.1] tracking-tight">
+                  {title}
+                </h1>
+                {description && (
+                  <p className="max-w-2xl text-pretty text-body-large text-white/80 leading-relaxed">
+                    {description}
+                  </p>
+                )}
+              </Stack>
             </div>
+            {rightSideContent && (
+              <div className="md:col-span-4 flex md:justify-end pb-2">
+                {rightSideContent}
+              </div>
+            )}
           </div>
-        )}
-
-        {/* Title */}
-        <h1 className="mb-4 animate-fade-in-scale text-display text-white text-balance delay-100">
-          {title}
-        </h1>
-
-        {/* Description */}
-        {description && (
-          <p className="mx-auto max-w-2xl animate-fade-in-scale text-white/90 text-body-large leading-relaxed delay-200">
-            {description}
-          </p>
-        )}
+        </div>
       </div>
     </section>
   );

@@ -3,8 +3,10 @@
 
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/common/Icon";
+import { Cluster } from "@/components/primitives/cluster";
 import { Button } from "@/components/ui/button";
 import { trackToolsEngagement } from "@/lib/analytics/enhanced-tracking";
+import { cn } from "@/lib/utils";
 import type { BrewingMethodKey } from "@/lib/tools/brewing-guide";
 // Import our components
 import { CoffeeCalculator } from "./CoffeeCalculator";
@@ -60,47 +62,59 @@ export function CoffeeCalculatorContainer({
 
   return (
     <div className={className}>
-      {/* Glassmorphed Tab Navigation */}
-      <div className="mb-8 flex justify-center">
-        <div className="surface-1 rounded-2xl p-2">
-          <div className="flex gap-2">
+      {/* Clean Tab Navigation */}
+      <div className="mb-8">
+        <div className="flex justify-center">
+          <Cluster gap="2" className="bg-muted p-1 rounded-xl inline-flex">
             <Button
-              className={`group flex items-center gap-2 rounded-xl px-6 py-3 transition-all duration-300 ${
+              className={cn(
+                "rounded-lg px-6 transition-all duration-300",
                 activeTab === "calculator"
-                  ? "scale-[1.02] bg-primary text-primary-foreground shadow-lg"
-                  : "hover:scale-[1.02] hover:bg-background/50"
-              }`}
-              onClick={() => setActiveTab("calculator")}
-              variant={activeTab === "calculator" ? "default" : "ghost"}
-            >
-              <Icon
-                className="h-4 w-4 transition-transform duration-300 group-hover:scale-110"
-                name="Calculator"
-              />
-              <span className="font-medium">Calculator</span>
-              {activeTab === "calculator" && (
-                <div className="ml-1 h-1.5 w-1.5 animate-pulse rounded-full bg-primary-foreground" />
+                  ? "bg-white text-primary shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/50"
               )}
+              onClick={() => setActiveTab("calculator")}
+              variant="ghost"
+              size="default"
+            >
+              <Cluster gap="2" align="center">
+                <Icon
+                  className={cn(
+                    "h-4 w-4 transition-transform duration-300",
+                    activeTab === "calculator"
+                      ? "scale-110"
+                      : "group-hover:scale-110"
+                  )}
+                  name="Calculator"
+                />
+                <span className="font-medium">Calculator</span>
+              </Cluster>
             </Button>
             <Button
-              className={`group flex items-center gap-2 rounded-xl px-6 py-3 transition-all duration-300 ${
+              className={cn(
+                "rounded-lg px-6 transition-all duration-300",
                 activeTab === "guide"
-                  ? "scale-[1.02] bg-primary text-primary-foreground shadow-lg"
-                  : "hover:scale-[1.02] hover:bg-background/50"
-              }`}
-              onClick={() => setActiveTab("guide")}
-              variant={activeTab === "guide" ? "default" : "ghost"}
-            >
-              <Icon
-                className="h-4 w-4 transition-transform duration-300 group-hover:scale-110"
-                name="BookOpen"
-              />
-              <span className="font-medium">Brewing Guide</span>
-              {activeTab === "guide" && (
-                <div className="ml-1 h-1.5 w-1.5 animate-pulse rounded-full bg-primary-foreground" />
+                  ? "bg-white text-primary shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/50"
               )}
+              onClick={() => setActiveTab("guide")}
+              variant="ghost"
+              size="default"
+            >
+              <Cluster gap="2" align="center">
+                <Icon
+                  className={cn(
+                    "h-4 w-4 transition-transform duration-300",
+                    activeTab === "guide"
+                      ? "scale-110"
+                      : "group-hover:scale-110"
+                  )}
+                  name="BookOpen"
+                />
+                <span className="font-medium">Brewing Guide</span>
+              </Cluster>
             </Button>
-          </div>
+          </Cluster>
         </div>
       </div>
       {/* Tab Content with Enhanced Transitions */}

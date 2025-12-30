@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/common/Icon";
+import { Stack } from "@/components/primitives/stack";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardMobileDrawer } from "./DashboardMobileDrawer";
 
@@ -14,6 +15,7 @@ type DashboardLayoutContentProps = {
  * Dashboard Layout Content Component
  * Wraps dashboard pages with sidebar and mobile drawer
  * Similar to how CoffeeDirectory and RoasterDirectory work
+ * Note: PageShell is already applied in layout.tsx
  */
 export function DashboardLayoutContent({
   children,
@@ -21,7 +23,7 @@ export function DashboardLayoutContent({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="py-8 md:py-12">
       {/* Mobile Sidebar Toggle Button */}
       <div className="mb-4 md:hidden">
         <Button
@@ -42,7 +44,7 @@ export function DashboardLayoutContent({
       />
 
       {/* Main Content Area */}
-      <div className="flex flex-col gap-6 md:flex-row">
+      <div className="flex flex-col md:flex-row md:gap-6">
         {/* Sidebar */}
         <DashboardSidebar />
 

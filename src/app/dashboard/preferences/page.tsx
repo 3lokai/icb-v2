@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
+import { Cluster } from "@/components/primitives/cluster";
 import {
   ROAST_LEVELS,
   PROCESSING_METHODS,
@@ -138,230 +141,249 @@ export default function PreferencesPage() {
 
   if (isLoading) {
     return (
-      <div className="container-default p-6 space-y-6">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-96" />
-      </div>
+      <Section spacing="default" contained={false}>
+        <Stack gap="6">
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-96" />
+        </Stack>
+      </Section>
     );
   }
 
   return (
-    <div className="container-default p-6">
-      <div className="mb-6">
-        <h1 className="font-bold text-title">Coffee Preferences</h1>
-        <p className="text-muted-foreground text-caption">
-          Customize your coffee preferences
-        </p>
-      </div>
-
-      <div className="flex w-full flex-col gap-6">
-        {error && (
-          <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-destructive text-caption">
-            {error}
-          </div>
-        )}
-
-        <FieldGroup>
-          <div className="flex flex-col gap-6">
-            <Field data-invalid={!!fieldErrors.roastLevels}>
-              <FieldLabel>Roast Levels</FieldLabel>
-              <FieldDescription>
-                Select your preferred roast levels (up to 10)
-              </FieldDescription>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {ROAST_LEVELS.map((roast) => (
-                  <div className="flex items-center gap-2" key={roast.value}>
-                    <Checkbox
-                      checked={
-                        formData.roastLevels?.includes(roast.value) ?? false
-                      }
-                      id={`roast-${roast.value}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("roastLevels", roast.value);
-                        } else {
-                          toggleArrayItem("roastLevels", roast.value);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`roast-${roast.value}`}
-                    >
-                      {roast.label}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-              {fieldErrors.roastLevels && (
-                <FieldError>{fieldErrors.roastLevels}</FieldError>
-              )}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.flavorProfiles}>
-              <FieldLabel>Flavor Profiles</FieldLabel>
-              <FieldDescription>
-                Select your preferred flavor profiles (up to 20)
-              </FieldDescription>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {popularFlavorProfiles.map((flavor) => (
-                  <div className="flex items-center gap-2" key={flavor}>
-                    <Checkbox
-                      checked={
-                        formData.flavorProfiles?.includes(flavor) ?? false
-                      }
-                      id={`flavor-${flavor}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("flavorProfiles", flavor);
-                        } else {
-                          toggleArrayItem("flavorProfiles", flavor);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`flavor-${flavor}`}
-                    >
-                      {flavor}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-              {fieldErrors.flavorProfiles && (
-                <FieldError>{fieldErrors.flavorProfiles}</FieldError>
-              )}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.processingMethods}>
-              <FieldLabel>Processing Methods</FieldLabel>
-              <FieldDescription>
-                Select your preferred processing methods (up to 15)
-              </FieldDescription>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {PROCESSING_METHODS.map((method) => (
-                  <div className="flex items-center gap-2" key={method.value}>
-                    <Checkbox
-                      checked={
-                        formData.processingMethods?.includes(method.value) ??
-                        false
-                      }
-                      id={`method-${method.value}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("processingMethods", method.value);
-                        } else {
-                          toggleArrayItem("processingMethods", method.value);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`method-${method.value}`}
-                    >
-                      {method.label}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-              {fieldErrors.processingMethods && (
-                <FieldError>{fieldErrors.processingMethods}</FieldError>
-              )}
-            </Field>
-
-            <Field data-invalid={!!fieldErrors.regions}>
-              <FieldLabel>Regions</FieldLabel>
-              <FieldDescription>
-                Select your preferred coffee regions (up to 20)
-              </FieldDescription>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {popularRegions.map((region) => (
-                  <div className="flex items-center gap-2" key={region}>
-                    <Checkbox
-                      checked={formData.regions?.includes(region) ?? false}
-                      id={`region-${region}`}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          toggleArrayItem("regions", region);
-                        } else {
-                          toggleArrayItem("regions", region);
-                        }
-                      }}
-                    />
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor={`region-${region}`}
-                    >
-                      {region}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-              {fieldErrors.regions && (
-                <FieldError>{fieldErrors.regions}</FieldError>
-              )}
-            </Field>
-
-            <Field>
-              <FieldLabel>Brew Preferences</FieldLabel>
-              <FieldDescription>Optional preferences</FieldDescription>
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <Label
-                    className="cursor-pointer font-normal"
-                    htmlFor="with-milk"
-                  >
-                    I prefer coffee with milk
-                  </Label>
-                  <Switch
-                    checked={formData.withMilkPreference ?? false}
-                    id="with-milk"
-                    onCheckedChange={(checked) =>
-                      updateFormData("withMilkPreference", checked)
-                    }
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <Label
-                    className="cursor-pointer font-normal"
-                    htmlFor="decaf-only"
-                  >
-                    Decaf only
-                  </Label>
-                  <Switch
-                    checked={formData.decafOnly ?? false}
-                    id="decaf-only"
-                    onCheckedChange={(checked) =>
-                      updateFormData("decafOnly", checked)
-                    }
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <Label
-                    className="cursor-pointer font-normal"
-                    htmlFor="organic-only"
-                  >
-                    Organic only
-                  </Label>
-                  <Switch
-                    checked={formData.organicOnly ?? false}
-                    id="organic-only"
-                    onCheckedChange={(checked) =>
-                      updateFormData("organicOnly", checked)
-                    }
-                  />
-                </div>
-              </div>
-            </Field>
-
-            <div className="flex items-center justify-end gap-4 pt-4">
-              <Button disabled={isSaving} onClick={handleSubmit} type="button">
-                {isSaving ? "Saving..." : "Save Preferences"}
-              </Button>
+    <Section spacing="default" contained={false}>
+      <Stack gap="8">
+        {/* Magazine-style header */}
+        <Stack gap="3">
+          <div>
+            <div className="inline-flex items-center gap-4 mb-3">
+              <span className="h-px w-8 md:w-12 bg-accent/60" />
+              <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                Personalization
+              </span>
             </div>
+            <h1 className="text-display text-balance leading-[1.1] tracking-tight">
+              Coffee Preferences
+            </h1>
+            <p className="text-muted-foreground text-caption mt-2">
+              Customize your coffee preferences
+            </p>
           </div>
-        </FieldGroup>
-      </div>
-    </div>
+        </Stack>
+
+        <Stack gap="6">
+          {error && (
+            <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-destructive text-caption">
+              {error}
+            </div>
+          )}
+
+          <FieldGroup>
+            <Stack gap="6">
+              <Field data-invalid={!!fieldErrors.roastLevels}>
+                <FieldLabel>Roast Levels</FieldLabel>
+                <FieldDescription>
+                  Select your preferred roast levels (up to 10)
+                </FieldDescription>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                  {ROAST_LEVELS.map((roast) => (
+                    <div className="flex items-center gap-2" key={roast.value}>
+                      <Checkbox
+                        checked={
+                          formData.roastLevels?.includes(roast.value) ?? false
+                        }
+                        id={`roast-${roast.value}`}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            toggleArrayItem("roastLevels", roast.value);
+                          } else {
+                            toggleArrayItem("roastLevels", roast.value);
+                          }
+                        }}
+                      />
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor={`roast-${roast.value}`}
+                      >
+                        {roast.label}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+                {fieldErrors.roastLevels && (
+                  <FieldError>{fieldErrors.roastLevels}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.flavorProfiles}>
+                <FieldLabel>Flavor Profiles</FieldLabel>
+                <FieldDescription>
+                  Select your preferred flavor profiles (up to 20)
+                </FieldDescription>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                  {popularFlavorProfiles.map((flavor) => (
+                    <div className="flex items-center gap-2" key={flavor}>
+                      <Checkbox
+                        checked={
+                          formData.flavorProfiles?.includes(flavor) ?? false
+                        }
+                        id={`flavor-${flavor}`}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            toggleArrayItem("flavorProfiles", flavor);
+                          } else {
+                            toggleArrayItem("flavorProfiles", flavor);
+                          }
+                        }}
+                      />
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor={`flavor-${flavor}`}
+                      >
+                        {flavor}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+                {fieldErrors.flavorProfiles && (
+                  <FieldError>{fieldErrors.flavorProfiles}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.processingMethods}>
+                <FieldLabel>Processing Methods</FieldLabel>
+                <FieldDescription>
+                  Select your preferred processing methods (up to 15)
+                </FieldDescription>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                  {PROCESSING_METHODS.map((method) => (
+                    <div className="flex items-center gap-2" key={method.value}>
+                      <Checkbox
+                        checked={
+                          formData.processingMethods?.includes(method.value) ??
+                          false
+                        }
+                        id={`method-${method.value}`}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            toggleArrayItem("processingMethods", method.value);
+                          } else {
+                            toggleArrayItem("processingMethods", method.value);
+                          }
+                        }}
+                      />
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor={`method-${method.value}`}
+                      >
+                        {method.label}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+                {fieldErrors.processingMethods && (
+                  <FieldError>{fieldErrors.processingMethods}</FieldError>
+                )}
+              </Field>
+
+              <Field data-invalid={!!fieldErrors.regions}>
+                <FieldLabel>Regions</FieldLabel>
+                <FieldDescription>
+                  Select your preferred coffee regions (up to 20)
+                </FieldDescription>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                  {popularRegions.map((region) => (
+                    <div className="flex items-center gap-2" key={region}>
+                      <Checkbox
+                        checked={formData.regions?.includes(region) ?? false}
+                        id={`region-${region}`}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            toggleArrayItem("regions", region);
+                          } else {
+                            toggleArrayItem("regions", region);
+                          }
+                        }}
+                      />
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor={`region-${region}`}
+                      >
+                        {region}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+                {fieldErrors.regions && (
+                  <FieldError>{fieldErrors.regions}</FieldError>
+                )}
+              </Field>
+
+              <Field>
+                <FieldLabel>Brew Preferences</FieldLabel>
+                <FieldDescription>Optional preferences</FieldDescription>
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <Label
+                      className="cursor-pointer font-normal"
+                      htmlFor="with-milk"
+                    >
+                      I prefer coffee with milk
+                    </Label>
+                    <Switch
+                      checked={formData.withMilkPreference ?? false}
+                      id="with-milk"
+                      onCheckedChange={(checked) =>
+                        updateFormData("withMilkPreference", checked)
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label
+                      className="cursor-pointer font-normal"
+                      htmlFor="decaf-only"
+                    >
+                      Decaf only
+                    </Label>
+                    <Switch
+                      checked={formData.decafOnly ?? false}
+                      id="decaf-only"
+                      onCheckedChange={(checked) =>
+                        updateFormData("decafOnly", checked)
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label
+                      className="cursor-pointer font-normal"
+                      htmlFor="organic-only"
+                    >
+                      Organic only
+                    </Label>
+                    <Switch
+                      checked={formData.organicOnly ?? false}
+                      id="organic-only"
+                      onCheckedChange={(checked) =>
+                        updateFormData("organicOnly", checked)
+                      }
+                    />
+                  </div>
+                </div>
+              </Field>
+
+              <div className="flex items-center justify-end gap-4 pt-4">
+                <Button
+                  disabled={isSaving}
+                  onClick={handleSubmit}
+                  type="button"
+                >
+                  {isSaving ? "Saving..." : "Save Preferences"}
+                </Button>
+              </div>
+            </Stack>
+          </FieldGroup>
+        </Stack>
+      </Stack>
+    </Section>
   );
 }

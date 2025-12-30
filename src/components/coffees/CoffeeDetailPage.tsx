@@ -7,6 +7,7 @@ import { Icon } from "@/components/common/Icon";
 import Tag, { TagList } from "@/components/common/Tag";
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
+import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -85,27 +86,27 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                 {/* Header Section */}
                 <Stack gap="6">
                   {/* Eyebrow with badges */}
-                  <Cluster gap="2" align="center">
-                    {coffee.bean_species && (
-                      <div className="inline-flex items-center gap-2">
-                        <span className="h-px w-8 bg-accent/60" />
-                        <span className="text-label">
-                          {coffee.bean_species}
-                        </span>
-                      </div>
-                    )}
-                    {coffee.decaf && (
-                      <Badge variant="secondary" className="text-label">
-                        Decaf
-                      </Badge>
-                    )}
-                    {coffee.is_limited && (
-                      <Badge variant="default" className="text-label">
-                        <Icon name="Lightning" size={12} className="mr-1" />
-                        Limited
-                      </Badge>
-                    )}
-                  </Cluster>
+                  <div>
+                    <div className="inline-flex items-center gap-4 mb-3">
+                      <span className="h-px w-8 md:w-12 bg-accent/60" />
+                      <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                        {coffee.bean_species || "Specialty Coffee"}
+                      </span>
+                    </div>
+                    <Cluster gap="2" align="center" className="mt-2">
+                      {coffee.decaf && (
+                        <Badge variant="secondary" className="text-label">
+                          Decaf
+                        </Badge>
+                      )}
+                      {coffee.is_limited && (
+                        <Badge variant="default" className="text-label">
+                          <Icon name="Lightning" size={12} className="mr-1" />
+                          Limited
+                        </Badge>
+                      )}
+                    </Cluster>
+                  </div>
 
                   {/* Title */}
                   <Stack gap="3">
@@ -211,11 +212,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                           </span>
                           <TagList>
                             {coffee.brew_methods.map((method) => (
-                              <Tag
-                                key={method.id}
-                                variant="outline"
-                                className="text-body"
-                              >
+                              <Tag key={method.id} variant="outline">
                                 {method.label}
                               </Tag>
                             ))}
@@ -228,10 +225,18 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
 
                 {/* Description */}
                 {(coffee.description_md || coffee.summary.seo_desc) && (
-                  <Stack gap="4">
-                    <div className="flex items-center gap-2">
-                      <Icon name="Note" size={18} className="text-accent" />
-                      <h2 className="text-title">About This Coffee</h2>
+                  <Stack gap="6">
+                    <div>
+                      <div className="inline-flex items-center gap-4 mb-3">
+                        <span className="h-px w-8 md:w-12 bg-accent/60" />
+                        <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                          The Story
+                        </span>
+                      </div>
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                        About This{" "}
+                        <span className="text-accent italic">Coffee.</span>
+                      </h2>
                     </div>
                     {coffee.description_md ? (
                       <div className="prose prose-sm dark:prose-invert max-w-none">
@@ -267,42 +272,43 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                 {/* Pricing Section */}
                 {coffee.variants.length > 0 && (
                   <Stack gap="6">
-                    <Stack gap="4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Icon
-                            name="CurrencyDollar"
-                            size={18}
-                            className="text-accent"
-                          />
-                          <h2 className="text-title">Pricing & Variants</h2>
+                    <div className="flex items-end justify-between">
+                      <div>
+                        <div className="inline-flex items-center gap-4 mb-3">
+                          <span className="h-px w-8 md:w-12 bg-accent/60" />
+                          <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                            Purchase Options
+                          </span>
                         </div>
-                        {hasStock ? (
-                          <Badge variant="default" className="bg-green-600">
-                            <Icon name="Check" size={12} className="mr-1" />
-                            In Stock
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary">Out of Stock</Badge>
+                        <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                          Pricing &{" "}
+                          <span className="text-accent italic">Variants.</span>
+                        </h2>
+                      </div>
+                      {hasStock ? (
+                        <Badge variant="default" className="bg-green-600">
+                          <Icon name="Check" size={12} className="mr-1" />
+                          In Stock
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary">Out of Stock</Badge>
+                      )}
+                    </div>
+
+                    {/* Price Range */}
+                    {minPrice && (
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-title font-bold">
+                          {formatPrice(minPrice)}
+                        </span>
+                        {coffee.summary.best_normalized_250g && (
+                          <span className="text-caption text-muted-foreground">
+                            ({formatPrice(coffee.summary.best_normalized_250g)}/
+                            250g)
+                          </span>
                         )}
                       </div>
-
-                      {/* Price Range */}
-                      {minPrice && (
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-title font-bold">
-                            {formatPrice(minPrice)}
-                          </span>
-                          {coffee.summary.best_normalized_250g && (
-                            <span className="text-caption text-muted-foreground">
-                              (
-                              {formatPrice(coffee.summary.best_normalized_250g)}
-                              / 250g)
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </Stack>
+                    )}
 
                     {/* Variants by Weight */}
                     <Stack gap="3">
@@ -362,7 +368,11 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                     </span>
                     <TagList>
                       {coffee.tags.map((tag, index) => (
-                        <Tag key={index} variant="outline">
+                        <Tag
+                          key={index}
+                          variant="outline"
+                          className="text-micro"
+                        >
                           {tag}
                         </Tag>
                       ))}
@@ -374,9 +384,9 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
           </div>
 
           {/* Reviews Section */}
-          <div className="mt-16">
+          <Section spacing="default" contained={false}>
             <ReviewSection entityType="coffee" entityId={coffee.id} />
-          </div>
+          </Section>
         </div>
       </PageShell>
     </div>

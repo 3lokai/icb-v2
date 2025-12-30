@@ -1,4 +1,9 @@
+"use client";
+
+import { Icon } from "@/components/common/Icon";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Cluster } from "@/components/primitives/cluster";
 import {
   type DifficultyLevel,
   EXPERTS,
@@ -97,6 +102,10 @@ export function RecipeSidebar({
     },
   ];
 
+  // Check if any filters are active
+  const hasActiveFilters =
+    selectedMethod || selectedDifficulty || selectedUse || selectedExpert;
+
   // Helper to toggle single-select filter
   const toggleFilter = <T,>(
     current: T | undefined,
@@ -119,31 +128,31 @@ export function RecipeSidebar({
     }
 
     return (
-      <div className="space-y-2">
-        <label className="font-medium text-caption" htmlFor={title}>
+      <div className="space-y-4">
+        <span className="shrink-0 font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
           {title}
-        </label>
-        <div className="space-y-2">
-          {items.map((item) => (
-            <label
-              className="flex cursor-pointer items-center gap-2 rounded-md p-2 transition-colors hover:bg-accent/50"
-              key={item.value}
-            >
-              <input
-                checked={selected === item.value}
-                className="h-4 w-4 rounded border-input"
-                onChange={() => toggleFilter(selected, item.value, onSelect)}
-                type="checkbox"
-              />
-              <span className="text-caption">
-                {item.label}{" "}
+        </span>
+        <Cluster gap="2">
+          {items.map((item) => {
+            const isSelected = selected === item.value;
+            return (
+              <Button
+                className="shrink-0"
+                key={item.value}
+                onClick={() => toggleFilter(selected, item.value, onSelect)}
+                size="sm"
+                variant={isSelected ? "default" : "outline"}
+              >
+                {item.label}
                 {item.count !== undefined && (
-                  <span className="text-muted-foreground">({item.count})</span>
+                  <span className="ml-1.5 text-overline opacity-70">
+                    ({item.count})
+                  </span>
                 )}
-              </span>
-            </label>
-          ))}
-        </div>
+              </Button>
+            );
+          })}
+        </Cluster>
       </div>
     );
   };
@@ -151,48 +160,134 @@ export function RecipeSidebar({
   return (
     <div className="w-full space-y-6 md:w-64">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-subheading">Filters</h2>
-        <Button onClick={onClearAll} size="sm" variant="ghost">
-          Reset
-        </Button>
+      <div className="mb-8 space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-subheading">Filters</h2>
+        </div>
+
+        {/* Quick Filter Buttons */}
+        <div className="space-y-6">
+          {/* Brewing Methods */}
+          {renderFilterSection({
+            title: "Brewing Method",
+            items: methods,
+            selected: selectedMethod,
+            onSelect: onMethodChange,
+          })}
+
+          {/* Difficulty Level */}
+          {renderFilterSection({
+            title: "Difficulty Level",
+            items: difficulties,
+            selected: selectedDifficulty,
+            onSelect: onDifficultyChange,
+          })}
+
+          {/* Recommended Use */}
+          {renderFilterSection({
+            title: "Recommended Use",
+            items: useCases,
+            selected: selectedUse,
+            onSelect: onUseChange,
+          })}
+
+          {/* Coffee Expert */}
+          {renderFilterSection({
+            title: "Coffee Expert",
+            items: EXPERTS.map((expert) => ({
+              value: expert.name,
+              label: expert.name,
+              count: expertCounts[expert.name] ?? 0,
+            })),
+            selected: selectedExpert,
+            onSelect: onExpertChange,
+          })}
+        </div>
       </div>
 
-      {/* Brewing Methods */}
-      {renderFilterSection({
-        title: "Brewing Method",
-        items: methods,
-        selected: selectedMethod,
-        onSelect: onMethodChange,
-      })}
-
-      {/* Difficulty Level */}
-      {renderFilterSection({
-        title: "Difficulty Level",
-        items: difficulties,
-        selected: selectedDifficulty,
-        onSelect: onDifficultyChange,
-      })}
-
-      {/* Recommended Use */}
-      {renderFilterSection({
-        title: "Recommended Use",
-        items: useCases,
-        selected: selectedUse,
-        onSelect: onUseChange,
-      })}
-
-      {/* Coffee Expert */}
-      {renderFilterSection({
-        title: "Coffee Expert",
-        items: EXPERTS.map((expert) => ({
-          value: expert.name,
-          label: expert.name,
-          count: expertCounts[expert.name] ?? 0,
-        })),
-        selected: selectedExpert,
-        onSelect: onExpertChange,
-      })}
+      {/* Applied Filters Section */}
+      {hasActiveFilters && (
+        <div className="flex flex-wrap items-center gap-3 py-2 border-y border-border/40">
+          <span className="shrink-0 font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+            Applied:
+          </span>
+          <Cluster gap="2">
+            {selectedMethod && (
+              <Badge
+                className="shrink-0 gap-1.5 px-3 py-1 text-overline bg-accent/10 text-accent border-accent/20"
+                variant="secondary"
+              >
+                {methods.find((m) => m.value === selectedMethod)?.label ||
+                  selectedMethod}
+                <button
+                  aria-label={`Remove ${selectedMethod} filter`}
+                  className="ml-1 rounded-full hover:bg-accent/20 transition-colors"
+                  onClick={() => onMethodChange(undefined)}
+                  type="button"
+                >
+                  <Icon name="X" size={10} />
+                </button>
+              </Badge>
+            )}
+            {selectedDifficulty && (
+              <Badge
+                className="shrink-0 gap-1.5 px-3 py-1 text-overline bg-accent/10 text-accent border-accent/20"
+                variant="secondary"
+              >
+                {selectedDifficulty}
+                <button
+                  aria-label={`Remove ${selectedDifficulty} filter`}
+                  className="ml-1 rounded-full hover:bg-accent/20 transition-colors"
+                  onClick={() => onDifficultyChange(undefined)}
+                  type="button"
+                >
+                  <Icon name="X" size={10} />
+                </button>
+              </Badge>
+            )}
+            {selectedUse && (
+              <Badge
+                className="shrink-0 gap-1.5 px-3 py-1 text-overline bg-accent/10 text-accent border-accent/20"
+                variant="secondary"
+              >
+                {selectedUse}
+                <button
+                  aria-label={`Remove ${selectedUse} filter`}
+                  className="ml-1 rounded-full hover:bg-accent/20 transition-colors"
+                  onClick={() => onUseChange(undefined)}
+                  type="button"
+                >
+                  <Icon name="X" size={10} />
+                </button>
+              </Badge>
+            )}
+            {selectedExpert && (
+              <Badge
+                className="shrink-0 gap-1.5 px-3 py-1 text-overline bg-accent/10 text-accent border-accent/20"
+                variant="secondary"
+              >
+                {selectedExpert}
+                <button
+                  aria-label={`Remove ${selectedExpert} filter`}
+                  className="ml-1 rounded-full hover:bg-accent/20 transition-colors"
+                  onClick={() => onExpertChange(undefined)}
+                  type="button"
+                >
+                  <Icon name="X" size={10} />
+                </button>
+              </Badge>
+            )}
+            <Button
+              className="shrink-0 text-micro font-bold uppercase tracking-widest hover:text-accent"
+              onClick={onClearAll}
+              size="sm"
+              variant="link"
+            >
+              Clear all
+            </Button>
+          </Cluster>
+        </div>
+      )}
     </div>
   );
 }
