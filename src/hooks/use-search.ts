@@ -157,16 +157,24 @@ export function useSearch() {
   // Keyboard shortcut: Cmd+K / Ctrl+K to open
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Cmd+K or Ctrl+K to open
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      // Cmd+K or Ctrl+K to open (case-insensitive)
+      // Check for both lowercase and uppercase, and ensure no other modifiers
+      if (
+        (e.metaKey || e.ctrlKey) &&
+        (e.key === "k" || e.key === "K") &&
+        !e.shiftKey &&
+        !e.altKey
+      ) {
         e.preventDefault();
+        e.stopPropagation();
         open();
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    // Use capture phase to ensure we catch the event early
+    window.addEventListener("keydown", handleKeyDown, true);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown, true);
     };
   }, [open]);
 

@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
 import { Cluster } from "@/components/primitives/cluster";
-import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateMetadata } from "@/lib/seo/metadata";
@@ -651,9 +650,9 @@ export default function TermsPage() {
                         contacting us at{" "}
                         <a
                           className="text-accent underline font-bold"
-                          href="mailto:gt.abhiseh@gmail.com"
+                          href="mailto:gta3lok.ai@gmail.com"
                         >
-                          gt.abhiseh@gmail.com
+                          gta3lok.ai@gmail.com
                         </a>
                         . Most concerns can be resolved quickly and efficiently
                         through this process.
@@ -690,9 +689,9 @@ export default function TermsPage() {
                             Email:{" "}
                             <a
                               className="text-accent font-bold underline"
-                              href="mailto:gt.abhiseh@gmail.com"
+                              href="mailto:gta3lok.ai@gmail.com"
                             >
-                              gt.abhiseh@gmail.com
+                              gta3lok.ai@gmail.com
                             </a>
                           </p>
                         </Stack>
@@ -747,9 +746,9 @@ export default function TermsPage() {
                         rights, please contact us at{" "}
                         <a
                           className="text-accent underline font-bold"
-                          href="mailto:gt.abhiseh@gmail.com"
+                          href="mailto:gta3lok.ai@gmail.com"
                         >
-                          gt.abhiseh@gmail.com
+                          gta3lok.ai@gmail.com
                         </a>{" "}
                         with details, and we will address your concerns
                         promptly.
@@ -794,9 +793,9 @@ export default function TermsPage() {
                         at{" "}
                         <a
                           className="text-accent underline font-bold"
-                          href="mailto:gt.abhiseh@gmail.com"
+                          href="mailto:gta3lok.ai@gmail.com"
                         >
-                          gt.abhiseh@gmail.com
+                          gta3lok.ai@gmail.com
                         </a>{" "}
                         with any concerns.
                       </p>
@@ -1283,14 +1282,14 @@ export default function TermsPage() {
                           ))}
                         </div>
                         <p>
-                          Legitmate research organizations, educational
+                          Legitimate research organizations, educational
                           institutions, or parties interested in commercial data
                           licensing should contact us directly at{" "}
                           <a
                             className="text-accent underline font-bold"
-                            href="mailto:gt.abhiseh@gmail.com"
+                            href="mailto:gta3lok.ai@gmail.com"
                           >
-                            gt.abhiseh@gmail.com
+                            gta3lok.ai@gmail.com
                           </a>{" "}
                           to discuss authorized access arrangements.
                         </p>
@@ -1335,7 +1334,7 @@ export default function TermsPage() {
               size="lg"
               className="rounded-full px-8"
             >
-              <a href="mailto:gt.abhiseh@gmail.com">Contact Support</a>
+              <a href="mailto:gta3lok.ai@gmail.com">Contact Support</a>
             </Button>
           </Cluster>
         </Section>

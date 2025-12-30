@@ -27,6 +27,21 @@ const roasterDirectoryFAQs = [
     answer:
       "Currently, we do not support direct user reviews on our platform. However, you can often find reviews on the roaster's own website or other coffee community forums.",
   },
+  {
+    question: "I'm a roaster. How can I claim my page?",
+    answer:
+      "If you're a roaster listed on our directory, you can claim your page by reaching out to us through our Contact page. We'll verify your identity and grant you access to manage your roaster profile, including updating information, adding new coffees, and managing your listing.",
+  },
+  {
+    question: "How do I update my roaster information or add new coffees?",
+    answer:
+      "Once you've claimed your roaster page, you can reach out to us through our Contact page with the updates you'd like to make. We'll help you keep your profile current, including contact information, location details, coffee listings, and any other relevant information about your roastery.",
+  },
+  {
+    question: "What happens after I claim my roaster page?",
+    answer:
+      "After claiming your page and verification, you'll be able to work with us to ensure your listing is accurate and up-to-date. This includes updating your business information, adding new coffee offerings, managing your profile details, and ensuring customers can find the most current information about your roastery.",
+  },
 ];
 
 export function RoasterDirectoryFAQ() {

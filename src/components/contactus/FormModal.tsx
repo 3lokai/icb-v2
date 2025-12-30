@@ -1,17 +1,27 @@
 // src/components/contactus/FormModal.tsx
+"use client";
+
 import { Button } from "../ui/button";
 import { Stack } from "../primitives/stack";
 import { Icon } from "../common/Icon";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { getRoastersForDropdown } from "@/app/actions/forms";
 
 type FormModalProps = {
-  activeForm: "roaster" | "suggestion" | "professional";
+  activeForm: "roaster" | "suggestion" | "professional" | "claim";
   onClose: () => void;
   onSubmit: (e: React.FormEvent, formType: string) => Promise<void>;
   formSubmitting: boolean;
   formSubmitted: boolean;
   formError: string | null;
   getButtonText: () => string;
+};
+
+type RoasterOption = {
+  id: string;
+  name: string;
+  slug: string;
 };
 
 export function FormModal({
@@ -23,10 +33,34 @@ export function FormModal({
   formError,
   getButtonText,
 }: FormModalProps) {
+  const [roasters, setRoasters] = useState<RoasterOption[]>([]);
+  const [loadingRoasters, setLoadingRoasters] = useState(false);
+
+  useEffect(() => {
+    if (activeForm === "claim") {
+      // Use a function to handle async state updates
+      const loadRoasters = async () => {
+        setLoadingRoasters(true);
+        try {
+          const result = await getRoastersForDropdown();
+          if (Array.isArray(result)) {
+            setRoasters(result);
+          }
+        } catch (error) {
+          console.error("Error loading roasters:", error);
+        } finally {
+          setLoadingRoasters(false);
+        }
+      };
+      loadRoasters();
+    }
+  }, [activeForm]);
+
   const getModalTitle = () => {
     if (activeForm === "roaster") return "Submit a Roaster";
     if (activeForm === "suggestion") return "Suggest Changes";
     if (activeForm === "professional") return "Professional Inquiry";
+    if (activeForm === "claim") return "Claim Your Listing";
     return "";
   };
 
@@ -261,6 +295,86 @@ export function FormModal({
     </form>
   );
 
+  const renderClaimForm = () => (
+    <form className="space-y-8" onSubmit={(e) => onSubmit(e, "roaster_claim")}>
+      <input
+        aria-hidden="true"
+        autoComplete="off"
+        className="pointer-events-none absolute opacity-0"
+        name="website"
+        style={{ position: "absolute", left: "-9999px" }}
+        tabIndex={-1}
+        type="text"
+      />
+
+      <Stack gap="3">
+        <label className={labelClasses} htmlFor="roasterId">
+          Select Your Roastery*
+        </label>
+        <select
+          className={cn(
+            inputClasses,
+            "appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M7%207l3%203%203-3%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_1rem_center] bg-[length:1.25em_1.25em] bg-no-repeat"
+          )}
+          id="roasterId"
+          name="roasterId"
+          required
+          disabled={loadingRoasters}
+        >
+          <option value="">
+            {loadingRoasters ? "Loading roasters..." : "Select a roaster"}
+          </option>
+          {roasters.map((roaster) => (
+            <option key={roaster.id} value={roaster.id}>
+              {roaster.name}
+            </option>
+          ))}
+        </select>
+      </Stack>
+
+      <Stack gap="3">
+        <label className={labelClasses} htmlFor="claimEmail">
+          Your Email Address*
+        </label>
+        <input
+          className={inputClasses}
+          id="claimEmail"
+          name="email"
+          placeholder="your@email.com"
+          required
+          type="email"
+        />
+        <p className="text-caption text-muted-foreground/70">
+          We&apos;ll use this email to verify your identity and contact you
+          about claiming your listing.
+        </p>
+      </Stack>
+
+      <Stack gap="4">
+        <Button
+          className="w-full h-14 text-body font-bold uppercase tracking-widest hover-lift shadow-xl shadow-accent/5"
+          disabled={formSubmitting || formSubmitted || loadingRoasters}
+          type="submit"
+        >
+          {getButtonText()}
+        </Button>
+
+        {formError && (
+          <div className="p-4 rounded-xl border border-destructive/20 bg-destructive/5 text-destructive text-caption">
+            {formError}
+          </div>
+        )}
+
+        {formSubmitted && (
+          <div className="p-4 rounded-xl border border-accent/20 bg-accent/5 text-accent font-medium text-caption text-center">
+            Claim request submitted! We&apos;ll verify your identity and get
+            back to you soon.
+          </div>
+        )}
+      </Stack>
+    </form>
+  );
+
   const renderProfessionalForm = () => (
     <form
       className="space-y-8"
@@ -388,7 +502,11 @@ export function FormModal({
               {getModalTitle()}
             </h3>
             <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/40">
-              {activeForm === "roaster" ? "Spread the word" : "Get in touch"}
+              {activeForm === "roaster"
+                ? "Spread the word"
+                : activeForm === "claim"
+                  ? "Verify ownership"
+                  : "Get in touch"}
             </p>
           </Stack>
           <button
@@ -404,6 +522,7 @@ export function FormModal({
           {activeForm === "roaster" && renderRoasterForm()}
           {activeForm === "suggestion" && renderSuggestionForm()}
           {activeForm === "professional" && renderProfessionalForm()}
+          {activeForm === "claim" && renderClaimForm()}
         </div>
       </div>
     </div>

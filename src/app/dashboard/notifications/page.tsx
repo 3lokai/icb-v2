@@ -8,7 +8,6 @@ import {
 } from "@/hooks/use-profile";
 import { Button } from "@/components/ui/button";
 import {
-  Field,
   FieldDescription,
   FieldError,
   FieldGroup,
@@ -141,19 +140,27 @@ export default function NotificationsPage() {
     <Section spacing="default" contained={false}>
       <Stack gap="8">
         {/* Magazine-style header */}
-        <Stack gap="3">
-          <div>
-            <div className="inline-flex items-center gap-4 mb-3">
-              <span className="h-px w-8 md:w-12 bg-accent/60" />
-              <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                Communication
-              </span>
+        <div className="mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+            <div className="md:col-span-8">
+              <Stack gap="6">
+                <div className="inline-flex items-center gap-4">
+                  <span className="h-px w-8 md:w-12 bg-accent/60" />
+                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                    Communication
+                  </span>
+                </div>
+                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                  Notification{" "}
+                  <span className="text-accent italic">Settings.</span>
+                </h2>
+                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                  Manage your notification preferences and email frequency.
+                </p>
+              </Stack>
             </div>
-            <h1 className="text-display text-balance leading-[1.1] tracking-tight">
-              Notification Settings
-            </h1>
           </div>
-        </Stack>
+        </div>
 
         <Stack gap="6">
           {error && (
@@ -163,107 +170,117 @@ export default function NotificationsPage() {
           )}
 
           <FieldGroup>
-            <Stack gap="6">
-              <Field>
-                <FieldLabel>Email Notifications</FieldLabel>
-                <FieldDescription>
-                  Choose what notifications you want to receive via email
-                </FieldDescription>
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center justify-between">
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor="new-roasters"
-                    >
-                      New roasters
-                    </Label>
-                    <Switch
-                      checked={formData.newRoasters ?? true}
-                      id="new-roasters"
-                      onCheckedChange={(checked) =>
-                        updateFormData("newRoasters", checked)
-                      }
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor="coffee-updates"
-                    >
-                      Coffee updates
-                    </Label>
-                    <Switch
-                      checked={formData.coffeeUpdates ?? true}
-                      id="coffee-updates"
-                      onCheckedChange={(checked) =>
-                        updateFormData("coffeeUpdates", checked)
-                      }
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor="newsletter"
-                    >
-                      Newsletter
-                    </Label>
-                    <Switch
-                      checked={formData.newsletter ?? true}
-                      id="newsletter"
-                      onCheckedChange={(checked) =>
-                        updateFormData("newsletter", checked)
-                      }
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor="platform-updates"
-                    >
-                      Platform updates
-                    </Label>
-                    <Switch
-                      checked={formData.platformUpdates ?? true}
-                      id="platform-updates"
-                      onCheckedChange={(checked) =>
-                        updateFormData("platformUpdates", checked)
-                      }
-                    />
+            <Stack gap="8">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
+                <div className="flex flex-col gap-1">
+                  <FieldLabel>Email Notifications</FieldLabel>
+                  <FieldDescription>
+                    Choose what notifications you want to receive via email
+                  </FieldDescription>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor="new-roasters"
+                      >
+                        New roasters
+                      </Label>
+                      <Switch
+                        checked={formData.newRoasters ?? true}
+                        id="new-roasters"
+                        onCheckedChange={(checked) =>
+                          updateFormData("newRoasters", checked)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor="coffee-updates"
+                      >
+                        Coffee updates
+                      </Label>
+                      <Switch
+                        checked={formData.coffeeUpdates ?? true}
+                        id="coffee-updates"
+                        onCheckedChange={(checked) =>
+                          updateFormData("coffeeUpdates", checked)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor="newsletter"
+                      >
+                        Newsletter
+                      </Label>
+                      <Switch
+                        checked={formData.newsletter ?? true}
+                        id="newsletter"
+                        onCheckedChange={(checked) =>
+                          updateFormData("newsletter", checked)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label
+                        className="cursor-pointer font-normal"
+                        htmlFor="platform-updates"
+                      >
+                        Platform updates
+                      </Label>
+                      <Switch
+                        checked={formData.platformUpdates ?? true}
+                        id="platform-updates"
+                        onCheckedChange={(checked) =>
+                          updateFormData("platformUpdates", checked)
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
-              </Field>
+              </div>
 
-              <Field data-invalid={!!fieldErrors.emailFrequency}>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
                 <FieldLabel htmlFor="email-frequency">
                   Email Frequency
                 </FieldLabel>
-                <FieldDescription>
-                  How often would you like to receive email notifications?
-                </FieldDescription>
-                <Select
-                  onValueChange={(value) =>
-                    updateFormData(
-                      "emailFrequency",
-                      value as NotificationPreferencesUpdateFormData["emailFrequency"]
-                    )
-                  }
-                  value={formData.emailFrequency || "weekly"}
-                >
-                  <SelectTrigger id="email-frequency" className="w-full">
-                    <SelectValue placeholder="Select frequency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="immediately">Immediately</SelectItem>
-                    <SelectItem value="daily">Daily</SelectItem>
-                    <SelectItem value="weekly">Weekly</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                    <SelectItem value="never">Never</SelectItem>
-                  </SelectContent>
-                </Select>
-                {fieldErrors.emailFrequency && (
-                  <FieldError>{fieldErrors.emailFrequency}</FieldError>
-                )}
-              </Field>
+                <div className="flex flex-col gap-2">
+                  <FieldDescription>
+                    How often would you like to receive email notifications?
+                  </FieldDescription>
+                  <Select
+                    onValueChange={(value) =>
+                      updateFormData(
+                        "emailFrequency",
+                        value as NotificationPreferencesUpdateFormData["emailFrequency"]
+                      )
+                    }
+                    value={formData.emailFrequency || "weekly"}
+                  >
+                    <SelectTrigger
+                      id="email-frequency"
+                      className="w-full"
+                      data-invalid={!!fieldErrors.emailFrequency}
+                    >
+                      <SelectValue placeholder="Select frequency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="immediately">Immediately</SelectItem>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="weekly">Weekly</SelectItem>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                      <SelectItem value="never">Never</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {fieldErrors.emailFrequency && (
+                    <FieldError>{fieldErrors.emailFrequency}</FieldError>
+                  )}
+                </div>
+              </div>
 
               <div className="flex items-center justify-end gap-4 pt-4">
                 <Button

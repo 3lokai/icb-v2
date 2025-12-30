@@ -9,6 +9,7 @@ import type {
   DeleteReviewInput,
 } from "@/types/review-types";
 import { isValidRating, isValidComment } from "@/types/review-types";
+import { sendSlackNotification } from "@/lib/notifications/slack";
 
 type ActionResult<T = undefined> = {
   success: boolean;
@@ -188,6 +189,17 @@ export async function createReview(
     }
 
     revalidateEntityPaths(input.entity_type, input.entity_id);
+
+    // Send Slack notification (fire and forget)
+    sendSlackNotification("review", {
+      entity_type: input.entity_type,
+      entity_id: input.entity_id,
+      rating: input.rating,
+      user_type: user_id ? "authenticated" : "anonymous",
+      user_id: user_id || null,
+    }).catch((err) => {
+      console.error("Failed to send review notification:", err);
+    });
 
     return { success: true, data: { id: data.id } };
   } catch (error) {

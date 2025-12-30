@@ -1,0 +1,31 @@
+{
+  "_metadata": {
+    "major_version": 2,
+    "minor_version": 1
+  },
+  "display_information": {
+    "name": "Indian Coffee Beans Notifications",
+    "description": "Receives notifications for user signups, reviews, and contact form submissions",
+    "background_color": "#2c1810"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "ICB Notifications",
+      "always_online": false
+    }
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": []
+    }
+  },
+  "settings": {
+    "interactivity": {
+      "is_enabled": false
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": false
+  }
+}
+

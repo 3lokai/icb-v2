@@ -454,8 +454,8 @@ export default function PrivacyPage() {
                           variant="link"
                           className="text-accent text-body-large"
                         >
-                          <a href="mailto:gt.abhiseh@gmail.com">
-                            gt.abhiseh@gmail.com
+                          <a href="mailto:gta3lok.ai@gmail.com">
+                            gta3lok.ai@gmail.com
                           </a>
                         </Button>
                       </Stack>
@@ -477,10 +477,10 @@ export default function PrivacyPage() {
                         so through your account settings or by contacting us
                         directly at{" "}
                         <a
-                          href="mailto:gt.abhiseh@gmail.com"
+                          href="mailto:gta3lok.ai@gmail.com"
                           className="underline"
                         >
-                          gt.abhiseh@gmail.com
+                          gta3lok.ai@gmail.com
                         </a>
                         .
                       </p>
@@ -549,7 +549,7 @@ export default function PrivacyPage() {
                       <div className="grid gap-4">
                         {[
                           "Visit our data deletion page at [yourdomain.com/data-deletion]",
-                          "Email us directly at gt.abhiseh@gmail.com",
+                          "Email us directly at gta3lok.ai@gmail.com",
                           "Use Facebook's app removal process and then contact us to delete local data",
                         ].map((step, index) => (
                           <div
@@ -696,7 +696,7 @@ export default function PrivacyPage() {
                 dealings with this site, we&apos;re here to help.
               </p>
               <Button asChild variant="default" size="lg" className="px-12">
-                <a href="mailto:gt.abhiseh@gmail.com">Contact Support</a>
+                <a href="mailto:gta3lok.ai@gmail.com">Contact Support</a>
               </Button>
             </Stack>
           </div>

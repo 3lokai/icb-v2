@@ -23,8 +23,11 @@ export function CoffeeGrid({ items, isLoading }: CoffeeGridProps) {
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {items.map((coffee) => (
-        <CoffeeCard coffee={coffee} key={coffee.slug || coffee.coffee_id} />
+      {items.map((coffee, index) => (
+        <CoffeeCard
+          coffee={coffee}
+          key={coffee.coffee_id || coffee.slug || `coffee-${index}`}
+        />
       ))}
     </div>
   );

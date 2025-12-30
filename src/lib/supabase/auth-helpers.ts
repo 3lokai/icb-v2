@@ -71,6 +71,27 @@ export const auth = {
     });
     return { data, error };
   },
+
+  async resetPasswordForEmail(email: string, redirectTo?: string) {
+    const supabase = createBrowserClient();
+    const redirectUrl =
+      redirectTo ||
+      (typeof window !== "undefined"
+        ? `${window.location.origin}/auth/reset-password`
+        : "/auth/reset-password");
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectUrl,
+    });
+    return { data, error };
+  },
+
+  async updateUser(updates: { password: string }) {
+    const supabase = createBrowserClient();
+    const { data, error } = await supabase.auth.updateUser({
+      password: updates.password,
+    });
+    return { data, error };
+  },
 };
 
 // Server-side auth helpers

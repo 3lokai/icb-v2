@@ -72,19 +72,27 @@ export default function DashboardPage() {
     <Section spacing="default" contained={false}>
       <Stack gap="8">
         {/* Magazine-style header */}
-        <Stack gap="3">
-          <div>
-            <div className="inline-flex items-center gap-4 mb-3">
-              <span className="h-px w-8 md:w-12 bg-accent/60" />
-              <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                Your Dashboard
-              </span>
+        <div className="mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+            <div className="md:col-span-8">
+              <Stack gap="6">
+                <div className="inline-flex items-center gap-4">
+                  <span className="h-px w-8 md:w-12 bg-accent/60" />
+                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                    Your Dashboard
+                  </span>
+                </div>
+                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                  Welcome back, {profile.full_name || profile.email}!
+                </h2>
+                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                  Manage your profile, preferences, and account settings from
+                  your personal dashboard.
+                </p>
+              </Stack>
             </div>
-            <h1 className="text-display text-balance leading-[1.1] tracking-tight">
-              Welcome back, {profile.full_name || profile.email}!
-            </h1>
           </div>
-        </Stack>
+        </div>
 
         <div className="grid gap-6 md:grid-cols-2">
           <Card>

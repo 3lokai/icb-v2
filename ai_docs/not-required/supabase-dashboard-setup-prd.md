@@ -612,8 +612,8 @@ CREATE POLICY "Users can manage their own roaster ratings" ON public.roaster_rat
 ### **OAuth Consent Screen**
 ```
 Application name: Indian Coffee Beans
-User support email: gt.abhiseh@gmail.com
-Application logo: [Upload your coffee logo]
+User support email: gta3lok.ao@gmail.com
+Application logo: [Upload your coffee logo] 
 Authorized domains: indiancoffeebeans.com
 Developer contact email: gt.abhishek@gmail.com
 
@@ -633,7 +633,7 @@ Scopes to request:
 2. **Create App**: 
    - App Type: "Consumer"
    - App Name: "Indian Coffee Beans"
-   - App Contact Email: gt.abhiseh@gmail.com
+   - App Contact Email: gta3lok.ai@gmail.com
 
 3. **Add Facebook Login Product**:
    - Go to "Products" > "Facebook Login" > "Set up"

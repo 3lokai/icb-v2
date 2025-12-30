@@ -329,7 +329,7 @@ export async function saveOnboardingData(data: OnboardingData): Promise<{
     const supabase = await createClient();
 
     // Save user profile
-    const profileData = prepareProfileData(validatedData);
+    const profileData = prepareProfileData(validatedData, true);
     console.log("Prepared profile data:", profileData);
     console.log("Current user ID:", currentUser.id);
 

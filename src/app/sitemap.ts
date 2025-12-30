@@ -78,9 +78,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch dynamic routes from Supabase
   try {
     // Use service role client if available (bypasses RLS), otherwise use regular client
-    const supabase = process.env.SUPABASE_SECRET_KEY
-      ? await createServiceRoleClient()
-      : await createClient();
+    let supabase;
+    try {
+      supabase = process.env.SUPABASE_SECRET_KEY
+        ? await createServiceRoleClient()
+        : await createClient();
+    } catch (clientError) {
+      // If service role client fails, fallback to regular client
+      console.warn(
+        "Failed to create service role client, using regular client:",
+        clientError
+      );
+      supabase = await createClient();
+    }
 
     // Fetch coffees and roasters in parallel
     const [coffeesResult, roastersResult] = await Promise.all([
@@ -97,6 +107,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         .eq("is_active", true)
         .not("slug", "is", null),
     ]);
+
+    // Check for query errors
+    if (coffeesResult.error) {
+      console.error(
+        "Failed to fetch coffees for sitemap:",
+        coffeesResult.error
+      );
+    }
+    if (roastersResult.error) {
+      console.error(
+        "Failed to fetch roasters for sitemap:",
+        roastersResult.error
+      );
+    }
 
     // Generate dynamic coffee routes
     const coffeeRoutes: MetadataRoute.Sitemap =

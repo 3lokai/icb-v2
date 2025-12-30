@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { CoffeeDetail } from "@/types/coffee-types";
-import CoffeeImageCarousel from "@/components/carousel-image";
+import CoffeeImageCarousel from "@/components/layout/carousel-image";
 import { Icon } from "@/components/common/Icon";
 import Tag, { TagList } from "@/components/common/Tag";
 import { Cluster } from "@/components/primitives/cluster";

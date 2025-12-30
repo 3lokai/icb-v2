@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import Tag, { TagList } from "@/components/common/Tag";
-import { cn, capitalizeFirstLetter } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 type CoffeeCoreDetailsProps = {
   coffee: CoffeeDetail;
@@ -34,29 +34,23 @@ export function CoffeeCoreDetails({
       <div className="stack-sm">
         <h2 className="text-subheading">Details</h2>
         <div className="flex flex-wrap gap-3">
-          {(coffee.roast_level_raw ||
-            coffee.roast_style_raw ||
-            coffee.roast_level) && (
+          {coffee.roast_level && (
             <div>
               <span className="text-caption text-muted-foreground">
                 Roast:{" "}
               </span>
               <span className="text-body">
-                {capitalizeFirstLetter(
-                  coffee.roast_level_raw ||
-                    coffee.roast_style_raw ||
-                    coffee.roast_level
-                )}
+                {coffee.roast_level_raw || coffee.roast_level}
               </span>
             </div>
           )}
-          {(coffee.process_raw || coffee.process) && (
+          {coffee.process && (
             <div>
               <span className="text-caption text-muted-foreground">
                 Process:{" "}
               </span>
               <span className="text-body">
-                {capitalizeFirstLetter(coffee.process_raw || coffee.process)}
+                {coffee.process_raw || coffee.process}
               </span>
             </div>
           )}
@@ -82,6 +76,35 @@ export function CoffeeCoreDetails({
                 Harvest:{" "}
               </span>
               <span className="text-body">{coffee.harvest_window}</span>
+            </div>
+          )}
+          {coffee.regions.length > 0 && (
+            <div>
+              <span className="text-caption text-muted-foreground">
+                Region{coffee.regions.length > 1 ? "s" : ""}:{" "}
+              </span>
+              <span className="text-body">
+                {coffee.regions
+                  .map(
+                    (region) =>
+                      region.display_name ||
+                      [region.country, region.state, region.subregion]
+                        .filter(Boolean)
+                        .join(", ") ||
+                      region.subregion
+                  )
+                  .join(", ")}
+              </span>
+            </div>
+          )}
+          {coffee.estates.length > 0 && (
+            <div>
+              <span className="text-caption text-muted-foreground">
+                Estate{coffee.estates.length > 1 ? "s" : ""}:{" "}
+              </span>
+              <span className="text-body">
+                {coffee.estates.map((estate) => estate.name).join(", ")}
+              </span>
             </div>
           )}
         </div>

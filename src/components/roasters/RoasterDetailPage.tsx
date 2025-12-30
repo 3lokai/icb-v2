@@ -370,6 +370,20 @@ export function RoasterDetailPage({
             </Section>
           )}
         </div>
+
+        {/* Claim Your Page CTA */}
+        <div className="text-center py-6">
+          <p className="text-caption text-muted-foreground">
+            If you are the roaster,{" "}
+            <Link
+              href="/contact?form=claim"
+              className="text-accent hover:underline font-medium"
+            >
+              claim your page now
+            </Link>{" "}
+            for a verified tag.
+          </p>
+        </div>
       </PageShell>
     </div>
   );

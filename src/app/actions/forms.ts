@@ -3,8 +3,13 @@
 import { headers } from "next/headers";
 import { z } from "zod";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import { sendSlackNotification } from "@/lib/notifications/slack";
 
-type FormType = "roaster_submission" | "suggestion" | "professional_inquiry";
+type FormType =
+  | "roaster_submission"
+  | "suggestion"
+  | "professional_inquiry"
+  | "roaster_claim";
 
 // Zod schemas for form validation
 const roasterSubmissionSchema = z.object({
@@ -93,6 +98,21 @@ const professionalInquirySchema = z.object({
     .string()
     .min(1, "Message is required")
     .max(5000, "Message must be less than 5000 characters")
+    .trim(),
+  website: z.string().optional(), // Honeypot field
+});
+
+const roasterClaimSchema = z.object({
+  roasterId: z
+    .string()
+    .min(1, "Please select a roaster")
+    .max(100, "Invalid roaster selection")
+    .trim(),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please provide a valid email address")
+    .toLowerCase()
     .trim(),
   website: z.string().optional(), // Honeypot field
 });
@@ -316,6 +336,65 @@ function processProfessionalInquiry(
   };
 }
 
+function processRoasterClaim(
+  formData: FormData,
+  metadata: { ipAddress: string | null; userAgent: string | null },
+  userId: string | null
+): { success: false; error: string } | { success: true; data: SubmissionData } {
+  const rawData = {
+    roasterId: formData.get("roasterId") as string,
+    email: formData.get("email") as string,
+    website: formData.get("website") as string, // Honeypot field
+  };
+
+  // Check honeypot - if filled, it's a bot
+  if (rawData.website) {
+    // Silently reject - don't let bots know they were caught
+    return {
+      success: true,
+      data: {
+        form_type: "roaster_claim",
+        email: "",
+        data: {},
+        ip_address: metadata.ipAddress,
+        user_agent: metadata.userAgent,
+        user_id: userId,
+        status: "pending",
+      },
+    };
+  }
+
+  // Validate with Zod
+  const validationResult = roasterClaimSchema.safeParse(rawData);
+
+  if (!validationResult.success) {
+    const firstError = validationResult.error.issues[0];
+    return {
+      success: false,
+      error:
+        firstError?.message || "Validation failed. Please check your input.",
+    };
+  }
+
+  const validatedData = validationResult.data;
+
+  return {
+    success: true,
+    data: {
+      form_type: "roaster_claim",
+      email: validatedData.email,
+      data: {
+        roasterId: validatedData.roasterId,
+        email: validatedData.email,
+      },
+      ip_address: metadata.ipAddress,
+      user_agent: metadata.userAgent,
+      user_id: userId,
+      status: "pending",
+    },
+  };
+}
+
 type FormProcessor = (
   formData: FormData,
   metadata: { ipAddress: string | null; userAgent: string | null },
@@ -328,6 +407,7 @@ const formProcessors: Record<FormType, FormProcessor> = {
   roaster_submission: processRoasterSubmission,
   suggestion: processSuggestion,
   professional_inquiry: processProfessionalInquiry,
+  roaster_claim: processRoasterClaim,
 };
 
 export async function submitForm(
@@ -376,6 +456,18 @@ export async function submitForm(
       };
     }
 
+    // Send Slack notification with full form details (fire and forget)
+    sendSlackNotification("form", {
+      form_type: result.data.form_type,
+      email: result.data.email,
+      data: result.data.data,
+      ip_address: result.data.ip_address,
+      user_agent: result.data.user_agent,
+      user_id: result.data.user_id,
+    }).catch((err) => {
+      console.error("Failed to send form notification:", err);
+    });
+
     return {
       success: true,
       id: insertedData.id,
@@ -385,6 +477,41 @@ export async function submitForm(
     return {
       success: false,
       error: "An unexpected error occurred. Please try again later.",
+    };
+  }
+}
+
+/**
+ * Server action to fetch a simple list of roasters for dropdowns
+ * Returns only id, name, and slug for active roasters
+ */
+export async function getRoastersForDropdown(): Promise<
+  { id: string; name: string; slug: string }[] | { error: string }
+> {
+  try {
+    const supabase = process.env.SUPABASE_SECRET_KEY
+      ? await createServiceRoleClient()
+      : await createClient();
+
+    const { data: roasters, error } = await supabase
+      .from("roasters")
+      .select("id, name, slug")
+      .eq("is_active", true)
+      .not("name", "is", null)
+      .not("slug", "is", null)
+      .order("name", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching roasters for dropdown:", error);
+      return { error: "Failed to fetch roasters" };
+    }
+
+    return (roasters || []) as { id: string; name: string; slug: string }[];
+  } catch (error) {
+    console.error("Error fetching roasters for dropdown:", error);
+    return {
+      error:
+        error instanceof Error ? error.message : "Failed to fetch roasters",
     };
   }
 }

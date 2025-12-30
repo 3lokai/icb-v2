@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import {
   useCoffeePreferences,
@@ -9,7 +9,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  Field,
   FieldDescription,
   FieldError,
   FieldGroup,
@@ -17,14 +16,15 @@ import {
 } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { TagsInput } from "@/components/ui/tags-input";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
-import { Cluster } from "@/components/primitives/cluster";
 import {
   ROAST_LEVELS,
   PROCESSING_METHODS,
   popularFlavorProfiles,
   popularRegions,
+  popularProcessingMethods,
 } from "@/lib/utils/coffee-constants";
 import { coffeePreferencesUpdateSchema } from "@/lib/validations/profile";
 import type { CoffeePreferencesUpdateFormData } from "@/lib/validations/profile";
@@ -154,22 +154,28 @@ export default function PreferencesPage() {
     <Section spacing="default" contained={false}>
       <Stack gap="8">
         {/* Magazine-style header */}
-        <Stack gap="3">
-          <div>
-            <div className="inline-flex items-center gap-4 mb-3">
-              <span className="h-px w-8 md:w-12 bg-accent/60" />
-              <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                Personalization
-              </span>
+        <div className="mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+            <div className="md:col-span-8">
+              <Stack gap="6">
+                <div className="inline-flex items-center gap-4">
+                  <span className="h-px w-8 md:w-12 bg-accent/60" />
+                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                    Personalization
+                  </span>
+                </div>
+                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                  Coffee{" "}
+                  <span className="text-accent italic">Preferences.</span>
+                </h2>
+                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                  Customize your coffee preferences to discover beans that match
+                  your taste profile.
+                </p>
+              </Stack>
             </div>
-            <h1 className="text-display text-balance leading-[1.1] tracking-tight">
-              Coffee Preferences
-            </h1>
-            <p className="text-muted-foreground text-caption mt-2">
-              Customize your coffee preferences
-            </p>
           </div>
-        </Stack>
+        </div>
 
         <Stack gap="6">
           {error && (
@@ -179,197 +185,181 @@ export default function PreferencesPage() {
           )}
 
           <FieldGroup>
-            <Stack gap="6">
-              <Field data-invalid={!!fieldErrors.roastLevels}>
+            <Stack gap="8">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
                 <FieldLabel>Roast Levels</FieldLabel>
-                <FieldDescription>
-                  Select your preferred roast levels (up to 10)
-                </FieldDescription>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                  {ROAST_LEVELS.map((roast) => (
-                    <div className="flex items-center gap-2" key={roast.value}>
-                      <Checkbox
-                        checked={
-                          formData.roastLevels?.includes(roast.value) ?? false
-                        }
-                        id={`roast-${roast.value}`}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            toggleArrayItem("roastLevels", roast.value);
-                          } else {
-                            toggleArrayItem("roastLevels", roast.value);
-                          }
-                        }}
-                      />
-                      <Label
-                        className="cursor-pointer font-normal"
-                        htmlFor={`roast-${roast.value}`}
+                <div className="flex flex-col gap-2">
+                  <FieldDescription>
+                    Select your preferred roast levels
+                  </FieldDescription>
+                  <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                    {ROAST_LEVELS.map((roast) => (
+                      <div
+                        className="flex items-center gap-2"
+                        key={roast.value}
                       >
-                        {roast.label}
-                      </Label>
-                    </div>
-                  ))}
+                        <Checkbox
+                          checked={
+                            formData.roastLevels?.includes(roast.value) ?? false
+                          }
+                          id={`roast-${roast.value}`}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              toggleArrayItem("roastLevels", roast.value);
+                            } else {
+                              toggleArrayItem("roastLevels", roast.value);
+                            }
+                          }}
+                        />
+                        <Label
+                          className="cursor-pointer font-normal"
+                          htmlFor={`roast-${roast.value}`}
+                        >
+                          {roast.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                  {fieldErrors.roastLevels && (
+                    <FieldError>{fieldErrors.roastLevels}</FieldError>
+                  )}
                 </div>
-                {fieldErrors.roastLevels && (
-                  <FieldError>{fieldErrors.roastLevels}</FieldError>
-                )}
-              </Field>
+              </div>
 
-              <Field data-invalid={!!fieldErrors.flavorProfiles}>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
                 <FieldLabel>Flavor Profiles</FieldLabel>
-                <FieldDescription>
-                  Select your preferred flavor profiles (up to 20)
-                </FieldDescription>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                  {popularFlavorProfiles.map((flavor) => (
-                    <div className="flex items-center gap-2" key={flavor}>
-                      <Checkbox
-                        checked={
-                          formData.flavorProfiles?.includes(flavor) ?? false
+                <div className="flex flex-col gap-2">
+                  <FieldDescription>
+                    Select your preferred flavor profiles
+                  </FieldDescription>
+                  <TagsInput
+                    value={formData.flavorProfiles || []}
+                    onChange={(value) =>
+                      updateFormData("flavorProfiles", value)
+                    }
+                    suggestions={popularFlavorProfiles.map((flavor) => ({
+                      value: flavor,
+                      label: flavor,
+                    }))}
+                    popularSuggestions={popularFlavorProfiles}
+                    placeholder="Add flavor profiles..."
+                    maxTags={20}
+                    disabled={isSaving}
+                  />
+                  {fieldErrors.flavorProfiles && (
+                    <FieldError>{fieldErrors.flavorProfiles}</FieldError>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
+                <div className="flex flex-col gap-1">
+                  <FieldLabel>Processing & Regions</FieldLabel>
+                  <FieldDescription>
+                    Select your preferred methods and regions
+                  </FieldDescription>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="flex flex-col gap-2">
+                      <FieldLabel className="text-body font-medium">
+                        Processing Methods
+                      </FieldLabel>
+                      <TagsInput
+                        value={formData.processingMethods || []}
+                        onChange={(value) =>
+                          updateFormData("processingMethods", value)
                         }
-                        id={`flavor-${flavor}`}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            toggleArrayItem("flavorProfiles", flavor);
-                          } else {
-                            toggleArrayItem("flavorProfiles", flavor);
-                          }
-                        }}
+                        suggestions={PROCESSING_METHODS}
+                        popularSuggestions={popularProcessingMethods}
+                        placeholder="Add processing methods..."
+                        maxTags={15}
+                        disabled={isSaving}
                       />
+                      {fieldErrors.processingMethods && (
+                        <FieldError>{fieldErrors.processingMethods}</FieldError>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <FieldLabel className="text-body font-medium">
+                        Regions
+                      </FieldLabel>
+                      <TagsInput
+                        value={formData.regions || []}
+                        onChange={(value) => updateFormData("regions", value)}
+                        suggestions={popularRegions.map((region) => ({
+                          value: region,
+                          label: region,
+                        }))}
+                        popularSuggestions={popularRegions}
+                        placeholder="Add regions..."
+                        maxTags={20}
+                        disabled={isSaving}
+                      />
+                      {fieldErrors.regions && (
+                        <FieldError>{fieldErrors.regions}</FieldError>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
+                <div className="flex flex-col gap-1">
+                  <FieldLabel>Brew Preferences</FieldLabel>
+                  <FieldDescription>Optional preferences</FieldDescription>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
                       <Label
                         className="cursor-pointer font-normal"
-                        htmlFor={`flavor-${flavor}`}
+                        htmlFor="with-milk"
                       >
-                        {flavor}
+                        I prefer coffee with milk
                       </Label>
-                    </div>
-                  ))}
-                </div>
-                {fieldErrors.flavorProfiles && (
-                  <FieldError>{fieldErrors.flavorProfiles}</FieldError>
-                )}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.processingMethods}>
-                <FieldLabel>Processing Methods</FieldLabel>
-                <FieldDescription>
-                  Select your preferred processing methods (up to 15)
-                </FieldDescription>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                  {PROCESSING_METHODS.map((method) => (
-                    <div className="flex items-center gap-2" key={method.value}>
-                      <Checkbox
-                        checked={
-                          formData.processingMethods?.includes(method.value) ??
-                          false
+                      <Switch
+                        checked={formData.withMilkPreference ?? false}
+                        id="with-milk"
+                        onCheckedChange={(checked) =>
+                          updateFormData("withMilkPreference", checked)
                         }
-                        id={`method-${method.value}`}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            toggleArrayItem("processingMethods", method.value);
-                          } else {
-                            toggleArrayItem("processingMethods", method.value);
-                          }
-                        }}
                       />
+                    </div>
+                    <div className="flex items-center justify-between">
                       <Label
                         className="cursor-pointer font-normal"
-                        htmlFor={`method-${method.value}`}
+                        htmlFor="decaf-only"
                       >
-                        {method.label}
+                        Decaf only
                       </Label>
-                    </div>
-                  ))}
-                </div>
-                {fieldErrors.processingMethods && (
-                  <FieldError>{fieldErrors.processingMethods}</FieldError>
-                )}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.regions}>
-                <FieldLabel>Regions</FieldLabel>
-                <FieldDescription>
-                  Select your preferred coffee regions (up to 20)
-                </FieldDescription>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                  {popularRegions.map((region) => (
-                    <div className="flex items-center gap-2" key={region}>
-                      <Checkbox
-                        checked={formData.regions?.includes(region) ?? false}
-                        id={`region-${region}`}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            toggleArrayItem("regions", region);
-                          } else {
-                            toggleArrayItem("regions", region);
-                          }
-                        }}
+                      <Switch
+                        checked={formData.decafOnly ?? false}
+                        id="decaf-only"
+                        onCheckedChange={(checked) =>
+                          updateFormData("decafOnly", checked)
+                        }
                       />
+                    </div>
+                    <div className="flex items-center justify-between">
                       <Label
                         className="cursor-pointer font-normal"
-                        htmlFor={`region-${region}`}
+                        htmlFor="organic-only"
                       >
-                        {region}
+                        Organic only
                       </Label>
+                      <Switch
+                        checked={formData.organicOnly ?? false}
+                        id="organic-only"
+                        onCheckedChange={(checked) =>
+                          updateFormData("organicOnly", checked)
+                        }
+                      />
                     </div>
-                  ))}
-                </div>
-                {fieldErrors.regions && (
-                  <FieldError>{fieldErrors.regions}</FieldError>
-                )}
-              </Field>
-
-              <Field>
-                <FieldLabel>Brew Preferences</FieldLabel>
-                <FieldDescription>Optional preferences</FieldDescription>
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center justify-between">
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor="with-milk"
-                    >
-                      I prefer coffee with milk
-                    </Label>
-                    <Switch
-                      checked={formData.withMilkPreference ?? false}
-                      id="with-milk"
-                      onCheckedChange={(checked) =>
-                        updateFormData("withMilkPreference", checked)
-                      }
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor="decaf-only"
-                    >
-                      Decaf only
-                    </Label>
-                    <Switch
-                      checked={formData.decafOnly ?? false}
-                      id="decaf-only"
-                      onCheckedChange={(checked) =>
-                        updateFormData("decafOnly", checked)
-                      }
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label
-                      className="cursor-pointer font-normal"
-                      htmlFor="organic-only"
-                    >
-                      Organic only
-                    </Label>
-                    <Switch
-                      checked={formData.organicOnly ?? false}
-                      id="organic-only"
-                      onCheckedChange={(checked) =>
-                        updateFormData("organicOnly", checked)
-                      }
-                    />
                   </div>
                 </div>
-              </Field>
+              </div>
 
               <div className="flex items-center justify-end gap-4 pt-4">
                 <Button

@@ -34,7 +34,7 @@ const educationItems = [
 export default function EducationSection() {
   return (
     <Section spacing="default" contained={false}>
-      <div className="glass-panel card-padding rounded-2xl">
+      <div className="surface-0 card-padding rounded-2xl">
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Left Column: Content */}

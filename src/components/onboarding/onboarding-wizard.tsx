@@ -33,30 +33,106 @@ import {
   step1Schema,
   step2Schema,
 } from "@/lib/validations/onboarding";
+import type { PrivateProfileDTO } from "@/data/user-dto";
 
 const TOTAL_STEPS = 2;
 
-const initialFormData: Partial<OnboardingFormData> = {
-  fullName: "",
-  city: "",
-  state: "",
-  country: "India",
-  preferredBrewingMethods: [],
-  withMilkPreference: false,
-  decafOnly: false,
-  organicOnly: false,
+type CoffeePreferences = {
+  with_milk_preference?: boolean | null;
+  decaf_only?: boolean | null;
+  organic_only?: boolean | null;
 };
 
-export function OnboardingWizard() {
+interface OnboardingWizardProps {
+  initialProfile?: PrivateProfileDTO;
+  initialCoffeePreferences?: CoffeePreferences;
+}
+
+export function OnboardingWizard({
+  initialProfile,
+  initialCoffeePreferences,
+}: OnboardingWizardProps) {
   const router = useRouter();
+
+  // Build initial form data from props
+  const initialFormData = useMemo((): Partial<OnboardingFormData> => {
+    // Type guard for gender enum
+    const validGenders = [
+      "male",
+      "female",
+      "non-binary",
+      "prefer-not-to-say",
+    ] as const;
+    const gender =
+      initialProfile?.gender &&
+      validGenders.includes(
+        initialProfile.gender as (typeof validGenders)[number]
+      )
+        ? (initialProfile.gender as (typeof validGenders)[number])
+        : undefined;
+
+    // Type guard for experience level enum
+    const validExperienceLevels = ["beginner", "enthusiast", "expert"] as const;
+    const experienceLevel =
+      initialProfile?.experience_level &&
+      validExperienceLevels.includes(
+        initialProfile.experience_level as (typeof validExperienceLevels)[number]
+      )
+        ? (initialProfile.experience_level as (typeof validExperienceLevels)[number])
+        : undefined;
+
+    return {
+      fullName: initialProfile?.full_name || "",
+      city: initialProfile?.city || "",
+      state: initialProfile?.state || "",
+      country: initialProfile?.country || "India",
+      gender,
+      experienceLevel,
+      preferredBrewingMethods: initialProfile?.preferred_brewing_methods || [],
+      withMilkPreference:
+        initialCoffeePreferences?.with_milk_preference ?? false,
+      decafOnly: initialCoffeePreferences?.decaf_only ?? false,
+      organicOnly: initialCoffeePreferences?.organic_only ?? false,
+    };
+  }, [initialProfile, initialCoffeePreferences]);
+
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] =
     useState<Partial<OnboardingFormData>>(initialFormData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("IN");
-  const [selectedStateCode, setSelectedStateCode] = useState<string>("");
+
+  // Initialize country/state codes from initial data
+  const countries = useMemo(() => Country.getAllCountries(), []);
+
+  // Extract values to satisfy React Compiler dependency inference
+  const initialCountry = initialProfile?.country;
+  const initialState = initialProfile?.state;
+
+  const initialCountryCode = useMemo(() => {
+    if (initialCountry) {
+      const country = countries.find((c) => c.name === initialCountry);
+      return country?.isoCode || "IN";
+    }
+    return "IN";
+  }, [initialCountry, countries]);
+
+  const [selectedCountryCode, setSelectedCountryCode] =
+    useState<string>(initialCountryCode);
+
+  const initialStateCode = useMemo(() => {
+    if (initialState && selectedCountryCode) {
+      const states = State.getStatesOfCountry(selectedCountryCode);
+      const state = states.find((s) => s.name === initialState);
+      return state?.isoCode || "";
+    }
+    return "";
+  }, [initialState, selectedCountryCode]);
+
+  const [selectedStateCode, setSelectedStateCode] =
+    useState<string>(initialStateCode);
+
   const [cityInputValue, setCityInputValue] = useState<string>(
     initialFormData.city || ""
   );
@@ -65,7 +141,6 @@ export function OnboardingWizard() {
   const progress = (currentStep / TOTAL_STEPS) * 100;
 
   // Country-State-City data
-  const countries = useMemo(() => Country.getAllCountries(), []);
   const states = useMemo(
     () =>
       selectedCountryCode ? State.getStatesOfCountry(selectedCountryCode) : [],

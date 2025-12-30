@@ -8,7 +8,6 @@ import { useProfile, useUpdateProfile } from "@/hooks/use-profile";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  Field,
   FieldDescription,
   FieldError,
   FieldGroup,
@@ -210,22 +209,26 @@ export default function ProfilePage() {
     <Section spacing="default" contained={false}>
       <Stack gap="8">
         {/* Magazine-style header */}
-        <Stack gap="3">
-          <div>
-            <div className="inline-flex items-center gap-4 mb-3">
-              <span className="h-px w-8 md:w-12 bg-accent/60" />
-              <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                Account Settings
-              </span>
+        <div className="mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+            <div className="md:col-span-8">
+              <Stack gap="6">
+                <div className="inline-flex items-center gap-4">
+                  <span className="h-px w-8 md:w-12 bg-accent/60" />
+                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                    Account Settings
+                  </span>
+                </div>
+                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                  Profile
+                </h2>
+                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                  Manage your profile information and personal details.
+                </p>
+              </Stack>
             </div>
-            <h1 className="text-display text-balance leading-[1.1] tracking-tight">
-              Profile
-            </h1>
-            <p className="text-muted-foreground text-caption mt-2">
-              Manage your profile information
-            </p>
           </div>
-        </Stack>
+        </div>
 
         <Stack gap="6">
           {error && (
@@ -235,262 +238,312 @@ export default function ProfilePage() {
           )}
 
           <FieldGroup>
-            <Stack gap="6">
-              <Field data-invalid={!!fieldErrors.fullName}>
+            <Stack gap="8">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
                 <FieldLabel htmlFor="fullName">
                   Full Name <span className="text-destructive">*</span>
                 </FieldLabel>
-                <Input
-                  id="fullName"
-                  onChange={(e) => updateFormData("fullName", e.target.value)}
-                  placeholder="John Doe"
-                  required
-                  type="text"
-                  value={formData.fullName || ""}
-                />
-                {fieldErrors.fullName && (
-                  <FieldError>{fieldErrors.fullName}</FieldError>
-                )}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.username}>
-                <FieldLabel htmlFor="username">Username</FieldLabel>
-                <Input
-                  id="username"
-                  onChange={(e) => updateFormData("username", e.target.value)}
-                  placeholder="johndoe"
-                  type="text"
-                  value={formData.username || ""}
-                />
-                <FieldDescription>
-                  Optional. 3-50 characters, letters, numbers, and underscores
-                  only.
-                </FieldDescription>
-                {fieldErrors.username && (
-                  <FieldError>{fieldErrors.username}</FieldError>
-                )}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.bio}>
-                <FieldLabel htmlFor="bio">Bio</FieldLabel>
-                <Textarea
-                  id="bio"
-                  onChange={(e) => updateFormData("bio", e.target.value)}
-                  placeholder="Tell us about yourself..."
-                  rows={4}
-                  value={formData.bio || ""}
-                />
-                <FieldDescription>
-                  Optional. Maximum 500 characters.
-                </FieldDescription>
-                {fieldErrors.bio && <FieldError>{fieldErrors.bio}</FieldError>}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.country}>
-                <FieldLabel htmlFor="country">Country</FieldLabel>
-                <Select
-                  onValueChange={(value) => {
-                    const country = countries.find((c) => c.isoCode === value);
-                    setSelectedCountryCode(value);
-                    setSelectedStateCode("");
-                    updateFormData("country", country?.name || "");
-                    updateFormData("state", undefined);
-                    updateFormData("city", undefined);
-                  }}
-                  value={
-                    countries.find((c) => c.name === formData.country)
-                      ?.isoCode || selectedCountryCode
-                  }
-                >
-                  <SelectTrigger id="country" className="w-full">
-                    <SelectValue placeholder="Select country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {countries.map((country) => (
-                      <SelectItem key={country.isoCode} value={country.isoCode}>
-                        {country.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FieldDescription>Defaults to India</FieldDescription>
-                {fieldErrors.country && (
-                  <FieldError>{fieldErrors.country}</FieldError>
-                )}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.state}>
-                <FieldLabel htmlFor="state">State</FieldLabel>
-                <Select
-                  disabled={!selectedCountryCode}
-                  onValueChange={(value) => {
-                    const state = states.find((s) => s.isoCode === value);
-                    setSelectedStateCode(value);
-                    updateFormData("state", state?.name || "");
-                    updateFormData("city", undefined);
-                  }}
-                  value={
-                    states.find((s) => s.name === formData.state)?.isoCode || ""
-                  }
-                >
-                  <SelectTrigger id="state" className="w-full">
-                    <SelectValue placeholder="Select state" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {states.map((state) => (
-                      <SelectItem key={state.isoCode} value={state.isoCode}>
-                        {state.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldErrors.state && (
-                  <FieldError>{fieldErrors.state}</FieldError>
-                )}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.city}>
-                <FieldLabel htmlFor="city">City</FieldLabel>
-                <Select
-                  disabled={!selectedStateCode}
-                  onValueChange={(value) => {
-                    const city = cities.find((c) => c.name === value);
-                    updateFormData("city", city?.name || "");
-                  }}
-                  value={formData.city || ""}
-                >
-                  <SelectTrigger id="city" className="w-full">
-                    <SelectValue placeholder="Select city" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {cities.map((city) => (
-                      <SelectItem key={city.name} value={city.name}>
-                        {city.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldErrors.city && (
-                  <FieldError>{fieldErrors.city}</FieldError>
-                )}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.gender}>
-                <FieldLabel>Gender</FieldLabel>
-                <FieldDescription>
-                  Skip if you prefer not sharing
-                </FieldDescription>
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    className="flex-1 min-w-[120px]"
-                    onClick={() => updateFormData("gender", "male")}
-                    type="button"
-                    variant={formData.gender === "male" ? "default" : "ghost"}
-                  >
-                    <Icon name="GenderMale" size={20} />
-                    <span>Male</span>
-                  </Button>
-                  <Button
-                    className="flex-1 min-w-[120px]"
-                    onClick={() => updateFormData("gender", "female")}
-                    type="button"
-                    variant={formData.gender === "female" ? "default" : "ghost"}
-                  >
-                    <Icon name="GenderFemale" size={20} />
-                    <span>Female</span>
-                  </Button>
-                  <Button
-                    className="flex-1 min-w-[120px]"
-                    onClick={() => updateFormData("gender", "non-binary")}
-                    type="button"
-                    variant={
-                      formData.gender === "non-binary" ? "default" : "ghost"
-                    }
-                  >
-                    <Icon name="GenderIntersex" size={20} />
-                    <span>Non-binary</span>
-                  </Button>
-                </div>
-                {fieldErrors.gender && (
-                  <FieldError>{fieldErrors.gender}</FieldError>
-                )}
-              </Field>
-
-              <Field data-invalid={!!fieldErrors.experienceLevel}>
-                <FieldLabel>Experience Level</FieldLabel>
-                <div className="flex flex-col gap-4">
-                  <Slider
-                    max={2}
-                    min={0}
-                    onValueChange={(value) => {
-                      const levels = ["beginner", "enthusiast", "expert"];
-                      updateFormData(
-                        "experienceLevel",
-                        levels[
-                          value[0] ?? 0
-                        ] as ProfileUpdateFormData["experienceLevel"]
-                      );
-                    }}
-                    step={1}
-                    value={
-                      formData.experienceLevel
-                        ? [
-                            ["beginner", "enthusiast", "expert"].indexOf(
-                              formData.experienceLevel
-                            ),
-                          ]
-                        : [0]
-                    }
+                <div className="flex flex-col gap-2">
+                  <Input
+                    data-invalid={!!fieldErrors.fullName}
+                    id="fullName"
+                    onChange={(e) => updateFormData("fullName", e.target.value)}
+                    placeholder="John Doe"
+                    required
+                    type="text"
+                    value={formData.fullName || ""}
                   />
-                  <div className="flex items-center justify-between text-caption text-muted-foreground">
-                    <span>Beginner</span>
-                    <span>Enthusiast</span>
-                    <span>Expert</span>
-                  </div>
-                  <div className="text-center text-caption font-medium">
-                    {formData.experienceLevel
-                      ? formData.experienceLevel.charAt(0).toUpperCase() +
-                        formData.experienceLevel.slice(1)
-                      : "Beginner"}
-                  </div>
+                  {fieldErrors.fullName && (
+                    <FieldError>{fieldErrors.fullName}</FieldError>
+                  )}
                 </div>
-                {fieldErrors.experienceLevel && (
-                  <FieldError>{fieldErrors.experienceLevel}</FieldError>
-                )}
-              </Field>
+              </div>
 
-              <Field>
-                <FieldLabel>Preferred Brewing Methods</FieldLabel>
-                <FieldDescription>
-                  Select all that apply (optional)
-                </FieldDescription>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                  {popularBrewingMethods.map((method) => (
-                    <div className="flex items-center gap-2" key={method}>
-                      <Checkbox
-                        checked={
-                          formData.preferredBrewingMethods?.includes(method) ??
-                          false
-                        }
-                        id={`method-${method}`}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            toggleArrayItem("preferredBrewingMethods", method);
-                          } else {
-                            toggleArrayItem("preferredBrewingMethods", method);
-                          }
-                        }}
-                      />
-                      <Label
-                        className="cursor-pointer font-normal"
-                        htmlFor={`method-${method}`}
-                      >
-                        {method}
-                      </Label>
-                    </div>
-                  ))}
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
+                <FieldLabel htmlFor="username">Username</FieldLabel>
+                <div className="flex flex-col gap-2">
+                  <Input
+                    data-invalid={!!fieldErrors.username}
+                    id="username"
+                    onChange={(e) => updateFormData("username", e.target.value)}
+                    placeholder="johndoe"
+                    type="text"
+                    value={formData.username || ""}
+                  />
+                  <FieldDescription>
+                    Optional. 3-50 characters, letters, numbers, and underscores
+                    only.
+                  </FieldDescription>
+                  {fieldErrors.username && (
+                    <FieldError>{fieldErrors.username}</FieldError>
+                  )}
                 </div>
-              </Field>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
+                <FieldLabel htmlFor="bio">Bio</FieldLabel>
+                <div className="flex flex-col gap-2">
+                  <Textarea
+                    data-invalid={!!fieldErrors.bio}
+                    id="bio"
+                    onChange={(e) => updateFormData("bio", e.target.value)}
+                    placeholder="Tell us about yourself..."
+                    rows={4}
+                    value={formData.bio || ""}
+                  />
+                  <FieldDescription>
+                    Optional. Maximum 500 characters.
+                  </FieldDescription>
+                  {fieldErrors.bio && (
+                    <FieldError>{fieldErrors.bio}</FieldError>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
+                <div className="flex flex-col gap-1">
+                  <FieldLabel>Location</FieldLabel>
+                  <FieldDescription>Defaults to India</FieldDescription>
+                </div>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      onValueChange={(value) => {
+                        const country = countries.find(
+                          (c) => c.isoCode === value
+                        );
+                        setSelectedCountryCode(value);
+                        setSelectedStateCode("");
+                        updateFormData("country", country?.name || "");
+                        updateFormData("state", undefined);
+                        updateFormData("city", undefined);
+                      }}
+                      value={
+                        countries.find((c) => c.name === formData.country)
+                          ?.isoCode || selectedCountryCode
+                      }
+                    >
+                      <SelectTrigger
+                        className="w-full"
+                        data-invalid={!!fieldErrors.country}
+                        id="country"
+                      >
+                        <SelectValue placeholder="Select country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map((country) => (
+                          <SelectItem
+                            key={country.isoCode}
+                            value={country.isoCode}
+                          >
+                            {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {fieldErrors.country && (
+                      <FieldError>{fieldErrors.country}</FieldError>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      disabled={!selectedCountryCode}
+                      onValueChange={(value) => {
+                        const state = states.find((s) => s.isoCode === value);
+                        setSelectedStateCode(value);
+                        updateFormData("state", state?.name || "");
+                        updateFormData("city", undefined);
+                      }}
+                      value={
+                        states.find((s) => s.name === formData.state)
+                          ?.isoCode || ""
+                      }
+                    >
+                      <SelectTrigger
+                        className="w-full"
+                        data-invalid={!!fieldErrors.state}
+                        id="state"
+                      >
+                        <SelectValue placeholder="Select state" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {states.map((state) => (
+                          <SelectItem key={state.isoCode} value={state.isoCode}>
+                            {state.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {fieldErrors.state && (
+                      <FieldError>{fieldErrors.state}</FieldError>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      disabled={!selectedStateCode}
+                      onValueChange={(value) => {
+                        const city = cities.find((c) => c.name === value);
+                        updateFormData("city", city?.name || "");
+                      }}
+                      value={formData.city || ""}
+                    >
+                      <SelectTrigger
+                        className="w-full"
+                        data-invalid={!!fieldErrors.city}
+                        id="city"
+                      >
+                        <SelectValue placeholder="Select city" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {cities.map((city) => (
+                          <SelectItem key={city.name} value={city.name}>
+                            {city.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {fieldErrors.city && (
+                      <FieldError>{fieldErrors.city}</FieldError>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
+                <div className="flex flex-col gap-1">
+                  <FieldLabel>Gender</FieldLabel>
+                  <FieldDescription>
+                    Skip if you prefer not sharing
+                  </FieldDescription>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-3">
+                    <Button
+                      className="flex-1"
+                      onClick={() => updateFormData("gender", "male")}
+                      type="button"
+                      variant={formData.gender === "male" ? "default" : "ghost"}
+                    >
+                      <Icon name="GenderMale" size={20} />
+                      <span>Male</span>
+                    </Button>
+                    <Button
+                      className="flex-1"
+                      onClick={() => updateFormData("gender", "female")}
+                      type="button"
+                      variant={
+                        formData.gender === "female" ? "default" : "ghost"
+                      }
+                    >
+                      <Icon name="GenderFemale" size={20} />
+                      <span>Female</span>
+                    </Button>
+                    <Button
+                      className="flex-1"
+                      onClick={() => updateFormData("gender", "non-binary")}
+                      type="button"
+                      variant={
+                        formData.gender === "non-binary" ? "default" : "ghost"
+                      }
+                    >
+                      <Icon name="GenderIntersex" size={20} />
+                      <span>Non-binary</span>
+                    </Button>
+                  </div>
+                  {fieldErrors.gender && (
+                    <FieldError>{fieldErrors.gender}</FieldError>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
+                <FieldLabel>
+                  Experience Level <span className="text-destructive">*</span>
+                </FieldLabel>
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-4">
+                    <Slider
+                      max={2}
+                      min={0}
+                      onValueChange={(value) => {
+                        const levels = ["beginner", "enthusiast", "expert"];
+                        updateFormData(
+                          "experienceLevel",
+                          levels[
+                            value[0] ?? 0
+                          ] as ProfileUpdateFormData["experienceLevel"]
+                        );
+                      }}
+                      step={1}
+                      value={
+                        formData.experienceLevel
+                          ? [
+                              ["beginner", "enthusiast", "expert"].indexOf(
+                                formData.experienceLevel
+                              ),
+                            ]
+                          : [0]
+                      }
+                    />
+                    <div className="relative flex text-caption text-muted-foreground">
+                      <span className="absolute left-0">Beginner</span>
+                      <span className="absolute left-1/2 -translate-x-1/2">
+                        Enthusiast
+                      </span>
+                      <span className="absolute right-0">Expert</span>
+                    </div>
+                  </div>
+                  {fieldErrors.experienceLevel && (
+                    <FieldError>{fieldErrors.experienceLevel}</FieldError>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start mt-4">
+                <div className="flex flex-col gap-1">
+                  <FieldLabel>Preferred Brewing Methods</FieldLabel>
+                  <FieldDescription>
+                    Select all that apply (optional)
+                  </FieldDescription>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                    {popularBrewingMethods.map((method) => (
+                      <div className="flex items-center gap-2" key={method}>
+                        <Checkbox
+                          checked={
+                            formData.preferredBrewingMethods?.includes(
+                              method
+                            ) ?? false
+                          }
+                          id={`method-${method}`}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              toggleArrayItem(
+                                "preferredBrewingMethods",
+                                method
+                              );
+                            } else {
+                              toggleArrayItem(
+                                "preferredBrewingMethods",
+                                method
+                              );
+                            }
+                          }}
+                        />
+                        <Label
+                          className="cursor-pointer font-normal"
+                          htmlFor={`method-${method}`}
+                        >
+                          {method}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
               <div className="flex items-center justify-end gap-4 pt-4">
                 <Button

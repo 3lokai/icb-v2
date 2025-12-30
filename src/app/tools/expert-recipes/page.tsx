@@ -6,7 +6,10 @@ import {
   expertRecipesFAQs,
 } from "@/components/faqs/ExpertRecipesFAQs";
 import { Icon } from "@/components/common/Icon";
-import { PageHeader } from "@/components/common/PageHeader";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Stack } from "@/components/primitives/stack";
+import { Section } from "@/components/primitives/section";
+import { Cluster } from "@/components/primitives/cluster";
 import StructuredData from "@/components/seo/StructuredData";
 import { ExpertRecipesClient } from "@/components/tools/RecipeClient";
 import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
@@ -121,265 +124,276 @@ const expertRecipesCollectionSchema = {
 
 export default function ExpertRecipesPage() {
   return (
-    <>
+    <div className="pb-20">
       {/* Structured Data */}
       <StructuredData schema={expertRecipesHowToSchema} />
       <StructuredData schema={expertRecipesFAQSchema} />
       <StructuredData schema={expertRecipesCollectionSchema} />
 
-      <div>
-        {/* Page Header */}
-        <PageHeader
-          backgroundImage="/images/hero-bg.png"
-          backgroundImageAlt="Coffee beans background"
-          description="Learn from world champions and coffee experts. Master championship-winning techniques from James Hoffmann, Tetsu Kasuya, Scott Rao, and more."
-          overline="Championship Brewing Techniques & Expert Recipes"
-          title="Expert Coffee Recipes"
-        />
+      {/* Page Header */}
+      <PageHeader
+        backgroundImage="/images/hero-experts.jpg"
+        backgroundImageAlt="Coffee beans background"
+        description="Learn from world champions and coffee experts. Master championship-winning techniques from James Hoffmann, Tetsu Kasuya, Scott Rao, and more."
+        overline="Championship Brewing Techniques & Expert Recipes"
+        title="Expert Coffee Recipes"
+      />
 
-        {/* Feature highlights and action buttons */}
-        <section className="section-spacing bg-muted/20">
-          <div className="container-default">
-            {/* Feature highlights */}
-            <div className="surface-1 mx-auto mb-8 max-w-2xl animate-fade-in-scale rounded-2xl p-6">
-              <div className="flex flex-wrap items-center justify-center gap-6 text-caption">
-                <div className="group flex items-center gap-2 transition-colors hover:text-primary">
-                  <div className="h-3 w-3 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                  <span className="font-medium">8 Championship Recipes</span>
-                </div>
-                <div className="group flex items-center gap-2 transition-colors hover:text-accent">
-                  <div className="h-3 w-3 rounded-full bg-accent shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                  <span className="font-medium">World-Class Experts</span>
-                </div>
-                <div className="group flex items-center gap-2 transition-colors hover:text-chart-2">
-                  <div className="h-3 w-3 rounded-full bg-chart-2 shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                  <span className="font-medium">Step-by-Step Guides</span>
-                </div>
+      <div className="container mx-auto px-4 -mt-20 relative z-30">
+        <Stack gap="12">
+          {/* Overlapping Card with Recipe Tool */}
+          <div
+            className="bg-background rounded-3xl p-6 md:p-10 border border-border/50 shadow-xl"
+            id="recipes"
+          >
+            <Stack gap="8">
+              {/* Header / Highlights Overlay */}
+              <div className="flex flex-col md:flex-row gap-6 items-center justify-between pb-8 border-b border-border/40">
+                <Cluster
+                  gap="6"
+                  align="center"
+                  className="justify-center md:justify-start text-caption"
+                >
+                  <div className="group flex items-center gap-2 transition-colors hover:text-primary">
+                    <div className="h-2.5 w-2.5 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
+                    <span className="font-medium">8 Championship Recipes</span>
+                  </div>
+                  <div className="group flex items-center gap-2 transition-colors hover:text-accent">
+                    <div className="h-2.5 w-2.5 rounded-full bg-accent shadow-sm transition-transform duration-300 group-hover:scale-125" />
+                    <span className="font-medium">World-Class Experts</span>
+                  </div>
+                  <div className="group flex items-center gap-2 transition-colors hover:text-chart-2">
+                    <div className="h-2.5 w-2.5 rounded-full bg-chart-2 shadow-sm transition-transform duration-300 group-hover:scale-125" />
+                    <span className="font-medium">Step-by-Step Guides</span>
+                  </div>
+                </Cluster>
+
+                <Button
+                  asChild
+                  className="btn-secondary hover-lift group"
+                  size="sm"
+                  variant="outline"
+                >
+                  <Link
+                    className="flex items-center gap-2"
+                    href="/tools/coffee-calculator"
+                  >
+                    <Icon
+                      className="transition-transform group-hover:scale-110"
+                      name="Calculator"
+                      size={16}
+                    />
+                    Try Calculator
+                  </Link>
+                </Button>
               </div>
-            </div>
 
-            {/* Action buttons */}
-            <div className="flex animate-fade-in-scale flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button
-                asChild
-                className="btn-primary hover-lift group"
-                size="lg"
-              >
-                <Link className="flex items-center gap-2" href="#recipes">
-                  <Icon
-                    className="transition-transform group-hover:scale-110"
-                    name="BookOpen"
-                    size={18}
-                  />
-                  Explore Recipes
-                </Link>
-              </Button>
-              <Button
-                asChild
-                className="btn-secondary hover-lift group"
-                size="lg"
-                variant="outline"
-              >
-                <Link
-                  className="flex items-center gap-2"
-                  href="/tools/coffee-calculator"
-                >
-                  <Icon
-                    className="transition-transform group-hover:scale-110"
-                    name="Calculator"
-                    size={18}
-                  />
-                  Try Calculator
-                </Link>
-              </Button>
-            </div>
+              {/* Recipes Client Tool */}
+              <div className="pt-2">
+                <ExpertRecipesClient />
+              </div>
+            </Stack>
           </div>
-        </section>
 
-        {/* Expert Recipes Tool */}
-        <section className="section-spacing" id="recipes">
-          <div className="container-default">
-            <ExpertRecipesClient />
-          </div>
-        </section>
+          {/* Featured Experts Section */}
+          <Section spacing="tight">
+            <Stack gap="12">
+              <div className="text-center">
+                <Stack gap="4" className="items-center">
+                  <h2 className="text-primary text-title font-serif italic">
+                    Featured Coffee Experts
+                  </h2>
+                  <div className="h-px w-16 bg-accent/60" />
+                  <p className="mx-auto max-w-2xl text-muted-foreground text-body-large">
+                    Learn from world champions, industry leaders, and coffee
+                    innovators who have shaped modern specialty coffee culture.
+                  </p>
+                </Stack>
+              </div>
 
-        {/* Featured Experts Section */}
-        <section className="section-spacing bg-muted/30">
-          <div className="container-default">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 text-primary text-title">
-                Featured Coffee Experts
-              </h2>
-              <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
-              <p className="mx-auto max-w-2xl text-muted-foreground">
-                Learn from world champions, industry leaders, and coffee
-                innovators who have shaped modern specialty coffee culture.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  name: "James Hoffmann",
-                  title: "World Barista Champion 2007",
-                  achievement: "YouTube Coffee Educator",
-                  recipes: ["V60 Technique", "French Press", "Chemex"],
-                  description:
-                    "Renowned for scientific approach to coffee and educational content",
-                },
-                {
-                  name: "Tetsu Kasuya",
-                  title: "World Brewers Cup Champion 2016",
-                  achievement: "Creator of 4:6 Method",
-                  recipes: ["4:6 V60 Method"],
-                  description:
-                    "Revolutionary systematic brewing method for flavor control",
-                },
-                {
-                  name: "Scott Rao",
-                  title: "Coffee Consultant & Author",
-                  achievement: "Industry Expert",
-                  recipes: ["V60 Uniform Extraction"],
-                  description: "Focus on scientific extraction and consistency",
-                },
-                {
-                  name: "Carolina Garay",
-                  title: "World AeroPress Champion 2018",
-                  achievement: "Temperature Innovation",
-                  recipes: ["Championship AeroPress"],
-                  description:
-                    "Known for innovative low-temperature brewing techniques",
-                },
-                {
-                  name: "George Stanica",
-                  title: "World AeroPress Champion 2024",
-                  achievement: "Software Engineer Brewer",
-                  recipes: ["Modern AeroPress"],
-                  description:
-                    "Precision-focused approach with specialized water composition",
-                },
-                {
-                  name: "Intelligentsia Coffee",
-                  title: "Third Wave Pioneer",
-                  achievement: "Industry Leader",
-                  recipes: ["Systematic Pour Over"],
-                  description:
-                    "Established third-wave coffee standards and techniques",
-                },
-              ].map((expert) => (
-                <div
-                  className="surface-1 card-padding hover-lift group relative overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
-                  key={expert.name}
-                >
-                  <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-primary/5 blur-xl" />
-                  <div className="relative z-10">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 transition-transform duration-300 group-hover:scale-110">
-                        <Icon className="h-6 w-6 text-primary" name="User" />
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {[
+                  {
+                    name: "James Hoffmann",
+                    title: "World Barista Champion 2007",
+                    achievement: "YouTube Coffee Educator",
+                    recipes: ["V60 Technique", "French Press", "Chemex"],
+                    description:
+                      "Renowned for scientific approach to coffee and educational content",
+                  },
+                  {
+                    name: "Tetsu Kasuya",
+                    title: "World Brewers Cup Champion 2016",
+                    achievement: "Creator of 4:6 Method",
+                    recipes: ["4:6 V60 Method"],
+                    description:
+                      "Revolutionary systematic brewing method for flavor control",
+                  },
+                  {
+                    name: "Scott Rao",
+                    title: "Coffee Consultant & Author",
+                    achievement: "Industry Expert",
+                    recipes: ["V60 Uniform Extraction"],
+                    description:
+                      "Focus on scientific extraction and consistency",
+                  },
+                  {
+                    name: "Carolina Garay",
+                    title: "World AeroPress Champion 2018",
+                    achievement: "Temperature Innovation",
+                    recipes: ["Championship AeroPress"],
+                    description:
+                      "Known for innovative low-temperature brewing techniques",
+                  },
+                  {
+                    name: "George Stanica",
+                    title: "World AeroPress Champion 2024",
+                    achievement: "Software Engineer Brewer",
+                    recipes: ["Modern AeroPress"],
+                    description:
+                      "Precision-focused approach with specialized water composition",
+                  },
+                  {
+                    name: "Intelligentsia Coffee",
+                    title: "Third Wave Pioneer",
+                    achievement: "Industry Leader",
+                    recipes: ["Systematic Pour Over"],
+                    description:
+                      "Established third-wave coffee standards and techniques",
+                  },
+                ].map((expert) => (
+                  <div
+                    className="surface-1 card-padding hover-lift group relative overflow-hidden rounded-2xl border border-border/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+                    key={expert.name}
+                  >
+                    <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-xl group-hover:bg-primary/10 transition-colors" />
+                    <div className="relative z-10">
+                      <div className="mb-6 flex items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-transform duration-300 group-hover:scale-110">
+                          <Icon className="h-6 w-6 text-primary" name="User" />
+                        </div>
+                        <div>
+                          <h3 className="text-subheading transition-colors group-hover:text-primary">
+                            {expert.name}
+                          </h3>
+                          <p className="text-muted-foreground text-caption">
+                            {expert.title}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-semibold transition-colors group-hover:text-primary">
-                          {expert.name}
-                        </h3>
-                        <p className="text-muted-foreground text-caption">
-                          {expert.title}
-                        </p>
-                      </div>
+
+                      <Badge className="badge mb-4 border-border/50 bg-background/90 text-foreground text-overline">
+                        {expert.achievement}
+                      </Badge>
+
+                      <p className="text-caption leading-relaxed transition-colors group-hover:text-foreground">
+                        {expert.description}
+                      </p>
                     </div>
+                  </div>
+                ))}
+              </div>
+            </Stack>
+          </Section>
 
-                    <Badge className="badge mb-3 border-border/50 bg-background/90 text-foreground text-overline">
-                      {expert.achievement}
-                    </Badge>
+          {/* Recipe Categories */}
+          <Section spacing="default">
+            <Stack gap="12">
+              <div className="text-center">
+                <Stack gap="4" className="items-center">
+                  <h2 className="text-primary text-title font-serif italic">
+                    Recipe Categories
+                  </h2>
+                  <div className="h-px w-16 bg-accent/60" />
+                  <p className="mx-auto max-w-2xl text-muted-foreground text-body-large">
+                    Organized by brewing method, difficulty level, and intended
+                    use to help you find the perfect recipe for your skill
+                    level.
+                  </p>
+                </Stack>
+              </div>
 
-                    <p className="mb-4 text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
-                      {expert.description}
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                <div className="surface-1 card-padding hover-lift group text-center rounded-2xl border border-border/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500/10 text-green-600 transition-transform duration-300 group-hover:scale-110">
+                    <Icon className="h-7 w-7" name="Coffee" />
+                  </div>
+                  <Stack gap="2">
+                    <h3 className="text-heading transition-colors group-hover:text-primary">
+                      Everyday Brewing
+                    </h3>
+                    <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
+                      Reliable, approachable recipes perfect for daily coffee
+                      routine. Forgiving techniques that produce consistently
+                      great results.
                     </p>
+                    <div className="pt-2">
+                      <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
+                        4 Recipes
+                      </Badge>
+                    </div>
+                  </Stack>
+                </div>
+
+                <div className="surface-1 card-padding hover-lift group relative overflow-hidden rounded-2xl border border-border/40 text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-red-500/5 blur-2xl" />
+                  <div className="relative z-10">
+                    <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10 text-red-600 transition-transform duration-300 group-hover:scale-110">
+                      <Icon className="h-7 w-7" name="Trophy" />
+                    </div>
+                    <Stack gap="2">
+                      <h3 className="text-heading transition-colors group-hover:text-primary">
+                        Competition Level
+                      </h3>
+                      <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
+                        Championship-winning techniques requiring precision and
+                        practice. Used in actual coffee competitions worldwide.
+                      </p>
+                      <div className="pt-2">
+                        <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
+                          3 Recipes
+                        </Badge>
+                      </div>
+                    </Stack>
                   </div>
                 </div>
-              ))}
-            </div>
+
+                <div className="surface-1 card-padding hover-lift group relative overflow-hidden rounded-2xl border border-border/40 text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="absolute top-0 left-0 h-24 w-24 rounded-full bg-blue-500/5 blur-2xl" />
+                  <div className="relative z-10">
+                    <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-600 transition-transform duration-300 group-hover:scale-110">
+                      <Icon className="h-7 w-7" name="Flask" />
+                    </div>
+                    <Stack gap="2">
+                      <h3 className="text-heading transition-colors group-hover:text-primary">
+                        Experimental
+                      </h3>
+                      <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
+                        Innovative techniques for exploring new flavor profiles
+                        and pushing brewing boundaries. For adventurous coffee
+                        lovers.
+                      </p>
+                      <div className="pt-2">
+                        <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
+                          1 Recipe
+                        </Badge>
+                      </div>
+                    </Stack>
+                  </div>
+                </div>
+              </div>
+            </Stack>
+          </Section>
+
+          {/* FAQ Section */}
+          <div className="max-w-4xl mx-auto w-full">
+            <ExpertRecipesFAQ />
           </div>
-        </section>
 
-        {/* Recipe Categories */}
-        <section className="section-spacing">
-          <div className="container-default">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 text-primary text-title">
-                Recipe Categories
-              </h2>
-              <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
-              <p className="mx-auto max-w-2xl text-muted-foreground">
-                Organized by brewing method, difficulty level, and intended use
-                to help you find the perfect recipe for your skill level.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              <div className="surface-1 card-padding hover-lift group text-center rounded-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-500/20 text-green-600 transition-transform duration-300 group-hover:scale-110">
-                  <Icon className="h-6 w-6" name="Coffee" />
-                </div>
-                <h3 className="mb-2 text-heading transition-colors group-hover:text-primary">
-                  Everyday Brewing
-                </h3>
-                <p className="mb-4 text-muted-foreground text-caption transition-colors group-hover:text-foreground">
-                  Reliable, approachable recipes perfect for daily coffee
-                  routine. Forgiving techniques that produce consistently great
-                  results.
-                </p>
-                <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
-                  4 Recipes
-                </Badge>
-              </div>
-
-              <div className="surface-1 card-padding hover-lift group relative overflow-hidden rounded-lg text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
-                <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-red-500/5 blur-xl" />
-                <div className="relative z-10">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20 text-red-600 transition-transform duration-300 group-hover:scale-110">
-                    <Icon className="h-6 w-6" name="Trophy" />
-                  </div>
-                  <h3 className="mb-2 text-heading transition-colors group-hover:text-primary">
-                    Competition Level
-                  </h3>
-                  <p className="mb-4 text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
-                    Championship-winning techniques requiring precision and
-                    practice. Used in actual coffee competitions worldwide.
-                  </p>
-                  <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
-                    3 Recipes
-                  </Badge>
-                </div>
-              </div>
-
-              <div className="surface-1 card-padding hover-lift group relative overflow-hidden rounded-lg text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
-                <div className="absolute top-0 left-0 h-12 w-12 rounded-full bg-blue-500/5 blur-xl" />
-                <div className="relative z-10">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/20 text-blue-600 transition-transform duration-300 group-hover:scale-110">
-                    <Icon className="h-6 w-6" name="Flask" />
-                  </div>
-                  <h3 className="mb-2 text-heading transition-colors group-hover:text-primary">
-                    Experimental
-                  </h3>
-                  <p className="mb-4 text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
-                    Innovative techniques for exploring new flavor profiles and
-                    pushing brewing boundaries. For adventurous coffee lovers.
-                  </p>
-                  <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
-                    1 Recipe
-                  </Badge>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <ExpertRecipesFAQ />
-
-        {/* CTA Section */}
-        <ExpertRecipesCta />
+          {/* CTA Section */}
+          <ExpertRecipesCta />
+        </Stack>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/common/Icon";
-import { PageHeader } from "@/components/common/PageHeader";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CoffeeDirectoryFAQ } from "@/components/faqs/CoffeeDirectoryFAQs";
@@ -155,7 +155,7 @@ export function CoffeeDirectory({
   return (
     <>
       <PageHeader
-        backgroundImage="/images/hero-bg.png"
+        backgroundImage="/images/hero-coffees.jpg"
         backgroundImageAlt="Coffee beans background"
         description="Discover over hundreds of specialty coffee beans from roasters across India. Verified data, verified roasters, verified taste."
         overline="Specialty Coffee Directory"

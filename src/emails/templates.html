@@ -1,0 +1,237 @@
+<!-- 
+  =============================================================================
+  NOTE TO USER: 
+  These templates are designed for Supabase Auth (or compatible services).
+  
+  1. LOGO IMAGE:
+     Email clients require images to be hosted on a public URL (https://...).
+     I have used a placeholder: 'YOUR_PUBLIC_PROJECT_URL/logo-icon.png'
+     You MUST replace this with the actual URL of your logo (e.g., from Supabase Storage).
+     Note: Use PNG or JPG for emails, as SVG support is limited in some clients (Gmail).
+
+  2. COLORS:
+     Email clients do not consistently support modern CSS (oklch, var(--)).
+     Colors are converted from your design system oklch values to hex for email compatibility.
+     - Background: #FAFAF9 (oklch(0.982 0.009 79.9))
+     - Card: #FFFFFF
+     - Text: #2D2D2D (oklch(0.222 0.03 54.2))
+     - Accent: #D97706 (oklch(0.722 0.139 40.5) - Warm Orange/Amber)
+     - Muted Text: #6B6B6B (oklch(0.639 0.115 80.9))
+  
+  3. TYPOGRAPHY:
+     Email clients have limited web font support. Using system fonts with fallbacks:
+     - Serif (Display): Playfair Display (with Georgia fallback) - matches your design system
+     - Sans-serif (Body): DM Sans (with system sans-serif fallback) - matches your design system
+     Note: Web fonts may not render in all email clients; fallbacks ensure compatibility.
+  
+  Copy the sections below into your email provider's template editor.
+  =============================================================================
+-->
+
+<!-- 
+  TEMPLATE: CONFIRM SIGNUP
+  Subject: Confirm your signup
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm your signup</title>
+  <style>
+    /* Email client resets */
+    body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #fafaf9; }
+    table, td { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+    a { text-decoration: none; }
+    
+    /* Web fonts for supported clients (Playfair Display, DM Sans) */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap');
+  </style>
+</head>
+<body style="margin: 0; padding: 0; word-spacing: normal; background-color: #fafaf9;">
+  <div style="background-color: #fafaf9; padding: 40px 20px;">
+    <!-- Main Container -->
+    <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%; max-width: 600px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden;">
+      
+      <!-- Decorative Header Stripe -->
+      <tr>
+        <td style="height: 6px; background-color: #D97706;"></td>
+      </tr>
+
+      <!-- Content Area -->
+      <tr>
+        <td style="padding: 40px 48px;">
+          <!-- Brand/Logo Area -->
+          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+            <tr>
+              <td style="padding-bottom: 32px; border-bottom: 1px solid #f0f0f0;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td style="padding-right: 12px;">
+                      <!-- REPLACE src WITH YOUR PUBLIC LOGO URL -->
+                      <img src="https://your-project-url.com/logo-icon.png" alt="Logo" width="32" height="32" style="display: block; width: 32px; height: 32px;">
+                    </td>
+                    <td>
+                      <span style="font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 20px; font-weight: 600; color: #D97706; letter-spacing: -0.5px;">
+                        IndianCoffeeBeans
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Main Message -->
+          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+            <tr>
+              <td style="padding-top: 32px; padding-bottom: 24px;">
+                <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 28px; line-height: 1.2; font-weight: 400; color: #2d2d2d;">
+                  Confirm your signup
+                </h2>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-bottom: 32px;">
+                <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #6b6b6b;">
+                  Thank you for joining. To complete your registration and start exploring the finest roasters, please confirm your email address.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" style="padding-bottom: 32px;">
+                <!-- Button -->
+                <a href="{{ .ConfirmationURL }}" 
+                   style="display: inline-block; padding: 14px 32px; background-color: #D97706; color: #ffffff; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 500; text-decoration: none; border-radius: 8px; box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);">
+                  Confirm Email Address
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #888888;">
+                  If you didn't create an account, you can safely ignore this email.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background-color: #fafafa; padding: 24px 48px;">
+          <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #999999; text-align: center;">
+            &copy; 2025 Indian Coffee Beans. All rights reserved.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
+
+
+<!-- 
+  TEMPLATE: RESET PASSWORD
+  Subject: Reset your password
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset your password</title>
+  <style>
+    body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #fafaf9; }
+    table, td { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+    a { text-decoration: none; }
+    
+    /* Web fonts for supported clients (Playfair Display, DM Sans) */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap');
+  </style>
+</head>
+<body style="margin: 0; padding: 0; word-spacing: normal; background-color: #fafaf9;">
+  <div style="background-color: #fafaf9; padding: 40px 20px;">
+    <!-- Main Container -->
+    <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%; max-width: 600px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden;">
+      
+      <!-- Decorative Header Stripe -->
+      <tr>
+        <td style="height: 6px; background-color: #D97706;"></td>
+      </tr>
+
+      <!-- Content Area -->
+      <tr>
+        <td style="padding: 40px 48px;">
+          <!-- Brand -->
+          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+            <tr>
+              <td style="padding-bottom: 32px; border-bottom: 1px solid #f0f0f0;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td style="padding-right: 12px;">
+                      <!-- REPLACE src WITH YOUR PUBLIC LOGO URL -->
+                      <img src="https://your-project-url.com/logo-icon.png" alt="Logo" width="32" height="32" style="display: block; width: 32px; height: 32px;">
+                    </td>
+                    <td>
+                      <span style="font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 20px; font-weight: 600; color: #D97706; letter-spacing: -0.5px;">
+                        IndianCoffeeBeans
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Main Message -->
+          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+            <tr>
+              <td style="padding-top: 32px; padding-bottom: 24px;">
+                <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 28px; line-height: 1.2; font-weight: 400; color: #2d2d2d;">
+                  Reset your password
+                </h2>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-bottom: 32px;">
+                <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #6b6b6b;">
+                  We received a request to reset the password for your account. Follow the link below to set a new password.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" style="padding-bottom: 32px;">
+                <!-- Button -->
+                <a href="{{ .ConfirmationURL }}" 
+                   style="display: inline-block; padding: 14px 32px; background-color: #D97706; color: #ffffff; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 500; text-decoration: none; border-radius: 8px; box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);">
+                  Reset Password
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #888888;">
+                  If you didn't ask to reset your password, you can ignore this email.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background-color: #fafafa; padding: 24px 48px;">
+          <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #999999; text-align: center;">
+            &copy; 2025 Indian Coffee Beans. All rights reserved.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

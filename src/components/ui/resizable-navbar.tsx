@@ -228,7 +228,7 @@ const NavItemComponent = ({
                 return (
                   <Link
                     className={cn(
-                      "relative block rounded-full px-4 py-2 text-sm transition-colors",
+                      "relative block rounded-full px-4 py-2 text-body transition-colors",
                       childActive
                         ? "font-medium text-accent-foreground"
                         : "text-muted-foreground hover:bg-accent/40 hover:text-accent-foreground"
@@ -290,7 +290,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
   return (
     <motion.div
       className={cn(
-        "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 font-medium text-muted-foreground text-sm transition duration-200 hover:text-foreground lg:flex lg:space-x-2",
+        "absolute inset-0 hidden flex-1 flex-row items-center justify-center gap-2 font-medium text-muted-foreground text-body transition-colors hover:text-foreground lg:flex",
         className
       )}
       onMouseLeave={handleLeave}
@@ -431,7 +431,7 @@ export const MobileNavDropdown = ({
         {isOpen && (
           <motion.div
             animate={{ opacity: 1, height: "auto" }}
-            className="mt-2 space-y-2 pl-4"
+            className="mt-2 flex flex-col gap-2 pl-4"
             exit={{ opacity: 0, height: 0 }}
             initial={{ opacity: 0, height: 0 }}
             transition={{
@@ -445,7 +445,7 @@ export const MobileNavDropdown = ({
               return (
                 <Link
                   className={cn(
-                    "block text-muted-foreground text-sm hover:text-foreground",
+                    "block text-muted-foreground text-body transition-colors hover:text-foreground",
                     childActive && "font-medium text-accent-foreground"
                   )}
                   href={child.link}
@@ -481,7 +481,7 @@ export const NavbarButton = ({
   | React.ComponentPropsWithoutRef<"button">
 )) => {
   const baseStyles =
-    "px-4 py-2 rounded-md bg-card text-foreground text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
+    "px-4 py-2 rounded-md bg-card text-foreground text-body font-semibold relative cursor-pointer hover:-translate-y-0.5 transition-all duration-200 inline-block text-center";
 
   const variantStyles = {
     primary: "bg-primary text-primary-foreground shadow-md hover:shadow-lg",

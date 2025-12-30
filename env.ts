@@ -24,6 +24,15 @@ const envSchema = z.object({
   NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY: z.string().optional(),
   IMAGEKIT_PRIVATE_KEY: z.string().optional(),
 
+  // Google Analytics (GA4) configuration
+  NEXT_PUBLIC_GA_ID: z.string().optional(),
+
+  // Slack webhooks for notifications
+  // Activity channel: user signups and reviews/ratings
+  SLACK_WEBHOOK_URL_ACTIVITY: z.string().url().optional(),
+  // Forms channel: contact form submissions
+  SLACK_WEBHOOK_URL_FORMS: z.string().url().optional(),
+
   // Node environment
   NODE_ENV: z
     .enum(["development", "production", "test"])

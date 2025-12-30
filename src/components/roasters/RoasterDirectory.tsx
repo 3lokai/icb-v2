@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/common/Icon";
-import { PageHeader } from "@/components/common/PageHeader";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { RoasterDirectoryFAQ } from "@/components/faqs/RoasterDirectoryFAQs";
@@ -147,7 +147,7 @@ export function RoasterDirectory({
   return (
     <>
       <PageHeader
-        backgroundImage="/images/hero-bg.png"
+        backgroundImage="/images/hero-roasters.jpg"
         backgroundImageAlt="Roastery background"
         description="Discover specialty coffee roasters from across India. Connect with the artisans dedicated to bringing out the best in every bean."
         overline="Artisan Roaster Directory"
