@@ -97,7 +97,7 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
         className={cn(
           "group relative overflow-hidden",
           "bg-card border border-border", // Solid border, no glass
-          "rounded-[1.5rem] shadow-sm hover:shadow-md",
+          "rounded-3xl shadow-sm hover:shadow-md",
           "transition-all duration-500 hover:-translate-y-1",
           "h-full flex flex-col"
         )}
@@ -105,10 +105,10 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
         itemType="https://schema.org/Organization"
       >
         {/* Magazine Accent: Subtle top stripe */}
-        <div className="absolute top-0 left-0 right-0 h-1 md:h-1.5 bg-gradient-to-r from-primary/60 via-accent to-primary/40 opacity-55" />
+        <div className="absolute top-0 left-0 right-0 h-1 md:h-1.5 bg-linear-to-r from-primary/60 via-accent to-primary/40 opacity-55" />
 
         {/* Logo Layer: Editorial Plate */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-[radial-gradient(circle_at_center,_var(--muted)_0%,_var(--background)_100%)] dark:bg-[radial-gradient(circle_at_center,_var(--card)_0%,_var(--background)_100%)] flex items-center justify-center border-b border-border/40">
+        <div className="relative aspect-4/3 w-full overflow-hidden bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)] dark:bg-[radial-gradient(circle_at_center,var(--card)_0%,var(--background)_100%)] flex items-center justify-center border-b border-border/40">
           {/* Subtle Plate Texture */}
           <div
             aria-hidden="true"
@@ -153,7 +153,7 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
           {/* Top image-integrated selector fade */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background/40 to-transparent opacity-80"
+            className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-linear-to-b from-background/40 to-transparent opacity-80"
           />
 
           {/* Ribbon / selector */}

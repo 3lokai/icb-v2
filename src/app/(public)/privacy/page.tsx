@@ -224,7 +224,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{purpose}</p>
                           </div>
                         ))}
@@ -376,7 +376,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{point}</p>
                           </div>
                         ))}
@@ -384,7 +384,7 @@ export default function PrivacyPage() {
                       <div className="flex items-start gap-4 p-6 rounded-2xl border border-accent/20 border-l-4 border-l-accent bg-accent/5">
                         <Icon
                           name="Info"
-                          className="text-accent flex-shrink-0"
+                          className="text-accent shrink-0"
                           size={24}
                         />
                         <p className="text-caption italic font-medium">
@@ -500,7 +500,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{note}</p>
                           </div>
                         ))}
@@ -531,7 +531,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{info}</p>
                           </div>
                         ))}
@@ -556,7 +556,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{step}</p>
                           </div>
                         ))}
@@ -647,7 +647,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{point}</p>
                           </div>
                         ))}

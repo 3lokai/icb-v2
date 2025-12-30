@@ -354,9 +354,9 @@ export default function AboutPage() {
                         {[
                           {
                             label: "Favorite Brew Method",
-                            value: "Inverted AeroPress",
+                            value: "AeroPress",
                           },
-                          { label: "Preferred Roast", value: "Dark" },
+                          { label: "Preferred Roast", value: "Light, Medium" },
                           { label: "Coffee Epiphany", value: "Italy, 2012" },
                         ].map((fact) => (
                           <div

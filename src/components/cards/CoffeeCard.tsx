@@ -76,7 +76,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
         className={cn(
           "group relative overflow-hidden",
           "bg-card border border-border",
-          "rounded-[1.5rem] shadow-sm hover:shadow-md",
+          "rounded-4xl shadow-sm hover:shadow-md",
           "transition-all duration-500 hover:-translate-y-1",
           "h-full flex flex-col"
         )}
@@ -84,10 +84,10 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
         itemType="https://schema.org/Product"
       >
         {/* Magazine Accent: Subtle top stripe */}
-        <div className="absolute top-0 left-0 right-0 h-1 md:h-1.5 bg-gradient-to-r from-primary/60 via-accent to-primary/40 opacity-55 z-10" />
+        <div className="absolute top-0 left-0 right-0 h-1 md:h-1.5 bg-linear-to-r from-primary/60 via-accent to-primary/40 opacity-55 z-10" />
 
         {/* Thumbnail Layer */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden">
+        <div className="relative aspect-4/3 w-full overflow-hidden">
           <Image
             alt={coffee.name || "Coffee product image"}
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -100,7 +100,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
           {/* Top image-integrated selector fade */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-background/70 via-background/30 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-linear-to-b from-background/70 via-background/30 to-transparent"
           />
 
           {/* Ribbon / selector */}

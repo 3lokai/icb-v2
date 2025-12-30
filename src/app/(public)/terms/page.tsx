@@ -329,7 +329,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5"
                           >
-                            <div className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-accent" />
+                            <div className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -366,7 +366,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -466,7 +466,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -558,7 +558,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -781,7 +781,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -830,7 +830,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group transition-all hover:border-accent/30"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -884,7 +884,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -925,7 +925,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -967,7 +967,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -1008,7 +1008,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -1051,7 +1051,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -1093,7 +1093,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -1144,7 +1144,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -1193,7 +1193,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -1244,7 +1244,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -1276,7 +1276,7 @@ export default function TermsPage() {
                               key={index}
                               className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group transition-all hover:bg-destructive/5 hover:border-destructive/20"
                             >
-                              <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-destructive/60 group-hover:bg-destructive group-hover:scale-125 transition-all" />
+                              <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-destructive/60 group-hover:bg-destructive group-hover:scale-125 transition-all" />
                               <p className="text-body">{item}</p>
                             </div>
                           ))}
@@ -1318,7 +1318,7 @@ export default function TermsPage() {
           <Cluster
             align="center"
             gap="8"
-            className="rounded-[2rem] bg-accent/5 border border-accent/10 p-12"
+            className="rounded-4xl bg-accent/5 border border-accent/10 p-12"
           >
             <Stack gap="2">
               <h3 className="text-heading font-serif italic">
