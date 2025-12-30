@@ -30,7 +30,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
       {hasStats ? (
         <Cluster gap="4" align="center" className="flex-wrap">
           {/* Star Rating */}
-          {avg_rating !== null && (
+          {avg_rating != null && (
             <div className="flex items-center gap-2 px-4 py-2.5 bg-muted/30 rounded-lg border border-border/40">
               <div className="flex items-center gap-1">
                 <Icon
@@ -62,7 +62,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
           </button>
 
           {/* Recommend % */}
-          {recommend_pct !== null && recommend_pct > 0 && (
+          {recommend_pct != null && recommend_pct > 0 && (
             <div className="flex items-center gap-2 px-4 py-2.5 bg-muted/30 rounded-lg border border-border/40">
               <Icon name="ThumbsUp" size={16} className="text-primary" />
               <span className="text-body font-medium text-foreground">
