@@ -20,7 +20,7 @@ export function ReviewSection({ entityType, entityId }: ReviewSectionProps) {
   return (
     <Stack gap="8">
       {/* Stats Header - Always shown with heading */}
-      <ReviewStats stats={stats} />
+      <ReviewStats stats={stats ?? null} />
       <Separator />
 
       {/* Capture UI - Always shown */}
