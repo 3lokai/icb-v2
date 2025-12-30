@@ -59,9 +59,9 @@ export default function PrivacyPage() {
             <aside className="md:col-span-12 lg:col-span-4 lg:sticky lg:top-24 h-fit">
               <div className="rounded-2xl border border-border/30 bg-muted/5 p-8">
                 <Stack gap="6">
-                  <h3 className="text-heading text-primary font-serif italic">
+                  <h2 className="text-heading text-primary font-serif italic">
                     Quick Navigation
-                  </h3>
+                  </h2>
                   <div className="h-px w-12 bg-accent/60" />
                   <nav className="flex flex-col gap-3">
                     {[

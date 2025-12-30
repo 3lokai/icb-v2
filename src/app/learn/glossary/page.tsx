@@ -6,7 +6,9 @@ export default function GlossaryPage() {
   if (terms.length === 0) {
     return (
       <>
-        <h1 className="mb-4 text-display text-balance">Coffee Glossary</h1>
+        <h1 className="mb-4 text-display text-balance">
+          Coffee Glossary - Indian Specialty Coffee Terms
+        </h1>
         <div className="rounded-lg border border-red-200 bg-red-50 p-4">
           <p className="font-semibold text-red-800">
             Debug: No glossary terms found
@@ -39,7 +41,9 @@ export default function GlossaryPage() {
 
   return (
     <>
-      <h1 className="mb-4 text-display text-balance">Coffee Glossary</h1>
+      <h1 className="mb-4 text-display text-balance">
+        Coffee Glossary - Indian Specialty Coffee Terms
+      </h1>
       <p className="mb-12 max-w-2xl text-body text-muted-foreground">
         Confused by washed vs natural, or Arabica vs Robusta? This glossary
         helps you decode the coffee lingo — from brew to bean.

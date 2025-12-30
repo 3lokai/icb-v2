@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
     ],
     qualities: [75, 80, 85, 90],
   },
+  // Enable compression (Vercel handles this automatically, but explicit for clarity)
+  compress: true,
+  // Optimize production builds
+  swcMinify: true,
 };
 
 export default nextConfig;

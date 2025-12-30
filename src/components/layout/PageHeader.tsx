@@ -33,6 +33,7 @@ export function PageHeader({
           className="object-cover"
           fill
           priority
+          sizes="100vw"
           src={backgroundImage}
         />
       </div>

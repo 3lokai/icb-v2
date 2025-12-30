@@ -133,7 +133,7 @@ export default function RoasterCard({ roaster }: RoasterCardProps) {
                   className="object-contain"
                   fill
                   itemProp="logo"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 400px"
                   src={roasterImagePresets.roasterLogo(
                     `roasters/${roaster.slug}-logo`
                   )}

@@ -7,7 +7,7 @@ const DEFAULT_SORT: RoasterSort = "relevance";
 
 /**
  * Parse URL query params into typed filter objects
- * Provides defaults (page=1, limit=24, sort="relevance")
+ * Provides defaults (page=1, limit=15, sort="relevance")
  * Handles comma-separated arrays (platforms, countries, states)
  * Converts string booleans ("1" → true)
  * Pure function - no React, Zustand, or router dependencies

@@ -50,6 +50,7 @@ export default function ForgotPasswordPage() {
           fill
           priority
           quality={90}
+          sizes="50vw"
           src="/images/password-screen.jpg"
         />
         <div className="absolute inset-0 bg-black/20" />

@@ -8,6 +8,7 @@ type LogoProps = {
   iconWidth?: number | string;
   iconHeight?: number | string;
   "aria-label"?: string;
+  compact?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export function Logo({
@@ -15,6 +16,7 @@ export function Logo({
   iconWidth = 40,
   iconHeight = 40,
   "aria-label": ariaLabel = "Indian Coffee Beans",
+  compact = false,
   ...props
 }: LogoProps) {
   return (
@@ -29,7 +31,7 @@ export function Logo({
     >
       <div className="relative flex items-center">
         <Image
-          alt=""
+          alt="Indian Coffee Beans logo"
           className="transition-transform duration-300 group-hover:scale-110"
           height={
             typeof iconHeight === "string"
@@ -47,6 +49,7 @@ export function Logo({
         <div className="-top-1 absolute right-0 opacity-0 transition-opacity group-hover:opacity-70">
           <Image
             alt=""
+            aria-hidden="true"
             className="animate-pulse opacity-50"
             height={12}
             src="/logo-icon.svg"
@@ -54,9 +57,9 @@ export function Logo({
           />
         </div>
       </div>
-      <h1 className="m-0 font-semibold font-serif text-primary leading-none transition-opacity duration-300">
-        IndianCoffeeBeans
-      </h1>
+      <span className="m-0 font-semibold font-serif text-primary leading-none transition-opacity duration-300">
+        {compact ? "ICB" : "IndianCoffeeBeans"}
+      </span>
     </div>
   );
 }

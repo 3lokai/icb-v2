@@ -143,6 +143,7 @@ export function NewsletterSection({
             alt="Coffee community"
             className="object-cover"
             fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
             src="/images/contact/enthusiast.png"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/5 pointer-events-none" />

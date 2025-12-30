@@ -116,7 +116,7 @@ export default function CoffeeImageCarousel({
                     className="object-contain"
                     fill
                     priority={index === 0}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 800px"
                     src={coffeeImagePresets.coffeeDetail(imageUrl)}
                     {...(blurDataUrl && {
                       placeholder: "blur",

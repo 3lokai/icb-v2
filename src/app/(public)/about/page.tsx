@@ -93,6 +93,7 @@ export default function AboutPage() {
                     className="img-responsive object-cover transition-transform duration-700 group-hover:scale-105"
                     fill
                     priority
+                    sizes="(max-width: 1024px) 100vw, 42vw"
                     src="/images/about/coffee-beans.png"
                   />
                 </div>
@@ -173,6 +174,7 @@ export default function AboutPage() {
                     alt="Map of Indian coffee regions"
                     className="img-responsive object-contain p-8 transition-transform duration-700 group-hover:scale-105"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     src="/images/about/indian-coffee-regions.png"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
@@ -341,6 +343,7 @@ export default function AboutPage() {
                         alt="Founder brewing coffee"
                         className="img-responsive object-cover transition-transform duration-700 group-hover:scale-105"
                         fill
+                        sizes="(max-width: 1024px) 100vw, 33vw"
                         src="/images/about/founder.jpg"
                       />
                       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />

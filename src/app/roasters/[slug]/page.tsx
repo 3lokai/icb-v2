@@ -104,6 +104,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ],
   };
 
+  // Note: Structured data is rendered via <StructuredData> component in the page
+  // to avoid duplication and reduce HTML size
   return generateSEOMetadata({
     title,
     description,
@@ -111,12 +113,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     image: ogImage,
     type: "website",
     canonical,
-    other: {
-      "application/ld+json": JSON.stringify([
-        localBusinessSchema,
-        breadcrumbSchema,
-      ]),
-    },
   });
 }
 
@@ -195,8 +191,7 @@ export default async function RoasterDetailPageServer({ params }: Props) {
 
   return (
     <>
-      <StructuredData schema={localBusinessSchema} />
-      <StructuredData schema={breadcrumbSchema} />
+      <StructuredData schema={[localBusinessSchema, breadcrumbSchema]} />
       <RoasterDetailPage roaster={roaster} />
     </>
   );

@@ -280,6 +280,7 @@ export default function ContactForms({
                       alt="Coffee roaster at work"
                       className="object-cover"
                       fill
+                      sizes="(max-width: 1024px) 100vw, 42vw"
                       src="/images/contact/roaster.png"
                     />
                     <div className="absolute inset-0 bg-linear-to-r from-background/20 to-transparent pointer-events-none lg:bg-linear-to-l" />

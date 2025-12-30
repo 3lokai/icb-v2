@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieNotice } from "@/components/common/CookieNotice";
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 import { AuthProvider } from "@/components/providers/auth-provider";
@@ -100,8 +101,7 @@ export default function RootLayout({
     >
       <body>
         <div className="bg-noise" />
-        <StructuredData schema={organizationSchema} />
-        <StructuredData schema={websiteSchema} />
+        <StructuredData schema={[organizationSchema, websiteSchema]} />
         <Script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js"
           strategy="lazyOnload"
@@ -125,6 +125,7 @@ export default function RootLayout({
             </AuthProvider>
           </QueryProvider>
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );

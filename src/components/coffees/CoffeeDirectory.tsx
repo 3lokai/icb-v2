@@ -79,13 +79,13 @@ export function CoffeeDirectory({
         initialFilters,
         initialPage,
         initialSort,
-        24 // limit is constant
+        15 // limit is constant
       );
       setAll({
         filters: initialFilters,
         page: initialPage,
         sort: initialSort,
-        limit: 24,
+        limit: 15,
       });
       lastSyncedQueryString.current = queryString;
       isInitialized.current = true;
