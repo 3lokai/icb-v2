@@ -16,7 +16,7 @@ export function CoffeeCoreDetails({
     <div className={cn("stack-md", className)}>
       {/* Title */}
       <div>
-        <h1 className="text-display font-serif">{coffee.name}</h1>
+        <h2 className="text-display font-serif">{coffee.name}</h2>
         {coffee.roaster && (
           <div className="mt-2">
             <span className="text-body-muted">by </span>

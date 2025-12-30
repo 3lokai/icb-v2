@@ -113,9 +113,13 @@ export default function CoffeeCalculatorPage() {
   return (
     <div className="pb-20">
       {/* Structured Data */}
-      <StructuredData schema={calculatorHowToSchema} />
-      <StructuredData schema={calculatorFAQSchema} />
-      <StructuredData schema={calculatorToolSchema} />
+      <StructuredData
+        schema={[
+          calculatorHowToSchema,
+          calculatorFAQSchema,
+          calculatorToolSchema,
+        ]}
+      />
 
       {/* Page Header */}
       <PageHeader

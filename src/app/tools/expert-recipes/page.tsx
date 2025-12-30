@@ -126,9 +126,13 @@ export default function ExpertRecipesPage() {
   return (
     <div className="pb-20">
       {/* Structured Data */}
-      <StructuredData schema={expertRecipesHowToSchema} />
-      <StructuredData schema={expertRecipesFAQSchema} />
-      <StructuredData schema={expertRecipesCollectionSchema} />
+      <StructuredData
+        schema={[
+          expertRecipesHowToSchema,
+          expertRecipesFAQSchema,
+          expertRecipesCollectionSchema,
+        ]}
+      />
 
       {/* Page Header */}
       <PageHeader

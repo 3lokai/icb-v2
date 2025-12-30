@@ -62,11 +62,11 @@ const InteractiveBentoCard = ({
           }}
         />
       </div>
-      <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-primary/40 via-accent/40 to-primary/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-primary/40 via-accent/40 to-primary/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
     </div>
 
     <div className="relative z-10 p-6 md:p-8 flex flex-col h-full">
-      <div className="flex transform-gpu flex-col gap-4 transition-all duration-500 group-hover:-translate-y-2 flex-grow">
+      <div className="flex transform-gpu flex-col gap-4 transition-all duration-500 group-hover:-translate-y-2 grow">
         <div className="flex items-center justify-between">
           <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-accent/10 text-accent group-hover:scale-110 transition-transform duration-500">
             <Icon name={icon} size={20} />
@@ -91,7 +91,7 @@ const InteractiveBentoCard = ({
       </div>
     </div>
 
-    <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-500 group-hover:bg-accent/[0.02]" />
+    <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-500 group-hover:bg-accent/2" />
   </div>
 );
 
@@ -263,7 +263,7 @@ export default function ContactForms({
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-0"
                 >
-                  <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-primary via-accent to-primary/60 opacity-60" />
+                  <div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-primary via-accent to-primary/60 opacity-60" />
                   <div
                     className="absolute inset-0 opacity-[0.03] pointer-events-none"
                     style={{
@@ -280,9 +280,10 @@ export default function ContactForms({
                       alt="Coffee roaster at work"
                       className="object-cover"
                       fill
+                      sizes="(max-width: 1024px) 100vw, 42vw"
                       src="/images/contact/roaster.png"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-transparent pointer-events-none lg:bg-gradient-to-l" />
+                    <div className="absolute inset-0 bg-linear-to-r from-background/20 to-transparent pointer-events-none lg:bg-linear-to-l" />
                   </div>
 
                   <div className="lg:col-span-7 p-8 md:p-12">

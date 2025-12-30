@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Stack } from "@/components/primitives/stack";
-import { Cluster } from "@/components/primitives/cluster";
 import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store";
 import type { CoffeeFilterMeta } from "@/types/coffee-types";
 import type {

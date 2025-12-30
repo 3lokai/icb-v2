@@ -9,7 +9,7 @@ import type {
  * Default values for coffee directory filters
  */
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 24;
+const DEFAULT_LIMIT = 15;
 const DEFAULT_SORT: CoffeeSort = "relevance";
 
 /**

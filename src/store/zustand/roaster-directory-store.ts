@@ -25,7 +25,7 @@ type RoasterDirectoryState = {
 const DEFAULT_FILTERS: RoasterFilters = {};
 const DEFAULT_PAGE = 1;
 const DEFAULT_SORT: RoasterSort = "relevance";
-const DEFAULT_LIMIT = 24;
+const DEFAULT_LIMIT = 15;
 
 export const useRoasterDirectoryStore = create<RoasterDirectoryState>(
   (set) => ({

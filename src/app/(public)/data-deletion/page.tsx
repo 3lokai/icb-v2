@@ -91,7 +91,7 @@ Thank you,
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Stack
                   gap="4"
-                  className="p-8 rounded-[2rem] border border-border/40 bg-muted/5"
+                  className="p-8 rounded-4xl border border-border/40 bg-muted/5"
                 >
                   <span className="text-micro font-bold uppercase tracking-widest text-accent">
                     Step 01
@@ -112,7 +112,7 @@ Thank you,
 
                 <Stack
                   gap="4"
-                  className="p-8 rounded-[2rem] border border-border/40 bg-muted/5"
+                  className="p-8 rounded-4xl border border-border/40 bg-muted/5"
                 >
                   <span className="text-micro font-bold uppercase tracking-widest text-accent">
                     Step 02
@@ -131,7 +131,7 @@ Thank you,
                 <h3 className="text-micro font-bold uppercase tracking-widest text-muted-foreground">
                   Using The Template
                 </h3>
-                <div className="relative group overflow-hidden rounded-[2rem] border border-border/40 bg-card/5 transition-all">
+                <div className="relative group overflow-hidden rounded-4xl border border-border/40 bg-card/5 transition-all">
                   <div className="p-8 font-mono text-caption whitespace-pre-wrap leading-relaxed">
                     {emailTemplate}
                   </div>
@@ -174,7 +174,7 @@ Thank you,
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="text-center p-8 rounded-[2rem] border border-border/20 bg-background/50"
+                    className="text-center p-8 rounded-4xl border border-border/20 bg-background/50"
                   >
                     <div className="text-title font-serif italic text-accent mb-2">
                       {item.days}

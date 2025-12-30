@@ -31,7 +31,7 @@ export async function fetchRoasterBySlug(
 
   // Fetch coffees for this roaster and calculate stats in parallel
   const [coffeesResult, coffeeStatsResult] = await Promise.all([
-    // Fetch coffees from coffee_summary view (limited to 24)
+    // Fetch coffees from coffee_summary view (limited to 15)
     supabase
       .from("coffee_summary")
       .select(
@@ -39,7 +39,7 @@ export async function fetchRoasterBySlug(
       )
       .eq("roaster_id", roasterId)
       .order("name", { ascending: true })
-      .limit(24),
+      .limit(15),
 
     // Fetch coffee stats for aggregation
     supabase

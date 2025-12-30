@@ -51,7 +51,7 @@ export function FAQ({ items, className }: SimpleFAQProps) {
             .replace(/[^a-z0-9-]/g, "");
           return (
             <AccordionItem key={itemId} value={itemId}>
-              <AccordionTrigger className="text-left !text-base md:!text-lg font-semibold">
+              <AccordionTrigger className="text-left text-base! md:text-lg! font-semibold">
                 {item.question}
               </AccordionTrigger>
               <AccordionContent className="text-caption leading-relaxed">

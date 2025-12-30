@@ -123,6 +123,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ],
   };
 
+  // Note: Structured data is rendered via <StructuredData> component in the page
+  // to avoid duplication and reduce HTML size
   return generateSEOMetadata({
     title,
     description,
@@ -131,9 +133,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     type: "product",
     canonical,
     productDetails,
-    other: {
-      "application/ld+json": JSON.stringify([productSchema, breadcrumbSchema]),
-    },
   });
 }
 
@@ -212,8 +211,7 @@ export default async function CoffeeDetailPageServer({ params }: Props) {
 
   return (
     <>
-      <StructuredData schema={productSchema} />
-      <StructuredData schema={breadcrumbSchema} />
+      <StructuredData schema={[productSchema, breadcrumbSchema]} />
       <CoffeeDetailPage coffee={coffee} />
     </>
   );

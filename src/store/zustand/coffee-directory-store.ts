@@ -29,7 +29,7 @@ interface CoffeeDirectoryState {
 
 const DEFAULT_FILTERS: CoffeeFilters = {};
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 24;
+const DEFAULT_LIMIT = 15;
 const DEFAULT_SORT: CoffeeSort = "relevance";
 
 export const useCoffeeDirectoryStore = create<CoffeeDirectoryState>((set) => ({

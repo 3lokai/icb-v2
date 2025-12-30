@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useMotionValueEvent, useScroll } from "motion/react";
 import { Icon } from "@/components/common/Icon";
 import { Logo } from "@/components/layout/logo";
 import { useAuth } from "@/components/providers/auth-provider";
@@ -64,10 +65,16 @@ const navItems = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isNavbarCompact, setIsNavbarCompact] = useState(false);
+  const { scrollY } = useScroll();
   const { user, signOut, isLoading: authLoading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useUserProfile();
   const { openSearch } = useSearchContext();
   const router = useRouter();
+
+  useMotionValueEvent(scrollY, "change", (latest: number) => {
+    setIsNavbarCompact(latest > 100);
+  });
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -105,7 +112,11 @@ export function Header() {
           className="relative z-20 mr-8 flex items-center gap-2 px-2 py-1"
           href="/"
         >
-          <Logo aria-label="Indian Coffee Beans" className="h-8 w-auto" />
+          <Logo
+            aria-label="Indian Coffee Beans"
+            className="h-8 w-auto"
+            compact={isNavbarCompact}
+          />
         </Link>
 
         {/* Desktop Navigation Items */}
@@ -270,7 +281,11 @@ export function Header() {
             className="flex items-center gap-2"
             href="/"
           >
-            <Logo aria-label="Indian Coffee Beans" className="h-8 w-auto" />
+            <Logo
+              aria-label="Indian Coffee Beans"
+              className="h-8 w-auto"
+              compact={isNavbarCompact}
+            />
           </Link>
           <div className="flex items-center gap-2">
             <button

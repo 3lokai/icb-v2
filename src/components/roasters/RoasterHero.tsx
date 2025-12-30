@@ -52,7 +52,7 @@ export function RoasterHero({ roaster }: RoasterHeroProps) {
         <div className="flex-1 space-y-4">
           {/* Name and location */}
           <div>
-            <h1 className="text-display mb-2">{roaster.name}</h1>
+            <h2 className="text-display mb-2">{roaster.name}</h2>
             {location && (
               <p className="text-body-muted flex items-center gap-1">
                 <span>📍</span>

@@ -1,7 +1,6 @@
 "use client";
 
 import type { CoffeeDetail } from "@/types/coffee-types";
-import { Icon } from "@/components/common/Icon";
 import Tag, { TagList } from "@/components/common/Tag";
 import { Stack } from "@/components/primitives/stack";
 import { SensoryRadarChart } from "./SensoryRadarChart";

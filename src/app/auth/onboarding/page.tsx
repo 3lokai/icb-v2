@@ -56,6 +56,7 @@ export default async function OnboardingPage() {
           fill
           priority
           quality={90}
+          sizes="50vw"
           src="/images/onboarding_screen.jpg"
         />
         <div className="absolute inset-0 bg-black/20" />

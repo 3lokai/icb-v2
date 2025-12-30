@@ -112,7 +112,8 @@ export function isImageKitConfigured(): boolean {
 export const coffeeImagePresets = {
   /**
    * CoffeeCard preset
-   * Size: 400x224px (h-56 in Tailwind)
+   * Size: 600x336px (optimized for 3-column grid on large screens)
+   * On 1920px screen: 33vw ≈ 634px, so 600px covers most cases
    * Crop: Force
    * Quality: 80
    */
@@ -121,8 +122,8 @@ export const coffeeImagePresets = {
       return getPlaceholderImage("coffee");
     }
     return getImageKitUrl(imagePath, {
-      width: 400,
-      height: 224,
+      width: 600,
+      height: 336,
       crop: "force",
       quality: 80,
     });
@@ -130,7 +131,8 @@ export const coffeeImagePresets = {
 
   /**
    * RoasterCard preset
-   * Size: 400x160px (h-40 in Tailwind)
+   * Size: 600x240px (optimized for 3-column grid on large screens)
+   * On 1920px screen: 33vw ≈ 634px, so 600px covers most cases
    * Crop: Maintain ratio (don't distort logos)
    * Quality: 85
    */
@@ -139,8 +141,8 @@ export const coffeeImagePresets = {
       return getPlaceholderImage("roaster");
     }
     return getImageKitUrl(imagePath, {
-      width: 400,
-      height: 160,
+      width: 600,
+      height: 240,
       crop: "maintain_ratio",
       quality: 85,
     });
@@ -148,7 +150,7 @@ export const coffeeImagePresets = {
 
   /**
    * RegionCard preset
-   * Size: 400x300px (aspect-[4/3])
+   * Size: 600x450px (aspect-[4/3], optimized for grid layouts)
    * Crop: Force
    * Quality: 82
    */
@@ -157,8 +159,8 @@ export const coffeeImagePresets = {
       return getPlaceholderImage("coffee");
     }
     return getImageKitUrl(imagePath, {
-      width: 400,
-      height: 300,
+      width: 600,
+      height: 450,
       crop: "force",
       quality: 82,
     });

@@ -145,7 +145,7 @@ export function RoasterDetailPage({
                         className="object-contain p-8"
                         fill
                         priority
-                        sizes="(max-width: 768px) 100vw, 33vw"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
                         src={roasterImagePresets.roasterLogo(
                           `roasters/${roaster.slug}-logo`
                         )}
