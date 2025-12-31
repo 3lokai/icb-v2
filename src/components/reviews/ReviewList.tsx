@@ -6,42 +6,32 @@ import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
 import { formatDistanceToNow } from "date-fns";
 
+type ReviewWithProfile = LatestReviewPerIdentity & {
+  user_profiles: {
+    id: string;
+    username: string | null;
+    full_name: string;
+    avatar_url: string | null;
+  } | null;
+};
+
 type ReviewListProps = {
   entityType: "coffee" | "roaster";
-  reviews: LatestReviewPerIdentity[];
+  reviews: ReviewWithProfile[];
 };
 
 const INITIAL_DISPLAY_COUNT = 3;
 
-export function ReviewList({ entityType, reviews }: ReviewListProps) {
+export function ReviewList({
+  entityType: _entityType,
+  reviews,
+}: ReviewListProps) {
   const [showAll, setShowAll] = useState(false);
-
-  if (!reviews || reviews.length === 0) {
-    return (
-      <div className="text-center py-16">
-        <Stack gap="4">
-          <div className="w-20 h-20 rounded-full bg-muted/50 border border-border/40 flex items-center justify-center mx-auto">
-            <Icon
-              name="ChatText"
-              size={32}
-              className="text-muted-foreground/60"
-            />
-          </div>
-          <Stack gap="2">
-            <h3 className="text-heading font-semibold">No reviews yet</h3>
-            <p className="text-body text-muted-foreground max-w-md mx-auto">
-              Be the first to share your experience with this {entityType} and
-              help others discover great coffee.
-            </p>
-          </Stack>
-        </Stack>
-      </div>
-    );
-  }
 
   const displayReviews = showAll
     ? reviews
@@ -96,11 +86,26 @@ export function ReviewList({ entityType, reviews }: ReviewListProps) {
   );
 }
 
-function ReviewItem({ review }: { review: LatestReviewPerIdentity }) {
+function ReviewItem({ review }: { review: ReviewWithProfile }) {
   const isAnonymous = review.identity_key?.startsWith("anon:");
   const timeAgo = review.created_at
     ? formatDistanceToNow(new Date(review.created_at), { addSuffix: true })
     : "";
+
+  // Get user display info
+  const userProfile = review.user_profiles;
+  const displayName = userProfile
+    ? userProfile.username || userProfile.full_name
+    : null;
+  const avatarUrl = userProfile?.avatar_url || null;
+  const initials = userProfile
+    ? userProfile.full_name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "?";
 
   return (
     <div className="group relative py-5 border-b border-border/40 last:border-0 transition-colors hover:bg-muted/20 rounded-lg px-3 -mx-3">
@@ -190,8 +195,17 @@ function ReviewItem({ review }: { review: LatestReviewPerIdentity }) {
           align="center"
           className="text-caption text-muted-foreground"
         >
+          <Avatar className="size-6">
+            <AvatarImage
+              src={avatarUrl || undefined}
+              alt={displayName || "Anonymous"}
+            />
+            <AvatarFallback className="text-caption font-medium">
+              {isAnonymous ? "?" : initials}
+            </AvatarFallback>
+          </Avatar>
           <span className="font-medium">
-            {isAnonymous ? "Anonymous reviewer" : "Reviewer"}
+            {isAnonymous ? "Anonymous" : displayName || "Reviewer"}
           </span>
           {timeAgo && (
             <>

@@ -71,16 +71,21 @@ export function CoffeeDirectory({
     (filters.brew_method_ids?.length ?? 0) +
     (filters.q ? 1 : 0);
 
-  // Initialize store from props (SSR data) on mount (only once)
+  // Initialize store from props (SSR data) on mount or when URL params change
   useEffect(() => {
-    if (!isInitialized.current) {
-      // Use props from server component (already parsed and validated)
-      const queryString = buildCoffeeQueryString(
-        initialFilters,
-        initialPage,
-        initialSort,
-        15 // limit is constant
-      );
+    // Use props from server component (already parsed and validated)
+    const queryString = buildCoffeeQueryString(
+      initialFilters,
+      initialPage,
+      initialSort,
+      15 // limit is constant
+    );
+
+    // Always initialize on first render, or update if URL params changed
+    if (
+      !isInitialized.current ||
+      queryString !== lastSyncedQueryString.current
+    ) {
       setAll({
         filters: initialFilters,
         page: initialPage,
@@ -99,13 +104,18 @@ export function CoffeeDirectory({
     }
 
     const queryString = buildCoffeeQueryString(filters, page, sort, limit);
+    const currentUrlQueryString = searchParams.toString();
 
-    // Only update URL if it's different from what we last synced
-    if (queryString !== lastSyncedQueryString.current) {
+    // Only update URL if store state differs from current URL
+    // This prevents overwriting URL params during navigation
+    if (
+      queryString !== currentUrlQueryString &&
+      queryString !== lastSyncedQueryString.current
+    ) {
       lastSyncedQueryString.current = queryString;
       router.replace(`/coffees?${queryString}`, { scroll: false });
     }
-  }, [filters, page, sort, limit, router]);
+  }, [filters, page, sort, limit, router, searchParams]);
 
   // Handle URL changes (back/forward navigation)
   useEffect(() => {

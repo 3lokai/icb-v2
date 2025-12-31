@@ -53,57 +53,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     "coffee roasters India",
   ];
 
-  // Build address string for LocalBusiness schema
-  const addressParts: string[] = [];
-  if (roaster.hq_city) addressParts.push(roaster.hq_city);
-  if (roaster.hq_state) addressParts.push(roaster.hq_state);
-  if (roaster.hq_country) addressParts.push(roaster.hq_country);
-  const address = addressParts.length > 0 ? addressParts.join(", ") : undefined;
-
-  // Generate structured data
-  const localBusinessSchema = generateSchemaOrg({
-    type: "LocalBusiness",
-    name: roaster.name,
-    description,
-    image: ogImage,
-    url: canonical,
-    address,
-    telephone: roaster.phone ?? undefined,
-    aggregateRating:
-      roaster.avg_rating && roaster.total_ratings_count
-        ? {
-            ratingValue: roaster.avg_rating,
-            ratingCount: roaster.total_ratings_count,
-          }
-        : undefined,
-  });
-
-  // Breadcrumb schema
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: baseUrl,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Roasters",
-        item: `${baseUrl}/roasters`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: roaster.name,
-        item: canonical,
-      },
-    ],
-  };
-
   // Note: Structured data is rendered via <StructuredData> component in the page
   // to avoid duplication and reduce HTML size
   return generateSEOMetadata({

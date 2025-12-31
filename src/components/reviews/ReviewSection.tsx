@@ -15,24 +15,24 @@ type ReviewSectionProps = {
 export function ReviewSection({ entityType, entityId }: ReviewSectionProps) {
   const { data: stats } = useReviewStats(entityType, entityId);
   const { data: reviews } = useReviews(entityType, entityId);
+  const hasReviews = reviews && reviews.length > 0;
 
   return (
     <Stack gap="8">
-      {/* Stats Header */}
-      {stats && stats.review_count && stats.review_count > 0 && (
-        <>
-          <ReviewStats stats={stats} />
-          <Separator />
-        </>
-      )}
-
-      {/* Capture UI - Always First */}
-      <ReviewCapture entityType={entityType} entityId={entityId} />
-
+      {/* Stats Header - Always shown with heading */}
+      <ReviewStats stats={stats ?? null} />
       <Separator />
 
-      {/* Reviews List */}
-      <ReviewList entityType={entityType} reviews={reviews ?? []} />
+      {/* Capture UI - Always shown */}
+      <ReviewCapture entityType={entityType} entityId={entityId} />
+
+      {/* Reviews List - Only shown if reviews exist */}
+      {hasReviews && (
+        <>
+          <Separator />
+          <ReviewList entityType={entityType} reviews={reviews} />
+        </>
+      )}
     </Stack>
   );
 }

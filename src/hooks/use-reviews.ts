@@ -22,18 +22,66 @@ export function useReviews(entityType: "coffee" | "roaster", entityId: string) {
     queryKey: queryKeys.reviews.byEntity(entityType, entityId),
     queryFn: async () => {
       const supabase = createClient();
-      const { data, error } = await supabase
+
+      // Fetch reviews
+      const { data: reviews, error: reviewsError } = await supabase
         .from("latest_reviews_per_identity")
         .select("*")
         .eq("entity_type", entityType)
         .eq("entity_id", entityId)
         .order("created_at", { ascending: false });
 
-      if (error) {
-        throw error;
+      if (reviewsError) {
+        throw reviewsError;
       }
 
-      return (data ?? []) as LatestReviewPerIdentity[];
+      if (!reviews || reviews.length === 0) {
+        return [];
+      }
+
+      // Get unique user IDs from reviews
+      const userIds = reviews
+        .map((r) => r.user_id)
+        .filter((id): id is string => id !== null);
+
+      // Fetch user profiles for authenticated users
+      const userProfilesMap = new Map<
+        string,
+        {
+          id: string;
+          username: string | null;
+          full_name: string;
+          avatar_url: string | null;
+        }
+      >();
+
+      if (userIds.length > 0) {
+        const { data: profiles, error: profilesError } = await supabase
+          .from("user_profiles")
+          .select("id, username, full_name, avatar_url")
+          .in("id", userIds);
+
+        if (!profilesError && profiles) {
+          profiles.forEach((profile) => {
+            userProfilesMap.set(profile.id, profile);
+          });
+        }
+      }
+
+      // Merge reviews with user profiles
+      return reviews.map((review) => ({
+        ...review,
+        user_profiles: review.user_id
+          ? userProfilesMap.get(review.user_id) || null
+          : null,
+      })) as (LatestReviewPerIdentity & {
+        user_profiles: {
+          id: string;
+          username: string | null;
+          full_name: string;
+          avatar_url: string | null;
+        } | null;
+      })[];
     },
     staleTime: 30 * 1000, // 30 seconds
   });
