@@ -4,18 +4,7 @@ import { Stack } from "@/components/primitives/stack";
 import { AuthForm } from "@/components/layout/auth-form";
 import { Logo } from "@/components/layout/logo";
 
-type SearchParams = {
-  mode?: "login" | "signup";
-};
-
-type AuthPageProps = {
-  searchParams: Promise<SearchParams>;
-};
-
-export default async function AuthPage({ searchParams }: AuthPageProps) {
-  const params = await searchParams;
-  const mode = params.mode === "signup" ? "signup" : "login";
-
+export default async function AuthPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col p-6 md:p-10">
@@ -27,7 +16,7 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
           </div>
           <div className="flex flex-1 items-center justify-center">
             <div className="w-full max-w-xs">
-              <AuthForm mode={mode} />
+              <AuthForm />
             </div>
           </div>
         </Stack>

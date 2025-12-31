@@ -33,22 +33,22 @@ export async function proxy(request: NextRequest) {
 
   // Redirect old auth routes to unified auth page
   if (request.nextUrl.pathname === "/login") {
-    return NextResponse.redirect(new URL("/auth?mode=login", request.url));
+    return NextResponse.redirect(new URL("/auth", request.url));
   }
   if (request.nextUrl.pathname === "/signup") {
-    return NextResponse.redirect(new URL("/auth?mode=signup", request.url));
+    return NextResponse.redirect(new URL("/auth", request.url));
   }
 
   // Protect routes that require authentication
   if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
-    return NextResponse.redirect(new URL("/auth?mode=login", request.url));
+    return NextResponse.redirect(new URL("/auth", request.url));
   }
 
   // Protect profile routes
   if (request.nextUrl.pathname.startsWith("/profile") && !user) {
     return NextResponse.redirect(
       new URL(
-        `/auth?mode=login&from=${encodeURIComponent(request.nextUrl.pathname)}`,
+        `/auth?from=${encodeURIComponent(request.nextUrl.pathname)}`,
         request.url
       )
     );
