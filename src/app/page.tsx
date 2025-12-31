@@ -1,16 +1,99 @@
-import CtaSection from "@/components/homepage/CtaSection";
-import EducationSection from "@/components/homepage/EducationContent";
-import FeaturedRoastersSection from "@/components/homepage/FeaturedRoastersSection";
-import FeaturesBentoGrid from "@/components/homepage/FeaturesBentoGrid";
+import dynamic from "next/dynamic";
 import HeroSection from "@/components/homepage/HeroSection";
-import NewArrivalsSection from "@/components/homepage/NewArrivalsSection";
-import NewsletterSection from "@/components/homepage/NewsletterSection";
-import TestimonialsSection from "@/components/homepage/TestimonialsSection";
-import { HomepageFAQ } from "@/components/faqs/HomePageFAQs";
 import { Banner1 } from "@/components/ui/banner1";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { fetchActiveAnnouncement } from "@/lib/data/fetch-announcement";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
+
+// Dynamic imports for below-the-fold components to reduce initial bundle size
+const NewArrivalsSection = dynamic(
+  () => import("@/components/homepage/NewArrivalsSection"),
+  {
+    loading: () => (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
+const FeaturesBentoGrid = dynamic(
+  () => import("@/components/homepage/FeaturesBentoGrid"),
+  {
+    loading: () => (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
+const NewsletterSection = dynamic(
+  () => import("@/components/homepage/NewsletterSection"),
+  {
+    loading: () => (
+      <div className="flex min-h-[200px] items-center justify-center">
+        <LoadingSpinner size="sm" />
+      </div>
+    ),
+  }
+);
+
+const FeaturedRoastersSection = dynamic(
+  () => import("@/components/homepage/FeaturedRoastersSection"),
+  {
+    loading: () => (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
+const EducationSection = dynamic(
+  () => import("@/components/homepage/EducationContent"),
+  {
+    loading: () => (
+      <div className="flex min-h-[300px] items-center justify-center">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
+const TestimonialsSection = dynamic(
+  () => import("@/components/homepage/TestimonialsSection"),
+  {
+    loading: () => (
+      <div className="flex min-h-[300px] items-center justify-center">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
+const HomepageFAQ = dynamic(
+  () =>
+    import("@/components/faqs/HomePageFAQs").then((mod) => ({
+      default: mod.HomepageFAQ,
+    })),
+  {
+    loading: () => (
+      <div className="flex min-h-[300px] items-center justify-center">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
+const CtaSection = dynamic(() => import("@/components/homepage/CtaSection"), {
+  loading: () => (
+    <div className="flex min-h-[200px] items-center justify-center">
+      <LoadingSpinner size="sm" />
+    </div>
+  ),
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl =
@@ -57,7 +140,6 @@ export default async function Home() {
         <EducationSection />
         <TestimonialsSection />
         <HomepageFAQ />
-
         <CtaSection />
       </main>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Stack } from "@/components/primitives/stack";
@@ -16,29 +16,37 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/components/providers/auth-provider";
 
-type AuthMode = "login" | "signup";
-
 type AuthFormProps = {
-  mode?: AuthMode;
   className?: string;
 } & React.ComponentProps<"form">;
 
-export function AuthForm({
-  mode: initialMode = "login",
-  className,
-  ...props
-}: AuthFormProps) {
+export function AuthForm({ className, ...props }: AuthFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { signIn, signUp, signInWithOAuth } = useAuth();
-  const [mode, setMode] = useState<AuthMode>(initialMode);
+
+  // Get initial error from URL params
+  const getInitialError = () => {
+    const errorParam = searchParams.get("error");
+    if (errorParam === "callback_failed") {
+      return "Authentication failed. Please try again.";
+    } else if (errorParam === "no_code") {
+      return "No authentication code received. Please try again.";
+    } else if (errorParam === "oauth_failed") {
+      return "OAuth authentication failed. Please try again.";
+    } else if (errorParam === "account_creation_failed") {
+      return "Account creation encountered an issue. You may already have an account - please try signing in, or contact support if the problem persists.";
+    }
+    return null;
+  };
+
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(getInitialError);
+  const [isAttemptingSignUp, setIsAttemptingSignUp] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,72 +59,63 @@ export function AuthForm({
     e.preventDefault();
     setError(null);
     setIsLoading(true);
+    setIsAttemptingSignUp(false);
 
     try {
-      if (mode === "signup") {
-        // Validate password confirmation
-        if (formData.password !== formData.confirmPassword) {
-          setError("Passwords do not match");
-          setIsLoading(false);
-          return;
-        }
+      // Validate password length
+      if (formData.password.length < 8) {
+        setError("Password must be at least 8 characters long");
+        setIsLoading(false);
+        return;
+      }
 
-        // Validate password length
-        if (formData.password.length < 8) {
-          setError("Password must be at least 8 characters long");
-          setIsLoading(false);
-          return;
-        }
+      // Try to sign in first
+      const { error: signInError } = await signIn(
+        formData.email,
+        formData.password
+      );
 
-        const { error: signUpError } = await signUp(
-          formData.email,
-          formData.password,
-          { full_name: formData.name }
-        );
+      if (!signInError) {
+        // Success - redirect to dashboard
+        router.push("/dashboard");
+        return;
+      }
 
-        if (signUpError) {
+      // If sign in failed, try to sign up (user might not exist)
+      // Supabase returns "Invalid login credentials" for both wrong password and user not found
+      setIsAttemptingSignUp(true);
+
+      const { error: signUpError } = await signUp(
+        formData.email,
+        formData.password
+      );
+
+      if (signUpError) {
+        // Check if user already exists (signup failed because email is taken)
+        if (
+          signUpError.message?.toLowerCase().includes("already registered") ||
+          signUpError.message?.toLowerCase().includes("user already exists")
+        ) {
+          setError(
+            "An account with this email already exists. Please check your password or use 'Forgot password' to reset it."
+          );
+        } else {
           setError(
             signUpError.message || "Failed to create account. Please try again."
           );
-          setIsLoading(false);
-          return;
         }
-
-        // Success - redirect to dashboard
-        router.push("/dashboard");
-      } else {
-        const { error: signInError } = await signIn(
-          formData.email,
-          formData.password
-        );
-
-        if (signInError) {
-          setError(
-            signInError.message ||
-              "Invalid email or password. Please try again."
-          );
-          setIsLoading(false);
-          return;
-        }
-
-        // Success - redirect to dashboard
-        router.push("/dashboard");
+        setIsLoading(false);
+        setIsAttemptingSignUp(false);
+        return;
       }
+
+      // Success - redirect to dashboard
+      router.push("/dashboard");
     } catch {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
+      setIsAttemptingSignUp(false);
     }
-  };
-
-  const toggleMode = () => {
-    setMode((prev) => (prev === "login" ? "signup" : "login"));
-    setError(null);
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
   };
 
   const handleOAuth = async (provider: "google" | "facebook") => {
@@ -136,14 +135,10 @@ export function AuthForm({
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
             <h1 className="text-title font-serif tracking-tight">
-              {mode === "login"
-                ? "Login to your account"
-                : "Create your account"}
+              Get started
             </h1>
             <p className="text-muted-foreground text-caption text-balance">
-              {mode === "login"
-                ? "Enter your email below to login to your account"
-                : "Fill in the form below to create your account"}
+              Enter your details below to continue
             </p>
           </div>
 
@@ -154,20 +149,6 @@ export function AuthForm({
           )}
 
           <Stack gap="4">
-            {mode === "signup" && (
-              <Field>
-                <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="John Doe"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                />
-              </Field>
-            )}
-
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <Input
@@ -178,28 +159,18 @@ export function AuthForm({
                 onChange={handleInputChange}
                 required
               />
-              {mode === "signup" && (
-                <FieldDescription>
-                  We&apos;ll use this to contact you. We will not share your
-                  email with anyone else.
-                </FieldDescription>
-              )}
             </Field>
 
             <Field>
-              {mode === "login" ? (
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <Link
-                    href="/auth/forgot-password"
-                    className="ml-auto text-caption underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-              ) : (
+              <div className="flex items-center">
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-              )}
+                <Link
+                  href="/auth/forgot-password"
+                  className="ml-auto text-caption underline-offset-4 hover:underline"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
               <Input
                 id="password"
                 type="password"
@@ -207,38 +178,18 @@ export function AuthForm({
                 onChange={handleInputChange}
                 required
               />
-              {mode === "signup" && (
-                <FieldDescription>
-                  Must be at least 8 characters long.
-                </FieldDescription>
-              )}
+              <FieldDescription>
+                Must be at least 8 characters long.
+              </FieldDescription>
             </Field>
-
-            {mode === "signup" && (
-              <Field>
-                <FieldLabel htmlFor="confirm-password">
-                  Confirm Password
-                </FieldLabel>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  required
-                />
-                <FieldDescription>
-                  Please confirm your password.
-                </FieldDescription>
-              </Field>
-            )}
 
             <Field>
               <Button type="submit" disabled={isLoading} className="w-full">
                 {isLoading
                   ? "Please wait..."
-                  : mode === "login"
-                    ? "Login"
-                    : "Create Account"}
+                  : isAttemptingSignUp
+                    ? "Create Account"
+                    : "Continue"}
               </Button>
             </Field>
           </Stack>
@@ -276,9 +227,7 @@ export function AuthForm({
                     fill="#EA4335"
                   />
                 </svg>
-                {mode === "login"
-                  ? "Continue with Google"
-                  : "Sign up with Google"}
+                Continue with Google
               </Button>
               <Button
                 variant="outline"
@@ -295,36 +244,9 @@ export function AuthForm({
                 >
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
-                {mode === "login"
-                  ? "Continue with Facebook"
-                  : "Sign up with Facebook"}
+                Continue with Facebook
               </Button>
             </div>
-            <FieldDescription className="text-center">
-              {mode === "login" ? (
-                <>
-                  Don&apos;t have an account?{" "}
-                  <button
-                    type="button"
-                    onClick={toggleMode}
-                    className="underline underline-offset-4 hover:no-underline"
-                  >
-                    Sign up
-                  </button>
-                </>
-              ) : (
-                <>
-                  Already have an account?{" "}
-                  <button
-                    type="button"
-                    onClick={toggleMode}
-                    className="underline underline-offset-4 hover:no-underline"
-                  >
-                    Sign in
-                  </button>
-                </>
-              )}
-            </FieldDescription>
           </Field>
         </FieldGroup>
       </Stack>

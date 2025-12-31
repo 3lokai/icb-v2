@@ -17,9 +17,9 @@ import { SearchProvider } from "@/providers/SearchProvider";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"], // Add the heavy weights
+  weight: ["400", "600", "700", "900"], // Optimized: removed 500 and 800 to reduce font file requests
   variable: "--font-display",
-  display: "swap", // Add this for better performance
+  display: "swap",
 });
 
 const dmSans = DM_Sans({
