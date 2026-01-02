@@ -17,16 +17,18 @@ import { SearchProvider } from "@/providers/SearchProvider";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "900"], // Optimized: removed 500 and 800 to reduce font file requests
+  weight: ["400", "700"], // Reduced from 4 weights to 2 for faster FCP (removed 600, 900)
   variable: "--font-display",
-  display: "swap",
+  display: "optional", // Use optional to prevent FOIT and improve FCP
+  preload: true, // Preload critical font
 });
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "500", "700"], // Kept 500 as font-medium is used 208+ times
   variable: "--font-sans",
-  display: "swap",
+  display: "optional", // Use optional to prevent FOIT and improve FCP
+  preload: true, // Preload critical font
 });
 
 export const metadata: Metadata = {

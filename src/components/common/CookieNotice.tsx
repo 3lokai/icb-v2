@@ -148,7 +148,7 @@ export function CookieNotice() {
     <div
       className={`fixed right-0 bottom-0 left-0 z-9999 border-border/20 border-t bg-card shadow-2xl transition-all duration-500 ${isExiting ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"}`}
     >
-      <div className="h-1 w-full bg-linear-to-r from-chart-1 via-chart-3 to-chart-5" />
+      <div className="h-1 w-full bg-gradient-to-r from-chart-1 via-chart-3 to-chart-5" />
       <div className="container-default flex flex-col items-center justify-between gap-4 px-6 py-4 md:flex-row">
         <div className="flex items-center gap-3">
           <Icon

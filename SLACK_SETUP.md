@@ -33,10 +33,18 @@ This guide will help you set up Slack webhooks to receive notifications from Ind
    - Copy the webhook URL
    - This is your `SLACK_WEBHOOK_URL_FORMS`
 
-6. **Add to Environment Variables**
+6. **Create Webhook for Roasters Channel**
+   - Click "Add New Webhook to Workspace" again
+   - Select the channel where you want roaster-related notifications (e.g., `#roasters`, `#roaster-inquiries`)
+   - Click "Allow"
+   - Copy the webhook URL
+   - This is your `SLACK_WEBHOOK_URL_ROASTERS`
+
+7. **Add to Environment Variables**
    ```env
    SLACK_WEBHOOK_URL_ACTIVITY=https://hooks.slack.com/services/YOUR/ACTIVITY/WEBHOOK
    SLACK_WEBHOOK_URL_FORMS=https://hooks.slack.com/services/YOUR/FORMS/WEBHOOK
+   SLACK_WEBHOOK_URL_ROASTERS=https://hooks.slack.com/services/YOUR/ROASTERS/WEBHOOK
    ```
 
 ## Option 2: Manual Setup
@@ -60,7 +68,10 @@ This guide will help you set up Slack webhooks to receive notifications from Ind
   - Receives: User signups, ratings/reviews
   
 - **Forms Channel**: `#forms`, `#contact-forms`, or `#inquiries`
-  - Receives: All contact form submissions
+  - Receives: General contact form submissions (suggestions, professional inquiries)
+  
+- **Roasters Channel**: `#roasters`, `#roaster-inquiries`, or `#partner-inquiries`
+  - Receives: Roaster submissions, roaster claims, and partner inquiries
 
 ## Testing
 
@@ -75,8 +86,12 @@ After setting up, test the notifications:
    - Check the activity channel for the notification
 
 3. **Test Form Notification**
-   - Submit a contact form
+   - Submit a contact form (non-roaster)
    - Check the forms channel for the notification
+
+4. **Test Roaster Notification**
+   - Submit a roaster submission, claim, or partner inquiry
+   - Check the roasters channel for the notification
 
 ## Security Notes
 

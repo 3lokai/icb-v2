@@ -9,7 +9,8 @@ type FormType =
   | "roaster_submission"
   | "suggestion"
   | "professional_inquiry"
-  | "roaster_claim";
+  | "roaster_claim"
+  | "partner_inquiry";
 
 // Zod schemas for form validation
 const roasterSubmissionSchema = z.object({
@@ -114,6 +115,47 @@ const roasterClaimSchema = z.object({
     .email("Please provide a valid email address")
     .toLowerCase()
     .trim(),
+  website: z.string().optional(), // Honeypot field
+});
+
+const partnerInquirySchema = z.object({
+  roasteryName: z
+    .string()
+    .min(1, "Roastery name is required")
+    .max(200, "Roastery name must be less than 200 characters")
+    .trim(),
+  yourName: z
+    .string()
+    .min(1, "Your name is required")
+    .max(100, "Name must be less than 100 characters")
+    .trim(),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please provide a valid email address")
+    .toLowerCase()
+    .trim(),
+  phoneNumber: z
+    .string()
+    .max(20, "Phone number must be less than 20 characters")
+    .trim()
+    .optional(),
+  websiteUrl: z
+    .string()
+    .max(500, "Website URL must be less than 500 characters")
+    .trim()
+    .optional(),
+  interestedIn: z.enum(["free", "verified", "premium"], {
+    message: "Please select a tier",
+  }),
+  message: z
+    .string()
+    .max(2000, "Message must be less than 2000 characters")
+    .trim()
+    .optional(),
+  termsAccepted: z.boolean().refine((val) => val === true, {
+    message: "You must accept the Terms of Service",
+  }),
   website: z.string().optional(), // Honeypot field
 });
 
@@ -395,6 +437,77 @@ function processRoasterClaim(
   };
 }
 
+function processPartnerInquiry(
+  formData: FormData,
+  metadata: { ipAddress: string | null; userAgent: string | null },
+  userId: string | null
+): { success: false; error: string } | { success: true; data: SubmissionData } {
+  const rawData = {
+    roasteryName: formData.get("roasteryName") as string,
+    yourName: formData.get("yourName") as string,
+    email: formData.get("email") as string,
+    phoneNumber: formData.get("phoneNumber") as string,
+    websiteUrl: formData.get("websiteUrl") as string,
+    interestedIn: formData.get("interestedIn") as string,
+    message: formData.get("message") as string,
+    termsAccepted: formData.get("termsAccepted") === "true",
+    website: formData.get("website") as string, // Honeypot field
+  };
+
+  // Check honeypot - if filled, it's a bot
+  if (rawData.website) {
+    // Silently reject - don't let bots know they were caught
+    return {
+      success: true,
+      data: {
+        form_type: "partner_inquiry",
+        email: "",
+        data: {},
+        ip_address: metadata.ipAddress,
+        user_agent: metadata.userAgent,
+        user_id: userId,
+        status: "pending",
+      },
+    };
+  }
+
+  // Validate with Zod
+  const validationResult = partnerInquirySchema.safeParse(rawData);
+
+  if (!validationResult.success) {
+    const firstError = validationResult.error.issues[0];
+    return {
+      success: false,
+      error:
+        firstError?.message || "Validation failed. Please check your input.",
+    };
+  }
+
+  const validatedData = validationResult.data;
+
+  return {
+    success: true,
+    data: {
+      form_type: "partner_inquiry",
+      email: validatedData.email,
+      data: {
+        roasteryName: validatedData.roasteryName,
+        yourName: validatedData.yourName,
+        email: validatedData.email,
+        phoneNumber: validatedData.phoneNumber || "",
+        websiteUrl: validatedData.websiteUrl || "",
+        interestedIn: validatedData.interestedIn,
+        message: validatedData.message || "",
+        termsAccepted: validatedData.termsAccepted,
+      },
+      ip_address: metadata.ipAddress,
+      user_agent: metadata.userAgent,
+      user_id: userId,
+      status: "pending",
+    },
+  };
+}
+
 type FormProcessor = (
   formData: FormData,
   metadata: { ipAddress: string | null; userAgent: string | null },
@@ -408,6 +521,7 @@ const formProcessors: Record<FormType, FormProcessor> = {
   suggestion: processSuggestion,
   professional_inquiry: processProfessionalInquiry,
   roaster_claim: processRoasterClaim,
+  partner_inquiry: processPartnerInquiry,
 };
 
 export async function submitForm(

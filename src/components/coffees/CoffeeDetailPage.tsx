@@ -23,7 +23,6 @@ type CoffeeDetailPageProps = {
 };
 
 export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
-  const hasStock = (coffee.summary.in_stock_count ?? 0) > 0;
   const minPrice = coffee.summary.min_price_in_stock;
 
   // Group variants by weight
@@ -268,27 +267,17 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                 {/* Pricing Section */}
                 {coffee.variants.length > 0 && (
                   <Stack gap="6">
-                    <div className="flex items-end justify-between">
-                      <div>
-                        <div className="inline-flex items-center gap-4 mb-3">
-                          <span className="h-px w-8 md:w-12 bg-accent/60" />
-                          <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                            Purchase Options
-                          </span>
-                        </div>
-                        <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                          Pricing &{" "}
-                          <span className="text-accent italic">Variants.</span>
-                        </h2>
+                    <div>
+                      <div className="inline-flex items-center gap-4 mb-3">
+                        <span className="h-px w-8 md:w-12 bg-accent/60" />
+                        <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                          Purchase Options
+                        </span>
                       </div>
-                      {hasStock ? (
-                        <Badge variant="default" className="bg-green-600">
-                          <Icon name="Check" size={12} className="mr-1" />
-                          In Stock
-                        </Badge>
-                      ) : (
-                        <Badge variant="secondary">Out of Stock</Badge>
-                      )}
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                        Pricing &{" "}
+                        <span className="text-accent italic">Variants.</span>
+                      </h2>
                     </div>
 
                     {/* Price Range */}
@@ -317,7 +306,6 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                             .filter((p): p is number => p !== null);
                           const minPrice =
                             prices.length > 0 ? Math.min(...prices) : null;
-                          const hasStock = variants.some((v) => v.in_stock);
 
                           return (
                             <Card key={weight} className="border-muted">
@@ -329,14 +317,6 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                                       : `${weight}g`}
                                   </span>
                                   <div className="flex items-center gap-3">
-                                    {hasStock && (
-                                      <Badge
-                                        variant="secondary"
-                                        className="text-label"
-                                      >
-                                        Available
-                                      </Badge>
-                                    )}
                                     {minPrice ? (
                                       <span className="text-body font-bold">
                                         {formatPrice(minPrice)}

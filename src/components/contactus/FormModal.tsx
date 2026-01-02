@@ -492,9 +492,9 @@ export function FormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-fade-in sm:p-6">
-      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col rounded-[2.5rem] border border-border bg-card shadow-2xl animate-in fade-in zoom-in duration-300">
+      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col rounded-[2.5rem] border border-border bg-card shadow-2xl animate-in fade-in zoom-in duration-300 overflow-hidden">
         {/* Decorative stripe */}
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-primary via-accent to-primary/60 opacity-60 rounded-t-[2.5rem]" />
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60" />
 
         <div className="sticky top-0 z-20 flex items-center justify-between p-8 md:p-10 border-b border-border/10 bg-card/95 backdrop-blur-md rounded-t-[2.5rem]">
           <Stack gap="2">

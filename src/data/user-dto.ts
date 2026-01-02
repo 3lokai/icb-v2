@@ -182,3 +182,55 @@ export async function profileExists(userId: string): Promise<boolean> {
 
   return !error && data !== null;
 }
+
+/**
+ * Get current user's coffee preferences
+ *
+ * @returns Coffee preferences data or null if not found
+ */
+export async function getCoffeePreferences() {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return null;
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("user_coffee_preferences")
+    .select("*")
+    .eq("user_id", currentUser.id)
+    .maybeSingle();
+
+  if (error || !data) {
+    return null;
+  }
+
+  return data;
+}
+
+/**
+ * Get current user's notification preferences
+ *
+ * @returns Notification preferences data or null if not found
+ */
+export async function getNotificationPreferences() {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return null;
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("user_notification_preferences")
+    .select("*")
+    .eq("user_id", currentUser.id)
+    .maybeSingle();
+
+  if (error || !data) {
+    return null;
+  }
+
+  return data;
+}

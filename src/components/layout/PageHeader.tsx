@@ -39,7 +39,7 @@ export function PageHeader({
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-x-0 top-20 bottom-0 z-10 bg-linear-to-b from-black/70 via-black/50 to-black/80" />
+      <div className="absolute inset-x-0 top-20 bottom-0 z-10 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
 
       <div className="container relative z-20 mx-auto px-4 py-12 md:py-20">
         <div className="mx-auto max-w-6xl w-full">
