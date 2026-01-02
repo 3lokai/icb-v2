@@ -2,18 +2,13 @@
 
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { CoffeeDirectoryFAQ } from "@/components/faqs/CoffeeDirectoryFAQs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCoffees } from "@/hooks/use-coffees";
-import {
-  buildCoffeeQueryString,
-  parseCoffeeSearchParams,
-} from "@/lib/filters/coffee-url";
+import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
 import { Stack } from "@/components/primitives/stack";
-import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store";
 import type {
   CoffeeFilterMeta,
   CoffeeFilters,
@@ -36,108 +31,34 @@ type CoffeeDirectoryProps = {
 
 /**
  * Coffee Directory Component (Client Component)
- * Coordinates between URL, Zustand store, and data fetching
+ * URL is the single source of truth for filters
  */
 export function CoffeeDirectory({
-  initialFilters,
   initialData,
-  initialPage,
-  initialSort,
   filterMeta,
 }: CoffeeDirectoryProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const isInitialized = useRef(false);
-  const lastSyncedQueryString = useRef<string>("");
-
-  // Get state from Zustand store
-  const { filters, page, sort, limit, setAll } = useCoffeeDirectoryStore();
+  const { filters, page, sort, limit } = useCoffeeFilters();
 
   // Mobile drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Calculate active filter count
-  const activeFilterCount =
-    (filters.in_stock_only ? 1 : 0) +
-    (filters.has_250g_only ? 1 : 0) +
-    (filters.max_price ? 1 : 0) +
-    (filters.roast_levels?.length ?? 0) +
-    (filters.processes?.length ?? 0) +
-    (filters.status?.length ?? 0) +
-    (filters.flavor_keys?.length ?? 0) +
-    (filters.roaster_ids?.length ?? 0) +
-    (filters.region_ids?.length ?? 0) +
-    (filters.estate_ids?.length ?? 0) +
-    (filters.brew_method_ids?.length ?? 0) +
-    (filters.q ? 1 : 0);
-
-  // Initialize store from props (SSR data) on mount or when URL params change
-  useEffect(() => {
-    // Use props from server component (already parsed and validated)
-    const queryString = buildCoffeeQueryString(
-      initialFilters,
-      initialPage,
-      initialSort,
-      15 // limit is constant
+  const activeFilterCount = useMemo(() => {
+    return (
+      (filters.in_stock_only ? 1 : 0) +
+      (filters.has_250g_only ? 1 : 0) +
+      (filters.max_price ? 1 : 0) +
+      (filters.roast_levels?.length ?? 0) +
+      (filters.processes?.length ?? 0) +
+      (filters.status?.length ?? 0) +
+      (filters.flavor_keys?.length ?? 0) +
+      (filters.roaster_ids?.length ?? 0) +
+      (filters.region_ids?.length ?? 0) +
+      (filters.estate_ids?.length ?? 0) +
+      (filters.brew_method_ids?.length ?? 0) +
+      (filters.q ? 1 : 0)
     );
-
-    // Always initialize on first render, or update if URL params changed
-    if (
-      !isInitialized.current ||
-      queryString !== lastSyncedQueryString.current
-    ) {
-      setAll({
-        filters: initialFilters,
-        page: initialPage,
-        sort: initialSort,
-        limit: 15,
-      });
-      lastSyncedQueryString.current = queryString;
-      isInitialized.current = true;
-    }
-  }, [initialFilters, initialPage, initialSort, setAll]);
-
-  // Sync store changes to URL
-  useEffect(() => {
-    if (!isInitialized.current) {
-      return;
-    }
-
-    const queryString = buildCoffeeQueryString(filters, page, sort, limit);
-    const currentUrlQueryString = searchParams.toString();
-
-    // Only update URL if store state differs from current URL
-    // This prevents overwriting URL params during navigation
-    if (
-      queryString !== currentUrlQueryString &&
-      queryString !== lastSyncedQueryString.current
-    ) {
-      lastSyncedQueryString.current = queryString;
-      router.replace(`/coffees?${queryString}`, { scroll: false });
-    }
-  }, [filters, page, sort, limit, router, searchParams]);
-
-  // Handle URL changes (back/forward navigation)
-  useEffect(() => {
-    if (!isInitialized.current) {
-      return;
-    }
-
-    const currentQueryString = searchParams.toString();
-
-    // Only update store if URL query string is different from what we last synced
-    if (currentQueryString !== lastSyncedQueryString.current) {
-      const urlSearchParams = new URLSearchParams(currentQueryString);
-      const parsed = parseCoffeeSearchParams(urlSearchParams);
-      setAll({
-        filters: parsed.filters,
-        page: parsed.page,
-        sort: parsed.sort,
-        limit: parsed.limit,
-      });
-      lastSyncedQueryString.current = currentQueryString;
-    }
-  }, [searchParams, setAll]);
+  }, [filters]);
 
   // Fetch data using TanStack Query
   const { data, isFetching, isError } = useCoffees(

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
-import { useRoasterDirectoryStore } from "@/store/zustand/roaster-directory-store";
+import { useRoasterFilters } from "@/hooks/use-roaster-filters";
 
 /**
  * Roaster Filter Bar Component
@@ -13,7 +13,7 @@ import { useRoasterDirectoryStore } from "@/store/zustand/roaster-directory-stor
  * URL sync is handled automatically by RoasterDirectory component
  */
 export function RoasterFilterBar() {
-  const { filters, updateFilters, resetFilters } = useRoasterDirectoryStore();
+  const { filters, updateFilters, resetFilters } = useRoasterFilters();
 
   // Check if any filters are active
   const hasActiveFilters =

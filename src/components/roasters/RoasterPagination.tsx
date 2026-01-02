@@ -3,7 +3,7 @@
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useRoasterDirectoryStore } from "@/store/zustand/roaster-directory-store";
+import { useRoasterFilters } from "@/hooks/use-roaster-filters";
 
 type RoasterPaginationProps = {
   totalPages: number;
@@ -15,7 +15,7 @@ type RoasterPaginationProps = {
  * URL sync is handled automatically by RoasterDirectory component
  */
 export function RoasterPagination({ totalPages }: RoasterPaginationProps) {
-  const { page, setPage } = useRoasterDirectoryStore();
+  const { page, setPage } = useRoasterFilters();
 
   const handlePrevious = () => {
     if (page > 1) {

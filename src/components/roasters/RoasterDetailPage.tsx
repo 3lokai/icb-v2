@@ -18,7 +18,6 @@ import { cn } from "@/lib/utils";
 import { ReviewSection } from "@/components/reviews";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
-import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store";
 
 type RoasterDetailPageProps = {
   roaster: RoasterDetail;
@@ -142,7 +141,6 @@ export function RoasterDetailPage({
   className,
 }: RoasterDetailPageProps) {
   const router = useRouter();
-  const setAll = useCoffeeDirectoryStore((state) => state.setAll);
 
   // Build location info
   const locationParts: string[] = [];
@@ -151,25 +149,18 @@ export function RoasterDetailPage({
   if (roaster.hq_country) locationParts.push(roaster.hq_country);
   const location = locationParts.length > 0 ? locationParts.join(", ") : null;
 
-  // Handle "See More" click - set store before navigation
+  // Handle "See More" click - navigate with filter in URL
   const handleSeeMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    // Set Zustand store with roaster filter
-    setAll({
-      filters: { roaster_ids: [roaster.id] },
-      page: 1,
-      sort: "relevance",
-      limit: 15,
-    });
-    // Navigate to coffee directory
-    router.push(
-      `/coffees?${buildCoffeeQueryString(
-        { roaster_ids: [roaster.id] },
-        1,
-        "relevance",
-        15
-      )}`
+    // Build URL with roaster filter
+    const queryString = buildCoffeeQueryString(
+      { roaster_ids: [roaster.id] },
+      1,
+      "relevance",
+      15
     );
+    // Navigate to coffee directory
+    router.push(`/coffees?${queryString}`);
   };
 
   // Social Links Logic

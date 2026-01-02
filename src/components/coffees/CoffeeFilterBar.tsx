@@ -4,7 +4,7 @@ import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Cluster } from "@/components/primitives/cluster";
-import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store";
+import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
 
 /**
  * Coffee Filter Bar Component
@@ -12,7 +12,7 @@ import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store"
  * URL sync is handled automatically by CoffeeDirectory component
  */
 export function CoffeeFilterBar() {
-  const { filters, updateFilters, resetFilters } = useCoffeeDirectoryStore();
+  const { filters, updateFilters, resetFilters } = useCoffeeFilters();
 
   // Check if any filters are active
   const hasActiveFilters =
@@ -25,7 +25,7 @@ export function CoffeeFilterBar() {
     filters.flavor_keys?.length ||
     filters.q;
 
-  // Quick filter actions (store updates trigger URL sync in CoffeeDirectory)
+  // Quick filter actions
   const handleQuickFilter = (filterType: string) => {
     if (filterType === "inStock") {
       updateFilters({

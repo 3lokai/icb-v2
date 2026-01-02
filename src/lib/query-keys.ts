@@ -61,6 +61,8 @@ export const queryKeys = {
       limit: number,
       sort: string
     ) => ["coffees", "list", { filters, page, limit, sort }] as const,
+    filterMeta: (filters: Record<string, any> | undefined) =>
+      ["coffees", "filter-meta", filters] as const,
   },
 
   // Roaster-related queries
@@ -72,6 +74,8 @@ export const queryKeys = {
       limit: number,
       sort: string
     ) => ["roasters", "list", { filters, page, limit, sort }] as const,
+    filterMeta: (filters: Record<string, any> | undefined) =>
+      ["roasters", "filter-meta", filters] as const,
   },
 
   // Review-related queries
