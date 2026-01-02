@@ -188,6 +188,20 @@ export const contactPageSchema = {
   },
 };
 
+export const partnerPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Partner With Us - IndianCoffeeBeans.com",
+  description:
+    "Join 45+ roasters on India's premier coffee platform. Get discovered by coffee enthusiasts.",
+  url: "https://indiancoffeebeans.com/roasters/partner",
+  publisher: {
+    "@type": "Organization",
+    name: "IndianCoffeeBeans.com",
+    url: "https://indiancoffeebeans.com",
+  },
+};
+
 export const aboutPageSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",

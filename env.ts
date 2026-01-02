@@ -30,8 +30,10 @@ const envSchema = z.object({
   // Slack webhooks for notifications
   // Activity channel: user signups and reviews/ratings
   SLACK_WEBHOOK_URL_ACTIVITY: z.string().url().optional(),
-  // Forms channel: contact form submissions
+  // Forms channel: contact form submissions (non-roaster)
   SLACK_WEBHOOK_URL_FORMS: z.string().url().optional(),
+  // Roasters channel: roaster submissions, claims, and partner inquiries
+  SLACK_WEBHOOK_URL_ROASTERS: z.string().url().optional(),
 
   // Node environment
   NODE_ENV: z

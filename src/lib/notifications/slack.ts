@@ -26,7 +26,8 @@ type FormPayload = {
     | "roaster_submission"
     | "suggestion"
     | "professional_inquiry"
-    | "roaster_claim";
+    | "roaster_claim"
+    | "partner_inquiry";
   email: string | null;
   data: Record<string, unknown>;
   ip_address: string | null;
@@ -137,6 +138,7 @@ function formatSlackMessage(
         suggestion: "Suggestion",
         professional_inquiry: "Professional Inquiry",
         roaster_claim: "Roaster Claim Request",
+        partner_inquiry: "Partner Inquiry",
       };
 
       const formTypeLabel = formTypeLabels[formPayload.form_type];
@@ -240,8 +242,24 @@ function formatSlackMessage(
 /**
  * Get the appropriate webhook URL based on notification type
  */
-function getWebhookUrl(type: NotificationType): string | undefined {
-  // Forms go to forms channel
+function getWebhookUrl(
+  type: NotificationType,
+  payload?: NotificationPayload
+): string | undefined {
+  // Roaster-related forms go to roasters channel
+  if (type === "form" && payload) {
+    const formPayload = payload as FormPayload;
+    const roasterFormTypes: FormPayload["form_type"][] = [
+      "roaster_submission",
+      "roaster_claim",
+      "partner_inquiry",
+    ];
+    if (roasterFormTypes.includes(formPayload.form_type)) {
+      return process.env.SLACK_WEBHOOK_URL_ROASTERS;
+    }
+  }
+
+  // Other forms go to forms channel
   if (type === "form") {
     return process.env.SLACK_WEBHOOK_URL_FORMS;
   }
@@ -258,18 +276,30 @@ function getWebhookUrl(type: NotificationType): string | undefined {
  *
  * Channel routing:
  * - Signups and reviews → SLACK_WEBHOOK_URL_ACTIVITY
- * - Forms → SLACK_WEBHOOK_URL_FORMS
+ * - Roaster forms (submission, claim, partner_inquiry) → SLACK_WEBHOOK_URL_ROASTERS
+ * - Other forms → SLACK_WEBHOOK_URL_FORMS
  */
 export async function sendSlackNotification(
   type: NotificationType,
   payload: NotificationPayload
 ): Promise<void> {
-  const webhookUrl = getWebhookUrl(type);
+  const webhookUrl = getWebhookUrl(type, payload);
 
   // Silently return if webhook URL is not configured
   if (!webhookUrl) {
     if (process.env.NODE_ENV === "development") {
-      const channelName = type === "form" ? "forms" : "activity";
+      let channelName = "activity";
+      if (type === "form" && payload) {
+        const formPayload = payload as FormPayload;
+        const roasterFormTypes: FormPayload["form_type"][] = [
+          "roaster_submission",
+          "roaster_claim",
+          "partner_inquiry",
+        ];
+        channelName = roasterFormTypes.includes(formPayload.form_type)
+          ? "roasters"
+          : "forms";
+      }
       console.log(
         `[Slack] ${channelName} webhook URL not configured, skipping notification`
       );

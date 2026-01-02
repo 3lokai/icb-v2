@@ -248,6 +248,20 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
               </Button>
             </div>
           </Field>
+
+          <div className="text-caption text-center mt-4">
+            By continuing, you agree to our{" "}
+            <Link href="/terms" className="underline-offset-4 hover:underline">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/privacy"
+              className="underline-offset-4 hover:underline"
+            >
+              Privacy Policy
+            </Link>
+          </div>
         </FieldGroup>
       </Stack>
     </form>

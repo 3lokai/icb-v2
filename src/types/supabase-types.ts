@@ -1213,6 +1213,7 @@ export type Database = {
           city: string | null;
           country: string | null;
           created_at: string | null;
+          deleted_at: string | null;
           email_verified: boolean | null;
           experience_level: string | null;
           full_name: string;
@@ -1233,6 +1234,7 @@ export type Database = {
           city?: string | null;
           country?: string | null;
           created_at?: string | null;
+          deleted_at?: string | null;
           email_verified?: boolean | null;
           experience_level?: string | null;
           full_name: string;
@@ -1253,6 +1255,7 @@ export type Database = {
           city?: string | null;
           country?: string | null;
           created_at?: string | null;
+          deleted_at?: string | null;
           email_verified?: boolean | null;
           experience_level?: string | null;
           full_name?: string;
@@ -1608,6 +1611,10 @@ export type Database = {
       };
     };
     Functions: {
+      anonymize_user_reviews: {
+        Args: { p_user_id: string };
+        Returns: undefined;
+      };
       assign_user_role: {
         Args: {
           assigned_by?: string;

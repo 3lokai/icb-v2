@@ -16,19 +16,21 @@ export default async function OnboardingPage() {
     redirect("/auth?mode=login&from=/auth/onboarding");
   }
 
+  // Parallelize profile and coffee preferences queries for better performance
+  const supabase = await createClient();
+  const [profile, coffeePreferencesResult] = await Promise.all([
+    getMyProfileDTO(),
+    supabase
+      .from("user_coffee_preferences")
+      .select("*")
+      .eq("user_id", currentUser.id)
+      .maybeSingle(),
+  ]);
+
   // Check if user has already completed onboarding
-  const profile = await getMyProfileDTO();
   if (profile?.onboarding_completed) {
     redirect("/profile");
   }
-
-  // Fetch coffee preferences if they exist
-  const supabase = await createClient();
-  const { data: coffeePreferences } = await supabase
-    .from("user_coffee_preferences")
-    .select("*")
-    .eq("user_id", currentUser.id)
-    .maybeSingle();
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -43,7 +45,9 @@ export default async function OnboardingPage() {
             <div className="w-full max-w-2xl">
               <OnboardingWizard
                 initialProfile={profile || undefined}
-                initialCoffeePreferences={coffeePreferences || undefined}
+                initialCoffeePreferences={
+                  coffeePreferencesResult.data || undefined
+                }
               />
             </div>
           </div>
