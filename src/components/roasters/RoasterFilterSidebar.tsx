@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
-import { useRoasterDirectoryStore } from "@/store/zustand/roaster-directory-store";
+import { useRoasterFilters } from "@/hooks/use-roaster-filters";
+import { useRoasterFilterMeta } from "@/hooks/use-roaster-filter-meta";
 import type { RoasterFilterMeta } from "@/types/roaster-types";
 
 type RoasterFilterContentProps = {
@@ -16,12 +17,21 @@ type RoasterFilterContentProps = {
 /**
  * Roaster Filter Content Component
  * Reusable filter content used in both sidebar and mobile drawer
+ * Uses dynamic filter counts that update based on active filters
  */
 export function RoasterFilterContent({
-  filterMeta,
+  filterMeta: initialFilterMeta,
   showHeader = true,
 }: RoasterFilterContentProps) {
-  const { filters, updateFilters, resetFilters } = useRoasterDirectoryStore();
+  const { filters, updateFilters, resetFilters } = useRoasterFilters();
+
+  // Fetch dynamic filter meta based on current filters
+  // Uses static meta as initial data, updates when filters change
+  const { data: dynamicFilterMeta, isFetching: isMetaLoading } =
+    useRoasterFilterMeta(filters, initialFilterMeta);
+
+  // Use dynamic meta if available, fallback to initial static meta
+  const filterMeta = dynamicFilterMeta || initialFilterMeta;
 
   // Toggle array filter values
   const toggleArrayFilter = (
@@ -86,7 +96,11 @@ export function RoasterFilterContent({
               />
               <span className="text-caption font-medium transition-colors">
                 {item.label}{" "}
-                <span className="text-muted-foreground/50 font-normal">
+                <span
+                  className={`text-muted-foreground/50 font-normal ${
+                    isMetaLoading ? "opacity-50" : ""
+                  }`}
+                >
                   ({item.count})
                 </span>
               </span>

@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Stack } from "@/components/primitives/stack";
-import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store";
+import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
+import { useCoffeeFilterMeta } from "@/hooks/use-coffee-filter-meta";
 import type { CoffeeFilterMeta } from "@/types/coffee-types";
 import type {
   CoffeeStatusEnum,
@@ -20,12 +21,21 @@ type CoffeeFilterContentProps = {
 /**
  * Coffee Filter Content Component
  * Reusable filter content used in both sidebar and mobile drawer
+ * Uses dynamic filter counts that update based on active filters
  */
 export function CoffeeFilterContent({
-  filterMeta,
+  filterMeta: initialFilterMeta,
   showHeader = true,
 }: CoffeeFilterContentProps) {
-  const { filters, updateFilters, resetFilters } = useCoffeeDirectoryStore();
+  const { filters, updateFilters, resetFilters } = useCoffeeFilters();
+
+  // Fetch dynamic filter meta based on current filters
+  // Uses static meta as initial data, updates when filters change
+  const { data: dynamicFilterMeta, isFetching: isMetaLoading } =
+    useCoffeeFilterMeta(filters, initialFilterMeta);
+
+  // Use dynamic meta if available, fallback to initial static meta
+  const filterMeta = dynamicFilterMeta || initialFilterMeta;
 
   // Toggle array filter values
   const toggleArrayFilter = (
@@ -215,7 +225,11 @@ export function CoffeeFilterContent({
               />
               <span className="text-caption font-medium transition-colors">
                 {roast.label}{" "}
-                <span className="text-muted-foreground/50 font-normal">
+                <span
+                  className={`text-muted-foreground/50 font-normal ${
+                    isMetaLoading ? "opacity-50" : ""
+                  }`}
+                >
                   ({roast.count})
                 </span>
               </span>
@@ -246,7 +260,11 @@ export function CoffeeFilterContent({
               />
               <span className="text-caption font-medium transition-colors">
                 {process.label}{" "}
-                <span className="text-muted-foreground/50 font-normal">
+                <span
+                  className={`text-muted-foreground/50 font-normal ${
+                    isMetaLoading ? "opacity-50" : ""
+                  }`}
+                >
                   ({process.count})
                 </span>
               </span>
@@ -279,7 +297,11 @@ export function CoffeeFilterContent({
                 />
                 <span className="text-caption font-medium transition-colors">
                   {status.label}{" "}
-                  <span className="text-muted-foreground/50 font-normal">
+                  <span
+                    className={`text-muted-foreground/50 font-normal ${
+                      isMetaLoading ? "opacity-50" : ""
+                    }`}
+                  >
                     ({status.count})
                   </span>
                 </span>

@@ -9,8 +9,9 @@ import type {
 
 /**
  * Helper to get coffee IDs from junction table filters
+ * Exported for use in filter meta calculations
  */
-async function getCoffeeIdsFromJunction(
+export async function getCoffeeIdsFromJunction(
   supabase: any,
   tableName: string,
   idColumn: string,
@@ -37,8 +38,9 @@ async function getCoffeeIdsFromJunction(
 
 /**
  * Helper to get coffee IDs from flavor keys filter
+ * Exported for use in filter meta calculations
  */
-async function getCoffeeIdsFromFlavorKeys(
+export async function getCoffeeIdsFromFlavorKeys(
   supabase: any,
   flavorKeys: string[]
 ): Promise<string[] | null> {
@@ -62,8 +64,9 @@ async function getCoffeeIdsFromFlavorKeys(
 
 /**
  * Helper to apply filters to query
+ * Exported for use in filter meta calculations
  */
-function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
+export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
   let filteredQuery = query;
 
   // Text search

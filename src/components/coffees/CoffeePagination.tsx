@@ -2,7 +2,7 @@
 
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
-import { useCoffeeDirectoryStore } from "@/store/zustand/coffee-directory-store";
+import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
 
 interface CoffeePaginationProps {
   totalPages: number;
@@ -14,7 +14,7 @@ interface CoffeePaginationProps {
  * URL sync is handled automatically by CoffeeDirectory component
  */
 export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
-  const { page, setPage } = useCoffeeDirectoryStore();
+  const { page, setPage } = useCoffeeFilters();
 
   if (totalPages <= 1) {
     return null;

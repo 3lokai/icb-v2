@@ -53,14 +53,6 @@ const navItems = [
       { name: "Glossary", link: "/learn/glossary" },
     ],
   },
-  {
-    name: "Know More",
-    link: "/about",
-    children: [
-      { name: "About", link: "/about" },
-      { name: "Contact", link: "/contact" },
-    ],
-  },
 ];
 
 export function Header() {

@@ -3,6 +3,7 @@ import { RoasterDirectory } from "@/components/roasters/RoasterDirectory";
 import { fetchRoasterFilterMeta } from "@/lib/data/fetch-roaster-filter-meta";
 import { fetchRoasters } from "@/lib/data/fetch-roasters";
 import { parseRoasterSearchParams } from "@/lib/filters/roaster-url";
+import { generateCollectionPageSchema } from "@/lib/seo/schema";
 
 /**
  * Generate metadata for roaster directory page
@@ -26,7 +27,7 @@ export async function generateMetadata({
     }
   }
 
-  const { filters } = parseRoasterSearchParams(urlSearchParams);
+  const { filters, page } = parseRoasterSearchParams(urlSearchParams);
 
   // Build title based on filters
   let title = "Roaster Directory | Indian Coffee Beans";
@@ -34,13 +35,39 @@ export async function generateMetadata({
     title = `${filters.q} - Roaster Search | Indian Coffee Beans`;
   }
 
-  const description =
-    filters.q || filters.countries
-      ? "Discover specialty coffee roasters from India. Filter by location and more."
-      : "Browse our complete directory of specialty coffee roasters from India. Find your perfect roaster with advanced filters.";
+  // Enhanced description based on active filters
+  let description =
+    "Browse our complete directory of specialty coffee roasters from India. Find your perfect roaster with advanced filters.";
+
+  if (filters.q) {
+    description = `Search results for "${filters.q}" - Discover specialty coffee roasters from India.`;
+  } else if (filters.cities && filters.cities.length > 0) {
+    description = `Find specialty coffee roasters in ${filters.cities.join(", ")}. Discover local Indian roasters.`;
+  } else if (filters.states && filters.states.length > 0) {
+    description = `Discover specialty coffee roasters in ${filters.states.join(", ")}. Find your perfect roaster.`;
+  } else if (filters.countries && filters.countries.length > 0) {
+    description = `Browse specialty coffee roasters from ${filters.countries.join(", ")}.`;
+  } else if (filters.q || filters.countries) {
+    description =
+      "Discover specialty coffee roasters from India. Filter by location and more.";
+  }
 
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+
+  // Build full URL with query params for canonical and OpenGraph
+  const currentUrl = new URL(`${baseUrl}/roasters`);
+  urlSearchParams.forEach((value, key) => {
+    currentUrl.searchParams.set(key, value);
+  });
+  const fullUrl = currentUrl.toString();
+
+  // Determine if page should be indexed (index page 1, noindex pages > 1)
+  const hasComplexFilters =
+    (filters.cities?.length ?? 0) > 0 ||
+    (filters.states?.length ?? 0) > 0 ||
+    (filters.countries?.length ?? 0) > 0;
+  const shouldIndex = page === 1 && !hasComplexFilters;
 
   return {
     title,
@@ -52,11 +79,17 @@ export async function generateMetadata({
       "coffee roasters near me",
       "Indian roasters",
     ],
+    alternates: {
+      canonical: fullUrl,
+    },
+    robots: shouldIndex
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
     openGraph: {
       title,
       description,
       type: "website",
-      url: `${baseUrl}/roasters`,
+      url: fullUrl,
     },
     twitter: {
       card: "summary_large_image",
@@ -99,13 +132,40 @@ export default async function RoastersPage({
     fetchRoasterFilterMeta(),
   ]);
 
+  // Generate structured data for filtered views
+  const hasFilters = Object.keys(filters).length > 0;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  const currentUrl = new URL(`${baseUrl}/roasters`);
+  urlSearchParams.forEach((value, key) => {
+    currentUrl.searchParams.set(key, value);
+  });
+
+  const collectionSchema = hasFilters
+    ? generateCollectionPageSchema(
+        "Roaster Directory",
+        "Discover specialty coffee roasters from India",
+        currentUrl.toString()
+      )
+    : null;
+
   return (
-    <RoasterDirectory
-      filterMeta={filterMeta}
-      initialData={initialData}
-      initialFilters={filters}
-      initialPage={page}
-      initialSort={sort}
-    />
+    <>
+      {collectionSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(collectionSchema),
+          }}
+        />
+      )}
+      <RoasterDirectory
+        filterMeta={filterMeta}
+        initialData={initialData}
+        initialFilters={filters}
+        initialPage={page}
+        initialSort={sort}
+      />
+    </>
   );
 }

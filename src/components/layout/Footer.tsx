@@ -95,22 +95,30 @@ export function Footer() {
                       href: "https://www.facebook.com/profile.php?id=61577147573879#",
                       icon: "FacebookLogo",
                     },
-                  ].map((social) => (
-                    <a
-                      key={social.label}
-                      aria-label={`Follow us on ${social.label}`}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background transition-all hover:bg-accent/10 hover:border-accent/20 hover:-translate-y-0.5"
-                      href={social.href}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <Icon
-                        className="text-primary/70"
-                        name={social.icon as any}
-                        size={18}
-                      />
-                    </a>
-                  ))}
+                    {
+                      label: "Email",
+                      href: "mailto:support@indiancoffeebeans.com",
+                      icon: "Envelope",
+                    },
+                  ].map((social) => {
+                    const isMailto = social.href.startsWith("mailto:");
+                    return (
+                      <a
+                        key={social.label}
+                        aria-label={`Follow us on ${social.label}`}
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background transition-all hover:bg-accent/10 hover:border-accent/20 hover:-translate-y-0.5"
+                        href={social.href}
+                        rel={isMailto ? undefined : "noopener noreferrer"}
+                        target={isMailto ? undefined : "_blank"}
+                      >
+                        <Icon
+                          className="text-primary/70"
+                          name={social.icon as any}
+                          size={18}
+                        />
+                      </a>
+                    );
+                  })}
                 </Cluster>
               </Stack>
             </div>
