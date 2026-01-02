@@ -163,6 +163,8 @@ function transformToRoasterSummary(
     hq_country: row.hq_country ?? null,
     is_active: row.is_active,
     instagram_handle: row.instagram_handle ?? null,
+    is_featured: row.is_featured ?? null,
+    is_editors_pick: row.is_editors_pick ?? null,
     coffee_count: stats.coffee_count,
     avg_coffee_rating: stats.avg_coffee_rating,
     rated_coffee_count: stats.rated_coffee_count,
@@ -197,7 +199,7 @@ export async function fetchRoasters(
   let query = supabase
     .from("roasters")
     .select(
-      "id, slug, name, website, hq_city, hq_state, hq_country, is_active, instagram_handle, avg_rating, avg_customer_support, avg_delivery_experience, avg_packaging, avg_value_for_money, total_ratings_count, recommend_percentage, created_at",
+      "id, slug, name, website, hq_city, hq_state, hq_country, is_active, instagram_handle, is_featured, is_editors_pick, avg_rating, avg_customer_support, avg_delivery_experience, avg_packaging, avg_value_for_money, total_ratings_count, recommend_percentage, created_at",
       { count: "exact" }
     );
 

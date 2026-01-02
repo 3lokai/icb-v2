@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/components/providers/auth-provider";
+import { sendWelcomeEmailAction } from "@/app/actions/welcome-email";
 
 type AuthFormProps = {
   className?: string;
@@ -53,6 +54,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
     setError(null);
+    setIsAttemptingSignUp(false);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,8 +64,16 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
     setIsAttemptingSignUp(false);
 
     try {
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!formData.email || !emailRegex.test(formData.email)) {
+        setError("Please enter a valid email address");
+        setIsLoading(false);
+        return;
+      }
+
       // Validate password length
-      if (formData.password.length < 8) {
+      if (!formData.password || formData.password.length < 8) {
         setError("Password must be at least 8 characters long");
         setIsLoading(false);
         return;
@@ -71,7 +81,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
 
       // Try to sign in first
       const { error: signInError } = await signIn(
-        formData.email,
+        formData.email.trim(),
         formData.password
       );
 
@@ -85,8 +95,8 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
       // Supabase returns "Invalid login credentials" for both wrong password and user not found
       setIsAttemptingSignUp(true);
 
-      const { error: signUpError } = await signUp(
-        formData.email,
+      const { data: signUpData, error: signUpError } = await signUp(
+        formData.email.trim(),
         formData.password
       );
 
@@ -109,7 +119,21 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
         return;
       }
 
-      // Success - redirect to dashboard
+      // Success - send welcome email (fire and forget)
+      if (signUpData?.user) {
+        const userName =
+          signUpData.user.user_metadata?.full_name ||
+          signUpData.user.user_metadata?.name ||
+          null;
+        sendWelcomeEmailAction(
+          signUpData.user.email || formData.email.trim(),
+          userName
+        ).catch((err) => {
+          console.error("Failed to send welcome email:", err);
+        });
+      }
+
+      // Redirect to dashboard
       router.push("/dashboard");
     } catch {
       setError("An unexpected error occurred. Please try again.");
@@ -145,6 +169,12 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
           {error && (
             <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption">
               {error}
+            </div>
+          )}
+
+          {isLoading && isAttemptingSignUp && !error && (
+            <div className="bg-muted text-muted-foreground rounded-md border p-3 text-caption">
+              Account not found. Creating a new account...
             </div>
           )}
 
@@ -185,11 +215,13 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
 
             <Field>
               <Button type="submit" disabled={isLoading} className="w-full">
-                {isLoading
-                  ? "Please wait..."
-                  : isAttemptingSignUp
-                    ? "Create Account"
-                    : "Continue"}
+                {isLoading && isAttemptingSignUp
+                  ? "Creating account..."
+                  : isLoading
+                    ? "Signing in..."
+                    : isAttemptingSignUp
+                      ? "Create Account"
+                      : "Continue"}
               </Button>
             </Field>
           </Stack>

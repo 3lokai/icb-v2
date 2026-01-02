@@ -27,6 +27,9 @@ const envSchema = z.object({
   // Google Analytics (GA4) configuration
   NEXT_PUBLIC_GA_ID: z.string().optional(),
 
+  // Resend email service
+  RESEND_API_KEY: z.string().optional(),
+
   // Slack webhooks for notifications
   // Activity channel: user signups and reviews/ratings
   SLACK_WEBHOOK_URL_ACTIVITY: z.string().url().optional(),

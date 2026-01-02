@@ -43,13 +43,6 @@ const navItems = [
     children: [
       { name: "Expert Recipes", link: "/tools/expert-recipes" },
       { name: "Coffee Calculator", link: "/tools/coffee-calculator" },
-    ],
-  },
-  {
-    name: "Learn",
-    link: "/blog",
-    children: [
-      { name: "Blog", link: "/blog" },
       { name: "Glossary", link: "/learn/glossary" },
     ],
   },
@@ -249,9 +242,14 @@ export function Header() {
               );
             }
             return (
-              <Button asChild size="sm" variant="outline">
-                <Link href="/auth">Login</Link>
-              </Button>
+              <>
+                <Button asChild size="sm" variant="outline">
+                  <Link href="/roasters/partner">For Roasters</Link>
+                </Button>
+                <Button asChild size="sm" variant="default">
+                  <Link href="/auth">Login</Link>
+                </Button>
+              </>
             );
           })()}
           <AnimatedThemeToggler
@@ -404,11 +402,18 @@ export function Header() {
               );
             }
             return (
-              <Button asChild className="w-full" variant="outline">
-                <Link href="/auth" onClick={closeMobileMenu}>
-                  Login
-                </Link>
-              </Button>
+              <div className="flex flex-col gap-2 w-full">
+                <Button asChild className="w-full" variant="outline">
+                  <Link href="/roasters/partner" onClick={closeMobileMenu}>
+                    For Roasters
+                  </Link>
+                </Button>
+                <Button asChild className="w-full" variant="default">
+                  <Link href="/auth" onClick={closeMobileMenu}>
+                    Login
+                  </Link>
+                </Button>
+              </div>
             );
           })()}
         </MobileNavMenu>

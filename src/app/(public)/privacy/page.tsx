@@ -454,8 +454,8 @@ export default function PrivacyPage() {
                           variant="link"
                           className="text-accent text-body-large"
                         >
-                          <a href="mailto:gta3lok.ai@gmail.com">
-                            gta3lok.ai@gmail.com
+                          <a href="mailto:support@indiancoffeebeans.com">
+                            support@indiancoffeebeans.com
                           </a>
                         </Button>
                       </Stack>
@@ -477,10 +477,10 @@ export default function PrivacyPage() {
                         so through your account settings or by contacting us
                         directly at{" "}
                         <a
-                          href="mailto:gta3lok.ai@gmail.com"
+                          href="mailto:support@indiancoffeebeans.com"
                           className="underline"
                         >
-                          gta3lok.ai@gmail.com
+                          support@indiancoffeebeans.com
                         </a>
                         .
                       </p>
@@ -549,7 +549,7 @@ export default function PrivacyPage() {
                       <div className="grid gap-4">
                         {[
                           "Visit our data deletion page at [yourdomain.com/data-deletion]",
-                          "Email us directly at gta3lok.ai@gmail.com",
+                          "Email us directly at support@indiancoffeebeans.com",
                           "Use Facebook's app removal process and then contact us to delete local data",
                         ].map((step, index) => (
                           <div
@@ -696,7 +696,9 @@ export default function PrivacyPage() {
                 dealings with this site, we&apos;re here to help.
               </p>
               <Button asChild variant="default" size="lg" className="px-12">
-                <a href="mailto:gta3lok.ai@gmail.com">Contact Support</a>
+                <a href="mailto:support@indiancoffeebeans.com">
+                  Contact Support
+                </a>
               </Button>
             </Stack>
           </div>

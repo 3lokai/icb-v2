@@ -98,8 +98,8 @@ const InteractiveBentoCard = ({
 // StatsBar Component
 const StatsBar = () => {
   const stats = [
-    { number: "45+", label: "Roasters Listed", urgent: false },
-    { number: "280+", label: "Coffees Cataloged", urgent: false },
+    { number: "60+", label: "Roasters Listed", urgent: false },
+    { number: "2,000+", label: "Coffees Cataloged", urgent: false },
     { number: "10", label: "Founding Spots Left", urgent: true },
     { number: "0%", label: "Commission", urgent: false },
   ];
@@ -149,7 +149,7 @@ const BenefitsSection = ({
       icon: "TrendUp" as IconName,
       title: "Growing Fast",
       description:
-        "45+ roasters, 280+ coffees, and momentum building daily. Real data, real roasters, real impact.",
+        "60+ roasters, 2,000+ coffees, and momentum building daily. Real data, real roasters, real impact.",
       buttonText: "Join Now",
       tier: "verified" as const,
     },
@@ -250,7 +250,7 @@ const PricingTiers = ({
       price: "₹3,500",
       originalPrice: "₹6,000",
       period: "/ year",
-      badge: "First 10 Only - Then ₹5,000",
+      badge: "First 10 Only - Then ₹6,000",
       features: [
         "Everything in Free",
         "Verified badge",

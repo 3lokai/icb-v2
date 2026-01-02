@@ -55,7 +55,7 @@ the future of Indian specialty coffee discovery.
 **Content:**
 ```
 ┌─────────────┬─────────────┬─────────────┬─────────────┐
-│ 45+         │ 280+        │ 10          │ 0%          │
+│ 60+         │ 2,000+        │ 10          │ 0%          │
 │ Roasters    │ Coffees     │ Founding    │ Commission  │
 │ Listed      │ Cataloged   │ Spots Left  │             │
 └─────────────┴─────────────┴─────────────┴─────────────┘
@@ -88,7 +88,7 @@ Get visibility before competition floods in.
 **Card 2:**
 ```
 📈 Growing Fast
-45+ roasters, 280+ coffees, and momentum building daily. 
+60+ roasters, 2,000+ coffees, and momentum building daily. 
 Real data, real roasters, real impact.
 ```
 
@@ -162,7 +162,7 @@ FREE
 ```
 VERIFIED
 ₹2,500 / year
-[Badge] First 10 Only - Then ₹5,000
+[Badge] First 10 Only - Then ₹6,000
 
 ✓ Everything in Free
 ✓ Verified badge
@@ -273,7 +273,7 @@ Q: Can I manage my own listings?
 A: Yes. Verified tier gives you full control to add/edit coffees and profile info.
 
 Q: What's the "Founding Roaster" benefit?
-A: Lock in ₹2,500/year pricing forever (regular ₹5,000). Plus exclusive badge and launch features.
+A: Lock in ₹2,500/year pricing forever (regular ₹6,000). Plus exclusive badge and launch features.
 
 Q: How long does verification take?
 A: 24-48 hours after payment. We verify ownership via email/domain check.
@@ -324,7 +324,7 @@ A: Prices shown are final. We're currently not GST registered.
 ```
 [Heading] Ready to Get Discovered?
 
-[Subheading] Join 45+ roasters already listed on India's 
+[Subheading] Join 60+ roasters already listed on India's 
 fastest-growing coffee platform.
 
 [Primary CTA] Claim Your Founding Spot

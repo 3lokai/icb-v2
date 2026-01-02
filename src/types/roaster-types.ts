@@ -87,6 +87,10 @@ export type RoasterSummary = {
   is_active: boolean;
   instagram_handle: string | null;
 
+  // Badge fields
+  is_featured: boolean | null;
+  is_editors_pick: boolean | null;
+
   // Aggregate stats
   coffee_count: number;
   avg_coffee_rating: number | null;

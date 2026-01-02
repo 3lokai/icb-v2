@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getMyProfileDTO } from "@/data/user-dto";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { sendSlackNotification } from "@/lib/notifications/slack";
+import { sendWelcomeEmail } from "@/lib/emails/resend";
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -152,12 +153,12 @@ export async function GET(request: NextRequest) {
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
 
     if (userCreatedAt > fiveMinutesAgo) {
-      // New user signup - send Slack notification
+      // New user signup - send Slack notification and welcome email
       const name =
         profile?.full_name ||
         user.user_metadata?.full_name ||
         user.user_metadata?.name ||
-        "Unknown";
+        null;
 
       // Determine signup method
       let method: "email" | "google" | "facebook" = "email";
@@ -174,11 +175,21 @@ export async function GET(request: NextRequest) {
       // Fire and forget - don't await
       sendSlackNotification("signup", {
         email: user.email || "unknown@example.com",
-        name,
+        name: name || "Unknown",
         method,
       }).catch((err) => {
         console.error("Failed to send signup notification:", err);
       });
+
+      // Send welcome email (fire and forget)
+      if (user.email) {
+        sendWelcomeEmail({
+          email: user.email,
+          name,
+        }).catch((err) => {
+          console.error("Failed to send welcome email:", err);
+        });
+      }
     }
 
     // Redirect to onboarding if profile doesn't exist or onboarding not completed

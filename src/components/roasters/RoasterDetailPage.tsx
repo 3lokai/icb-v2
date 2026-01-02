@@ -459,7 +459,7 @@ export function RoasterDetailPage({
           <p className="text-caption text-muted-foreground">
             If you are the roaster,{" "}
             <Link
-              href="/contact?form=claim"
+              href="/roasters/partner"
               className="text-accent hover:underline font-medium"
             >
               claim your page now
