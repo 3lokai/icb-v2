@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
           priority
           quality={90}
           sizes="50vw"
-          src="/images/password-screen.jpg"
+          src="/images/password-screen.avif"
         />
         <div className="absolute inset-0 bg-black/20" />
         {/* Magazine noise texture */}

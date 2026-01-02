@@ -30,8 +30,8 @@ export default function AboutPage() {
 
       {/* Replaced Custom Hero with PageHeader */}
       <PageHeader
-        backgroundImage="/images/hero-bg.png" // You might want to use a specific about page image if available
-        backgroundImageAlt="Indian coffee plantation"
+        backgroundImage="/images/hero-about.avif"
+        backgroundImageAlt="IndianCoffeeBeans About Page"
         description="India's first comprehensive, independent directory for specialty coffee roasters and their offerings."
         overline="The Mission"
         title={

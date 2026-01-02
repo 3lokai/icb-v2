@@ -21,7 +21,7 @@ export function PageHeader({
   description,
   overline,
   rightSideContent,
-  backgroundImage = "/images/hero-bg.png",
+  backgroundImage = "/images/hero-bg.avif",
   backgroundImageAlt = "Coffee beans background",
 }: PageHeaderProps) {
   return (
