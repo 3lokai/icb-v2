@@ -572,7 +572,7 @@ export default function TermsPage() {
                         </p>
                         <p className="font-bold text-foreground">
                           In no event shall our total liability to you for all
-                          damages, losses, or causes of action exceed ₹5,000
+                          damages, losses, or causes of action exceed ₹6,000
                           (five thousand Indian Rupees). This cap applies
                           regardless of whether you have paid for any services,
                           as IndianCoffeeBeans is primarily offered as a free
@@ -650,9 +650,9 @@ export default function TermsPage() {
                         contacting us at{" "}
                         <a
                           className="text-accent underline font-bold"
-                          href="mailto:gta3lok.ai@gmail.com"
+                          href="mailto:support@indiancoffeebeans.com"
                         >
-                          gta3lok.ai@gmail.com
+                          support@indiancoffeebeans.com
                         </a>
                         . Most concerns can be resolved quickly and efficiently
                         through this process.
@@ -689,9 +689,9 @@ export default function TermsPage() {
                             Email:{" "}
                             <a
                               className="text-accent font-bold underline"
-                              href="mailto:gta3lok.ai@gmail.com"
+                              href="mailto:support@indiancoffeebeans.com"
                             >
-                              gta3lok.ai@gmail.com
+                              support@indiancoffeebeans.com
                             </a>
                           </p>
                         </Stack>
@@ -746,9 +746,9 @@ export default function TermsPage() {
                         rights, please contact us at{" "}
                         <a
                           className="text-accent underline font-bold"
-                          href="mailto:gta3lok.ai@gmail.com"
+                          href="mailto:support@indiancoffeebeans.com"
                         >
-                          gta3lok.ai@gmail.com
+                          support@indiancoffeebeans.com
                         </a>{" "}
                         with details, and we will address your concerns
                         promptly.
@@ -793,9 +793,9 @@ export default function TermsPage() {
                         at{" "}
                         <a
                           className="text-accent underline font-bold"
-                          href="mailto:gta3lok.ai@gmail.com"
+                          href="mailto:support@indiancoffeebeans.com"
                         >
-                          gta3lok.ai@gmail.com
+                          support@indiancoffeebeans.com
                         </a>{" "}
                         with any concerns.
                       </p>
@@ -1287,9 +1287,9 @@ export default function TermsPage() {
                           licensing should contact us directly at{" "}
                           <a
                             className="text-accent underline font-bold"
-                            href="mailto:gta3lok.ai@gmail.com"
+                            href="mailto:support@indiancoffeebeans.com"
                           >
-                            gta3lok.ai@gmail.com
+                            support@indiancoffeebeans.com
                           </a>{" "}
                           to discuss authorized access arrangements.
                         </p>
@@ -1334,7 +1334,7 @@ export default function TermsPage() {
               size="lg"
               className="rounded-full px-8"
             >
-              <a href="mailto:gta3lok.ai@gmail.com">Contact Support</a>
+              <a href="mailto:support@indiancoffeebeans.com">Contact Support</a>
             </Button>
           </Cluster>
         </Section>

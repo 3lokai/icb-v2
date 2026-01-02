@@ -186,7 +186,7 @@ export default function PartnerFormModal({
                   <span className="text-caption text-foreground">
                     I agree to the{" "}
                     <a
-                      href="/terms"
+                      href="/roasters/terms"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-accent hover:underline"

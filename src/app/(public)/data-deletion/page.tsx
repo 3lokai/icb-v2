@@ -4,7 +4,7 @@ import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { toast } from "sonner";
 
-const CONTACT_EMAIL = "gta3lok.ai@gmail.com";
+const CONTACT_EMAIL = "support@indiancoffeebeans.com";
 
 export default function DataDeletionPage() {
   const emailTemplate = `Subject: Data Deletion Request - IndianCoffeeBeans Account

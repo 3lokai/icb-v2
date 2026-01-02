@@ -38,8 +38,8 @@ export function Footer() {
       <div className="relative py-12 md:py-16">
         <div className="container-default">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
-            {/* Column 1: Brand - Spans 4 on md */}
-            <div className="md:col-span-4">
+            {/* Column 1: Brand - Spans 3 on md */}
+            <div className="md:col-span-3">
               <Stack gap="6">
                 <div>
                   <Link
@@ -70,7 +70,7 @@ export function Footer() {
                       name="Envelope"
                       size={16}
                     />
-                    contact@indiancoffeebeans.com
+                    support@indiancoffeebeans.com
                   </p>
                   <p className="flex items-center gap-3 text-body text-muted-foreground transition-colors hover:text-foreground">
                     <Icon className="text-accent/60" name="MapPin" size={16} />
@@ -123,62 +123,122 @@ export function Footer() {
               </Stack>
             </div>
 
-            {/* Column 2: Discover - Spans 2 on md */}
-            <div className="md:col-span-2">
-              <Stack gap="6">
-                <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
-                  Discover
-                </h4>
-                <ul className="space-y-3">
-                  {[
-                    { href: "/coffees", label: "Coffees" },
-                    { href: "/roasters", label: "Roasters" },
-                    { href: "/regions", label: "Regions" },
-                  ].map(({ href, label }) => (
-                    <li key={label}>
+            {/* Link columns group - Spans 6 on md with reduced gap */}
+            <div className="grid grid-cols-1 gap-6 md:col-span-6 md:ml-8 md:grid-cols-3">
+              {/* Column 2: Discover */}
+              <div>
+                <Stack gap="6">
+                  <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
+                    Discover
+                  </h4>
+                  <ul className="space-y-3">
+                    {[
+                      { href: "/coffees", label: "Coffees" },
+                      { href: "/roasters", label: "Roasters" },
+                    ].map(({ href, label }) => (
+                      <li key={label}>
+                        <Link
+                          className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
+                          href={href}
+                        >
+                          <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                          {label}
+                        </Link>
+                      </li>
+                    ))}
+                    <li>
+                      <div className="flex items-center gap-2 text-body text-muted-foreground">
+                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0" />
+                        <span>Regions</span>
+                        <span className="rounded-full bg-accent/10 px-2 py-0.5 text-micro font-medium text-accent">
+                          Coming Soon
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
+                </Stack>
+              </div>
+
+              {/* Column 3: Resources */}
+              <div>
+                <Stack gap="6">
+                  <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
+                    Resources
+                  </h4>
+                  <ul className="space-y-3">
+                    {[
+                      { href: "/tools/coffee-calculator", label: "Calculator" },
+                      { href: "/tools/expert-recipes", label: "Recipes" },
+                      { href: "/learn/glossary", label: "Glossary" },
+                    ].map(({ href, label }) => (
+                      <li key={label}>
+                        <Link
+                          className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
+                          href={href}
+                        >
+                          <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                          {label}
+                        </Link>
+                      </li>
+                    ))}
+                    <li>
+                      <div className="flex items-center gap-2 text-body text-muted-foreground">
+                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0" />
+                        <span>Learn</span>
+                        <span className="rounded-full bg-accent/10 px-2 py-0.5 text-micro font-medium text-accent">
+                          Coming Soon
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
+                </Stack>
+              </div>
+
+              {/* Column 4: About ICB */}
+              <div>
+                <Stack gap="6">
+                  <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
+                    About ICB
+                  </h4>
+                  <ul className="space-y-3">
+                    <li>
                       <Link
                         className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
-                        href={href}
+                        href="/about"
                       >
                         <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                        {label}
+                        About
                       </Link>
                     </li>
-                  ))}
-                </ul>
-              </Stack>
-            </div>
-
-            {/* Column 3: Tools & Learn - Spans 2 on md */}
-            <div className="md:col-span-2">
-              <Stack gap="6">
-                <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
-                  Resources
-                </h4>
-                <ul className="space-y-3">
-                  {[
-                    { href: "/tools/coffee-calculator", label: "Calculator" },
-                    { href: "/tools/expert-recipes", label: "Recipes" },
-                    { href: "/learn", label: "Learn" },
-                    { href: "/learn/glossary", label: "Glossary" },
-                    { href: "/about", label: "About" },
-                  ].map(({ href, label }) => (
-                    <li key={label}>
+                    <li>
                       <Link
                         className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
-                        href={href}
+                        href="/contact"
                       >
                         <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                        {label}
+                        Contact Us
                       </Link>
                     </li>
-                  ))}
-                </ul>
-              </Stack>
+                    {/* Separator */}
+                    <li className="pt-2">
+                      <div className="h-px w-full bg-border/60" />
+                    </li>
+                    <li>
+                      <Link
+                        className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
+                        href="/roasters/partner"
+                      >
+                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                        For Roasters
+                      </Link>
+                    </li>
+                  </ul>
+                </Stack>
+              </div>
             </div>
 
-            {/* Column 4: Newsletter - Spans 4 on md */}
-            <div className="md:col-span-4">
+            {/* Column 5: Newsletter - Spans 3 on md */}
+            <div className="md:col-span-3">
               <div className="relative overflow-hidden rounded-2xl border border-border bg-background/40 p-6 transition-all hover:bg-background/60 hover:border-border/80">
                 <Stack gap="4">
                   <div className="flex items-center justify-between">

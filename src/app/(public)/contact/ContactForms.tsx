@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { toast } from "sonner";
 import { Icon, type IconName } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
@@ -321,20 +322,11 @@ export default function ContactForms({
                       </div>
 
                       <div className="pt-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                        <Button
-                          size="lg"
-                          className="hover-lift"
-                          onClick={() => setActiveForm("claim")}
-                        >
-                          Claim Your Listing
+                        <Button size="lg" className="hover-lift" asChild>
+                          <Link href="/roasters/partner">
+                            Claim / Add Your Listing
+                          </Link>
                         </Button>
-                        <button
-                          className="text-caption font-medium text-muted-foreground hover:text-accent transition-colors underline decoration-border/50 hover:decoration-accent/50 underline-offset-4"
-                          onClick={() => setActiveForm("roaster")}
-                          type="button"
-                        >
-                          Or submit a new roastery &rarr;
-                        </button>
                       </div>
                     </Stack>
                   </div>

@@ -18,7 +18,7 @@ type AuthContextType = {
     email: string,
     password: string,
     metadata?: { full_name?: string }
-  ) => Promise<{ error: any }>;
+  ) => Promise<{ data: any; error: any }>;
   signInWithOAuth: (provider: "google" | "facebook") => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
   refreshUser: () => Promise<void>;
@@ -60,11 +60,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     password: string,
     metadata?: { full_name?: string }
   ) => {
-    const { error } = await auth.signUp(email, password, metadata);
+    const { data, error } = await auth.signUp(email, password, metadata);
     if (!error) {
       await refreshUser();
     }
-    return { error };
+    return { data, error };
   };
 
   const signInWithOAuth = async (provider: "google" | "facebook") => {

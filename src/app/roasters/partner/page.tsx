@@ -11,7 +11,7 @@ import PartnerPageClient from "./PartnerPageClient";
 export const metadata: Metadata = generateMetadata({
   title: "Partner With Us - List Your Roastery | IndianCoffeeBeans",
   description:
-    "Join 45+ roasters on India's premier coffee platform. Get discovered by coffee enthusiasts. Founding roaster pricing: ₹2,500/year (limited spots).",
+    "Join 60+ roasters on India's premier coffee platform. Get discovered by coffee enthusiasts. Founding roaster pricing: ₹2,500/year (limited spots).",
   keywords: [
     "roaster partnership",
     "coffee roaster listing",

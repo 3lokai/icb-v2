@@ -193,7 +193,7 @@ export const partnerPageSchema = {
   "@type": "WebPage",
   name: "Partner With Us - IndianCoffeeBeans.com",
   description:
-    "Join 45+ roasters on India's premier coffee platform. Get discovered by coffee enthusiasts.",
+    "Join 60+ roasters on India's premier coffee platform. Get discovered by coffee enthusiasts.",
   url: "https://indiancoffeebeans.com/roasters/partner",
   publisher: {
     "@type": "Organization",
@@ -235,6 +235,15 @@ export const termsPageSchema = {
   description:
     "Terms and conditions for using IndianCoffeeBeans.com directory and services.",
   url: "https://indiancoffeebeans.com/terms",
+};
+
+export const roastersTermsPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Roaster Partnership Agreement - IndianCoffeeBeans.com",
+  description:
+    "Terms and conditions for roaster partnerships and subscription services on IndianCoffeeBeans.com.",
+  url: "https://indiancoffeebeans.com/roasters/terms",
 };
 
 // Organization Schema for root layout

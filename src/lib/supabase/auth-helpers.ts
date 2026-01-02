@@ -5,10 +5,29 @@ import { createClient as createServerClient } from "./server";
 export const auth = {
   async signIn(email: string, password: string) {
     const supabase = createBrowserClient();
+
+    // Validate inputs before making the request
+    if (!email || !password) {
+      return {
+        data: null,
+        error: { message: "Email and password are required" },
+      };
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({
-      email,
+      email: email.trim(),
       password,
     });
+
+    // Log error details for debugging
+    if (error) {
+      console.error("Sign in error:", {
+        message: error.message,
+        status: error.status,
+        name: error.name,
+      });
+    }
+
     return { data, error };
   },
 
@@ -18,13 +37,32 @@ export const auth = {
     metadata?: { full_name?: string }
   ) {
     const supabase = createBrowserClient();
+
+    // Validate inputs before making the request
+    if (!email || !password) {
+      return {
+        data: null,
+        error: { message: "Email and password are required" },
+      };
+    }
+
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email: email.trim(),
       password,
       options: {
         data: metadata,
       },
     });
+
+    // Log error details for debugging
+    if (error) {
+      console.error("Sign up error:", {
+        message: error.message,
+        status: error.status,
+        name: error.name,
+      });
+    }
+
     return { data, error };
   },
 

@@ -17,10 +17,11 @@ type RoasterCardProps = {
 type RibbonType = "featured" | "editors-pick" | null;
 
 function computeRibbon(roaster: RoasterSummary): RibbonType {
-  if (roaster.coffee_count > 10) {
+  // Use database flags if available
+  if (roaster.is_featured === true) {
     return "featured";
   }
-  if (roaster.avg_rating && roaster.avg_rating >= 4.5) {
+  if (roaster.is_editors_pick === true) {
     return "editors-pick";
   }
   return null;
