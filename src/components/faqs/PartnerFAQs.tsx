@@ -19,7 +19,7 @@ const partnerFAQs = [
   {
     question: 'What\'s the "Founding Roaster" benefit?',
     answer:
-      "Lock in ₹2,500/year pricing forever (regular ₹6,000). Plus exclusive badge and launch features.",
+      "Lock in ₹3,500/year pricing forever (regular ₹6,000). Plus exclusive badge and launch features.",
   },
   {
     question: "How long does verification take?",

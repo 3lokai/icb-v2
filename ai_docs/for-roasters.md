@@ -161,7 +161,7 @@ FREE
 #### Verified Tier (Highlight this one - Featured Card)
 ```
 VERIFIED
-₹2,500 / year
+₹3,500 / year
 [Badge] First 10 Only - Then ₹6,000
 
 ✓ Everything in Free
@@ -273,7 +273,7 @@ Q: Can I manage my own listings?
 A: Yes. Verified tier gives you full control to add/edit coffees and profile info.
 
 Q: What's the "Founding Roaster" benefit?
-A: Lock in ₹2,500/year pricing forever (regular ₹6,000). Plus exclusive badge and launch features.
+A: Lock in ₹3,500/year pricing forever (regular ₹6,000). Plus exclusive badge and launch features.
 
 Q: How long does verification take?
 A: 24-48 hours after payment. We verify ownership via email/domain check.
