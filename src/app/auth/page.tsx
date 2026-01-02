@@ -29,7 +29,7 @@ export default async function AuthPage() {
           priority
           quality={90}
           sizes="50vw"
-          src="/images/login_screen.jpg"
+          src="/images/login_screen.avif"
         />
         <div className="absolute inset-0 bg-black/20" />
         {/* Magazine noise texture */}

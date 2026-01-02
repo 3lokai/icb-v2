@@ -61,7 +61,7 @@ export default async function OnboardingPage() {
           priority
           quality={90}
           sizes="50vw"
-          src="/images/onboarding_screen.jpg"
+          src="/images/onboarding_screen.avif"
         />
         <div className="absolute inset-0 bg-black/20" />
         {/* Magazine noise texture */}
