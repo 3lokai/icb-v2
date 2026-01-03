@@ -145,16 +145,19 @@ const NavItemComponent = ({
   };
 
   const renderButton = () => (
-    <button
+    <Link
+      aria-expanded={isDropdownOpen}
+      aria-label={`${item.name} menu`}
       className={cn(
         "relative flex items-center gap-1 px-4 py-2 transition-colors",
         active
           ? "font-medium text-accent-foreground"
           : "text-muted-foreground hover:text-accent-foreground"
       )}
+      href={item.link}
+      onClick={onItemClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={onLeave}
-      type="button"
     >
       {showPill && (
         <motion.div
@@ -174,7 +177,7 @@ const NavItemComponent = ({
         name="CaretDown"
         size={12}
       />
-    </button>
+    </Link>
   );
 
   const renderLink = () => (
@@ -290,7 +293,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
   return (
     <motion.div
       className={cn(
-        "absolute inset-0 hidden flex-1 flex-row items-center justify-center gap-2 font-medium text-muted-foreground text-body transition-colors hover:text-foreground lg:flex",
+        "absolute inset-0 hidden flex-row items-center justify-center gap-2 font-medium text-muted-foreground text-body transition-colors hover:text-foreground lg:flex",
         className
       )}
       onMouseLeave={handleLeave}
@@ -381,12 +384,17 @@ export const MobileNavToggle = ({
 }: {
   isOpen: boolean;
   onClick: () => void;
-}) =>
-  isOpen ? (
-    <Icon className="text-foreground" name="X" onClick={onClick} size={20} />
-  ) : (
-    <Icon className="text-foreground" name="List" onClick={onClick} size={20} />
-  );
+}) => (
+  <button
+    aria-expanded={isOpen}
+    aria-label="Toggle menu"
+    className="text-foreground"
+    onClick={onClick}
+    type="button"
+  >
+    <Icon name={isOpen ? "X" : "List"} size={20} />
+  </button>
+);
 
 type MobileNavDropdownProps = {
   item: NavItem;
@@ -413,6 +421,8 @@ export const MobileNavDropdown = ({
   return (
     <div className="w-full">
       <button
+        aria-expanded={isOpen}
+        aria-label={`${item.name} menu`}
         className={cn(
           "flex w-full items-center justify-between text-muted-foreground hover:text-foreground",
           active && "font-medium text-accent-foreground"

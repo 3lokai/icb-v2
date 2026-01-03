@@ -23,6 +23,11 @@ const menuItems = [
     icon: "Coffee",
   },
   {
+    title: "My Reviews",
+    url: "/dashboard/my-reviews",
+    icon: "Star",
+  },
+  {
     title: "Notifications",
     url: "/dashboard/notifications",
     icon: "Bell",

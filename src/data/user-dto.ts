@@ -234,3 +234,202 @@ export async function getNotificationPreferences() {
 
   return data;
 }
+
+/**
+ * Review with entity details for display
+ */
+export type MyReview = {
+  id: string;
+  entity_type: "coffee" | "roaster";
+  entity_id: string;
+  user_id: string | null;
+  anon_id: string | null;
+  recommend: boolean | null;
+  rating: number | null;
+  value_for_money: boolean | null;
+  works_with_milk: boolean | null;
+  brew_method: string | null;
+  comment: string | null;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  identity_key: string | null;
+  entity: {
+    id: string;
+    slug: string;
+    name: string;
+  };
+};
+
+/**
+ * Get current user's reviews with entity details
+ *
+ * Fetches all reviews submitted by the authenticated user from the
+ * latest_reviews_per_identity view, and enriches them with entity
+ * information (coffee or roaster name and slug).
+ *
+ * @returns Array of reviews with entity details, or empty array if none found
+ *
+ * @example
+ * ```ts
+ * const reviews = await getMyReviews();
+ * const coffeeReviews = reviews.filter(r => r.entity_type === 'coffee');
+ * const roasterReviews = reviews.filter(r => r.entity_type === 'roaster');
+ * ```
+ */
+export async function getMyReviews(): Promise<MyReview[]> {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return [];
+  }
+
+  const supabase = await createClient();
+
+  // Fetch reviews from latest_reviews_per_identity view
+  // Filter by user_id for authenticated users
+  console.log("[getMyReviews] Fetching reviews for user:", currentUser.id);
+
+  const { data: reviews, error: reviewsError } = await supabase
+    .from("latest_reviews_per_identity")
+    .select("*")
+    .eq("user_id", currentUser.id)
+    .order("created_at", { ascending: false });
+
+  if (reviewsError) {
+    console.error("[getMyReviews] Error fetching user reviews:", {
+      error: reviewsError,
+      message: reviewsError.message,
+      code: reviewsError.code,
+      details: reviewsError.details,
+      hint: reviewsError.hint,
+      userId: currentUser.id,
+    });
+    return [];
+  }
+
+  console.log("[getMyReviews] Query result:", {
+    reviewsFound: reviews?.length ?? 0,
+    userId: currentUser.id,
+    hasData: !!reviews,
+  });
+
+  if (!reviews || reviews.length === 0) {
+    // No reviews found - this is normal for new users
+    console.log("[getMyReviews] No reviews found for user:", currentUser.id);
+    return [];
+  }
+
+  // Separate coffee and roaster reviews
+  const coffeeReviews = reviews.filter((r) => r.entity_type === "coffee");
+  const roasterReviews = reviews.filter((r) => r.entity_type === "roaster");
+
+  console.log("[getMyReviews] Separated reviews:", {
+    total: reviews.length,
+    coffee: coffeeReviews.length,
+    roaster: roasterReviews.length,
+    coffeeEntityIds: coffeeReviews.map((r) => r.entity_id),
+    roasterEntityIds: roasterReviews.map((r) => r.entity_id),
+  });
+
+  // Fetch entity details in parallel
+  const [coffeeEntities, roasterEntities] = await Promise.all([
+    coffeeReviews.length > 0
+      ? supabase
+          .from("coffees")
+          .select("id, slug, name")
+          .in(
+            "id",
+            coffeeReviews.map((r) => r.entity_id)
+          )
+      : { data: [], error: null },
+    roasterReviews.length > 0
+      ? supabase
+          .from("roasters")
+          .select("id, slug, name")
+          .in(
+            "id",
+            roasterReviews.map((r) => r.entity_id)
+          )
+      : { data: [], error: null },
+  ]);
+
+  if (coffeeEntities.error) {
+    console.error(
+      "[getMyReviews] Error fetching coffee entities:",
+      coffeeEntities.error
+    );
+  }
+  if (roasterEntities.error) {
+    console.error(
+      "[getMyReviews] Error fetching roaster entities:",
+      roasterEntities.error
+    );
+  }
+
+  console.log("[getMyReviews] Entity lookup results:", {
+    coffeeEntitiesFound: coffeeEntities.data?.length ?? 0,
+    roasterEntitiesFound: roasterEntities.data?.length ?? 0,
+    coffeeEntities: coffeeEntities.data,
+    roasterEntities: roasterEntities.data,
+  });
+
+  // Create maps for quick lookup
+  const coffeeMap = new Map((coffeeEntities.data || []).map((c) => [c.id, c]));
+  const roasterMap = new Map(
+    (roasterEntities.data || []).map((r) => [r.id, r])
+  );
+
+  // Combine reviews with entity details
+  const enrichedReviews: MyReview[] = [];
+
+  for (const review of reviews) {
+    const entity =
+      review.entity_type === "coffee"
+        ? coffeeMap.get(review.entity_id)
+        : roasterMap.get(review.entity_id);
+
+    if (!entity) {
+      // Entity not found - skip this review
+      console.warn("[getMyReviews] Entity not found for review:", {
+        reviewId: review.id,
+        entityType: review.entity_type,
+        entityId: review.entity_id,
+        coffeeMapSize: coffeeMap.size,
+        roasterMapSize: roasterMap.size,
+      });
+      continue;
+    }
+
+    enrichedReviews.push({
+      id: review.id,
+      entity_type: review.entity_type,
+      entity_id: review.entity_id,
+      user_id: review.user_id,
+      anon_id: review.anon_id,
+      recommend: review.recommend,
+      rating: review.rating,
+      value_for_money: review.value_for_money,
+      works_with_milk: review.works_with_milk,
+      brew_method: review.brew_method,
+      comment: review.comment,
+      status: review.status,
+      created_at: review.created_at,
+      updated_at: review.updated_at,
+      identity_key: review.identity_key || null,
+      entity: {
+        id: entity.id,
+        slug: entity.slug,
+        name: entity.name,
+      },
+    });
+  }
+
+  console.log("[getMyReviews] Final enriched reviews:", {
+    totalEnriched: enrichedReviews.length,
+    originalCount: reviews.length,
+    skipped: reviews.length - enrichedReviews.length,
+  });
+
+  return enrichedReviews;
+}
