@@ -26,15 +26,17 @@ type DashboardClientProps = {
   initialCoffeePreferences: CoffeePreferences | null;
 };
 
-export function DashboardClient({
-  initialProfile,
-  initialCoffeePreferences,
-}: DashboardClientProps) {
+export function DashboardClient({ initialProfile }: DashboardClientProps) {
   // Use TanStack Query with initialData to avoid refetching
   const { data: profile } = useQuery({
     queryKey: queryKeys.profile.current,
     initialData: initialProfile,
     staleTime: 5 * 60 * 1000,
+    queryFn: async () => {
+      // This won't be called since we have initialData and staleTime
+      // But required by TanStack Query v5
+      return initialProfile;
+    },
   });
 
   if (!profile) {

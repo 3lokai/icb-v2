@@ -1,15 +1,13 @@
-// app/loading.tsx
-
 import CoffeeFact from "@/components/common/CoffeeFact";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { Stack } from "@/components/primitives/stack";
 
-export default function Loading() {
+export default function MyReviewsLoading() {
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-background p-6 z-50">
       <div className="mx-auto text-center">
         <Stack gap="12" className="items-center">
-          <LoadingSpinner size="lg" text="Steeping the perfect read..." />
+          <LoadingSpinner size="lg" text="Fetching your reviews..." />
 
           <div className="relative w-full overflow-hidden pt-12">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-24 bg-accent/40" />

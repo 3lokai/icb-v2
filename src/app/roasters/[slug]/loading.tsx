@@ -4,8 +4,8 @@ import { Stack } from "@/components/primitives/stack";
 
 export default function Loading() {
   return (
-    <div className="flex min-h-[80vh] flex-col items-center justify-center bg-background p-6">
-      <div className="mx-auto max-w-2xl text-center">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-background p-6 z-50">
+      <div className="mx-auto text-center">
         <Stack gap="12" className="items-center">
           <LoadingSpinner size="lg" text="Roasting the details..." />
 

@@ -59,6 +59,7 @@ const Banner1 = ({
         </div>
 
         <Button
+          aria-label="Close banner"
           className="-mr-2 h-8 w-8 flex-none"
           onClick={handleClose}
           size="icon"

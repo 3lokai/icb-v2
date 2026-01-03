@@ -87,6 +87,7 @@ export const queryKeys = {
       ["reviews", "stats", entityType, entityId] as const,
     latest: (entityType: string, entityId: string) =>
       ["reviews", "latest", entityType, entityId] as const,
+    myReviews: ["reviews", "my"] as const,
   },
 } as const;
 

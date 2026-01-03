@@ -39,7 +39,7 @@ const navItems = [
   { name: "Roasters", link: "/roasters" },
   {
     name: "Tools",
-    link: "/tools/expert-recipes",
+    link: "/tools",
     children: [
       { name: "Expert Recipes", link: "/tools/expert-recipes" },
       { name: "Coffee Calculator", link: "/tools/coffee-calculator" },

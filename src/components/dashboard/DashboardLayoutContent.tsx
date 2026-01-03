@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/common/Icon";
-import { Stack } from "@/components/primitives/stack";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardMobileDrawer } from "./DashboardMobileDrawer";
 

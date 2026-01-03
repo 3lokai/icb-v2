@@ -571,6 +571,7 @@ export async function submitForm(
     }
 
     // Send Slack notification with full form details (fire and forget)
+    // Errors are already logged in sendSlackNotification, so we only log here in dev
     sendSlackNotification("form", {
       form_type: result.data.form_type,
       email: result.data.email,
@@ -579,7 +580,13 @@ export async function submitForm(
       user_agent: result.data.user_agent,
       user_id: result.data.user_id,
     }).catch((err) => {
-      console.error("Failed to send form notification:", err);
+      // Only log in development - production errors are handled in sendSlackNotification
+      if (process.env.NODE_ENV === "development") {
+        console.error(
+          `[Forms] Failed to send Slack notification for "${result.data.form_type}":`,
+          err instanceof Error ? err.message : String(err)
+        );
+      }
     });
 
     return {

@@ -285,23 +285,31 @@ export async function sendSlackNotification(
 ): Promise<void> {
   const webhookUrl = getWebhookUrl(type, payload);
 
-  // Silently return if webhook URL is not configured
+  // Log warning if webhook URL is not configured
+  // Keep warnings in production as they indicate configuration issues
   if (!webhookUrl) {
+    let channelName = "activity";
+    if (type === "form" && payload) {
+      const formPayload = payload as FormPayload;
+      const roasterFormTypes: FormPayload["form_type"][] = [
+        "roaster_submission",
+        "roaster_claim",
+        "partner_inquiry",
+      ];
+      channelName = roasterFormTypes.includes(formPayload.form_type)
+        ? "roasters"
+        : "forms";
+    }
+    const envVarName = `SLACK_WEBHOOK_URL_${channelName.toUpperCase()}`;
+    // More concise warning in production, detailed in development
     if (process.env.NODE_ENV === "development") {
-      let channelName = "activity";
-      if (type === "form" && payload) {
-        const formPayload = payload as FormPayload;
-        const roasterFormTypes: FormPayload["form_type"][] = [
-          "roaster_submission",
-          "roaster_claim",
-          "partner_inquiry",
-        ];
-        channelName = roasterFormTypes.includes(formPayload.form_type)
-          ? "roasters"
-          : "forms";
-      }
-      console.log(
-        `[Slack] ${channelName} webhook URL not configured, skipping notification`
+      console.warn(
+        `[Slack] ${channelName} webhook URL (${envVarName}) not configured, skipping notification for type: ${type}`
+      );
+    } else {
+      // Production: log once per missing webhook to avoid spam
+      console.warn(
+        `[Slack] ${envVarName} not configured - notifications disabled`
       );
     }
     return;
@@ -320,12 +328,34 @@ export async function sendSlackNotification(
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => "Unknown error");
+      // Always log errors - important for production debugging
       console.error(
-        `[Slack] Notification failed: ${response.status} ${errorText}`
+        `[Slack] Notification failed (${type}): ${response.status} ${response.statusText}${errorText ? ` - ${errorText.substring(0, 200)}` : ""}`
+      );
+    } else if (process.env.NODE_ENV === "development") {
+      // Only log success in development to reduce production noise
+      let channelName = "activity";
+      if (type === "form" && payload) {
+        const formPayload = payload as FormPayload;
+        const roasterFormTypes: FormPayload["form_type"][] = [
+          "roaster_submission",
+          "roaster_claim",
+          "partner_inquiry",
+        ];
+        channelName = roasterFormTypes.includes(formPayload.form_type)
+          ? "roasters"
+          : "forms";
+      }
+      console.log(
+        `[Slack] Successfully sent ${type} notification to ${channelName} channel`
       );
     }
   } catch (error) {
-    // Log error but don't throw - notifications should never break the app
-    console.error("[Slack] Failed to send notification:", error);
+    // Always log errors - important for production debugging
+    // Don't throw - notifications should never break the app
+    console.error(
+      `[Slack] Failed to send notification (${type}):`,
+      error instanceof Error ? error.message : String(error)
+    );
   }
 }

@@ -264,6 +264,7 @@ export default function HeroSection() {
                 <div className="-translate-y-1/2 absolute top-1/2 right-2 flex min-w-[120px] items-center justify-end gap-1">
                   {searchQuery && (
                     <Button
+                      aria-label="Clear search"
                       className="h-8 w-8 rounded-lg text-white/70 transition-all duration-300 hover:bg-black/30 hover:text-white"
                       onClick={() => {
                         setSearchQuery("");
