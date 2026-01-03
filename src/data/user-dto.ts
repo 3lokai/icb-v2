@@ -433,3 +433,66 @@ export async function getMyReviews(): Promise<MyReview[]> {
 
   return enrichedReviews;
 }
+
+/**
+ * Get current user's review statistics
+ *
+ * Returns aggregated statistics about the user's reviews:
+ * - Coffee review count and average rating
+ * - Roaster review count and average rating
+ *
+ * @returns Review statistics object
+ */
+export async function getMyReviewStats(): Promise<{
+  coffeeCount: number;
+  coffeeAverageRating: number | null;
+  roasterCount: number;
+  roasterAverageRating: number | null;
+}> {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return {
+      coffeeCount: 0,
+      coffeeAverageRating: null,
+      roasterCount: 0,
+      roasterAverageRating: null,
+    };
+  }
+
+  const reviews = await getMyReviews();
+
+  const coffeeReviews = reviews.filter((r) => r.entity_type === "coffee");
+  const roasterReviews = reviews.filter((r) => r.entity_type === "roaster");
+
+  // Calculate average rating for coffee reviews
+  const coffeeReviewsWithRatings = coffeeReviews.filter(
+    (r) => r.rating !== null
+  );
+  const coffeeAverageRating =
+    coffeeReviewsWithRatings.length > 0
+      ? coffeeReviewsWithRatings.reduce((sum, r) => sum + (r.rating || 0), 0) /
+        coffeeReviewsWithRatings.length
+      : null;
+
+  // Calculate average rating for roaster reviews
+  const roasterReviewsWithRatings = roasterReviews.filter(
+    (r) => r.rating !== null
+  );
+  const roasterAverageRating =
+    roasterReviewsWithRatings.length > 0
+      ? roasterReviewsWithRatings.reduce((sum, r) => sum + (r.rating || 0), 0) /
+        roasterReviewsWithRatings.length
+      : null;
+
+  return {
+    coffeeCount: coffeeReviews.length,
+    coffeeAverageRating: coffeeAverageRating
+      ? Math.round(coffeeAverageRating * 10) / 10
+      : null,
+    roasterCount: roasterReviews.length,
+    roasterAverageRating: roasterAverageRating
+      ? Math.round(roasterAverageRating * 10) / 10
+      : null,
+  };
+}
