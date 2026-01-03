@@ -271,16 +271,24 @@ export const roasterImagePresets = {
    * Roaster logo preset
    * Size: 300x300px (square)
    * Crop: Maintain ratio (don't distort logos)
-   * Quality: 85
+   * Quality: 90
+   *
+   * NOTE:
+   * v=1 is a one-time cache buster to defeat Vercel _next/image cache.
+   * Leave it forever. It will not affect other roasters.
    */
   roasterLogo: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
       return getPlaceholderImage("roaster");
     }
-    return getImageKitUrl(imagePath, {
-      width: 320, // control size
-      quality: 90, // logos benefit from higher quality
-      format: "png", // keep transparency intact
+
+    // 👇 one-time cache bust
+    const pathWithVersion = `${imagePath}?v=1`;
+
+    return getImageKitUrl(pathWithVersion, {
+      width: 320,
+      quality: 90,
+      format: "png",
     });
   },
 
