@@ -8,6 +8,11 @@ export interface WelcomeEmailParams {
   name: string | null;
 }
 
+export interface NewsletterWelcomeEmailParams {
+  email: string;
+  name: string | null;
+}
+
 /**
  * Send welcome email to new users
  *
@@ -49,7 +54,7 @@ We're just launching, so your feedback is gold. Here's what you can do:
 
 We'd love to hear what you think - just reply to this email with any thoughts, suggestions, or questions.
 
-Cheers,
+Cheers,  
 GT
 
 ---
@@ -59,5 +64,57 @@ One-Stop Shop for Indian Coffee.`,
   } catch (error) {
     // Log error but don't throw - email sending should never break the app
     console.error("[Resend] Failed to send welcome email:", error);
+  }
+}
+
+/**
+ * Send newsletter welcome email to new subscribers
+ *
+ * This is a fire-and-forget operation - errors are logged but don't throw
+ */
+export async function sendNewsletterWelcomeEmail({
+  email,
+  name,
+}: NewsletterWelcomeEmailParams): Promise<void> {
+  // Silently return if Resend API key is not configured
+  if (!process.env.RESEND_API_KEY) {
+    if (process.env.NODE_ENV === "development") {
+      console.log(
+        "[Resend] API key not configured, skipping newsletter welcome email"
+      );
+    }
+    return;
+  }
+
+  try {
+    const userName = name || "Coffee Lover";
+
+    await resend.emails.send({
+      from: "thrlok.gt@indiancoffeebeans.com",
+      to: email,
+      subject: "Thanks for subscribing to IndianCoffeeBeans newsletter!",
+      text: `Hey ${userName},
+
+Thanks for signing up for the IndianCoffeeBeans newsletter 🙌
+
+Quick heads-up: the newsletter is still **brewing**.
+
+I'm actively working on the site and the data behind it, and once things settle a bit, I'll start sending regular updates here — new roasters, interesting coffees, site updates, and the occasional coffee rant.
+
+No spam. No nonsense. Just useful coffee stuff.
+
+Appreciate your patience (and your trust).
+More coming soon.
+
+Cheers,
+GT
+
+—
+IndianCoffeeBeans
+Discover Indian specialty coffee`,
+    });
+  } catch (error) {
+    // Log error but don't throw - email sending should never break the app
+    console.error("[Resend] Failed to send newsletter welcome email:", error);
   }
 }

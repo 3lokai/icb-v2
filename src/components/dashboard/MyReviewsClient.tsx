@@ -8,7 +8,6 @@ import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Section } from "@/components/primitives/section";
 import { cn } from "@/lib/utils";
 import type { MyReview } from "@/data/user-dto";
 import { formatDistanceToNow } from "date-fns";
@@ -53,128 +52,126 @@ export function MyReviewsClient({ initialReviews }: MyReviewsClientProps) {
   const hasMoreRoaster = roasterReviews.length > INITIAL_DISPLAY_COUNT;
 
   return (
-    <Section spacing="default" contained={false}>
-      <Stack gap="8">
-        {/* Main header */}
-        <div className="mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-            <div className="md:col-span-8">
-              <Stack gap="6">
-                <div className="inline-flex items-center gap-4">
-                  <span className="h-px w-8 md:w-12 bg-accent/60" />
-                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                    Your Contributions
-                  </span>
-                </div>
-                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                  My <span className="text-accent italic">Reviews.</span>
-                </h2>
-                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                  View and manage all the reviews you've shared with the
-                  community.
-                </p>
-              </Stack>
-            </div>
-          </div>
-        </div>
-
-        {/* Coffee Reviews Section */}
-        <div className="mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mb-8">
-            <div className="md:col-span-8">
-              <Stack gap="6">
-                <div className="inline-flex items-center gap-4">
-                  <span className="h-px w-8 md:w-12 bg-accent/60" />
-                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                    Coffee Reviews
-                  </span>
-                </div>
-                <h3 className="text-subheading text-balance leading-[1.1] tracking-tight">
-                  Coffee <span className="text-accent italic">Reviews.</span>
-                </h3>
-                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                  {coffeeReviews.length === 0
-                    ? "Reviews you've shared for coffees in our directory."
-                    : `${coffeeReviews.length} ${coffeeReviews.length === 1 ? "review" : "reviews"} you've shared for coffees in our directory.`}
-                </p>
-              </Stack>
-            </div>
-          </div>
-
-          {coffeeReviews.length > 0 ? (
+    <Stack gap="8">
+      {/* Main header */}
+      <div className="mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+          <div className="md:col-span-8">
             <Stack gap="6">
-              {displayedCoffeeReviews.map((review) => (
-                <ReviewItem key={review.id} review={review} />
-              ))}
-              {hasMoreCoffee && !showAllCoffee && (
-                <Button
-                  variant="outline"
-                  onClick={() => setShowAllCoffee(true)}
-                  className="w-full border-border/60 hover:border-primary/50 hover:bg-accent/30 transition-all"
-                >
-                  Show all {coffeeReviews.length} coffee reviews
-                  <Icon name="CaretDown" size={14} className="ml-2" />
-                </Button>
-              )}
+              <div className="inline-flex items-center gap-4">
+                <span className="h-px w-8 md:w-12 bg-accent/60" />
+                <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                  Your Contributions
+                </span>
+              </div>
+              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                My <span className="text-accent italic">Reviews.</span>
+              </h2>
+              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                View and manage all the reviews you've shared with the
+                community.
+              </p>
             </Stack>
-          ) : (
-            <EmptyState
-              message="Share your reviews with others"
-              buttonText="Browse Coffees"
-              buttonHref="/coffees"
-            />
-          )}
-        </div>
-
-        {/* Roaster Reviews Section */}
-        <div>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mb-8">
-            <div className="md:col-span-8">
-              <Stack gap="6">
-                <div className="inline-flex items-center gap-4">
-                  <span className="h-px w-8 md:w-12 bg-accent/60" />
-                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                    Roaster Reviews
-                  </span>
-                </div>
-                <h3 className="text-subheading text-balance leading-[1.1] tracking-tight">
-                  Roaster <span className="text-accent italic">Reviews.</span>
-                </h3>
-                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                  {roasterReviews.length === 0
-                    ? "Reviews you've shared for roasters in our directory."
-                    : `${roasterReviews.length} ${roasterReviews.length === 1 ? "review" : "reviews"} you've shared for roasters in our directory.`}
-                </p>
-              </Stack>
-            </div>
           </div>
-
-          {roasterReviews.length > 0 ? (
-            <Stack gap="6">
-              {displayedRoasterReviews.map((review) => (
-                <ReviewItem key={review.id} review={review} />
-              ))}
-              {hasMoreRoaster && !showAllRoaster && (
-                <Button
-                  variant="outline"
-                  onClick={() => setShowAllRoaster(true)}
-                  className="w-full border-border/60 hover:border-primary/50 hover:bg-accent/30 transition-all"
-                >
-                  Show all {roasterReviews.length} roaster reviews
-                  <Icon name="CaretDown" size={14} className="ml-2" />
-                </Button>
-              )}
-            </Stack>
-          ) : (
-            <EmptyState
-              message="Share your reviews with others"
-              buttonText="Browse Roasters"
-              buttonHref="/roasters"
-            />
-          )}
         </div>
-      </Stack>
-    </Section>
+      </div>
+
+      {/* Coffee Reviews Section */}
+      <div className="mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mb-8">
+          <div className="md:col-span-8">
+            <Stack gap="6">
+              <div className="inline-flex items-center gap-4">
+                <span className="h-px w-8 md:w-12 bg-accent/60" />
+                <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                  Coffee Reviews
+                </span>
+              </div>
+              <h3 className="text-subheading text-balance leading-[1.1] tracking-tight">
+                Coffee <span className="text-accent italic">Reviews.</span>
+              </h3>
+              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                {coffeeReviews.length === 0
+                  ? "Reviews you've shared for coffees in our directory."
+                  : `${coffeeReviews.length} ${coffeeReviews.length === 1 ? "review" : "reviews"} you've shared for coffees in our directory.`}
+              </p>
+            </Stack>
+          </div>
+        </div>
+
+        {coffeeReviews.length > 0 ? (
+          <Stack gap="6">
+            {displayedCoffeeReviews.map((review) => (
+              <ReviewItem key={review.id} review={review} />
+            ))}
+            {hasMoreCoffee && !showAllCoffee && (
+              <Button
+                variant="outline"
+                onClick={() => setShowAllCoffee(true)}
+                className="w-full border-border/60 hover:border-primary/50 hover:bg-accent/30 transition-all"
+              >
+                Show all {coffeeReviews.length} coffee reviews
+                <Icon name="CaretDown" size={14} className="ml-2" />
+              </Button>
+            )}
+          </Stack>
+        ) : (
+          <EmptyState
+            message="Share your reviews with others"
+            buttonText="Browse Coffees"
+            buttonHref="/coffees"
+          />
+        )}
+      </div>
+
+      {/* Roaster Reviews Section */}
+      <div>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mb-8">
+          <div className="md:col-span-8">
+            <Stack gap="6">
+              <div className="inline-flex items-center gap-4">
+                <span className="h-px w-8 md:w-12 bg-accent/60" />
+                <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                  Roaster Reviews
+                </span>
+              </div>
+              <h3 className="text-subheading text-balance leading-[1.1] tracking-tight">
+                Roaster <span className="text-accent italic">Reviews.</span>
+              </h3>
+              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                {roasterReviews.length === 0
+                  ? "Reviews you've shared for roasters in our directory."
+                  : `${roasterReviews.length} ${roasterReviews.length === 1 ? "review" : "reviews"} you've shared for roasters in our directory.`}
+              </p>
+            </Stack>
+          </div>
+        </div>
+
+        {roasterReviews.length > 0 ? (
+          <Stack gap="6">
+            {displayedRoasterReviews.map((review) => (
+              <ReviewItem key={review.id} review={review} />
+            ))}
+            {hasMoreRoaster && !showAllRoaster && (
+              <Button
+                variant="outline"
+                onClick={() => setShowAllRoaster(true)}
+                className="w-full border-border/60 hover:border-primary/50 hover:bg-accent/30 transition-all"
+              >
+                Show all {roasterReviews.length} roaster reviews
+                <Icon name="CaretDown" size={14} className="ml-2" />
+              </Button>
+            )}
+          </Stack>
+        ) : (
+          <EmptyState
+            message="Share your reviews with others"
+            buttonText="Browse Roasters"
+            buttonHref="/roasters"
+          />
+        )}
+      </div>
+    </Stack>
   );
 }
 

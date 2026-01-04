@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { z } from "zod";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import { sendNewsletterWelcomeEmail } from "@/lib/emails/resend";
 
 const newsletterSchema = z.object({
   email: z
@@ -94,6 +95,25 @@ export async function subscribeToNewsletter(formData: FormData) {
         error: "Failed to subscribe. Please try again later.",
       };
     }
+
+    // Get user's name from profile if authenticated
+    let userName: string | null = null;
+    if (user?.id) {
+      const { data: profile } = await supabase
+        .from("user_profiles")
+        .select("full_name")
+        .eq("id", user.id)
+        .single();
+      userName = profile?.full_name || null;
+    }
+
+    // Send newsletter welcome email (fire and forget)
+    sendNewsletterWelcomeEmail({
+      email,
+      name: userName,
+    }).catch((err) => {
+      console.error("Failed to send newsletter welcome email:", err);
+    });
 
     return {
       success: true,
