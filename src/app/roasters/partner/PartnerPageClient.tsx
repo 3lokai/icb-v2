@@ -195,7 +195,7 @@ const HowItWorksSection = () => {
       number: "2",
       title: "Choose Your Tier",
       description:
-        "Start free or upgrade to Verified/Premium for enhanced features and analytics.",
+        "Start free or upgrade to Verified/Premium for enhanced features.",
     },
     {
       number: "3",
@@ -236,7 +236,7 @@ const PricingTiers = ({
       period: "/ Forever",
       badge: null,
       features: [
-        "Basic listing",
+        "Community listing",
         "Link to your website",
         "Community reviews visible",
         "Searchable in directory",
@@ -252,16 +252,12 @@ const PricingTiers = ({
       period: "/ year",
       badge: "First 10 Only - Then ₹6,000",
       features: [
-        "Everything in Free",
         "Verified badge",
         "Claim & edit your profile",
         "Add roastery story & photos",
         "Product management dashboard",
-        "Traffic analytics",
-        "Priority support",
         "Price locked forever",
         '"Founding Roaster" badge',
-        "Featured in launch posts",
       ],
       cta: "Claim Founding Spot",
       tier: "verified" as const,
@@ -273,17 +269,15 @@ const PricingTiers = ({
       period: "/ year",
       badge: "Limited Availability",
       features: [
-        "Everything in Verified",
-        "Advanced analytics dashboard",
-        "Competitor benchmarking",
+        "Founding Partner recognition (permanent)",
+        "Traffic analytics",
         "Unlimited photos/videos",
         "Custom profile sections",
-        "Email capture widget",
-        "Quarterly optimization reviews",
         "Early access to new features",
-        "Data cleanup service (coming soon)",
+        "Direct access",
+        "Featured in launch posts",
       ],
-      cta: "Contact Us",
+      cta: "Request Invite",
       tier: "premium" as const,
       featured: false,
     },
@@ -308,7 +302,7 @@ const PricingTiers = ({
               Most Popular
             </Badge>
           )}
-          <div className="mb-6">
+          <div className="mb-6 min-h-[140px] flex flex-col">
             <div className="text-label text-muted-foreground mb-2">
               {tierData.name}
             </div>
@@ -334,7 +328,7 @@ const PricingTiers = ({
                 <span className="text-body-muted">{tierData.period}</span>
               </div>
             )}
-            {tierData.badge && (
+            {tierData.badge ? (
               <Badge
                 variant="outline"
                 className="mt-3 w-fit bg-accent/10 border-accent/30 text-accent"
@@ -342,6 +336,8 @@ const PricingTiers = ({
                 <Icon name="ClockClockwise" size={14} />
                 {tierData.badge}
               </Badge>
+            ) : (
+              <div className="mt-3 h-[24px]" />
             )}
           </div>
 
@@ -367,6 +363,11 @@ const PricingTiers = ({
           >
             {tierData.cta}
           </Button>
+          {tierData.tier === "free" && (
+            <p className="text-center text-micro text-muted-foreground mt-2">
+              Submit your roastery to be listed. No payment required.
+            </p>
+          )}
         </div>
       ))}
     </div>
@@ -376,11 +377,6 @@ const PricingTiers = ({
 // FeaturesGrid Component
 const FeaturesGrid = () => {
   const features = [
-    {
-      icon: "ChartBar" as IconName,
-      title: "Traffic Analytics",
-      description: "See who's viewing, clicking, and discovering your coffees.",
-    },
     {
       icon: "CheckCircle" as IconName,
       title: "Verified Badge",
@@ -410,11 +406,6 @@ const FeaturesGrid = () => {
       icon: "TrendUp" as IconName,
       title: "Performance Insights",
       description: "Understand what coffees resonate with your audience.",
-    },
-    {
-      icon: "Headset" as IconName,
-      title: "Priority Support",
-      description: "Get help when you need it via email/WhatsApp.",
     },
   ];
 
@@ -723,6 +714,9 @@ export default function PartnerPageClient({
                     setActiveForm(tier);
                   }}
                 />
+                <p className="text-center text-micro text-muted-foreground mt-4">
+                  Pricing reflects participation, not promotion.
+                </p>
               </Stack>
             </Section>
           </div>
