@@ -255,7 +255,7 @@ export default function HeroSection() {
                     }
                   }}
                   onKeyDown={handleKeyDown}
-                  placeholder="Search for coffee, roasters, or regions..."
+                  placeholder="Which coffee do you want to try next?"
                   ref={inputRef}
                   type="text"
                   value={searchQuery}
