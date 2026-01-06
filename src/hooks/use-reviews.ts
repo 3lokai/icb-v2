@@ -5,7 +5,7 @@ import { useCallback, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { queryKeys } from "@/lib/query-keys";
 import { createReview, deleteReview } from "@/app/actions/reviews";
-import { ensureAnonId } from "@/lib/reviews/anon-id";
+import { ensureAnonId, setReviewCount } from "@/lib/reviews/anon-id";
 import type {
   CreateReviewInput,
   DeleteReviewInput,
@@ -146,11 +146,21 @@ export function useCreateReview() {
     }) => {
       const result = await createReview(input, anonId);
       if (!result.success) {
+        // Check if it's the limit error
+        if (result.error === "ANON_LIMIT_REACHED") {
+          const error = new Error(result.error);
+          (error as any).data = result.data;
+          throw error;
+        }
         throw new Error(result.error || "Failed to create review");
       }
       return result.data;
     },
-    onSuccess: (_, variables) => {
+    onSuccess: (data, variables) => {
+      // Sync review count from server (server is source of truth)
+      if (data && data.review_count !== undefined) {
+        setReviewCount(data.review_count);
+      }
       // Invalidate related queries
       queryClient.invalidateQueries({
         queryKey: queryKeys.reviews.byEntity(
@@ -225,6 +235,7 @@ export function useCreateReview() {
     isSuccess: lastSuccess && !isDebouncing && !mutation.isPending,
     isError: mutation.isError,
     error: mutation.error,
+    reviewCount: mutation.data?.review_count,
     cleanup,
   };
 }

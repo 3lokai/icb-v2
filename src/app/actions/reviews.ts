@@ -113,6 +113,60 @@ async function resolveIdentity(
 }
 
 /**
+ * Check anonymous review limit
+ * Returns the current count of distinct entity reviews (not total rows)
+ * This ensures edits/autosaves to the same entity don't count as multiple reviews
+ *
+ * @param anon_id - Anonymous user ID
+ * @param excludeEntityType - Optional: exclude this entity type from count (for edits)
+ * @param excludeEntityId - Optional: exclude this entity ID from count (for edits)
+ */
+async function checkAnonymousReviewLimit(
+  anon_id: string,
+  excludeEntityType?: string,
+  excludeEntityId?: string
+): Promise<number> {
+  const supabase = await createServiceRoleClient();
+
+  // Count distinct (entity_type, entity_id) combinations, not total rows
+  // This ensures edits/autosaves to the same entity don't count as separate reviews
+  const { data, error } = await supabase
+    .from("reviews")
+    .select("entity_type, entity_id")
+    .eq("anon_id", anon_id)
+    .eq("status", "active");
+
+  if (error) {
+    console.error("Error checking anonymous review limit:", error);
+    // Return 0 on error to allow the review (fail open, but log error)
+    return 0;
+  }
+
+  if (!data || data.length === 0) {
+    return 0;
+  }
+
+  // Filter out excluded entity if provided (for edits)
+  const filteredData =
+    excludeEntityType && excludeEntityId
+      ? data.filter(
+          (r) =>
+            !(
+              r.entity_type === excludeEntityType &&
+              r.entity_id === excludeEntityId
+            )
+        )
+      : data;
+
+  // Count distinct entity reviews
+  const distinctEntities = new Set(
+    filteredData.map((r) => `${r.entity_type}:${r.entity_id}`)
+  );
+
+  return distinctEntities.size;
+}
+
+/**
  * Create a new review (handles both new reviews and edits)
  *
  * Uses immutable history pattern - all edits create new INSERTs.
@@ -121,7 +175,7 @@ async function resolveIdentity(
 export async function createReview(
   input: CreateReviewInput,
   anonId?: string | null
-): Promise<ActionResult<{ id: string }>> {
+): Promise<ActionResult<{ id: string; review_count: number }>> {
   try {
     // Basic validation
     if (!input.entity_id || !isUuid(input.entity_id)) {
@@ -156,6 +210,40 @@ export async function createReview(
     }
 
     const { user_id, anon_id } = identity.data;
+
+    // Check anonymous review limit before inserting
+    // Exclude current entity if user already has a review for it (this is an edit, not new review)
+    if (user_id === null && anon_id !== null) {
+      // Check if user already has a review for this entity (this would be an edit)
+      const supabaseCheck = await createServiceRoleClient();
+      const { data: existingReview } = await supabaseCheck
+        .from("reviews")
+        .select("id")
+        .eq("anon_id", anon_id)
+        .eq("entity_type", input.entity_type)
+        .eq("entity_id", input.entity_id)
+        .eq("status", "active")
+        .limit(1)
+        .single();
+
+      const isEdit = !!existingReview;
+
+      // Count distinct entity reviews, excluding current entity if it's an edit
+      const currentCount = await checkAnonymousReviewLimit(
+        anon_id,
+        isEdit ? input.entity_type : undefined,
+        isEdit ? input.entity_id : undefined
+      );
+
+      // Only check limit for new reviews, not edits
+      if (!isEdit && currentCount >= 3) {
+        return {
+          success: false,
+          error: "ANON_LIMIT_REACHED",
+          data: { limit: 3, current: currentCount },
+        } as unknown as ActionResult<{ id: string; review_count: number }>;
+      }
+    }
 
     const supabase = await createServiceRoleClient();
 
@@ -201,7 +289,13 @@ export async function createReview(
       console.error("Failed to send review notification:", err);
     });
 
-    return { success: true, data: { id: data.id } };
+    // Get updated review count for anonymous users (count distinct entities)
+    let review_count = 0;
+    if (user_id === null && anon_id !== null) {
+      review_count = await checkAnonymousReviewLimit(anon_id);
+    }
+
+    return { success: true, data: { id: data.id, review_count } };
   } catch (error) {
     console.error("Unexpected error creating review:", error);
     return {
