@@ -114,6 +114,7 @@ export type CoffeeFilters = {
   has_sensory_only?: boolean;
 
   // Numeric
+  min_price?: number;
   max_price?: number;
 
   // Origin

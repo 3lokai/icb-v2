@@ -46,6 +46,9 @@ async function fetchCoffeeFilterMetaFromAPI(
   if (filters.has_250g_only) {
     params.set("has250gOnly", "1");
   }
+  if (filters.min_price) {
+    params.set("minPrice", filters.min_price.toString());
+  }
   if (filters.max_price) {
     params.set("maxPrice", filters.max_price.toString());
   }

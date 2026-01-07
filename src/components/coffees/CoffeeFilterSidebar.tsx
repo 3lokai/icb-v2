@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { DualRangeSlider } from "@/components/ui/dual-range-slider";
 import { Stack } from "@/components/primitives/stack";
 import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
 import { useCoffeeFilterMeta } from "@/hooks/use-coffee-filter-meta";
@@ -28,6 +30,17 @@ export function CoffeeFilterContent({
   showHeader = true,
 }: CoffeeFilterContentProps) {
   const { filters, updateFilters, resetFilters } = useCoffeeFilters();
+
+  // Local state for price slider to enable smooth dragging
+  // Only used during drag, synced from filters when not dragging
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragValue, setDragValue] = useState<[number, number] | null>(null);
+
+  // Derive current value from filters or drag state
+  const currentPriceRange: [number, number] =
+    isDragging && dragValue
+      ? dragValue
+      : [filters.min_price ?? 0, filters.max_price ?? 10000];
 
   // Fetch dynamic filter meta based on current filters
   // Uses static meta as initial data, updates when filters change
@@ -96,7 +109,7 @@ export function CoffeeFilterContent({
     options: FilterSectionOptions<T>
   ) => {
     const { title, items, filterKey, getValue, totalCount } = options;
-    if (items.length === 0) {
+    if (!items || items.length === 0) {
       return null;
     }
 
@@ -187,22 +200,6 @@ export function CoffeeFilterContent({
         totalCount: filterMeta.totals.roasters,
       })}
 
-      {/* Regions */}
-      {renderFilterSection({
-        title: "Regions",
-        items: filterMeta.regions,
-        filterKey: "region_ids",
-        getValue: (item) => item.id,
-      })}
-
-      {/* Estates */}
-      {renderFilterSection({
-        title: "Estates",
-        items: filterMeta.estates,
-        filterKey: "estate_ids",
-        getValue: (item) => item.id,
-      })}
-
       {/* Roast Levels */}
       <Stack gap="3">
         <label
@@ -237,6 +234,67 @@ export function CoffeeFilterContent({
           ))}
         </Stack>
       </Stack>
+
+      {/* Price Range */}
+      <Stack gap="3">
+        <label
+          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+          htmlFor="priceRange"
+        >
+          Price Range (₹)
+        </label>
+        <div className="px-1 pt-8">
+          <DualRangeSlider
+            id="priceRange"
+            min={0}
+            max={10000}
+            step={50}
+            value={currentPriceRange}
+            onValueChange={(values) => {
+              // Update local state during drag for responsive UI
+              setIsDragging(true);
+              setDragValue([values[0], values[1]]);
+            }}
+            onValueCommit={(values) => {
+              const [min, max] = values;
+              // Reset dragging state
+              setIsDragging(false);
+              setDragValue(null);
+              // If both values are at extremes, clear the filters
+              if (min === 0 && max === 10000) {
+                updateFilters({
+                  min_price: undefined,
+                  max_price: undefined,
+                });
+              } else {
+                updateFilters({
+                  min_price: min > 0 ? min : undefined,
+                  max_price: max < 10000 ? max : undefined,
+                });
+              }
+            }}
+            label={(value) => `₹${value?.toLocaleString() ?? "0"}`}
+            labelPosition="top"
+            className="w-full"
+          />
+        </div>
+      </Stack>
+
+      {/* Regions */}
+      {renderFilterSection({
+        title: "Regions",
+        items: filterMeta.regions,
+        filterKey: "region_ids",
+        getValue: (item) => item.id,
+      })}
+
+      {/* Estates */}
+      {renderFilterSection({
+        title: "Estates",
+        items: filterMeta.estates,
+        filterKey: "estate_ids",
+        getValue: (item) => item.id,
+      })}
 
       {/* Processing Methods */}
       <Stack gap="3">
@@ -329,32 +387,6 @@ export function CoffeeFilterContent({
         filterKey: "brew_method_ids",
         getValue: (item) => item.id,
       })}
-
-      {/* Price Range */}
-      <Stack gap="3">
-        <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-          htmlFor="maxPrice"
-        >
-          Max Price (₹)
-        </label>
-        <Input
-          id="maxPrice"
-          className="h-10 border-border/60 focus:border-accent/40"
-          min="0"
-          onChange={(e) => {
-            const value = e.target.value
-              ? Number.parseInt(e.target.value, 10)
-              : undefined;
-            updateFilters({
-              max_price: value && value > 0 ? value : undefined,
-            });
-          }}
-          placeholder="e.g. 500"
-          type="number"
-          value={filters.max_price || ""}
-        />
-      </Stack>
 
       {/* Boolean Filters */}
       <Stack gap="4">

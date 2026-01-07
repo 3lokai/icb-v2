@@ -176,7 +176,12 @@ export function parseCoffeeSearchParams(searchParams: URLSearchParams): {
     filters.has_250g_only = true;
   }
 
-  // Numeric filter
+  // Numeric filters
+  const minPrice = parseNumericFilter(searchParams, "minPrice");
+  if (minPrice !== undefined) {
+    filters.min_price = minPrice;
+  }
+
   const maxPrice = parseNumericFilter(searchParams, "maxPrice");
   if (maxPrice !== undefined) {
     filters.max_price = maxPrice;
@@ -283,7 +288,8 @@ export function buildCoffeeQueryString(
   addBooleanFlag(params, "inStockOnly", filters.in_stock_only);
   addBooleanFlag(params, "has250gOnly", filters.has_250g_only);
 
-  // Numeric filter
+  // Numeric filters
+  addNumericFilter(params, "minPrice", filters.min_price);
   addNumericFilter(params, "maxPrice", filters.max_price);
 
   return params.toString();
