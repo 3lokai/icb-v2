@@ -422,7 +422,7 @@ export default function HeroSection() {
               >
                 <Link href="/coffees">
                   <Icon className="mr-2" name="Coffee" size={18} />
-                  Explore Directory
+                  Explore Coffees
                 </Link>
               </Button>
               <Button

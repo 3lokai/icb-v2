@@ -65,16 +65,22 @@ export type Database = {
       };
       brew_methods: {
         Row: {
+          canonical_key: Database["public"]["Enums"]["grind_enum"] | null;
+          canonical_label: string | null;
           id: string;
           key: string;
           label: string;
         };
         Insert: {
+          canonical_key?: Database["public"]["Enums"]["grind_enum"] | null;
+          canonical_label?: string | null;
           id?: string;
           key: string;
           label: string;
         };
         Update: {
+          canonical_key?: Database["public"]["Enums"]["grind_enum"] | null;
+          canonical_label?: string | null;
           id?: string;
           key?: string;
           label?: string;
@@ -706,6 +712,59 @@ export type Database = {
           },
         ];
       };
+      raw_products: {
+        Row: {
+          first_seen_at: string;
+          id: string;
+          is_coffee: boolean | null;
+          last_seen_at: string;
+          name: string;
+          platform: Database["public"]["Enums"]["platform_enum"];
+          platform_product_id: string;
+          product_url: string | null;
+          roaster_id: string;
+          slug: string | null;
+          source_raw: Json | null;
+          status: string | null;
+        };
+        Insert: {
+          first_seen_at?: string;
+          id?: string;
+          is_coffee?: boolean | null;
+          last_seen_at?: string;
+          name: string;
+          platform: Database["public"]["Enums"]["platform_enum"];
+          platform_product_id: string;
+          product_url?: string | null;
+          roaster_id: string;
+          slug?: string | null;
+          source_raw?: Json | null;
+          status?: string | null;
+        };
+        Update: {
+          first_seen_at?: string;
+          id?: string;
+          is_coffee?: boolean | null;
+          last_seen_at?: string;
+          name?: string;
+          platform?: Database["public"]["Enums"]["platform_enum"];
+          platform_product_id?: string;
+          product_url?: string | null;
+          roaster_id?: string;
+          slug?: string | null;
+          source_raw?: Json | null;
+          status?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "raw_products_roaster_id_fkey";
+            columns: ["roaster_id"];
+            isOneToOne: false;
+            referencedRelation: "roasters";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       regions: {
         Row: {
           country: string | null;
@@ -822,6 +881,7 @@ export type Database = {
           repeat_count: number | null;
           robots_allow: boolean | null;
           robots_checked_at: string | null;
+          scrape_base_url: string | null;
           slug: string;
           social_json: Json;
           support_email: string | null;
@@ -871,6 +931,7 @@ export type Database = {
           repeat_count?: number | null;
           robots_allow?: boolean | null;
           robots_checked_at?: string | null;
+          scrape_base_url?: string | null;
           slug: string;
           social_json?: Json;
           support_email?: string | null;
@@ -920,6 +981,7 @@ export type Database = {
           repeat_count?: number | null;
           robots_allow?: boolean | null;
           robots_checked_at?: string | null;
+          scrape_base_url?: string | null;
           slug?: string;
           social_json?: Json;
           support_email?: string | null;
@@ -1917,7 +1979,7 @@ export type Database = {
         | "whole"
         | "filter"
         | "espresso"
-        | "omni"
+        | "drip"
         | "other"
         | "turkish"
         | "moka_pot"
@@ -1929,7 +1991,13 @@ export type Database = {
         | "south_indian_filter"
         | "pour_over"
         | "syphon";
-      platform_enum: "shopify" | "woocommerce" | "custom" | "other";
+      platform_enum:
+        | "shopify"
+        | "woocommerce"
+        | "custom"
+        | "other"
+        | "godaddy/ols"
+        | "wix";
       process_enum:
         | "washed"
         | "natural"
@@ -2127,7 +2195,7 @@ export const Constants = {
         "whole",
         "filter",
         "espresso",
-        "omni",
+        "drip",
         "other",
         "turkish",
         "moka_pot",
@@ -2140,7 +2208,14 @@ export const Constants = {
         "pour_over",
         "syphon",
       ],
-      platform_enum: ["shopify", "woocommerce", "custom", "other"],
+      platform_enum: [
+        "shopify",
+        "woocommerce",
+        "custom",
+        "other",
+        "godaddy/ols",
+        "wix",
+      ],
       process_enum: [
         "washed",
         "natural",
