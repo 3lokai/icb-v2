@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   initGA,
   pageview,
@@ -17,7 +17,6 @@ import {
  */
 export function GoogleAnalytics() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   // Initialize GA on mount
   useEffect(() => {
@@ -26,12 +25,11 @@ export function GoogleAnalytics() {
 
   // Track pageviews and attribution on route changes
   useEffect(() => {
-    if (!pathname) return;
+    if (!pathname || typeof window === "undefined") return;
 
-    // Get current URL with search params
-    const url =
-      pathname +
-      (searchParams?.toString() ? `?${searchParams.toString()}` : "");
+    // Get current URL with search params from window.location
+    // This avoids the need for useSearchParams() which requires Suspense
+    const url = window.location.pathname + window.location.search;
 
     // Track pageview
     pageview(url);
@@ -45,7 +43,7 @@ export function GoogleAnalytics() {
     ) {
       storeAttributionData(utmParams);
     }
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return null;
 }
