@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieNotice } from "@/components/common/CookieNotice";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
@@ -126,6 +127,7 @@ export default function RootLayout({
             <AuthProvider>
               <SearchProvider>
                 <ModalProvider>
+                  <GoogleAnalytics />
                   <ConditionalLayout>{children}</ConditionalLayout>
                   <SearchCommand />
                   <Toaster />

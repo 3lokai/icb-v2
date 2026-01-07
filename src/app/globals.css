@@ -77,24 +77,6 @@
   /* Animation variables */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
-  --animate-fade-in-out: fade-in-out 4s ease-in-out;
-  --animate-progress: progress 8s linear;
-  --animate-infinite-slider: infiniteSlider 20s linear infinite;
-  --animate-infinite-slider-reverse: infiniteSliderReverse 20s linear infinite;
-  --animate-shadow-ping: shadow-ping 1.5s ease-in-out infinite;
-  --animate-flip-btn: flip-btn 6s infinite steps(2, end);
-  --animate-rotate-btn: rotate-btn 3s linear infinite both;
-  --animate-light-to-right-top: light-to-right 4s linear infinite;
-  --animate-light-to-right-bottom: light-to-right 4s linear infinite;
-  --animate-slide-to-right: slide-to-right 3s linear infinite;
-  --animate-slide-to-top: slide-to-top 3s linear infinite;
-  --animate-slide-to-bottom: slide-to-bottom 3s linear infinite;
-  --animate-slide-to-left: slide-to-left 3s linear infinite;
-  --animate-slide-to-right-top: slide-to-right-top 3s linear infinite;
-  --animate-slide-to-right-bottom: slide-to-right-bottom 3s linear infinite;
-  --animate-slide-to-left-top: slide-to-left-top 3s linear infinite;
-  --animate-slide-to-left-bottom: slide-to-left-bottom 3s linear infinite;
-  --animate-shine: shine var(--duration) infinite linear;
   --animate-marquee: marquee var(--duration) infinite linear;
 
   /* Shadow color base - coffee-tinted from accent */

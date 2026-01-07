@@ -159,13 +159,16 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     // Brew Methods
     supabase
       .from("coffee_brew_methods")
-      .select("brew_method_id, brew_methods(id, label)")
+      .select(
+        "brew_method_id, brew_methods(id, label, canonical_key, canonical_label)"
+      )
       .then((result) => {
         if (result.error) {
           throw result.error;
         }
         const data = result.data || [];
 
+        // Group by canonical_key instead of individual brew method id
         const counts = new Map<
           string,
           { id: string; label: string; count: number }
@@ -175,16 +178,27 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
           const bm = row.brew_methods as unknown as {
             id: string;
             label: string;
+            canonical_key: string | null;
+            canonical_label: string | null;
           } | null;
           if (!bm) {
             continue;
           }
 
-          const existing = counts.get(bm.id);
+          // Only include brew methods with canonical_key
+          if (!bm.canonical_key) {
+            continue;
+          }
+
+          // Use canonical_key as id, canonical_label as label (fallback to canonical_key if label is null)
+          const key = bm.canonical_key;
+          const label = bm.canonical_label || bm.canonical_key;
+
+          const existing = counts.get(key);
           if (existing) {
             existing.count += 1;
           } else {
-            counts.set(bm.id, { id: bm.id, label: bm.label, count: 1 });
+            counts.set(key, { id: key, label: label, count: 1 });
           }
         }
 

@@ -100,7 +100,14 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
     filteredQuery = filteredQuery.eq("has_250g_bool", true);
   }
 
-  // Numeric filter
+  // Numeric filters
+  if (filters.min_price && filters.min_price > 0) {
+    filteredQuery = filteredQuery.gte(
+      "best_normalized_250g",
+      filters.min_price
+    );
+  }
+
   if (filters.max_price && filters.max_price > 0) {
     filteredQuery = filteredQuery.lte(
       "best_normalized_250g",
@@ -475,15 +482,32 @@ export async function fetchCoffees(
   }
 
   if (filters.brew_method_ids?.length) {
+    // brew_method_ids in filters are actually canonical_keys from UI
+    // Filter by canonical_key instead of brew_method_id
     junctionFilters.push({
-      ids: filters.brew_method_ids,
-      getter: () =>
-        getCoffeeIdsFromJunction(
+      ids: filters.brew_method_ids, // These are canonical_keys
+      getter: async () => {
+        // First, get all brew_method_ids that have the given canonical_keys
+        const { data: brewMethods } = await supabase
+          .from("brew_methods")
+          .select("id")
+          .in("canonical_key", filters.brew_method_ids!)
+          .not("canonical_key", "is", null);
+
+        if (!brewMethods || brewMethods.length === 0) {
+          return null;
+        }
+
+        const brewMethodIds = brewMethods.map((bm: any) => bm.id);
+
+        // Then get coffee IDs from the junction table
+        return getCoffeeIdsFromJunction(
           supabase,
           "coffee_brew_methods",
           "brew_method_id",
-          filters.brew_method_ids!
-        ),
+          brewMethodIds
+        );
+      },
     });
   }
 
