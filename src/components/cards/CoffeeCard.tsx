@@ -1,5 +1,6 @@
 // src/components/cards/CoffeeCard.tsx
 import Image from "next/image";
+import { useMemo, memo } from "react";
 import { Card, CardTitle } from "@/components/ui/card";
 import { coffeeImagePresets } from "@/lib/imagekit";
 import { computeCoffeeRibbon, formatPrice } from "@/lib/utils/coffee-utils";
@@ -47,7 +48,61 @@ function getRibbonStyles(ribbon: ReturnType<typeof computeCoffeeRibbon>) {
   return "";
 }
 
-export default function CoffeeCard({ coffee }: CoffeeCardProps) {
+function CoffeeCardComponent({ coffee }: CoffeeCardProps) {
+  // All hooks must be called before any conditional returns
+  // Memoize expensive computations
+  const displayRibbon = useMemo(
+    () => (coffee ? computeCoffeeRibbon(coffee) : null),
+    [coffee]
+  );
+  const price = coffee?.best_normalized_250g;
+  const hasRoaster = Boolean(coffee?.roaster_name);
+  const ariaLabel = useMemo(
+    () =>
+      coffee && hasRoaster
+        ? `View details for ${coffee.name} coffee by ${coffee.roaster_name}`
+        : coffee
+          ? `View details for ${coffee.name} coffee`
+          : "View coffee details",
+    [coffee, hasRoaster]
+  );
+
+  // Memoize formatted price
+  const formattedPrice = useMemo(
+    () => (price ? formatPrice(price).replace(/₹/g, "").trim() : null),
+    [price]
+  );
+
+  // Memoize image URL
+  const imageUrl = useMemo(
+    () =>
+      coffee?.image_url ? coffeeImagePresets.coffeeCard(coffee.image_url) : "",
+    [coffee]
+  );
+
+  // Memoize roast level display
+  const roastLevel = useMemo(
+    () =>
+      coffee
+        ? capitalizeFirstLetter(
+            coffee.roast_level_raw ||
+              coffee.roast_style_raw ||
+              coffee.roast_level
+          ) || "—"
+        : "—",
+    [coffee]
+  );
+
+  // Memoize process display
+  const process = useMemo(
+    () =>
+      coffee
+        ? capitalizeFirstLetter(coffee.process_raw || coffee.process) || "—"
+        : "—",
+    [coffee]
+  );
+
+  // Early returns after all hooks
   if (!coffee) {
     return null;
   }
@@ -57,13 +112,6 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
   if (!coffee.name) {
     return null;
   }
-
-  const displayRibbon = computeCoffeeRibbon(coffee);
-  const price = coffee.best_normalized_250g;
-  const hasRoaster = Boolean(coffee.roaster_name);
-  const ariaLabel = hasRoaster
-    ? `View details for ${coffee.name} coffee by ${coffee.roaster_name}`
-    : `View details for ${coffee.name} coffee`;
 
   return (
     <CoffeeTrackingLink
@@ -94,7 +142,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
             fill
             itemProp="image"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 400px"
-            src={coffeeImagePresets.coffeeCard(coffee.image_url)}
+            src={imageUrl}
           />
 
           {/* Top image-integrated selector fade */}
@@ -151,11 +199,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
                   Roast
                 </span>
                 <span className="text-caption font-medium line-clamp-1">
-                  {capitalizeFirstLetter(
-                    coffee.roast_level_raw ||
-                      coffee.roast_style_raw ||
-                      coffee.roast_level
-                  ) || "—"}
+                  {roastLevel}
                 </span>
               </div>
               <div className="flex flex-col gap-0.5 border-l-2 border-accent/20 pl-3">
@@ -163,9 +207,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
                   Process
                 </span>
                 <span className="text-caption font-medium line-clamp-1">
-                  {capitalizeFirstLetter(
-                    coffee.process_raw || coffee.process
-                  ) || "—"}
+                  {process}
                 </span>
               </div>
             </div>
@@ -194,7 +236,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
                       className="text-caption font-black text-accent"
                       itemProp="price"
                     >
-                      {formatPrice(price).replace(/₹/g, "").trim()}
+                      {formattedPrice}
                     </span>
                   </div>
                   <span className="text-overline text-muted-foreground/60 italic">
@@ -229,3 +271,30 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
     </CoffeeTrackingLink>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders
+const CoffeeCard = memo(CoffeeCardComponent, (prevProps, nextProps) => {
+  // Custom comparison function for better performance
+  // Compare tags arrays by converting to string for deep equality
+  const prevTags = prevProps.coffee.tags?.join(",") || "";
+  const nextTags = nextProps.coffee.tags?.join(",") || "";
+
+  return (
+    prevProps.coffee.coffee_id === nextProps.coffee.coffee_id &&
+    prevProps.coffee.slug === nextProps.coffee.slug &&
+    prevProps.coffee.name === nextProps.coffee.name &&
+    prevProps.coffee.image_url === nextProps.coffee.image_url &&
+    prevProps.coffee.best_normalized_250g ===
+      nextProps.coffee.best_normalized_250g &&
+    prevProps.coffee.roaster_name === nextProps.coffee.roaster_name &&
+    prevProps.coffee.roast_level === nextProps.coffee.roast_level &&
+    prevProps.coffee.roast_level_raw === nextProps.coffee.roast_level_raw &&
+    prevProps.coffee.process === nextProps.coffee.process &&
+    prevProps.coffee.process_raw === nextProps.coffee.process_raw &&
+    prevTags === nextTags
+  );
+});
+
+CoffeeCard.displayName = "CoffeeCard";
+
+export default CoffeeCard;

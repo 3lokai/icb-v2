@@ -22,7 +22,6 @@ type PartnerPageClientProps = {
 };
 
 // InteractiveBentoCard component (reused from ContactForms pattern)
-// InteractiveBentoCard component (reused from ContactForms pattern)
 const InteractiveBentoCard = ({
   icon,
   title,
