@@ -11,13 +11,13 @@ import {
 } from "@/lib/analytics";
 
 /**
- * Google Analytics component that:
+ *  Analytics component that:
  * 1. Initializes GA on mount
  * 2. Tracks pageviews on route changes
  * 3. Tracks pageview when consent is granted (if not already tracked)
  * 4. Stores attribution data from UTM parameters
  */
-export function GoogleAnalytics() {
+export function Analytics() {
   const pathname = usePathname();
   const trackedPages = useRef<Set<string>>(new Set());
 

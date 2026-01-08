@@ -4,7 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieNotice } from "@/components/common/CookieNotice";
-import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { Analytics as GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { env } from "../../env";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
