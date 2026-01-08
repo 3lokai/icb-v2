@@ -9,8 +9,8 @@ import {
 import type { CoffeeFilters, CoffeeSort } from "@/types/coffee-types";
 
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 15;
-const DEFAULT_SORT: CoffeeSort = "relevance";
+const _DEFAULT_LIMIT = 15;
+const _DEFAULT_SORT: CoffeeSort = "relevance";
 
 /**
  * Hook to read and update coffee filters from URL

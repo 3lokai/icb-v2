@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getMyProfileDTO } from "@/data/user-dto";
 import { queryKeys } from "@/lib/query-keys";
 import { createClient } from "@/lib/supabase/client";
 import type { PrivateProfileDTO } from "@/data/user-dto";

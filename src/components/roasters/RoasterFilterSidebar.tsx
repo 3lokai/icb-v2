@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Stack } from "@/components/primitives/stack";
-import { Cluster } from "@/components/primitives/cluster";
 import { useRoasterFilters } from "@/hooks/use-roaster-filters";
 import { useRoasterFilterMeta } from "@/hooks/use-roaster-filter-meta";
 import type { RoasterFilterMeta } from "@/types/roaster-types";

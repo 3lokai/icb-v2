@@ -1,7 +1,6 @@
 // src/components/home/NewsletterSection.tsx
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
-import { Icon } from "@/components/common/Icon";
 import { NewsletterForm } from "../common/NewsletterForm";
 
 export default function NewsletterSection() {

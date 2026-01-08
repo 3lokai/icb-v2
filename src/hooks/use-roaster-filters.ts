@@ -9,8 +9,8 @@ import {
 import type { RoasterFilters, RoasterSort } from "@/types/roaster-types";
 
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 15;
-const DEFAULT_SORT: RoasterSort = "relevance";
+const _DEFAULT_LIMIT = 15;
+const _DEFAULT_SORT: RoasterSort = "relevance";
 
 /**
  * Hook to read and update roaster filters from URL
