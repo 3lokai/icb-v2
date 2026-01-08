@@ -13,6 +13,31 @@ export async function GET(req: NextRequest) {
     const type = searchParams.get("type") ?? "website";
     const imageUrl = searchParams.get("image") ?? null;
 
+    // Default to logo-icon.svg if no image provided
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    const defaultLogoUrl = `${baseUrl}/logo-icon.svg`;
+    const finalImageUrl = imageUrl || defaultLogoUrl;
+    const isLogoImage = finalImageUrl.includes("logo-icon.svg");
+
+    // Fetch logo SVG if it's the default logo
+    let logoSrc: string | null = null;
+    if (isLogoImage) {
+      try {
+        const logoResponse = await fetch(finalImageUrl);
+        if (logoResponse.ok) {
+          const logoText = await logoResponse.text();
+          // Encode SVG as base64 for use in img src
+          // In edge runtime, we use btoa for base64 encoding
+          const logoBase64 = btoa(logoText);
+          logoSrc = `data:image/svg+xml;base64,${logoBase64}`;
+        }
+      } catch (e) {
+        // Fallback to gradient if logo fetch fails
+        console.error("Failed to fetch logo:", e);
+      }
+    }
+
     return new ImageResponse(
       <div
         style={{
@@ -23,13 +48,41 @@ export async function GET(req: NextRequest) {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "#f4eee2",
-          backgroundImage: imageUrl
-            ? `url(${imageUrl})`
-            : "linear-gradient(to bottom right, #f4eee2, #e8dfca)",
+          backgroundImage:
+            !isLogoImage && finalImageUrl.startsWith("http")
+              ? `url(${finalImageUrl})`
+              : "linear-gradient(to bottom right, #f4eee2, #e8dfca)",
           backgroundSize: "cover",
           backgroundPosition: "center",
+          position: "relative",
         }}
       >
+        {/* Logo overlay in top-right corner when using logo */}
+        {logoSrc ? (
+          <div
+            style={{
+              position: "absolute",
+              top: 40,
+              right: 40,
+              width: 120,
+              height: 120,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logoSrc}
+              alt="Logo"
+              width={120}
+              height={120}
+              style={{
+                objectFit: "contain",
+              }}
+            />
+          </div>
+        ) : null}
         <div
           style={{
             display: "flex",

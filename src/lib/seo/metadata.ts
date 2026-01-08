@@ -35,13 +35,16 @@ function buildOGImageUrl(
   image: string | undefined,
   type: string
 ): string {
+  // Default to logo-icon.svg when no image is provided
+  const defaultImage = `${baseUrl}/logo-icon.svg`;
+
   if (image) {
     if (image.startsWith("http")) {
       return image;
     }
     return `${baseUrl}/api/og?title=${encodeURIComponent(title || "")}&image=${encodeURIComponent(image)}&type=${type}`;
   }
-  return `${baseUrl}/api/og?title=${encodeURIComponent(title || "")}`;
+  return `${baseUrl}/api/og?title=${encodeURIComponent(title || "")}&image=${encodeURIComponent(defaultImage)}&type=${type}`;
 }
 
 // Helper: Merge keywords with defaults
