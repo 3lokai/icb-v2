@@ -3,6 +3,7 @@ import { getMyProfileDTO } from "@/data/user-dto";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { sendSlackNotification } from "@/lib/notifications/slack";
 import { sendWelcomeEmail } from "@/lib/emails/resend";
+import { subscribeToConvertKit } from "@/lib/convertkit/client";
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -189,6 +190,86 @@ export async function GET(request: NextRequest) {
         }).catch((err) => {
           console.error("Failed to send welcome email:", err);
         });
+      }
+
+      // Sync to ConvertKit if newsletter_subscribed is true (default)
+      if (user.email && (profile?.newsletter_subscribed ?? true)) {
+        const serviceClient = await createServiceRoleClient();
+
+        // Get full profile data for custom fields
+        const { data: fullProfile } = await serviceClient
+          .from("user_profiles")
+          .select("experience_level, city, state, country")
+          .eq("id", user.id)
+          .single();
+
+        // Get user roles
+        const { data: roles } = await serviceClient
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id);
+
+        const userRoles = roles?.map((r) => r.role) || [];
+        const signupSource =
+          method === "google"
+            ? "oauth-google"
+            : method === "facebook"
+              ? "oauth-facebook"
+              : "user-registration";
+
+        // Sync to ConvertKit (fire and forget)
+        subscribeToConvertKit({
+          email_address: user.email,
+          first_name: name,
+          state: "active",
+          fields: {
+            "Signup Source": signupSource,
+            ...(userRoles.length > 0 && { "User Role": userRoles[0] }),
+            ...(fullProfile?.experience_level && {
+              "Experience Level": fullProfile.experience_level,
+            }),
+            ...(fullProfile?.city || fullProfile?.state || fullProfile?.country
+              ? {
+                  Location: [
+                    fullProfile.city,
+                    fullProfile.state,
+                    fullProfile.country,
+                  ]
+                    .filter(Boolean)
+                    .join(", "),
+                }
+              : {}),
+          },
+        })
+          .then((response) => {
+            // Store subscriber ID if we got a response
+            if (response?.subscriber?.id) {
+              Promise.resolve(
+                serviceClient
+                  .from("user_profiles")
+                  .update({ convertkit_subscriber_id: response.subscriber.id })
+                  .eq("id", user.id)
+              )
+                .then((result) => {
+                  if (result.error) {
+                    throw result.error;
+                  }
+                  console.log(
+                    `[ConvertKit] Stored subscriber ID ${response.subscriber.id} for user ${user.id}`
+                  );
+                })
+                .catch((err: unknown) => {
+                  console.error(
+                    "[ConvertKit] Failed to store subscriber ID:",
+                    err
+                  );
+                });
+            }
+          })
+          .catch((err) => {
+            // Already logged in subscribeToConvertKit
+            console.error("[ConvertKit] OAuth signup sync error:", err);
+          });
       }
     }
 

@@ -2,7 +2,7 @@
 
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { useMemo, useState } from "react";
+import { useMemo, useState, memo } from "react";
 import { CoffeeDirectoryFAQ } from "@/components/faqs/CoffeeDirectoryFAQs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,8 +32,9 @@ type CoffeeDirectoryProps = {
 /**
  * Coffee Directory Component (Client Component)
  * URL is the single source of truth for filters
+ * Optimized with memoization to reduce re-renders
  */
-export function CoffeeDirectory({
+function CoffeeDirectoryComponent({
   initialData,
   filterMeta,
 }: CoffeeDirectoryProps) {
@@ -66,6 +67,9 @@ export function CoffeeDirectory({
     initialData
   );
 
+  // Memoize items to prevent unnecessary re-renders
+  const items = useMemo(() => data?.items || [], [data?.items]);
+
   // Render minimal UI (Phase 1)
   if (isError) {
     return (
@@ -79,9 +83,6 @@ export function CoffeeDirectory({
       </div>
     );
   }
-
-  // For Phase 1, pass CoffeeSummary directly (mapping will be used in Phase 2)
-  const items = data?.items || [];
 
   return (
     <>
@@ -173,3 +174,7 @@ export function CoffeeDirectory({
     </>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders
+export const CoffeeDirectory = memo(CoffeeDirectoryComponent);
+CoffeeDirectory.displayName = "CoffeeDirectory";

@@ -30,6 +30,9 @@ const envSchema = z.object({
   // Resend email service
   RESEND_API_KEY: z.string().optional(),
 
+  // ConvertKit/Kit API (server-side only)
+  KIT_API_KEY: z.string().optional(),
+
   // Slack webhooks for notifications
   // Activity channel: user signups and reviews/ratings
   SLACK_WEBHOOK_URL_ACTIVITY: z.string().url().optional(),

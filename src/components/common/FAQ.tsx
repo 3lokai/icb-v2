@@ -24,6 +24,7 @@ type FAQSectionProps = {
   description: string;
   badge: string;
   className?: string;
+  contained?: boolean;
 };
 
 type SimpleFAQProps = {
@@ -73,11 +74,12 @@ export function FAQSection({
   description,
   badge,
   className,
+  contained = true,
 }: FAQSectionProps) {
   const schema = generateFAQSchema(items);
 
   return (
-    <Section spacing="loose" className={className}>
+    <Section spacing="loose" className={className} contained={contained}>
       <StructuredData schema={schema} />
       <div className="mb-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end border-b border-border/10 pb-8">
