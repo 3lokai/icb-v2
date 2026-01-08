@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 import { ReviewSection } from "@/components/reviews";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
+import { trackRoasterClick } from "@/lib/analytics";
+import { trackRoasterConversion } from "@/lib/analytics/enhanced-tracking";
 
 type RoasterDetailPageProps = {
   roaster: RoasterDetail;
@@ -39,6 +41,7 @@ type ConnectSectionProps = {
   location: string | null;
   phone: string | null | undefined;
   supportEmail: string | null | undefined;
+  roasterId: string;
 };
 
 function ConnectSection({
@@ -46,6 +49,7 @@ function ConnectSection({
   location,
   phone,
   supportEmail,
+  roasterId,
 }: ConnectSectionProps) {
   if (socialLinks.length === 0 && !location && !phone && !supportEmail) {
     return null;
@@ -61,18 +65,32 @@ function ConnectSection({
                 Connect
               </span>
               <div className="flex flex-wrap gap-2">
-                {socialLinks.map((link) => (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-md hover:bg-accent hover:text-accent-foreground text-muted-foreground transition-colors"
-                    title={link.label}
-                  >
-                    <Icon name={link.icon as any} size={20} />
-                  </a>
-                ))}
+                {socialLinks.map((link) => {
+                  const handleSocialClick = () => {
+                    // Track website clicks separately from social media
+                    if (link.label === "Website") {
+                      trackRoasterClick(roasterId, "website");
+                      trackRoasterConversion(roasterId, "website_click");
+                    } else {
+                      trackRoasterClick(roasterId, "social");
+                      trackRoasterConversion(roasterId, "social_click");
+                    }
+                  };
+
+                  return (
+                    <a
+                      key={link.url}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-md hover:bg-accent hover:text-accent-foreground text-muted-foreground transition-colors"
+                      title={link.label}
+                      onClick={handleSocialClick}
+                    >
+                      <Icon name={link.icon as any} size={20} />
+                    </a>
+                  );
+                })}
               </div>
             </Stack>
           )}
@@ -107,6 +125,10 @@ function ConnectSection({
                     <a
                       href={`tel:${phone}`}
                       className="hover:text-primary transition-colors"
+                      onClick={() => {
+                        trackRoasterClick(roasterId, "phone");
+                        trackRoasterConversion(roasterId, "phone_click");
+                      }}
                     >
                       {phone}
                     </a>
@@ -122,6 +144,10 @@ function ConnectSection({
                     <a
                       href={`mailto:${supportEmail}`}
                       className="hover:text-primary transition-colors"
+                      onClick={() => {
+                        trackRoasterClick(roasterId, "email");
+                        trackRoasterConversion(roasterId, "email_click");
+                      }}
                     >
                       {supportEmail}
                     </a>
@@ -285,6 +311,7 @@ export function RoasterDetailPage({
                       location={location}
                       phone={roaster.phone}
                       supportEmail={roaster.support_email}
+                      roasterId={roaster.id}
                     />
                   </div>
                 </Stack>
@@ -382,6 +409,7 @@ export function RoasterDetailPage({
                     location={location}
                     phone={roaster.phone}
                     supportEmail={roaster.support_email}
+                    roasterId={roaster.id}
                   />
                 </div>
               </Stack>

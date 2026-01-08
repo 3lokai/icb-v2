@@ -1,0 +1,538 @@
+<!-- 
+  =============================================================================
+  CONVERTKIT NEWSLETTER EMAIL TEMPLATE
+  =============================================================================
+  
+  This template is designed for ConvertKit newsletter emails with:
+  - Header section with image and text (editorial style)
+  - 3 editorial sections matching homepage component patterns
+  - "Share the Coffee Love" section with shareable text and social buttons
+  
+  DESIGN NOTES:
+  - Colors match your design system (converted from oklch to hex for email compatibility)
+  - Uses table-based layout for maximum email client compatibility
+  - Responsive design with mobile-friendly breakpoints
+  - Editorial pattern: overline + title with accent italic + description
+  
+  USAGE:
+  1. Replace IMAGE_URL placeholders with actual hosted image URLs
+  2. Replace LINK_URL placeholders with actual links
+  3. Customize section content as needed
+  4. Copy into ConvertKit's email template editor
+  
+  CONVERTKIT VARIABLES USED:
+  - {{ message_content }} - Main broadcast content (insert where needed)
+  - {{ unsubscribe_link }} - Unsubscribe link
+  - {{ unsubscribe_url }} - Unsubscribe URL (for custom link text)
+  - {{ subscriber.first_name }} - Subscriber's first name
+  - {{ subscriber.email_address }} - Subscriber's email
+  - {{ address }} - Company address
+  
+  =============================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Newsletter - Indian Coffee Beans</title>
+  <style>
+    /* Email client resets */
+    body { 
+      margin: 0; 
+      padding: 0; 
+      -webkit-text-size-adjust: 100%; 
+      -ms-text-size-adjust: 100%; 
+      background-color: #fafaf9; 
+    }
+    table, td { 
+      border-collapse: collapse; 
+      mso-table-lspace: 0pt; 
+      mso-table-rspace: 0pt; 
+    }
+    img { 
+      border: 0; 
+      height: auto; 
+      line-height: 100%; 
+      outline: none; 
+      text-decoration: none; 
+      -ms-interpolation-mode: bicubic; 
+      display: block;
+    }
+    a { 
+      text-decoration: none; 
+    }
+    
+    /* Web fonts for supported clients */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap');
+    
+    /* Media queries for responsive design */
+    @media only screen and (max-width: 600px) {
+      .email-container {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .email-padding {
+        padding: 24px 20px !important;
+      }
+      .section-padding {
+        padding: 32px 20px !important;
+      }
+      .editorial-title {
+        font-size: 24px !important;
+        line-height: 1.2 !important;
+      }
+      .editorial-description {
+        font-size: 15px !important;
+      }
+      .two-column {
+        display: block !important;
+        width: 100% !important;
+      }
+      .two-column td {
+        display: block !important;
+        width: 100% !important;
+        padding: 12px 0 !important;
+      }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; word-spacing: normal; background-color: #fafaf9;">
+  
+  <!-- Main Wrapper -->
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #fafaf9;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        
+        <!-- Main Email Container -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="email-container" style="width: 100%; max-width: 680px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+          
+          <!-- ============================================
+               HEADER SECTION - Image and Text
+               ============================================ -->
+          <tr>
+            <td class="email-padding" style="padding: 48px 48px 40px;">
+              <!-- Header Image -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td align="center" style="padding-bottom: 32px;">
+                    <!-- REPLACE WITH YOUR HEADER IMAGE URL -->
+                    <img src="{{HEADER_IMAGE_URL}}" alt="Coffee Newsletter Header" width="580" style="width: 100%; max-width: 580px; height: auto; border-radius: 12px; display: block;">
+                  </td>
+                </tr>
+              </table>
+              
+              <!-- Header Text (Editorial Style) -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td style="padding-bottom: 8px;">
+                    <div style="display: inline-flex; align-items: center; gap: 16px;">
+                      <span style="display: inline-block; height: 1px; width: 48px; background-color: #D97706; opacity: 0.6;"></span>
+                      <span style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 500; color: #6b6b6b; letter-spacing: 0.15em; text-transform: uppercase;">
+                        Newsletter
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 8px;">
+                    <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #6b6b6b;">
+                      {% if subscriber.first_name %}Hi {{ subscriber.first_name }},{% else %}Hello,{% endif %}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 16px;">
+                    <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 36px; line-height: 1.1; font-weight: 400; color: #2d2d2d; letter-spacing: -0.5px;">
+                      Your Monthly <span style="color: #D97706; font-style: italic;">Coffee</span> Journey
+                    </h1>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.6; color: #6b6b6b; max-width: 580px;">
+                      Discover the latest from India's specialty coffee scene—new roasters, brewing insights, and stories from the estates.
+                    </p>
+                  </td>
+                </tr>
+                <!-- OPTIONAL: Insert broadcast message content here -->
+                <!-- 
+                <tr>
+                  <td style="padding-top: 24px;">
+                    <div style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #2d2d2d;">
+                      {{ message_content }}
+                    </div>
+                  </td>
+                </tr>
+                -->
+              </table>
+            </td>
+          </tr>
+          
+          <!-- ============================================
+               EDITORIAL SECTION 1
+               ============================================ -->
+          <tr>
+            <td class="section-padding" style="padding: 48px 48px; background-color: #fafaf9;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <!-- Editorial Header -->
+                <tr>
+                  <td style="padding-bottom: 24px;">
+                    <div style="display: inline-flex; align-items: center; gap: 16px;">
+                      <span style="display: inline-block; height: 1px; width: 48px; background-color: #D97706; opacity: 0.6;"></span>
+                      <span style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 500; color: #6b6b6b; letter-spacing: 0.15em; text-transform: uppercase;">
+                        Freshly Harvested
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 16px;">
+                    <h2 class="editorial-title" style="margin: 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 28px; line-height: 1.1; font-weight: 400; color: #2d2d2d; letter-spacing: -0.3px;">
+                      New <span style="color: #D97706; font-style: italic;">Arrivals.</span>
+                    </h2>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 32px;">
+                    <p class="editorial-description" style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #6b6b6b; max-width: 580px;">
+                      The latest additions to our roster of exceptional Indian coffee beans, featuring freshly roasted delights from across the country.
+                    </p>
+                  </td>
+                </tr>
+                
+                <!-- Content Card -->
+                <tr>
+                  <td>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #f0f0f0;">
+                      <tr>
+                        <td class="two-column" style="padding: 0;">
+                          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                              <td class="two-column" style="width: 50%; padding: 24px;">
+                                <!-- REPLACE WITH YOUR IMAGE URL -->
+                                <img src="{{SECTION1_IMAGE_URL}}" alt="New Coffee Arrival" width="280" style="width: 100%; max-width: 280px; height: auto; border-radius: 8px; display: block;">
+                              </td>
+                              <td class="two-column" style="width: 50%; padding: 24px; vertical-align: top;">
+                                <h3 style="margin: 0 0 12px 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 20px; line-height: 1.3; font-weight: 500; color: #2d2d2d;">
+                                  Featured Coffee
+                                </h3>
+                                <p style="margin: 0 0 16px 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #6b6b6b;">
+                                  Discover this month's standout coffee with unique tasting notes and origin story.
+                                </p>
+                                <a href="{{SECTION1_LINK_URL}}" style="display: inline-block; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; color: #D97706; text-decoration: none;">
+                                  Explore Coffee →
+                                </a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- ============================================
+               EDITORIAL SECTION 2
+               ============================================ -->
+          <tr>
+            <td class="section-padding" style="padding: 48px 48px; background-color: #ffffff;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <!-- Editorial Header -->
+                <tr>
+                  <td style="padding-bottom: 24px;">
+                    <div style="display: inline-flex; align-items: center; gap: 16px;">
+                      <span style="display: inline-block; height: 1px; width: 48px; background-color: #D97706; opacity: 0.6;"></span>
+                      <span style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 500; color: #6b6b6b; letter-spacing: 0.15em; text-transform: uppercase;">
+                        The Craftsmen
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 16px;">
+                    <h2 class="editorial-title" style="margin: 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 28px; line-height: 1.1; font-weight: 400; color: #2d2d2d; letter-spacing: -0.3px;">
+                      Featured <span style="color: #D97706; font-style: italic;">Roasters.</span>
+                    </h2>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 32px;">
+                    <p class="editorial-description" style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #6b6b6b; max-width: 580px;">
+                      Discover India's finest specialty coffee roasters, each bringing a unique perspective and passion to their craft.
+                    </p>
+                  </td>
+                </tr>
+                
+                <!-- Content Card -->
+                <tr>
+                  <td>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #fafaf9; border-radius: 12px; overflow: hidden; border: 1px solid #f0f0f0;">
+                      <tr>
+                        <td class="two-column" style="padding: 0;">
+                          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                              <td class="two-column" style="width: 50%; padding: 24px; vertical-align: top;">
+                                <h3 style="margin: 0 0 12px 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 20px; line-height: 1.3; font-weight: 500; color: #2d2d2d;">
+                                  Roaster Spotlight
+                                </h3>
+                                <p style="margin: 0 0 16px 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #6b6b6b;">
+                                  Meet the artisans behind India's specialty coffee movement and learn about their unique approach to roasting.
+                                </p>
+                                <a href="{{SECTION2_LINK_URL}}" style="display: inline-block; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; color: #D97706; text-decoration: none;">
+                                  Meet Roasters →
+                                </a>
+                              </td>
+                              <td class="two-column" style="width: 50%; padding: 24px;">
+                                <!-- REPLACE WITH YOUR IMAGE URL -->
+                                <img src="{{SECTION2_IMAGE_URL}}" alt="Featured Roaster" width="280" style="width: 100%; max-width: 280px; height: auto; border-radius: 8px; display: block;">
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- ============================================
+               EDITORIAL SECTION 3
+               ============================================ -->
+          <tr>
+            <td class="section-padding" style="padding: 48px 48px; background-color: #fafaf9;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <!-- Editorial Header -->
+                <tr>
+                  <td style="padding-bottom: 24px;">
+                    <div style="display: inline-flex; align-items: center; gap: 16px;">
+                      <span style="display: inline-block; height: 1px; width: 48px; background-color: #D97706; opacity: 0.6;"></span>
+                      <span style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 500; color: #6b6b6b; letter-spacing: 0.15em; text-transform: uppercase;">
+                        Knowledge Base
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 16px;">
+                    <h2 class="editorial-title" style="margin: 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 28px; line-height: 1.1; font-weight: 400; color: #2d2d2d; letter-spacing: -0.3px;">
+                      Unlock the World of <span style="color: #D97706; font-style: italic;">Indian Coffee.</span>
+                    </h2>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 32px;">
+                    <p class="editorial-description" style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #6b6b6b; max-width: 580px;">
+                      Dive into India's rich coffee heritage, from cultivation techniques in the Western Ghats to traditional brewing methods.
+                    </p>
+                  </td>
+                </tr>
+                
+                <!-- Content Card -->
+                <tr>
+                  <td>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #f0f0f0;">
+                      <tr>
+                        <td style="padding: 24px;">
+                          <!-- REPLACE WITH YOUR IMAGE URL -->
+                          <img src="{{SECTION3_IMAGE_URL}}" alt="Coffee Education" width="580" style="width: 100%; max-width: 580px; height: auto; border-radius: 8px; display: block; margin-bottom: 20px;">
+                          <h3 style="margin: 0 0 12px 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 20px; line-height: 1.3; font-weight: 500; color: #2d2d2d;">
+                            Brewing Insights
+                          </h3>
+                          <p style="margin: 0 0 16px 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #6b6b6b;">
+                            Master brewing techniques specifically tailored to bring out the best in Indian coffees. Learn about bean varieties, processing methods, and more.
+                          </p>
+                          <a href="{{SECTION3_LINK_URL}}" style="display: inline-block; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; color: #D97706; text-decoration: none;">
+                            Explore Educational Content →
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- ============================================
+               SHARE THE COFFEE LOVE SECTION
+               ============================================ -->
+          <tr>
+            <td class="section-padding" style="padding: 48px 48px; background-color: #ffffff;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #fafaf9; border-radius: 16px; border: 1px solid #f0f0f0; padding: 32px;">
+                <tr>
+                  <td align="center" style="padding-bottom: 24px;">
+                    <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 28px; line-height: 1.2; font-weight: 400; color: #2d2d2d; letter-spacing: -0.3px;">
+                      Share the <span style="color: #D97706; font-style: italic;">Coffee</span> Love
+                    </h2>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom: 32px;">
+                    <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #6b6b6b; max-width: 500px;">
+                      Help us spread the word about India's specialty coffee scene. Share this newsletter with fellow coffee enthusiasts!
+                    </p>
+                  </td>
+                </tr>
+                
+                <!-- Shareable Text Box -->
+                <tr>
+                  <td style="padding-bottom: 24px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px;">
+                      <tr>
+                        <td>
+                          <p id="shareable-text" style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #2d2d2d; font-weight: 500;">
+                            ☕ Discover India's specialty coffee scene with Indian Coffee Beans - your guide to the finest roasters and beans from across the country. Check it out: https://indiancoffeebeans.com
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- Social Share Buttons -->
+                <tr>
+                  <td align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <!-- Twitter/X Button -->
+                        <td style="padding: 0 8px;">
+                          <a href="https://twitter.com/intent/tweet?text=☕ Discover India's specialty coffee scene with Indian Coffee Beans - your guide to the finest roasters and beans from across the country.&url=https://indiancoffeebeans.com" target="_blank" style="display: inline-block; padding: 12px 24px; background-color: #1DA1F2; color: #ffffff; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; text-decoration: none; border-radius: 8px; text-align: center;">
+                            Twitter
+                          </a>
+                        </td>
+                        <!-- Facebook Button -->
+                        <td style="padding: 0 8px;">
+                          <a href="https://www.facebook.com/sharer/sharer.php?u=https://indiancoffeebeans.com" target="_blank" style="display: inline-block; padding: 12px 24px; background-color: #1877F2; color: #ffffff; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; text-decoration: none; border-radius: 8px; text-align: center;">
+                            Facebook
+                          </a>
+                        </td>
+                        <!-- LinkedIn Button -->
+                        <td style="padding: 0 8px;">
+                          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://indiancoffeebeans.com" target="_blank" style="display: inline-block; padding: 12px 24px; background-color: #0077B5; color: #ffffff; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; text-decoration: none; border-radius: 8px; text-align: center;">
+                            LinkedIn
+                          </a>
+                        </td>
+                        <!-- WhatsApp Button -->
+                        <td style="padding: 0 8px;">
+                          <a href="https://wa.me/?text=☕ Discover India's specialty coffee scene with Indian Coffee Beans - your guide to the finest roasters and beans from across the country. https://indiancoffeebeans.com" target="_blank" style="display: inline-block; padding: 12px 24px; background-color: #25D366; color: #ffffff; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; text-decoration: none; border-radius: 8px; text-align: center;">
+                            WhatsApp
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- Copy Link Button -->
+                <tr>
+                  <td align="center" style="padding-top: 24px;">
+                    <p style="margin: 0 0 12px 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; color: #6b6b6b;">
+                      Or copy this link to share:
+                    </p>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 400px;">
+                      <tr>
+                        <td style="background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 16px;">
+                          <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; color: #2d2d2d; word-break: break-all;">
+                            https://indiancoffeebeans.com
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- ============================================
+               FOOTER
+               ============================================ -->
+          <tr>
+            <td class="email-padding" style="padding: 40px 48px; background-color: #fafaf9; border-top: 1px solid #f0f0f0;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td align="center" style="padding-bottom: 24px;">
+                    <!-- Logo/Brand -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="padding-right: 12px;">
+                          <!-- REPLACE WITH YOUR LOGO URL -->
+                          <img src="{{LOGO_URL}}" alt="Indian Coffee Beans Logo" width="32" height="32" style="display: block; width: 32px; height: 32px;">
+                        </td>
+                        <td>
+                          <span style="font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: 600; color: #D97706; letter-spacing: -0.5px;">
+                            IndianCoffeeBeans
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom: 16px;">
+                    <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #6b6b6b; max-width: 500px;">
+                      India's first specialty coffee directory. Discover roasters, explore beans, and master the art of brewing.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom: 24px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="padding: 0 12px;">
+                          <a href="https://indiancoffeebeans.com" style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; color: #D97706; text-decoration: none;">
+                            Visit Website
+                          </a>
+                        </td>
+                        <td style="padding: 0 12px;">
+                          <span style="color: #e0e0e0;">|</span>
+                        </td>
+                        <td style="padding: 0 12px;">
+                          <a href="{{ unsubscribe_url }}" style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; color: #6b6b6b; text-decoration: none;">
+                            Unsubscribe
+                          </a>
+                        </td>
+                        <td style="padding: 0 12px;">
+                          <span style="color: #e0e0e0;">|</span>
+                        </td>
+                        <td style="padding: 0 12px;">
+                          <a href="{{ subscriber_preferences_url }}" style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; color: #6b6b6b; text-decoration: none;">
+                            Update Preferences
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-top: 16px;">
+                    {% if address %}
+                    <p style="margin: 0 0 8px 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #999999; line-height: 1.5;">
+                      {{ address }}
+                    </p>
+                    {% endif %}
+                    <p style="margin: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #999999;">
+                      &copy; 2025 Indian Coffee Beans. All rights reserved.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+  
+</body>
+</html>
+

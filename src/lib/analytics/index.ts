@@ -27,43 +27,43 @@ export const hasAnalyticsConsent = (): boolean => {
   return false;
 };
 
-// Initialize Google Analytics with respect to consent
+// Initialize Google Analytics dataLayer and gtag function
+// Note: The actual script loading is handled by Next.js Script component in layout.tsx
 export const initGA = () => {
   if (typeof window === "undefined" || !GA_TRACKING_ID || !isProduction()) {
     console.log("GA4 tracking disabled (dev environment)");
     return;
   }
 
-  if (typeof window !== "undefined" && !window.gtag) {
-    // Add gtag script but with consent mode
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`;
-    document.head.appendChild(script);
-
+  if (typeof window !== "undefined") {
+    // Initialize dataLayer if it doesn't exist
     window.dataLayer = window.dataLayer || [];
-    window.gtag = (...args: unknown[]) => {
-      window.dataLayer.push(args);
-    };
 
-    window.gtag("js", new Date());
+    // Initialize gtag function if it doesn't exist
+    if (!window.gtag) {
+      window.gtag = (...args: unknown[]) => {
+        window.dataLayer.push(args);
+      };
+    }
 
-    // Set default consent to denied
+    // Set default consent to denied (will be updated when user consents)
     window.gtag("consent", "default", {
       analytics_storage: "denied",
       ad_storage: "denied",
     });
 
-    // Configure GA
-    window.gtag("config", GA_TRACKING_ID, {
-      page_path: window.location.pathname,
-    });
-
-    // Check and update consent if already given
-    if (hasAnalyticsConsent()) {
-      window.gtag("consent", "update", {
-        analytics_storage: "granted",
+    // Configure GA (only if script is loaded)
+    if (GA_TRACKING_ID) {
+      window.gtag("config", GA_TRACKING_ID, {
+        page_path: window.location.pathname,
       });
+
+      // Check and update consent if already given
+      if (hasAnalyticsConsent()) {
+        window.gtag("consent", "update", {
+          analytics_storage: "granted",
+        });
+      }
     }
   }
 };
@@ -74,6 +74,12 @@ export const updateAnalyticsConsent = (granted: boolean) => {
     window.gtag("consent", "update", {
       analytics_storage: granted ? "granted" : "denied",
     });
+
+    // Dispatch custom event to notify GoogleAnalytics component
+    // This allows tracking the current pageview when consent is granted
+    if (granted) {
+      window.dispatchEvent(new Event("icb-consent-updated"));
+    }
   }
 };
 

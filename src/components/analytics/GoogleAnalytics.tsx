@@ -1,22 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import {
   initGA,
   pageview,
   storeAttributionData,
   getUTMParams,
+  hasAnalyticsConsent,
 } from "@/lib/analytics";
 
 /**
  * Google Analytics component that:
  * 1. Initializes GA on mount
  * 2. Tracks pageviews on route changes
- * 3. Stores attribution data from UTM parameters
+ * 3. Tracks pageview when consent is granted (if not already tracked)
+ * 4. Stores attribution data from UTM parameters
  */
 export function GoogleAnalytics() {
   const pathname = usePathname();
+  const trackedPages = useRef<Set<string>>(new Set());
 
   // Initialize GA on mount
   useEffect(() => {
@@ -24,15 +27,25 @@ export function GoogleAnalytics() {
   }, []);
 
   // Track pageviews and attribution on route changes
+  // This works for all routes including dynamic routes like /coffees/[slug] and /roasters/[slug]
   useEffect(() => {
     if (!pathname || typeof window === "undefined") return;
 
     // Get current URL with search params from window.location
     // This avoids the need for useSearchParams() which requires Suspense
+    // For dynamic routes, pathname will be the actual path (e.g., "/coffees/coffee-slug")
     const url = window.location.pathname + window.location.search;
+    const pageKey = `${pathname}${window.location.search}`;
 
-    // Track pageview
-    pageview(url);
+    // Track pageview if consent is given
+    if (hasAnalyticsConsent()) {
+      // Only track if we haven't tracked this exact page yet
+      // This prevents duplicate tracking when the component re-renders
+      if (!trackedPages.current.has(pageKey)) {
+        pageview(url);
+        trackedPages.current.add(pageKey);
+      }
+    }
 
     // Store attribution data if UTM parameters are present
     const utmParams = getUTMParams();
@@ -43,6 +56,49 @@ export function GoogleAnalytics() {
     ) {
       storeAttributionData(utmParams);
     }
+  }, [pathname]);
+
+  // Track pageview when consent is granted (if not already tracked for current page)
+  useEffect(() => {
+    if (typeof window === "undefined" || !pathname) return;
+
+    const trackCurrentPageIfConsented = () => {
+      if (hasAnalyticsConsent()) {
+        const url = window.location.pathname + window.location.search;
+        const pageKey = `${pathname}${window.location.search}`;
+
+        // Track if we haven't tracked this page yet
+        if (!trackedPages.current.has(pageKey)) {
+          pageview(url);
+          trackedPages.current.add(pageKey);
+        }
+      }
+    };
+
+    // Check immediately in case consent was already given
+    trackCurrentPageIfConsented();
+
+    // Listen for consent changes (when user accepts cookies via storage event)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "icb-cookie-consent") {
+        // Small delay to ensure consent state is updated
+        setTimeout(trackCurrentPageIfConsented, 100);
+      }
+    };
+
+    // Listen for storage events (cross-tab consent changes)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Also listen for custom events that might be dispatched when consent changes
+    const handleCustomEvent = () => {
+      setTimeout(trackCurrentPageIfConsented, 100);
+    };
+    window.addEventListener("icb-consent-updated", handleCustomEvent);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("icb-consent-updated", handleCustomEvent);
+    };
   }, [pathname]);
 
   return null;

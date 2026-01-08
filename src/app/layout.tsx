@@ -5,6 +5,7 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieNotice } from "@/components/common/CookieNotice";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { env } from "../../env";
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
@@ -117,6 +118,29 @@ export default function RootLayout({
           src="https://challenges.cloudflare.com/turnstile/v0/api.js"
           strategy="lazyOnload"
         />
+        {/* Google Analytics - Load script via Next.js Script component to avoid ORB issues */}
+        {env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('consent', 'default', {
+                  'analytics_storage': 'denied',
+                  'ad_storage': 'denied'
+                });
+                gtag('config', '${env.NEXT_PUBLIC_GA_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
+        )}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
