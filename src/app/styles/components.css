@@ -92,6 +92,16 @@
     @apply relative z-10 text-center max-w-3xl mx-auto px-4;
   }
 
+  /* LCP optimization: Ensure hero heading is immediately visible */
+  .hero-content h1 {
+    /* Force immediate visibility - no animation delays */
+    opacity: 1 !important;
+    transform: none !important;
+    /* Performance hints for faster rendering */
+    will-change: auto;
+    content-visibility: auto;
+  }
+
 
 
   /* Search components */

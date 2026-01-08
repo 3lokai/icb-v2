@@ -1,5 +1,4 @@
 import type { ComponentProps, HTMLAttributes } from "react";
-import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -48,20 +47,6 @@ export const AnnouncementTitle = ({
 }: AnnouncementTitleProps) => (
   <div
     className={cn("flex items-center gap-1 truncate py-1", className)}
-    {...props}
-  />
-);
-
-export type AnnouncementShinyTextProps = ComponentProps<
-  typeof AnimatedShinyText
->;
-
-export const AnnouncementShinyText = ({
-  className,
-  ...props
-}: AnnouncementShinyTextProps) => (
-  <AnimatedShinyText
-    className={cn("font-medium text-sm", className)}
     {...props}
   />
 );

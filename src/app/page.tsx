@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import HeroSection from "@/components/homepage/HeroSection";
 import { Banner1 } from "@/components/ui/banner1";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
@@ -132,7 +133,22 @@ export default async function Home() {
         />
       )}
       <main className="flex-1 bg-muted/30">
-        <HeroSection />
+        {/* Wrap HeroSection in Suspense for streaming SSR - allows h1 to render earlier */}
+        <Suspense
+          fallback={
+            <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
+              <div className="hero-content">
+                <h1 className="text-hero text-white text-balance leading-[1.05]">
+                  Discover India's{" "}
+                  <span className="text-accent italic">Finest Coffee</span>{" "}
+                  Beans.
+                </h1>
+              </div>
+            </section>
+          }
+        >
+          <HeroSection />
+        </Suspense>
         <NewArrivalsSection />
         <FeaturesBentoGrid />
         <NewsletterSection />

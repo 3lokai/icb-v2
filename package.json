@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
+    "analyze": "cross-env ANALYZE=true next build --webpack",
     "type-check": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
@@ -70,12 +71,14 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@next/bundle-analyzer": "^16.1.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "eslint": "^9.18.0",
     "eslint-config-next": "^16.0.8",
@@ -102,5 +105,18 @@
   },
   "_comment": {
     "node-domexception-deprecation": "Deprecation warning from transitive dependency (supabase → node-fetch → fetch-blob → node-domexception). Safe to ignore - Node.js 18+ has native DOMException support. Will be resolved when upstream packages update."
+  },
+  "browserslist": {
+    "production": [
+      "chrome >= 80",
+      "edge >= 80",
+      "firefox >= 75",
+      "safari >= 14"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

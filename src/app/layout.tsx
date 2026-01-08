@@ -6,16 +6,26 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieNotice } from "@/components/common/CookieNotice";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { env } from "../../env";
-import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { SearchCommand } from "@/components/search/SearchCommand";
+import dynamic from "next/dynamic";
 import StructuredData from "@/components/seo/StructuredData";
 import { Toaster } from "@/components/ui/sonner";
 import { organizationSchema, websiteSchema } from "@/lib/seo/schema";
 import { SearchProvider } from "@/providers/SearchProvider";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/Footer";
+
+// Lazy load SearchCommand to reduce initial bundle size
+// Only loads when search modal is opened (cmdk is ~50-100KB)
+// Note: No ssr: false needed - SearchCommand is already client-only
+const SearchCommand = dynamic(() =>
+  import("@/components/search/SearchCommand").then((mod) => ({
+    default: mod.SearchCommand,
+  }))
+);
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -152,7 +162,11 @@ export default function RootLayout({
               <SearchProvider>
                 <ModalProvider>
                   <GoogleAnalytics />
-                  <ConditionalLayout>{children}</ConditionalLayout>
+                  <div className="surface-0 relative flex min-h-screen flex-col">
+                    <Header />
+                    <main className="flex-1">{children}</main>
+                    <Footer />
+                  </div>
                   <SearchCommand />
                   <Toaster />
                   <CookieNotice />
