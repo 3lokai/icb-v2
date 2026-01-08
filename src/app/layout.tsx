@@ -128,28 +128,13 @@ export default function RootLayout({
           src="https://challenges.cloudflare.com/turnstile/v0/api.js"
           strategy="lazyOnload"
         />
-        {/* Google Analytics - Load script via Next.js Script component to avoid ORB issues */}
+        {/* Google Analytics - Script loading only, initialization handled by GoogleAnalytics component */}
+        {/* This ensures proper production checks and consent mode handling */}
         {env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('consent', 'default', {
-                  'analytics_storage': 'denied',
-                  'ad_storage': 'denied'
-                });
-                gtag('config', '${env.NEXT_PUBLIC_GA_ID}', {
-                  page_path: window.location.pathname,
-                });
-              `}
-            </Script>
-          </>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_ID}`}
+            strategy="afterInteractive"
+          />
         )}
         <ThemeProvider
           attribute="class"

@@ -31,20 +31,29 @@ export const hasAnalyticsConsent = (): boolean => {
 // Note: The actual script loading is handled by Next.js Script component in layout.tsx
 export const initGA = () => {
   if (typeof window === "undefined" || !GA_TRACKING_ID || !isProduction()) {
-    console.log("GA4 tracking disabled (dev environment)");
+    if (process.env.NODE_ENV === "development") {
+      console.log("GA4 tracking disabled (dev environment)");
+    }
     return;
   }
 
-  if (typeof window !== "undefined") {
-    // Initialize dataLayer if it doesn't exist
-    window.dataLayer = window.dataLayer || [];
+  // Initialize dataLayer early (before script loads)
+  window.dataLayer = window.dataLayer || [];
 
-    // Initialize gtag function if it doesn't exist
-    if (!window.gtag) {
-      window.gtag = (...args: unknown[]) => {
-        window.dataLayer.push(args);
-      };
-    }
+  // Define gtag function early (before script loads)
+  // This ensures commands are queued if script hasn't loaded yet
+  if (!window.gtag) {
+    window.gtag = (...args: unknown[]) => {
+      window.dataLayer.push(args);
+    };
+    window.gtag("js", new Date());
+  }
+
+  // Wait for the GA script to load before configuring
+  // Check if script is already loaded by looking for gtag in window
+  const checkAndInit = () => {
+    // If script hasn't loaded yet, the gtag function will queue commands
+    // The actual Google gtag will take over once the script loads
 
     // Set default consent to denied (will be updated when user consents)
     window.gtag("consent", "default", {
@@ -52,7 +61,7 @@ export const initGA = () => {
       ad_storage: "denied",
     });
 
-    // Configure GA (only if script is loaded)
+    // Configure GA
     if (GA_TRACKING_ID) {
       window.gtag("config", GA_TRACKING_ID, {
         page_path: window.location.pathname,
@@ -65,7 +74,11 @@ export const initGA = () => {
         });
       }
     }
-  }
+  };
+
+  // If dataLayer already exists, script might be loaded
+  // Otherwise, commands will be queued and executed when script loads
+  checkAndInit();
 };
 
 // Update consent status
