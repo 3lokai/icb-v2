@@ -244,16 +244,21 @@ export async function GET(request: NextRequest) {
           .then((response) => {
             // Store subscriber ID if we got a response
             if (response?.subscriber?.id) {
-              serviceClient
-                .from("user_profiles")
-                .update({ convertkit_subscriber_id: response.subscriber.id })
-                .eq("id", user.id)
-                .then(() => {
+              Promise.resolve(
+                serviceClient
+                  .from("user_profiles")
+                  .update({ convertkit_subscriber_id: response.subscriber.id })
+                  .eq("id", user.id)
+              )
+                .then((result) => {
+                  if (result.error) {
+                    throw result.error;
+                  }
                   console.log(
                     `[ConvertKit] Stored subscriber ID ${response.subscriber.id} for user ${user.id}`
                   );
                 })
-                .catch((err) => {
+                .catch((err: unknown) => {
                   console.error(
                     "[ConvertKit] Failed to store subscriber ID:",
                     err

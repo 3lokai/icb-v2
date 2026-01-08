@@ -1,6 +1,9 @@
-"use server";
-
-import { env } from "../../../env";
+/**
+ * ConvertKit/Kit API v4 Client
+ *
+ * This is a utility library (not a Server Actions file) to allow usage
+ * in both Next.js server actions and standalone scripts.
+ */
 
 /**
  * ConvertKit/Kit API v4 Types
@@ -47,7 +50,7 @@ export interface KitErrorResponse {
  * Check if ConvertKit is configured
  */
 export function isConvertKitConfigured(): boolean {
-  return Boolean(env.KIT_API_KEY);
+  return Boolean(process.env.KIT_API_KEY);
 }
 
 /**
@@ -65,7 +68,7 @@ export async function subscribeToConvertKit(
     return null;
   }
 
-  const apiKey = env.KIT_API_KEY!;
+  const apiKey = process.env.KIT_API_KEY!;
   const apiUrl = "https://api.kit.com/v4/subscribers";
 
   try {
@@ -147,7 +150,7 @@ export async function unsubscribeFromConvertKit(
     return false;
   }
 
-  const apiKey = env.KIT_API_KEY!;
+  const apiKey = process.env.KIT_API_KEY!;
   const apiUrl = `https://api.kit.com/v4/subscribers/${subscriberId}/unsubscribe`;
 
   try {

@@ -159,16 +159,21 @@ export async function subscribeToNewsletter(formData: FormData) {
       .then((response) => {
         // Store subscriber ID if we got a response and user is authenticated
         if (response?.subscriber?.id && user?.id) {
-          supabase
-            .from("user_profiles")
-            .update({ convertkit_subscriber_id: response.subscriber.id })
-            .eq("id", user.id)
-            .then(() => {
+          Promise.resolve(
+            supabase
+              .from("user_profiles")
+              .update({ convertkit_subscriber_id: response.subscriber.id })
+              .eq("id", user.id)
+          )
+            .then((result) => {
+              if (result.error) {
+                throw result.error;
+              }
               console.log(
                 `[ConvertKit] Stored subscriber ID ${response.subscriber.id} for user ${user.id}`
               );
             })
-            .catch((err) => {
+            .catch((err: unknown) => {
               console.error("[ConvertKit] Failed to store subscriber ID:", err);
             });
         }
@@ -259,16 +264,21 @@ export async function syncUserToConvertKit(userId: string): Promise<void> {
       .then((response) => {
         // Store subscriber ID if we got a response
         if (response?.subscriber?.id) {
-          supabase
-            .from("user_profiles")
-            .update({ convertkit_subscriber_id: response.subscriber.id })
-            .eq("id", userId)
-            .then(() => {
+          Promise.resolve(
+            supabase
+              .from("user_profiles")
+              .update({ convertkit_subscriber_id: response.subscriber.id })
+              .eq("id", userId)
+          )
+            .then((result) => {
+              if (result.error) {
+                throw result.error;
+              }
               console.log(
                 `[ConvertKit] Stored subscriber ID ${response.subscriber.id} for user ${userId}`
               );
             })
-            .catch((err) => {
+            .catch((err: unknown) => {
               console.error("[ConvertKit] Failed to store subscriber ID:", err);
             });
         }
