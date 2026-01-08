@@ -33,6 +33,11 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# Google Service Account Keys (GA4 setup - never commit these!)
+google-service-account-key.json
+*-service-account-key.json
+*service-account*.json
+
 # vercel
 .vercel
 

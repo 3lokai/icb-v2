@@ -4,6 +4,7 @@ import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { CoffeeDetail } from "@/types/coffee-types";
+import { trackCoffeePurchaseIntent } from "@/lib/analytics/enhanced-tracking";
 
 type CoffeeBuyButtonProps = {
   coffee: CoffeeDetail;
@@ -14,20 +15,15 @@ export function CoffeeBuyButton({ coffee, className }: CoffeeBuyButtonProps) {
   const buyUrl = coffee.direct_buy_url || coffee.summary.direct_buy_url;
 
   const handleClick = () => {
-    if (buyUrl) {
-      // Track buy button click for analytics
-      if (typeof window !== "undefined" && "gtag" in window) {
-        const gtag = window.gtag as (
-          command: string,
-          targetId: string,
-          config?: Record<string, unknown>
-        ) => void;
-        gtag("event", "buy_button_click", {
-          coffee_id: coffee.id,
-          coffee_name: coffee.name,
-          roaster_id: coffee.roaster_id,
-        });
-      }
+    if (buyUrl && coffee.id && coffee.roaster_id) {
+      // Track purchase intent with enhanced tracking
+      const coffeePrice = coffee.summary.best_normalized_250g;
+      trackCoffeePurchaseIntent(
+        coffee.id,
+        coffee.roaster_id,
+        "purchase_link_click",
+        coffeePrice ? coffeePrice * 4 : undefined // Convert 250g to 1kg for value estimation
+      );
       window.open(buyUrl, "_blank", "noopener,noreferrer");
     }
   };
