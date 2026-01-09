@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { coffeeImagePresets } from "@/lib/imagekit";
 import type { RegionSummary } from "@/types/region-types";
 
 type RegionCardProps = {
@@ -30,7 +31,7 @@ export default function RegionCard({ region }: RegionCardProps) {
           fill
           itemProp="image"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 400px"
-          src={region.image_url || "/images/default-region.jpg"}
+          src={coffeeImagePresets.regionCard(region.image_url)}
         />
 
         <div className="region-overlay" />

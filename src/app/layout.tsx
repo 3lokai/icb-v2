@@ -124,17 +124,64 @@ export default function RootLayout({
       <body>
         <div className="bg-noise" />
         <StructuredData schema={[organizationSchema, websiteSchema]} />
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          strategy="lazyOnload"
-        />
-        {/* Google Analytics - Script loading only, initialization handled by GoogleAnalytics component */}
-        {/* This ensures proper production checks and consent mode handling */}
+        {/* Google Analytics - Inline initialization script runs BEFORE external script loads */}
+        {/* This ensures dataLayer and gtag are ready immediately, eliminating race conditions */}
         {env.NEXT_PUBLIC_GA_ID && (
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_ID}`}
-            strategy="afterInteractive"
-          />
+          <>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  (function() {
+                    // Check if we should initialize GA (production check)
+                    var isProd = ${process.env.NODE_ENV === "production" ? "true" : "false"};
+                    var enableAnalytics = ${process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true" ? "true" : "false"};
+                    var hostname = typeof window !== "undefined" ? window.location.hostname : "";
+                    var shouldInit = enableAnalytics || (isProd && hostname !== "localhost" && hostname !== "127.0.0.1" && !hostname.startsWith("localhost:") && !hostname.startsWith("127.0.0.1:"));
+                    
+                    if (!shouldInit) return;
+                    
+                    // Initialize dataLayer early (before external script loads)
+                    window.dataLayer = window.dataLayer || [];
+                    
+                    // Define gtag function early (before external script loads)
+                    // This ensures commands are queued if script hasn't loaded yet
+                    if (!window.gtag) {
+                      window.gtag = function gtag() {
+                        window.dataLayer.push(Array.from(arguments));
+                      };
+                      window.gtag("js", new Date());
+                    }
+                    
+                    // Set default consent to denied (GDPR/CCPA compliance)
+                    // This must be set BEFORE any config calls
+                    window.gtag("consent", "default", {
+                      analytics_storage: "denied",
+                      ad_storage: "denied",
+                    });
+                    
+                    // Check for existing consent and update if granted
+                    try {
+                      var consent = localStorage.getItem("icb-cookie-consent");
+                      if (consent) {
+                        var parsed = JSON.parse(consent);
+                        if (parsed.analytics) {
+                          window.gtag("consent", "update", {
+                            analytics_storage: "granted",
+                          });
+                        }
+                      }
+                    } catch (e) {
+                      // Silently fail if consent check fails
+                    }
+                  })();
+                `,
+              }}
+            />
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+          </>
         )}
         <ThemeProvider
           attribute="class"
@@ -146,9 +193,9 @@ export default function RootLayout({
             <AuthProvider>
               <SearchProvider>
                 <ModalProvider>
-                  <GoogleAnalytics />
                   <div className="surface-0 relative flex min-h-screen flex-col">
                     <Header />
+                    <GoogleAnalytics />
                     <main className="flex-1">{children}</main>
                     <Footer />
                   </div>

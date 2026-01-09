@@ -102,8 +102,9 @@ export default function CoffeeImageCarousel({
       >
         <CarouselContent>
           {images.map((image, index) => {
-            const imageUrl = image.imagekit_url || "";
+            const imageUrl = image.imagekit_url || null;
             const altText = image.alt || `${coffeeName} - Image ${index + 1}`;
+            const processedUrl = coffeeImagePresets.coffeeDetail(imageUrl);
             const blurDataUrl = imageUrl
               ? generateBlurPlaceholder(imageUrl)
               : undefined;
@@ -113,11 +114,11 @@ export default function CoffeeImageCarousel({
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
                   <Image
                     alt={altText}
-                    className="object-contain"
+                    className="object-cover"
                     fill
                     priority={index === 0}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 800px"
-                    src={coffeeImagePresets.coffeeDetail(imageUrl)}
+                    src={processedUrl}
                     {...(blurDataUrl && {
                       placeholder: "blur",
                       blurDataURL: blurDataUrl,
@@ -141,7 +142,7 @@ export default function CoffeeImageCarousel({
         <Carousel className="mt-4 w-full" aria-label="Image thumbnails">
           <CarouselContent className="flex my-1">
             {images.map((image, index) => {
-              const imageUrl = image.imagekit_url || "";
+              const imageUrl = image.imagekit_url || null;
               const altText =
                 image.alt || `${coffeeName} - Thumbnail ${index + 1}`;
               const isActive = current === index + 1;

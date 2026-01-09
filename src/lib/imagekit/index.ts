@@ -114,8 +114,9 @@ export const coffeeImagePresets = {
    * CoffeeCard preset
    * Size: 600x336px (optimized for 3-column grid on large screens)
    * On 1920px screen: 33vw ≈ 634px, so 600px covers most cases
-   * Crop: Force
+   * Crop: Force (cropped to fill container, used with object-cover)
    * Quality: 80
+   * Focus: Center (ensures important content is centered)
    */
   coffeeCard: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -126,6 +127,7 @@ export const coffeeImagePresets = {
       height: 336,
       crop: "force",
       quality: 80,
+      focus: "center",
     });
   },
 
@@ -151,8 +153,9 @@ export const coffeeImagePresets = {
   /**
    * RegionCard preset
    * Size: 600x450px (aspect-[4/3], optimized for grid layouts)
-   * Crop: Force
+   * Crop: Force (cropped to fill container, used with object-cover)
    * Quality: 82
+   * Focus: Center (ensures important content is centered)
    */
   regionCard: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -163,6 +166,7 @@ export const coffeeImagePresets = {
       height: 450,
       crop: "force",
       quality: 82,
+      focus: "center",
     });
   },
 
@@ -190,8 +194,9 @@ export const coffeeImagePresets = {
   /**
    * Blog card preset
    * Size: 400x225px (16:9 aspect)
-   * Crop: Force
+   * Crop: Force (cropped to fill container, used with object-cover)
    * Quality: 78
+   * Focus: Center (ensures important content is centered)
    */
   blogCard: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -202,14 +207,16 @@ export const coffeeImagePresets = {
       height: 225,
       crop: "force",
       quality: 78,
+      focus: "center",
     });
   },
 
   /**
    * Coffee detail page main carousel preset
    * Size: 800x600px (4:3 aspect)
-   * Crop: At max enlarge (fit within dimensions without cropping, allows enlargement)
+   * Crop: Force (cropped to fill container, used with object-cover)
    * Quality: 90
+   * Focus: Center (ensures important content is centered)
    */
   coffeeDetail: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -218,16 +225,18 @@ export const coffeeImagePresets = {
     return getImageKitUrl(imagePath, {
       width: 800,
       height: 600,
-      crop: "at_max_enlarge",
+      crop: "force",
       quality: 90,
+      focus: "center",
     });
   },
 
   /**
    * Coffee detail page thumbnail preset
    * Size: 150x150px (square)
-   * Crop: At max enlarge (fit within dimensions without cropping, allows enlargement)
+   * Crop: Force (cropped to fill square container, used with object-cover)
    * Quality: 75
+   * Focus: Center (ensures important content is centered)
    */
   coffeeThumbnail: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -236,8 +245,9 @@ export const coffeeImagePresets = {
     return getImageKitUrl(imagePath, {
       width: 150,
       height: 150,
-      crop: "at_max_enlarge",
+      crop: "force",
       quality: 75,
+      focus: "center",
     });
   },
 
@@ -269,13 +279,18 @@ export const coffeeImagePresets = {
 export const roasterImagePresets = {
   /**
    * Roaster logo preset
-   * Size: 300x300px (square)
-   * Crop: Maintain ratio (don't distort logos)
+   * Size: 400x400px (square, optimized for fill mode)
+   * Crop: Force (cropped to square, used with object-contain to preserve aspect ratio)
    * Quality: 90
+   * Format: PNG (preserves transparency for logos)
+   * Focus: Center (ensures logo is centered)
    *
    * NOTE:
    * v=1 is a one-time cache buster to defeat Vercel _next/image cache.
    * Leave it forever. It will not affect other roasters.
+   *
+   * The image is cropped to square on ImageKit side, but object-contain
+   * in components ensures the logo maintains its aspect ratio.
    */
   roasterLogo: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -286,9 +301,12 @@ export const roasterImagePresets = {
     const pathWithVersion = `${imagePath}?v=1`;
 
     return getImageKitUrl(pathWithVersion, {
-      width: 320,
+      width: 400,
+      height: 400,
+      crop: "force",
       quality: 90,
       format: "png",
+      focus: "center",
     });
   },
 
