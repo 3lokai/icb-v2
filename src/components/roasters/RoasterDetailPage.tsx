@@ -11,8 +11,7 @@ import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Prose } from "@/components/primitives/prose";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ReviewSection } from "@/components/reviews";
@@ -34,132 +33,6 @@ function formatNumber(num: number | null | undefined): string {
 function formatRating(num: number | null | undefined): string {
   if (num === null || num === undefined) return "—";
   return num.toFixed(1);
-}
-
-type ConnectSectionProps = {
-  socialLinks: Array<{ label: string; url: string; icon: string }>;
-  location: string | null;
-  phone: string | null | undefined;
-  supportEmail: string | null | undefined;
-  roasterId: string;
-};
-
-function ConnectSection({
-  socialLinks,
-  location,
-  phone,
-  supportEmail,
-  roasterId,
-}: ConnectSectionProps) {
-  if (socialLinks.length === 0 && !location && !phone && !supportEmail) {
-    return null;
-  }
-
-  return (
-    <Card>
-      <CardContent className="p-6">
-        <Stack gap="6">
-          {socialLinks.length > 0 && (
-            <Stack gap="3">
-              <span className="text-caption text-muted-foreground font-medium">
-                Connect
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {socialLinks.map((link) => {
-                  const handleSocialClick = () => {
-                    // Track website clicks separately from social media
-                    if (link.label === "Website") {
-                      trackRoasterClick(roasterId, "website");
-                      trackRoasterConversion(roasterId, "website_click");
-                    } else {
-                      trackRoasterClick(roasterId, "social");
-                      trackRoasterConversion(roasterId, "social_click");
-                    }
-                  };
-
-                  return (
-                    <a
-                      key={link.url}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 rounded-md hover:bg-accent hover:text-accent-foreground text-muted-foreground transition-colors"
-                      title={link.label}
-                      onClick={handleSocialClick}
-                    >
-                      <Icon name={link.icon as any} size={20} />
-                    </a>
-                  );
-                })}
-              </div>
-            </Stack>
-          )}
-
-          {socialLinks.length > 0 && (location || phone || supportEmail) && (
-            <Separator />
-          )}
-
-          {(location || phone || supportEmail) && (
-            <Stack gap="3">
-              <span className="text-caption text-muted-foreground font-medium">
-                Location & Contact
-              </span>
-              <Stack gap="2" className="text-body">
-                {location && (
-                  <div className="flex items-start gap-2">
-                    <Icon
-                      name="MapPin"
-                      size={16}
-                      className="mt-0.5 text-muted-foreground"
-                    />
-                    <span>{location}</span>
-                  </div>
-                )}
-                {phone && (
-                  <div className="flex items-center gap-2">
-                    <Icon
-                      name="Phone"
-                      size={16}
-                      className="text-muted-foreground"
-                    />
-                    <a
-                      href={`tel:${phone}`}
-                      className="hover:text-primary transition-colors"
-                      onClick={() => {
-                        trackRoasterClick(roasterId, "phone");
-                        trackRoasterConversion(roasterId, "phone_click");
-                      }}
-                    >
-                      {phone}
-                    </a>
-                  </div>
-                )}
-                {supportEmail && (
-                  <div className="flex items-center gap-2">
-                    <Icon
-                      name="Envelope"
-                      size={16}
-                      className="text-muted-foreground"
-                    />
-                    <a
-                      href={`mailto:${supportEmail}`}
-                      className="hover:text-primary transition-colors"
-                      onClick={() => {
-                        trackRoasterClick(roasterId, "email");
-                        trackRoasterConversion(roasterId, "email_click");
-                      }}
-                    >
-                      {supportEmail}
-                    </a>
-                  </div>
-                )}
-              </Stack>
-            </Stack>
-          )}
-        </Stack>
-      </CardContent>
-    </Card>
-  );
 }
 
 export function RoasterDetailPage({
@@ -254,9 +127,9 @@ export function RoasterDetailPage({
   return (
     <div className={cn("w-full bg-background", className)}>
       <PageShell maxWidth="7xl">
-        <div className="py-8 md:py-12">
+        <div className="py-8 md:py-12 lg:py-16">
           {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="mb-8">
+          <nav aria-label="Breadcrumb" className="mb-6 md:mb-8">
             <Cluster gap="2" align="center" className="text-caption">
               <Link
                 href="/"
@@ -278,222 +151,385 @@ export function RoasterDetailPage({
             </Cluster>
           </nav>
 
-          {/* Main Layout Grid */}
-          <div className="grid grid-cols-1 gap-16 lg:grid-cols-7">
-            {/* Left Column: Image, Socials, Location (Sticky) */}
-            <div className="order-1 lg:order-1 lg:col-span-3">
-              <div className="lg:sticky lg:top-24">
-                <Stack gap="8">
-                  {/* Brand Image/Logo */}
-                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl border bg-muted shadow-sm">
-                    {roaster.slug ? (
-                      <Image
-                        alt={`${roaster.name} logo`}
-                        className="object-contain p-8"
-                        fill
-                        priority
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
-                        src={roasterImagePresets.roasterLogo(
-                          `roasters/${roaster.slug}-logo`
-                        )}
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                        <Icon name="Storefront" size={64} />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Connect Section - Desktop only */}
-                  <div className="hidden lg:block">
-                    <ConnectSection
-                      socialLinks={socialLinks}
-                      location={location}
-                      phone={roaster.phone}
-                      supportEmail={roaster.support_email}
-                      roasterId={roaster.id}
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 gap-12 md:gap-16 lg:grid-cols-7">
+            {/* Left Column: Image */}
+            <div className="order-1 lg:col-span-3">
+              <Stack gap="6">
+                <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-border/60 bg-muted/30 shadow-sm transition-all duration-300 hover:shadow-md">
+                  {roaster.slug ? (
+                    <Image
+                      alt={`${roaster.name} logo`}
+                      className="object-contain p-8 md:p-12"
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+                      src={roasterImagePresets.roasterLogo(
+                        `roasters/${roaster.slug}-logo`
+                      )}
                     />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-muted-foreground/40">
+                      <Icon name="Storefront" size={84} />
+                    </div>
+                  )}
+                </div>
+
+                {/* Visit Website (Desktop) */}
+                {roaster.website && (
+                  <div className="hidden lg:block">
+                    <Button
+                      asChild
+                      size="lg"
+                      className="w-full hover-lift shadow-md"
+                    >
+                      <a
+                        href={roaster.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => {
+                          trackRoasterClick(roaster.id, "website");
+                          trackRoasterConversion(roaster.id, "website_click");
+                        }}
+                      >
+                        <Icon name="Globe" size={18} className="mr-2" />
+                        Visit Roaster Website
+                        <Icon name="ArrowRight" size={14} className="ml-2" />
+                      </a>
+                    </Button>
                   </div>
-                </Stack>
-              </div>
+                )}
+              </Stack>
             </div>
 
             {/* Right Column: Details & Content */}
-            <div className="order-2 lg:order-2 lg:col-span-4">
-              <Stack gap="12">
-                {/* Header */}
+            <div className="order-2 lg:col-span-4">
+              <Stack gap="8">
+                {/* Header Section */}
                 <Stack gap="6">
-                  <div>
-                    <div className="inline-flex items-center gap-4 mb-3">
-                      <span className="h-px w-8 md:w-12 bg-accent/60" />
-                      <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                        {(roaster.active_coffee_count || 0) > 0
-                          ? `Active with ${roaster.active_coffee_count} coffees`
-                          : "Coffee Roaster"}
-                      </span>
-                    </div>
+                  {/* Eyebrow */}
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 bg-accent/60" />
+                    <span className="text-overline text-muted-foreground tracking-[0.2em]">
+                      {(roaster.active_coffee_count || 0) > 0
+                        ? `Active with ${roaster.active_coffee_count} coffees`
+                        : "Coffee Roaster"}
+                    </span>
                   </div>
-                  <h1 className="text-display text-balance leading-[1.1] tracking-tight">
+
+                  {/* Title */}
+                  <h1 className="text-display text-balance leading-[1.1] tracking-tight font-serif italic">
                     {roaster.name}
                   </h1>
-                </Stack>
 
-                {/* Stats Ribbon */}
-                <Card className="border-muted bg-card/50">
-                  <CardContent className="p-4">
-                    <div className="flex flex-wrap items-center justify-around gap-6">
+                  {/* Stats Ribbon */}
+                  <div className="py-6 md:py-8 border-y border-border/60 bg-muted/5 rounded-lg md:rounded-xl px-4 md:px-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
                       {stats.map((stat) => (
                         <div
                           key={stat.label}
-                          className="flex flex-col items-center gap-1 min-w-[100px]"
+                          className="flex flex-col gap-1.5 items-center sm:items-start"
                         >
-                          <div className="flex items-center gap-2 text-muted-foreground/80">
-                            <Icon name={stat.icon as any} size={14} />
-                            <span className="text-caption font-medium uppercase tracking-wider">
+                          <div className="flex items-center gap-2 text-muted-foreground">
+                            <Icon
+                              name={stat.icon as any}
+                              size={14}
+                              className="text-accent/60"
+                            />
+                            <span className="text-label font-bold uppercase tracking-widest leading-none">
                               {stat.label}
                             </span>
                           </div>
-                          <span className="text-title font-semibold text-foreground">
+                          <span className="text-heading font-serif italic text-accent leading-none">
                             {stat.value}
                           </span>
                         </div>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </Stack>
 
-                {/* About */}
-                {roaster.description && (
-                  <Stack gap="6">
-                    <div>
-                      <div className="inline-flex items-center gap-4 mb-3">
-                        <span className="h-px w-8 md:w-12 bg-accent/60" />
-                        <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                          The Story
+                {/* Connect Section */}
+                {(socialLinks.length > 0 ||
+                  location ||
+                  roaster.phone ||
+                  roaster.support_email) && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    {/* Socials Column */}
+                    {socialLinks.length > 0 && (
+                      <Stack gap="3">
+                        <span className="text-label text-muted-foreground font-bold uppercase tracking-widest">
+                          Connect
                         </span>
-                      </div>
-                      <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                        About{" "}
-                        <span className="text-accent italic">
-                          {roaster.name}.
+                        <div className="flex flex-wrap gap-2">
+                          {socialLinks.map((link) => {
+                            const handleSocialClick = () => {
+                              if (link.label === "Website") {
+                                trackRoasterClick(roaster.id, "website");
+                                trackRoasterConversion(
+                                  roaster.id,
+                                  "website_click"
+                                );
+                              } else {
+                                trackRoasterClick(roaster.id, "social");
+                                trackRoasterConversion(
+                                  roaster.id,
+                                  "social_click"
+                                );
+                              }
+                            };
+
+                            return (
+                              <a
+                                key={link.url}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group p-3 rounded-xl hover:bg-accent/10 text-muted-foreground hover:text-accent transition-all duration-200 border border-border/60 hover:border-accent/40 bg-background shadow-sm"
+                                title={link.label}
+                                onClick={handleSocialClick}
+                              >
+                                <Icon
+                                  name={link.icon as any}
+                                  size={20}
+                                  className="transition-transform group-hover:scale-110"
+                                />
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </Stack>
+                    )}
+
+                    {/* Contact Details Column */}
+                    {(location || roaster.phone || roaster.support_email) && (
+                      <Stack gap="3">
+                        <span className="text-label text-muted-foreground font-bold uppercase tracking-widest">
+                          Location & Contact
                         </span>
-                      </h2>
-                    </div>
-                    <div className="prose prose-sm dark:prose-invert max-w-none">
-                      <p className="text-body text-muted-foreground leading-relaxed whitespace-pre-line">
-                        {roaster.description}
-                      </p>
-                    </div>
-                  </Stack>
+                        <Stack gap="3">
+                          {location && (
+                            <div className="flex items-start gap-3 text-body-small text-muted-foreground group">
+                              <Icon
+                                name="MapPin"
+                                size={16}
+                                className="mt-0.5 text-accent/60 flex-shrink-0 transition-colors group-hover:text-accent"
+                              />
+                              <span className="leading-tight">{location}</span>
+                            </div>
+                          )}
+                          {roaster.phone && (
+                            <div className="flex items-center gap-3 text-body-small group">
+                              <Icon
+                                name="Phone"
+                                size={16}
+                                className="text-accent/60 flex-shrink-0 transition-colors group-hover:text-accent"
+                              />
+                              <a
+                                href={`tel:${roaster.phone}`}
+                                className="text-muted-foreground hover:text-accent transition-colors underline-offset-4 hover:underline"
+                                onClick={() => {
+                                  trackRoasterClick(roaster.id, "phone");
+                                  trackRoasterConversion(
+                                    roaster.id,
+                                    "phone_click"
+                                  );
+                                }}
+                              >
+                                {roaster.phone}
+                              </a>
+                            </div>
+                          )}
+                          {roaster.support_email && (
+                            <div className="flex items-center gap-3 text-body-small group">
+                              <Icon
+                                name="Envelope"
+                                size={16}
+                                className="text-accent/60 flex-shrink-0 transition-colors group-hover:text-accent"
+                              />
+                              <a
+                                href={`mailto:${roaster.support_email}`}
+                                className="text-muted-foreground hover:text-accent transition-colors underline-offset-4 hover:underline"
+                                onClick={() => {
+                                  trackRoasterClick(roaster.id, "email");
+                                  trackRoasterConversion(
+                                    roaster.id,
+                                    "email_click"
+                                  );
+                                }}
+                              >
+                                {roaster.support_email}
+                              </a>
+                            </div>
+                          )}
+                        </Stack>
+                      </Stack>
+                    )}
+                  </div>
                 )}
 
-                {/* Visit Website Button */}
+                {/* Visit Website (Mobile) */}
                 {roaster.website && (
-                  <Button asChild size="lg" className="w-full hover-lift">
-                    <a
-                      href={roaster.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <div className="lg:hidden">
+                    <Button
+                      asChild
+                      size="lg"
+                      className="w-full hover-lift shadow-sm"
                     >
-                      <Icon name="Globe" size={18} className="mr-2" />
-                      Visit Roaster Website
-                      <Icon name="ArrowRight" size={14} className="ml-2" />
-                    </a>
-                  </Button>
+                      <a
+                        href={roaster.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => {
+                          trackRoasterClick(roaster.id, "website");
+                          trackRoasterConversion(roaster.id, "website_click");
+                        }}
+                      >
+                        <Icon name="Globe" size={18} className="mr-2" />
+                        Visit Roaster Website
+                        <Icon name="ArrowRight" size={14} className="ml-2" />
+                      </a>
+                    </Button>
+                  </div>
                 )}
-
-                {/* Connect Section - Mobile only (after About) */}
-                <div className="lg:hidden order-3">
-                  <ConnectSection
-                    socialLinks={socialLinks}
-                    location={location}
-                    phone={roaster.phone}
-                    supportEmail={roaster.support_email}
-                    roasterId={roaster.id}
-                  />
-                </div>
               </Stack>
             </div>
           </div>
 
-          {/* Coffees List Section */}
-          {roaster.coffees && roaster.coffees.length > 0 && (
-            <div className="order-4 mt-16">
-              <Stack gap="12">
+          {/* Story Section */}
+          {roaster.description && (
+            <Section
+              spacing="default"
+              contained={false}
+              className="border-t border-border/60 bg-muted/5 mt-16 md:mt-24"
+            >
+              <Stack gap="6">
                 <div>
                   <div className="inline-flex items-center gap-4 mb-3">
-                    <span className="h-px w-8 md:w-12 bg-accent/60" />
-                    <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                      Our Selection
+                    <span className="h-px w-6 bg-accent/40" />
+                    <span className="text-overline text-muted-foreground tracking-[0.2em]">
+                      Our Story
                     </span>
+                    <span className="h-px w-6 bg-accent/40" />
                   </div>
-                  <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                    Available{" "}
-                    <span className="text-accent italic">Coffees.</span>
+                  <h2 className="text-title text-balance leading-tight font-serif italic">
+                    The <span className="text-accent">Roaster's Story.</span>
                   </h2>
                 </div>
-                <Stack gap="8">
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {roaster.coffees.slice(0, 6).map((coffee) => (
-                      <CoffeeCard key={coffee.coffee_id} coffee={coffee} />
-                    ))}
-                  </div>
-
-                  {roaster.coffees.length > 6 && (
-                    <div className="flex justify-center">
-                      <Button asChild variant="outline" size="sm">
-                        <Link
-                          href={`/coffees?${buildCoffeeQueryString(
-                            { roaster_ids: [roaster.id] },
-                            1,
-                            "relevance",
-                            15
-                          )}`}
-                          onClick={handleSeeMoreClick}
-                          className="inline-flex items-center gap-2"
-                        >
-                          See More
-                          <Icon name="ArrowRight" size={14} />
-                        </Link>
-                      </Button>
-                    </div>
-                  )}
-                </Stack>
+                <Prose className="max-w-none">
+                  <p className="text-body-large text-muted-foreground font-serif leading-relaxed whitespace-pre-line italic opacity-90">
+                    {roaster.description}
+                  </p>
+                </Prose>
               </Stack>
-            </div>
+            </Section>
+          )}
+
+          {/* Coffees List Section */}
+          {roaster.coffees && roaster.coffees.length > 0 && (
+            <Section
+              spacing="default"
+              contained={false}
+              className="border-t border-border/60"
+            >
+              <Stack gap="8">
+                <div>
+                  <div className="inline-flex items-center gap-4 mb-3">
+                    <span className="h-px w-8 bg-accent/60" />
+                    <span className="text-overline text-muted-foreground tracking-[0.2em]">
+                      Curated Selection
+                    </span>
+                  </div>
+                  <h2 className="text-title text-balance leading-[1.1] tracking-tight font-serif italic">
+                    Our <span className="text-accent">Selection.</span>
+                  </h2>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {roaster.coffees.slice(0, 6).map((coffee) => (
+                    <CoffeeCard key={coffee.coffee_id} coffee={coffee} />
+                  ))}
+                </div>
+
+                {roaster.coffees.length > 6 && (
+                  <div className="flex justify-center pt-4">
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="lg"
+                      className="rounded-full px-8 hover-lift"
+                    >
+                      <Link
+                        href={`/coffees?${buildCoffeeQueryString(
+                          { roaster_ids: [roaster.id] },
+                          1,
+                          "relevance",
+                          15
+                        )}`}
+                        onClick={handleSeeMoreClick}
+                        className="inline-flex items-center gap-2"
+                      >
+                        Explore All Coffees
+                        <Icon name="ArrowRight" size={16} />
+                      </Link>
+                    </Button>
+                  </div>
+                )}
+              </Stack>
+            </Section>
           )}
 
           {/* Empty State */}
           {(!roaster.coffees || roaster.coffees.length === 0) && (
-            <Section spacing="default" contained={false} className="order-4">
+            <Section
+              spacing="default"
+              contained={false}
+              className="border-t border-border/60"
+            >
               <div className="text-center">
-                <div className="border rounded-lg border-dashed p-12">
-                  <p className="text-body text-muted-foreground">
+                <div className="border border-dashed border-border/40 rounded-3xl p-16 bg-muted/20">
+                  <Icon
+                    name="Coffee"
+                    size={48}
+                    className="mx-auto mb-4 text-muted-foreground/40"
+                  />
+                  <p className="text-body text-muted-foreground font-serif italic">
                     No coffees currently listed for this roaster.
                   </p>
                 </div>
               </div>
             </Section>
           )}
-        </div>
 
-        {/* Reviews Section */}
-        <Section spacing="default" contained={false} className="order-5">
-          <ReviewSection entityType="roaster" entityId={roaster.id} />
-        </Section>
+          {/* Reviews Section */}
+          <Section
+            spacing="default"
+            contained={false}
+            className="border-t border-border/60"
+          >
+            <ReviewSection entityType="roaster" entityId={roaster.id} />
+          </Section>
 
-        {/* Claim Your Page CTA */}
-        <div className="text-center py-6">
-          <p className="text-caption text-muted-foreground">
-            If you are the roaster,{" "}
-            <Link
-              href="/roasters/partner"
-              className="text-accent hover:underline font-medium"
-            >
-              claim your page now
-            </Link>{" "}
-            for a verified tag.
-          </p>
+          {/* Claim Your Page CTA */}
+          <div className="text-center py-12 md:py-16 border-t border-border/40">
+            <p className="text-label text-muted-foreground tracking-wide uppercase">
+              Partner with Indian Coffee Beans
+            </p>
+            <p className="mt-4 text-body text-muted-foreground">
+              If you are the owner of{" "}
+              <span className="text-foreground font-medium">
+                {roaster.name}
+              </span>
+              ,{" "}
+              <Link
+                href="/roasters/partner"
+                className="text-accent hover:underline font-medium italic underline-offset-4"
+              >
+                claim your page now
+              </Link>{" "}
+              to get a verified badge and manage your coffees.
+            </p>
+          </div>
         </div>
       </PageShell>
     </div>

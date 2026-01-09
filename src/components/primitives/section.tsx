@@ -30,6 +30,10 @@ export function Section({
     loose: "py-14 md:py-20 lg:py-28",
   };
 
+  // Check if className explicitly overrides padding (py-0 or similar)
+  const hasPaddingOverride =
+    className?.includes("py-0") || className?.includes("!py-0");
+
   const content = (
     <>
       {(eyebrow || title) && (
@@ -42,17 +46,17 @@ export function Section({
     </>
   );
 
+  const sectionClassName = hasPaddingOverride
+    ? className
+    : cn(spacingClasses[spacing], className);
+
   if (contained) {
     return (
-      <section className={cn(spacingClasses[spacing], className)}>
+      <section className={sectionClassName}>
         <PageShell>{content}</PageShell>
       </section>
     );
   }
 
-  return (
-    <section className={cn(spacingClasses[spacing], className)}>
-      {content}
-    </section>
-  );
+  return <section className={sectionClassName}>{content}</section>;
 }

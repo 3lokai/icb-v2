@@ -73,11 +73,10 @@ function CoffeeCardComponent({ coffee }: CoffeeCardProps) {
     [price]
   );
 
-  // Memoize image URL
+  // Memoize image URL (preset handles null/undefined and returns placeholder)
   const imageUrl = useMemo(
-    () =>
-      coffee?.image_url ? coffeeImagePresets.coffeeCard(coffee.image_url) : "",
-    [coffee]
+    () => coffeeImagePresets.coffeeCard(coffee?.image_url),
+    [coffee?.image_url]
   );
 
   // Memoize roast level display

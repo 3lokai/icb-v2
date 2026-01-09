@@ -21,8 +21,11 @@ export function Analytics() {
   const pathname = usePathname();
   const trackedPages = useRef<Set<string>>(new Set());
 
-  // Initialize GA on mount
+  // Initialize GA on mount - ensure consent is up-to-date
+  // Note: Core initialization (dataLayer, gtag) is done via inline script in layout.tsx
+  // This ensures it runs before hydration and before the external GA script loads
   useEffect(() => {
+    // Update consent status (core initialization already done by inline script)
     initGA();
   }, []);
 
