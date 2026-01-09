@@ -27,6 +27,7 @@ const isProduction = (): boolean => {
 };
 
 // Check if consent has been granted
+// Defaults to true (opt-out model) unless explicitly rejected
 export const hasAnalyticsConsent = (): boolean => {
   if (!isProduction()) {
     return false;
@@ -37,13 +38,20 @@ export const hasAnalyticsConsent = (): boolean => {
       const consent = localStorage.getItem("icb-cookie-consent");
       if (consent) {
         const { analytics } = JSON.parse(consent);
-        return !!analytics;
+        // If analytics is explicitly false, return false
+        // Otherwise default to true (opt-out model)
+        return analytics !== false;
       }
+      // No consent stored = default to granted (opt-out model)
+      return true;
     } catch (e) {
       console.error("Error checking analytics consent", e);
+      // Default to granted on error
+      return true;
     }
   }
-  return false;
+  // Default to granted (opt-out model)
+  return true;
 };
 
 // Initialize Google Analytics (simplified - core initialization is done inline in layout.tsx)
@@ -70,17 +78,22 @@ export const initGA = () => {
       window.dataLayer.push(args);
     };
     window.gtag("js", new Date());
-    // Set default consent if gtag wasn't initialized
+    // Set default consent if gtag wasn't initialized (opt-out model - default granted)
     window.gtag("consent", "default", {
-      analytics_storage: "denied",
+      analytics_storage: "granted",
       ad_storage: "denied",
     });
   }
 
-  // Update consent status if it has changed (e.g., user just granted consent)
+  // Update consent status based on user preference (opt-out model)
   if (hasAnalyticsConsent()) {
     window.gtag("consent", "update", {
       analytics_storage: "granted",
+    });
+  } else {
+    // User explicitly rejected - deny consent
+    window.gtag("consent", "update", {
+      analytics_storage: "denied",
     });
   }
 };

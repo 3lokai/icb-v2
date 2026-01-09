@@ -20,7 +20,7 @@ export function CookieNotice() {
   const [isExiting, setIsExiting] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true,
-    analytics: false,
+    analytics: true, // Default to enabled (opt-out model)
   });
 
   useEffect(() => {

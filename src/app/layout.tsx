@@ -152,26 +152,39 @@ export default function RootLayout({
                       window.gtag("js", new Date());
                     }
                     
-                    // Set default consent to denied (GDPR/CCPA compliance)
+                    // Set default consent to granted (opt-out model)
                     // This must be set BEFORE any config calls
                     window.gtag("consent", "default", {
-                      analytics_storage: "denied",
+                      analytics_storage: "granted",
                       ad_storage: "denied",
                     });
                     
-                    // Check for existing consent and update if granted
+                    // Check for explicit rejection and update if user rejected
+                    var shouldTrack = true;
                     try {
                       var consent = localStorage.getItem("icb-cookie-consent");
                       if (consent) {
                         var parsed = JSON.parse(consent);
-                        if (parsed.analytics) {
+                        // If analytics is explicitly false, deny consent
+                        if (parsed.analytics === false) {
                           window.gtag("consent", "update", {
-                            analytics_storage: "granted",
+                            analytics_storage: "denied",
                           });
+                          shouldTrack = false;
                         }
                       }
+                      // If no consent stored, default remains "granted" (opt-out model)
                     } catch (e) {
-                      // Silently fail if consent check fails
+                      // Silently fail if consent check fails, default remains "granted"
+                    }
+                    
+                    // Initialize GA config (standard Google pattern)
+                    // Only track if consent is granted (opt-out model - default is granted)
+                    var gaId = ${env.NEXT_PUBLIC_GA_ID ? `"${env.NEXT_PUBLIC_GA_ID}"` : "null"};
+                    if (shouldTrack && gaId) {
+                      window.gtag("config", gaId, {
+                        page_path: window.location.pathname,
+                      });
                     }
                   })();
                 `,

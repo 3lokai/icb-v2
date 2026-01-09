@@ -220,7 +220,6 @@
     background: var(--muted-foreground);
     border-radius: var(--radius-sm);
     border: 1px solid var(--muted);
-    transition: all 0.1s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
