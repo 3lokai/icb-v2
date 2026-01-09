@@ -29,7 +29,7 @@ const envSchema = z.object({
   NEXT_PUBLIC_GOOGLE_TAG_ID: z.string().optional(),
   // GA4 Measurement ID (G-XXXX) - used for gtag('config', ...) and events
   NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
-  // Legacy: kept for backward compatibility
+  // Legacy: kept for backward compatibility, maps to GA_MEASUREMENT_ID
   NEXT_PUBLIC_GA_ID: z.string().optional(),
 
   // Resend email service
