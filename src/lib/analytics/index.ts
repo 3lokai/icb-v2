@@ -1,37 +1,11 @@
 // src/lib/analytics/index.ts
-// Use GA_MEASUREMENT_ID (G-XXXX) for config and events, NOT GOOGLE_TAG_ID (GT-XXXX)
-// IMPORTANT: Never use Google Tag ID (GT-XXXX) here - only GA4 Measurement ID (G-XXXX)
-// This is used for gtag('config', ...) and all event tracking
+// GA4 Measurement ID (G-XXXX) - used for event tracking
+// Note: Pageview tracking is handled automatically by @next/third-parties/google component
+// Consent mode is initialized by beforeInteractive script in layout.tsx
 export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-const isProduction = (): boolean => {
-  // Allow explicit override via environment variable
-  if (process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true") {
-    return true;
-  }
-
-  // Standard production check
-  if (process.env.NODE_ENV !== "production") {
-    return false;
-  }
-
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  // More precise hostname checking - only exclude actual localhost/127.0.0.1
-  // Don't exclude hostnames that just contain these strings (e.g., staging-3000.example.com)
-  const hostname = window.location.hostname;
-  return (
-    hostname !== "localhost" &&
-    hostname !== "127.0.0.1" &&
-    !hostname.startsWith("localhost:") &&
-    !hostname.startsWith("127.0.0.1:")
-  );
-};
 
 // Check if consent has been granted
 // Defaults to true (opt-out model) unless explicitly rejected
-// Note: In development, still respects consent but doesn't track (handled by isProduction check in pageview)
 export const hasAnalyticsConsent = (): boolean => {
   if (typeof window === "undefined") {
     return false;
@@ -54,81 +28,16 @@ export const hasAnalyticsConsent = (): boolean => {
   }
 };
 
-// Initialize Google Analytics (simplified - core initialization is done inline in layout.tsx)
-// This function now only handles runtime consent updates and ensures GA is ready
-// The inline script in layout.tsx handles: dataLayer, gtag function, and initial consent mode
-export const initGA = () => {
-  // Core initialization is done via inline script in layout.tsx
-  // This function is kept for backward compatibility and to ensure consent is up-to-date
-  if (typeof window === "undefined" || !GA_TRACKING_ID || !isProduction()) {
-    if (process.env.NODE_ENV === "development") {
-      console.log("GA4 tracking disabled (dev environment)");
-    }
-    return;
-  }
-
-  // Ensure dataLayer and gtag exist (fallback - should already be initialized by inline script)
-  if (!window.dataLayer) {
-    window.dataLayer = [];
-  }
-
-  if (!window.gtag) {
-    // Use rest parameters (TypeScript-friendly) - inline script uses arguments (standard GA pattern)
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
-    };
-    window.gtag("js", new Date());
-    // Set default consent if gtag wasn't initialized (opt-out model - default granted)
-    window.gtag("consent", "default", {
-      analytics_storage: "granted",
-      ad_storage: "denied",
-    });
-  }
-
-  // Update consent status based on user preference (opt-out model)
-  if (hasAnalyticsConsent()) {
-    window.gtag("consent", "update", {
-      analytics_storage: "granted",
-    });
-  } else {
-    // User explicitly rejected - deny consent
-    window.gtag("consent", "update", {
-      analytics_storage: "denied",
-    });
-  }
-};
-
 // Update consent status
+// Note: Consent mode is initialized by beforeInteractive script in layout.tsx
+// This function is called when user changes preferences via cookie consent UI
 export const updateAnalyticsConsent = (granted: boolean) => {
   if (typeof window !== "undefined" && window.gtag) {
     window.gtag("consent", "update", {
       analytics_storage: granted ? "granted" : "denied",
     });
-
-    // Dispatch custom event to notify GoogleAnalytics component
-    // This allows tracking the current pageview when consent is granted
-    if (granted) {
-      window.dispatchEvent(new Event("icb-consent-updated"));
-    }
-  }
-};
-
-export const pageview = (url: string) => {
-  // Ensure GA is initialized before tracking
-  if (typeof window === "undefined" || !GA_TRACKING_ID || !isProduction()) {
-    return;
-  }
-
-  // Initialize if not already done (safety check)
-  if (!window.dataLayer || !window.gtag) {
-    initGA();
-  }
-
-  // Only track if consent is given
-  if (window.gtag && hasAnalyticsConsent()) {
-    window.gtag("config", GA_TRACKING_ID, {
-      page_path: url,
-    });
+    // Note: Removed 'icb-consent-updated' event dispatch since we're not manually tracking pageviews
+    // Next.js GoogleAnalytics component handles pageview tracking automatically
   }
 };
 
@@ -543,15 +452,17 @@ export const trackToolsUsage = (
   });
 };
 
+// Type declarations for Google Analytics
+// @next/third-parties/google provides Window.dataLayer and Window.gtag types
+// We only need to augment gtag if needed for our specific usage
 declare global {
-  // Required for TypeScript global augmentation
   interface Window {
-    dataLayer: unknown[];
-    // gtag supports both specific signatures and rest parameters
-    gtag: (
+    // gtag function signature for our event tracking
+    // dataLayer is provided by @next/third-parties/google types
+    gtag?: (
       command: "event" | "config" | "consent" | "js",
-      actionOrTarget: unknown,
-      params?: Record<string, unknown>
+      actionOrTarget: any,
+      params?: Record<string, any>
     ) => void;
   }
 }

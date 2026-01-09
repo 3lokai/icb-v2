@@ -3,6 +3,7 @@ import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleAnalytics as NextGoogleAnalytics } from "@next/third-parties/google";
 import { CookieNotice } from "@/components/common/CookieNotice";
 import { Analytics as GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { env } from "../../env";
@@ -124,80 +125,70 @@ export default function RootLayout({
       <body>
         <div className="bg-noise" />
         <StructuredData schema={[organizationSchema, websiteSchema]} />
-        {/* Google Analytics - Inline initialization script runs BEFORE external script loads */}
-        {/* This ensures dataLayer and gtag are ready immediately, eliminating race conditions */}
-        {/* Uses GOOGLE_TAG_ID (GT-XXXX) for script loader, GA_MEASUREMENT_ID (G-XXXX) for config */}
-        {(env.NEXT_PUBLIC_GOOGLE_TAG_ID ||
-          env.NEXT_PUBLIC_GA_MEASUREMENT_ID) && (
-          <>
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  (function() {
-                    // Check if we should initialize GA (production check)
-                    var isProd = ${process.env.NODE_ENV === "production" ? "true" : "false"};
-                    var enableAnalytics = ${process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true" ? "true" : "false"};
-                    var hostname = typeof window !== "undefined" ? window.location.hostname : "";
-                    var shouldInit = enableAnalytics || (isProd && hostname !== "localhost" && hostname !== "127.0.0.1" && !hostname.startsWith("localhost:") && !hostname.startsWith("127.0.0.1:"));
-                    
-                    if (!shouldInit) return;
-                    
-                    // Initialize dataLayer early (before external script loads)
-                    window.dataLayer = window.dataLayer || [];
-                    
-                    // Define gtag function early (before external script loads)
-                    // This ensures commands are queued if script hasn't loaded yet
-                    if (!window.gtag) {
-                      window.gtag = function gtag() {
-                        window.dataLayer.push(Array.from(arguments));
-                      };
-                      window.gtag("js", new Date());
-                    }
-                    
-                    // Set default consent to granted (opt-out model)
-                    // This must be set BEFORE any config calls
-                    window.gtag("consent", "default", {
-                      analytics_storage: "granted",
-                      ad_storage: "denied",
-                    });
-                    
-                    // Check for explicit rejection and update if user rejected
-                    var shouldTrack = true;
-                    try {
-                      var consent = localStorage.getItem("icb-cookie-consent");
-                      if (consent) {
-                        var parsed = JSON.parse(consent);
-                        // If analytics is explicitly false, deny consent
-                        if (parsed.analytics === false) {
-                          window.gtag("consent", "update", {
-                            analytics_storage: "denied",
-                          });
-                          shouldTrack = false;
-                        }
+        {/* Google Analytics Consent Mode - Must run before Next.js GoogleAnalytics component */}
+        {/* This script ONLY initializes dataLayer, gtag, and consent - NO config call */}
+        {env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <Script
+            id="ga-consent-init"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function() {
+                  // Check if we should initialize GA (production check)
+                  var isProd = ${process.env.NODE_ENV === "production" ? "true" : "false"};
+                  var enableAnalytics = ${process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true" ? "true" : "false"};
+                  var hostname = typeof window !== "undefined" ? window.location.hostname : "";
+                  var shouldInit = enableAnalytics || (isProd && hostname !== "localhost" && hostname !== "127.0.0.1" && !hostname.startsWith("localhost:") && !hostname.startsWith("127.0.0.1:"));
+                  
+                  if (!shouldInit) return;
+                  
+                  // Initialize dataLayer early (before Next.js component loads)
+                  window.dataLayer = window.dataLayer || [];
+                  
+                  // Define gtag function early (before Next.js component loads)
+                  // This ensures commands are queued if script hasn't loaded yet
+                  if (!window.gtag) {
+                    window.gtag = function gtag() {
+                      window.dataLayer.push(Array.from(arguments));
+                    };
+                    window.gtag("js", new Date());
+                  }
+                  
+                  // Set default consent to granted (opt-out model)
+                  // This must be set BEFORE Next.js component runs its config
+                  window.gtag("consent", "default", {
+                    analytics_storage: "granted",
+                    ad_storage: "denied",
+                  });
+                  
+                  // Check localStorage for previous consent preference
+                  // Matches STORAGE_KEY from use-cookie-consent.ts hook
+                  try {
+                    var consent = localStorage.getItem("icb-cookie-consent");
+                    if (consent) {
+                      var parsed = JSON.parse(consent);
+                      // If analytics is explicitly false, deny consent
+                      if (parsed.analytics === false) {
+                        window.gtag("consent", "update", {
+                          analytics_storage: "denied",
+                        });
                       }
-                      // If no consent stored, default remains "granted" (opt-out model)
-                    } catch (e) {
-                      // Silently fail if consent check fails, default remains "granted"
+                      // If analytics is true or not set, default remains "granted" (opt-out model)
                     }
-                    
-                    // Initialize GA config (standard Google pattern)
-                    // Use GA_MEASUREMENT_ID (G-XXXX) for config, NOT GOOGLE_TAG_ID (GT-XXXX)
-                    // Only track if consent is granted (opt-out model - default is granted)
-                    var measurementId = ${env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? `"${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}"` : "null"};
-                    if (shouldTrack && measurementId) {
-                      window.gtag("config", measurementId, {
-                        page_path: window.location.pathname,
-                      });
-                    }
-                  })();
-                `,
-              }}
-            />
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GOOGLE_TAG_ID || ""}`}
-              strategy="afterInteractive"
-            />
-          </>
+                    // If no consent stored, default remains "granted" (opt-out model)
+                  } catch (e) {
+                    // Silently fail if consent check fails, default remains "granted"
+                  }
+                  
+                  // NO config call here - Next.js GoogleAnalytics component handles config
+                })();
+              `,
+            }}
+          />
+        )}
+        {/* Next.js Google Analytics Component - Handles script loading and automatic pageview tracking */}
+        {env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <NextGoogleAnalytics gaId={env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
         <ThemeProvider
           attribute="class"
