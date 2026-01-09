@@ -25,6 +25,11 @@ const envSchema = z.object({
   IMAGEKIT_PRIVATE_KEY: z.string().optional(),
 
   // Google Analytics (GA4) configuration
+  // Google Tag ID (GT-XXXX) - used for loading the gtag.js script
+  NEXT_PUBLIC_GOOGLE_TAG_ID: z.string().optional(),
+  // GA4 Measurement ID (G-XXXX) - used for gtag('config', ...) and events
+  NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
+  // Legacy: kept for backward compatibility
   NEXT_PUBLIC_GA_ID: z.string().optional(),
 
   // Resend email service

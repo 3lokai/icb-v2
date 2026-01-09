@@ -126,7 +126,9 @@ export default function RootLayout({
         <StructuredData schema={[organizationSchema, websiteSchema]} />
         {/* Google Analytics - Inline initialization script runs BEFORE external script loads */}
         {/* This ensures dataLayer and gtag are ready immediately, eliminating race conditions */}
-        {env.NEXT_PUBLIC_GA_ID && (
+        {/* Uses GOOGLE_TAG_ID (GT-XXXX) for script loader, GA_MEASUREMENT_ID (G-XXXX) for config */}
+        {(env.NEXT_PUBLIC_GOOGLE_TAG_ID ||
+          env.NEXT_PUBLIC_GA_MEASUREMENT_ID) && (
           <>
             <script
               dangerouslySetInnerHTML={{
@@ -152,33 +154,47 @@ export default function RootLayout({
                       window.gtag("js", new Date());
                     }
                     
-                    // Set default consent to denied (GDPR/CCPA compliance)
+                    // Set default consent to granted (opt-out model)
                     // This must be set BEFORE any config calls
                     window.gtag("consent", "default", {
-                      analytics_storage: "denied",
+                      analytics_storage: "granted",
                       ad_storage: "denied",
                     });
                     
-                    // Check for existing consent and update if granted
+                    // Check for explicit rejection and update if user rejected
+                    var shouldTrack = true;
                     try {
                       var consent = localStorage.getItem("icb-cookie-consent");
                       if (consent) {
                         var parsed = JSON.parse(consent);
-                        if (parsed.analytics) {
+                        // If analytics is explicitly false, deny consent
+                        if (parsed.analytics === false) {
                           window.gtag("consent", "update", {
-                            analytics_storage: "granted",
+                            analytics_storage: "denied",
                           });
+                          shouldTrack = false;
                         }
                       }
+                      // If no consent stored, default remains "granted" (opt-out model)
                     } catch (e) {
-                      // Silently fail if consent check fails
+                      // Silently fail if consent check fails, default remains "granted"
+                    }
+                    
+                    // Initialize GA config (standard Google pattern)
+                    // Use GA_MEASUREMENT_ID (G-XXXX) for config, NOT GOOGLE_TAG_ID (GT-XXXX)
+                    // Only track if consent is granted (opt-out model - default is granted)
+                    var measurementId = ${env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? `"${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}"` : "null"};
+                    if (shouldTrack && measurementId) {
+                      window.gtag("config", measurementId, {
+                        page_path: window.location.pathname,
+                      });
                     }
                   })();
                 `,
               }}
             />
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_ID}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GOOGLE_TAG_ID || ""}`}
               strategy="afterInteractive"
             />
           </>

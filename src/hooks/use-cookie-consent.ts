@@ -9,11 +9,12 @@ export type CookiePreferences = {
 
 export const getStoredPreferences = (): CookiePreferences => {
   if (typeof window === "undefined") {
-    return { necessary: true, analytics: false };
+    return { necessary: true, analytics: true };
   }
   const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) {
-    return { necessary: true, analytics: false };
+    // Default to analytics enabled (opt-out model)
+    return { necessary: true, analytics: true };
   }
   try {
     const parsed = JSON.parse(stored);
@@ -22,15 +23,20 @@ export const getStoredPreferences = (): CookiePreferences => {
       // If old format exists, treat marketing as analytics
       return {
         necessary: parsed.necessary ?? true,
-        analytics: parsed.analytics || parsed.marketing,
+        analytics:
+          parsed.analytics !== undefined
+            ? parsed.analytics
+            : (parsed.marketing ?? true),
       };
     }
+    // Default to true if not explicitly set (opt-out model)
     return {
       necessary: parsed.necessary ?? true,
-      analytics: parsed.analytics ?? false,
+      analytics: parsed.analytics !== undefined ? parsed.analytics : true,
     };
   } catch {
-    return { necessary: true, analytics: false };
+    // Default to analytics enabled on error
+    return { necessary: true, analytics: true };
   }
 };
 
