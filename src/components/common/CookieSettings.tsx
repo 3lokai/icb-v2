@@ -21,7 +21,7 @@ export function CookieSettings({
   const [isOpen, setIsOpen] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true,
-    analytics: false,
+    analytics: true, // Default to enabled (opt-out model)
   });
 
   useEffect(() => {

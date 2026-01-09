@@ -27,7 +27,15 @@ export function Analytics() {
   useEffect(() => {
     // Update consent status (core initialization already done by inline script)
     initGA();
-  }, []);
+
+    // Mark initial page as tracked (inline script already called gtag('config') for it)
+    // This prevents double-firing the initial pageview when component mounts
+    // Use the same key format as the pageview tracking logic
+    if (typeof window !== "undefined" && pathname) {
+      const initialPageKey = `${pathname}${window.location.search}`;
+      trackedPages.current.add(initialPageKey);
+    }
+  }, [pathname]);
 
   // Track pageviews and attribution on route changes
   // This works for all routes including dynamic routes like /coffees/[slug] and /roasters/[slug]
