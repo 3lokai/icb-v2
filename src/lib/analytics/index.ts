@@ -452,15 +452,17 @@ export const trackToolsUsage = (
   });
 };
 
+// Type declarations for Google Analytics
+// @next/third-parties/google provides Window.dataLayer and Window.gtag types
+// We only need to augment gtag if needed for our specific usage
 declare global {
-  // Required for TypeScript global augmentation
   interface Window {
-    dataLayer: unknown[];
-    // gtag supports both specific signatures and rest parameters
-    gtag: (
+    // gtag function signature for our event tracking
+    // dataLayer is provided by @next/third-parties/google types
+    gtag?: (
       command: "event" | "config" | "consent" | "js",
-      actionOrTarget: unknown,
-      params?: Record<string, unknown>
+      actionOrTarget: any,
+      params?: Record<string, any>
     ) => void;
   }
 }
