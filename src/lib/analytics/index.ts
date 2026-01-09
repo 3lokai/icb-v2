@@ -1,5 +1,8 @@
 // src/lib/analytics/index.ts
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
+// Use GA_MEASUREMENT_ID (G-XXXX) for config and events, NOT GOOGLE_TAG_ID (GT-XXXX)
+// IMPORTANT: Never use Google Tag ID (GT-XXXX) here - only GA4 Measurement ID (G-XXXX)
+// This is used for gtag('config', ...) and all event tracking
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const isProduction = (): boolean => {
   // Allow explicit override via environment variable
   if (process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true") {
@@ -28,30 +31,27 @@ const isProduction = (): boolean => {
 
 // Check if consent has been granted
 // Defaults to true (opt-out model) unless explicitly rejected
+// Note: In development, still respects consent but doesn't track (handled by isProduction check in pageview)
 export const hasAnalyticsConsent = (): boolean => {
-  if (!isProduction()) {
+  if (typeof window === "undefined") {
     return false;
   }
 
-  if (typeof window !== "undefined") {
-    try {
-      const consent = localStorage.getItem("icb-cookie-consent");
-      if (consent) {
-        const { analytics } = JSON.parse(consent);
-        // If analytics is explicitly false, return false
-        // Otherwise default to true (opt-out model)
-        return analytics !== false;
-      }
-      // No consent stored = default to granted (opt-out model)
-      return true;
-    } catch (e) {
-      console.error("Error checking analytics consent", e);
-      // Default to granted on error
-      return true;
+  try {
+    const consent = localStorage.getItem("icb-cookie-consent");
+    if (consent) {
+      const { analytics } = JSON.parse(consent);
+      // If analytics is explicitly false, return false
+      // Otherwise default to true (opt-out model)
+      return analytics !== false;
     }
+    // No consent stored = default to granted (opt-out model)
+    return true;
+  } catch (e) {
+    console.error("Error checking analytics consent", e);
+    // Default to granted on error (opt-out model)
+    return true;
   }
-  // Default to granted (opt-out model)
-  return true;
 };
 
 // Initialize Google Analytics (simplified - core initialization is done inline in layout.tsx)

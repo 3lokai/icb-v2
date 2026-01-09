@@ -126,7 +126,9 @@ export default function RootLayout({
         <StructuredData schema={[organizationSchema, websiteSchema]} />
         {/* Google Analytics - Inline initialization script runs BEFORE external script loads */}
         {/* This ensures dataLayer and gtag are ready immediately, eliminating race conditions */}
-        {env.NEXT_PUBLIC_GA_ID && (
+        {/* Uses GOOGLE_TAG_ID (GT-XXXX) for script loader, GA_MEASUREMENT_ID (G-XXXX) for config */}
+        {(env.NEXT_PUBLIC_GOOGLE_TAG_ID ||
+          env.NEXT_PUBLIC_GA_MEASUREMENT_ID) && (
           <>
             <script
               dangerouslySetInnerHTML={{
@@ -179,10 +181,11 @@ export default function RootLayout({
                     }
                     
                     // Initialize GA config (standard Google pattern)
+                    // Use GA_MEASUREMENT_ID (G-XXXX) for config, NOT GOOGLE_TAG_ID (GT-XXXX)
                     // Only track if consent is granted (opt-out model - default is granted)
-                    var gaId = ${env.NEXT_PUBLIC_GA_ID ? `"${env.NEXT_PUBLIC_GA_ID}"` : "null"};
-                    if (shouldTrack && gaId) {
-                      window.gtag("config", gaId, {
+                    var measurementId = ${env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? `"${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}"` : "null"};
+                    if (shouldTrack && measurementId) {
+                      window.gtag("config", measurementId, {
                         page_path: window.location.pathname,
                       });
                     }
@@ -191,7 +194,7 @@ export default function RootLayout({
               }}
             />
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_ID}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GOOGLE_TAG_ID || ""}`}
               strategy="afterInteractive"
             />
           </>
