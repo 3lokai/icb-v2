@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo, useRef, startTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -18,6 +18,7 @@ import type {
 type CoffeeFilterContentProps = {
   filterMeta: CoffeeFilterMeta;
   showHeader?: boolean;
+  isVisible?: boolean;
 };
 
 /**
@@ -28,6 +29,7 @@ type CoffeeFilterContentProps = {
 export function CoffeeFilterContent({
   filterMeta: initialFilterMeta,
   showHeader = true,
+  isVisible = true,
 }: CoffeeFilterContentProps) {
   const { filters, updateFilters, resetFilters } = useCoffeeFilters();
 
@@ -35,6 +37,76 @@ export function CoffeeFilterContent({
   // Only used during drag, synced from filters when not dragging
   const [isDragging, setIsDragging] = useState(false);
   const [dragValue, setDragValue] = useState<[number, number] | null>(null);
+
+  // Local state for search input - updates immediately, commits to URL after debounce
+  const [qDraft, setQDraft] = useState(filters.q || "");
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isUserTypingRef = useRef(false);
+  const prevQRef = useRef<string | undefined>(filters.q);
+
+  // Sync qDraft when filters.q changes externally (e.g., from URL or other components)
+  // Only sync when user is not actively typing to avoid conflicts
+  // Using startTransition to mark as non-urgent update to avoid cascading renders
+  useEffect(() => {
+    if (prevQRef.current !== filters.q && !isUserTypingRef.current) {
+      prevQRef.current = filters.q;
+      startTransition(() => {
+        setQDraft(filters.q || "");
+      });
+    }
+  }, [filters.q]);
+
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Debounced commit to URL
+  const debouncedCommitQ = useMemo(
+    () => (value: string) => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+      debounceTimerRef.current = setTimeout(() => {
+        isUserTypingRef.current = false;
+        updateFilters({ q: value.trim() || undefined });
+      }, 300);
+    },
+    [updateFilters]
+  );
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    isUserTypingRef.current = true;
+    setQDraft(value); // Immediate UI update
+    debouncedCommitQ(value); // Debounced URL update (resets typing flag when done)
+  };
+
+  // Commit on blur
+  const handleSearchBlur = () => {
+    isUserTypingRef.current = false;
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    updateFilters({ q: qDraft.trim() || undefined });
+  };
+
+  // Commit on Enter key
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      isUserTypingRef.current = false;
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+      updateFilters({ q: qDraft.trim() || undefined });
+      e.currentTarget.blur();
+    }
+  };
 
   // Derive current value from filters or drag state
   const currentPriceRange: [number, number] =
@@ -45,7 +117,7 @@ export function CoffeeFilterContent({
   // Fetch dynamic filter meta based on current filters
   // Uses static meta as initial data, updates when filters change
   const { data: dynamicFilterMeta, isFetching: isMetaLoading } =
-    useCoffeeFilterMeta(filters, initialFilterMeta);
+    useCoffeeFilterMeta(filters, initialFilterMeta, true, isVisible);
 
   // Use dynamic meta if available, fallback to initial static meta
   const filterMeta = dynamicFilterMeta || initialFilterMeta;
@@ -182,12 +254,12 @@ export function CoffeeFilterContent({
         <Input
           id="search"
           className="h-10 border-border/60 focus:border-accent/40"
-          onChange={(e) =>
-            updateFilters({ q: e.target.value.trim() || undefined })
-          }
+          onChange={handleSearchChange}
+          onBlur={handleSearchBlur}
+          onKeyDown={handleSearchKeyDown}
           placeholder="Type to search..."
           type="text"
-          value={filters.q || ""}
+          value={qDraft}
         />
       </Stack>
 
@@ -441,9 +513,10 @@ type CoffeeFilterSidebarProps = {
  * Hidden on mobile, visible on desktop
  */
 export function CoffeeFilterSidebar({ filterMeta }: CoffeeFilterSidebarProps) {
+  // Sidebar is always visible on desktop (when this component renders)
   return (
     <aside className="hidden w-full md:block md:w-64">
-      <CoffeeFilterContent filterMeta={filterMeta} />
+      <CoffeeFilterContent filterMeta={filterMeta} isVisible={true} />
     </aside>
   );
 }
