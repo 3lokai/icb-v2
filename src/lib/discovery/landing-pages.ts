@@ -178,7 +178,7 @@ export const LANDING_PAGES: LandingPageConfig[] = [
       "Common questions about getting rich, full-bodied coffee from your French Press.",
     faqBadge: "Pro Tips",
     filter: {
-      brew_method_ids: ["frenchpress"],
+      brew_method_ids: ["french_press"],
     },
     sortOrder: "rating_desc",
     faqs: [
