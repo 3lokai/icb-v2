@@ -578,7 +578,8 @@ export function CoffeeFilterContent({
             defaultValue={filters.processes || []}
             onValueChange={(values) => {
               updateFilters({
-                processes: values.length > 0 ? values : undefined,
+                processes:
+                  values.length > 0 ? (values as ProcessEnum[]) : undefined,
               });
             }}
             placeholder="Select processing methods..."
