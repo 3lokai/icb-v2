@@ -1080,7 +1080,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                       >
                         <Icon name="Check" className="h-4 w-4" />
                       </div>
-                      <span>
+                      <span className="text-caption font-medium">
                         (Select All
                         {getAllOptions().length > 20
                           ? ` - ${getAllOptions().length} options`
@@ -1131,7 +1131,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 aria-hidden="true"
                               />
                             )}
-                            <span>{option.label}</span>
+                            <span className="text-caption font-medium">
+                              {option.label}
+                            </span>
                           </CommandItem>
                         );
                       })}
@@ -1175,7 +1177,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               aria-hidden="true"
                             />
                           )}
-                          <span>{option.label}</span>
+                          <span className="text-caption font-medium">
+                            {option.label}
+                          </span>
                         </CommandItem>
                       );
                     })}

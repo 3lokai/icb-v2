@@ -1,18 +1,15 @@
 "use client";
 
-import {
-  useState,
-  useEffect,
-  useMemo,
-  useRef,
-  startTransition,
-  useCallback,
-} from "react";
+import { useState, useEffect, useMemo, useRef, startTransition } from "react";
 import { useSearch } from "@/hooks/use-search";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { DualRangeSlider } from "@/components/ui/dual-range-slider";
+import {
+  MultiSelect,
+  type MultiSelectOption,
+} from "@/components/ui/multi-select";
 import { Stack } from "@/components/primitives/stack";
 import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
 import { useCoffeeFilterMeta } from "@/hooks/use-coffee-filter-meta";
@@ -45,6 +42,8 @@ export function CoffeeFilterContent({
   // Only used during drag, synced from filters when not dragging
   const [isDragging, setIsDragging] = useState(false);
   const [dragValue, setDragValue] = useState<[number, number] | null>(null);
+  // Track committed price range to sync with filters when URL updates
+  const committedPriceRangeRef = useRef<[number, number] | null>(null);
 
   // Local state for search input - updates immediately, commits to URL after debounce
   const [qDraft, setQDraft] = useState(filters.q || "");
@@ -176,11 +175,33 @@ export function CoffeeFilterContent({
     }
   };
 
+  // Sync dragValue with filters when they match the committed values
+  // This ensures the slider stays in the correct position until URL updates complete
+  // Note: setState in effect is necessary here to sync with external state (URL params)
+  useEffect(() => {
+    if (committedPriceRangeRef.current && !isDragging) {
+      const [committedMin, committedMax] = committedPriceRangeRef.current;
+      const filtersMatch =
+        (filters.min_price ?? 0) === committedMin &&
+        (filters.max_price ?? 10000) === committedMax;
+
+      if (filtersMatch) {
+        // Filters have updated, safe to clear drag state
+        // Use startTransition to mark this as non-urgent update
+        startTransition(() => {
+          setDragValue(null);
+        });
+        committedPriceRangeRef.current = null;
+      }
+    }
+  }, [filters.min_price, filters.max_price, isDragging]);
+
   // Derive current value from filters or drag state
-  const currentPriceRange: [number, number] =
-    isDragging && dragValue
-      ? dragValue
-      : [filters.min_price ?? 0, filters.max_price ?? 10000];
+  // Keep dragValue even when not dragging, until filters update (handled by useEffect above)
+  const currentPriceRange: [number, number] = dragValue ?? [
+    filters.min_price ?? 0,
+    filters.max_price ?? 10000,
+  ];
 
   // Fetch dynamic filter meta based on current filters
   // Uses static meta as initial data, updates when filters change
@@ -189,6 +210,46 @@ export function CoffeeFilterContent({
 
   // Use dynamic meta if available, fallback to initial static meta
   const filterMeta = dynamicFilterMeta || initialFilterMeta;
+
+  // Transform regions to MultiSelectOption format
+  const regionOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.regions.map((region) => ({
+        value: region.id,
+        label: `${region.label} (${region.count})`,
+      })),
+    [filterMeta.regions]
+  );
+
+  // Transform estates to MultiSelectOption format
+  const estateOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.estates.map((estate) => ({
+        value: estate.id,
+        label: `${estate.label} (${estate.count})`,
+      })),
+    [filterMeta.estates]
+  );
+
+  // Transform processes to MultiSelectOption format
+  const processOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.processes.map((process) => ({
+        value: process.value,
+        label: `${process.label} (${process.count})`,
+      })),
+    [filterMeta.processes]
+  );
+
+  // Transform flavor notes to MultiSelectOption format
+  const flavorOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.flavorNotes.map((flavor) => ({
+        value: flavor.id, // flavor_keys uses the key field, which is stored as id in our meta
+        label: `${flavor.label} (${flavor.count})`,
+      })),
+    [filterMeta.flavorNotes]
+  );
 
   // Toggle array filter values
   const toggleArrayFilter = (
@@ -332,6 +393,14 @@ export function CoffeeFilterContent({
         />
       </Stack>
 
+      {/* Brew Methods */}
+      {renderFilterSection({
+        title: "Brew Methods",
+        items: filterMeta.brewMethods,
+        filterKey: "brew_method_ids",
+        getValue: (item) => item.id,
+      })}
+
       {/* Roasters */}
       {renderFilterSection({
         title: "Roasters",
@@ -384,7 +453,7 @@ export function CoffeeFilterContent({
         >
           Price Range (₹)
         </label>
-        <div className="px-1 pt-8">
+        <div className="pt-8 overflow-visible">
           <DualRangeSlider
             id="priceRange"
             min={0}
@@ -398,9 +467,11 @@ export function CoffeeFilterContent({
             }}
             onValueCommit={(values) => {
               const [min, max] = values;
-              // Reset dragging state
+              // Store committed values to sync with filters later
+              committedPriceRangeRef.current = [min, max];
+              // User has released, but keep dragValue set until filters update
               setIsDragging(false);
-              setDragValue(null);
+              // Don't clear dragValue here - wait for filters to update via useEffect
               // If both values are at extremes, clear the filters
               if (min === 0 && max === 10000) {
                 updateFilters({
@@ -421,56 +492,101 @@ export function CoffeeFilterContent({
         </div>
       </Stack>
 
+      {/* Flavor Profiles */}
+      {flavorOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="flavor_keys"
+          >
+            Flavor Profiles
+          </label>
+          <MultiSelect
+            options={flavorOptions}
+            defaultValue={filters.flavor_keys || []}
+            onValueChange={(values) => {
+              updateFilters({
+                flavor_keys: values.length > 0 ? values : undefined,
+              });
+            }}
+            placeholder="Select flavor profiles..."
+            searchable={true}
+            className="w-full"
+          />
+        </Stack>
+      )}
+
       {/* Regions */}
-      {renderFilterSection({
-        title: "Regions",
-        items: filterMeta.regions,
-        filterKey: "region_ids",
-        getValue: (item) => item.id,
-      })}
+      {regionOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="region_ids"
+          >
+            Regions
+          </label>
+          <MultiSelect
+            options={regionOptions}
+            defaultValue={filters.region_ids || []}
+            onValueChange={(values) => {
+              updateFilters({
+                region_ids: values.length > 0 ? values : undefined,
+              });
+            }}
+            placeholder="Select regions..."
+            searchable={true}
+            className="w-full"
+          />
+        </Stack>
+      )}
 
       {/* Estates */}
-      {renderFilterSection({
-        title: "Estates",
-        items: filterMeta.estates,
-        filterKey: "estate_ids",
-        getValue: (item) => item.id,
-      })}
+      {estateOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="estate_ids"
+          >
+            Estates
+          </label>
+          <MultiSelect
+            options={estateOptions}
+            defaultValue={filters.estate_ids || []}
+            onValueChange={(values) => {
+              updateFilters({
+                estate_ids: values.length > 0 ? values : undefined,
+              });
+            }}
+            placeholder="Select estates..."
+            searchable={true}
+            className="w-full"
+          />
+        </Stack>
+      )}
 
       {/* Processing Methods */}
-      <Stack gap="3">
-        <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-          htmlFor="processes"
-        >
-          Processing Method
-        </label>
-        <Stack gap="1" className="pr-2 custom-scrollbar">
-          {filterMeta.processes.map((process) => (
-            <label
-              className="group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors hover:text-accent"
-              key={process.value}
-            >
-              <input
-                checked={isFilterSelected("processes", process.value)}
-                className="h-3.5 w-3.5 rounded border-border/60 text-accent focus:ring-accent/30"
-                onChange={() => toggleArrayFilter("processes", process.value)}
-                type="checkbox"
-              />
-              <span className="text-caption font-medium transition-colors">
-                {process.label}{" "}
-                <span
-                  className={`text-muted-foreground/50 font-normal ${
-                    isMetaLoading ? "opacity-50" : ""
-                  }`}
-                >
-                  ({process.count})
-                </span>
-              </span>
-            </label>
-          ))}
+      {processOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="processes"
+          >
+            Processing Method
+          </label>
+          <MultiSelect
+            options={processOptions}
+            defaultValue={filters.processes || []}
+            onValueChange={(values) => {
+              updateFilters({
+                processes: values.length > 0 ? values : undefined,
+              });
+            }}
+            placeholder="Select processing methods..."
+            searchable={true}
+            className="w-full"
+          />
         </Stack>
-      </Stack>
+      )}
 
       {/* Status */}
       <Stack gap="3">
@@ -508,26 +624,6 @@ export function CoffeeFilterContent({
             ))}
         </Stack>
       </Stack>
-
-      {/* Flavor Profiles */}
-      {renderFilterSection({
-        title: "Flavor Profiles",
-        items: filterMeta.flavorNotes,
-        filterKey: "flavor_keys",
-        getValue: (item) => item.id, // flavor_keys uses the key field, which is stored as id in our meta
-        totalCount: filterMeta.flavorNotes.reduce(
-          (sum, item) => sum + item.count,
-          0
-        ),
-      })}
-
-      {/* Brew Methods */}
-      {renderFilterSection({
-        title: "Brew Methods",
-        items: filterMeta.brewMethods,
-        filterKey: "brew_method_ids",
-        getValue: (item) => item.id,
-      })}
 
       {/* Boolean Filters */}
       <Stack gap="4">
