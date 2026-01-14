@@ -73,9 +73,14 @@ export async function getCoffeeIdsFromFlavorKeys(
 export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
   let filteredQuery = query;
 
-  // Text search
-  if (filters.q?.trim()) {
+  // Text search (only if not filtering by specific IDs from Fuse)
+  if (filters.q?.trim() && !filters.coffee_ids?.length) {
     filteredQuery = filteredQuery.ilike("name", `%${filters.q.trim()}%`);
+  }
+
+  // ID Filter (from Fuse)
+  if (filters.coffee_ids?.length) {
+    filteredQuery = filteredQuery.in("coffee_id", filters.coffee_ids);
   }
 
   // Array filters

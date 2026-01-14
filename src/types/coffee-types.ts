@@ -127,6 +127,9 @@ export type CoffeeFilters = {
 
   // Roasters
   roaster_ids?: string[];
+
+  // IDs (from Fuse search)
+  coffee_ids?: string[];
 };
 
 export type CoffeeFilterMeta = {

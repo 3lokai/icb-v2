@@ -1,6 +1,14 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef, startTransition } from "react";
+import {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  startTransition,
+  useCallback,
+} from "react";
+import { useSearch } from "@/hooks/use-search";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -44,6 +52,14 @@ export function CoffeeFilterContent({
   const isUserTypingRef = useRef(false);
   const prevQRef = useRef<string | undefined>(filters.q);
 
+  // Local Fuse Search
+  const localSearch = useSearch({ enableShortcut: false });
+
+  // Ensure index is loaded on interaction
+  const ensureSearchReady = () => {
+    localSearch.ensureIndexLoaded();
+  };
+
   // Sync qDraft when filters.q changes externally (e.g., from URL or other components)
   // Only sync when user is not actively typing to avoid conflicts
   // Using startTransition to mark as non-urgent update to avoid cascading renders
@@ -66,24 +82,76 @@ export function CoffeeFilterContent({
   }, []);
 
   // Debounced commit to URL
+  // Debounced commit to URL with Fuse Search
   const debouncedCommitQ = useMemo(
     () => (value: string) => {
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
       }
+
       debounceTimerRef.current = setTimeout(() => {
-        isUserTypingRef.current = false;
-        updateFilters({ q: value.trim() || undefined });
+        // If empty, clear filters immediately
+        if (!value.trim()) {
+          isUserTypingRef.current = false;
+          updateFilters({ q: undefined, coffee_ids: undefined });
+          localSearch.setQuery("");
+          return;
+        }
+
+        // Trigger Fuse Search
+        localSearch.setQuery(value.trim());
+
+        // Note: The actual updateFilters call will happen in the Effect
+        // effectively waiting for results.
+        // However, to ensure we don't get stuck if Fuse fails or is slow,
+        // we could set a fallback?
+        // For now, we rely on the effect below.
       }, 300);
     },
-    [updateFilters]
+    [updateFilters, localSearch]
   );
+
+  // Sync Fuse results to URL filters
+  useEffect(() => {
+    // Only update if we have a query (active search)
+    // and the query matches what we drafted (to avoid stale results overwriting new typing)
+    // and we are not currently debouncing (wait for typing to stop?)
+    // Actually, localSearch.query is updated immediately safely.
+
+    if (localSearch.query && localSearch.isReady && !localSearch.isLoading) {
+      const query = localSearch.query;
+      // Filter for coffees only
+      const coffeeResults = localSearch.results.filter(
+        (r) => r.type === "coffee"
+      );
+      const ids = coffeeResults.map((r) => r.id);
+
+      // Commit to URL
+      // We set 'q' to the query so the UI (and backend text search fallback) knows about it
+      // We set 'coffee_ids' to the Fuse matches
+      // Only update if different? updateFilters handles shallow merge, but URL push might happen.
+      // logic: if qDraft matches query, we are good.
+
+      if (qDraft.trim() === query) {
+        isUserTypingRef.current = false;
+        updateFilters({ q: query, coffee_ids: ids });
+      }
+    }
+  }, [
+    localSearch.results,
+    localSearch.isReady,
+    localSearch.isLoading,
+    localSearch.query,
+    qDraft,
+    updateFilters,
+  ]);
 
   // Handle search input change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     isUserTypingRef.current = true;
     setQDraft(value); // Immediate UI update
+    ensureSearchReady();
     debouncedCommitQ(value); // Debounced URL update (resets typing flag when done)
   };
 
@@ -257,6 +325,7 @@ export function CoffeeFilterContent({
           onChange={handleSearchChange}
           onBlur={handleSearchBlur}
           onKeyDown={handleSearchKeyDown}
+          onFocus={ensureSearchReady}
           placeholder="Type to search..."
           type="text"
           value={qDraft}

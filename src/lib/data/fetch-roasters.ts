@@ -29,8 +29,16 @@ function applyFilters(query: any, filters: RoasterFilters) {
   // This is REQUIRED to match the RLS policy "Public can view active roasters"
   filteredQuery = filteredQuery.eq("is_active", true);
 
-  if (filters.q && filters.q.trim().length > 0) {
+  if (
+    filters.q &&
+    filters.q.trim().length > 0 &&
+    !filters.roaster_ids?.length
+  ) {
     filteredQuery = filteredQuery.ilike("name", `%${filters.q.trim()}%`);
+  }
+
+  if (filters.roaster_ids && filters.roaster_ids.length > 0) {
+    filteredQuery = filteredQuery.in("id", filters.roaster_ids);
   }
 
   // Apply country filter - default to "India" if no countries filter is specified
