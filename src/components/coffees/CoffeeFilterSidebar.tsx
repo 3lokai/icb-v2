@@ -1,10 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo, useRef, startTransition } from "react";
+import { useSearch } from "@/hooks/use-search";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { DualRangeSlider } from "@/components/ui/dual-range-slider";
+import {
+  MultiSelect,
+  type MultiSelectOption,
+} from "@/components/ui/multi-select";
 import { Stack } from "@/components/primitives/stack";
 import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
 import { useCoffeeFilterMeta } from "@/hooks/use-coffee-filter-meta";
@@ -18,6 +23,7 @@ import type {
 type CoffeeFilterContentProps = {
   filterMeta: CoffeeFilterMeta;
   showHeader?: boolean;
+  isVisible?: boolean;
 };
 
 /**
@@ -28,6 +34,7 @@ type CoffeeFilterContentProps = {
 export function CoffeeFilterContent({
   filterMeta: initialFilterMeta,
   showHeader = true,
+  isVisible = true,
 }: CoffeeFilterContentProps) {
   const { filters, updateFilters, resetFilters } = useCoffeeFilters();
 
@@ -35,20 +42,214 @@ export function CoffeeFilterContent({
   // Only used during drag, synced from filters when not dragging
   const [isDragging, setIsDragging] = useState(false);
   const [dragValue, setDragValue] = useState<[number, number] | null>(null);
+  // Track committed price range to sync with filters when URL updates
+  const committedPriceRangeRef = useRef<[number, number] | null>(null);
+
+  // Local state for search input - updates immediately, commits to URL after debounce
+  const [qDraft, setQDraft] = useState(filters.q || "");
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isUserTypingRef = useRef(false);
+  const prevQRef = useRef<string | undefined>(filters.q);
+
+  // Local Fuse Search
+  const localSearch = useSearch({ enableShortcut: false });
+
+  // Ensure index is loaded on interaction
+  const ensureSearchReady = () => {
+    localSearch.ensureIndexLoaded();
+  };
+
+  // Sync qDraft when filters.q changes externally (e.g., from URL or other components)
+  // Only sync when user is not actively typing to avoid conflicts
+  // Using startTransition to mark as non-urgent update to avoid cascading renders
+  useEffect(() => {
+    if (prevQRef.current !== filters.q && !isUserTypingRef.current) {
+      prevQRef.current = filters.q;
+      startTransition(() => {
+        setQDraft(filters.q || "");
+      });
+    }
+  }, [filters.q]);
+
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Debounced commit to URL
+  // Debounced commit to URL with Fuse Search
+  const debouncedCommitQ = useMemo(
+    () => (value: string) => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+
+      debounceTimerRef.current = setTimeout(() => {
+        // If empty, clear filters immediately
+        if (!value.trim()) {
+          isUserTypingRef.current = false;
+          updateFilters({ q: undefined, coffee_ids: undefined });
+          localSearch.setQuery("");
+          return;
+        }
+
+        // Trigger Fuse Search
+        localSearch.setQuery(value.trim());
+
+        // Note: The actual updateFilters call will happen in the Effect
+        // effectively waiting for results.
+        // However, to ensure we don't get stuck if Fuse fails or is slow,
+        // we could set a fallback?
+        // For now, we rely on the effect below.
+      }, 300);
+    },
+    [updateFilters, localSearch]
+  );
+
+  // Sync Fuse results to URL filters
+  useEffect(() => {
+    // Only update if we have a query (active search)
+    // and the query matches what we drafted (to avoid stale results overwriting new typing)
+    // and we are not currently debouncing (wait for typing to stop?)
+    // Actually, localSearch.query is updated immediately safely.
+
+    if (localSearch.query && localSearch.isReady && !localSearch.isLoading) {
+      const query = localSearch.query;
+      // Filter for coffees only
+      const coffeeResults = localSearch.results.filter(
+        (r) => r.type === "coffee"
+      );
+      const ids = coffeeResults.map((r) => r.id);
+
+      // Commit to URL
+      // We set 'q' to the query so the UI (and backend text search fallback) knows about it
+      // We set 'coffee_ids' to the Fuse matches
+      // Only update if different? updateFilters handles shallow merge, but URL push might happen.
+      // logic: if qDraft matches query, we are good.
+
+      if (qDraft.trim() === query) {
+        isUserTypingRef.current = false;
+        updateFilters({ q: query, coffee_ids: ids });
+      }
+    }
+  }, [
+    localSearch.results,
+    localSearch.isReady,
+    localSearch.isLoading,
+    localSearch.query,
+    qDraft,
+    updateFilters,
+  ]);
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    isUserTypingRef.current = true;
+    setQDraft(value); // Immediate UI update
+    ensureSearchReady();
+    debouncedCommitQ(value); // Debounced URL update (resets typing flag when done)
+  };
+
+  // Commit on blur
+  const handleSearchBlur = () => {
+    isUserTypingRef.current = false;
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    updateFilters({ q: qDraft.trim() || undefined });
+  };
+
+  // Commit on Enter key
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      isUserTypingRef.current = false;
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+      updateFilters({ q: qDraft.trim() || undefined });
+      e.currentTarget.blur();
+    }
+  };
+
+  // Sync dragValue with filters when they match the committed values
+  // This ensures the slider stays in the correct position until URL updates complete
+  // Note: setState in effect is necessary here to sync with external state (URL params)
+  useEffect(() => {
+    if (committedPriceRangeRef.current && !isDragging) {
+      const [committedMin, committedMax] = committedPriceRangeRef.current;
+      const filtersMatch =
+        (filters.min_price ?? 0) === committedMin &&
+        (filters.max_price ?? 10000) === committedMax;
+
+      if (filtersMatch) {
+        // Filters have updated, safe to clear drag state
+        // Use startTransition to mark this as non-urgent update
+        startTransition(() => {
+          setDragValue(null);
+        });
+        committedPriceRangeRef.current = null;
+      }
+    }
+  }, [filters.min_price, filters.max_price, isDragging]);
 
   // Derive current value from filters or drag state
-  const currentPriceRange: [number, number] =
-    isDragging && dragValue
-      ? dragValue
-      : [filters.min_price ?? 0, filters.max_price ?? 10000];
+  // Keep dragValue even when not dragging, until filters update (handled by useEffect above)
+  const currentPriceRange: [number, number] = dragValue ?? [
+    filters.min_price ?? 0,
+    filters.max_price ?? 10000,
+  ];
 
   // Fetch dynamic filter meta based on current filters
   // Uses static meta as initial data, updates when filters change
   const { data: dynamicFilterMeta, isFetching: isMetaLoading } =
-    useCoffeeFilterMeta(filters, initialFilterMeta);
+    useCoffeeFilterMeta(filters, initialFilterMeta, true, isVisible);
 
   // Use dynamic meta if available, fallback to initial static meta
   const filterMeta = dynamicFilterMeta || initialFilterMeta;
+
+  // Transform regions to MultiSelectOption format
+  const regionOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.regions.map((region) => ({
+        value: region.id,
+        label: `${region.label} (${region.count})`,
+      })),
+    [filterMeta.regions]
+  );
+
+  // Transform estates to MultiSelectOption format
+  const estateOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.estates.map((estate) => ({
+        value: estate.id,
+        label: `${estate.label} (${estate.count})`,
+      })),
+    [filterMeta.estates]
+  );
+
+  // Transform processes to MultiSelectOption format
+  const processOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.processes.map((process) => ({
+        value: process.value,
+        label: `${process.label} (${process.count})`,
+      })),
+    [filterMeta.processes]
+  );
+
+  // Transform flavor notes to MultiSelectOption format
+  const flavorOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.flavorNotes.map((flavor) => ({
+        value: flavor.id, // flavor_keys uses the key field, which is stored as id in our meta
+        label: `${flavor.label} (${flavor.count})`,
+      })),
+    [filterMeta.flavorNotes]
+  );
 
   // Toggle array filter values
   const toggleArrayFilter = (
@@ -182,14 +383,23 @@ export function CoffeeFilterContent({
         <Input
           id="search"
           className="h-10 border-border/60 focus:border-accent/40"
-          onChange={(e) =>
-            updateFilters({ q: e.target.value.trim() || undefined })
-          }
+          onChange={handleSearchChange}
+          onBlur={handleSearchBlur}
+          onKeyDown={handleSearchKeyDown}
+          onFocus={ensureSearchReady}
           placeholder="Type to search..."
           type="text"
-          value={filters.q || ""}
+          value={qDraft}
         />
       </Stack>
+
+      {/* Brew Methods */}
+      {renderFilterSection({
+        title: "Brew Methods",
+        items: filterMeta.brewMethods,
+        filterKey: "brew_method_ids",
+        getValue: (item) => item.id,
+      })}
 
       {/* Roasters */}
       {renderFilterSection({
@@ -243,7 +453,7 @@ export function CoffeeFilterContent({
         >
           Price Range (₹)
         </label>
-        <div className="px-1 pt-8">
+        <div className="pt-8 overflow-visible">
           <DualRangeSlider
             id="priceRange"
             min={0}
@@ -257,9 +467,11 @@ export function CoffeeFilterContent({
             }}
             onValueCommit={(values) => {
               const [min, max] = values;
-              // Reset dragging state
+              // Store committed values to sync with filters later
+              committedPriceRangeRef.current = [min, max];
+              // User has released, but keep dragValue set until filters update
               setIsDragging(false);
-              setDragValue(null);
+              // Don't clear dragValue here - wait for filters to update via useEffect
               // If both values are at extremes, clear the filters
               if (min === 0 && max === 10000) {
                 updateFilters({
@@ -280,56 +492,102 @@ export function CoffeeFilterContent({
         </div>
       </Stack>
 
+      {/* Flavor Profiles */}
+      {flavorOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="flavor_keys"
+          >
+            Flavor Profiles
+          </label>
+          <MultiSelect
+            options={flavorOptions}
+            defaultValue={filters.flavor_keys || []}
+            onValueChange={(values) => {
+              updateFilters({
+                flavor_keys: values.length > 0 ? values : undefined,
+              });
+            }}
+            placeholder="Select flavor profiles..."
+            searchable={true}
+            className="w-full"
+          />
+        </Stack>
+      )}
+
       {/* Regions */}
-      {renderFilterSection({
-        title: "Regions",
-        items: filterMeta.regions,
-        filterKey: "region_ids",
-        getValue: (item) => item.id,
-      })}
+      {regionOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="region_ids"
+          >
+            Regions
+          </label>
+          <MultiSelect
+            options={regionOptions}
+            defaultValue={filters.region_ids || []}
+            onValueChange={(values) => {
+              updateFilters({
+                region_ids: values.length > 0 ? values : undefined,
+              });
+            }}
+            placeholder="Select regions..."
+            searchable={true}
+            className="w-full"
+          />
+        </Stack>
+      )}
 
       {/* Estates */}
-      {renderFilterSection({
-        title: "Estates",
-        items: filterMeta.estates,
-        filterKey: "estate_ids",
-        getValue: (item) => item.id,
-      })}
+      {estateOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="estate_ids"
+          >
+            Estates
+          </label>
+          <MultiSelect
+            options={estateOptions}
+            defaultValue={filters.estate_ids || []}
+            onValueChange={(values) => {
+              updateFilters({
+                estate_ids: values.length > 0 ? values : undefined,
+              });
+            }}
+            placeholder="Select estates..."
+            searchable={true}
+            className="w-full"
+          />
+        </Stack>
+      )}
 
       {/* Processing Methods */}
-      <Stack gap="3">
-        <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-          htmlFor="processes"
-        >
-          Processing Method
-        </label>
-        <Stack gap="1" className="pr-2 custom-scrollbar">
-          {filterMeta.processes.map((process) => (
-            <label
-              className="group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors hover:text-accent"
-              key={process.value}
-            >
-              <input
-                checked={isFilterSelected("processes", process.value)}
-                className="h-3.5 w-3.5 rounded border-border/60 text-accent focus:ring-accent/30"
-                onChange={() => toggleArrayFilter("processes", process.value)}
-                type="checkbox"
-              />
-              <span className="text-caption font-medium transition-colors">
-                {process.label}{" "}
-                <span
-                  className={`text-muted-foreground/50 font-normal ${
-                    isMetaLoading ? "opacity-50" : ""
-                  }`}
-                >
-                  ({process.count})
-                </span>
-              </span>
-            </label>
-          ))}
+      {processOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="processes"
+          >
+            Processing Method
+          </label>
+          <MultiSelect
+            options={processOptions}
+            defaultValue={filters.processes || []}
+            onValueChange={(values) => {
+              updateFilters({
+                processes:
+                  values.length > 0 ? (values as ProcessEnum[]) : undefined,
+              });
+            }}
+            placeholder="Select processing methods..."
+            searchable={true}
+            className="w-full"
+          />
         </Stack>
-      </Stack>
+      )}
 
       {/* Status */}
       <Stack gap="3">
@@ -367,26 +625,6 @@ export function CoffeeFilterContent({
             ))}
         </Stack>
       </Stack>
-
-      {/* Flavor Profiles */}
-      {renderFilterSection({
-        title: "Flavor Profiles",
-        items: filterMeta.flavorNotes,
-        filterKey: "flavor_keys",
-        getValue: (item) => item.id, // flavor_keys uses the key field, which is stored as id in our meta
-        totalCount: filterMeta.flavorNotes.reduce(
-          (sum, item) => sum + item.count,
-          0
-        ),
-      })}
-
-      {/* Brew Methods */}
-      {renderFilterSection({
-        title: "Brew Methods",
-        items: filterMeta.brewMethods,
-        filterKey: "brew_method_ids",
-        getValue: (item) => item.id,
-      })}
 
       {/* Boolean Filters */}
       <Stack gap="4">
@@ -441,9 +679,10 @@ type CoffeeFilterSidebarProps = {
  * Hidden on mobile, visible on desktop
  */
 export function CoffeeFilterSidebar({ filterMeta }: CoffeeFilterSidebarProps) {
+  // Sidebar is always visible on desktop (when this component renders)
   return (
     <aside className="hidden w-full md:block md:w-64">
-      <CoffeeFilterContent filterMeta={filterMeta} />
+      <CoffeeFilterContent filterMeta={filterMeta} isVisible={true} />
     </aside>
   );
 }

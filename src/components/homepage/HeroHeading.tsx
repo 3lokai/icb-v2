@@ -20,7 +20,7 @@ export function HeroHeading() {
       {/* Main heading - Server-rendered for optimal LCP */}
       <div className="lcp-optimized">
         <Stack gap="6">
-          <h1 className="text-hero text-white text-balance leading-[1.05]">
+          <h1 className="text-hero text-white text-balance leading-[1.1]">
             Discover India's{" "}
             <span className="text-accent italic">Finest Coffee</span> Beans.
           </h1>

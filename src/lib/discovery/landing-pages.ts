@@ -129,7 +129,7 @@ export const LANDING_PAGES: LandingPageConfig[] = [
       "Common questions about mastering the V60 pour-over technique.",
     faqBadge: "Pro Tips",
     filter: {
-      brew_method_ids: ["v60"],
+      brew_method_ids: ["pour_over"],
     },
     sortOrder: "rating_desc",
     faqs: [
@@ -178,7 +178,7 @@ export const LANDING_PAGES: LandingPageConfig[] = [
       "Common questions about getting rich, full-bodied coffee from your French Press.",
     faqBadge: "Pro Tips",
     filter: {
-      brew_method_ids: ["frenchpress"],
+      brew_method_ids: ["french_press"],
     },
     sortOrder: "rating_desc",
     faqs: [

@@ -1,5 +1,8 @@
 "use client";
 
+import { useState, useEffect, useMemo, useRef, startTransition } from "react";
+import { useSearch } from "@/hooks/use-search";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -24,6 +27,76 @@ export function RoasterFilterContent({
   showHeader = true,
 }: RoasterFilterContentProps) {
   const { filters, updateFilters, resetFilters } = useRoasterFilters();
+
+  // Local state for search
+  const [qDraft, setQDraft] = useState(filters.q || "");
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isUserTypingRef = useRef(false);
+  const prevQRef = useRef<string | undefined>(filters.q);
+
+  const localSearch = useSearch({ enableShortcut: false });
+  const ensureSearchReady = () => localSearch.ensureIndexLoaded();
+
+  // Sync qDraft when filters.q changes externally
+  useEffect(() => {
+    if (prevQRef.current !== filters.q && !isUserTypingRef.current) {
+      prevQRef.current = filters.q;
+      startTransition(() => {
+        setQDraft(filters.q || "");
+      });
+    }
+  }, [filters.q]);
+
+  // Debounced commit
+  const debouncedCommitQ = useMemo(
+    () => (value: string) => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+      debounceTimerRef.current = setTimeout(() => {
+        if (!value.trim()) {
+          isUserTypingRef.current = false;
+          updateFilters({ q: undefined, roaster_ids: undefined });
+          localSearch.setQuery("");
+          return;
+        }
+        localSearch.setQuery(value.trim());
+      }, 300);
+    },
+    [updateFilters, localSearch]
+  );
+
+  // Sync Fuse results
+  useEffect(() => {
+    if (localSearch.query && localSearch.isReady && !localSearch.isLoading) {
+      const query = localSearch.query;
+      // Filter for roasters only
+      const roasterResults = localSearch.results.filter(
+        (r) => r.type === "roaster"
+      );
+      const ids = roasterResults.map((r) => r.id);
+
+      if (qDraft.trim() === query) {
+        isUserTypingRef.current = false;
+        updateFilters({ q: query, roaster_ids: ids });
+      }
+    }
+  }, [
+    localSearch.results,
+    localSearch.isReady,
+    localSearch.isLoading,
+    localSearch.query,
+    qDraft,
+    updateFilters,
+  ]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    isUserTypingRef.current = true;
+    setQDraft(value);
+    ensureSearchReady();
+    debouncedCommitQ(value);
+  };
 
   // Fetch dynamic filter meta based on current filters
   // Uses static meta as initial data, updates when filters change
@@ -141,12 +214,11 @@ export function RoasterFilterContent({
         <Input
           id="search"
           className="h-10 border-border/60 focus:border-accent/40"
-          onChange={(e) =>
-            updateFilters({ q: e.target.value.trim() || undefined })
-          }
+          onChange={handleSearchChange}
+          onFocus={ensureSearchReady}
           placeholder="Type to search..."
           type="text"
-          value={filters.q || ""}
+          value={qDraft}
         />
       </Stack>
 

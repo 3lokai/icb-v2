@@ -167,6 +167,11 @@ export function parseCoffeeSearchParams(searchParams: URLSearchParams): {
     filters.brew_method_ids = brewMethodIds;
   }
 
+  const coffeeIds = parseStringArray(searchParams.get("coffeeIds"));
+  if (coffeeIds) {
+    filters.coffee_ids = coffeeIds;
+  }
+
   // Boolean flags
   if (parseBooleanFlag(searchParams, "inStockOnly")) {
     filters.in_stock_only = true;
@@ -283,6 +288,7 @@ export function buildCoffeeQueryString(
   addArrayFilter(params, "regionIds", filters.region_ids);
   addArrayFilter(params, "estateIds", filters.estate_ids);
   addArrayFilter(params, "brewMethodIds", filters.brew_method_ids);
+  addArrayFilter(params, "coffeeIds", filters.coffee_ids);
 
   // Boolean flags
   addBooleanFlag(params, "inStockOnly", filters.in_stock_only);

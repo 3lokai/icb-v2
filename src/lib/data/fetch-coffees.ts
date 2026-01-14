@@ -7,6 +7,9 @@ import type {
   CoffeeSummary,
 } from "@/types/coffee-types";
 
+// Note: getCoffeeIdsFromJunction and getCoffeeIdsFromFlavorKeys are kept for backward compatibility
+// but are no longer used in fetchCoffees - they may be used by filter meta calculations
+
 /**
  * Helper to get coffee IDs from junction table filters
  * Exported for use in filter meta calculations
@@ -64,14 +67,20 @@ export async function getCoffeeIdsFromFlavorKeys(
 
 /**
  * Helper to apply filters to query
+ * Updated to work with coffee_directory_mv materialized view
  * Exported for use in filter meta calculations
  */
 export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
   let filteredQuery = query;
 
-  // Text search
-  if (filters.q?.trim()) {
+  // Text search (only if not filtering by specific IDs from Fuse)
+  if (filters.q?.trim() && !filters.coffee_ids?.length) {
     filteredQuery = filteredQuery.ilike("name", `%${filters.q.trim()}%`);
+  }
+
+  // ID Filter (from Fuse)
+  if (filters.coffee_ids?.length) {
+    filteredQuery = filteredQuery.in("coffee_id", filters.coffee_ids);
   }
 
   // Array filters
@@ -112,6 +121,30 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
     filteredQuery = filteredQuery.lte(
       "best_normalized_250g",
       filters.max_price
+    );
+  }
+
+  // Junction table filters using array operators (for coffee_directory_mv)
+  // flavor_keys: use contains (@>) - coffee must have ALL selected flavors
+  if (filters.flavor_keys?.length) {
+    filteredQuery = filteredQuery.contains("flavor_keys", filters.flavor_keys);
+  }
+
+  // region_ids: use overlaps (&&) - coffee must have ANY selected region
+  if (filters.region_ids?.length) {
+    filteredQuery = filteredQuery.overlaps("region_ids", filters.region_ids);
+  }
+
+  // estate_ids: use overlaps (&&) - coffee must have ANY selected estate
+  if (filters.estate_ids?.length) {
+    filteredQuery = filteredQuery.overlaps("estate_ids", filters.estate_ids);
+  }
+
+  // brew_method_canonical_keys: use contains (@>) - coffee must support ALL selected methods
+  if (filters.brew_method_ids?.length) {
+    filteredQuery = filteredQuery.contains(
+      "brew_method_canonical_keys",
+      filters.brew_method_ids
     );
   }
 
@@ -215,114 +248,12 @@ export async function fetchAllCoffeeImages(
 }
 
 /**
- * Helper to enrich data with coffees, roasters tables, and images
+ * Helper to transform row from coffee_directory_mv to CoffeeSummary
+ * All data is already in the materialized view, so this is just direct mapping
  */
-async function enrichCoffeeData(
-  supabase: any,
-  data: any[]
-): Promise<{
-  coffeesMap: Map<string, any>;
-  roastersMap: Map<string, any>;
-  imagesMap: Map<string, string>;
-}> {
-  const coffeeIds = [
-    ...new Set(data.map((row: any) => row.coffee_id).filter(Boolean)),
-  ];
-  const roasterIds = [
-    ...new Set(data.map((row: any) => row.roaster_id).filter(Boolean)),
-  ];
-
-  const coffeesMap = new Map();
-  if (coffeeIds.length > 0) {
-    const { data: coffeesData } = await supabase
-      .from("coffees")
-      .select(
-        "id, decaf, is_limited, bean_species, rating_avg, rating_count, tags"
-      )
-      .in("id", coffeeIds);
-
-    if (coffeesData) {
-      for (const coffee of coffeesData) {
-        coffeesMap.set(coffee.id, coffee);
-      }
-    }
-  }
-
-  const roastersMap = new Map();
-  if (roasterIds.length > 0) {
-    const { data: roastersData } = await supabase
-      .from("roasters")
-      .select("id, slug, name, hq_city, hq_state, hq_country, website")
-      .in("id", roasterIds);
-
-    if (roastersData) {
-      for (const roaster of roastersData) {
-        roastersMap.set(roaster.id, roaster);
-      }
-    }
-  }
-
-  // Fetch images for all coffees
-  const imagesMap = await fetchCoffeeImages(supabase, coffeeIds);
-
-  return { coffeesMap, roastersMap, imagesMap };
-}
-
-/**
- * Helper to extract coffee data from map
- */
-function getCoffeeData(
-  coffeeId: string | null,
-  coffeesMap: Map<string, any>
-): {
-  decaf: boolean;
-  is_limited: boolean;
-  bean_species: any;
-  rating_avg: any;
-  rating_count: number;
-  tags: any;
-} {
-  const coffee = coffeeId ? coffeesMap.get(coffeeId) : null;
+function transformToCoffeeSummary(row: any): CoffeeSummary {
   return {
-    decaf: coffee?.decaf ?? false,
-    is_limited: coffee?.is_limited ?? false,
-    bean_species: coffee?.bean_species ?? null,
-    rating_avg: coffee?.rating_avg ?? null,
-    rating_count: coffee?.rating_count ?? 0,
-    tags: coffee?.tags ?? null,
-  };
-}
-
-/**
- * Helper to extract roaster data from map
- */
-function getRoasterData(
-  roasterId: string | null,
-  roastersMap: Map<string, any>
-): {
-  roaster_slug: string;
-  roaster_name: string;
-  hq_city: any;
-  hq_state: any;
-  hq_country: any;
-  website: any;
-} {
-  const roaster = roasterId ? roastersMap.get(roasterId) : null;
-  return {
-    roaster_slug: roaster?.slug ?? "",
-    roaster_name: roaster?.name ?? "",
-    hq_city: roaster?.hq_city ?? null,
-    hq_state: roaster?.hq_state ?? null,
-    hq_country: roaster?.hq_country ?? null,
-    website: roaster?.website ?? null,
-  };
-}
-
-/**
- * Helper to extract basic summary view data
- */
-function getBasicSummaryData(row: any): Partial<CoffeeSummary> {
-  return {
+    // From coffee_summary view fields
     coffee_id: row.coffee_id ?? null,
     slug: row.slug ?? null,
     name: row.name ?? null,
@@ -330,92 +261,45 @@ function getBasicSummaryData(row: any): Partial<CoffeeSummary> {
     status: row.status ?? null,
     process: row.process ?? null,
     process_raw: row.process_raw ?? null,
-  };
-}
-
-/**
- * Helper to extract roast-related summary data
- */
-function getRoastSummaryData(row: any): Partial<CoffeeSummary> {
-  return {
     roast_level: row.roast_level ?? null,
     roast_level_raw: row.roast_level_raw ?? null,
     roast_style_raw: row.roast_style_raw ?? null,
-  };
-}
-
-/**
- * Helper to extract commerce-related summary data
- */
-function getCommerceSummaryData(row: any): Partial<CoffeeSummary> {
-  return {
     direct_buy_url: row.direct_buy_url ?? null,
     has_250g_bool: row.has_250g_bool ?? null,
+    has_sensory: row.has_sensory ?? null,
     in_stock_count: row.in_stock_count ?? null,
     min_price_in_stock: row.min_price_in_stock ?? null,
     best_variant_id: row.best_variant_id ?? null,
     best_normalized_250g: row.best_normalized_250g ?? null,
     weights_available: row.weights_available ?? null,
-  };
-}
-
-/**
- * Helper to extract sensory-related summary data
- */
-function getSensorySummaryData(
-  row: any,
-  imagesMap: Map<string, string>
-): Partial<CoffeeSummary> {
-  const coffeeId = row.coffee_id ?? null;
-  const imageUrl = coffeeId ? (imagesMap.get(coffeeId) ?? null) : null;
-
-  return {
-    has_sensory: row.has_sensory ?? null,
     sensory_public: row.sensory_public ?? null,
     sensory_updated_at: row.sensory_updated_at ?? null,
-    image_url: imageUrl,
-  };
-}
 
-/**
- * Helper to extract summary view data
- */
-function getSummaryViewData(
-  row: any,
-  imagesMap: Map<string, string>
-): Partial<CoffeeSummary> {
-  return {
-    ...getBasicSummaryData(row),
-    ...getRoastSummaryData(row),
-    ...getCommerceSummaryData(row),
-    ...getSensorySummaryData(row, imagesMap),
-  };
-}
+    // From coffees table (now in MV)
+    decaf: row.decaf ?? false,
+    is_limited: row.is_limited ?? false,
+    bean_species: row.bean_species ?? null,
+    rating_avg: row.rating_avg ?? null,
+    rating_count: row.rating_count ?? 0,
+    tags: row.tags ?? null,
 
-/**
- * Helper to transform row data to CoffeeSummary
- */
-function transformToCoffeeSummary(
-  row: any,
-  coffeesMap: Map<string, any>,
-  roastersMap: Map<string, any>,
-  imagesMap: Map<string, string>
-): CoffeeSummary {
-  const summaryData = getSummaryViewData(row, imagesMap);
-  const coffeeData = getCoffeeData(row.coffee_id, coffeesMap);
-  const roasterData = getRoasterData(row.roaster_id, roastersMap);
+    // From roasters table (now in MV)
+    roaster_slug: row.roaster_slug ?? "",
+    roaster_name: row.roaster_name ?? "",
+    hq_city: row.hq_city ?? null,
+    hq_state: row.hq_state ?? null,
+    hq_country: row.hq_country ?? null,
+    website: row.website ?? null,
 
-  return {
-    ...summaryData,
-    ...coffeeData,
-    ...roasterData,
+    // From coffee_images table (now in MV)
+    image_url: row.image_url ?? null,
   } as CoffeeSummary;
 }
 
 /**
  * Empty result helper
  */
-function emptyResult(page: number, limit: number): CoffeeListResponse {
+function _emptyResult(page: number, limit: number): CoffeeListResponse {
   return {
     items: [],
     page,
@@ -427,6 +311,7 @@ function emptyResult(page: number, limit: number): CoffeeListResponse {
 
 /**
  * Fetch coffees with filters, sorting, and pagination
+ * Uses coffee_directory_mv materialized view for optimal performance
  * This is the ONLY place where Supabase query logic lives.
  * Both SSR page and API route call this function.
  */
@@ -442,96 +327,13 @@ export async function fetchCoffees(
     ? await createServiceRoleClient()
     : await createClient();
 
-  // Handle junction table filters (flavor, region, estate, brew method)
-  const junctionFilters: Array<{
-    ids: string[] | undefined;
-    getter: () => Promise<string[] | null>;
-  }> = [];
+  // Build query using coffee_directory_mv materialized view
+  // All data (coffees, roasters, images, junction arrays) is already included
+  let query = supabase
+    .from("coffee_directory_mv")
+    .select("*", { count: "exact" });
 
-  if (filters.flavor_keys?.length) {
-    junctionFilters.push({
-      ids: filters.flavor_keys,
-      getter: () => getCoffeeIdsFromFlavorKeys(supabase, filters.flavor_keys!),
-    });
-  }
-
-  if (filters.region_ids?.length) {
-    junctionFilters.push({
-      ids: filters.region_ids,
-      getter: () =>
-        getCoffeeIdsFromJunction(
-          supabase,
-          "coffee_regions",
-          "region_id",
-          filters.region_ids!
-        ),
-    });
-  }
-
-  if (filters.estate_ids?.length) {
-    junctionFilters.push({
-      ids: filters.estate_ids,
-      getter: () =>
-        getCoffeeIdsFromJunction(
-          supabase,
-          "coffee_estates",
-          "estate_id",
-          filters.estate_ids!
-        ),
-    });
-  }
-
-  if (filters.brew_method_ids?.length) {
-    // brew_method_ids in filters are actually canonical_keys from UI
-    // Filter by canonical_key instead of brew_method_id
-    junctionFilters.push({
-      ids: filters.brew_method_ids, // These are canonical_keys
-      getter: async () => {
-        // First, get all brew_method_ids that have the given canonical_keys
-        const { data: brewMethods } = await supabase
-          .from("brew_methods")
-          .select("id")
-          .in("canonical_key", filters.brew_method_ids!)
-          .not("canonical_key", "is", null);
-
-        if (!brewMethods || brewMethods.length === 0) {
-          return null;
-        }
-
-        const brewMethodIds = brewMethods.map((bm: any) => bm.id);
-
-        // Then get coffee IDs from the junction table
-        return getCoffeeIdsFromJunction(
-          supabase,
-          "coffee_brew_methods",
-          "brew_method_id",
-          brewMethodIds
-        );
-      },
-    });
-  }
-
-  // Process junction filters and get coffee IDs
-  const junctionCoffeeIds = await Promise.all(
-    junctionFilters.map((filter) => filter.getter())
-  );
-
-  // If any junction filter returns null, return empty result
-  if (junctionCoffeeIds.some((ids) => ids === null)) {
-    return emptyResult(page, limit);
-  }
-
-  // Build query
-  let query = supabase.from("coffee_summary").select("*", { count: "exact" });
-
-  // Apply junction filters
-  for (const coffeeIds of junctionCoffeeIds) {
-    if (coffeeIds && coffeeIds.length > 0) {
-      query = query.in("coffee_id", coffeeIds);
-    }
-  }
-
-  // Apply direct filters
+  // Apply all filters (including junction table filters using array operators)
   query = applyFiltersToQuery(query, filters);
 
   // Apply sorting
@@ -549,13 +351,9 @@ export async function fetchCoffees(
     throw new Error(`Failed to fetch coffees: ${error.message}`);
   }
 
-  // Enrich and transform data
-  const { coffeesMap, roastersMap, imagesMap } = await enrichCoffeeData(
-    supabase,
-    data || []
-  );
+  // Transform data (all fields already in MV, just map directly)
   const items: CoffeeSummary[] = (data || []).map((row: any) =>
-    transformToCoffeeSummary(row, coffeesMap, roastersMap, imagesMap)
+    transformToCoffeeSummary(row)
   );
 
   const total = count ?? 0;
