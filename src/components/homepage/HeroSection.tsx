@@ -8,12 +8,11 @@ import { Icon } from "@/components/common/Icon";
 import { HeroHeading } from "./HeroHeading";
 import { HeroVideoBackground } from "./HeroVideoBackground";
 
-// Dynamically import HeroSearch with SSR disabled since it requires SearchProvider context
-const HeroSearch = dynamic(
-  () => import("./HeroSearch").then((mod) => ({ default: mod.HeroSearch })),
-  {
-    ssr: false,
-  }
+// Dynamically import HeroSearch - client component will handle SearchProvider context
+const HeroSearch = dynamic(() =>
+  import("./HeroSearch").then((mod) => ({
+    default: mod.HeroSearch,
+  }))
 );
 
 export default function HeroSection() {
