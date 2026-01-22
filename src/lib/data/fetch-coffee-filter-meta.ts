@@ -383,6 +383,7 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
 
   return {
     flavorNotes: sortByCountAndLabel(flavorNotesResult),
+    canonicalFlavors: [], // Static meta doesn't include canonical flavors - use RPC for filtered meta
     regions: sortByCountAndLabel(regionsResult),
     estates: sortByCountAndLabel(estatesResult),
     brewMethods: sortByCountAndLabel(brewMethodsResult),

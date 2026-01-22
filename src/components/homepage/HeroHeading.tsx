@@ -7,7 +7,7 @@ export function HeroHeading() {
   return (
     <>
       {/* Hero badge - Animation removed for LCP optimization */}
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-start">
         <Announcement variant="onMedia">
           <AnnouncementTitle className="gap-2">
             <Icon className="text-accent" name="MapPin" size={16} />
@@ -19,16 +19,16 @@ export function HeroHeading() {
 
       {/* Main heading - Server-rendered for optimal LCP */}
       <div className="lcp-optimized">
-        <Stack gap="6">
+        <Stack gap="6" className="text-left">
           <h1 className="text-hero text-white text-balance leading-[1.1]">
-            Discover India's{" "}
-            <span className="text-accent italic">Finest Coffee</span> Beans.
+            Rate your coffee. Build your{" "}
+            <span className="text-accent italic">Coffee Identity.</span>
           </h1>
           {/* Animation removed from paragraph for LCP optimization */}
-          <p className="mx-auto max-w-3xl text-white/90 text-body-large leading-relaxed text-pretty">
-            Explore exceptional Indian specialty coffee beans, roasters, and the
-            stories behind each perfect cup. Verified data for the modern
-            brewer.
+          <p className="max-w-3xl text-white/90 text-body-large leading-relaxed text-pretty">
+            A community-driven platform where your ratings shape your{" "}
+            <span className="text-accent">taste profile</span> — and help others
+            discover better Indian coffee.
           </p>
         </Stack>
       </div>

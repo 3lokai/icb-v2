@@ -31,6 +31,9 @@ export async function fetchCoffeeFilterMetaWithFilters(
     p_estate_ids: filters.estate_ids?.length ? filters.estate_ids : null,
     p_brew_method_canonical_keys: brewMethodCanonicalKeys,
     p_flavor_keys: filters.flavor_keys?.length ? filters.flavor_keys : null,
+    p_canon_flavor_node_ids: filters.canon_flavor_node_ids?.length
+      ? filters.canon_flavor_node_ids
+      : null,
     p_in_stock_only: filters.in_stock_only === true,
     p_has_250g_only: filters.has_250g_only === true,
     p_min_price:
@@ -48,6 +51,7 @@ export async function fetchCoffeeFilterMetaWithFilters(
   if (!data) {
     return {
       flavorNotes: [],
+      canonicalFlavors: [],
       regions: [],
       estates: [],
       brewMethods: [],
@@ -63,6 +67,7 @@ export async function fetchCoffeeFilterMetaWithFilters(
   const normalized = data as CoffeeFilterMeta;
   return {
     flavorNotes: normalized.flavorNotes || [],
+    canonicalFlavors: normalized.canonicalFlavors || [],
     regions: normalized.regions || [],
     estates: normalized.estates || [],
     brewMethods: normalized.brewMethods || [],

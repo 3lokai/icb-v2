@@ -54,9 +54,14 @@ import type {
 type ReviewCaptureProps = {
   entityType: "coffee" | "roaster";
   entityId: string;
+  initialRating?: number;
 };
 
-export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
+export function ReviewCapture({
+  entityType,
+  entityId,
+  initialRating,
+}: ReviewCaptureProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [showLimitModal, setShowLimitModal] = useState(false);
   const [showWarningAlert, setShowWarningAlert] = useState(false);
@@ -81,7 +86,7 @@ export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
     entity_type: entityType,
     entity_id: entityId,
     recommend: null,
-    rating: null,
+    rating: initialRating ?? null,
     value_for_money: null,
     works_with_milk: null,
     brew_method: null,
@@ -274,7 +279,11 @@ export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
       <>
         {/* Delete Confirmation Modal */}
         <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-          <DialogContent className="overflow-hidden rounded-[2.5rem] border-border/60 p-0 gap-0 sm:max-w-md">
+          <DialogContent
+            className={cn(
+              "surface-2 overflow-hidden rounded-[2.5rem] p-0 gap-0 sm:max-w-md"
+            )}
+          >
             {/* Decorative stripe */}
             <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-destructive/60 via-destructive to-destructive/60 opacity-60 z-10" />
 
@@ -477,7 +486,11 @@ export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
     <>
       {/* Warning Dialog after 2nd review */}
       <Dialog open={showWarningAlert} onOpenChange={setShowWarningAlert}>
-        <DialogContent className="overflow-hidden rounded-[2.5rem] border-border/60 p-0 gap-0 sm:max-w-lg">
+        <DialogContent
+          className={cn(
+            "surface-2 overflow-hidden rounded-[2.5rem] p-0 gap-0 sm:max-w-lg"
+          )}
+        >
           {/* Decorative stripe */}
           <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-primary via-accent to-primary/60 opacity-60 z-10" />
 
@@ -514,7 +527,11 @@ export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
           }
         }}
       >
-        <DialogContent className="overflow-hidden rounded-[2.5rem] border-border/60 p-0 gap-0 sm:max-w-lg">
+        <DialogContent
+          className={cn(
+            "surface-2 overflow-hidden rounded-[2.5rem] p-0 gap-0 sm:max-w-lg"
+          )}
+        >
           {/* Decorative stripe */}
           <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-primary via-accent to-primary/60 opacity-60 z-10" />
 
@@ -543,7 +560,11 @@ export function ReviewCapture({ entityType, entityId }: ReviewCaptureProps) {
 
       {/* Delete Confirmation Modal */}
       <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-        <DialogContent className="overflow-hidden rounded-[2.5rem] border-border/60 p-0 gap-0 sm:max-w-md">
+        <DialogContent
+          className={cn(
+            "surface-2 overflow-hidden rounded-[2.5rem] p-0 gap-0 sm:max-w-md"
+          )}
+        >
           {/* Decorative stripe */}
           <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-destructive/60 via-destructive to-destructive/60 opacity-60 z-10" />
 

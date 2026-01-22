@@ -112,8 +112,9 @@ export function isImageKitConfigured(): boolean {
 export const coffeeImagePresets = {
   /**
    * CoffeeCard preset
-   * Size: 600x336px (optimized for 3-column grid on large screens)
-   * On 1920px screen: 33vw ≈ 634px, so 600px covers most cases
+   * Size: 480x320px (3:2 aspect ratio, optimized for default variant)
+   * Matches max-w-[320px] card constraint for consistent magazine tile look
+   * Also works for hero variant (square) with cropping
    * Crop: Force (cropped to fill container, used with object-cover)
    * Quality: 80
    * Focus: Center (ensures important content is centered)
@@ -123,8 +124,8 @@ export const coffeeImagePresets = {
       return getPlaceholderImage("coffee");
     }
     return getImageKitUrl(imagePath, {
-      width: 600,
-      height: 336,
+      width: 480,
+      height: 320,
       crop: "force",
       quality: 80,
       focus: "center",

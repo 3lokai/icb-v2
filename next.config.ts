@@ -38,6 +38,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "via.placeholder.com", // For fallback images
       },
+      {
+        protocol: "https",
+        hostname: "placehold.co", // For collection placeholders
+      },
     ],
     qualities: [75, 80, 85, 90],
   },

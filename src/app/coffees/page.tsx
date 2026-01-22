@@ -72,6 +72,7 @@ export async function generateMetadata({
     (filters.region_ids?.length ?? 0) > 0 ||
     (filters.estate_ids?.length ?? 0) > 0 ||
     (filters.flavor_keys?.length ?? 0) > 0 ||
+    (filters.canon_flavor_node_ids?.length ?? 0) > 0 ||
     (filters.brew_method_ids?.length ?? 0) > 0;
   const shouldIndex = page === 1 && !hasComplexFilters;
 

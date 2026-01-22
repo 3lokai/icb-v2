@@ -147,6 +147,11 @@ export function parseCoffeeSearchParams(searchParams: URLSearchParams): {
     filters.flavor_keys = flavorKeys;
   }
 
+  const canonFlavorIds = parseStringArray(searchParams.get("canonFlavorIds"));
+  if (canonFlavorIds) {
+    filters.canon_flavor_node_ids = canonFlavorIds;
+  }
+
   const roasterIds = parseStringArray(searchParams.get("roasterIds"));
   if (roasterIds) {
     filters.roaster_ids = roasterIds;
@@ -283,7 +288,8 @@ export function buildCoffeeQueryString(
   addArrayFilter(params, "roastLevels", filters.roast_levels);
   addArrayFilter(params, "processes", filters.processes);
   addArrayFilter(params, "statuses", filters.status);
-  addArrayFilter(params, "flavorKeys", filters.flavor_keys);
+  addArrayFilter(params, "flavorKeys", filters.flavor_keys); // Legacy
+  addArrayFilter(params, "canonFlavorIds", filters.canon_flavor_node_ids);
   addArrayFilter(params, "roasterIds", filters.roaster_ids);
   addArrayFilter(params, "regionIds", filters.region_ids);
   addArrayFilter(params, "estateIds", filters.estate_ids);

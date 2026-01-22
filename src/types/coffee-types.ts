@@ -122,7 +122,8 @@ export type CoffeeFilters = {
   estate_ids?: string[];
 
   // Flavor & brew
-  flavor_keys?: string[];
+  flavor_keys?: string[]; // Legacy - kept for backward compatibility
+  canon_flavor_node_ids?: string[]; // UUIDs from canon_sensory_nodes
   brew_method_ids?: string[];
 
   // Roasters
@@ -133,7 +134,15 @@ export type CoffeeFilters = {
 };
 
 export type CoffeeFilterMeta = {
-  flavorNotes: Array<{ id: string; label: string; count: number }>;
+  flavorNotes: Array<{ id: string; label: string; count: number }>; // Legacy
+  canonicalFlavors: Array<{
+    id: string; // UUID from canon_sensory_nodes
+    slug: string;
+    descriptor: string; // Display label
+    subcategory: string;
+    family: string;
+    count: number;
+  }>;
   regions: Array<{ id: string; label: string; count: number }>;
   estates: Array<{ id: string; label: string; count: number }>;
   brewMethods: Array<{ id: string; label: string; count: number }>;
@@ -192,6 +201,10 @@ export type CoffeeSummary = {
 
   // Optional first image
   image_url?: string | null;
+
+  // Junction table arrays (from coffee_directory_mv)
+  flavor_keys?: string[] | null;
+  brew_method_canonical_keys?: string[] | null;
 };
 
 export type CoffeeCardData = {

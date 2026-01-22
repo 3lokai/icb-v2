@@ -241,14 +241,14 @@ export function CoffeeFilterContent({
     [filterMeta.processes]
   );
 
-  // Transform flavor notes to MultiSelectOption format
+  // Transform canonical flavors to MultiSelectOption format
   const flavorOptions: MultiSelectOption[] = useMemo(
     () =>
-      filterMeta.flavorNotes.map((flavor) => ({
-        value: flavor.id, // flavor_keys uses the key field, which is stored as id in our meta
-        label: `${flavor.label} (${flavor.count})`,
+      filterMeta.canonicalFlavors.map((flavor) => ({
+        value: flavor.id, // UUID from canon_sensory_nodes
+        label: `${flavor.descriptor} (${flavor.count})`,
       })),
-    [filterMeta.flavorNotes]
+    [filterMeta.canonicalFlavors]
   );
 
   // Toggle array filter values
@@ -258,6 +258,7 @@ export function CoffeeFilterContent({
       | "processes"
       | "status"
       | "flavor_keys"
+      | "canon_flavor_node_ids"
       | "roaster_ids"
       | "region_ids"
       | "estate_ids"
@@ -278,6 +279,7 @@ export function CoffeeFilterContent({
       | "processes"
       | "status"
       | "flavor_keys"
+      | "canon_flavor_node_ids"
       | "roaster_ids"
       | "region_ids"
       | "estate_ids"
@@ -299,7 +301,8 @@ export function CoffeeFilterContent({
       | "region_ids"
       | "estate_ids"
       | "brew_method_ids"
-      | "flavor_keys";
+      | "flavor_keys"
+      | "canon_flavor_node_ids";
     getValue: (item: T) => string;
     totalCount?: number;
   };
@@ -497,16 +500,16 @@ export function CoffeeFilterContent({
         <Stack gap="3">
           <label
             className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-            htmlFor="flavor_keys"
+            htmlFor="canon_flavor_node_ids"
           >
             Flavor Profiles
           </label>
           <MultiSelect
             options={flavorOptions}
-            defaultValue={filters.flavor_keys || []}
+            defaultValue={filters.canon_flavor_node_ids || []}
             onValueChange={(values) => {
               updateFilters({
-                flavor_keys: values.length > 0 ? values : undefined,
+                canon_flavor_node_ids: values.length > 0 ? values : undefined,
               });
             }}
             placeholder="Select flavor profiles..."

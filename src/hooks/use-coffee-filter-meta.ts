@@ -38,6 +38,9 @@ async function fetchCoffeeFilterMetaFromAPI(
   if (filters.flavor_keys?.length) {
     params.set("flavorKeys", filters.flavor_keys.join(","));
   }
+  if (filters.canon_flavor_node_ids?.length) {
+    params.set("canonFlavorIds", filters.canon_flavor_node_ids.join(","));
+  }
   if (filters.in_stock_only) {
     params.set("inStockOnly", "1");
   }
@@ -108,6 +111,7 @@ export function useCoffeeFilterMeta(
     if (rest.processes?.length) return true;
     if (rest.status?.length) return true;
     if (rest.flavor_keys?.length) return true;
+    if (rest.canon_flavor_node_ids?.length) return true;
     if (rest.roaster_ids?.length) return true;
     if (rest.region_ids?.length) return true;
     if (rest.estate_ids?.length) return true;

@@ -1,5 +1,5 @@
 -- Migration: Create coffee_directory_mv materialized view
--- Created: 2026-01-12
+-- Created: 2026-01-15
 -- Description: Materialized view consolidating all data needed for coffee directory listing and filtering
 --              Eliminates multiple joins currently done in fetch-coffees.ts by including:
 --              - All fields from coffee_summary view logic
@@ -7,12 +7,19 @@
 --              - Roaster information from roasters table
 --              - First image URL from coffee_images table
 --              - Junction table arrays for efficient filtering
+--              - Canonical flavor mapping for hierarchical filtering (family/subcategory/descriptor)
+
+-- ============================================================================
+-- DROP EXISTING MV AND INDEXES (if exists from previous migration)
+-- ============================================================================
+
+DROP MATERIALIZED VIEW IF EXISTS coffee_directory_mv CASCADE;
 
 -- ============================================================================
 -- MATERIALIZED VIEW: coffee_directory_mv
 -- ============================================================================
 
-CREATE MATERIALIZED VIEW IF NOT EXISTS coffee_directory_mv AS
+CREATE MATERIALIZED VIEW coffee_directory_mv AS
 WITH 
   -- Pre-aggregate variant data to avoid row explosion
   variant_aggs AS (
@@ -32,23 +39,60 @@ WITH
     FROM variant_computed v
     GROUP BY v.coffee_id
   ),
+  
   -- Pre-aggregate junction table arrays separately to avoid row explosion
+  -- Now includes canonical flavor mapping through flavor_note_to_canon -> canon_sensory_nodes
   junction_aggs AS (
     SELECT 
       c.id AS coffee_id,
-      ARRAY_AGG(DISTINCT fn.key ORDER BY fn.key) FILTER (WHERE fn.key IS NOT NULL) AS flavor_keys,
-      ARRAY_AGG(DISTINCT cr.region_id ORDER BY cr.region_id) FILTER (WHERE cr.region_id IS NOT NULL) AS region_ids,
-      ARRAY_AGG(DISTINCT ce.estate_id ORDER BY ce.estate_id) FILTER (WHERE ce.estate_id IS NOT NULL) AS estate_ids,
-      ARRAY_AGG(DISTINCT bm.canonical_key ORDER BY bm.canonical_key) FILTER (WHERE bm.canonical_key IS NOT NULL) AS brew_method_canonical_keys
+
+      -- Existing raw flavor tokens (keep for display / legacy)
+      ARRAY_AGG(DISTINCT fn.key ORDER BY fn.key)
+        FILTER (WHERE fn.key IS NOT NULL) AS flavor_keys,
+
+      -- ✅ Canonical flavor mapping (descriptor-level)
+      ARRAY_AGG(DISTINCT csn.id ORDER BY csn.id)
+        FILTER (WHERE csn.id IS NOT NULL AND csn.node_type = 'flavor') AS canon_flavor_node_ids,
+
+      ARRAY_AGG(DISTINCT csn.slug ORDER BY csn.slug)
+        FILTER (WHERE csn.slug IS NOT NULL AND csn.node_type = 'flavor') AS canon_flavor_slugs,
+
+      ARRAY_AGG(DISTINCT csn.descriptor ORDER BY csn.descriptor)
+        FILTER (WHERE csn.descriptor IS NOT NULL AND csn.node_type = 'flavor') AS canon_flavor_descriptors,
+
+      -- ✅ For category + subcategory filtering
+      ARRAY_AGG(DISTINCT csn.subcategory ORDER BY csn.subcategory)
+        FILTER (WHERE csn.subcategory IS NOT NULL AND csn.node_type = 'flavor') AS canon_flavor_subcategories,
+
+      ARRAY_AGG(DISTINCT csn.family ORDER BY csn.family)
+        FILTER (WHERE csn.family IS NOT NULL AND csn.node_type = 'flavor') AS canon_flavor_families,
+
+      -- Existing origin + brew arrays (unchanged)
+      ARRAY_AGG(DISTINCT cr.region_id ORDER BY cr.region_id)
+        FILTER (WHERE cr.region_id IS NOT NULL) AS region_ids,
+
+      ARRAY_AGG(DISTINCT ce.estate_id ORDER BY ce.estate_id)
+        FILTER (WHERE ce.estate_id IS NOT NULL) AS estate_ids,
+
+      ARRAY_AGG(DISTINCT bm.canonical_key ORDER BY bm.canonical_key)
+        FILTER (WHERE bm.canonical_key IS NOT NULL) AS brew_method_canonical_keys
+
     FROM coffees c
     LEFT JOIN coffee_flavor_notes cfn ON cfn.coffee_id = c.id
     LEFT JOIN flavor_notes fn ON fn.id = cfn.flavor_note_id
+
+    -- ✅ Join to canonical mapping
+    LEFT JOIN flavor_note_to_canon fntc ON fntc.flavor_note_id = fn.id
+    LEFT JOIN canon_sensory_nodes csn ON csn.id = fntc.canon_node_id
+
     LEFT JOIN coffee_regions cr ON cr.coffee_id = c.id
     LEFT JOIN coffee_estates ce ON ce.coffee_id = c.id
     LEFT JOIN coffee_brew_methods cbm ON cbm.coffee_id = c.id
     LEFT JOIN brew_methods bm ON bm.id = cbm.brew_method_id
+
     GROUP BY c.id
   ),
+  
   -- Pre-aggregate first image separately
   first_images AS (
     SELECT DISTINCT ON (ci.coffee_id)
@@ -113,7 +157,17 @@ SELECT
   fi.imagekit_url AS image_url,
   
   -- Junction table arrays from pre-aggregated CTE
+  -- Raw flavor keys (for display / legacy)
   ja.flavor_keys,
+  
+  -- ✅ Canonical flavors for hierarchical filtering
+  ja.canon_flavor_node_ids,
+  ja.canon_flavor_slugs,
+  ja.canon_flavor_descriptors,
+  ja.canon_flavor_subcategories,
+  ja.canon_flavor_families,
+  
+  -- Origin and brew method arrays
   ja.region_ids,
   ja.estate_ids,
   ja.brew_method_canonical_keys
@@ -130,49 +184,67 @@ LEFT JOIN junction_aggs ja ON ja.coffee_id = c.id;
 -- ============================================================================
 
 -- UNIQUE index on coffee_id (required for CONCURRENT refresh, also serves as primary lookup)
-CREATE UNIQUE INDEX IF NOT EXISTS idx_coffee_directory_mv_coffee_id 
+CREATE UNIQUE INDEX idx_coffee_directory_mv_coffee_id 
   ON coffee_directory_mv USING btree (coffee_id);
 
 -- Filtering indexes
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_roaster_id 
+CREATE INDEX idx_coffee_directory_mv_roaster_id 
   ON coffee_directory_mv USING btree (roaster_id);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_status 
+CREATE INDEX idx_coffee_directory_mv_status 
   ON coffee_directory_mv USING btree (status);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_roast_level 
+CREATE INDEX idx_coffee_directory_mv_roast_level 
   ON coffee_directory_mv USING btree (roast_level);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_process 
+CREATE INDEX idx_coffee_directory_mv_process 
   ON coffee_directory_mv USING btree (process);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_best_normalized_250g 
+CREATE INDEX idx_coffee_directory_mv_best_normalized_250g 
   ON coffee_directory_mv USING btree (best_normalized_250g);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_in_stock_count 
+CREATE INDEX idx_coffee_directory_mv_in_stock_count 
   ON coffee_directory_mv USING btree (in_stock_count);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_has_250g_bool 
+CREATE INDEX idx_coffee_directory_mv_has_250g_bool 
   ON coffee_directory_mv USING btree (has_250g_bool);
 
 -- Composite indexes for common filter combinations
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_status_roast_level 
+CREATE INDEX idx_coffee_directory_mv_status_roast_level 
   ON coffee_directory_mv USING btree (status, roast_level);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_roaster_status 
+CREATE INDEX idx_coffee_directory_mv_roaster_status 
   ON coffee_directory_mv USING btree (roaster_id, status);
 
 -- GIN indexes on array columns for efficient array operations
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_flavor_keys_gin 
+-- Raw flavor keys (legacy)
+CREATE INDEX idx_coffee_directory_mv_flavor_keys_gin 
   ON coffee_directory_mv USING gin (flavor_keys);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_region_ids_gin 
+-- ✅ Canonical flavor GIN indexes for hierarchical filtering
+CREATE INDEX idx_coffee_directory_mv_canon_flavor_node_ids_gin
+  ON coffee_directory_mv USING gin (canon_flavor_node_ids);
+
+CREATE INDEX idx_coffee_directory_mv_canon_flavor_slugs_gin
+  ON coffee_directory_mv USING gin (canon_flavor_slugs);
+
+CREATE INDEX idx_coffee_directory_mv_canon_flavor_descriptors_gin
+  ON coffee_directory_mv USING gin (canon_flavor_descriptors);
+
+CREATE INDEX idx_coffee_directory_mv_canon_flavor_subcategories_gin
+  ON coffee_directory_mv USING gin (canon_flavor_subcategories);
+
+CREATE INDEX idx_coffee_directory_mv_canon_flavor_families_gin
+  ON coffee_directory_mv USING gin (canon_flavor_families);
+
+-- Origin and brew method GIN indexes
+CREATE INDEX idx_coffee_directory_mv_region_ids_gin 
   ON coffee_directory_mv USING gin (region_ids);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_estate_ids_gin 
+CREATE INDEX idx_coffee_directory_mv_estate_ids_gin 
   ON coffee_directory_mv USING gin (estate_ids);
 
-CREATE INDEX IF NOT EXISTS idx_coffee_directory_mv_brew_method_canonical_keys_gin 
+CREATE INDEX idx_coffee_directory_mv_brew_method_canonical_keys_gin 
   ON coffee_directory_mv USING gin (brew_method_canonical_keys);
 
 -- ============================================================================
@@ -200,6 +272,13 @@ COMMENT ON FUNCTION refresh_coffee_directory_mv() IS
 COMMENT ON MATERIALIZED VIEW coffee_directory_mv IS 
   'Materialized view consolidating all data needed for coffee directory listing and filtering. 
    Includes all fields from coffee_summary view logic plus additional fields from coffees, 
-   roasters, coffee_images tables and junction table arrays for efficient filtering. 
+   roasters, coffee_images tables and junction table arrays for efficient filtering.
+   
+   Canonical flavor columns support hierarchical filtering:
+   - canon_flavor_families: top-level categories (e.g., "Fruity", "Sweet", "Nutty")
+   - canon_flavor_subcategories: mid-level groupings (e.g., "Berry", "Citrus", "Chocolate")
+   - canon_flavor_descriptors: specific flavors (e.g., "Blueberry", "Lemon", "Dark Chocolate")
+   - canon_flavor_slugs: URL-safe identifiers for each descriptor
+   - canon_flavor_node_ids: UUIDs for database lookups
+   
    Refresh using refresh_coffee_directory_mv() function.';
-

@@ -125,9 +125,17 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
   }
 
   // Junction table filters using array operators (for coffee_directory_mv)
-  // flavor_keys: use contains (@>) - coffee must have ALL selected flavors
+  // flavor_keys: use contains (@>) - coffee must have ALL selected flavors (legacy)
   if (filters.flavor_keys?.length) {
     filteredQuery = filteredQuery.contains("flavor_keys", filters.flavor_keys);
+  }
+
+  // canon_flavor_node_ids: use overlaps (&&) - coffee must have ANY selected canonical flavor
+  if (filters.canon_flavor_node_ids?.length) {
+    filteredQuery = filteredQuery.overlaps(
+      "canon_flavor_node_ids",
+      filters.canon_flavor_node_ids
+    );
   }
 
   // region_ids: use overlaps (&&) - coffee must have ANY selected region
@@ -293,6 +301,10 @@ function transformToCoffeeSummary(row: any): CoffeeSummary {
 
     // From coffee_images table (now in MV)
     image_url: row.image_url ?? null,
+
+    // Junction table arrays (now in MV)
+    flavor_keys: row.flavor_keys ?? null,
+    brew_method_canonical_keys: row.brew_method_canonical_keys ?? null,
   } as CoffeeSummary;
 }
 

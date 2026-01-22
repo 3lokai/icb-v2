@@ -63,6 +63,20 @@ const EducationSection = dynamic(
   }
 );
 
+const CollectionGrid = dynamic(
+  () =>
+    import("@/components/collections/CollectionGrid").then((mod) => ({
+      default: mod.CollectionGrid,
+    })),
+  {
+    loading: () => (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
 const TestimonialsSection = dynamic(
   () => import("@/components/homepage/TestimonialsSection"),
   {
@@ -149,6 +163,19 @@ export default async function Home() {
         >
           <HeroSection />
         </Suspense>
+
+        {/* Curated Collections Section */}
+        <section className="container py-12 md:py-16">
+          <div className="mb-8">
+            <h2 className="text-6 font-semibold mb-2">Curated Collections</h2>
+            <p className="text-2 text-muted">
+              Hand-picked coffee selections to match your taste and brewing
+              style
+            </p>
+          </div>
+          <CollectionGrid showHero tier="core" />
+        </section>
+
         <NewArrivalsSection />
         <FeaturesBentoGrid />
         <NewsletterSection />

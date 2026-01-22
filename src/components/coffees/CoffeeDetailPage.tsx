@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import CoffeeImageCarousel from "@/components/layout/carousel-image";
 import { Icon } from "@/components/common/Icon";
@@ -12,6 +14,8 @@ import { Stack } from "@/components/primitives/stack";
 import { Prose } from "@/components/primitives/prose";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useModal } from "@/components/providers/modal-provider";
+import { ReviewCapture } from "@/components/reviews/ReviewCapture";
 import { cn, capitalizeFirstLetter } from "@/lib/utils";
 import { formatPrice } from "@/lib/utils/coffee-utils";
 import { CoffeeSensoryProfile } from "./CoffeeSensoryProfile";
@@ -24,6 +28,39 @@ type CoffeeDetailPageProps = {
 
 export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
   const minPrice = coffee.summary.min_price_in_stock;
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { openModal } = useModal();
+
+  // Auto-open rating modal if ?rate=true is in URL
+  useEffect(() => {
+    const shouldRate = searchParams.get("rate") === "true";
+    if (shouldRate && coffee.id) {
+      // Small delay to ensure page is fully rendered
+      const timer = setTimeout(() => {
+        openModal({
+          type: "custom",
+          component: ReviewCapture,
+          props: {
+            entityType: "coffee",
+            entityId: coffee.id,
+            initialRating: undefined,
+            onClose: () => {
+              // Remove ?rate=true from URL after modal closes
+              const newSearchParams = new URLSearchParams(searchParams);
+              newSearchParams.delete("rate");
+              const newUrl = newSearchParams.toString()
+                ? `${window.location.pathname}?${newSearchParams.toString()}`
+                : window.location.pathname;
+              router.replace(newUrl, { scroll: false });
+            },
+          },
+        });
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams, coffee.id, openModal, router]);
 
   // Group variants by weight
   const variantsByWeight = coffee.variants.reduce(

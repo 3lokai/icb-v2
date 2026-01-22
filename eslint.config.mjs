@@ -50,6 +50,8 @@ const eslintConfig = defineConfig([
     "*.config.{js,ts,mjs}",
     // Ignore shadcn/ui components (they are imports and shouldn't be modified)
     "**/components/ui/**",
+    // Ignore auto-generated Supabase types
+    "src/types/supabase-types.ts",
   ]),
 ]);
 
