@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { CoffeeCollection } from "@/lib/collections/coffee-collections";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { Icon } from "@/components/common/Icon";
+import { Stack } from "@/components/primitives/stack";
+import { cn } from "@/lib/utils";
 
 // ============================================================================
 // TYPES
@@ -12,7 +14,7 @@ import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 type CollectionCardProps = {
   collection: CoffeeCollection;
-  variant?: "default" | "hero";
+  variant?: "default" | "small";
   coffeeCount?: number; // Optional: pass actual count from DB
   onClick?: () => void;
 };
@@ -27,7 +29,8 @@ export function CollectionCard({
   coffeeCount,
   onClick,
 }: CollectionCardProps) {
-  const isHero = variant === "hero";
+  const isSmall = variant === "small";
+  const [imageError, setImageError] = useState(false);
 
   const handleClick = () => {
     if (onClick) {
@@ -39,97 +42,93 @@ export function CollectionCard({
     <Link
       href={collection.filterUrl}
       onClick={handleClick}
-      className={`
-        collection-card group relative overflow-hidden 
-        rounded-3 transition-all duration-200
-        hover:scale-[1.02] hover:brightness-110
-        focus-visible:outline-none focus-visible:ring-2 
-        focus-visible:ring-primary focus-visible:ring-offset-2
-        ${isHero ? "aspect-[21/9]" : "aspect-[4/3]"}
-      `}
+      aria-label={`Explore ${collection.name} collection`}
+      className={cn(
+        "group relative overflow-hidden",
+        "surface-1 rounded-lg card-hover",
+        "bg-transparent border-transparent hover:border-transparent", // Override surface-1 bg and border to show image
+        "transition-colors duration-500",
+        "focus-visible:outline-none focus-visible:ring-2",
+        "focus-visible:ring-ring focus-visible:ring-offset-2",
+        "block w-full",
+        isSmall ? "aspect-square max-w-[200px]" : "aspect-[9/16] max-w-[280px]"
+      )}
     >
       {/* Background Image */}
       <div className="absolute inset-0">
-        <Image
-          src={collection.imageUrl}
-          alt={collection.name}
-          fill
-          className="object-cover"
-          sizes={
-            isHero
-              ? "100vw"
-              : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          }
-          priority={isHero || collection.featured}
-        />
+        {imageError ? (
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-accent/40 to-primary/60" />
+        ) : (
+          <Image
+            src={collection.imageUrl}
+            alt={collection.name}
+            fill
+            className="object-cover rounded-lg transition-transform duration-500 ease-out group-hover:scale-110"
+            sizes={
+              isSmall
+                ? "(max-width: 768px) 50vw, 33vw"
+                : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            }
+            priority={collection.featured}
+            onError={() => setImageError(true)}
+          />
+        )}
       </div>
 
       {/* Gradient Overlay */}
       <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 60%)",
-        }}
+        className={cn(
+          "absolute inset-0",
+          "bg-gradient-to-t from-black/80 via-black/40 to-black/5"
+        )}
       />
 
       {/* Content Container */}
-      <div className="relative h-full flex flex-col justify-end p-6">
-        {/* Badges */}
-        {collection.badges && collection.badges.length > 0 && (
-          <div className="flex gap-2 mb-4">
-            {collection.badges.slice(0, 3).map((badge, index) => (
-              <Badge
-                key={index}
-                variant={badge.variant || "onMedia"}
-                className="backdrop-blur-sm"
-              >
-                {badge.label}
-              </Badge>
-            ))}
-          </div>
-        )}
-
-        {/* Heading */}
-        <h3
-          className={`
-            font-semibold text-white mb-1 
-            drop-shadow-lg
-            ${isHero ? "text-5 md:text-6" : "text-4 md:text-5"}
-          `}
-        >
-          {collection.name}
-        </h3>
-
-        {/* Tagline */}
-        <p className="text-1 text-white/80 mb-3 drop-shadow-md">
-          {collection.tagline}
-        </p>
-
-        {/* Description (only for hero variant) */}
-        {isHero && (
-          <p className="text-2 text-white/70 mb-4 max-w-2xl line-clamp-2">
-            {collection.description}
-          </p>
-        )}
-
-        {/* CTA with Coffee Count */}
-        <div className="flex items-center gap-2 text-white/90 group-hover:text-white transition-colors">
-          <span className="text-2 font-medium">Explore</span>
-          {coffeeCount !== undefined && (
-            <>
-              <span className="text-white/50">·</span>
-              <span className="text-1 text-white/70">
-                {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
-              </span>
-            </>
+      <div className="relative h-full flex flex-col justify-end">
+        <Stack
+          gap="2"
+          className={cn(
+            isSmall ? "card-padding-compact" : "card-padding",
+            "transition-opacity group-hover:opacity-100"
           )}
-          <ArrowRight
-            size={20}
-            weight="bold"
-            className="ml-1 transition-transform group-hover:translate-x-1"
-          />
-        </div>
+        >
+          {/* Heading */}
+          <h3
+            className={`${
+              isSmall ? "text-subheading" : "text-heading"
+            } text-white drop-shadow-lg text-balance line-clamp-2`}
+          >
+            {collection.name}
+          </h3>
+
+          {/* Tagline - only show in default variant */}
+          {!isSmall && (
+            <p className="text-body font-medium text-white/90 drop-shadow-md line-clamp-2">
+              {collection.tagline}
+            </p>
+          )}
+
+          {/* CTA with Coffee Count */}
+          <div className="flex items-center gap-2 text-white/90 group-hover:text-white transition-colors">
+            <span className={cn(isSmall ? "text-caption" : "text-body")}>
+              Explore
+            </span>
+            {coffeeCount !== undefined && !isSmall && (
+              <>
+                <span className="text-white/50">·</span>
+                <span className="text-caption text-white/70">
+                  {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
+                </span>
+              </>
+            )}
+            <Icon
+              name="ArrowRight"
+              size={isSmall ? 16 : 18}
+              color="glass"
+              className="ml-1 transition-transform group-hover:translate-x-1"
+            />
+          </div>
+        </Stack>
       </div>
     </Link>
   );

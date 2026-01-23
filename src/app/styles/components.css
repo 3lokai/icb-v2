@@ -247,3 +247,13 @@
   @apply bg-popover text-popover-foreground border border-border shadow-xl rounded-xl;
 }
 
+
+/* Utility: Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

@@ -7,12 +7,6 @@ import type { CoffeeFilters } from "@/types/coffee-types";
 
 export type CollectionTier = "core" | "secondary" | "premium";
 
-export type CollectionBadge = {
-  label: string;
-  variant?: "default" | "secondary" | "destructive" | "outline" | "onMedia";
-  color?: string;
-};
-
 export type CoffeeCollection = {
   id: string; // URL-friendly slug
   name: string;
@@ -26,7 +20,6 @@ export type CoffeeCollection = {
 
   // UI/Visual
   imageUrl: string; // Background image for the card
-  badges?: CollectionBadge[]; // Max 3 badges
   icon?: string; // Optional icon name (phosphor icon)
   accentColor?: string; // Optional theme color for the card
 
@@ -131,12 +124,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       processes: ["washed"],
       in_stock_only: true,
     },
-    imageUrl:
-      "https://placehold.co/1200x900/2d3748/f7fafc?text=Beginner+Friendly+Coffee", // TODO: Add actual image
-    badges: [
-      { label: "Beginner Friendly", variant: "secondary" },
-      { label: "Balanced", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/beginner-friendly.jpg",
     featured: false,
     sortOrder: 1,
   },
@@ -160,12 +148,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
         CANON_FLAVORS.nuts,
       ],
     },
-    imageUrl:
-      "https://placehold.co/1200x900/3d2817/f7fafc?text=Milk+Friendly+Coffee",
-    badges: [
-      { label: "Milk Friendly", variant: "secondary" },
-      { label: "Daily Driver", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/milk-friendly.jpg",
     featured: true, // Hero collection
     sortOrder: 2,
   },
@@ -178,11 +161,11 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       "Light roasts bursting with berry, citrus, and tropical notes. Best enjoyed black in a V60 or Chemex.",
     tier: "core",
     filterUrl:
-      "/coffee?roastLevels=light,light_medium&processes=natural,honey,anaerobic&brewMethodIds=pour_over,v60,chemex&inStockOnly=1",
+      "/coffee?roastLevels=light,light_medium&processes=natural,honey,anaerobic&brewMethodIds=pour_over&inStockOnly=1",
     filters: {
       roast_levels: ["light", "light_medium"],
       processes: ["natural", "honey", "anaerobic"],
-      brew_method_ids: ["pour_over", "v60", "chemex"],
+      brew_method_ids: ["pour_over"],
       in_stock_only: true,
       canon_flavor_node_ids: [
         CANON_FLAVORS.berry_fresh,
@@ -191,12 +174,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
         CANON_FLAVORS.fruity,
       ],
     },
-    imageUrl:
-      "https://placehold.co/1200x900/dc2626/f7fafc?text=Fruity+Filter+Coffee",
-    badges: [
-      { label: "Fruit-Forward", variant: "secondary" },
-      { label: "Pour Over", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/fruity-filter-coffee.jpg",
     featured: false,
     sortOrder: 3,
   },
@@ -216,12 +194,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       processes: ["washed", "pulped_natural"],
       in_stock_only: true,
     },
-    imageUrl:
-      "https://placehold.co/1200x900/78350f/f7fafc?text=South+Indian+Filter",
-    badges: [
-      { label: "Heritage", variant: "secondary" },
-      { label: "Filter Coffee", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/south-indian-filter.jpg",
     featured: false,
     sortOrder: 4,
   },
@@ -239,12 +212,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
       canon_flavor_node_ids: [CANON_FLAVORS.balanced_acidity],
     },
-    imageUrl:
-      "https://placehold.co/1200x900/57534e/f7fafc?text=Balanced+Medium",
-    badges: [
-      { label: "Versatile", variant: "secondary" },
-      { label: "Balanced", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/balanced-medium.jpg",
     featured: false,
     sortOrder: 5,
   },
@@ -260,20 +228,15 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       "Ultra-light roasts for the clarity-obsessed. Tea-like body, explosive aromatics, delicate extraction required.",
     tier: "secondary",
     filterUrl:
-      "/coffee?roastLevels=light&processes=washed,natural&brewMethodIds=pour_over,v60,aeropress&inStockOnly=1",
+      "/coffee?roastLevels=light&processes=washed,natural&brewMethodIds=pour_over,aeropress&inStockOnly=1",
     filters: {
       roast_levels: ["light"],
       processes: ["washed", "natural"],
-      brew_method_ids: ["pour_over", "v60", "aeropress"],
+      brew_method_ids: ["pour_over", "aeropress"],
       in_stock_only: true,
       canon_flavor_node_ids: [CANON_FLAVORS.bright_acidity],
     },
-    imageUrl:
-      "https://placehold.co/1200x900/dbeafe/1e40af?text=Light+%26+Bright",
-    badges: [
-      { label: "High Acidity", variant: "secondary" },
-      { label: "Clarity", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/light-bright.jpg",
     sortOrder: 6,
   },
 
@@ -297,11 +260,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
         CANON_FLAVORS.earthy,
       ],
     },
-    imageUrl: "https://placehold.co/1200x900/a8a29e/f7fafc?text=Low+Acidity",
-    badges: [
-      { label: "Low Acidity", variant: "secondary" },
-      { label: "Smooth", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/low-acidity.jpg",
     sortOrder: 7,
   },
 
@@ -319,11 +278,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
       canon_flavor_node_ids: [CANON_FLAVORS.full_body],
     },
-    imageUrl: "https://placehold.co/1200x900/1c1917/f7fafc?text=Bold+%26+Dark",
-    badges: [
-      { label: "Bold", variant: "secondary" },
-      { label: "Full Body", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/bold-dark.jpg",
     sortOrder: 8,
   },
 
@@ -346,11 +301,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       ],
       in_stock_only: true,
     },
-    imageUrl: "https://placehold.co/1200x900/db2777/f7fafc?text=Experimental",
-    badges: [
-      { label: "Experimental", variant: "secondary" },
-      { label: "Funky", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 9,
   },
 
@@ -367,11 +318,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       // Note: Requires estate filtering in actual implementation
       // estate_ids: [...], // Add when available
     },
-    imageUrl: "https://placehold.co/1200x900/15803d/f7fafc?text=Single+Estate",
-    badges: [
-      { label: "Single Estate", variant: "secondary" },
-      { label: "Traceable", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 10,
   },
 
@@ -389,12 +336,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       roast_levels: ["medium", "medium_dark"],
       in_stock_only: true,
     },
-    imageUrl:
-      "https://placehold.co/1200x900/292524/f7fafc?text=Espresso+Blends",
-    badges: [
-      { label: "Espresso", variant: "secondary" },
-      { label: "Consistent", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 11,
   },
 
@@ -413,11 +355,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       max_price: 600,
       in_stock_only: true,
     },
-    imageUrl: "https://placehold.co/1200x900/047857/f7fafc?text=Great+Value",
-    badges: [
-      { label: "Great Value", variant: "secondary" },
-      { label: "Under ₹600", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 12,
   },
 
@@ -434,12 +372,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       limited_only: true,
       in_stock_only: true,
     },
-    imageUrl:
-      "https://placehold.co/1200x900/6b21a8/f7fafc?text=Premium+Microlots",
-    badges: [
-      { label: "Premium", variant: "secondary" },
-      { label: "Limited Edition", variant: "outline" },
-    ],
+    imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 13,
   },
 ];

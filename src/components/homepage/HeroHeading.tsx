@@ -21,14 +21,13 @@ export function HeroHeading() {
       <div className="lcp-optimized">
         <Stack gap="6" className="text-left">
           <h1 className="text-hero text-white text-balance leading-[1.1]">
-            Rate your coffee. Build your{" "}
-            <span className="text-accent italic">Coffee Identity.</span>
+            Which <span className="text-accent italic">coffee</span> did you{" "}
+            <span className="text-accent italic">brew</span> last?
           </h1>
           {/* Animation removed from paragraph for LCP optimization */}
           <p className="max-w-3xl text-white/90 text-body-large leading-relaxed text-pretty">
-            A community-driven platform where your ratings shape your{" "}
-            <span className="text-accent">taste profile</span> — and help others
-            discover better Indian coffee.
+            Rate your coffee to build your taste profile and see how others
+            experience it.
           </p>
         </Stack>
       </div>

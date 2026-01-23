@@ -58,12 +58,12 @@ export const COFFEE_STATUS: LookupOption[] = [
   { value: "archived", label: "Archived" },
 ];
 
-// Grind types enum
+// Grind types enum - matches database grind_enum
 export const GRIND_TYPES: LookupOption[] = [
   { value: "whole", label: "Whole Bean" },
   { value: "filter", label: "Filter" },
   { value: "espresso", label: "Espresso" },
-  { value: "omni", label: "Omni" },
+  { value: "drip", label: "Drip" },
   { value: "other", label: "Other" },
   { value: "turkish", label: "Turkish" },
   { value: "moka_pot", label: "Moka Pot" },

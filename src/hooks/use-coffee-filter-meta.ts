@@ -47,6 +47,15 @@ async function fetchCoffeeFilterMetaFromAPI(
   if (filters.has_250g_only) {
     params.set("has250gOnly", "1");
   }
+  if (filters.limited_only) {
+    params.set("limitedOnly", "1");
+  }
+  if (filters.decaf_only) {
+    params.set("decafOnly", "1");
+  }
+  if (filters.has_sensory_only) {
+    params.set("hasSensoryOnly", "1");
+  }
   if (filters.min_price) {
     params.set("minPrice", filters.min_price.toString());
   }
@@ -120,6 +129,9 @@ export function useCoffeeFilterMeta(
     // Check booleans are true
     if (rest.in_stock_only === true) return true;
     if (rest.has_250g_only === true) return true;
+    if (rest.limited_only === true) return true;
+    if (rest.decaf_only === true) return true;
+    if (rest.has_sensory_only === true) return true;
 
     // Check prices are set
     if (rest.min_price !== undefined && rest.min_price > 0) return true;

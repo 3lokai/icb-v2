@@ -186,6 +186,18 @@ export function parseCoffeeSearchParams(searchParams: URLSearchParams): {
     filters.has_250g_only = true;
   }
 
+  if (parseBooleanFlag(searchParams, "limitedOnly")) {
+    filters.limited_only = true;
+  }
+
+  if (parseBooleanFlag(searchParams, "decafOnly")) {
+    filters.decaf_only = true;
+  }
+
+  if (parseBooleanFlag(searchParams, "hasSensoryOnly")) {
+    filters.has_sensory_only = true;
+  }
+
   // Numeric filters
   const minPrice = parseNumericFilter(searchParams, "minPrice");
   if (minPrice !== undefined) {
@@ -299,6 +311,9 @@ export function buildCoffeeQueryString(
   // Boolean flags
   addBooleanFlag(params, "inStockOnly", filters.in_stock_only);
   addBooleanFlag(params, "has250gOnly", filters.has_250g_only);
+  addBooleanFlag(params, "limitedOnly", filters.limited_only);
+  addBooleanFlag(params, "decafOnly", filters.decaf_only);
+  addBooleanFlag(params, "hasSensoryOnly", filters.has_sensory_only);
 
   // Numeric filters
   addNumericFilter(params, "minPrice", filters.min_price);

@@ -109,6 +109,18 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
     filteredQuery = filteredQuery.eq("has_250g_bool", true);
   }
 
+  if (filters.limited_only === true) {
+    filteredQuery = filteredQuery.eq("is_limited", true);
+  }
+
+  if (filters.decaf_only === true) {
+    filteredQuery = filteredQuery.eq("decaf", true);
+  }
+
+  if (filters.has_sensory_only === true) {
+    filteredQuery = filteredQuery.eq("has_sensory", true);
+  }
+
   // Numeric filters
   if (filters.min_price && filters.min_price > 0) {
     filteredQuery = filteredQuery.gte(
