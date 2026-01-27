@@ -1,5 +1,6 @@
 // src/lib/collections/coffee-collections.ts
-import type { CoffeeFilters } from "@/types/coffee-types";
+import type { CoffeeFilters, CoffeeSort } from "@/types/coffee-types";
+import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
 
 // ============================================================================
 // COLLECTION TYPES
@@ -15,8 +16,10 @@ export type CoffeeCollection = {
   tier: CollectionTier;
 
   // Filtering
-  filterUrl: string; // Full /coffee?... URL
   filters: CoffeeFilters; // Parsed filter object for programmatic use
+  sort?: CoffeeSort; // Optional sort override (defaults to "relevance")
+  page?: number; // Optional page override (defaults to 1)
+  limit?: number; // Optional limit override (defaults to 15)
 
   // UI/Visual
   imageUrl: string; // Background image for the card
@@ -27,6 +30,20 @@ export type CoffeeCollection = {
   featured?: boolean; // Show as hero on homepage
   sortOrder?: number; // Display order within tier
 };
+
+/**
+ * Get the filter URL for a collection
+ * Generated from filters object to ensure consistency
+ */
+export function getCollectionFilterUrl(collection: CoffeeCollection): string {
+  const queryString = buildCoffeeQueryString(
+    collection.filters,
+    collection.page ?? 1,
+    collection.sort ?? "relevance",
+    collection.limit ?? 15
+  );
+  return `/coffee?${queryString}`;
+}
 
 // ============================================================================
 // CANON FLAVOR ID CONSTANTS
@@ -117,13 +134,12 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Perfect first specialty coffee. Smooth, forgiving, and approachable profiles from trusted Indian roasters.",
     tier: "core",
-    filterUrl:
-      "/coffee?roastLevels=medium&processes=washed&inStockOnly=1&sort=rating_desc",
     filters: {
       roast_levels: ["medium"],
       processes: ["washed"],
       in_stock_only: true,
     },
+    sort: "rating_desc",
     imageUrl: "/images/collections/beginner-friendly.jpg",
     featured: false,
     sortOrder: 1,
@@ -136,8 +152,6 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Coffees that shine in milk. Rich, sweet, and built for your daily ritual—cappuccino, latte, or filter coffee.",
     tier: "core",
-    filterUrl:
-      "/coffee?roastLevels=medium,medium_dark&brewMethodIds=espresso,south_indian_filter&inStockOnly=1",
     filters: {
       roast_levels: ["medium", "medium_dark"],
       brew_method_ids: ["espresso", "south_indian_filter"],
@@ -160,8 +174,6 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Light roasts bursting with berry, citrus, and tropical notes. Best enjoyed black in a V60 or Chemex.",
     tier: "core",
-    filterUrl:
-      "/coffee?roastLevels=light,light_medium&processes=natural,honey,anaerobic&brewMethodIds=pour_over&inStockOnly=1",
     filters: {
       roast_levels: ["light", "light_medium"],
       processes: ["natural", "honey", "anaerobic"],
@@ -186,8 +198,6 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Specialty takes on the classic South Indian filter coffee. Chicory-free, traceable, and roasted for depth without bitterness.",
     tier: "core",
-    filterUrl:
-      "/coffee?brewMethodIds=south_indian_filter,channi,coffee_filter&roastLevels=medium,medium_dark&processes=washed,pulped_natural&inStockOnly=1",
     filters: {
       brew_method_ids: ["south_indian_filter", "channi", "coffee_filter"],
       roast_levels: ["medium", "medium_dark"],
@@ -206,12 +216,12 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Versatile, approachable, and reliable. Works black or with milk, suitable for any brew method.",
     tier: "core",
-    filterUrl: "/coffee?roastLevels=medium&inStockOnly=1&sort=rating_desc",
     filters: {
       roast_levels: ["medium"],
       in_stock_only: true,
       canon_flavor_node_ids: [CANON_FLAVORS.balanced_acidity],
     },
+    sort: "rating_desc",
     imageUrl: "/images/collections/balanced-medium.jpg",
     featured: false,
     sortOrder: 5,
@@ -227,8 +237,6 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Ultra-light roasts for the clarity-obsessed. Tea-like body, explosive aromatics, delicate extraction required.",
     tier: "secondary",
-    filterUrl:
-      "/coffee?roastLevels=light&processes=washed,natural&brewMethodIds=pour_over,aeropress&inStockOnly=1",
     filters: {
       roast_levels: ["light"],
       processes: ["washed", "natural"],
@@ -247,8 +255,6 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Gentle on the stomach. Low-acid coffees with chocolatey, earthy, or nutty profiles.",
     tier: "secondary",
-    filterUrl:
-      "/coffee?roastLevels=medium,medium_dark,dark&processes=washed,monsooned,pulped_natural&inStockOnly=1",
     filters: {
       roast_levels: ["medium", "medium_dark", "dark"],
       processes: ["washed", "monsooned", "pulped_natural"],
@@ -271,13 +277,12 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "For those who like it bold. Smoky, robust, and unapologetic. Perfect for strong filter coffee or espresso.",
     tier: "secondary",
-    filterUrl:
-      "/coffee?roastLevels=dark,medium_dark&inStockOnly=1&sort=rating_desc",
     filters: {
       roast_levels: ["dark", "medium_dark"],
       in_stock_only: true,
       canon_flavor_node_ids: [CANON_FLAVORS.full_body],
     },
+    sort: "rating_desc",
     imageUrl: "/images/collections/bold-dark.jpg",
     sortOrder: 8,
   },
@@ -289,8 +294,6 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Coffees for the adventurous. Funky fermentation, tropical fruit bombs, and unconventional processing.",
     tier: "secondary",
-    filterUrl:
-      "/coffee?processes=anaerobic,carbonic_maceration,double_fermented,experimental,natural&inStockOnly=1&sort=newest",
     filters: {
       processes: [
         "anaerobic",
@@ -301,6 +304,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       ],
       in_stock_only: true,
     },
+    sort: "newest",
     imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 9,
   },
@@ -312,12 +316,12 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Know your farmer. Single-estate lots with full transparency—region, altitude, varietal, and story.",
     tier: "secondary",
-    filterUrl: "/coffee?inStockOnly=1&sort=rating_desc",
     filters: {
       in_stock_only: true,
       // Note: Requires estate filtering in actual implementation
       // estate_ids: [...], // Add when available
     },
+    sort: "rating_desc",
     imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 10,
   },
@@ -329,13 +333,12 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Pre-dialed espresso coffees. Blends and single origins optimized for shot-pulling and milk drinks.",
     tier: "secondary",
-    filterUrl:
-      "/coffee?brewMethodIds=espresso&roastLevels=medium,medium_dark&inStockOnly=1&sort=rating_desc",
     filters: {
       brew_method_ids: ["espresso"],
       roast_levels: ["medium", "medium_dark"],
       in_stock_only: true,
     },
+    sort: "rating_desc",
     imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 11,
   },
@@ -350,11 +353,11 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Best bang-for-buck coffees. High ratings, low prices, and proven crowd-pleasers.",
     tier: "premium",
-    filterUrl: "/coffee?maxPrice=600&sort=best_value&inStockOnly=1",
     filters: {
       max_price: 600,
       in_stock_only: true,
     },
+    sort: "best_value",
     imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 12,
   },
@@ -366,12 +369,12 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     description:
       "Rare, competition-grade, or limited-edition coffees. For special occasions and deep exploration.",
     tier: "premium",
-    filterUrl: "/coffee?minPrice=1000&limitedOnly=1&inStockOnly=1&sort=newest",
     filters: {
       min_price: 1000,
       limited_only: true,
       in_stock_only: true,
     },
+    sort: "newest",
     imageUrl: "/images/collections/default-filter.jpg",
     sortOrder: 13,
   },

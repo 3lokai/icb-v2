@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { CoffeeCollection } from "@/lib/collections/coffee-collections";
+import { getCollectionFilterUrl } from "@/lib/collections/coffee-collections";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { cn } from "@/lib/utils";
@@ -40,7 +41,7 @@ export function CollectionCard({
 
   return (
     <Link
-      href={collection.filterUrl}
+      href={getCollectionFilterUrl(collection)}
       onClick={handleClick}
       aria-label={`Explore ${collection.name} collection`}
       className={cn(
@@ -55,7 +56,7 @@ export function CollectionCard({
       )}
     >
       {/* Background Image */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 rounded-lg overflow-hidden">
         {imageError ? (
           <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-accent/40 to-primary/60" />
         ) : (
@@ -63,7 +64,7 @@ export function CollectionCard({
             src={collection.imageUrl}
             alt={collection.name}
             fill
-            className="object-cover rounded-lg transition-transform duration-500 ease-out group-hover:scale-110"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
             sizes={
               isSmall
                 ? "(max-width: 768px) 50vw, 33vw"
@@ -78,7 +79,7 @@ export function CollectionCard({
       {/* Gradient Overlay */}
       <div
         className={cn(
-          "absolute inset-0",
+          "absolute inset-0 rounded-lg",
           "bg-gradient-to-t from-black/80 via-black/40 to-black/5"
         )}
       />

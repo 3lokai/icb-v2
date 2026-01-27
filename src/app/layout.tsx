@@ -18,6 +18,8 @@ import { organizationSchema, websiteSchema } from "@/lib/seo/schema";
 import { SearchProvider } from "@/providers/SearchProvider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/Footer";
+import { Banner1 } from "@/components/ui/banner1";
+import { fetchActiveAnnouncement } from "@/lib/data/fetch-announcement";
 
 // Lazy load SearchCommand to reduce initial bundle size
 // Only loads when search modal is opened (cmdk is ~50-100KB)
@@ -111,11 +113,13 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const announcement = await fetchActiveAnnouncement();
+
   return (
     <html
       className={`${playfair.variable} ${dmSans.variable}`}
@@ -201,9 +205,17 @@ export default function RootLayout({
               <SearchProvider>
                 <ModalProvider>
                   <div className="surface-0 relative flex min-h-screen flex-col">
+                    {announcement && (
+                      <Banner1
+                        defaultVisible
+                        description={announcement.message}
+                        linkText={announcement.link ? "Learn more" : undefined}
+                        linkUrl={announcement.link || undefined}
+                      />
+                    )}
                     <Header />
-                    <GoogleAnalytics />
                     <main className="flex-1">{children}</main>
+                    <GoogleAnalytics />
                     <Footer />
                   </div>
                   <SearchCommand />

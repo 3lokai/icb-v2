@@ -131,7 +131,7 @@ export function HeroSearch() {
   }, [showResults]);
 
   return (
-    <div className="max-w-2xl animate-fade-in-scale delay-300">
+    <div className="w-full animate-fade-in-scale delay-300">
       <Stack gap="6">
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-4 z-10 flex items-center">

@@ -177,7 +177,7 @@ export function HomeCollectionGrid({
       )}
 
       {/* 4-Column Parallax Grid */}
-      <div className="overflow-hidden lg:pb-[200px] lg:-mb-[200px]">
+      <div className="overflow-hidden lg:pb-[200px] lg:-mb-[200px] pt-4 -mt-4">
         <div
           ref={gridRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start"
@@ -205,7 +205,7 @@ export function HomeCollectionGrid({
         </div>
       </div>
       {/* Filter Strip Integration (Subtle) */}
-      <div className="mt-4 pt-4 border-t border-border/40">
+      <div className="mt-0 pt-4 border-t border-border/40">
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
           {/* Subtle Section Title */}
           <div className="flex-none">

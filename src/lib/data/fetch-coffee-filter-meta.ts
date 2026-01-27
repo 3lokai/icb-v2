@@ -34,6 +34,7 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
   // Run all queries in parallel for better performance
   const [
     flavorNotesResult,
+    canonicalFlavorsResult,
     regionsResult,
     estatesResult,
     brewMethodsResult,
@@ -76,6 +77,85 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
             existing.count += 1;
           } else {
             counts.set(fn.id, { id: fn.key, label: fn.label, count: 1 });
+          }
+        }
+
+        return Array.from(counts.values()).filter((item) => item.count > 0);
+      }),
+
+    // Canonical Flavors - Join through coffee_flavor_notes -> flavor_notes -> flavor_note_to_canon -> canon_sensory_nodes
+    supabase
+      .from("coffee_flavor_notes")
+      .select(
+        `
+        flavor_note_id,
+        flavor_notes(
+          id,
+          flavor_note_to_canon(
+            canon_node_id,
+            canon_sensory_nodes(id, slug, descriptor, subcategory, family)
+          )
+        )
+      `
+      )
+      .then((result) => {
+        if (result.error) {
+          throw result.error;
+        }
+        const data = result.data || [];
+
+        // Aggregate counts by canon_sensory_nodes.id
+        const counts = new Map<
+          string,
+          {
+            id: string;
+            slug: string;
+            descriptor: string;
+            subcategory: string;
+            family: string;
+            count: number;
+          }
+        >();
+
+        for (const row of data) {
+          const fn = row.flavor_notes as unknown as {
+            id: string;
+            flavor_note_to_canon: Array<{
+              canon_node_id: string;
+              canon_sensory_nodes: {
+                id: string;
+                slug: string;
+                descriptor: string;
+                subcategory: string;
+                family: string;
+              } | null;
+            }> | null;
+          } | null;
+
+          if (!fn || !fn.flavor_note_to_canon) {
+            continue;
+          }
+
+          // Process each canonical flavor mapping
+          for (const mapping of fn.flavor_note_to_canon) {
+            const canonNode = mapping.canon_sensory_nodes;
+            if (!canonNode) {
+              continue;
+            }
+
+            const existing = counts.get(canonNode.id);
+            if (existing) {
+              existing.count += 1;
+            } else {
+              counts.set(canonNode.id, {
+                id: canonNode.id,
+                slug: canonNode.slug,
+                descriptor: canonNode.descriptor,
+                subcategory: canonNode.subcategory,
+                family: canonNode.family,
+                count: 1,
+              });
+            }
           }
         }
 
@@ -381,9 +461,17 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     }),
   ]);
 
+  // Sort canonical flavors by count DESC, then descriptor ASC
+  const sortedCanonicalFlavors = canonicalFlavorsResult.sort((a, b) => {
+    if (b.count !== a.count) {
+      return b.count - a.count;
+    }
+    return a.descriptor.localeCompare(b.descriptor);
+  });
+
   return {
     flavorNotes: sortByCountAndLabel(flavorNotesResult),
-    canonicalFlavors: [], // Static meta doesn't include canonical flavors - use RPC for filtered meta
+    canonicalFlavors: sortedCanonicalFlavors,
     regions: sortByCountAndLabel(regionsResult),
     estates: sortByCountAndLabel(estatesResult),
     brewMethods: sortByCountAndLabel(brewMethodsResult),
