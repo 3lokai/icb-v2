@@ -47,6 +47,7 @@ export default function RoasterInfrastructureSection() {
                         src={roasterImagePresets.roasterLogo(
                           `roasters/${roaster.slug}-logo`
                         )}
+                        unoptimized
                       />
                     </div>
                     <div className="min-w-0">

@@ -72,6 +72,7 @@ export function CollectionCard({
             }
             priority={collection.featured}
             onError={() => setImageError(true)}
+            unoptimized
           />
         )}
       </div>

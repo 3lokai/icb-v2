@@ -94,6 +94,7 @@ export function ReviewCapture({
   };
 
   const [formData, setFormData] = useState<CreateReviewInput>(defaultFormData);
+  const [hoveredStar, setHoveredStar] = useState<number | null>(null);
 
   // Resolve identity (user or anon)
   const [identityKey, setIdentityKey] = useState<string | null>(null);
@@ -615,10 +616,22 @@ export function ReviewCapture({
                 </span>
               </div>
               <h3 className="text-title text-balance leading-tight">
-                How was your <span className="text-accent italic">Brew?</span>
+                {entityType === "coffee" ? (
+                  <>
+                    How was your{" "}
+                    <span className="text-accent italic">Brew?</span>
+                  </>
+                ) : (
+                  <>
+                    How was your{" "}
+                    <span className="text-accent italic">Experience?</span>
+                  </>
+                )}
               </h3>
               <p className="text-body text-muted-foreground">
-                Share your experience to help others discover great coffee
+                {entityType === "coffee"
+                  ? "Share your experience to help others discover great coffee"
+                  : "Share your experience to help others discover great roasters"}
               </p>
             </Stack>
 
@@ -632,27 +645,36 @@ export function ReviewCapture({
                     <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
                       Overall rating*
                     </label>
-                    <div className="flex items-center gap-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                          key={star}
-                          type="button"
-                          onClick={() => handleRatingClick(star)}
-                          disabled={isLoading || isDeleting}
-                          className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <Icon
-                            name="CoffeeBean"
-                            size={28}
-                            className={cn(
-                              "transition-all duration-200",
-                              formData.rating && star <= formData.rating
-                                ? "text-amber-500 fill-amber-500 drop-shadow-sm"
-                                : "text-muted-foreground/30 hover:text-amber-500/60 hover:fill-amber-500/20"
-                            )}
-                          />
-                        </button>
-                      ))}
+                    <div
+                      className="flex items-center gap-2"
+                      onMouseLeave={() => setHoveredStar(null)}
+                    >
+                      {[1, 2, 3, 4, 5].map((star) => {
+                        const isFilled = hoveredStar
+                          ? star <= hoveredStar
+                          : formData.rating && star <= formData.rating;
+                        return (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => handleRatingClick(star)}
+                            onMouseEnter={() => setHoveredStar(star)}
+                            disabled={isLoading || isDeleting}
+                            className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <Icon
+                              name="Star"
+                              size={28}
+                              className={cn(
+                                "transition-all duration-200",
+                                isFilled
+                                  ? "text-amber-500 fill-amber-500 drop-shadow-sm"
+                                  : "text-muted-foreground/30"
+                              )}
+                            />
+                          </button>
+                        );
+                      })}
                       {formData.rating && (
                         <span className="text-body font-medium text-muted-foreground ml-1">
                           {formData.rating}/5
@@ -680,32 +702,36 @@ export function ReviewCapture({
                       </p>
                     )}
                   </Stack>
-
-                  {/* Add to My Recommendations Checkbox */}
-                  <div className="flex items-center gap-2">
-                    <Checkbox
-                      id="recommend"
-                      checked={formData.recommend === true}
-                      onCheckedChange={(checked) => {
-                        const newFormData = {
-                          ...formData,
-                          recommend: checked === true ? true : null,
-                        };
-                        setFormData(newFormData);
-                      }}
-                      disabled={isLoading || isDeleting}
-                    />
-                    <label
-                      htmlFor="recommend"
-                      className="text-body text-foreground cursor-pointer select-none"
-                    >
-                      Add to &quot;My Recommendations&quot;
-                    </label>
-                  </div>
                 </Stack>
 
                 {/* Right Column: Additional Details */}
                 <Stack gap="8">
+                  {/* Add to My Recommendations Checkbox */}
+                  <Stack gap="4">
+                    <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                      Recommendations
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="recommend"
+                        checked={formData.recommend === true}
+                        onCheckedChange={(checked) => {
+                          const newFormData = {
+                            ...formData,
+                            recommend: checked === true ? true : null,
+                          };
+                          setFormData(newFormData);
+                        }}
+                        disabled={isLoading || isDeleting}
+                      />
+                      <label
+                        htmlFor="recommend"
+                        className="text-body text-foreground cursor-pointer select-none"
+                      >
+                        Add to &quot;My Recommendations&quot;
+                      </label>
+                    </div>
+                  </Stack>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-8">
                     {/* Value for Money */}
                     <Stack gap="4">

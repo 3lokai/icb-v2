@@ -39,6 +39,7 @@ export function RoasterHero({ roaster }: RoasterHeroProps) {
                 src={roasterImagePresets.roasterLogo(
                   `roasters/${roaster.slug}-logo`
                 )}
+                unoptimized
               />
             </div>
           ) : (

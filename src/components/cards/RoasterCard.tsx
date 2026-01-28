@@ -86,6 +86,7 @@ export default function RoasterCard({
                   `roasters/${roaster.slug}-logo`
                 )}
                 onError={() => setHasError(true)}
+                unoptimized
               />
             ) : (
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted border border-border">
@@ -182,6 +183,7 @@ export default function RoasterCard({
                     `roasters/${roaster.slug}-logo`
                   )}
                   onError={() => setHasError(true)}
+                  unoptimized
                 />
               ) : (
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 border-2 border-accent/20">

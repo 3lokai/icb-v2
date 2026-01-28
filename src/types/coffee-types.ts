@@ -81,6 +81,9 @@ export type CoffeeDetail = {
 
   // Reviews array
   reviews?: CoffeeReview[];
+
+  // Canonical flavor node IDs for similar coffee matching
+  canon_flavor_node_ids?: string[];
 };
 
 // ----------------------------------------------------------------------------
@@ -277,4 +280,18 @@ export type CoffeeListResponse = {
   limit: number;
   total: number;
   totalPages: number;
+};
+
+// ----------------------------------------------------------------------------
+// 6. Similar Coffee Types
+// ----------------------------------------------------------------------------
+
+export type SimilarCoffeeMatch = {
+  coffee: CoffeeSummary;
+  match_type: "flavor" | "style" | "origin" | "fallback";
+  overlap_flavor_ids: string[];
+  overlap_flavor_labels: string[]; // Resolved labels for display
+  roast_match: boolean;
+  process_match: boolean;
+  origin_match: boolean;
 };

@@ -87,6 +87,7 @@ export function QuickRating({
   const [valueForMoney, setValueForMoney] = useState<boolean | null>(null);
   const [worksWithMilk, setWorksWithMilk] = useState<boolean | null>(null);
   const [brewMethod, setBrewMethod] = useState<GrindEnum | null>(null);
+  const [hoveredStar, setHoveredStar] = useState<number | null>(null);
 
   const hasAutoSavedRef = useRef(false);
   const hasShownSuccessToastRef = useRef(false);
@@ -358,14 +359,20 @@ export function QuickRating({
                   ) : (
                     <>
                       How was your{" "}
-                      <span className="text-accent italic">Brew?</span>
+                      <span className="text-accent italic">
+                        {entityType === "coffee" ? "Brew?" : "Experience?"}
+                      </span>
                     </>
                   )}
                 </h3>
                 <p className="text-body text-muted-foreground">
                   {initialRating
-                    ? "Share your thoughts to help others find their perfect cup."
-                    : "Share your experience to help others discover great coffee"}
+                    ? entityType === "coffee"
+                      ? "Share your thoughts to help others find their perfect cup."
+                      : "Share your thoughts to help others discover great roasters."
+                    : entityType === "coffee"
+                      ? "Share your experience to help others discover great coffee"
+                      : "Share your experience to help others discover great roasters"}
                 </p>
               </Stack>
             )}
@@ -376,27 +383,34 @@ export function QuickRating({
                 "flex items-center gap-3",
                 isInline ? "justify-start" : "justify-center"
               )}
+              onMouseLeave={() => setHoveredStar(null)}
             >
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => handleRatingClick(star)}
-                  disabled={isSaving || isDeleting}
-                  className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Icon
-                    name="CoffeeBean"
-                    size={36}
-                    className={cn(
-                      "transition-all duration-200",
-                      rating >= star
-                        ? "text-amber-500 fill-amber-500 drop-shadow-sm"
-                        : "text-muted-foreground/30 hover:text-amber-500/60 hover:fill-amber-500/20"
-                    )}
-                  />
-                </button>
-              ))}
+              {[1, 2, 3, 4, 5].map((star) => {
+                const isFilled = hoveredStar
+                  ? star <= hoveredStar
+                  : rating >= star;
+                return (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => handleRatingClick(star)}
+                    onMouseEnter={() => setHoveredStar(star)}
+                    disabled={isSaving || isDeleting}
+                    className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Icon
+                      name="Star"
+                      size={36}
+                      className={cn(
+                        "transition-all duration-200",
+                        isFilled
+                          ? "text-amber-500 fill-amber-500 drop-shadow-sm"
+                          : "text-muted-foreground/30"
+                      )}
+                    />
+                  </button>
+                );
+              })}
               {rating > 0 && (
                 <span className="text-body font-medium text-muted-foreground ml-2">
                   {rating}/5
@@ -407,7 +421,7 @@ export function QuickRating({
             {/* Comment - always visible */}
             <Stack gap="3">
               <Textarea
-                placeholder={`What made this ${entityType} memorable?`}
+                placeholder={`Any notes to share about this ${entityType}?`}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 disabled={isSaving || isDeleting}
@@ -423,152 +437,174 @@ export function QuickRating({
 
             {/* Additional Details */}
             <Stack gap="6" className="pt-2 border-t border-border/40">
-              {/* Recommend checkbox */}
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="recommend"
-                  checked={recommend === true}
-                  onCheckedChange={(checked) => {
-                    setRecommend(checked === true ? true : null);
-                  }}
-                  disabled={isSaving || isDeleting}
-                />
-                <label
-                  htmlFor="recommend"
-                  className="text-body text-foreground cursor-pointer select-none"
-                >
-                  Add to &quot;My Recommendations&quot;
-                </label>
-              </div>
+              {/* 2 Column Layout for Non-Mobile */}
+              <div className="flex flex-col md:flex-row md:flex-wrap gap-6">
+                {/* First Row, Column 1: Brew method */}
+                {entityType === "coffee" && (
+                  <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
+                    <Stack gap="3">
+                      <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                        Brew method used
+                      </label>
+                      <Select
+                        value={brewMethod ?? "none"}
+                        onValueChange={(value) =>
+                          setBrewMethod(
+                            value === "none" ? null : (value as GrindEnum)
+                          )
+                        }
+                        disabled={isSaving || isDeleting}
+                      >
+                        <SelectTrigger className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5">
+                          <SelectValue placeholder="How did you brew this coffee?" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {GRIND_TYPES.filter(
+                            (grind) => grind.value !== "whole"
+                          ).map((grind) => (
+                            <SelectItem key={grind.value} value={grind.value}>
+                              {grind.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </Stack>
+                  </div>
+                )}
 
-              {/* Value for Money */}
-              <Stack gap="3">
-                <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                  Value for money
-                </label>
-                <Cluster gap="2" className="flex-wrap">
-                  <Button
-                    type="button"
-                    variant={valueForMoney === true ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setValueForMoney(true)}
-                    disabled={isSaving || isDeleting}
-                    className={cn(
-                      "h-9 px-4",
-                      valueForMoney === true && "shadow-sm"
-                    )}
-                  >
-                    <Icon name="ThumbsUp" size={14} className="mr-1.5" />
-                    Good
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={valueForMoney === false ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setValueForMoney(false)}
-                    disabled={isSaving || isDeleting}
-                    className={cn(
-                      "h-9 px-4",
-                      valueForMoney === false && "shadow-sm"
-                    )}
-                  >
-                    <Icon name="ThumbsDown" size={14} className="mr-1.5" />
-                    Poor
-                  </Button>
-                  {valueForMoney !== null && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setValueForMoney(null)}
-                      disabled={isSaving || isDeleting}
-                      className="h-9 px-3 text-muted-foreground hover:text-foreground"
-                    >
-                      Clear
-                    </Button>
-                  )}
-                </Cluster>
-              </Stack>
+                {/* First Row, Column 2: Add to Recommendations */}
+                <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
+                  <Stack gap="3">
+                    <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                      Recommendations
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="recommend"
+                        checked={recommend === true}
+                        onCheckedChange={(checked) => {
+                          setRecommend(checked === true ? true : null);
+                        }}
+                        disabled={isSaving || isDeleting}
+                      />
+                      <label
+                        htmlFor="recommend"
+                        className="text-body text-foreground cursor-pointer select-none"
+                      >
+                        Add to &quot;My Recommendations&quot;
+                      </label>
+                    </div>
+                  </Stack>
+                </div>
 
-              {/* Works with milk - coffee only */}
-              {entityType === "coffee" && (
-                <Stack gap="3">
-                  <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                    Profile suitability
-                  </label>
-                  <Cluster gap="2" className="flex-wrap">
-                    <Button
-                      type="button"
-                      variant={worksWithMilk === false ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setWorksWithMilk(false)}
-                      disabled={isSaving || isDeleting}
-                      className={cn(
-                        "h-9 px-4",
-                        worksWithMilk === false && "shadow-sm"
-                      )}
-                    >
-                      Black
-                    </Button>
-                    <Button
-                      type="button"
-                      variant={worksWithMilk === true ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setWorksWithMilk(true)}
-                      disabled={isSaving || isDeleting}
-                      className={cn(
-                        "h-9 px-4",
-                        worksWithMilk === true && "shadow-sm"
-                      )}
-                    >
-                      Milk
-                    </Button>
-                    {worksWithMilk !== null && (
+                {/* Second Row, Column 1: Value for Money */}
+                <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
+                  <Stack gap="3">
+                    <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                      Value for money
+                    </label>
+                    <Cluster gap="2" className="flex-wrap">
                       <Button
                         type="button"
-                        variant="ghost"
+                        variant={valueForMoney === true ? "default" : "outline"}
                         size="sm"
-                        onClick={() => setWorksWithMilk(null)}
+                        onClick={() => setValueForMoney(true)}
                         disabled={isSaving || isDeleting}
-                        className="h-9 px-3 text-muted-foreground hover:text-foreground"
+                        className={cn(
+                          "h-9 px-4",
+                          valueForMoney === true && "shadow-sm"
+                        )}
                       >
-                        Clear
+                        <Icon name="ThumbsUp" size={14} className="mr-1.5" />
+                        Good
                       </Button>
-                    )}
-                  </Cluster>
-                </Stack>
-              )}
+                      <Button
+                        type="button"
+                        variant={
+                          valueForMoney === false ? "default" : "outline"
+                        }
+                        size="sm"
+                        onClick={() => setValueForMoney(false)}
+                        disabled={isSaving || isDeleting}
+                        className={cn(
+                          "h-9 px-4",
+                          valueForMoney === false && "shadow-sm"
+                        )}
+                      >
+                        <Icon name="ThumbsDown" size={14} className="mr-1.5" />
+                        Poor
+                      </Button>
+                      {valueForMoney !== null && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setValueForMoney(null)}
+                          disabled={isSaving || isDeleting}
+                          className="h-9 px-3 text-muted-foreground hover:text-foreground"
+                        >
+                          Clear
+                        </Button>
+                      )}
+                    </Cluster>
+                  </Stack>
+                </div>
 
-              {/* Brew method - coffee only */}
-              {entityType === "coffee" && (
-                <Stack gap="3">
-                  <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                    Brew method used
-                  </label>
-                  <Select
-                    value={brewMethod ?? "none"}
-                    onValueChange={(value) =>
-                      setBrewMethod(
-                        value === "none" ? null : (value as GrindEnum)
-                      )
-                    }
-                    disabled={isSaving || isDeleting}
-                  >
-                    <SelectTrigger className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5">
-                      <SelectValue placeholder="How did you brew this coffee?" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {GRIND_TYPES.filter(
-                        (grind) => grind.value !== "whole"
-                      ).map((grind) => (
-                        <SelectItem key={grind.value} value={grind.value}>
-                          {grind.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </Stack>
-              )}
+                {/* Second Row, Column 2: Profile suitability - coffee only */}
+                {entityType === "coffee" && (
+                  <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
+                    <Stack gap="3">
+                      <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                        Profile suitability
+                      </label>
+                      <Cluster gap="2" className="flex-wrap">
+                        <Button
+                          type="button"
+                          variant={
+                            worksWithMilk === false ? "default" : "outline"
+                          }
+                          size="sm"
+                          onClick={() => setWorksWithMilk(false)}
+                          disabled={isSaving || isDeleting}
+                          className={cn(
+                            "h-9 px-4",
+                            worksWithMilk === false && "shadow-sm"
+                          )}
+                        >
+                          Black
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={
+                            worksWithMilk === true ? "default" : "outline"
+                          }
+                          size="sm"
+                          onClick={() => setWorksWithMilk(true)}
+                          disabled={isSaving || isDeleting}
+                          className={cn(
+                            "h-9 px-4",
+                            worksWithMilk === true && "shadow-sm"
+                          )}
+                        >
+                          Milk
+                        </Button>
+                        {worksWithMilk !== null && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setWorksWithMilk(null)}
+                            disabled={isSaving || isDeleting}
+                            className="h-9 px-3 text-muted-foreground hover:text-foreground"
+                          >
+                            Clear
+                          </Button>
+                        )}
+                      </Cluster>
+                    </Stack>
+                  </div>
+                )}
+              </div>
             </Stack>
 
             {/* Status indicator */}

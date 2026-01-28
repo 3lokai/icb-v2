@@ -23,9 +23,13 @@ import { trackCoffeeDiscovery } from "@/lib/analytics/enhanced-tracking";
 
 type CoffeeCardProps = {
   coffee: CoffeeSummary;
-  variant?: "hero" | "default" | "compact";
+  variant?: "hero" | "default" | "compact" | "similar";
   userRating?: number | null;
   onRateClick?: (coffeeId: string, rating: number) => void;
+  matchInfo?: {
+    matchType: "flavor" | "style" | "origin" | "fallback";
+    chips: string[]; // Max 3 labels to display
+  };
 };
 
 type RatingFooterProps = {
@@ -203,6 +207,7 @@ function CoffeeCardComponent({
   variant = "default",
   userRating,
   onRateClick,
+  matchInfo,
 }: CoffeeCardProps) {
   const router = useRouter();
   const { openModal } = useModal();
@@ -315,6 +320,7 @@ function CoffeeCardComponent({
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 420px"
             src={imageUrl}
+            unoptimized
           />
         </div>
 
@@ -380,6 +386,66 @@ function CoffeeCardComponent({
     );
   }
 
+  // Similar variant - compact vertical card with match chips
+  if (variant === "similar") {
+    return (
+      <Card
+        onClick={handleCardClick}
+        className={cn(
+          "group relative overflow-hidden cursor-pointer",
+          "surface-1 rounded-lg card-hover",
+          "h-full flex flex-col",
+          "p-0"
+        )}
+        aria-label={ariaLabel}
+      >
+        {/* Image - 3:4 aspect ratio */}
+        <div className="relative aspect-[3/4] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
+          <Image
+            alt={coffee.name || "Coffee"}
+            className="object-contain"
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            src={imageUrl}
+            unoptimized
+          />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 card-padding-compact transition-opacity duration-200 group-hover:opacity-90">
+          <Stack gap="2">
+            {/* Coffee name */}
+            <h3 className="text-heading text-balance line-clamp-2">
+              {coffee.name}
+            </h3>
+
+            {/* Roaster */}
+            {coffee.roaster_name && (
+              <p className="text-body-muted font-medium">
+                {coffee.roaster_name}
+              </p>
+            )}
+
+            {/* Match chips row - max 3 badges */}
+            {matchInfo && matchInfo.chips.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {matchInfo.chips.slice(0, 3).map((chip, idx) => (
+                  <Badge
+                    key={idx}
+                    variant="outline"
+                    className="text-micro font-medium"
+                  >
+                    {chip}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </Stack>
+        </div>
+      </Card>
+    );
+  }
+
   // Compact variant - dense, horizontal row card, no interactive rating
   if (variant === "compact") {
     return (
@@ -401,6 +467,7 @@ function CoffeeCardComponent({
             fill
             sizes="64px"
             src={imageUrl}
+            unoptimized
           />
         </div>
 
@@ -443,6 +510,7 @@ function CoffeeCardComponent({
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
           src={imageUrl}
+          unoptimized
         />
       </div>
 
@@ -517,7 +585,8 @@ const CoffeeCard = memo(CoffeeCardComponent, (prevProps, nextProps) => {
     prevProps.coffee.image_url === nextProps.coffee.image_url &&
     prevProps.coffee.rating_avg === nextProps.coffee.rating_avg &&
     prevProps.coffee.rating_count === nextProps.coffee.rating_count &&
-    prevProps.variant === nextProps.variant
+    prevProps.variant === nextProps.variant &&
+    JSON.stringify(prevProps.matchInfo) === JSON.stringify(nextProps.matchInfo)
   );
 });
 

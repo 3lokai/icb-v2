@@ -35,14 +35,26 @@ import { useSearchContext } from "@/providers/SearchProvider";
 const NAME_SPLIT_REGEX = /\s+/;
 
 const navItems = [
-  { name: "Coffees", link: "/coffees" },
-  { name: "Roasters", link: "/roasters" },
   {
-    name: "Tools",
-    link: "/tools",
+    name: "Explore",
+    link: "/explore",
     children: [
-      { name: "Expert Recipes", link: "/tools/expert-recipes" },
-      { name: "Coffee Calculator", link: "/tools/coffee-calculator" },
+      { name: "Coffees", link: "/coffees" },
+      { name: "Roasters", link: "/roasters" },
+      { name: "Estates", link: "/estates" },
+      { name: "Regions", link: "/regions" },
+    ],
+  },
+  {
+    name: "Profile",
+    link: "/dashboard/profile",
+  },
+  {
+    name: "Learn",
+    link: "/learn",
+    children: [
+      { name: "Brew Calculator", link: "/tools/coffee-calculator" },
+      { name: "Expert recipes", link: "/tools/expert-recipes" },
       { name: "Glossary", link: "/learn/glossary" },
     ],
   },

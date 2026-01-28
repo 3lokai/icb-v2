@@ -42,9 +42,9 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
   return (
     <div className={cn("w-full bg-background min-h-screen", className)}>
       <PageShell maxWidth="5xl">
-        <Stack gap="8" className="py-8 md:py-12">
+        <Stack gap="6" className="py-8 md:py-12">
           {/* 📌 GLOBAL HEADER (ALWAYS VISIBLE) */}
-          <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-md pt-4 pb-6 border-b border-border/40">
+          <header className="sticky top-24 z-30 bg-background/80 backdrop-blur-md pt-4 pb-6 border-b border-border/40">
             <Stack gap="4">
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <Stack gap="1">
@@ -80,7 +80,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                 <Cluster gap="3">
                   <Button
                     size="lg"
-                    className="shadow-xl bg-primary hover:scale-[1.02] transition-transform"
+                    className="shadow-xl bg-primary hover:scale-[1.02] transition-transform min-w-[160px]"
                     onClick={handleScrollToRating}
                   >
                     Rate this coffee
@@ -90,7 +90,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                       variant="outline"
                       size="lg"
                       asChild
-                      className="text-muted-foreground"
+                      className="text-muted-foreground min-w-[160px]"
                     >
                       <a
                         href={coffee.direct_buy_url}
@@ -106,13 +106,12 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
             </Stack>
           </header>
 
-          {/* 🧱 TABS LAYOUT */}
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="mb-8 bg-muted/30 p-1 rounded-full w-fit">
+            <TabsList className="mb-6 bg-muted/20 p-1 rounded-full w-fit">
               <TabsTrigger value="overview" className="rounded-full px-6">
                 Overview
               </TabsTrigger>
@@ -176,112 +175,62 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                       </div>
                     )}
 
-                    {coffee.direct_buy_url && (
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        asChild
-                        className="w-fit"
-                      >
-                        <a
-                          href={coffee.direct_buy_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Buy from roaster
-                        </a>
-                      </Button>
-                    )}
-                  </Stack>
-                </div>
-
-                {/* At a Glance (Core Details - Compact) */}
-                <Section
-                  contained={false}
-                  spacing="tight"
-                  className="border-t border-border/20 pt-8"
-                >
-                  <Stack gap="6">
-                    <div>
-                      <div className="inline-flex items-center gap-4 mb-3">
-                        <span className="h-px w-8 bg-accent/60" />
-                        <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                          Quick Look
-                        </span>
-                      </div>
-                      <h3 className="text-heading font-serif italic mb-6">
-                        At a Glance
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-body">
-                        {coffee.roast_level && (
-                          <Stack gap="1">
-                            <span className="text-label">Roast</span>
-                            <span className="font-medium">
-                              {coffee.roast_level_raw || coffee.roast_level}
-                            </span>
-                          </Stack>
-                        )}
-                        {coffee.process && (
-                          <Stack gap="1">
-                            <span className="text-label">Process</span>
-                            <span className="font-medium">
-                              {coffee.process_raw || coffee.process}
-                            </span>
-                          </Stack>
-                        )}
-                        {coffee.regions.length > 0 && (
-                          <Stack gap="1">
-                            <span className="text-label">
-                              Region{coffee.regions.length > 1 ? "s" : ""}
-                            </span>
-                            <span className="font-medium">
-                              {coffee.regions
-                                .map(
-                                  (region) =>
-                                    region.display_name ||
-                                    [
-                                      region.country,
-                                      region.state,
-                                      region.subregion,
-                                    ]
-                                      .filter(Boolean)
-                                      .join(", ") ||
-                                    region.subregion
-                                )
-                                .join(", ")}
-                            </span>
-                          </Stack>
-                        )}
-                        {coffee.estates.length > 0 && (
-                          <Stack gap="1">
-                            <span className="text-label">
-                              Estate{coffee.estates.length > 1 ? "s" : ""}
-                            </span>
-                            <span className="font-medium">
-                              {coffee.estates
-                                .map((estate) => estate.name)
-                                .join(", ")}
-                            </span>
-                          </Stack>
-                        )}
-                      </div>
+                    {/* At a Glance - Quick Details */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border/20">
+                      {coffee.roast_level && (
+                        <Stack gap="1">
+                          <span className="text-label">Roast</span>
+                          <span className="font-medium">
+                            {coffee.roast_level_raw || coffee.roast_level}
+                          </span>
+                        </Stack>
+                      )}
+                      {coffee.process && (
+                        <Stack gap="1">
+                          <span className="text-label">Process</span>
+                          <span className="font-medium">
+                            {coffee.process_raw || coffee.process}
+                          </span>
+                        </Stack>
+                      )}
+                      {coffee.regions.length > 0 && (
+                        <Stack gap="1">
+                          <span className="text-label">
+                            Region{coffee.regions.length > 1 ? "s" : ""}
+                          </span>
+                          <span className="font-medium">
+                            {coffee.regions
+                              .map(
+                                (region) =>
+                                  region.display_name ||
+                                  [
+                                    region.country,
+                                    region.state,
+                                    region.subregion,
+                                  ]
+                                    .filter(Boolean)
+                                    .join(", ") ||
+                                  region.subregion
+                              )
+                              .join(", ")}
+                          </span>
+                        </Stack>
+                      )}
+                      {coffee.estates.length > 0 && (
+                        <Stack gap="1">
+                          <span className="text-label">
+                            Estate{coffee.estates.length > 1 ? "s" : ""}
+                          </span>
+                          <span className="font-medium">
+                            {coffee.estates
+                              .map((estate) => estate.name)
+                              .join(", ")}
+                          </span>
+                        </Stack>
+                      )}
                     </div>
                   </Stack>
-                </Section>
-
-                {/* Community Reviews */}
-                {reviews && reviews.length > 0 && (
-                  <Section
-                    contained={false}
-                    spacing="tight"
-                    className="border-t border-border/20 pt-8"
-                  >
-                    <ReviewList
-                      entityType="coffee"
-                      reviews={reviews.slice(0, 10)}
-                    />
-                  </Section>
-                )}
+                </div>
               </Stack>
             </TabsContent>
 
@@ -289,31 +238,26 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
             <TabsContent value="details">
               <Stack gap="6" className="max-w-4xl">
                 {coffee.description_md && (
-                  <Section contained={false} spacing="tight">
-                    <Stack gap="4">
-                      <div className="inline-flex items-center gap-4 mb-2">
-                        <span className="h-px w-8 bg-accent/60" />
-                        <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                          Coffee Story
-                        </span>
-                      </div>
-                      <h3 className="text-title font-serif italic">
-                        About this coffee
-                      </h3>
-                      <Prose className="max-w-none">
-                        <p className="whitespace-pre-line text-body-large text-muted-foreground/80 leading-relaxed">
-                          {coffee.description_md}
-                        </p>
-                      </Prose>
-                    </Stack>
-                  </Section>
+                  <Stack gap="4">
+                    <div className="inline-flex items-center gap-4 mb-2">
+                      <span className="h-px w-8 bg-accent/60" />
+                      <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                        Coffee Story
+                      </span>
+                    </div>
+                    <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                      About this{" "}
+                      <span className="text-accent italic">coffee</span>
+                    </h2>
+                    <Prose className="max-w-none">
+                      <p className="whitespace-pre-line text-body-large text-muted-foreground/80 leading-relaxed">
+                        {coffee.description_md}
+                      </p>
+                    </Prose>
+                  </Stack>
                 )}
 
-                <Section
-                  contained={false}
-                  spacing="tight"
-                  className="border-t border-border/20 pt-8"
-                >
+                <div className="border-t border-border/20 pt-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <Stack gap="6">
                       <Stack gap="1">
@@ -392,27 +336,23 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                       )}
                     </Stack>
                   </div>
-                </Section>
+                </div>
 
                 {/* Tags and Badges */}
                 {(coffee.decaf ||
                   coffee.is_limited ||
                   (coffee.tags && coffee.tags.length > 0)) && (
-                  <Section
-                    contained={false}
-                    spacing="tight"
-                    className="border-t border-border/20 pt-8"
-                  >
+                  <div className="border-t border-border/20 pt-8">
                     <Stack gap="4">
                       <div className="inline-flex items-center gap-4 mb-3">
                         <span className="h-px w-8 bg-accent/60" />
                         <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                          Classification
+                          Roaster's Classification
                         </span>
                       </div>
-                      <h3 className="text-heading font-serif italic mb-2">
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-2">
                         Tags
-                      </h3>
+                      </h2>
                       <TagList>
                         {coffee.decaf && <Tag variant="filled">Decaf</Tag>}
                         {coffee.is_limited && (
@@ -426,7 +366,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                           ))}
                       </TagList>
                     </Stack>
-                  </Section>
+                  </div>
                 )}
               </Stack>
             </TabsContent>
@@ -434,19 +374,10 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
             {/* 🟥 FLAVOR TAB */}
             <TabsContent value="flavor">
               <Stack gap="6" className="max-w-4xl">
-                <Section contained={false} spacing="tight">
-                  <CoffeeSensoryProfile
-                    coffee={coffee}
-                    className="border-0 p-0"
-                  />
-                </Section>
+                <CoffeeSensoryProfile coffee={coffee} className="border-0" />
 
-                <Section
-                  contained={false}
-                  spacing="tight"
-                  className="border-t border-border/20 pt-8"
-                >
-                  <Stack gap="8">
+                <div className="border-t border-border/20 pt-8">
+                  <Stack gap="6">
                     <div>
                       <div className="inline-flex items-center gap-4 mb-3">
                         <span className="h-px w-8 bg-accent/60" />
@@ -454,16 +385,17 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                           Roaster's Take
                         </span>
                       </div>
-                      <h3 className="text-title font-serif italic mb-2">
-                        Tasting Notes
-                      </h3>
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-2">
+                        Tasting{" "}
+                        <span className="text-accent italic">Notes</span>
+                      </h2>
                       <p className="text-caption text-muted-foreground">
                         Original tasting notes from {coffee.roaster?.name}
                       </p>
                     </div>
 
                     {coffee.flavor_notes.length > 0 ? (
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap ">
                         {coffee.flavor_notes.map((note) => (
                           <div
                             key={note.id}
@@ -479,34 +411,33 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                       </p>
                     )}
                   </Stack>
-                </Section>
+                </div>
               </Stack>
             </TabsContent>
 
             {/* 💰 PRICING TAB */}
             <TabsContent value="pricing">
               <Stack gap="6" className="max-w-4xl">
-                <Section contained={false} spacing="tight">
-                  <Stack gap="4">
-                    <div className="inline-flex items-center gap-4 mb-2">
-                      <span className="h-px w-8 bg-accent/60" />
-                      <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                        Available Options
-                      </span>
-                    </div>
-                    <h3 className="text-title font-serif italic mb-4">
-                      Pricing & Availability
-                    </h3>
+                <Stack gap="4">
+                  <div className="inline-flex items-center gap-4 mb-2">
+                    <span className="h-px w-8 bg-accent/60" />
+                    <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                      Available Options
+                    </span>
+                  </div>
+                  <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-4">
+                    Pricing &{" "}
+                    <span className="text-accent italic">Availability</span>
+                  </h2>
 
-                    {coffee.variants.length > 0 ? (
-                      <CoffeePricingTable variants={coffee.variants} />
-                    ) : (
-                      <p className="text-body-muted italic">
-                        No pricing information available
-                      </p>
-                    )}
-                  </Stack>
-                </Section>
+                  {coffee.variants.length > 0 ? (
+                    <CoffeePricingTable variants={coffee.variants} />
+                  ) : (
+                    <p className="text-body-muted italic">
+                      No pricing information available
+                    </p>
+                  )}
+                </Stack>
               </Stack>
             </TabsContent>
           </Tabs>
@@ -527,25 +458,23 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
               </div>
             </Stack>
           </div>
-
+          {/* Community Reviews */}
+          {reviews && reviews.length > 0 && (
+            <Section
+              contained={false}
+              spacing="tight"
+              className="border-t border-border/20 pt-8"
+            >
+              <ReviewList entityType="coffee" reviews={reviews.slice(0, 10)} />
+            </Section>
+          )}
           {/* Similar Coffees */}
           <Section
             contained={false}
             spacing="tight"
-            className="border-t border-border/20 pt-8 max-w-4xl"
+            className="border-t border-border/20 pt-8"
           >
-            <SimilarCoffees
-              currentCoffeeId={coffee.id}
-              regionIds={
-                coffee.regions.length > 0
-                  ? coffee.regions.map((r) => r.id)
-                  : undefined
-              }
-              {...(coffee.process && { process: String(coffee.process) })}
-              {...(coffee.roast_level && {
-                roastLevel: String(coffee.roast_level),
-              })}
-            />
+            <SimilarCoffees coffee={coffee} />
           </Section>
         </Stack>
       </PageShell>

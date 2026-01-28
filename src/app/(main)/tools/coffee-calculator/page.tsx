@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { generateMetadata } from "@/lib/seo/metadata";
 import { generateFAQSchema, generateHowToSchema } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
-import ExpertRecipesCta from "../../../components/tools/ExpertRecipesCta";
+import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
 
 // SEO Metadata (keeping your existing metadata)
 export const metadata = generateMetadata({

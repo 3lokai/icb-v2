@@ -11,9 +11,9 @@ export function UserProfileTeaser() {
   return (
     <Section spacing="default" className="overflow-hidden">
       <div className="mx-auto max-w-6xl">
-        <div className="grid items-center gap-12 md:grid-cols-12 md:gap-24">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-24">
           {/* Left: Copy */}
-          <div className="md:col-span-5 relative z-10">
+          <div className="lg:col-span-5 relative z-10">
             <Stack gap="8">
               <Stack gap="6">
                 <motion.div
@@ -79,7 +79,7 @@ export function UserProfileTeaser() {
           </div>
 
           {/* Right: Visual - Floating Composition */}
-          <div className="md:col-span-12 lg:col-span-7 relative h-[500px] w-full mt-8 md:mt-0">
+          <div className="lg:col-span-7 relative h-[500px] w-full mt-12 lg:mt-0">
             {/* Ambient Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] opacity-20 pointer-events-none">
               <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 via-primary/10 to-transparent blur-3xl rounded-full mix-blend-screen" />
@@ -121,7 +121,7 @@ export function UserProfileTeaser() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="absolute top-1/2 left-[10%] -translate-y-1/2 z-20"
+              className="absolute top-1/2 left-0 sm:left-[10%] -translate-y-1/2 z-20"
             >
               <div className="relative overflow-hidden rounded-[2rem] border border-border/50 bg-background/80 backdrop-blur-md shadow-2xl p-6 w-[280px]">
                 <div className="flex flex-col items-center text-center">
@@ -178,7 +178,7 @@ export function UserProfileTeaser() {
 
             {/* 2. The Station: "My Setup" (Top Right) */}
             <motion.div
-              className="absolute top-[10%] right-[5%] z-10 w-[220px]"
+              className="absolute top-[5%] right-0 sm:right-[5%] z-10 w-[200px] sm:w-[220px]"
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               animate={{ y: [0, -10, 0] }}
@@ -212,7 +212,7 @@ export function UserProfileTeaser() {
 
             {/* 3. The Taste: Flavor Profile (Bottom Right) */}
             <motion.div
-              className="absolute bottom-[15%] right-[10%] z-20 w-[240px]"
+              className="absolute bottom-[10%] right-[2%] sm:right-[10%] z-20 w-[220px] sm:w-[240px]"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               animate={{ y: [0, -8, 0] }}
