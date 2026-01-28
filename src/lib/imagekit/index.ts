@@ -112,42 +112,26 @@ export function isImageKitConfigured(): boolean {
 export const coffeeImagePresets = {
   /**
    * CoffeeCard preset
-   * Size: 600x336px (optimized for 3-column grid on large screens)
-   * On 1920px screen: 33vw ≈ 634px, so 600px covers most cases
-   * Crop: Force (cropped to fill container, used with object-cover)
-   * Quality: 80
-   * Focus: Center (ensures important content is centered)
+   * Returns original image without transformations
    */
   coffeeCard: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
       return getPlaceholderImage("coffee");
     }
-    return getImageKitUrl(imagePath, {
-      width: 600,
-      height: 336,
-      crop: "force",
-      quality: 80,
-      focus: "center",
-    });
+    // Return plain ImageKit URL without transformations
+    return getImageKitUrl(imagePath);
   },
 
   /**
    * RoasterCard preset
-   * Size: 600x240px (optimized for 3-column grid on large screens)
-   * On 1920px screen: 33vw ≈ 634px, so 600px covers most cases
-   * Crop: Maintain ratio (don't distort logos)
-   * Quality: 85
+   * Returns original image without transformations
    */
   roasterCard: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
       return getPlaceholderImage("roaster");
     }
-    return getImageKitUrl(imagePath, {
-      width: 600,
-      height: 240,
-      crop: "maintain_ratio",
-      quality: 85,
-    });
+    // Return plain ImageKit URL without transformations
+    return getImageKitUrl(imagePath);
   },
 
   /**
@@ -213,42 +197,26 @@ export const coffeeImagePresets = {
 
   /**
    * Coffee detail page main carousel preset
-   * Size: 800x600px (4:3 aspect)
-   * Crop: Force (cropped to fill container, used with object-cover)
-   * Quality: 90
-   * Focus: Center (ensures important content is centered)
+   * Returns original image without transformations
    */
   coffeeDetail: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
       return getPlaceholderImage("coffee");
     }
-    return getImageKitUrl(imagePath, {
-      width: 800,
-      height: 600,
-      crop: "force",
-      quality: 90,
-      focus: "center",
-    });
+    // Return plain ImageKit URL without transformations
+    return getImageKitUrl(imagePath);
   },
 
   /**
    * Coffee detail page thumbnail preset
-   * Size: 150x150px (square)
-   * Crop: Force (cropped to fill square container, used with object-cover)
-   * Quality: 75
-   * Focus: Center (ensures important content is centered)
+   * Returns original image without transformations
    */
   coffeeThumbnail: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
       return getPlaceholderImage("coffee");
     }
-    return getImageKitUrl(imagePath, {
-      width: 150,
-      height: 150,
-      crop: "force",
-      quality: 75,
-      focus: "center",
-    });
+    // Return plain ImageKit URL without transformations
+    return getImageKitUrl(imagePath);
   },
 
   /**
@@ -279,35 +247,14 @@ export const coffeeImagePresets = {
 export const roasterImagePresets = {
   /**
    * Roaster logo preset
-   * Size: 400x400px (square, optimized for fill mode)
-   * Crop: Force (cropped to square, used with object-contain to preserve aspect ratio)
-   * Quality: 90
-   * Format: PNG (preserves transparency for logos)
-   * Focus: Center (ensures logo is centered)
-   *
-   * NOTE:
-   * v=1 is a one-time cache buster to defeat Vercel _next/image cache.
-   * Leave it forever. It will not affect other roasters.
-   *
-   * The image is cropped to square on ImageKit side, but object-contain
-   * in components ensures the logo maintains its aspect ratio.
+   * Returns original image without transformations
    */
   roasterLogo: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
       return getPlaceholderImage("roaster");
     }
-
-    // 👇 one-time cache bust
-    const pathWithVersion = `${imagePath}?v=1`;
-
-    return getImageKitUrl(pathWithVersion, {
-      width: 400,
-      height: 400,
-      crop: "force",
-      quality: 90,
-      format: "png",
-      focus: "center",
-    });
+    // Return plain ImageKit URL without transformations
+    return getImageKitUrl(imagePath);
   },
 
   /**
