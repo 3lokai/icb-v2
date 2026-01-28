@@ -60,6 +60,7 @@ export type RoasterFilters = {
   states?: string[];
   countries?: string[];
   active_only?: boolean;
+  roaster_ids?: string[];
 };
 
 export type RoasterFilterMeta = {

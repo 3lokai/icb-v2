@@ -29,7 +29,10 @@ const FUSE_CONFIG = {
   findAllMatches: false, // Only find first match per key (faster)
 };
 
-export function useSearch() {
+export function useSearch(
+  options: { enableShortcut?: boolean } = { enableShortcut: true }
+) {
+  const { enableShortcut = true } = options;
   const [state, setState] = useState<SearchState>({
     isOpen: false,
     query: "",
@@ -141,6 +144,7 @@ export function useSearch() {
 
   // Run search when index becomes ready and there's already a query that hasn't been searched yet
   useEffect(() => {
+    // Only auto-search if query is present
     if (
       state.isReady &&
       fuseRef.current &&
@@ -156,6 +160,8 @@ export function useSearch() {
 
   // Keyboard shortcut: Cmd+K / Ctrl+K to open
   useEffect(() => {
+    if (!enableShortcut) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Cmd+K or Ctrl+K to open (case-insensitive)
       // Check for both lowercase and uppercase, and ensure no other modifiers
@@ -176,12 +182,14 @@ export function useSearch() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown, true);
     };
-  }, [open]);
+  }, [open, enableShortcut]);
 
+  // Expose ensureIndexLoaded to allow manual preloading
   return {
     ...state,
     open,
     close,
     setQuery,
+    ensureIndexLoaded,
   };
 }

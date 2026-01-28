@@ -138,7 +138,7 @@ export default async function Home() {
           fallback={
             <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
               <div className="hero-content">
-                <h1 className="text-hero text-white text-balance leading-[1.05]">
+                <h1 className="text-hero text-white text-balance leading-[1.1]">
                   Discover India's{" "}
                   <span className="text-accent italic">Finest Coffee</span>{" "}
                   Beans.

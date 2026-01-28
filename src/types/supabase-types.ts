@@ -1632,6 +1632,58 @@ export type Database = {
           },
         ];
       };
+      coffee_directory_mv: {
+        Row: {
+          bean_species: Database["public"]["Enums"]["species_enum"] | null;
+          best_normalized_250g: number | null;
+          best_variant_id: string | null;
+          brew_method_canonical_keys:
+            | Database["public"]["Enums"]["grind_enum"][]
+            | null;
+          coffee_id: string | null;
+          decaf: boolean;
+          direct_buy_url: string | null;
+          estate_ids: string[] | null;
+          flavor_keys: string[] | null;
+          has_250g_bool: boolean | null;
+          has_sensory: boolean | null;
+          hq_city: string | null;
+          hq_country: string | null;
+          hq_state: string | null;
+          image_url: string | null;
+          in_stock_count: number | null;
+          is_limited: boolean;
+          min_price_in_stock: number | null;
+          name: string | null;
+          process: Database["public"]["Enums"]["process_enum"] | null;
+          process_raw: string | null;
+          rating_avg: number | null;
+          rating_count: number;
+          region_ids: string[] | null;
+          roast_level: Database["public"]["Enums"]["roast_level_enum"] | null;
+          roast_level_raw: string | null;
+          roast_style_raw: string | null;
+          roaster_id: string | null;
+          roaster_name: string | null;
+          roaster_slug: string | null;
+          sensory_public: Json | null;
+          sensory_updated_at: string | null;
+          slug: string | null;
+          status: Database["public"]["Enums"]["coffee_status_enum"] | null;
+          tags: string[] | null;
+          website: string | null;
+          weights_available: number[] | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "coffees_roaster_id_fkey";
+            columns: ["roaster_id"];
+            isOneToOne: false;
+            referencedRelation: "roasters";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       entity_review_stats: {
         Row: {
           avg_rating: number | null;

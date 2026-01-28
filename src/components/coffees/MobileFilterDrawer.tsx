@@ -27,18 +27,18 @@ export function MobileFilterDrawer({
 }: MobileFilterDrawerProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        className="overflow-y-auto md:hidden"
-        side="left"
-      >
+      <SheetContent className="overflow-y-auto md:hidden" side="left">
         <SheetHeader>
           <SheetTitle>Filters</SheetTitle>
         </SheetHeader>
         <div className="mt-6">
-          <CoffeeFilterContent filterMeta={filterMeta} showHeader={false} />
+          <CoffeeFilterContent
+            filterMeta={filterMeta}
+            showHeader={false}
+            isVisible={open}
+          />
         </div>
       </SheetContent>
     </Sheet>
   );
 }
-

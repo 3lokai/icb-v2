@@ -70,6 +70,17 @@ export function parseRoasterSearchParams(searchParams: URLSearchParams): {
     }
   }
 
+  const roasterIdsParam = searchParams.get("roasterIds");
+  if (roasterIdsParam) {
+    const roasterIds = roasterIdsParam
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+    if (roasterIds.length > 0) {
+      filters.roaster_ids = roasterIds;
+    }
+  }
+
   // Boolean flags (as "1" or omitted)
   const activeOnlyParam = searchParams.get("activeOnly");
   if (activeOnlyParam === "1") {
@@ -127,6 +138,7 @@ export function buildRoasterQueryString(
   }
 
   // Only include countries if it's not the default "india"
+  // Only include countries if it's not the default "india"
   if (filters.countries && filters.countries.length > 0) {
     const hasNonDefaultCountry = filters.countries.some(
       (c) => c.toLowerCase() !== "india"
@@ -134,6 +146,10 @@ export function buildRoasterQueryString(
     if (hasNonDefaultCountry || filters.countries.length > 1) {
       params.set("countries", filters.countries.join(","));
     }
+  }
+
+  if (filters.roaster_ids && filters.roaster_ids.length > 0) {
+    params.set("roasterIds", filters.roaster_ids.join(","));
   }
 
   // Boolean flags (as "1" or omitted)

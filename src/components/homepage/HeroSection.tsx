@@ -1,16 +1,23 @@
 // Server component for optimal LCP
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/common/Icon";
 import { HeroHeading } from "./HeroHeading";
-import { HeroSearch } from "./HeroSearch";
 import { HeroVideoBackground } from "./HeroVideoBackground";
+
+// Dynamically import HeroSearch - client component will handle SearchProvider context
+const HeroSearch = dynamic(() =>
+  import("./HeroSearch").then((mod) => ({
+    default: mod.HeroSearch,
+  }))
+);
 
 export default function HeroSection() {
   return (
-    <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[80vh] items-center justify-center overflow-x-hidden pb-8">
       {/* Background Video - Client component for lazy loading */}
       <HeroVideoBackground />
 
