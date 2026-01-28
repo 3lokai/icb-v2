@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import { StarRating } from "../common/StarRating";
 import { Stack } from "../primitives/stack";
 import { useModal } from "@/components/providers/modal-provider";
-import { ReviewCapture } from "@/components/reviews";
+import { QuickRating } from "@/components/reviews";
 import { trackCoffeeDiscovery } from "@/lib/analytics/enhanced-tracking";
 
 type CoffeeCardProps = {
@@ -155,7 +155,11 @@ function RatingFooter({
         e.stopPropagation();
         onOpenModal();
       }}
-      className="mt-auto border-t border-border/40 bg-muted/20 cursor-pointer"
+      className={cn(
+        "mt-auto border-t border-border/40 bg-muted/20 cursor-pointer",
+        "transition-transform duration-200 ease-out origin-bottom",
+        "group-hover:scale-[1.02] group-hover:bg-muted/30"
+      )}
     >
       <div
         className={cn(
@@ -252,7 +256,7 @@ function CoffeeCardComponent({
 
     openModal({
       type: "custom",
-      component: ReviewCapture,
+      component: QuickRating,
       props: {
         entityType: "coffee",
         entityId: coffee.coffee_id,
@@ -304,7 +308,7 @@ function CoffeeCardComponent({
         aria-label={ariaLabel}
       >
         {/* Hero Image */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden image-hover-zoom">
+        <div className="relative aspect-[4/3] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
           <Image
             alt={coffee.name || "Coffee"}
             className="object-contain"
@@ -315,7 +319,7 @@ function CoffeeCardComponent({
         </div>
 
         {/* Content */}
-        <div className="flex-1 card-padding">
+        <div className="flex-1 card-padding transition-opacity duration-200 group-hover:opacity-90">
           <Stack gap="3">
             {/* Coffee name - hero size */}
             <h3 className="text-title text-balance line-clamp-2">
@@ -390,7 +394,7 @@ function CoffeeCardComponent({
         aria-label={ariaLabel}
       >
         {/* Small image - fixed square */}
-        <div className="relative w-16 h-16 shrink-0 overflow-hidden rounded image-hover-zoom self-center">
+        <div className="relative w-16 h-16 shrink-0 overflow-hidden rounded image-hover-zoom self-center transition-opacity duration-200 group-hover:opacity-90">
           <Image
             alt={coffee.name || "Coffee"}
             className="object-contain"
@@ -401,7 +405,7 @@ function CoffeeCardComponent({
         </div>
 
         {/* Content - 1-2 lines total */}
-        <div className="flex-1 min-w-0 flex flex-col justify-center">
+        <div className="flex-1 min-w-0 flex flex-col justify-center transition-opacity duration-200 group-hover:opacity-90">
           <Stack gap="1">
             {/* Coffee name - primary */}
             <h3 className="text-body line-clamp-1">{coffee.name}</h3>
@@ -432,7 +436,7 @@ function CoffeeCardComponent({
       aria-label={ariaLabel}
     >
       {/* Image - 3:2 aspect ratio for tighter magazine tile */}
-      <div className="relative aspect-[3/2] w-full overflow-hidden image-hover-zoom">
+      <div className="relative aspect-[3/2] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
         <Image
           alt={coffee.name || "Coffee"}
           className="object-contain"
@@ -443,7 +447,7 @@ function CoffeeCardComponent({
       </div>
 
       {/* Content - strict hierarchy */}
-      <div className="flex-1 card-padding-compact">
+      <div className="flex-1 card-padding-compact transition-opacity duration-200 group-hover:opacity-90">
         <Stack gap="2">
           {/* 1. Coffee name - 2 lines max */}
           <h3 className="text-heading text-balance line-clamp-2">
