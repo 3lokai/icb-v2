@@ -1,11 +1,64 @@
 // src/components/home/EducationSection.tsx
 
 import Image from "next/image";
-import Link from "next/link";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { Icon, IconName } from "../common/Icon";
+
+function ComingSoonBadge() {
+  return (
+    <div className="pointer-events-none absolute right-0 top-0 select-none opacity-80 mix-blend-multiply dark:mix-blend-screen md:-right-4 md:-top-4">
+      <svg
+        viewBox="0 0 140 140"
+        className="h-32 w-32 rotate-12 text-muted-foreground duration-500 hover:rotate-45"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Outer text path */}
+        <path
+          id="textPath-edu"
+          d="M70 15 A 55 55 0 1 1 70 125 A 55 55 0 1 1 70 15"
+          stroke="transparent"
+        />
+        <text className="fill-current text-caption font-bold uppercase tracking-[0.25em]">
+          <textPath href="#textPath-edu" startOffset="50%" textAnchor="middle">
+            • Coming Soon • Coming Soon
+          </textPath>
+        </text>
+
+        {/* Inner decoration */}
+        <circle
+          cx="70"
+          cy="70"
+          r="40"
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeDasharray="2 4"
+          className="opacity-40"
+        />
+        <circle
+          cx="70"
+          cy="70"
+          r="34"
+          stroke="currentColor"
+          strokeWidth="0.5"
+          className="opacity-20"
+        />
+
+        {/* Center icon - Theme Logo */}
+        <image
+          href="/logo-icon.svg"
+          x="40"
+          y="40"
+          width="60"
+          height="60"
+          className="opacity-25"
+        />
+      </svg>
+    </div>
+  );
+}
 
 const educationItems = [
   {
@@ -34,14 +87,15 @@ const educationItems = [
 export default function EducationSection() {
   return (
     <Section spacing="default" contained={false}>
-      <div className="surface-0 card-padding rounded-2xl">
+      <div className="surface-0 card-padding overflow-hidden rounded-2xl">
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Left Column: Content */}
             <div className="order-2 lg:order-1">
               <Stack gap="8">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-                  <div className="md:col-span-8">
+                  <div className="md:col-span-8 relative">
+                    <ComingSoonBadge />
                     <Stack gap="6">
                       <div className="inline-flex items-center gap-4">
                         <span className="h-px w-8 md:w-12 bg-accent/60" />
@@ -98,19 +152,13 @@ export default function EducationSection() {
                 </Stack>
 
                 <Button
-                  asChild
-                  className="hover-lift group"
+                  disabled
+                  className="opacity-50 cursor-not-allowed pointer-events-none"
                   size="lg"
                   variant="default"
                 >
-                  <Link href="/learn">
-                    Explore Educational Content
-                    <Icon
-                      className="ml-2 transition-transform group-hover:translate-x-1"
-                      name="ArrowRight"
-                      size={16}
-                    />
-                  </Link>
+                  Explore Educational Content
+                  <Icon className="ml-2" name="ArrowRight" size={16} />
                 </Button>
               </Stack>
             </div>

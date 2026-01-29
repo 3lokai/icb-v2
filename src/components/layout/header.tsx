@@ -42,8 +42,18 @@ const baseNavItems = [
     children: [
       { name: "Coffees", link: "/coffees" },
       { name: "Roasters", link: "/roasters" },
-      { name: "Estates", link: "/estates" },
-      { name: "Regions", link: "/regions" },
+      {
+        name: "Estates",
+        link: "/estates",
+        disabled: true,
+        badge: "Coming Soon",
+      },
+      {
+        name: "Regions",
+        link: "/regions",
+        disabled: true,
+        badge: "Coming Soon",
+      },
     ],
   },
   {
@@ -101,7 +111,14 @@ export function Header() {
   type NavItem = {
     name: string;
     link: string;
-    children?: { name: string; link: string }[];
+    disabled?: boolean;
+    badge?: string;
+    children?: {
+      name: string;
+      link: string;
+      disabled?: boolean;
+      badge?: string;
+    }[];
   };
 
   const navItems: NavItem[] = [
@@ -183,14 +200,17 @@ export function Header() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link className="flex items-center" href="/dashboard">
+                      <Link
+                        className="flex items-center"
+                        href={`/profile/${profile?.username}`}
+                      >
                         <Icon
                           className="mr-2"
                           color="muted"
-                          name="SquaresFour"
+                          name="User"
                           size={16}
                         />
-                        Dashboard
+                        My Profile
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -201,52 +221,10 @@ export function Header() {
                         <Icon
                           className="mr-2"
                           color="muted"
-                          name="User"
+                          name="GearSix"
                           size={16}
                         />
-                        Profile
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link
-                        className="flex items-center"
-                        href="/dashboard/preferences"
-                      >
-                        <Icon
-                          className="mr-2"
-                          color="muted"
-                          name="Coffee"
-                          size={16}
-                        />
-                        Coffee Preferences
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link
-                        className="flex items-center"
-                        href="/dashboard/notifications"
-                      >
-                        <Icon
-                          className="mr-2"
-                          color="muted"
-                          name="Bell"
-                          size={16}
-                        />
-                        Notifications
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link
-                        className="flex items-center"
-                        href="/dashboard/privacy"
-                      >
-                        <Icon
-                          className="mr-2"
-                          color="muted"
-                          name="Shield"
-                          size={16}
-                        />
-                        Privacy & Data
+                        Settings
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />

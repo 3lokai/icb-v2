@@ -52,7 +52,11 @@ export async function GET(req: NextRequest) {
             !isLogoImage && finalImageUrl.startsWith("http")
               ? `url(${finalImageUrl})`
               : "linear-gradient(to bottom right, #f4eee2, #e8dfca)",
-          backgroundSize: "cover",
+          backgroundSize:
+            !isLogoImage && finalImageUrl.startsWith("http")
+              ? "contain"
+              : "cover",
+          backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           position: "relative",
         }}

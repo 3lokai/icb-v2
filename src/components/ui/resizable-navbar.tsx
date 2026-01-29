@@ -25,6 +25,8 @@ type NavBodyProps = {
 type NavItem = {
   name: string;
   link: string;
+  disabled?: boolean;
+  badge?: string;
   children?: NavItem[];
 };
 
@@ -228,6 +230,23 @@ const NavItemComponent = ({
             >
               {item.children?.map((child) => {
                 const childActive = isActive(child.link);
+
+                if (child.disabled) {
+                  return (
+                    <span
+                      className="relative flex items-center justify-between gap-2 rounded-full px-4 py-2 text-body text-muted-foreground/50 cursor-not-allowed"
+                      key={child.link}
+                    >
+                      <span className="relative z-20">{child.name}</span>
+                      {child.badge && (
+                        <span className="relative z-20 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                          {child.badge}
+                        </span>
+                      )}
+                    </span>
+                  );
+                }
+
                 return (
                   <Link
                     className={cn(
@@ -452,6 +471,23 @@ export const MobileNavDropdown = ({
           >
             {item.children?.map((child) => {
               const childActive = isActive(child.link);
+
+              if (child.disabled) {
+                return (
+                  <span
+                    className="flex items-center justify-between gap-2 text-muted-foreground/50 text-body cursor-not-allowed"
+                    key={child.link}
+                  >
+                    <span>{child.name}</span>
+                    {child.badge && (
+                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                        {child.badge}
+                      </span>
+                    )}
+                  </span>
+                );
+              }
+
               return (
                 <Link
                   className={cn(
