@@ -1,5 +1,9 @@
 import { notFound } from "next/navigation";
-import { fetchUserProfileByUsername } from "@/lib/data/fetch-user-profile";
+import { cookies } from "next/headers";
+import {
+  fetchUserProfileByUsername,
+  fetchAnonProfile,
+} from "@/lib/data/fetch-user-profile";
 import { serverAuth } from "@/lib/supabase/auth-helpers";
 import { ProfilePage } from "@/components/profile/ProfilePage";
 import type { Metadata } from "next";
@@ -10,6 +14,15 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { username } = await params;
+
+  // Handle "anon" specially - redirect to the anon profile page
+  // This ensures the static /profile/anon route works in production
+  if (username === "anon") {
+    return {
+      title: "My Profile | Indian Coffee Beans",
+      description: "View your anonymous profile, ratings, and recommendations.",
+    };
+  }
 
   // Try to fetch profile for metadata (without viewer check for public profiles)
   const profileData = await fetchUserProfileByUsername(username);
@@ -63,6 +76,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function UserProfilePage({ params }: Props) {
   const { username } = await params;
+
+  // Handle "anon" specially - the static /profile/anon route may not work in production
+  // because the dynamic [username] route can capture it first
+  if (username === "anon") {
+    // Get anon_id from cookies
+    const cookieStore = await cookies();
+    const anonId = cookieStore.get("icb_anon_id")?.value;
+
+    if (!anonId) {
+      // No anon_id found - show not found
+      notFound();
+    }
+
+    // Fetch anon profile data
+    const profileData = await fetchAnonProfile(anonId);
+
+    if (!profileData) {
+      notFound();
+    }
+
+    // Show profile with isOwner=true and isAnonymous=true
+    return (
+      <ProfilePage
+        profileData={profileData}
+        isOwner={true}
+        isAnonymous={true}
+      />
+    );
+  }
 
   // Get current viewer for privacy checks
   const { user: viewer } = await serverAuth.getUser();

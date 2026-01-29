@@ -42,81 +42,81 @@ export function getCollectionFilterUrl(collection: CoffeeCollection): string {
     collection.sort ?? "relevance",
     collection.limit ?? 15
   );
-  return `/coffee?${queryString}`;
+  return `/coffees?${queryString}`;
 }
 
 // ============================================================================
-// CANON FLAVOR ID CONSTANTS
+// CANON FLAVOR SLUG CONSTANTS
 // ============================================================================
-// These IDs are from canon_sensory_nodes table
+// These slugs are from canon_sensory_nodes table (human-readable, URL-safe)
 
-const CANON_FLAVORS = {
+const CANON_FLAVOR_SLUGS = {
   // Sweet & Chocolatey
-  chocolate: "98bf4c2d-ef90-4e6e-9fd6-7e86c9213c9b",
-  milk_chocolate: "3a977953-14cb-4d29-a080-768a61f70f7d",
-  dark_chocolate: "75bbe726-69ac-4de7-a9f0-124acb96aee8",
-  caramel: "288bc54b-c606-4dd4-bcac-1b49f5378575",
-  honey: "6e3e1cac-b6bb-4117-8a10-cf6b912cd78d",
-  brown_sugar: "7a7ae924-c101-4f71-81c0-bfff28035baf",
+  chocolate: "chocolate",
+  milk_chocolate: "milk-chocolate",
+  dark_chocolate: "dark-chocolate",
+  caramel: "caramel",
+  honey: "honey",
+  brown_sugar: "brown-sugar",
 
   // Nutty
-  nuts: "5497743a-9207-4150-a190-4f19b33c67bf",
-  hazelnut: "4086f7ee-b207-4b59-8ffd-f88ef059a0eb",
-  almond: "89130b2b-9e58-4264-bddd-28da0db5ce9d",
-  cashew: "73ea50f9-32fa-4ad1-994b-fd7d68a43309",
-  peanut: "60007fbc-6a7e-4b6d-8af7-b972b42b072a",
-  coconut: "0cbb5aee-1e80-488a-a112-c49abbb4ea4a",
+  nuts: "nuts",
+  hazelnut: "hazelnut",
+  almond: "almond",
+  cashew: "cashew",
+  peanut: "peanut",
+  coconut: "coconut",
 
   // Fruity - Berries
-  berry_fresh: "fd50eb7b-3152-46c5-8e24-131455221393",
-  blueberry: "e91314ab-1e47-4dff-af61-0a37b5ec082f",
-  strawberry: "5fa8268b-c6c9-4222-b7f8-2d6583cfb694",
-  raspberry: "1ffce3ab-df55-491c-bec2-98a7710f492c",
-  blackberry: "8ca4cb0d-7396-49af-b50f-2bca2be1c457",
-  cranberry: "4ba7261a-1887-4acc-8467-7994d9aa16c7",
+  berry_fresh: "berry-fresh",
+  blueberry: "blueberry",
+  strawberry: "strawberry",
+  raspberry: "raspberry",
+  blackberry: "blackberry",
+  cranberry: "cranberry",
 
   // Fruity - Citrus
-  citrus: "63e2ef1b-2e4f-4695-b446-73a18fa61019",
-  orange: "e1050e92-c1bf-494e-91f1-cd71a9c048c4",
-  lemon: "0a2ad3d1-7faf-44a7-a04b-ba52ab6ce543",
-  lime: "8097de3c-2bf0-437c-bbc1-098c9ef24fdb",
-  grapefruit: "e6cd2866-df1c-4f68-87ab-f645534e4082",
-  mandarin: "c9dbfbbe-2a3d-4d47-ab56-d129e25d27d1",
-  bergamot: "f1386cc0-2dca-4a2e-be18-c4f65ff6cbcc",
+  citrus: "citrus",
+  orange: "orange",
+  lemon: "lemon",
+  lime: "lime",
+  grapefruit: "grapefruit",
+  mandarin: "mandarin",
+  bergamot: "bergamot",
 
   // Fruity - Tropical
-  fruity: "5ccb6abc-47db-46a6-bf4c-d1d88b88128a",
-  tropical: "cbc027fc-4dc1-4019-9a12-7ab53e944933", // mango
-  pineapple: "d42e1975-494a-402b-801b-4c664a17e4bd",
-  passion_fruit: "9decc12b-01b5-4b74-9e10-b6a3766cd767",
-  guava: "31b6ed5e-1793-4d1a-8797-aee16cbae7aa",
-  papaya: "8e5ec8f0-eef4-43f2-bcad-3e44c40a6b56",
+  fruity: "fruity",
+  tropical: "mango", // tropical maps to mango slug
+  pineapple: "pineapple",
+  passion_fruit: "passion-fruit",
+  guava: "guava",
+  papaya: "papaya",
 
   // Fruity - Stone Fruit
-  cherry: "088316c9-be7f-494a-a5be-021847e9964e",
-  peach: "e7540c42-0816-47fc-a5bc-d1ab988932b6",
-  apricot: "6590e507-39ff-47db-b1ff-97b6f7aff197",
-  plum: "db36fc7f-2c83-493a-86b9-1925347d2581",
+  cherry: "cherry",
+  peach: "peach",
+  apricot: "apricot",
+  plum: "plum",
 
   // Floral
-  floral: "4dc2bb0d-5499-4d1a-8a97-739944fcef03",
-  jasmine: "73d7f8d0-8975-437f-bc46-a0c660f32335",
-  rose: "cfbf1301-d314-483b-95b8-fedc97a098c7",
-  hibiscus: "4cd6dd98-b91b-4bc6-ba1b-97b99dbf9c93",
-  lavender: "4c3ece9c-45b6-4618-a3d8-1e1083bd5bd0",
+  floral: "floral",
+  jasmine: "jasmine",
+  rose: "rose",
+  hibiscus: "hibiscus",
+  lavender: "lavender",
 
   // Earthy
-  earthy: "da7cea69-e156-47f6-afd8-e781b6ee4263", // soil
-  mushroom: "da1dd9da-67ae-48d4-a1db-f833919441a5",
-  wet_earth: "86caef43-8ce8-4fa7-a2b1-5b0adda0bf92",
+  earthy: "soil", // earthy maps to soil slug
+  mushroom: "mushroom",
+  wet_earth: "wet-earth",
 
   // Attributes
-  balanced_acidity: "64639573-2c33-4130-a896-192c9d83caaa",
-  low_acidity: "469fbaa0-9ae4-4430-b5b7-0a9d21924df3",
-  bright_acidity: "b60c1c0e-88c7-45e6-b425-78b5da090adb",
-  medium_body: "5682297a-71cc-405c-bc5c-0200d9bd1d11",
-  full_body: "98a987ff-73f4-404b-a8a6-c4d310ebe3ba",
-  creamy_mouthfeel: "932953f8-ab8b-40c9-afa8-316c58c8689e",
+  balanced_acidity: "balanced-acidity",
+  low_acidity: "low-acidity",
+  bright_acidity: "bright-acidity",
+  medium_body: "medium-body",
+  full_body: "full-body",
+  creamy_mouthfeel: "creamy-mouthfeel",
 } as const;
 
 // ============================================================================
@@ -156,10 +156,10 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       roast_levels: ["medium", "medium_dark"],
       brew_method_ids: ["espresso", "south_indian_filter"],
       in_stock_only: true,
-      canon_flavor_node_ids: [
-        CANON_FLAVORS.chocolate,
-        CANON_FLAVORS.caramel,
-        CANON_FLAVORS.nuts,
+      canon_flavor_slugs: [
+        CANON_FLAVOR_SLUGS.chocolate,
+        CANON_FLAVOR_SLUGS.caramel,
+        CANON_FLAVOR_SLUGS.nuts,
       ],
     },
     imageUrl: "/images/collections/milk-friendly.jpg",
@@ -179,14 +179,14 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       processes: ["natural", "honey", "anaerobic"],
       brew_method_ids: ["pour_over"],
       in_stock_only: true,
-      canon_flavor_node_ids: [
-        CANON_FLAVORS.berry_fresh,
-        CANON_FLAVORS.citrus,
-        CANON_FLAVORS.tropical,
-        CANON_FLAVORS.fruity,
+      canon_flavor_slugs: [
+        CANON_FLAVOR_SLUGS.berry_fresh,
+        CANON_FLAVOR_SLUGS.citrus,
+        CANON_FLAVOR_SLUGS.tropical,
+        CANON_FLAVOR_SLUGS.fruity,
       ],
     },
-    imageUrl: "/images/collections/fruity-filter-coffee.jpg",
+    imageUrl: "/images/collections/fruity-filter.jpg",
     featured: false,
     sortOrder: 3,
   },
@@ -219,7 +219,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     filters: {
       roast_levels: ["medium"],
       in_stock_only: true,
-      canon_flavor_node_ids: [CANON_FLAVORS.balanced_acidity],
+      canon_flavor_slugs: [CANON_FLAVOR_SLUGS.balanced_acidity],
     },
     sort: "rating_desc",
     imageUrl: "/images/collections/balanced-medium.jpg",
@@ -242,7 +242,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       processes: ["washed", "natural"],
       brew_method_ids: ["pour_over", "aeropress"],
       in_stock_only: true,
-      canon_flavor_node_ids: [CANON_FLAVORS.bright_acidity],
+      canon_flavor_slugs: [CANON_FLAVOR_SLUGS.bright_acidity],
     },
     imageUrl: "/images/collections/light-bright.jpg",
     sortOrder: 6,
@@ -259,11 +259,11 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       roast_levels: ["medium", "medium_dark", "dark"],
       processes: ["washed", "monsooned", "pulped_natural"],
       in_stock_only: true,
-      canon_flavor_node_ids: [
-        CANON_FLAVORS.low_acidity,
-        CANON_FLAVORS.chocolate,
-        CANON_FLAVORS.nuts,
-        CANON_FLAVORS.earthy,
+      canon_flavor_slugs: [
+        CANON_FLAVOR_SLUGS.low_acidity,
+        CANON_FLAVOR_SLUGS.chocolate,
+        CANON_FLAVOR_SLUGS.nuts,
+        CANON_FLAVOR_SLUGS.earthy,
       ],
     },
     imageUrl: "/images/collections/low-acidity.jpg",
@@ -280,7 +280,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
     filters: {
       roast_levels: ["dark", "medium_dark"],
       in_stock_only: true,
-      canon_flavor_node_ids: [CANON_FLAVORS.full_body],
+      canon_flavor_slugs: [CANON_FLAVOR_SLUGS.full_body],
     },
     sort: "rating_desc",
     imageUrl: "/images/collections/bold-dark.jpg",

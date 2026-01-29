@@ -41,7 +41,10 @@ export async function proxy(request: NextRequest) {
 
   // Protect routes that require authentication
   if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
-    return NextResponse.redirect(new URL("/auth", request.url));
+    // Include the current path as 'from' so user returns after auth
+    const authUrl = new URL("/auth", request.url);
+    authUrl.searchParams.set("from", request.nextUrl.pathname);
+    return NextResponse.redirect(authUrl);
   }
 
   // Redirect authenticated users away from auth pages (but allow callback and onboarding)

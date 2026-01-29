@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { CoffeeDirectory } from "@/components/coffees/CoffeeDirectory";
+import { CollectionGrid } from "@/components/collections/CollectionGrid";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { fetchCoffeeFilterMeta } from "@/lib/data/fetch-coffee-filter-meta";
 import { fetchCoffees } from "@/lib/data/fetch-coffees";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
@@ -167,6 +169,37 @@ export default async function CoffeesPage({
           }}
         />
       )}
+      <PageHeader
+        backgroundImage="/images/hero-coffees.avif"
+        backgroundImageAlt="Coffee beans background"
+        description="Discover over hundreds of specialty coffee beans from roasters across India. Verified data, verified roasters, verified taste."
+        overline="Specialty Coffee Directory"
+        rightSideContent={
+          <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-widest font-medium">
+            <span className="h-1 w-1 rounded-full bg-accent/40" />
+            Updated Regularly
+            <span className="h-1 w-1 rounded-full bg-accent/40" />
+          </div>
+        }
+        title={
+          <>
+            Explore India&apos;s{" "}
+            <span className="text-accent italic">Exceptional</span> Beans.
+          </>
+        }
+      />
+      {/* Optional Quick Start Section */}
+      <CollectionGrid
+        maxItems={8}
+        cardVariant="small"
+        overline="Optional Quick Start"
+        title="Start with a"
+        titleAccent="Collection"
+        description="Hand-picked groupings based on common brewing and flavour patterns."
+        ctaText="Browse All Coffees"
+        ctaHref="/coffees"
+        mobileDecorativeText="Quick Start"
+      />
       <CoffeeDirectory
         filterMeta={filterMeta}
         initialData={initialData}

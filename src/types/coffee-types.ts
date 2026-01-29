@@ -120,16 +120,24 @@ export type CoffeeFilters = {
   min_price?: number;
   max_price?: number;
 
-  // Origin
+  // Origin - slug-based (human-readable URLs)
+  region_slugs?: string[]; // Slugs from canon_regions
+  estate_keys?: string[]; // estate_key values from estates table
+
+  // Origin - ID-based (internal use, resolved from slugs)
   region_ids?: string[];
   estate_ids?: string[];
 
   // Flavor & brew
   flavor_keys?: string[]; // Legacy - kept for backward compatibility
-  canon_flavor_node_ids?: string[]; // UUIDs from canon_sensory_nodes
-  brew_method_ids?: string[];
+  canon_flavor_slugs?: string[]; // Slugs from canon_sensory_nodes (human-readable URLs)
+  canon_flavor_node_ids?: string[]; // UUIDs from canon_sensory_nodes (internal use, resolved from slugs)
+  brew_method_ids?: string[]; // Already uses canonical keys
 
-  // Roasters
+  // Roasters - slug-based (human-readable URLs)
+  roaster_slugs?: string[]; // Slugs from roasters table
+
+  // Roasters - ID-based (internal use, resolved from slugs)
   roaster_ids?: string[];
 
   // IDs (from Fuse search)
@@ -146,17 +154,36 @@ export type CoffeeFilterMeta = {
     family: string;
     count: number;
   }>;
-  regions: Array<{ id: string; label: string; count: number }>;
-  estates: Array<{ id: string; label: string; count: number }>;
+  regions: Array<{ id: string; slug: string; label: string; count: number }>;
+  estates: Array<{ id: string; key: string; label: string; count: number }>;
   brewMethods: Array<{ id: string; label: string; count: number }>;
-  roasters: Array<{ id: string; label: string; count: number }>;
+  roasters: Array<{ id: string; slug: string; label: string; count: number }>;
   roastLevels: Array<{ value: RoastLevelEnum; label: string; count: number }>;
   processes: Array<{ value: ProcessEnum; label: string; count: number }>;
   statuses: Array<{ value: CoffeeStatusEnum; label: string; count: number }>;
+  species: Array<{ value: SpeciesEnum; label: string; count: number }>;
   totals: {
     coffees: number;
     roasters: number;
   };
+};
+
+/** Display labels for species enum values (for filter UI) */
+export const SPECIES_LABELS: Record<SpeciesEnum, string> = {
+  arabica: "Arabica",
+  robusta: "Robusta",
+  liberica: "Liberica",
+  blend: "Blend",
+  arabica_80_robusta_20: "80% Arabica, 20% Robusta",
+  arabica_70_robusta_30: "70% Arabica, 30% Robusta",
+  arabica_60_robusta_40: "60% Arabica, 40% Robusta",
+  arabica_50_robusta_50: "50% Arabica, 50% Robusta",
+  robusta_80_arabica_20: "80% Robusta, 20% Arabica",
+  arabica_chicory: "Arabica + Chicory",
+  robusta_chicory: "Robusta + Chicory",
+  blend_chicory: "Blend + Chicory",
+  filter_coffee_mix: "Filter Coffee Mix",
+  excelsa: "Excelsa",
 };
 
 // ----------------------------------------------------------------------------

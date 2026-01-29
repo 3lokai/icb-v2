@@ -105,13 +105,13 @@ export function Header() {
   };
 
   const navItems: NavItem[] = [
-    ...baseNavItems,
     {
       name: "Profile",
       link: user
         ? "/profile" // Will redirect to /profile/[username] via page.tsx
         : "/profile/anon", // Direct link to anon profile
     },
+    ...baseNavItems,
   ];
 
   return (

@@ -145,19 +145,19 @@ const NavItemComponent = ({
   };
 
   const renderButton = () => (
-    <Link
+    <button
       aria-expanded={isDropdownOpen}
+      aria-haspopup="true"
       aria-label={`${item.name} menu`}
       className={cn(
-        "relative flex items-center gap-1 px-4 py-2 transition-colors",
+        "relative flex cursor-pointer items-center gap-1 border-0 bg-transparent px-4 py-2 font-inherit text-inherit transition-colors",
         active
           ? "font-medium text-accent-foreground"
           : "text-muted-foreground hover:text-accent-foreground"
       )}
-      href={item.link}
-      onClick={onItemClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={onLeave}
+      type="button"
     >
       {showPill && (
         <motion.div
@@ -177,7 +177,7 @@ const NavItemComponent = ({
         name="CaretDown"
         size={12}
       />
-    </Link>
+    </button>
   );
 
   const renderLink = () => (

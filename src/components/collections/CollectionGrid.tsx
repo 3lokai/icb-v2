@@ -25,6 +25,7 @@ type CollectionGridProps = {
   showFeatured?: boolean; // Show featured collection separately
   maxItems?: number; // Limit displayed items (default: 4)
   coffeeCountMap?: Record<string, number>; // Map of collection ID to coffee count
+  cardVariant?: "default" | "small"; // Card variant (default: "default")
   // Header props
   overline?: string;
   title?: string;
@@ -44,6 +45,7 @@ export function CollectionGrid({
   showFeatured = false,
   maxItems = 4,
   coffeeCountMap = {},
+  cardVariant = "default",
   overline = "Discover By Style",
   title = "Curated",
   titleAccent = "Collections.",
@@ -128,7 +130,7 @@ export function CollectionGrid({
         <div className="mb-6 w-full">
           <CollectionCard
             collection={featuredCollection}
-            variant="default"
+            variant={cardVariant}
             coffeeCount={coffeeCountMap[featuredCollection.id]}
           />
         </div>
@@ -136,12 +138,18 @@ export function CollectionGrid({
 
       {/* Regular Grid */}
       {gridCollections.length > 0 && (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          className={
+            cardVariant === "small"
+              ? "grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+              : "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          }
+        >
           {gridCollections.map((collection) => (
             <CollectionCard
               key={collection.id}
               collection={collection}
-              variant="default"
+              variant={cardVariant}
               coffeeCount={coffeeCountMap[collection.id]}
             />
           ))}

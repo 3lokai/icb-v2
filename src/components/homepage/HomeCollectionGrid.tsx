@@ -15,7 +15,6 @@ import {
 } from "@/lib/collections/coffee-collections";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
-import { Button } from "@/components/ui/button";
 import { Icon, type IconName } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 
@@ -68,7 +67,7 @@ const filterOptions: FilterOption[] = [
   {
     label: "By Roaster",
     icon: "Storefront",
-    href: "/roasters",
+    href: "/coffees?groupBy=roaster",
     description: "Explore India's top roasters",
   },
 ];

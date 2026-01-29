@@ -1,5 +1,6 @@
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import {
+  BEAN_TYPES,
   COFFEE_STATUS,
   PROCESSING_METHODS,
   ROAST_LEVELS,
@@ -9,6 +10,7 @@ import type {
   CoffeeStatusEnum,
   ProcessEnum,
   RoastLevelEnum,
+  SpeciesEnum,
 } from "@/types/db-enums";
 
 /**
@@ -42,6 +44,7 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     roastLevelsResult,
     processesResult,
     statusesResult,
+    speciesResult,
     totalsResult,
   ] = await Promise.all([
     // Flavor Notes - Use RPC or raw SQL for aggregation
@@ -162,10 +165,12 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
         return Array.from(counts.values()).filter((item) => item.count > 0);
       }),
 
-    // Regions
+    // Regions - join with canon_regions to get slug
     supabase
       .from("coffee_regions")
-      .select("region_id, regions(id, display_name)")
+      .select(
+        "region_id, regions(id, display_name, canon_region_id, canon_regions(slug))"
+      )
       .then((result) => {
         if (result.error) {
           throw result.error;
@@ -174,24 +179,30 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
 
         const counts = new Map<
           string,
-          { id: string; label: string; count: number }
+          { id: string; slug: string; label: string; count: number }
         >();
 
         for (const row of data) {
           const r = row.regions as unknown as {
             id: string;
             display_name: string | null;
+            canon_region_id: string | null;
+            canon_regions: {
+              slug: string;
+            } | null;
           } | null;
           if (!r) {
             continue;
           }
 
+          const slug = r.canon_regions?.slug || r.id;
           const existing = counts.get(r.id);
           if (existing) {
             existing.count += 1;
           } else {
             counts.set(r.id, {
               id: r.id,
+              slug: slug,
               label: r.display_name || r.id,
               count: 1,
             });
@@ -201,10 +212,10 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
         return Array.from(counts.values()).filter((item) => item.count > 0);
       }),
 
-    // Estates
+    // Estates - get estate_key for URL-friendly filtering
     supabase
       .from("coffee_estates")
-      .select("estate_id, estates(id, name)")
+      .select("estate_id, estates(id, name, estate_key)")
       .then((result) => {
         if (result.error) {
           throw result.error;
@@ -213,23 +224,30 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
 
         const counts = new Map<
           string,
-          { id: string; label: string; count: number }
+          { id: string; key: string; label: string; count: number }
         >();
 
         for (const row of data) {
           const e = row.estates as unknown as {
             id: string;
             name: string;
+            estate_key: string | null;
           } | null;
           if (!e) {
             continue;
           }
 
+          const key = e.estate_key || e.id;
           const existing = counts.get(e.id);
           if (existing) {
             existing.count += 1;
           } else {
-            counts.set(e.id, { id: e.id, label: e.name, count: 1 });
+            counts.set(e.id, {
+              id: e.id,
+              key: key,
+              label: e.name,
+              count: 1,
+            });
           }
         }
 
@@ -285,10 +303,10 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
         return Array.from(counts.values()).filter((item) => item.count > 0);
       }),
 
-    // Roasters - count from coffee_summary
+    // Roasters - count from coffee_summary, include slug
     supabase
       .from("coffee_summary")
-      .select("roaster_id, roasters(id, name)")
+      .select("roaster_id, roasters(id, name, slug)")
       .not("roaster_id", "is", null)
       .then((result) => {
         if (result.error) {
@@ -298,23 +316,30 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
 
         const counts = new Map<
           string,
-          { id: string; label: string; count: number }
+          { id: string; slug: string; label: string; count: number }
         >();
 
         for (const row of data) {
           const r = row.roasters as unknown as {
             id: string;
             name: string;
+            slug: string | null;
           } | null;
           if (!r) {
             continue;
           }
 
+          const slug = r.slug || r.id;
           const existing = counts.get(r.id);
           if (existing) {
             existing.count += 1;
           } else {
-            counts.set(r.id, { id: r.id, label: r.name, count: 1 });
+            counts.set(r.id, {
+              id: r.id,
+              slug: slug,
+              label: r.name,
+              count: 1,
+            });
           }
         }
 
@@ -438,6 +463,45 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
           });
       }),
 
+    // Species (from coffee_directory_mv; coffee_summary view does not have bean_species)
+    supabase
+      .from("coffee_directory_mv")
+      .select("bean_species")
+      .not("bean_species", "is", null)
+      .then((result) => {
+        if (result.error) {
+          throw result.error;
+        }
+        const data = result.data || [];
+
+        const counts = new Map<SpeciesEnum, number>();
+        for (const row of data) {
+          if (row.bean_species) {
+            counts.set(
+              row.bean_species as SpeciesEnum,
+              (counts.get(row.bean_species as SpeciesEnum) || 0) + 1
+            );
+          }
+        }
+
+        return Array.from(counts.entries())
+          .map(([value, count]) => {
+            const option = BEAN_TYPES.find((b) => b.value === value);
+            return {
+              value,
+              label: option?.label || value,
+              count,
+            };
+          })
+          .filter((item) => item.count > 0)
+          .sort((a, b) => {
+            if (b.count !== a.count) {
+              return b.count - a.count;
+            }
+            return a.label.localeCompare(b.label);
+          });
+      }),
+
     // Totals
     Promise.all([
       supabase
@@ -479,6 +543,7 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     roastLevels: roastLevelsResult,
     processes: processesResult,
     statuses: statusesResult,
+    species: speciesResult,
     totals: totalsResult,
   };
 }
