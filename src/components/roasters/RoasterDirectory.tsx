@@ -56,7 +56,7 @@ export function RoasterDirectory({
   // Fetch data using TanStack Query
   const { data, isFetching, isError } = useRoasters(
     { filters, page, limit, sort },
-    initialData
+    { initialData }
   );
 
   // Render minimal UI (Phase 1)

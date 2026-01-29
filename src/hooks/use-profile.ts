@@ -19,7 +19,7 @@ import type {
 } from "@/lib/validations/profile";
 
 // Fetch current user's profile
-export function useProfile() {
+export function useProfile(initialData?: PrivateProfileDTO | null) {
   return useQuery({
     queryKey: queryKeys.profile.current,
     queryFn: async () => {
@@ -65,6 +65,7 @@ export function useProfile() {
         newsletter_subscribed: profile.newsletter_subscribed,
       } as PrivateProfileDTO;
     },
+    initialData,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: false,
   });
@@ -126,7 +127,7 @@ export function useUpdateProfile() {
 }
 
 // Fetch coffee preferences
-export function useCoffeePreferences() {
+export function useCoffeePreferences(initialData?: any) {
   return useQuery({
     queryKey: queryKeys.profile.coffeePreferences,
     queryFn: async () => {
@@ -151,6 +152,7 @@ export function useCoffeePreferences() {
 
       return data;
     },
+    initialData,
     staleTime: 5 * 60 * 1000,
     retry: false,
   });
@@ -210,7 +212,7 @@ export function useUpdateCoffeePreferences() {
 }
 
 // Fetch notification preferences
-export function useNotificationPreferences() {
+export function useNotificationPreferences(initialData?: any) {
   return useQuery({
     queryKey: queryKeys.profile.notifications,
     queryFn: async () => {
@@ -235,6 +237,7 @@ export function useNotificationPreferences() {
 
       return data;
     },
+    initialData,
     staleTime: 5 * 60 * 1000,
     retry: false,
   });

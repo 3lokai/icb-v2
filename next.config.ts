@@ -12,6 +12,13 @@ if (process.env.ANALYZE === "true") {
 }
 
 const nextConfig: NextConfig = {
+  // Server Actions configuration
+  // Allow 3MB body size to support 2MB image uploads (base64 encoding adds ~33% overhead)
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "3mb",
+    },
+  } as NextConfig["experimental"],
   // Target modern browsers - avoid unnecessary transpilation
   // Modern browsers support ES2020+ features natively
   compiler: {
@@ -40,7 +47,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "placehold.co", // For collection placeholders
+        hostname: "images.unsplash.com", // For collection placeholders
       },
     ],
     qualities: [75, 80, 85, 90],

@@ -64,7 +64,7 @@ function CoffeeDirectoryComponent({
   // Fetch data using TanStack Query
   const { data, isFetching, isError } = useCoffees(
     { filters, page, limit, sort },
-    initialData
+    { initialData }
   );
 
   // Memoize items to prevent unnecessary re-renders

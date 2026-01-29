@@ -709,7 +709,7 @@ export function ReviewCapture({
                   {/* Add to My Recommendations Checkbox */}
                   <Stack gap="4">
                     <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                      Recommendations
+                      Selections
                     </label>
                     <div className="flex items-center gap-2">
                       <Checkbox

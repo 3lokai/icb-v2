@@ -310,10 +310,10 @@ export function QuickRating({
                 : "p-8 md:p-10 pb-6 border-b border-border/10 pt-10"
             )}
           >
-            <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/40 mb-1 text-left">
+            <p className="text-overline tracking-[0.1em] text-muted-foreground/60 mb-1 text-left">
               Limit Reached
             </p>
-            <h3 className="font-serif italic text-title text-primary leading-none text-left">
+            <h3 className="text-title text-primary leading-none text-left">
               Unlock Unlimited Reviews
             </h3>
             <p className="text-body text-muted-foreground mt-2 text-left">
@@ -349,7 +349,7 @@ export function QuickRating({
                 >
                   <span className="h-px w-6 bg-accent/60" />
                   <span className="text-overline text-muted-foreground tracking-[0.1em]">
-                    {initialRating ? "Thanks you" : `Rate this ${entityType}`}
+                    {initialRating ? "Thank you" : `Rate this ${entityType}`}
                   </span>
                   <span className="h-px w-6 bg-accent/60" />
                 </div>
@@ -443,7 +443,7 @@ export function QuickRating({
                 {entityType === "coffee" && (
                   <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
                     <Stack gap="3">
-                      <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                      <label className="text-label uppercase tracking-widest">
                         Brew method used
                       </label>
                       <Select
@@ -475,7 +475,7 @@ export function QuickRating({
                 {/* First Row, Column 2: Add to Recommendations */}
                 <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
                   <Stack gap="3">
-                    <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                    <label className="text-label uppercase tracking-widest">
                       Recommendations
                     </label>
                     <div className="flex items-center gap-2">
@@ -489,9 +489,9 @@ export function QuickRating({
                       />
                       <label
                         htmlFor="recommend"
-                        className="text-body text-foreground cursor-pointer select-none"
+                        className="text-caption text-foreground cursor-pointer select-none"
                       >
-                        Add to &quot;My Recommendations&quot;
+                        Add to &quot;My Selections&quot;
                       </label>
                     </div>
                   </Stack>
@@ -500,7 +500,7 @@ export function QuickRating({
                 {/* Second Row, Column 1: Value for Money */}
                 <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
                   <Stack gap="3">
-                    <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                    <label className="text-label uppercase tracking-widest">
                       Value for money
                     </label>
                     <Cluster gap="2" className="flex-wrap">
@@ -554,7 +554,7 @@ export function QuickRating({
                 {entityType === "coffee" && (
                   <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
                     <Stack gap="3">
-                      <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                      <label className="text-label uppercase tracking-widest">
                         Profile suitability
                       </label>
                       <Cluster gap="2" className="flex-wrap">
@@ -619,7 +619,7 @@ export function QuickRating({
               <div className="flex items-center justify-center">
                 <Badge
                   variant="secondary"
-                  className="text-label bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-3 py-1"
+                  className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-3 py-1"
                 >
                   <Icon name="Check" size={12} className="mr-1.5" />
                   Saved

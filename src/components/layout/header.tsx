@@ -34,7 +34,8 @@ import { useSearchContext } from "@/providers/SearchProvider";
 // Regex for splitting names into parts (defined at top level for performance)
 const NAME_SPLIT_REGEX = /\s+/;
 
-const navItems = [
+// Base nav items (without Profile - it's added conditionally)
+const baseNavItems = [
   {
     name: "Explore",
     link: "/explore",
@@ -44,10 +45,6 @@ const navItems = [
       { name: "Estates", link: "/estates" },
       { name: "Regions", link: "/regions" },
     ],
-  },
-  {
-    name: "Profile",
-    link: "/dashboard/profile",
   },
   {
     name: "Learn",
@@ -99,6 +96,23 @@ export function Header() {
     profile?.full_name ?? user?.email?.split("@")[0] ?? "User";
   const avatarUrl = profile?.avatar_url ?? null;
   const initials = getInitials(profile?.full_name ?? user?.email ?? null);
+
+  // Build nav items with conditional Profile link
+  type NavItem = {
+    name: string;
+    link: string;
+    children?: { name: string; link: string }[];
+  };
+
+  const navItems: NavItem[] = [
+    ...baseNavItems,
+    {
+      name: "Profile",
+      link: user
+        ? "/profile" // Will redirect to /profile/[username] via page.tsx
+        : "/profile/anon", // Direct link to anon profile
+    },
+  ];
 
   return (
     <Navbar className="top-0">
@@ -318,7 +332,7 @@ export function Header() {
         </MobileNavHeader>
         <MobileNavMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu}>
           {navItems.map((item) =>
-            item.children && item.children.length > 0 ? (
+            "children" in item && item.children && item.children.length > 0 ? (
               <MobileNavDropdown
                 item={item}
                 key={item.link}

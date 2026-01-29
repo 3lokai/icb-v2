@@ -44,16 +44,6 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/auth", request.url));
   }
 
-  // Protect profile routes
-  if (request.nextUrl.pathname.startsWith("/profile") && !user) {
-    return NextResponse.redirect(
-      new URL(
-        `/auth?from=${encodeURIComponent(request.nextUrl.pathname)}`,
-        request.url
-      )
-    );
-  }
-
   // Redirect authenticated users away from auth pages (but allow callback and onboarding)
   if (
     (request.nextUrl.pathname.startsWith("/login") ||
