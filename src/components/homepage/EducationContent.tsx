@@ -90,8 +90,8 @@ export default function EducationSection() {
       <div className="surface-0 card-padding overflow-hidden rounded-2xl">
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-            {/* Left Column: Content */}
-            <div className="order-2 lg:order-1">
+            {/* Left Column: Content - first on mobile, left on desktop */}
+            <div className="order-1 lg:order-1">
               <Stack gap="8">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
                   <div className="md:col-span-8 relative">
@@ -117,7 +117,7 @@ export default function EducationSection() {
                       </p>
                     </Stack>
                   </div>
-                  <div className="md:col-span-4 flex md:justify-end pb-2">
+                  <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
                     <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
                       <span className="h-1 w-1 rounded-full bg-accent/40" />
                       Heritage & Craft
@@ -163,8 +163,8 @@ export default function EducationSection() {
               </Stack>
             </div>
 
-            {/* Right Column: Image with floating fact card */}
-            <div className="relative order-1 lg:order-2">
+            {/* Right Column: Image with floating fact card - second on mobile, right on desktop */}
+            <div className="relative order-2 lg:order-2">
               <div className="relative mx-auto aspect-square max-w-[500px]">
                 {/* Main Image */}
                 <div className="group relative h-full w-full overflow-hidden rounded-2xl shadow-2xl">

@@ -30,7 +30,7 @@ export default async function MainLayout({
         />
       )}
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 overflow-x-hidden">{children}</main>
       <Footer />
       <SearchCommand />
       <CookieNotice />

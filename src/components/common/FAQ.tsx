@@ -99,7 +99,7 @@ export function FAQSection({
               </p>
             </Stack>
           </div>
-          <div className="md:col-span-4 flex md:justify-end pb-2">
+          <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
             <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
               <span className="h-1 w-1 rounded-full bg-accent/40" />
               {badge}

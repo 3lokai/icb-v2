@@ -58,7 +58,7 @@ export default function FeaturedRoastersSection() {
               </p>
             </Stack>
           </div>
-          <div className="md:col-span-4 flex md:justify-end pb-2">
+          <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
             <Link className="hidden md:block" href="/roasters">
               <Button className="group" variant="outline">
                 View All Roasters

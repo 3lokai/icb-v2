@@ -52,7 +52,7 @@ export default function HowItWorksSection() {
           </div>
 
           {/* Right Column: Explainer */}
-          <div className="md:col-span-4 flex md:justify-end pb-2">
+          <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
             <p className="max-w-xs text-pretty text-body text-muted-foreground/80 leading-relaxed">
               Your coffee profile grows as you rate coffees and add context —
               from the beans you enjoy to the gear you brew with. It&apos;s a
