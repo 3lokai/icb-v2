@@ -1,249 +1,259 @@
-@layer components {
-  /* Surface layers: depth + material */
-  /* Depth is expressed using surfaces, not blur */
-  .surface-0 {
-    @apply bg-background;
-  }
+@layer components;
 
-  .surface-1 {
-    @apply bg-card text-card-foreground border border-border/60;
-  }
+/* Surface layers: depth + material */
+/* Depth is expressed using surfaces, not blur */
+.surface-0 {
+  @apply bg-background;
+}
 
-  .surface-2 {
-    @apply bg-popover text-popover-foreground border border-border/70;
-  }
+.surface-1 {
+  /* Card depth */
+  @apply bg-card text-card-foreground border border-border/60;
+}
 
-  /* Shell helpers */
-  .card-shell {
-    @apply bg-card text-card-foreground border border-border/60 rounded-lg;
-  }
+.surface-2 {
+  /* Popover/Modal depth */
+  @apply bg-popover text-popover-foreground border border-border/70;
+}
 
-  .modal-shell {
-    @apply bg-popover text-popover-foreground border border-border/70 rounded-lg;
-  }
+/* Shell helpers - DEPRECATED: Use surface classes + rounding utilities */
+/* .card-shell, .modal-shell, .nav-shell removed for consistency */
 
-  .nav-shell {
-    @apply bg-card text-card-foreground border-b border-border/60;
-  }
+.btn-icon {
+  /* Calm hover state: No spread of accent color on tools */
+  @apply inline-flex items-center justify-center h-9 w-9 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-300;
+}
 
+/* Badges */
+.badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-muted text-foreground;
+}
 
+.badge-outline {
+  @apply border border-accent bg-transparent text-foreground;
+}
 
-  .btn-icon {
-    @apply inline-flex items-center justify-center h-9 w-9 rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors duration-300;
-  }
+/* Cards */
+.card-base {
+  @apply bg-card text-card-foreground border border-border/60 rounded-lg;
+}
 
-  /* Badges */
-  .badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-muted text-foreground;
-  }
+.card-hover {
+  @apply transition-colors duration-500 hover:border-border;
+}
 
-  .badge-outline {
-    @apply border border-accent bg-transparent text-foreground;
-  }
+.card-featured {
+  /* Neutral emphasis: No primary border signal */
+  @apply border-2 border-border bg-muted/40;
+}
 
-  /* Cards */
-  .card-base {
-    @apply bg-card text-card-foreground border border-border/60 rounded-lg;
-  }
+.card-review {
+  @apply bg-muted text-foreground p-6 rounded-lg;
+}
 
-  .card-hover {
-    @apply transition-colors duration-500 hover:border-border;
-  }
+/* Other Components */
+.avatar-sm {
+  @apply h-8 w-8 rounded-full overflow-hidden;
+}
 
-  .card-featured {
-    @apply border-2 border-primary;
-  }
+.tag-list {
+  @apply flex flex-wrap gap-2;
+}
 
-  .card-review {
-    @apply bg-muted text-foreground p-6 rounded-lg;
-  }
+.breadcrumb {
+  @apply flex items-center gap-1 text-sm text-muted-foreground;
+}
 
-  /* Other Components */
-  .avatar-sm {
-    @apply h-8 w-8 rounded-full overflow-hidden;
-  }
+.pill-filter {
+  @apply inline-flex items-center rounded-full px-3 py-1 text-sm bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors;
+}
 
-  .tag-list {
-    @apply flex flex-wrap gap-2;
-  }
+.search-wrapper {
+  @apply relative w-full max-w-2xl;
+}
 
-  .breadcrumb {
-    @apply flex items-center gap-1 text-sm text-muted-foreground;
-  }
+.rating-stars {
+  /* Neutral/Accent rating color, not chart color */
+  @apply flex text-accent;
+}
 
-  .pill-filter {
-    @apply inline-flex items-center rounded-full px-3 py-1 text-sm bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors;
-  }
+/* Hero section specific */
+.hero-wrapper {
+  @apply relative overflow-hidden bg-cover bg-center py-16 md:py-24 lg:py-32;
+}
 
-  .search-wrapper {
-    @apply relative w-full max-w-2xl;
-  }
+.hero-content {
+  @apply relative z-10 text-center max-w-3xl mx-auto px-4;
+}
 
-  .rating-stars {
-    @apply flex text-chart-1;
-  }
-
-  /* Hero section specific */
-  .hero-wrapper {
-    @apply relative overflow-hidden bg-cover bg-center py-16 md:py-24 lg:py-32;
-  }
-
-  .hero-content {
-    @apply relative z-10 text-center max-w-3xl mx-auto px-4;
-  }
-
-  /* LCP optimization: Ensure hero heading is immediately visible */
-  .hero-content h1 {
-    /* Force immediate visibility - no animation delays */
-    opacity: 1 !important;
-    transform: none !important;
-    /* Performance hints for faster rendering */
-    will-change: auto;
-    content-visibility: auto;
-  }
+/* LCP optimization: Ensure hero heading is immediately visible */
+.hero-content h1 {
+  /* Force immediate visibility - no animation delays */
+  opacity: 1 !important;
+  transform: none !important;
+  /* Performance hints for faster rendering */
+  will-change: auto;
+  content-visibility: auto;
+}
 
 
 
-  /* Search components */
-  .search-input {
-    @apply w-full py-2 px-4 rounded-md border border-input bg-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring text-base font-sans md:text-sm;
-  }
+/* Search components */
+.search-input {
+  @apply w-full py-2 px-4 rounded-md border border-input bg-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring text-base font-sans md:text-sm;
+}
 
-  .search-button {
-    @apply absolute right-1 top-1 h-8 px-3 rounded-md bg-primary text-primary-foreground hover:bg-primary/90;
-  }
+.search-button {
+  @apply absolute right-1 top-1 h-8 px-3 rounded-md bg-primary text-primary-foreground hover:bg-primary/90;
+}
 
-  .filter-tag {
-    @apply inline-block px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors;
-  }
+.filter-tag {
+  @apply inline-block px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors;
+}
 
-  /* Region card variations */
-  .region-card {
-    @apply relative overflow-hidden rounded-sm aspect-[5/6] border border-border/60;
-  }
+/* Region card variations */
+.region-card {
+  @apply relative overflow-hidden rounded-sm aspect-[5/6] border border-border/60;
+}
 
-  .region-overlay {
-    @apply absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent;
-  }
+.region-overlay {
+  /* Softened gradient: Less "Netflix poster" */
+  @apply absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent;
+}
 
-  .region-content {
-    @apply absolute bottom-0 left-0 p-4 text-white;
-  }
+.region-content {
+  @apply absolute bottom-0 left-0 p-4 text-white;
+}
 
-  /* Price display */
-  .price-tag {
-    @apply text-lg font-bold text-accent-foreground;
-  }
+/* Price display */
+.price-tag {
+  @apply text-lg font-bold text-accent-foreground;
+}
 
-  /* Footer components */
-  .footer-heading {
-    @apply font-medium text-base mb-4 text-foreground/90;
-  }
+/* Footer components */
+.footer-heading {
+  @apply font-medium text-base mb-4 text-foreground/90;
+}
 
-  .footer-link {
-    @apply text-sm text-muted-foreground hover:text-foreground hover:bg-muted px-2 py-1 rounded transition-all duration-200;
-  }
+.footer-link {
+  @apply text-sm text-muted-foreground hover:text-foreground hover:bg-muted px-2 py-1 rounded transition-all duration-200;
+}
 
-  .footer-section {
-    @apply flex flex-col space-y-2 bg-muted/50 p-4 rounded-lg;
-  }
+.footer-section {
+  @apply flex flex-col space-y-2 bg-muted/50 p-4 rounded-lg;
+}
 
-  /* Newsletter */
-  .newsletter-wrapper {
-    @apply w-full max-w-md mx-auto;
-  }
+/* Newsletter */
+.newsletter-wrapper {
+  @apply w-full max-w-md mx-auto;
+}
 
-  .newsletter-input {
-    @apply w-full py-2 px-4 rounded-md border border-input bg-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
-  }
+.newsletter-input {
+  @apply w-full py-2 px-4 rounded-md border border-input bg-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
+}
 
-  /* Testimonial components */
-  .star-rating {
-    @apply flex text-chart-1;
-  }
+/* Testimonial components */
+.star-rating {
+  @apply flex text-accent;
+}
 
-  .testimonial-card {
-    @apply bg-muted text-foreground rounded-lg p-6;
-  }
+.testimonial-card {
+  @apply bg-muted text-foreground rounded-lg p-6;
+}
 
-  .testimonial-author {
-    @apply flex items-center mt-4 space-x-3;
-  }
+.testimonial-author {
+  @apply flex items-center mt-4 space-x-3;
+}
 
-  /* Blog components */
-  .article-card {
-    @apply bg-card text-card-foreground border border-border/60 rounded-lg overflow-hidden;
-    @apply hover:border-border transition-colors duration-500;
-  }
+/* Blog components */
+.article-card {
+  @apply bg-card text-card-foreground border border-border/60 rounded-lg overflow-hidden;
+  @apply hover:border-border transition-colors duration-500;
+}
 
-  .article-meta {
-    @apply flex items-center space-x-4 text-sm text-muted-foreground bg-muted/50 px-3 py-1 rounded;
-  }
+.article-meta {
+  @apply flex items-center space-x-4 text-sm text-muted-foreground bg-muted/50 px-3 py-1 rounded;
+}
 
-  .article-category {
-    @apply inline-block px-2 py-0.5 text-xs font-medium bg-muted text-muted-foreground rounded;
-  }
+.article-category {
+  @apply inline-block px-2 py-0.5 text-xs font-medium bg-muted text-muted-foreground rounded;
+}
 
-  /* Form Messages */
-  .form-message {
-    @apply p-3 rounded-md text-sm bg-muted border border-border;
-  }
+/* Form Messages */
+.form-message {
+  @apply p-3 rounded-md text-sm bg-muted border border-border;
+}
 
-  /* Glossary Terms */
-  .glossary-term {
-    @apply cursor-help underline decoration-dotted decoration-accent/60 underline-offset-2 text-accent-foreground font-medium;
-    transition: background-color 0.2s ease, text-decoration-color 0.2s ease, border-radius 0.2s ease;
-  }
+/* Glossary Terms */
+.glossary-term {
+  @apply cursor-help underline decoration-dotted decoration-accent/60 underline-offset-2 text-accent-foreground font-medium;
+  transition: background-color 0.2s ease, text-decoration-color 0.2s ease, border-radius 0.2s ease;
+}
 
-  .glossary-term:hover {
-    @apply decoration-accent decoration-2 bg-accent/10 px-1 -mx-1 rounded;
-  }
+.glossary-term:hover {
+  @apply decoration-accent decoration-2 bg-accent/10 px-1 -mx-1 rounded;
+}
 
-  /* Responsive image */
-  .img-responsive {
-    @apply w-full h-auto object-cover;
-  }
+/* Responsive image */
+.img-responsive {
+  @apply w-full h-auto object-cover;
+}
 
-  /* Interaction States */
-  /* Dropdown transitions */
-  .dropdown-enter {
-    opacity: 0;
-    transform: scale(0.95) translateY(-10px);
-  }
+/* Interaction States */
+/* Dropdown transitions */
+.dropdown-enter {
+  opacity: 0;
+  transform: scale(0.95) translateY(-10px);
+}
 
-  .dropdown-enter-active {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
-  }
+.dropdown-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
 
-  .dropdown-exit {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+.dropdown-exit {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
 
-  .dropdown-exit-active {
-    opacity: 0;
-    transform: scale(0.95) translateY(-10px);
-    transition: opacity 0.15s ease-in, transform 0.15s ease-in;
-  }
+.dropdown-exit-active {
+  opacity: 0;
+  transform: scale(0.95) translateY(-10px);
+  transition: opacity 0.15s ease-in, transform 0.15s ease-in;
+}
 
-  /* User menu enhancements */
-  .user-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    text-align: center;
-  }
+/* User menu enhancements */
+.user-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  text-align: center;
+}
 
-  /* Hover zones for better UX */
-  .dropdown-hover-zone {
-    padding-top: 4px;
-    margin-top: -4px;
-  }
+/* Hover zones for better UX */
+.dropdown-hover-zone {
+  padding-top: 4px;
+  margin-top: -4px;
+}
 
-  /* Logo text hiding in compact navbar */
-  .navbar-compact h1 {
-    display: none;
-  }
+/* Logo text hiding in compact navbar */
+.navbar-compact h1 {
+  display: none;
+}
+
+/* Toast notifications - apply surface-2 styling */
+.toaster [data-sonner-toast] {
+  @apply bg-popover text-popover-foreground border border-border shadow-xl rounded-xl;
+}
+
+
+/* Utility: Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }

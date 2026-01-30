@@ -28,7 +28,8 @@ export function useCoffeeFilters() {
   }, [searchParams]);
 
   // Update filters by updating URL
-  // Wrapped in useTransition to keep UI responsive during URL updates
+  // Use startTransition so MultiSelect can receive multiple selections before re-render
+  // (immediate router.replace would close the popover after each selection)
   const updateFilters = useCallback(
     (
       updates:
@@ -40,7 +41,6 @@ export function useCoffeeFilters() {
         typeof updates === "function" ? updates(current.filters) : updates;
       const newFilters = { ...current.filters, ...updatesObj };
 
-      // Reset page to 1 when filters change
       const queryString = buildCoffeeQueryString(
         newFilters,
         1,
@@ -48,7 +48,6 @@ export function useCoffeeFilters() {
         current.limit
       );
 
-      // Use transition to mark URL update as non-urgent
       startTransition(() => {
         router.replace(`/coffees?${queryString}`, { scroll: false });
       });
@@ -58,18 +57,14 @@ export function useCoffeeFilters() {
 
   // Reset all filters
   const resetFilters = useCallback(() => {
-    startTransition(() => {
-      router.replace(`/coffees`, { scroll: false });
-    });
+    router.replace(`/coffees`, { scroll: false });
   }, [router]);
 
   // Update page
   const setPage = useCallback(
     (newPage: number) => {
       const queryString = buildCoffeeQueryString(filters, newPage, sort, limit);
-      startTransition(() => {
-        router.replace(`/coffees?${queryString}`, { scroll: false });
-      });
+      router.replace(`/coffees?${queryString}`, { scroll: false });
     },
     [filters, sort, limit, router]
   );
@@ -83,9 +78,7 @@ export function useCoffeeFilters() {
         newSort,
         limit
       );
-      startTransition(() => {
-        router.replace(`/coffees?${queryString}`, { scroll: false });
-      });
+      router.replace(`/coffees?${queryString}`, { scroll: false });
     },
     [filters, limit, router]
   );

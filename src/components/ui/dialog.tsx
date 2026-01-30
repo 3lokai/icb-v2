@@ -2,7 +2,9 @@
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import type * as React from "react";
+import { Children, isValidElement } from "react";
 import { Icon } from "@/components/common/Icon";
+import { VisuallyHidden } from "@/components/ui/visually-hidden";
 
 import { cn } from "@/lib/utils";
 
@@ -54,17 +56,49 @@ function DialogContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
 }) {
+  // Check if children contain a DialogTitle
+  const hasTitle = Children.toArray(children).some((child) => {
+    if (isValidElement(child)) {
+      // Check if it's a DialogTitle directly
+      if (child.type === DialogTitle) return true;
+      // Check if it's a DialogHeader containing a DialogTitle
+      if (child.type === DialogHeader) {
+        const headerProps = child.props as { children?: React.ReactNode };
+        if (headerProps.children) {
+          return Children.toArray(headerProps.children).some(
+            (headerChild) =>
+              isValidElement(headerChild) && headerChild.type === DialogTitle
+          );
+        }
+      }
+      // Recursively check nested children
+      const childProps = child.props as { children?: React.ReactNode };
+      if (childProps?.children) {
+        return Children.toArray(childProps.children).some(
+          (nestedChild) =>
+            isValidElement(nestedChild) && nestedChild.type === DialogTitle
+        );
+      }
+    }
+    return false;
+  });
+
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-background p-6 shadow-lg duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in sm:max-w-lg",
+          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-0 overflow-hidden rounded-[2.5rem] border border-border/60 bg-background p-0 shadow-lg duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in sm:max-w-lg",
           className
         )}
         data-slot="dialog-content"
         {...props}
       >
+        {!hasTitle && (
+          <VisuallyHidden>
+            <DialogTitle>Dialog</DialogTitle>
+          </VisuallyHidden>
+        )}
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close
@@ -83,7 +117,10 @@ function DialogContent({
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
+      className={cn(
+        "flex flex-col gap-2 px-6 pt-6 text-center sm:text-left",
+        className
+      )}
       data-slot="dialog-header"
       {...props}
     />
@@ -94,7 +131,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+        "flex flex-col-reverse gap-2 px-6 pb-6 sm:flex-row sm:justify-end",
         className
       )}
       data-slot="dialog-footer"

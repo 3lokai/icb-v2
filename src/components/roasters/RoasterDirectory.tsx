@@ -56,7 +56,7 @@ export function RoasterDirectory({
   // Fetch data using TanStack Query
   const { data, isFetching, isError } = useRoasters(
     { filters, page, limit, sort },
-    initialData
+    { initialData }
   );
 
   // Render minimal UI (Phase 1)
@@ -98,6 +98,29 @@ export function RoasterDirectory({
       />
 
       <div className="container mx-auto p-4 pt-16 md:pt-24">
+        {/* Section Header */}
+        <div className="mb-12">
+          <Stack gap="6">
+            <div className="inline-flex items-center gap-4">
+              <span className="h-px w-8 md:w-12 bg-accent/60" />
+              <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                The Directory
+              </span>
+            </div>
+
+            <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+              Explore India&apos;s{" "}
+              <span className="text-accent italic">Roaster Network</span>
+            </h2>
+
+            <p className="max-w-md text-pretty text-body-large text-muted-foreground leading-relaxed">
+              Discover specialty coffee roasters from across the country. Filter
+              by location, search by name, or browse to find your next favorite
+              roaster.
+            </p>
+          </Stack>
+        </div>
+
         {/* Results Count */}
         {data && (
           <div className="mb-6 text-center">

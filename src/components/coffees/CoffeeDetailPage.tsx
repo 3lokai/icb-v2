@@ -1,21 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { useState, useCallback } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
-import CoffeeImageCarousel from "@/components/layout/carousel-image";
 import { Icon } from "@/components/common/Icon";
-import Tag, { TagList } from "@/components/common/Tag";
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Prose } from "@/components/primitives/prose";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ReviewList, ReviewStats, QuickRating } from "@/components/reviews";
+import { useReviews, useReviewStats } from "@/hooks/use-reviews";
 import { cn, capitalizeFirstLetter } from "@/lib/utils";
-import { formatPrice } from "@/lib/utils/coffee-utils";
+import { SimilarCoffees } from "./SimilarCoffees";
 import { CoffeeSensoryProfile } from "./CoffeeSensoryProfile";
-import { ReviewSection } from "@/components/reviews";
+import Tag, { TagList } from "@/components/common/Tag";
+import CoffeeImageCarousel from "@/components/layout/carousel-image";
+import { CoffeePricingTable } from "./CoffeePricingTable";
 
 type CoffeeDetailPageProps = {
   coffee: CoffeeDetail;
@@ -23,460 +26,457 @@ type CoffeeDetailPageProps = {
 };
 
 export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
-  const minPrice = coffee.summary.min_price_in_stock;
+  const [activeTab, setActiveTab] = useState("overview");
 
-  // Group variants by weight
-  const variantsByWeight = coffee.variants.reduce(
-    (acc, variant) => {
-      const weight = variant.weight_g;
-      if (!acc[weight]) {
-        acc[weight] = [];
-      }
-      acc[weight].push(variant);
-      return acc;
-    },
-    {} as Record<number, typeof coffee.variants>
-  );
+  const { data: reviews } = useReviews("coffee", coffee.id);
+  const { data: stats } = useReviewStats("coffee", coffee.id);
+
+  const handleScrollToRating = useCallback(() => {
+    // Scroll to rating section
+    const ratingSection = document.getElementById("rating-section");
+    if (ratingSection) {
+      ratingSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
 
   return (
-    <div className={cn("w-full bg-background", className)}>
-      <PageShell maxWidth="7xl">
-        <div className="py-8 md:py-12 lg:py-16">
-          {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="mb-6 md:mb-8">
-            <Cluster gap="2" align="center" className="text-caption">
-              <Link
-                href="/"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Home
-              </Link>
-              <span className="text-muted-foreground/40">/</span>
-              <Link
-                href="/coffees"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Coffees
-              </Link>
-              <span className="text-muted-foreground/40">/</span>
-              <span className="text-foreground font-medium">{coffee.name}</span>
-            </Cluster>
-          </nav>
-
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 gap-12 md:gap-16 lg:grid-cols-7">
-            {/* Left Column: Image */}
-            <div className="order-1 lg:col-span-3">
-              <Stack gap="6">
-                <CoffeeImageCarousel
-                  coffeeName={coffee.name}
-                  images={coffee.images}
-                />
-              </Stack>
-            </div>
-
-            {/* Right Column: Details */}
-            <div className="order-2 lg:col-span-4">
-              <Stack gap="6">
-                {/* Header Section */}
-                <Stack gap="6">
-                  {/* Eyebrow with badges */}
-                  <Stack gap="2">
-                    <div className="inline-flex items-center gap-4">
-                      <span className="h-px w-8 bg-accent/60" />
-                      <span className="text-overline text-muted-foreground tracking-[0.2em]">
-                        {coffee.bean_species || "Specialty Coffee"}
-                        {coffee.decaf && " • Decaf"}
-                      </span>
-                    </div>
-                    {coffee.is_limited && (
-                      <Badge
-                        variant="outline"
-                        className="text-label bg-accent/5 text-accent border-accent/20 w-fit"
+    <div className={cn("w-full bg-background min-h-screen", className)}>
+      <PageShell maxWidth="5xl">
+        <Stack gap="6" className="py-8 md:py-12">
+          {/* 📌 GLOBAL HEADER (ALWAYS VISIBLE) */}
+          <header className="sticky top-24 z-30 bg-background/80 backdrop-blur-md pt-4 pb-6 border-b border-border/40">
+            <Stack gap="4">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <Stack gap="1">
+                  <h1 className="text-display font-serif italic leading-none text-balance">
+                    {coffee.name}
+                  </h1>
+                  <Cluster gap="2" align="center">
+                    {coffee.roaster && (
+                      <Link
+                        href={`/roasters/${coffee.roaster.slug}`}
+                        className="text-body-muted hover:text-foreground transition-colors font-medium"
                       >
-                        <Icon name="Lightning" size={10} className="mr-1" />
-                        Limited Release
-                      </Badge>
+                        {coffee.roaster.name}
+                      </Link>
                     )}
-                  </Stack>
-
-                  {/* Title */}
-                  <Stack gap="6">
-                    <h1 className="text-display text-balance leading-[1.1] tracking-tight font-serif italic">
-                      {coffee.name}
-                    </h1>
-
-                    <div className="flex flex-wrap items-center justify-between gap-4 md:gap-6">
-                      {coffee.roaster && (
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 flex-shrink-0 rounded-full border border-border/60 bg-muted/50 flex items-center justify-center overflow-hidden">
-                            <Icon
-                              name="Storefront"
-                              size={20}
-                              className="text-muted-foreground"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-0.5">
-                            <span className="text-label text-muted-foreground uppercase tracking-widest leading-none">
-                              Roasted By
-                            </span>
-                            <Link
-                              href={`/roasters/${coffee.roaster.slug}`}
-                              className="group inline-flex items-center gap-1.5 text-body font-medium text-primary hover:text-primary/80 transition-colors"
-                            >
-                              {coffee.roaster.name}
-                              <Icon
-                                name="ArrowRight"
-                                size={14}
-                                className="transition-transform group-hover:translate-x-0.5"
-                              />
-                            </Link>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Quick Pricing Summary & CTA */}
-                      <div className="flex items-center gap-4 md:gap-6 py-2.5 px-4 md:px-6 rounded-2xl bg-accent/5 border border-accent/10 ml-auto lg:ml-0">
-                        <div className="flex flex-col gap-0.5">
-                          <span className="text-label text-muted-foreground uppercase tracking-widest">
-                            Starts at
-                          </span>
-                          <span className="text-heading font-serif italic text-accent leading-none">
-                            {formatPrice(minPrice || 0)}
-                          </span>
-                        </div>
-                        {coffee.direct_buy_url && (
-                          <Button
-                            asChild
-                            size="sm"
-                            className="shadow-md hover-lift"
-                          >
-                            <a
-                              href={coffee.direct_buy_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center"
-                            >
-                              Buy Now
-                            </a>
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </Stack>
+                  </Cluster>
+                  <div className="text-label uppercase tracking-widest mt-1">
+                    {[
+                      coffee.estates?.[0]?.name ||
+                        coffee.regions?.[0]?.display_name,
+                      capitalizeFirstLetter(
+                        coffee.process_raw || coffee.process || ""
+                      ),
+                      capitalizeFirstLetter(
+                        coffee.roast_level_raw || coffee.roast_level || ""
+                      ),
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </div>
                 </Stack>
 
-                {/* Core Details / Technical Sheet */}
-                <div className="py-6 md:py-8 border-y border-border/60 bg-muted/5 rounded-lg md:rounded-xl px-4 md:px-6">
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 md:gap-y-8 gap-x-4 md:gap-x-6 lg:gap-x-8">
-                    {(coffee.roast_level_raw ||
-                      coffee.roast_style_raw ||
-                      coffee.roast_level) && (
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-label uppercase tracking-widest font-bold text-muted-foreground">
-                          Roast
-                        </span>
-                        <span className="text-body font-medium text-foreground">
-                          {capitalizeFirstLetter(
-                            coffee.roast_level_raw ||
-                              coffee.roast_style_raw ||
-                              coffee.roast_level
-                          )}
-                        </span>
-                      </div>
-                    )}
-                    {(coffee.process_raw || coffee.process) && (
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-label uppercase tracking-widest font-bold text-muted-foreground">
-                          Process
-                        </span>
-                        <span className="text-body font-medium text-foreground">
-                          {capitalizeFirstLetter(
-                            coffee.process_raw || coffee.process
-                          )}
-                        </span>
-                      </div>
-                    )}
-                    {(coffee.estates.length > 0 ||
-                      coffee.regions.length > 0) && (
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-label uppercase tracking-widest font-bold text-muted-foreground">
-                          Origin
-                        </span>
-                        <span
-                          className="text-body font-medium text-foreground truncate"
-                          title={[
-                            ...coffee.estates.map((e) => e.name),
-                            ...coffee.regions
-                              .map((r) => r.display_name)
-                              .filter(Boolean),
-                          ].join(", ")}
-                        >
-                          {[
-                            coffee.estates[0]?.name,
-                            coffee.regions[0]?.display_name,
-                          ]
-                            .filter(Boolean)
-                            .join(", ")}
-                          {(coffee.estates.length > 1 ||
-                            coffee.regions.length > 1) &&
-                            " + more"}
-                        </span>
-                      </div>
-                    )}
-                    {coffee.varieties && coffee.varieties.length > 0 && (
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-label uppercase tracking-widest font-bold text-muted-foreground">
-                          Variety
-                        </span>
-                        <span
-                          className="text-body font-medium text-foreground truncate"
-                          title={coffee.varieties.join(", ")}
-                        >
-                          {coffee.varieties.join(", ")}
-                        </span>
-                      </div>
-                    )}
-                    {(coffee.crop_year || coffee.harvest_window) && (
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-label uppercase tracking-widest font-bold text-muted-foreground">
-                          Harvest
-                        </span>
-                        <span className="text-body font-medium text-foreground">
-                          {coffee.crop_year} {coffee.harvest_window}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {coffee.brew_methods.length > 0 && (
-                    <div className="mt-6 md:mt-8 pt-6 border-t border-dashed border-border/40">
-                      <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
-                        <span className="text-label uppercase tracking-widest font-bold text-muted-foreground whitespace-nowrap">
-                          Best Brewed With
-                        </span>
-                        <div className="flex flex-wrap gap-2">
-                          {coffee.brew_methods.map((method) => (
-                            <span
-                              key={method.id}
-                              className="text-label px-3 py-1.5 rounded-full border border-border/60 bg-background font-medium hover:border-accent/40 transition-colors"
-                            >
-                              {method.label}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Purchase Action (Mobile) */}
-                {coffee.direct_buy_url && (
-                  <div className="lg:hidden">
-                    <Button asChild size="lg" className="w-full hover-lift">
+                <Cluster gap="3">
+                  <Button
+                    size="lg"
+                    className="shadow-xl bg-primary hover:scale-[1.02] transition-transform min-w-[160px]"
+                    onClick={handleScrollToRating}
+                  >
+                    Rate this coffee
+                  </Button>
+                  {coffee.direct_buy_url && (
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      asChild
+                      className="text-muted-foreground min-w-[160px]"
+                    >
                       <a
                         href={coffee.direct_buy_url}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Icon name="ShoppingCart" size={18} className="mr-2" />
-                        Buy Now
-                        <Icon name="ArrowRight" size={14} className="ml-2" />
+                        Buy from roaster
                       </a>
                     </Button>
-                  </div>
-                )}
-              </Stack>
-            </div>
-          </div>
-
-          {/* Story Section - Full Width Subsection */}
-          {(coffee.description_md ||
-            coffee.summary.seo_desc ||
-            (coffee.tags && coffee.tags.length > 0)) && (
-            <Section
-              spacing="default"
-              contained={false}
-              className="border-t border-border/60 bg-muted/5"
-            >
-              <Stack gap="6">
-                <div>
-                  <div className="inline-flex items-center gap-4 mb-3">
-                    <span className="h-px w-6 bg-accent/40" />
-                    <span className="text-overline text-muted-foreground tracking-[0.2em]">
-                      As per the Roaster
-                    </span>
-                    <span className="h-px w-6 bg-accent/40" />
-                  </div>
-                  <h2 className="text-title text-balance leading-tight font-serif italic">
-                    The Story of{" "}
-                    <span className="text-accent">this Coffee.</span>
-                  </h2>
-                </div>
-                {coffee.description_md ? (
-                  <Prose className="max-w-none">
-                    <p className="text-body-large text-muted-foreground font-serif leading-relaxed whitespace-pre-line italic opacity-90">
-                      {coffee.description_md}
-                    </p>
-                  </Prose>
-                ) : (
-                  <p className="text-body text-muted-foreground leading-relaxed">
-                    {coffee.summary.seo_desc}
-                  </p>
-                )}
-
-                {/* Tags */}
-                {coffee.tags && coffee.tags.length > 0 && (
-                  <div className="flex flex-col gap-1">
-                    <span className="text-label text-muted-foreground uppercase tracking-widest font-bold">
-                      Tags
-                    </span>
-                    <TagList>
-                      {coffee.tags.slice(0, 8).map((tag, index) => (
-                        <Tag
-                          key={index}
-                          variant="outline"
-                          className="text-label"
-                        >
-                          {tag}
-                        </Tag>
-                      ))}
-                    </TagList>
-                  </div>
-                )}
-              </Stack>
-            </Section>
-          )}
-
-          {/* Sensory & Pricing Section - 2 Column */}
-          <Section
-            spacing="default"
-            contained={false}
-            className="border-t border-border/60"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-20 items-start">
-              {/* Left Column: Sensory Profile */}
-              <div className="flex flex-col">
-                <CoffeeSensoryProfile
-                  coffee={coffee}
-                  className="border-t-0 py-0 md:py-0 lg:py-0"
-                />
+                  )}
+                </Cluster>
               </div>
+            </Stack>
+          </header>
 
-              {/* Right Column: Pricing & Variants */}
-              <div className="flex flex-col">
-                {coffee.variants.length > 0 && (
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
+            <TabsList className="mb-6 bg-muted/20 p-1 rounded-full w-fit">
+              <TabsTrigger value="overview" className="rounded-full px-6">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="details" className="rounded-full px-6">
+                Details
+              </TabsTrigger>
+              <TabsTrigger value="flavor" className="rounded-full px-6">
+                Flavor
+              </TabsTrigger>
+              <TabsTrigger value="pricing" className="rounded-full px-6">
+                Pricing
+              </TabsTrigger>
+            </TabsList>
+
+            {/* 🟦 OVERVIEW TAB (CORE EXPERIENCE) */}
+            <TabsContent value="overview">
+              <Stack gap="4" className="max-w-4xl">
+                {/* Hero: Coffee Image + Stats + Buy */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                  <div className="w-full max-w-sm mx-auto md:ml-auto">
+                    <CoffeeImageCarousel
+                      images={coffee.images}
+                      coffeeName={coffee.name}
+                      className="rounded-3xl"
+                    />
+                  </div>
+
+                  <Stack gap="6">
+                    {stats &&
+                    stats.review_count !== null &&
+                    stats.review_count > 0 ? (
+                      <Cluster gap="4" align="center">
+                        <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 text-amber-600 rounded-full border border-amber-500/20">
+                          <Icon
+                            name="Star"
+                            size={16}
+                            className="fill-amber-500"
+                          />
+                          <span className="text-heading font-bold">
+                            {stats.avg_rating?.toFixed(1)}
+                          </span>
+                        </div>
+                        <span className="text-body-muted">
+                          {stats.review_count}{" "}
+                          {stats.review_count === 1 ? "person" : "people"} rated
+                          this coffee
+                        </span>
+                      </Cluster>
+                    ) : (
+                      <span className="text-body-muted italic">
+                        No community ratings yet
+                      </span>
+                    )}
+
+                    {coffee.summary.min_price_in_stock && (
+                      <div>
+                        <p className="text-body-muted">Starting at</p>
+                        <p className="text-heading font-bold text-foreground">
+                          ₹{coffee.summary.min_price_in_stock}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* At a Glance - Quick Details */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border/20">
+                      {coffee.roast_level && (
+                        <Stack gap="1">
+                          <span className="text-label">Roast</span>
+                          <span className="font-medium">
+                            {coffee.roast_level_raw || coffee.roast_level}
+                          </span>
+                        </Stack>
+                      )}
+                      {coffee.process && (
+                        <Stack gap="1">
+                          <span className="text-label">Process</span>
+                          <span className="font-medium">
+                            {coffee.process_raw || coffee.process}
+                          </span>
+                        </Stack>
+                      )}
+                      {coffee.regions.length > 0 && (
+                        <Stack gap="1">
+                          <span className="text-label">
+                            Region{coffee.regions.length > 1 ? "s" : ""}
+                          </span>
+                          <span className="font-medium">
+                            {coffee.regions
+                              .map(
+                                (region) =>
+                                  region.display_name ||
+                                  [
+                                    region.country,
+                                    region.state,
+                                    region.subregion,
+                                  ]
+                                    .filter(Boolean)
+                                    .join(", ") ||
+                                  region.subregion
+                              )
+                              .join(", ")}
+                          </span>
+                        </Stack>
+                      )}
+                      {coffee.estates.length > 0 && (
+                        <Stack gap="1">
+                          <span className="text-label">
+                            Estate{coffee.estates.length > 1 ? "s" : ""}
+                          </span>
+                          <span className="font-medium">
+                            {coffee.estates
+                              .map((estate) => estate.name)
+                              .join(", ")}
+                          </span>
+                        </Stack>
+                      )}
+                    </div>
+                  </Stack>
+                </div>
+              </Stack>
+            </TabsContent>
+
+            {/* 🟨 DETAILS TAB (Origin + Production Info) */}
+            <TabsContent value="details">
+              <Stack gap="6" className="max-w-4xl">
+                {coffee.description_md && (
+                  <Stack gap="4">
+                    <div className="inline-flex items-center gap-4 mb-2">
+                      <span className="h-px w-8 bg-accent/60" />
+                      <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                        Coffee Story
+                      </span>
+                    </div>
+                    <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                      About this{" "}
+                      <span className="text-accent italic">coffee</span>
+                    </h2>
+                    <Prose className="max-w-none">
+                      <p className="whitespace-pre-line text-body-large text-muted-foreground/80 leading-relaxed">
+                        {coffee.description_md}
+                      </p>
+                    </Prose>
+                  </Stack>
+                )}
+
+                <div className="border-t border-border/20 pt-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <Stack gap="6">
+                      <Stack gap="1">
+                        <span className="text-label uppercase tracking-widest font-bold">
+                          Region / Estate
+                        </span>
+                        <span className="text-body font-medium">
+                          {[
+                            ...coffee.estates.map((e) => e.name),
+                            ...coffee.regions
+                              .map((r) => r.display_name)
+                              .filter(Boolean),
+                          ].join(", ") || "—"}
+                        </span>
+                      </Stack>
+                      {coffee.varieties && coffee.varieties.length > 0 && (
+                        <Stack gap="1">
+                          <span className="text-label uppercase tracking-widest font-bold">
+                            Variety
+                          </span>
+                          <span className="text-body font-medium">
+                            {coffee.varieties.join(", ")}
+                          </span>
+                        </Stack>
+                      )}
+                    </Stack>
+
+                    <Stack gap="6">
+                      {coffee.roast_level && (
+                        <Stack gap="1">
+                          <span className="text-label uppercase tracking-widest font-bold">
+                            Roast Level
+                          </span>
+                          <span className="text-body font-medium">
+                            {coffee.roast_level_raw || coffee.roast_level}
+                          </span>
+                        </Stack>
+                      )}
+                      <Stack gap="1">
+                        <span className="text-label uppercase tracking-widest font-bold">
+                          Processing details
+                        </span>
+                        <span className="text-body font-medium">
+                          {coffee.process_raw || coffee.process || "—"}
+                        </span>
+                      </Stack>
+                      {coffee.bean_species && (
+                        <Stack gap="1">
+                          <span className="text-label uppercase tracking-widest font-bold">
+                            Species
+                          </span>
+                          <span className="text-body font-medium">
+                            {coffee.bean_species}
+                          </span>
+                        </Stack>
+                      )}
+                      {coffee.crop_year && (
+                        <Stack gap="1">
+                          <span className="text-label uppercase tracking-widest font-bold">
+                            Crop Year
+                          </span>
+                          <span className="text-body font-medium">
+                            {coffee.crop_year}
+                          </span>
+                        </Stack>
+                      )}
+                      {coffee.harvest_window && (
+                        <Stack gap="1">
+                          <span className="text-label uppercase tracking-widest font-bold">
+                            Harvest
+                          </span>
+                          <span className="text-body font-medium">
+                            {coffee.harvest_window}
+                          </span>
+                        </Stack>
+                      )}
+                    </Stack>
+                  </div>
+                </div>
+
+                {/* Tags and Badges */}
+                {(coffee.decaf ||
+                  coffee.is_limited ||
+                  (coffee.tags && coffee.tags.length > 0)) && (
+                  <div className="border-t border-border/20 pt-8">
+                    <Stack gap="4">
+                      <div className="inline-flex items-center gap-4 mb-3">
+                        <span className="h-px w-8 bg-accent/60" />
+                        <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                          Roaster's Classification
+                        </span>
+                      </div>
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-2">
+                        Tags
+                      </h2>
+                      <TagList>
+                        {coffee.decaf && <Tag variant="filled">Decaf</Tag>}
+                        {coffee.is_limited && (
+                          <Tag variant="filled">Limited</Tag>
+                        )}
+                        {coffee.tags &&
+                          coffee.tags.map((tag, index) => (
+                            <Tag key={index} variant="outline">
+                              {tag}
+                            </Tag>
+                          ))}
+                      </TagList>
+                    </Stack>
+                  </div>
+                )}
+              </Stack>
+            </TabsContent>
+
+            {/* 🟥 FLAVOR TAB */}
+            <TabsContent value="flavor">
+              <Stack gap="6" className="max-w-4xl">
+                <CoffeeSensoryProfile coffee={coffee} className="border-0" />
+
+                <div className="border-t border-border/20 pt-8">
                   <Stack gap="6">
                     <div>
                       <div className="inline-flex items-center gap-4 mb-3">
                         <span className="h-px w-8 bg-accent/60" />
-                        <span className="text-overline text-muted-foreground tracking-[0.2em]">
-                          Purchase Options
+                        <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                          Roaster's Take
                         </span>
                       </div>
-                      <h2 className="text-title text-balance leading-[1.1] tracking-tight font-serif italic">
-                        Pricing & <span className="text-accent">Variants.</span>
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-2">
+                        Tasting{" "}
+                        <span className="text-accent italic">Notes</span>
                       </h2>
+                      <p className="text-caption text-muted-foreground">
+                        Original tasting notes from {coffee.roaster?.name}
+                      </p>
                     </div>
 
-                    {/* Quick CTA Row */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 md:p-6 rounded-2xl bg-accent/5 border border-accent/10">
-                      <Stack gap="1">
-                        <span className="text-label text-muted-foreground uppercase tracking-widest">
-                          Starting From
-                        </span>
-                        <span className="text-heading font-serif italic text-accent">
-                          {formatPrice(minPrice || 0)}
-                        </span>
-                      </Stack>
-                      {coffee.direct_buy_url && (
-                        <Button
-                          asChild
-                          size="lg"
-                          className="shadow-lg hover-lift h-12 px-6 w-full sm:w-auto"
-                        >
-                          <a
-                            href={coffee.direct_buy_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center"
+                    {coffee.flavor_notes.length > 0 ? (
+                      <div className="flex flex-wrap ">
+                        {coffee.flavor_notes.map((note) => (
+                          <div
+                            key={note.id}
+                            className="px-4 py-2 rounded-full border border-border/40 bg-muted/20 text-body font-medium text-muted-foreground"
                           >
-                            Get This Coffee
-                            <Icon
-                              name="ArrowRight"
-                              size={16}
-                              className="ml-2"
-                            />
-                          </a>
-                        </Button>
-                      )}
-                    </div>
-
-                    {/* Weight Options List */}
-                    <Stack gap="3">
-                      <span className="text-label text-muted-foreground uppercase tracking-widest font-bold">
-                        Available Weights
-                      </span>
-                      <div className="grid grid-cols-1 gap-2.5">
-                        {Object.entries(variantsByWeight)
-                          .sort(([a], [b]) => Number(a) - Number(b))
-                          .map(([weight, variants]) => {
-                            const prices = variants
-                              .map((v) => v.price_current)
-                              .filter((p): p is number => p !== null);
-                            const minPrice =
-                              prices.length > 0 ? Math.min(...prices) : null;
-
-                            return (
-                              <div
-                                key={weight}
-                                className="flex items-center justify-between p-4 rounded-xl border border-border/60 bg-card hover:border-accent/40 hover:bg-card/50 transition-all duration-200"
-                              >
-                                <div className="flex items-center gap-3">
-                                  <div className="h-8 w-8 rounded-full bg-muted/50 border border-border/40 flex items-center justify-center">
-                                    <Icon
-                                      name="Handbag"
-                                      size={14}
-                                      className="text-muted-foreground"
-                                    />
-                                  </div>
-                                  <span className="text-body font-medium text-foreground">
-                                    {Number(weight) >= 1000
-                                      ? `${Number(weight) / 1000}kg`
-                                      : `${weight}g`}
-                                  </span>
-                                </div>
-                                <div className="flex flex-col items-end gap-0.5">
-                                  <span className="text-body font-bold text-accent">
-                                    {minPrice ? formatPrice(minPrice) : "N/A"}
-                                  </span>
-                                  {Number(weight) === 250 &&
-                                    coffee.summary.best_normalized_250g && (
-                                      <span className="text-label text-muted-foreground">
-                                        Best Value
-                                      </span>
-                                    )}
-                                </div>
-                              </div>
-                            );
-                          })}
+                            {note.label}
+                          </div>
+                        ))}
                       </div>
-                    </Stack>
+                    ) : (
+                      <p className="italic text-muted-foreground">
+                        No tasting notes cataloged
+                      </p>
+                    )}
                   </Stack>
-                )}
-              </div>
-            </div>
-          </Section>
+                </div>
+              </Stack>
+            </TabsContent>
 
-          {/* Reviews Section */}
-          <Section
-            spacing="default"
-            contained={false}
-            className="border-t border-border/60"
+            {/* 💰 PRICING TAB */}
+            <TabsContent value="pricing">
+              <Stack gap="6" className="max-w-4xl">
+                <Stack gap="4">
+                  <div className="inline-flex items-center gap-4 mb-2">
+                    <span className="h-px w-8 bg-accent/60" />
+                    <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                      Available Options
+                    </span>
+                  </div>
+                  <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-4">
+                    Pricing &{" "}
+                    <span className="text-accent italic">Availability</span>
+                  </h2>
+
+                  {coffee.variants.length > 0 ? (
+                    <CoffeePricingTable variants={coffee.variants} />
+                  ) : (
+                    <p className="text-body-muted italic">
+                      No pricing information available
+                    </p>
+                  )}
+                </Stack>
+              </Stack>
+            </TabsContent>
+          </Tabs>
+
+          {/* Rating Section - Always visible after tabs */}
+          <div
+            id="rating-section"
+            className="scroll-mt-8 mt-12 border-t border-border/20 pt-12 max-w-4xl"
           >
-            <ReviewSection entityType="coffee" entityId={coffee.id} />
+            <Stack gap="4">
+              <ReviewStats stats={stats || null} />
+              <div className="surface-2 rounded-3xl p-8 border border-accent/20">
+                <QuickRating
+                  entityType="coffee"
+                  entityId={coffee.id}
+                  variant="inline"
+                />
+              </div>
+            </Stack>
+          </div>
+          {/* Community Reviews */}
+          {reviews && reviews.length > 0 && (
+            <Section
+              contained={false}
+              spacing="tight"
+              className="border-t border-border/20 pt-8"
+            >
+              <ReviewList entityType="coffee" reviews={reviews.slice(0, 10)} />
+            </Section>
+          )}
+          {/* Similar Coffees */}
+          <Section
+            contained={false}
+            spacing="tight"
+            className="border-t border-border/20 pt-8"
+          >
+            <SimilarCoffees coffee={coffee} />
           </Section>
-        </div>
+        </Stack>
       </PageShell>
     </div>
   );

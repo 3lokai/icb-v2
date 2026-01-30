@@ -27,6 +27,9 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
   const searchParams = useSearchParams();
   const { signIn, signUp, signInWithOAuth } = useAuth();
 
+  // Get the return URL from search params (where user came from)
+  const returnTo = searchParams.get("from") || "/dashboard";
+
   // Get initial error from URL params
   const getInitialError = () => {
     const errorParam = searchParams.get("error");
@@ -87,8 +90,8 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
       );
 
       if (!signInError) {
-        // Success - redirect to dashboard
-        router.push("/dashboard");
+        // Success - redirect to return URL or dashboard
+        router.push(returnTo);
         return;
       }
 
@@ -141,8 +144,8 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
         }
       }
 
-      // Redirect to dashboard
-      router.push("/dashboard");
+      // Redirect to return URL or dashboard
+      router.push(returnTo);
     } catch {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
@@ -153,7 +156,8 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
   const handleOAuth = async (provider: "google" | "facebook") => {
     setIsLoading(true);
     setError(null);
-    const { error } = await signInWithOAuth(provider);
+    // Pass the return URL to OAuth so user is redirected back after auth
+    const { error } = await signInWithOAuth(provider, returnTo);
     if (error) {
       setError(`Failed to sign in with ${provider}. Please try again.`);
       setIsLoading(false);
@@ -179,62 +183,6 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
               {error}
             </div>
           )}
-
-          {isLoading && isAttemptingSignUp && !error && (
-            <div className="bg-muted text-muted-foreground rounded-md border p-3 text-caption">
-              Account not found. Creating a new account...
-            </div>
-          )}
-
-          <Stack gap="4">
-            <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
-            </Field>
-
-            <Field>
-              <div className="flex items-center">
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Link
-                  href="/auth/forgot-password"
-                  className="ml-auto text-caption underline-offset-4 hover:underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input
-                id="password"
-                type="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-              />
-              <FieldDescription>
-                Must be at least 8 characters long.
-              </FieldDescription>
-            </Field>
-
-            <Field>
-              <Button type="submit" disabled={isLoading} className="w-full">
-                {isLoading && isAttemptingSignUp
-                  ? "Creating account..."
-                  : isLoading
-                    ? "Signing in..."
-                    : isAttemptingSignUp
-                      ? "Create Account"
-                      : "Continue"}
-              </Button>
-            </Field>
-          </Stack>
-
-          <FieldSeparator>Or continue with</FieldSeparator>
 
           <Field>
             <div className="flex flex-col gap-3">
@@ -288,6 +236,62 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
               </Button>
             </div>
           </Field>
+
+          <FieldSeparator>Or continue with email</FieldSeparator>
+
+          {isLoading && isAttemptingSignUp && !error && (
+            <div className="bg-muted text-muted-foreground rounded-md border p-3 text-caption">
+              Account not found. Creating a new account...
+            </div>
+          )}
+
+          <Stack gap="4">
+            <Field>
+              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+            </Field>
+
+            <Field>
+              <div className="flex items-center">
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <Link
+                  href="/auth/forgot-password"
+                  className="ml-auto text-caption underline-offset-4 hover:underline"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+              <FieldDescription>
+                Must be at least 8 characters long.
+              </FieldDescription>
+            </Field>
+
+            <Field>
+              <Button type="submit" disabled={isLoading} className="w-full">
+                {isLoading && isAttemptingSignUp
+                  ? "Creating account..."
+                  : isLoading
+                    ? "Signing in..."
+                    : isAttemptingSignUp
+                      ? "Create Account"
+                      : "Continue with Email"}
+              </Button>
+            </Field>
+          </Stack>
 
           <div className="text-caption text-center mt-4">
             By continuing, you agree to our{" "}

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import { buildRoasterQueryString } from "@/lib/filters/roaster-url";
 import { queryKeys } from "@/lib/query-keys";
 import type {
@@ -32,7 +32,7 @@ async function fetchRoastersFromAPI(
 /**
  * TanStack Query hook for fetching roasters
  * @param params - Object containing filters, page, limit, sort
- * @param initialData - Optional initial data for SSR hydration
+ * @param options - Optional TanStack Query options
  */
 export function useRoasters(
   params: {
@@ -41,13 +41,16 @@ export function useRoasters(
     limit: number;
     sort: RoasterSort;
   },
-  initialData?: RoasterListResponse
+  options?: Omit<
+    UseQueryOptions<RoasterListResponse, Error>,
+    "queryKey" | "queryFn"
+  >
 ) {
   const { filters, page, limit, sort } = params;
   return useQuery({
     queryKey: queryKeys.roasters.list(filters, page, limit, sort),
     queryFn: () => fetchRoastersFromAPI(filters, page, limit, sort),
-    placeholderData: initialData,
     staleTime: 60 * 1000, // 1 minute
+    ...options,
   });
 }

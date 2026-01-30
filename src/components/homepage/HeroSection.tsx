@@ -1,84 +1,40 @@
 // Server component for optimal LCP
-import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/common/Icon";
 import { HeroHeading } from "./HeroHeading";
 import { HeroVideoBackground } from "./HeroVideoBackground";
 
-// Dynamically import HeroSearch - client component will handle SearchProvider context
+// Dynamic import for client-side search component (code splitting)
 const HeroSearch = dynamic(() =>
-  import("./HeroSearch").then((mod) => ({
-    default: mod.HeroSearch,
-  }))
+  import("./HeroSearch").then((mod) => ({ default: mod.HeroSearch }))
+);
+
+// Dynamic import for client-side CTA buttons
+const HeroCTAs = dynamic(() =>
+  import("./HeroCTAs").then((mod) => ({ default: mod.HeroCTAs }))
 );
 
 export default function HeroSection() {
   return (
-    <section className="relative flex min-h-[80vh] items-center justify-center overflow-x-hidden pb-8">
+    <section className="relative flex min-h-[100dvh] items-center justify-start overflow-x-hidden pb-12 pt-16 px-6 sm:px-12 md:px-24">
       {/* Background Video - Client component for lazy loading */}
       <HeroVideoBackground />
 
-      {/* Overlay */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
+      {/* Overlay - Refined for dark video with left-anchored focus */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-l from-black/80 via-black/40 to-black/60" />
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_20%_50%,rgba(0,0,0,0.3)_0%,transparent_70%)]" />
 
-      {/* Main content container */}
-      <div className="hero-content">
+      {/* Main content container - Left aligned */}
+      <div className="hero-content relative z-10 text-left w-full max-w-2xl">
         <Stack gap="8">
           {/* Server-rendered heading for optimal LCP */}
-          <HeroHeading />
+          <HeroHeading rightAligned={false} />
 
-          {/* Search section - Client component for interactivity, deferred for LCP */}
-          <div className="hero-search-deferred">
-            <HeroSearch />
-          </div>
+          {/* Client-side search component - dynamically loaded */}
+          <HeroSearch />
 
-          {/* CTA Buttons - Server-rendered */}
-          <Stack gap="8" className="animate-fade-in-scale delay-300">
-            <Cluster gap="4" align="center" className="justify-center">
-              <Button
-                asChild
-                className="hover-lift px-8"
-                variant="default"
-                size="lg"
-              >
-                <Link href="/coffees">
-                  <Icon className="mr-2" name="Coffee" size={18} />
-                  Explore Coffees
-                </Link>
-              </Button>
-              <Button
-                asChild
-                className="hover-lift px-8 whitespace-nowrap"
-                variant="secondary"
-                size="lg"
-              >
-                <Link href="/roasters">
-                  <Icon className="mr-2" name="Storefront" size={18} />
-                  Meet Roasters
-                </Link>
-              </Button>
-            </Cluster>
-
-            {/* Editorial Footer */}
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-4">
-              <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-[0.2em] font-medium">
-                <span className="h-1 w-1 rounded-full bg-accent/60" />
-                Updated Regularly
-              </div>
-              <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-[0.2em] font-medium">
-                <span className="h-1 w-1 rounded-full bg-accent/60" />
-                Manually Reviewed
-              </div>
-              <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-[0.2em] font-medium">
-                <span className="h-1 w-1 rounded-full bg-accent/60" />
-                Community Driven
-                <span className="h-1 w-1 rounded-full bg-accent/60" />
-              </div>
-            </div>
-          </Stack>
+          {/* CTA Buttons - Client-side for search interaction */}
+          <HeroCTAs />
         </Stack>
       </div>
     </section>

@@ -240,8 +240,7 @@ export async function createReview(
         return {
           success: false,
           error: "ANON_LIMIT_REACHED",
-          data: { limit: 3, current: currentCount },
-        } as unknown as ActionResult<{ id: string; review_count: number }>;
+        };
       }
     }
 

@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useQuery } from "@tanstack/react-query";
-import { useUpdatePrivacySettings } from "@/hooks/use-profile";
+import { useProfile, useUpdatePrivacySettings } from "@/hooks/use-profile";
 import { Button } from "@/components/ui/button";
 import {
   FieldDescription,
@@ -19,7 +18,6 @@ import { Rule } from "@/components/primitives/rule";
 import { privacySettingsSchema } from "@/lib/validations/profile";
 import type { PrivacySettingsFormData } from "@/lib/validations/profile";
 import type { PrivateProfileDTO } from "@/data/user-dto";
-import { queryKeys } from "@/lib/query-keys";
 import {
   Dialog,
   DialogContent,
@@ -39,12 +37,8 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
   const router = useRouter();
   const updatePrivacy = useUpdatePrivacySettings();
 
-  // Use TanStack Query with initialData to avoid refetching
-  const { data: profile } = useQuery({
-    queryKey: queryKeys.profile.current,
-    initialData: initialProfile,
-    staleTime: 5 * 60 * 1000,
-  });
+  // Use hook with server-fetched initialData
+  const { data: profile } = useProfile(initialProfile);
 
   const [formData, setFormData] = useState<Partial<PrivacySettingsFormData>>({
     isPublicProfile: true,
