@@ -3,6 +3,7 @@ import type {
   CoffeeStatusEnum,
   ProcessEnum,
   RoastLevelEnum,
+  SpeciesEnum,
 } from "@/types/db-enums";
 
 /**
@@ -142,21 +143,57 @@ export function parseCoffeeSearchParams(searchParams: URLSearchParams): {
     filters.status = statuses;
   }
 
+  const beanSpecies = parseEnumArray<SpeciesEnum>(
+    searchParams.get("beanSpecies")
+  );
+  if (beanSpecies) {
+    filters.bean_species = beanSpecies;
+  }
+
   const flavorKeys = parseStringArray(searchParams.get("flavorKeys"));
   if (flavorKeys) {
     filters.flavor_keys = flavorKeys;
   }
 
+  // Canonical flavors - prefer slugs, fallback to IDs for backward compatibility
+  const canonFlavorSlugs = parseStringArray(searchParams.get("flavors"));
+  if (canonFlavorSlugs) {
+    filters.canon_flavor_slugs = canonFlavorSlugs;
+  }
+  // Backward compatibility: also support old canonFlavorIds param
+  const canonFlavorIds = parseStringArray(searchParams.get("canonFlavorIds"));
+  if (canonFlavorIds) {
+    filters.canon_flavor_node_ids = canonFlavorIds;
+  }
+
+  // Roasters - prefer slugs, fallback to IDs for backward compatibility
+  const roasterSlugs = parseStringArray(searchParams.get("roasters"));
+  if (roasterSlugs) {
+    filters.roaster_slugs = roasterSlugs;
+  }
+  // Backward compatibility: also support old roasterIds param
   const roasterIds = parseStringArray(searchParams.get("roasterIds"));
   if (roasterIds) {
     filters.roaster_ids = roasterIds;
   }
 
+  // Regions - prefer slugs, fallback to IDs for backward compatibility
+  const regionSlugs = parseStringArray(searchParams.get("regions"));
+  if (regionSlugs) {
+    filters.region_slugs = regionSlugs;
+  }
+  // Backward compatibility: also support old regionIds param
   const regionIds = parseStringArray(searchParams.get("regionIds"));
   if (regionIds) {
     filters.region_ids = regionIds;
   }
 
+  // Estates - prefer keys, fallback to IDs for backward compatibility
+  const estateKeys = parseStringArray(searchParams.get("estates"));
+  if (estateKeys) {
+    filters.estate_keys = estateKeys;
+  }
+  // Backward compatibility: also support old estateIds param
   const estateIds = parseStringArray(searchParams.get("estateIds"));
   if (estateIds) {
     filters.estate_ids = estateIds;
@@ -179,6 +216,18 @@ export function parseCoffeeSearchParams(searchParams: URLSearchParams): {
 
   if (parseBooleanFlag(searchParams, "has250gOnly")) {
     filters.has_250g_only = true;
+  }
+
+  if (parseBooleanFlag(searchParams, "limitedOnly")) {
+    filters.limited_only = true;
+  }
+
+  if (parseBooleanFlag(searchParams, "decafOnly")) {
+    filters.decaf_only = true;
+  }
+
+  if (parseBooleanFlag(searchParams, "hasSensoryOnly")) {
+    filters.has_sensory_only = true;
   }
 
   // Numeric filters
@@ -283,16 +332,22 @@ export function buildCoffeeQueryString(
   addArrayFilter(params, "roastLevels", filters.roast_levels);
   addArrayFilter(params, "processes", filters.processes);
   addArrayFilter(params, "statuses", filters.status);
-  addArrayFilter(params, "flavorKeys", filters.flavor_keys);
-  addArrayFilter(params, "roasterIds", filters.roaster_ids);
-  addArrayFilter(params, "regionIds", filters.region_ids);
-  addArrayFilter(params, "estateIds", filters.estate_ids);
+  addArrayFilter(params, "beanSpecies", filters.bean_species);
+  addArrayFilter(params, "flavorKeys", filters.flavor_keys); // Legacy
+  // Use slug-based params for human-readable URLs
+  addArrayFilter(params, "flavors", filters.canon_flavor_slugs);
+  addArrayFilter(params, "roasters", filters.roaster_slugs);
+  addArrayFilter(params, "regions", filters.region_slugs);
+  addArrayFilter(params, "estates", filters.estate_keys);
   addArrayFilter(params, "brewMethodIds", filters.brew_method_ids);
   addArrayFilter(params, "coffeeIds", filters.coffee_ids);
 
   // Boolean flags
   addBooleanFlag(params, "inStockOnly", filters.in_stock_only);
   addBooleanFlag(params, "has250gOnly", filters.has_250g_only);
+  addBooleanFlag(params, "limitedOnly", filters.limited_only);
+  addBooleanFlag(params, "decafOnly", filters.decaf_only);
+  addBooleanFlag(params, "hasSensoryOnly", filters.has_sensory_only);
 
   // Numeric filters
   addNumericFilter(params, "minPrice", filters.min_price);

@@ -1,63 +1,75 @@
-@layer components {
-  /* Layout & Spacing */
-  .container-default {
-    @apply w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
-  }
+@layer components;
 
-  .section-spacing {
-    @apply py-16 md:py-24 lg:py-32;
-  }
-
-  .section-spacing-tight {
-    @apply py-12 md:py-16 lg:py-24;
-  }
-
-  .section-spacing-loose {
-    @apply py-24 md:py-32 lg:py-48;
-  }
-
-  .stack-xs {
-    @apply flex flex-col gap-2;
-  }
-
-  .stack-sm {
-    @apply flex flex-col gap-3;
-  }
-
-  .stack-md {
-    @apply flex flex-col gap-6;
-  }
-
-  .stack-lg {
-    @apply flex flex-col gap-10;
-  }
-
-  .grid-cards {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
-  }
-
-  .card-padding {
-    @apply p-4 md:p-6;
-  }
-
-  .flex-between {
-    @apply flex justify-between items-center;
-  }
-
-  .flex-center {
-    @apply flex justify-center items-center;
-  }
-
-  /* Image hover effects - Subtle only */
-  .image-hover-zoom {
-    @apply overflow-hidden;
-  }
-
-  .image-hover-zoom img {
-    @apply transition-transform duration-700 ease-out;
-  }
-
-  .image-hover-zoom:hover img {
-    @apply scale-105;
-  }
+/* Layout & Spacing */
+.container-default {
+  @apply w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
 }
+
+.section-spacing {
+  @apply py-16 md:py-24 lg:py-32;
+}
+
+/* Product density: default for app screens */
+.section-spacing-tight {
+  @apply py-8 md:py-12 lg:py-16;
+}
+
+.section-spacing-loose {
+  @apply py-24 md:py-32 lg:py-48;
+}
+
+.stack-xs {
+  @apply flex flex-col gap-2;
+}
+
+.stack-sm {
+  @apply flex flex-col gap-3;
+}
+
+.stack-md {
+  @apply flex flex-col gap-6;
+}
+
+.stack-lg {
+  @apply flex flex-col gap-10;
+}
+
+/* Editorial Grid (Spacious) */
+.grid-cards {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+/* Product Grid (Dense - Future use for streams) */
+.grid-cards-dense {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6;
+}
+
+.card-padding {
+  @apply p-4 md:p-6;
+}
+
+.card-padding-compact {
+  @apply p-3 md:p-4;
+}
+
+.flex-between {
+  @apply flex justify-between items-center;
+}
+
+.flex-center {
+  @apply flex justify-center items-center;
+}
+
+/* Image hover effects - Subtle only */
+.image-hover-zoom {
+  @apply overflow-hidden;
+}
+
+.image-hover-zoom img {
+  @apply transition-transform duration-700 ease-out;
+}
+
+.image-hover-zoom:hover img {
+  @apply scale-105;
+}
+

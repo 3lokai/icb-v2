@@ -95,12 +95,18 @@ export const auth = {
     return supabase.auth.onAuthStateChange(callback);
   },
 
-  async signInWithOAuth(provider: "google" | "facebook") {
+  async signInWithOAuth(provider: "google" | "facebook", returnTo?: string) {
     const supabase = createBrowserClient();
-    const redirectTo =
+    // Build callback URL with optional next parameter for post-auth redirect
+    const baseCallback =
       typeof window !== "undefined"
         ? `${window.location.origin}/auth/callback`
         : "/auth/callback";
+    // Append the return URL as 'next' param so callback knows where to redirect
+    const redirectTo =
+      returnTo && returnTo !== "/dashboard"
+        ? `${baseCallback}?next=${encodeURIComponent(returnTo)}`
+        : baseCallback;
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {

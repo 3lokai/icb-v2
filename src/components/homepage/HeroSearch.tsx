@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 import { Icon } from "@/components/common/Icon";
-import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -132,7 +131,7 @@ export function HeroSearch() {
   }, [showResults]);
 
   return (
-    <div className="mx-auto max-w-2xl animate-fade-in-scale delay-300">
+    <div className="w-full animate-fade-in-scale delay-300">
       <Stack gap="6">
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-4 z-10 flex items-center">
@@ -147,7 +146,7 @@ export function HeroSearch() {
               }
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Which coffee do you want to try next?"
+            placeholder="Find your brew | Search by name, roast, region or flavor"
             ref={inputRef}
             type="text"
             value={searchQuery}
@@ -268,36 +267,6 @@ export function HeroSearch() {
             </div>
           )}
         </div>
-
-        {/* Popular searches */}
-        <Cluster gap="3" align="center" className="justify-center">
-          <span className="text-micro font-bold uppercase tracking-widest text-white/60">
-            Trending:
-          </span>
-          {[
-            "Monsooned Malabar",
-            "Chikmagalur",
-            "Natural Process",
-            "Blue Tokai",
-          ].map((term) => (
-            <Button
-              key={term}
-              onClick={() => openSearch(term)}
-              size="sm"
-              variant="chip"
-              className="bg-white/5 border-white/10 hover:bg-white/15 hover:border-white/20"
-            >
-              <span className="flex items-center gap-1.5">
-                {term}
-                <Icon
-                  className="opacity-40 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100"
-                  name="ArrowRight"
-                  size={12}
-                />
-              </span>
-            </Button>
-          ))}
-        </Cluster>
       </Stack>
     </div>
   );

@@ -75,7 +75,7 @@ function ModalRenderer() {
     <>
       {modals.map((modal) => (
         <Dialog key={modal.id} onOpenChange={() => closeModal(modal.id)} open>
-          <DialogContent>
+          <DialogContent className="surface-2">
             {modal.component ? (
               <modal.component
                 {...modal.props}

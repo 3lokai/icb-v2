@@ -33,8 +33,8 @@ const Banner1 = ({
   return (
     <section className="w-full border-b bg-background px-4 py-3">
       <div className="flex items-center justify-between gap-2">
-        <div className="flex-1 text-center">
-          <span className="text-sm">
+        <div className="group min-w-0 flex-1 overflow-hidden">
+          <span className="inline-block whitespace-nowrap text-sm [--duration:20s] animate-marquee-single">
             {title && <span className="font-medium">{title} </span>}
             <span className="text-muted-foreground">
               {description}

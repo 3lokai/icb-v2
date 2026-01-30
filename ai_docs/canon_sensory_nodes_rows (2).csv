@@ -1,0 +1,308 @@
+id,family,subcategory,descriptor,node_type,slug,is_indian,description,notes,sort_order,created_at,updated_at
+2543581f-77c1-4b46-a411-40ec911c329c,Floral,Light Floral,Marigold,flavor,marigold,false,,,1000,2026-01-22 14:04:17.059316+00,2026-01-22 14:04:17.059316+00
+1379e758-99d1-42c2-a248-dfe7e29880ea,Floral,Light Floral,Magnolia,flavor,magnolia,false,,,1000,2026-01-22 14:03:27.87593+00,2026-01-22 14:03:27.87593+00
+803d2a93-8000-448a-b3a0-792bf55b1cd7,Earthy / Savory,Woody,Oak,flavor,oak,false,,,1000,2026-01-22 14:00:56.016373+00,2026-01-22 14:00:56.016373+00
+b8586277-0b34-4778-8d3f-0cdfa95edd77,Earthy / Savory,Woody,Cedar,flavor,cedar,false,,,1000,2026-01-22 14:00:24.426316+00,2026-01-22 14:00:24.426316+00
+0b4553cb-8d67-4597-afe6-8fd03a135baa,Fruity,Pome,Hawthorn,flavor,hawthorn,false,,,1000,2026-01-22 13:58:03.419875+00,2026-01-22 13:58:03.419875+00
+302ac832-58ad-4365-94f5-565ae0ccbe01,Earthy / Savory,Earthy,Tobacco,flavor,tobacco,false,,,1000,2026-01-22 13:33:52.525644+00,2026-01-22 13:33:52.525644+00
+f5a4a2b1-3b49-4539-956a-0abe3f2dfdb3,Fruity,Pome,Pomegranate,flavor,pomegranate,false,,,1000,2026-01-22 13:30:30.253734+00,2026-01-22 13:30:30.253734+00
+2a773108-3fdf-43fe-8a29-01fde526dffd,Roasted / Smoky,Roast,Malt,flavor,malt,false,,,1000,2026-01-22 13:28:39.190103+00,2026-01-22 13:28:39.190103+00
+75fbd8e3-e3aa-4f4c-8b8d-f50feec2f41e,Floral,Light Floral,Honeysuckle,flavor,honeysuckle,false,,,1000,2026-01-22 13:26:55.217165+00,2026-01-22 13:26:55.217165+00
+f3cd097f-b736-4afe-9869-3850a3a0c42a,Herbal / Vegetal,Herbs,Juniper,flavor,juniper,false,,,1000,2026-01-22 13:26:22.413266+00,2026-01-22 13:26:22.413266+00
+eecc55db-98ac-4294-90c2-8567ac02a1b2,Fruity,Dried Fruit,Jujube,flavor,jujube,false,,,1000,2026-01-22 13:25:47.524346+00,2026-01-22 13:25:47.524346+00
+1104ad89-b43b-42d7-a6c0-84cd2459cf8a,Herbal / Vegetal,Indian Herbs,Mahua,flavor,mahua,true,,,1000,2026-01-22 13:25:19.739717+00,2026-01-22 13:25:19.739717+00
+612d68d9-a856-4e1c-9a9c-f78d5c2bc2bb,Fruity,Tropical,Persimmon,flavor,persimmon,false,,,1000,2026-01-22 13:23:39.247565+00,2026-01-22 13:23:39.247565+00
+c9dbfbbe-2a3d-4d47-ab56-d129e25d27d1,Fruity,Citrus,Mandarin,flavor,mandarin,false,,,1000,2026-01-22 13:05:31.713659+00,2026-01-22 13:05:31.713659+00
+a6024702-7183-4ff8-a874-756fac037b55,Fruity,Tropical Fruit,Dragon Fruit,flavor,dragon-fruit,false,,,1000,2026-01-22 12:43:27.366501+00,2026-01-22 12:43:27.366501+00
+ae4b5a83-2190-4872-8874-db7105b825b4,Fruity,Tropical Fruit,Star Fruit,flavor,star-fruit,false,,,1000,2026-01-22 12:42:43.157434+00,2026-01-22 12:42:43.157434+00
+6146d5ba-bc1e-4a02-b171-11785eb90773,Floral,Light Floral,Coffee Blossom,flavor,coffee-blossom,false,,,1000,2026-01-22 12:26:37.294695+00,2026-01-22 12:26:37.294695+00
+14fae658-0d08-4677-98d3-a2056232b154,Floral,Light Floral,Plum Blossom,flavor,plum-blossom,false,,,1000,2026-01-22 12:26:00.491955+00,2026-01-22 12:26:00.491955+00
+14582a36-0be5-4eed-ba5c-c328aeb15055,Floral,Citrus Floral,Citrus Blossom,flavor,citrus-blossom,false,,,1000,2026-01-22 12:25:05.947073+00,2026-01-22 12:25:05.947073+00
+7e3f5867-2998-495c-bb88-93784c3502da,Fruity,Melon,Melon,flavor,melon,false,,,1000,2026-01-22 11:09:42.030845+00,2026-01-22 11:09:42.030845+00
+e870ab93-f077-4904-8657-7a86fd613824,Herbal / Vegetal,Green / Vegetal,Fig Leaf,flavor,fig-leaf,false,,,1000,2026-01-22 10:48:18.715077+00,2026-01-22 10:48:18.715077+00
+894cb4df-144f-4916-bea6-fc9217d57cf6,Fermented / Funky,Alcoholic,Bourbon,flavor,bourbon,false,,,1000,2026-01-22 10:15:42.040713+00,2026-01-22 10:15:42.040713+00
+73e4ea88-0bc5-4ab1-9dc6-a94484579ff5,Attributes,General,Alcohol,attribute,alcohol,false,,,1000,2026-01-22 10:13:43.484128+00,2026-01-22 10:13:43.484128+00
+3072fb91-582c-443d-a1c8-619f5705632c,Spice,Sweet Spice,Vanilla,flavor,vanilla,false,,,1000,2026-01-22 09:41:37.539341+00,2026-01-22 09:41:37.539341+00
+14eaedad-7984-4cf3-ac54-d1cc6afd190e,Dairy,Fresh Dairy,Butter,flavor,butter,false,,,1000,2026-01-22 09:35:16.776151+00,2026-01-22 09:35:16.776151+00
+56778431-692d-4d68-88f8-abd594deb938,Dairy,Fresh Dairy,Cream,flavor,cream,false,,,1000,2026-01-22 09:34:43.629837+00,2026-01-22 09:34:43.629837+00
+ce4c41fe-47c8-4bc7-9b51-a2e4b3adb776,Fruity,Tropical,Mangosteen,flavor,mangosteen,false,,,1000,2026-01-22 09:26:28.130304+00,2026-01-22 09:26:28.130304+00
+704a61ff-e255-44bb-aa18-c49d8ea93352,Fruity,Tropical,Green Mango,flavor,green-mango,false,,,1000,2026-01-22 09:25:39.015532+00,2026-01-22 09:25:39.015532+00
+dd2bbaa4-be46-4db6-b751-b46d460c66e1,Fruity,Berries,Black Currant,flavor,black-currant,false,,,1000,2026-01-22 09:16:11.966718+00,2026-01-22 09:16:11.966718+00
+f50192fb-2db7-4d39-b170-2b944c7b248f,Fruity,Berries,Grape,flavor,grape,false,,,1000,2026-01-22 09:05:28.311108+00,2026-01-22 09:05:28.311108+00
+f1386cc0-2dca-4a2e-be18-c4f65ff6cbcc,Fruity,Citrus,Bergamot,flavor,bergamot,false,,,1000,2026-01-22 08:56:53.589083+00,2026-01-22 08:56:53.589083+00
+9348f480-f5ac-426d-8217-bf893efb24ea,Fruity,Tropical,Rose Apple,flavor,rose-apple,false,,,1000,2026-01-22 08:47:28.373657+00,2026-01-22 08:47:28.373657+00
+eb94211a-d97e-41fe-91fc-4acd80394e18,Spice,Warm Spice,Bayleaf,flavor,bayleaf,false,,,1000,2026-01-22 08:33:37.02872+00,2026-01-22 08:33:37.02872+00
+f8d7e905-1e51-45e5-a717-ec6a36b2f153,Fruity,Citrus,Finger Lime,flavor,finger-lime,false,,,1000,2026-01-22 07:47:29.784541+00,2026-01-22 07:47:29.784541+00
+fa8a45c4-4c68-4428-abf0-ead28577fb44,Fruity,Citrus,Orange Marmalade,flavor,orange-marmalade,false,,,1000,2026-01-22 07:46:02.756954+00,2026-01-22 07:46:02.756954+00
+4288822b-5423-44d2-b241-a52a4a81616d,Floral,Citrus Floral,Orange Blossoms,flavor,orange-blossoms,false,,,1000,2026-01-22 07:45:19.678241+00,2026-01-22 07:45:19.678241+00
+60f08fce-713b-49c7-a31b-2c0ae8cfdc78,Fruity,Dried Fruit,Dried Berries,flavor,dried-berries,false,,,1000,2026-01-22 07:28:09.664837+00,2026-01-22 07:28:09.664837+00
+49607fa4-8a91-4016-99a4-d9cefa5c072a,Fermented / Funky,Fermented,Fermented Fruit,flavor,fermented-fruit,false,,,1000,2026-01-22 07:10:16.049422+00,2026-01-22 07:10:16.049422+00
+0f8e3fc5-765c-4c0e-8c33-3f8be2bad8f4,Fermented / Funky,Fermented,Aged,flavor,aged,false,,,1000,2026-01-22 06:47:36.308631+00,2026-01-22 06:47:36.308631+00
+f41e9fb6-82ed-42bc-9f3c-24e2191c0762,Spice,General,Spice,flavor,spice,false,,,1000,2026-01-21 21:24:28.293865+00,2026-01-21 21:24:28.293865+00
+4fa6c363-6295-4c66-afb1-1f5fac19f5db,Sweet,Breakfast / Cereals,Corn,flavor,corn,false,,,1000,2026-01-21 21:21:52.543827+00,2026-01-21 21:21:52.543827+00
+5497743a-9207-4150-a190-4f19b33c67bf,Nutty,Nuts,Nuts,flavor,nuts,false,,,1000,2026-01-21 21:20:47.632687+00,2026-01-21 21:20:47.632687+00
+326679a3-fa25-4f82-a71d-cd314c318ed2,Sweet,Confectionary,Biscuit / Cookie,flavor,biscuit-cookie,false,,,1000,2026-01-21 21:18:53.469054+00,2026-01-21 21:18:53.469054+00
+6e3e1cac-b6bb-4117-8a10-cf6b912cd78d,Sweet,Honey,Honey,flavor,honey,false,,,1000,2026-01-21 21:17:52.557229+00,2026-01-21 21:17:52.557229+00
+98bf4c2d-ef90-4e6e-9fd6-7e86c9213c9b,Chocolatey / Cocoa,Chocolate,Chocolate,flavor,chocolate,false,,,1000,2026-01-21 21:14:09.092139+00,2026-01-21 21:14:09.092139+00
+63e2ef1b-2e4f-4695-b446-73a18fa61019,Fruity,Citrus,Citrus,flavor,citrus,false,,,1000,2026-01-21 21:09:44.940568+00,2026-01-21 21:09:44.940568+00
+288bc54b-c606-4dd4-bcac-1b49f5378575,Caramelized / Brown Sugar,Caramel,Caramel,flavor,caramel,false,,,1000,2026-01-21 21:08:03.409151+00,2026-01-21 21:08:03.409151+00
+7a7ae924-c101-4f71-81c0-bfff28035baf,Sweet,Sugar,Brown Sugar,flavor,brown-sugar,false,,,1000,2026-01-21 21:05:19.776337+00,2026-01-21 21:05:19.776337+00
+3df7f488-774a-4427-92d0-36a980429d7c,Sweet,Confectionary,Bubblegum,flavor,bubblegum,false,,,1000,2026-01-21 20:17:31.48378+00,2026-01-21 20:17:31.48378+00
+b7b5680a-a553-4538-9837-263c9be87876,Fermented / Funky,Fermented Fruit,Fermented Berry,flavor,fermented-berry,false,,,1000,2026-01-21 20:14:01.637404+00,2026-01-21 20:14:01.637404+00
+ef93afd0-9a32-403c-b770-969a7b3231f3,Fruity,Berries,Cranberry Jam,flavor,cranberry-jam,false,,,1000,2026-01-21 20:12:50.832318+00,2026-01-21 20:12:50.832318+00
+7b4df812-3ad5-4695-a9e1-df6dd3fb7971,Fruity,Berries,Açaí,flavor,acai,false,,,1000,2026-01-21 20:02:45.60206+00,2026-01-21 20:02:45.60206+00
+d2bac640-c509-4c44-adbd-a292433de48f,Fruity,Berries,Berry Compote,flavor,berry-compote,false,,,1000,2026-01-21 20:00:16.171742+00,2026-01-21 20:00:16.171742+00
+0bbedbfc-fec3-4fe3-ab76-1752401a5bb5,Fruity,General,Jam / Preserve,flavor,berry-jam,false,,,1000,2026-01-21 19:59:22.320654+00,2026-01-21 19:59:22.320654+00
+adb66717-6d10-411a-8289-24c06619281e,Fruity,Berries,Gooseberry,flavor,gooseberry,false,,,1000,2026-01-21 19:50:51.976231+00,2026-01-21 19:50:51.976231+00
+1313dfd3-f7ec-46b7-9859-e9ec83cd83aa,Fruity,Dried Fruit,Dried Fruit,flavor,dried-fruit,false,,,1000,2026-01-21 15:26:57.059902+00,2026-01-21 15:26:57.059902+00
+d8edaaf1-1954-4b4f-b56d-163e8b405cee,Fruity,Dried Fruit,Dried Apricot,flavor,dried-apricot,false,,,1000,2026-01-21 15:24:27.227606+00,2026-01-21 15:24:27.227606+00
+9decc12b-01b5-4b74-9e10-b6a3766cd767,Fruity,Tropical,Passion Fruit,flavor,passion-fruit,false,,,1000,2026-01-21 15:19:22.296686+00,2026-01-21 15:19:22.296686+00
+fd50eb7b-3152-46c5-8e24-131455221393,Fruity,Berries,Berry (Fresh),flavor,berry-fresh,false,,,1000,2026-01-21 13:56:59.446755+00,2026-01-21 13:56:59.446755+00
+010e2c97-d9c7-499c-9dfc-99a93e3c5d99,Floral,Indian Floral,Parijaat,flavor,parijaat,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+02707a8b-0372-4ffe-bd81-cef1114480d1,Roasted / Smoky,Smoky,Campfire,flavor,campfire,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+032e4a87-afd7-4bc3-ab8d-a4573c3dfded,Sweet,Jaggery,Date Jaggery,flavor,date-jaggery,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+05708d12-d95f-4c3f-b7f8-bcfbfe6b6a79,Caramelized / Brown Sugar,Indian Sweets,Gulkand,flavor,gulkand,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+07606c85-9a87-4b84-88e9-be8e8ab40437,Roasted / Smoky,Indian,Roasted Ragi,flavor,roasted-ragi,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+0858a797-7955-40a3-8555-cdcfe1a14853,Herbal / Vegetal,Herbs,Rosemary,flavor,rosemary,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+088316c9-be7f-494a-a5be-021847e9964e,Fruity,Stone Fruit,Cherry,flavor,cherry,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+09205d92-b23e-4ccd-8706-003792b22dca,Spice,Indian Masala,Turmeric,flavor,turmeric,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+0a1aa5a3-a936-4ffd-a768-9ee711367d38,Defects / Off-notes,Fermentation Faults,Butyric,defect,butyric,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+0a2ad3d1-7faf-44a7-a04b-ba52ab6ce543,Fruity,Citrus,Lemon,flavor,lemon,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+0c539341-8c62-4fd0-bf06-cba1a5bdee46,Fruity,Indian / Regional Fruits,Bael,flavor,bael,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+0cbb5aee-1e80-488a-a112-c49abbb4ea4a,Nutty,Indian,Coconut,flavor,coconut,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+1012e7a2-fd06-439e-941c-306229907c9c,Earthy / Savory,Indian Savory,Sambar Powder,flavor,sambar-powder,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+10d15620-1c3d-4d96-a5da-ae926b81b4b8,Sweet,Confectionary,Candy,flavor,candy,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+114a4fd8-f2d9-409d-bdf3-b26c589d0c79,Other / Structural,Other,Metallic,flavor,metallic,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+11706d04-b9a8-4cb0-922f-cc84f1ca9005,Herbal / Vegetal,Herbs,Thyme,flavor,thyme,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+1830a508-6899-444a-a8c9-68c4bc092fe9,Roasted / Smoky,Smoky,Ash,flavor,ash,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+1c254167-593a-4fdc-9b6f-1186e21c813e,Herbal / Vegetal,Green / Vegetal,Bell Pepper,flavor,bell-pepper,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+1e217291-f721-4276-aefa-bbea38029994,Attributes,Acidity,High Acidity,attribute,high-acidity,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+1ffce3ab-df55-491c-bec2-98a7710f492c,Fruity,Berries,Raspberry,flavor,raspberry,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+219ffb05-5e4d-4c70-8746-2495c710eabb,Fruity,Tropical,Sitaphal (Custard Apple),flavor,sitaphal-custard-apple,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+22b4ac44-4620-47eb-80d7-99d043e77e67,Attributes,Bitterness,High Bitterness,attribute,high-bitterness,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+22c99be3-74b0-41c1-8929-e02f54627844,Attributes,Mouthfeel,Oily Mouthfeel,attribute,oily-mouthfeel,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+25af32ac-4dfa-4b69-abd6-d32a98f29792,Defects / Off-notes,Chemical,Iodine,defect,iodine,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+26cb0279-1dcc-4de3-871a-bae6ab8b8387,Sweet,Syrupy,Treacle,flavor,treacle,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+270159b8-2bf2-4f2f-acf9-3b7f1edbcad2,Roasted / Smoky,Roast,Char,flavor,char,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+27b618f7-54ee-42c2-a24d-e66891a6c10b,Caramelized / Brown Sugar,Indian Sweets,Puran Poli Filling,flavor,puran-poli-filling,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+285d9edc-a3c2-41c8-b3bf-882c5b1cea98,Spice,Indian Masala,Asafoetida (Hing),flavor,asafoetida-hing,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+28e949e2-25cc-4cac-a1f5-4c1a5a175fdc,Sweet,Syrupy,Maple Syrup,flavor,maple-syrup,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+28f1a0d6-db32-4892-98ce-0e371cc4d604,Spice,Sweet Spice,Anise,flavor,anise,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+2ac19e04-c787-4afe-90db-e8a4d2ae8466,Attributes,Finish,Lingering Finish,attribute,lingering-finish,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+2cfe082d-1c7b-45c1-a52a-d4ce22e06a60,Other / Structural,Other,Chalky,flavor,chalky,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+2d18ceb3-e03c-43dc-8dc0-fdee3af13bf2,Nutty,Nuts,Pecan,flavor,pecan,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+2d7ec3d0-fb80-492c-afc3-9f0a93a04935,Fruity,Dried Fruit,Sultana,flavor,sultana,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+2ee47e55-8479-4c75-9c57-f70f3335d268,Sweet,Honey,Wild Honey,flavor,wild-honey,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+30706046-ab4c-4f60-9c6b-11dba63e87b9,Spice,Sweet Spice,Fennel,flavor,fennel,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+31b6ed5e-1793-4d1a-8797-aee16cbae7aa,Fruity,Tropical,Guava,flavor,guava,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+31fc7d09-e123-4a3b-b4c2-cc0fd290cd06,Defects / Off-notes,Chemical,Plastic,defect,plastic,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+323d26f5-dd4f-4d80-ac90-4b73407b56a0,Nutty,Seeds,Sesame,flavor,sesame,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3283678a-d61f-44ed-8768-a87abbb227f3,Fermented / Funky,Lactic,Curd,flavor,curd,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3376497c-3abe-44df-8d6f-9a1abdd8b74b,Floral,Indian Floral,Mogra,flavor,mogra,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3376d4ab-b3bd-4b75-9a31-97c9466375f6,Nutty,Indian,Roasted Chana,flavor,roasted-chana,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+34c4f0c1-2738-48be-b1fe-064e139743a6,Sweet,Jaggery,Palm Jaggery,flavor,palm-jaggery,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+37243273-7c89-4001-b222-e96289cf5376,Spice,Warm Spice,Allspice,flavor,allspice,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+38515320-7015-4381-a7b3-56ac5fa4fdd4,Herbal / Vegetal,Green / Vegetal,Peas,flavor,peas,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+38e89b48-b20d-4355-896c-b6ca3504fff1,Fruity,Citrus,Pomelo,flavor,pomelo,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3a0b2a2c-1299-4fe7-8023-9af6095174fc,Spice,Sweet Spice,Cardamom,flavor,cardamom,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3a7846b2-8faf-4572-b602-00928c99682a,Fruity,Indian / Regional Fruits,Kokum,flavor,kokum,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3a977953-14cb-4d29-a080-768a61f70f7d,Chocolatey / Cocoa,Chocolate,Milk Chocolate,flavor,milk-chocolate,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3b687aea-e99a-42ff-b5a8-e7e81342e283,Defects / Off-notes,Chemical,Medicinal,defect,medicinal,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3c24d689-ffbf-4287-bfd3-0b636242dccc,Herbal / Vegetal,Green / Vegetal,Oolong,flavor,oolong,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3c329475-c05e-4872-8965-f1ba3077561b,Fruity,Indian / Regional Fruits,Karonda,flavor,karonda,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3c8cc3a9-39f2-4af6-9c45-225b19af5b49,Attributes,Bitterness,Low Bitterness,attribute,low-bitterness,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3e261c3f-a7bb-4bf3-8071-ff25f4805923,Herbal / Vegetal,Green / Vegetal,Spinach,flavor,spinach,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3e817c40-0843-48e8-8bf4-a55141d53998,Fruity,Stone Fruit,Nectarine,flavor,nectarine,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+3f5689be-c370-4abd-87ce-998631fe8131,Fruity,Pome,Apple,flavor,apple,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+4086f7ee-b207-4b59-8ffd-f88ef059a0eb,Nutty,Nuts,Hazelnut,flavor,hazelnut,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+40e7d1d3-429d-48de-86dc-59a60f3735a2,Attributes,Sweetness,Balanced Sweetness,attribute,balanced-sweetness,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+42f42a01-72d9-40d8-a6e5-a883550b36c1,Sweet,Confectionary,Lollipop,flavor,lollipop,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+439b7979-afeb-4e5b-be20-d71dfbce9489,Fruity,Tropical,Litchi,flavor,litchi,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+43fc522b-31f2-4fff-8c2f-3a06edb7aaa6,Sweet,Sugar,Cane Sugar,flavor,cane-sugar,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+44b556fb-eafe-46ad-ae59-9d12f21a3644,Fruity,Dried Fruit,Prunes,flavor,prunes,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+4575fe6f-e646-461e-8dce-25c99696d503,Fruity,Pome,Pear,flavor,pear,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+469fbaa0-9ae4-4430-b5b7-0a9d21924df3,Attributes,Acidity,Low Acidity,attribute,low-acidity,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+46cb6724-0ba5-4821-bb0a-f2fed5793508,Sweet,Sugar,Raw Sugar,flavor,raw-sugar,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+4732d711-79dc-4544-a08a-7e950466ebdf,Roasted / Smoky,Indian,Filter Coffee Decoction,flavor,filter-coffee-decoction,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+4825a36d-d19d-466e-a2ee-037e32b17b46,Sweet,Jaggery,Cane Jaggery,flavor,cane-jaggery,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+49cda5f7-541b-4474-9757-37db52345957,Nutty,Nuts,Walnut,flavor,walnut,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+4a751fe8-7a47-43b1-9cf6-e2b654c46c4c,Fruity,Berries,Mulberry,flavor,mulberry,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+4ba7261a-1887-4acc-8467-7994d9aa16c7,Fruity,Berries,Cranberry,flavor,cranberry,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+4c3ece9c-45b6-4618-a3d8-1e1083bd5bd0,Floral,Light Floral,Lavender,flavor,lavender,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+4cd6dd98-b91b-4bc6-ba1b-97b99dbf9c93,Floral,Light Floral,Hibiscus,flavor,hibiscus,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+4dc2bb0d-5499-4d1a-8a97-739944fcef03,Floral,Light Floral,Floral,flavor,floral,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+51bcfd94-8e32-4c66-9cac-f80864bfbe9f,Other / Structural,Other,Astringent,flavor,astringent,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+526aa56a-e131-4930-8915-aa48d3c72064,Fruity,Citrus,Yuzu,flavor,yuzu,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+52cab32b-82a7-49e7-a077-488894bef9d6,Herbal / Vegetal,Green / Vegetal,Grass,flavor,grass,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5386db74-4610-45a2-8898-3ae29c8c3f6d,Defects / Off-notes,Fermentation Faults,Isovaleric,defect,isovaleric,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+53eb4292-bb45-4248-8a07-022dfb8e5245,Roasted / Smoky,Smoky,Wood Smoke,flavor,wood-smoke,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+53f9dd33-0921-45e3-8be9-f42ada844717,Fruity,Stone Fruit,Aloo Bukhara,flavor,aloo-bukhara,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+549a2255-20dc-4276-883f-3fc16949f9cf,Fermented / Funky,Alcoholic,Winey,flavor,winey,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+56335eab-4f34-4e3b-9b60-7887b9cb18a8,Caramelized / Brown Sugar,Toffee / Butterscotch,Toffee Sauce,flavor,toffee-sauce,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5682297a-71cc-405c-bc5c-0200d9bd1d11,Attributes,Body,Medium Body,attribute,medium-body,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5721cf4c-9d1f-46da-8fee-9762cb1b75c7,Nutty,Indian,Dry Coconut,flavor,dry-coconut,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5a5d9bd4-097a-4879-bb63-3aa3e0441183,Chocolatey / Cocoa,Cocoa,Cacao Nibs,flavor,cacao-nibs,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5b6a3824-3da1-4f38-a777-353ff240591c,Herbal / Vegetal,Indian Herbs,Lemongrass,flavor,lemongrass,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5ccb6abc-47db-46a6-bf4c-d1d88b88128a,Fruity,General,Fruity,flavor,fruity,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5d2a3466-1a0d-447c-98f4-f8e998e4e1a9,Chocolatey / Cocoa,Cocoa,Cocoa Powder,flavor,cocoa-powder,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5fa8268b-c6c9-4222-b7f8-2d6583cfb694,Fruity,Berries,Strawberry,flavor,strawberry,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5fc1c282-3a78-45f4-b0fd-55173f431dd7,Defects / Off-notes,Stale,Paper,defect,paper,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+5fda9180-030d-4748-a1ae-ab6602f13b05,Earthy / Savory,Savory,Seaweed,flavor,seaweed,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+60007fbc-6a7e-4b6d-8af7-b972b42b072a,Nutty,Nuts,Peanut,flavor,peanut,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+61c7eb09-0352-4c76-846a-45cb07651629,Attributes,Finish,Clean Finish,attribute,clean-finish,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+63dba01e-0f37-4fcc-9f69-52261a66c33d,Attributes,Sweetness,Mildly Sweet,attribute,mildly-sweet,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+64639573-2c33-4130-a896-192c9d83caaa,Attributes,Acidity,Balanced Acidity,attribute,balanced-acidity,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+64a1f1c4-5bd1-45c4-b428-496638987dd9,Attributes,Body,Light Body,attribute,light-body,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+6590e507-39ff-47db-b1ff-97b6f7aff197,Fruity,Stone Fruit,Apricot,flavor,apricot,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+6788dbf6-d4de-4998-b5d4-f3346f95a6d6,Roasted / Smoky,Roast,Toast,flavor,toast,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+68dab57d-a07c-4682-ba94-988c8635d713,Earthy / Savory,Savory,Miso,flavor,miso,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+6b3525a2-4aca-4ca5-adac-b3ed9bbb1200,Sweet,Honey,Forest Honey,flavor,forest-honey,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+6ba80d4c-6c95-4de1-9985-3e83b2f4e804,Attributes,Mouthfeel,Clean Mouthfeel,attribute,clean-mouthfeel,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+6e2045d4-d4ac-4498-936e-16c8b784cff6,Spice,Sweet Spice,Star Anise,flavor,star-anise,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+6ee24a72-06ee-4bff-9c32-f335d4f4e864,Fruity,Tropical,Longan,flavor,longan,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+6f92948f-1f7d-45f8-8fc7-83d230ef2680,Caramelized / Brown Sugar,Indian Sweets,Chikki,flavor,chikki,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+6f9de86c-7846-482e-b166-5f6e4a7aa984,Fruity,Melon,Watermelon,flavor,watermelon,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+70ed3af8-e0e5-4355-a078-5e052d0037fe,Roasted / Smoky,Roast,Bread Crust,flavor,bread-crust,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+70f515de-eeeb-4cc5-a169-666d8d336c3e,Nutty,Indian,Groundnut Chikki,flavor,groundnut-chikki,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+72937ec4-8440-42f4-aed7-335afb964fe3,Fruity,Dried Fruit,Kharik (Dry dates),flavor,kharik-dry-dates,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+73d7f8d0-8975-437f-bc46-a0c660f32335,Floral,Light Floral,Jasmine,flavor,jasmine,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+73ea50f9-32fa-4ad1-994b-fd7d68a43309,Nutty,Nuts,Cashew,flavor,cashew,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+741f50eb-5c15-4644-889f-be3a1fa9adf4,Attributes,Body,Syrupy Body,attribute,syrupy-body,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+75bbe726-69ac-4de7-a9f0-124acb96aee8,Chocolatey / Cocoa,Chocolate,Dark Chocolate,flavor,dark-chocolate,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+75c5f744-7510-48b3-982a-e8792ccf77a5,Earthy / Savory,Indian Savory,Rasam,flavor,rasam,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+78560ed3-25a8-4eb5-ba16-e54cbf39e586,Spice,Hot Spice,Black Pepper,flavor,black-pepper,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7a508eeb-1ee3-43a8-8f59-627e65f5238f,Caramelized / Brown Sugar,Indian Sweets,Mysore Pak,flavor,mysore-pak,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7b90feef-2e62-4146-b49d-580ed838f6ee,Herbal / Vegetal,Green / Vegetal,Black Tea,flavor,black-tea,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7c443fa1-d9d2-4e91-ae0f-fc5b9436f1b7,Sweet,Sugar,White Sugar,flavor,white-sugar,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7c55816f-9382-4712-9de2-136f65467549,Floral,Indian Floral,Temple Flower,flavor,temple-flower,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7c98a83e-7ee6-45b9-96c0-2e320388fe18,Attributes,Mouthfeel,Dry Mouthfeel,attribute,dry-mouthfeel,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7d19edc9-783e-458c-a137-80635d120065,Caramelized / Brown Sugar,Toffee / Butterscotch,Butterscotch,flavor,butterscotch,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7d2830a4-91cf-4492-8273-12c9378a77a2,Attributes,Mouthfeel,Velvety Mouthfeel,attribute,velvety-mouthfeel,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7db6ce4e-e378-4cc2-ac09-2b88c39d5a1d,Fermented / Funky,Alcoholic,Rum,flavor,rum,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7ea3d2dd-9298-4253-872c-aaa8c9bff761,Attributes,Body,Tea-like Body,attribute,tea-like-body,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7f62f532-9c57-441f-9bd0-6e3094893f42,Fermented / Funky,Fermented Fruit,Wine Gums,flavor,wine-gums,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+7fdfd58e-16c8-405c-9a75-955e078b80f8,Attributes,Mouthfeel,Juicy Mouthfeel,attribute,juicy-mouthfeel,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+8097de3c-2bf0-437c-bbc1-098c9ef24fdb,Fruity,Citrus,Lime,flavor,lime,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+8533eee9-f7f3-450c-8317-727961697c38,Fruity,Dried Fruit,Dates,flavor,dates,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+860e4060-e304-4caa-bea9-1d40939ea250,Fruity,Pome,Red Apple,flavor,red-apple,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+862a718e-6445-4db6-90c8-7eba0505659d,Earthy / Savory,Earthy,Peat,flavor,peat,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+86caef43-8ce8-4fa7-a2b1-5b0adda0bf92,Earthy / Savory,Earthy,Wet Earth,flavor,wet-earth,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+86d102cd-8ea6-4f57-bcf9-f12ee5a6a8ac,Spice,Warm Spice,Nutmeg,flavor,nutmeg,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+89130b2b-9e58-4264-bddd-28da0db5ce9d,Nutty,Nuts,Almond,flavor,almond,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+897248fe-bc52-4cc6-920d-ce6e218e2011,Fermented / Funky,Alcoholic,Whiskey,flavor,whiskey,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+8bd69dfd-c220-4929-95a8-e7cd66eaa901,Nutty,Nuts,Pistachio,flavor,pistachio,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+8c548b0e-9351-4bb3-8242-16532735707a,Sweet,Confectionary,Toffee,flavor,toffee,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+8c9e2f6f-f1ba-49eb-afdf-a44c17f26901,Caramelized / Brown Sugar,Caramel,Burnt Caramel,flavor,burnt-caramel,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+8ca4cb0d-7396-49af-b50f-2bca2be1c457,Fruity,Berries,Blackberry,flavor,blackberry,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+8d8dd0e8-e8bc-42d5-add3-169c10c074a6,Spice,Indian Masala,Ginger,flavor,ginger,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+8e5ec8f0-eef4-43f2-bcad-3e44c40a6b56,Fruity,Tropical,Papaya,flavor,papaya,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+901af839-9f59-42eb-91d7-699e13bfd94a,Sweet,Sugar,Turbinado,flavor,turbinado,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+922fc5cd-96ec-469b-862d-f3716ddbcde2,Spice,Sweet Spice,Liquorice,flavor,liquorice,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+92322f43-d586-4e74-9b9b-8d4d03a0dcbd,Defects / Off-notes,Stale,Cardboard,defect,cardboard,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+924a2ab9-30be-40dc-8ffa-e5fcdce58ec1,Herbal / Vegetal,Indian Herbs,Neem,flavor,neem,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+932953f8-ab8b-40c9-afa8-316c58c8689e,Attributes,Mouthfeel,Creamy Mouthfeel,attribute,creamy-mouthfeel,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+949aeb57-e2f2-4bea-be36-aa62b9d228e6,Herbal / Vegetal,Indian Herbs,Curry Leaf,flavor,curry-leaf,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+9792c7c7-f285-431e-8726-6cff5d492732,Fruity,Indian / Regional Fruits,Wood Apple,flavor,wood-apple,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+98a987ff-73f4-404b-a8a6-c4d310ebe3ba,Attributes,Body,Full Body,attribute,full-body,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+98da72fb-6278-4a5a-9772-88896f4f553a,Attributes,Sweetness,Very Sweet,attribute,very-sweet,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+990650d7-c690-4920-a487-1b46ecd6f69c,Defects / Off-notes,Fermentation Faults,Skunky,defect,skunky,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+9bde975a-4aad-4418-a311-8831762861c3,Sweet,Sugar,Demerara,flavor,demerara,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+9cac3461-34b5-407c-9f78-df045e7d4b87,Fruity,Tropical,Rambutan,flavor,rambutan,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+9de6d9ea-b498-4c3e-ac51-c33b6a3830a8,Defects / Off-notes,Fermentation Faults,Vinegar,defect,vinegar,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+9ed05b82-bca9-44c0-a218-9327114e0db3,Caramelized / Brown Sugar,Caramel,Caramel Sauce,flavor,caramel-sauce,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+9f18518e-c5da-4daf-b3e1-8aae9625c64a,Fruity,Citrus,Blood Orange,flavor,blood-orange,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+9f3b5e44-6eb6-4062-a1f1-466df07c9e75,Attributes,Mouthfeel,Silky Mouthfeel,attribute,silky-mouthfeel,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+a21bd8d8-bb9d-4015-88a5-0b831fcf15fb,Roasted / Smoky,Roast,Burnt Toast,flavor,burnt-toast,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+a39ce795-75c1-430b-8066-349f6a132a2e,Other / Structural,Other,Saline,flavor,saline,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+a4355a5f-923c-4bcb-b5f3-0cb15e92554e,Herbal / Vegetal,Herbs,Basil,flavor,basil,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+a6e73a36-3356-4c1d-879e-7d16d592dd22,Floral,Light Floral,Chamomile,flavor,chamomile,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+a7e4aba8-9014-4665-8e37-9cf497aedc6c,Spice,Hot Spice,White Pepper,flavor,white-pepper,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+a82d8b45-ec62-4bee-a49d-e0e8a1a57ff2,Fruity,Dried Fruit,Raisin,flavor,raisin,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+a8cdeb08-7b14-42b2-a218-10d83747c821,Nutty,Seeds,Pumpkin Seed,flavor,pumpkin-seed,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+aa0344c9-c98d-4202-b2a3-3f5d6996042b,Spice,Indian Masala,Fenugreek,flavor,fenugreek,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+aa5cf5c5-de80-42ae-b244-8c6bc7ed55e2,Sweet,Confectionary,Orange Candy,flavor,orange-candy,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ab169bdc-1404-4421-9daa-1d020240a119,Fruity,General,Red Fruit,flavor,red-fruit,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ac8e6dd4-0709-4240-aa4b-3f058ee7388a,Fruity,Pome,Green Apple,flavor,green-apple,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+adffb649-ed61-4054-86b1-89cd05dd54b4,Fruity,Pome,Quince,flavor,quince,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b058af98-bd9a-4038-8b9c-f6ef0a37b41c,Attributes,Finish,Short Finish,attribute,short-finish,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b1904203-5a3b-4210-bf21-a4b8ec594bce,Fruity,Citrus,Malta Orange,flavor,malta-orange,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b2abf86f-397b-4077-afd5-2bc57d727f34,Defects / Off-notes,Chemical,Phenolic,defect,phenolic,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b2f039cd-b0d3-43b0-bbb8-cc35f41434a6,Fermented / Funky,Alcoholic,Brandy,flavor,brandy,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b36a6bd9-e005-470c-bae0-7475e0156848,Fermented / Funky,Fermented Fruit,Overripe Mango,flavor,overripe-mango,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b4373aea-1197-43be-9113-cbaf5f8fa711,Spice,Warm Spice,Mace,flavor,mace,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b5a8c6e4-d6ce-4011-b372-857cb7431821,Sweet,Confectionary,Barfi,flavor,barfi,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b5bd2183-aafe-4d83-bc22-2af2d1d91124,Spice,Warm Spice,Cinnamon,flavor,cinnamon,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b60c1c0e-88c7-45e6-b425-78b5da090adb,Attributes,Acidity,Bright Acidity,attribute,bright-acidity,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b695cdf8-52d5-4599-9940-7443490fb158,Spice,Indian Masala,Mustard Seed,flavor,mustard-seed,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b84b96fa-6b97-4fb6-a39f-0859ba0c82e6,Attributes,Bitterness,Mild Bitterness,attribute,mild-bitterness,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b88d28a0-bbbf-43e9-80e9-16d901aa4550,Spice,Indian Masala,Cumin,flavor,cumin,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+b8e9adaa-15b3-40a7-9fb0-24432f31f544,Chocolatey / Cocoa,Chocolate,White Chocolate,flavor,white-chocolate,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ba327af0-5369-49b1-b5f4-b3775018174e,Attributes,Finish,Long Finish,attribute,long-finish,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+bda4e9b1-691c-4dd1-a0ea-8f2eedfd20a5,Spice,Warm Spice,Clove,flavor,clove,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+be441ee7-283e-4523-93e1-ebd5003bcb83,Defects / Off-notes,Stale,Musty,defect,musty,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+bf7fc798-b77b-469f-862c-5a7b3f4b9742,Fruity,Melon,Muskmelon,flavor,muskmelon,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c018c131-f51e-4178-b8fa-344ccfbad66f,Floral,Light Floral,Buttercup,flavor,buttercup,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c02f3e1a-295d-4428-bf19-ecb12ade740e,Nutty,Nuts,Macadamia,flavor,macadamia,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c095537d-c1e9-4995-b5e7-7b7f5e93f3f8,Earthy / Savory,Earthy,Forest Floor,flavor,forest-floor,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c1c0d2f9-32a7-45b3-910c-a692ed42048f,Defects / Off-notes,Fermentation Faults,Acetic,defect,acetic,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c2410cee-a7be-4fca-b8ed-268bed06115e,Herbal / Vegetal,Herbs,Mint,flavor,mint,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c317e094-12a6-4cbd-baed-71e088bec187,Defects / Off-notes,Chemical,Rubber,defect,rubber,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c47e0944-2e19-4c87-b156-83c27dc058c0,Earthy / Savory,Savory,Broth,flavor,broth,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c5c19457-3a33-4bc0-b322-6f8b3250dc7c,Spice,Hot Spice,Long Pepper,flavor,long-pepper,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c6f9086c-4fa8-4d6b-bc48-8158173bb0b4,Earthy / Savory,Indian Savory,Tamarind,flavor,tamarind,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c8a071ae-1f6f-4425-91eb-42ffbf9a11f9,Fruity,Indian / Regional Fruits,Amla,flavor,amla,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+c9d90be4-0735-4bc9-bcd7-b6e4b75f4630,Attributes,Acidity,Mild Acidity,attribute,mild-acidity,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ca7ed2a3-9d8b-4d9c-a744-7d48a84ed3d6,Sweet,Honey,Acacia Honey,flavor,acacia-honey,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+cb85737c-7c00-499c-86aa-d6103c773ef1,Sweet,Confectionary,Peda,flavor,peda,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+cbc027fc-4dc1-4019-9a12-7ab53e944933,Fruity,Tropical,Mango,flavor,mango,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+cbdf6be7-9b7b-4ead-8075-1d597d543bc0,Earthy / Savory,Savory,Soy Sauce,flavor,soy-sauce,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ccc49f7f-204d-42eb-82da-b8c3f0b63f13,Fermented / Funky,Lactic,Yogurt,flavor,yogurt,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ce963db0-3710-4a2b-8c87-3fb5219b4e85,Sweet,Syrupy,Golden Syrup,flavor,golden-syrup,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+cf395cb6-0b71-4b50-91d1-af85034b43f9,Herbal / Vegetal,Indian Herbs,Tulsi,flavor,tulsi,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+cfbf1301-d314-483b-95b8-fedc97a098c7,Floral,Light Floral,Rose,flavor,rose,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+d2c38dea-a2a5-4c77-b1f9-4ef623160c71,Caramelized / Brown Sugar,Caramel,Light Caramel,flavor,light-caramel,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+d39475b1-9156-46d7-9910-3263e7b9fc43,Spice,Indian Masala,Chai Masala,flavor,chai-masala,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+d42e1975-494a-402b-801b-4c664a17e4bd,Fruity,Tropical,Pineapple,flavor,pineapple,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+d4482730-2656-402c-bdff-cd3844bec2fa,Fruity,Melon,Honeydew,flavor,honeydew,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+d47065a4-c795-4c82-8afb-1d19cbebe774,Fruity,Tropical,Kiwi,flavor,kiwi,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+d4bb8698-4848-4b53-ba43-bd14b17fdefe,Fruity,Tropical,Banana,flavor,banana,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+d6dff9b1-1c19-4526-b51c-95ffed565d4b,Sweet,Jaggery,Nolen Gur,flavor,nolen-gur,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+d82ab3ec-ee46-4400-b59b-48ac85cdc5a4,Chocolatey / Cocoa,Cocoa,Baking Chocolate,flavor,baking-chocolate,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+d8a614b1-964c-4a64-b6a0-257aac8d4116,Sweet,Confectionary,Lemon Candy,flavor,lemon-candy,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+da1d3036-53cd-4912-9220-59a534465ef1,Defects / Off-notes,Stale,Woody,defect,woody,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+da1dd9da-67ae-48d4-a1db-f833919441a5,Earthy / Savory,Earthy,Mushroom,flavor,mushroom,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+da7cea69-e156-47f6-afd8-e781b6ee4263,Earthy / Savory,Earthy,Soil,flavor,soil,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+dab6b227-2f4a-4678-b07c-aa6699c2dd22,Herbal / Vegetal,Green / Vegetal,Hay,flavor,hay,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+db36fc7f-2c83-493a-86b9-1925347d2581,Fruity,Stone Fruit,Plum,flavor,plum,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+db63a71a-5043-4878-895a-4f75920920c2,Sweet,Confectionary,Fudge,flavor,fudge,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+dc0a67f6-d990-4d6b-8edf-81811eb310f4,Spice,Indian Masala,Coriander Seed,flavor,coriander-seed,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+dcb27052-30c8-4ed4-af23-e9e37cce79ae,Fermented / Funky,Fermented Fruit,Overripe Banana,flavor,overripe-banana,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+dd525626-0d25-48c1-835e-ffcc5a32de2b,Attributes,Mouthfeel,Crisp Mouthfeel,attribute,crisp-mouthfeel,false,,Non-flavor sensory attribute (kept separate from aroma/flavor wheel).,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ddc68a2b-40e0-46b0-8e8e-010d63203f35,Chocolatey / Cocoa,Chocolate,Drinking Chocolate,flavor,drinking-chocolate,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+de2bdc07-40a8-44f7-8831-20a5f787980b,Fruity,Indian / Regional Fruits,Phalsa,flavor,phalsa,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+de2f0add-1257-4862-9ec9-09ee8e40aa1a,Roasted / Smoky,Indian,Roasted Rice,flavor,roasted-rice,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e1050e92-c1bf-494e-91f1-cd71a9c048c4,Fruity,Citrus,Orange,flavor,orange,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e1d5b9ad-8b6a-4a87-b011-bb9097d7d860,Fruity,Indian / Regional Fruits,Jamun,flavor,jamun,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e22ac2ce-5629-47b3-a1b2-1ff9b530ab50,Caramelized / Brown Sugar,Molasses,Molasses,flavor,molasses,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e240678a-6cfb-449b-a61e-b503a8372e38,Herbal / Vegetal,Green / Vegetal,Green Tea,flavor,green-tea,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e61dd15c-f177-4827-837c-cd40b8eeb8a0,Spice,Indian Masala,Garam Masala,flavor,garam-masala,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e6cd2866-df1c-4f68-87ab-f645534e4082,Fruity,Citrus,Grapefruit,flavor,grapefruit,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e7540c42-0816-47fc-a5bc-d1ab988932b6,Fruity,Stone Fruit,Peach,flavor,peach,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e7f842da-5a74-438f-a64e-e1156ead7bdb,Herbal / Vegetal,Indian Herbs,Betel Leaf,flavor,betel-leaf,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e8608cba-c11f-4044-80aa-24d4de75c695,Sweet,Confectionary,Cotton Candy,flavor,cotton-candy,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e91314ab-1e47-4dff-af61-0a37b5ec082f,Fruity,Berries,Blueberry,flavor,blueberry,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+e91c534b-4074-4b64-b4e8-a136e8c4205e,Earthy / Savory,Savory,Umami,flavor,umami,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ea0f1059-dc7d-4c91-b037-9ad9b6eb7b39,Spice,Hot Spice,Chilli,flavor,chilli,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ea36795e-98bc-4889-87e6-6bf2e685c514,Fruity,Dried Fruit,Fig,flavor,fig,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+eb451e75-72f9-4748-bd87-f75e63bfe4a1,Herbal / Vegetal,Herbs,Sage,flavor,sage,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ed529978-203b-4902-8420-76ab1a52cdf5,Fruity,Citrus,Mosambi,flavor,mosambi,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+eec77571-8190-47df-8acb-76eb17212cfa,Fermented / Funky,Lactic,Buttermilk,flavor,buttermilk,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+ef1e7000-a1e1-46e5-914f-316d1018f298,Sweet,Honey,White Honey,flavor,white-honey,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+f145f256-20d4-4ff3-a1a4-27b073b4b7d7,Roasted / Smoky,Smoky,Barbecue,flavor,barbecue,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+f31276f8-4ae6-45c2-81a4-8838f0bcca74,Nutty,Seeds,Sunflower Seed,flavor,sunflower-seed,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+f569961c-f63e-4863-b8c0-4d2b118a8aac,Floral,Indian Floral,Raat Rani,flavor,raat-rani,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+f9b4594f-dab8-4b47-82d7-0bf903add754,Other / Structural,Other,Mineral,flavor,mineral,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+fa0fb76a-eb16-4aa7-a0fa-172ad2fbc24c,Fruity,Tropical,Jackfruit,flavor,jackfruit,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+fbbd997b-5ecf-42a0-be26-d1078146aab2,Nutty,Seeds,Flaxseed,flavor,flaxseed,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+fc20fb14-978f-42a3-9e36-ef61536100f6,Fruity,Tropical,Sapota (Chikoo),flavor,sapota-chikoo,true,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00
+fceb432c-10c3-4384-9fa7-0505bc26e666,Caramelized / Brown Sugar,Molasses,Blackstrap,flavor,blackstrap,false,,,1000,2026-01-20 20:30:51.634543+00,2026-01-20 20:30:51.634543+00

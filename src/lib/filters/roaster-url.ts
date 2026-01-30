@@ -70,6 +70,18 @@ export function parseRoasterSearchParams(searchParams: URLSearchParams): {
     }
   }
 
+  // Roasters - prefer slugs, fallback to IDs for backward compatibility
+  const roasterSlugsParam = searchParams.get("roasters");
+  if (roasterSlugsParam) {
+    const roasterSlugs = roasterSlugsParam
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+    if (roasterSlugs.length > 0) {
+      filters.roaster_slugs = roasterSlugs;
+    }
+  }
+  // Backward compatibility: also support old roasterIds param
   const roasterIdsParam = searchParams.get("roasterIds");
   if (roasterIdsParam) {
     const roasterIds = roasterIdsParam
@@ -148,8 +160,9 @@ export function buildRoasterQueryString(
     }
   }
 
-  if (filters.roaster_ids && filters.roaster_ids.length > 0) {
-    params.set("roasterIds", filters.roaster_ids.join(","));
+  // Use slug-based param for human-readable URLs
+  if (filters.roaster_slugs && filters.roaster_slugs.length > 0) {
+    params.set("roasters", filters.roaster_slugs.join(","));
   }
 
   // Boolean flags (as "1" or omitted)

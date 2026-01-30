@@ -25,6 +25,8 @@ type NavBodyProps = {
 type NavItem = {
   name: string;
   link: string;
+  disabled?: boolean;
+  badge?: string;
   children?: NavItem[];
 };
 
@@ -145,19 +147,19 @@ const NavItemComponent = ({
   };
 
   const renderButton = () => (
-    <Link
+    <button
       aria-expanded={isDropdownOpen}
+      aria-haspopup="true"
       aria-label={`${item.name} menu`}
       className={cn(
-        "relative flex items-center gap-1 px-4 py-2 transition-colors",
+        "relative flex cursor-pointer items-center gap-1 border-0 bg-transparent px-4 py-2 font-inherit text-inherit transition-colors",
         active
           ? "font-medium text-accent-foreground"
           : "text-muted-foreground hover:text-accent-foreground"
       )}
-      href={item.link}
-      onClick={onItemClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={onLeave}
+      type="button"
     >
       {showPill && (
         <motion.div
@@ -177,7 +179,7 @@ const NavItemComponent = ({
         name="CaretDown"
         size={12}
       />
-    </Link>
+    </button>
   );
 
   const renderLink = () => (
@@ -228,6 +230,23 @@ const NavItemComponent = ({
             >
               {item.children?.map((child) => {
                 const childActive = isActive(child.link);
+
+                if (child.disabled) {
+                  return (
+                    <span
+                      className="relative flex items-center justify-between gap-2 rounded-full px-4 py-2 text-body text-muted-foreground/50 cursor-not-allowed"
+                      key={child.link}
+                    >
+                      <span className="relative z-20">{child.name}</span>
+                      {child.badge && (
+                        <span className="relative z-20 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                          {child.badge}
+                        </span>
+                      )}
+                    </span>
+                  );
+                }
+
                 return (
                   <Link
                     className={cn(
@@ -452,6 +471,23 @@ export const MobileNavDropdown = ({
           >
             {item.children?.map((child) => {
               const childActive = isActive(child.link);
+
+              if (child.disabled) {
+                return (
+                  <span
+                    className="flex items-center justify-between gap-2 text-muted-foreground/50 text-body cursor-not-allowed"
+                    key={child.link}
+                  >
+                    <span>{child.name}</span>
+                    {child.badge && (
+                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                        {child.badge}
+                      </span>
+                    )}
+                  </span>
+                );
+              }
+
               return (
                 <Link
                   className={cn(
