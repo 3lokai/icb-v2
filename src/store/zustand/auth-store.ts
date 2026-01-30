@@ -17,10 +17,7 @@ interface AuthState {
     password: string,
     metadata?: { full_name?: string }
   ) => Promise<{ error: any }>;
-  signInWithOAuth: (
-    provider: "google" | "facebook",
-    returnTo?: string
-  ) => Promise<{ error: any }>;
+  signInWithOAuth: (provider: "google" | "facebook") => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
   initialize: () => Promise<void>;
 }
@@ -68,11 +65,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     return { error };
   },
 
-  signInWithOAuth: async (
-    provider: "google" | "facebook",
-    returnTo?: string
-  ) => {
-    const { error } = await auth.signInWithOAuth(provider, returnTo);
+  signInWithOAuth: async (provider: "google" | "facebook") => {
+    const { error } = await auth.signInWithOAuth(provider);
     // OAuth redirects, so we don't need to refresh user here
     return { error };
   },

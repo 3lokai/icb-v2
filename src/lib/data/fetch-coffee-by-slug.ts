@@ -50,7 +50,6 @@ export async function fetchCoffeeBySlug(
     regionsResult,
     estatesResult,
     summaryResult,
-    canonFlavorIdsResult,
   ] = await Promise.all([
     // Fetch roaster
     supabase
@@ -110,13 +109,6 @@ export async function fetchCoffeeBySlug(
     supabase
       .from("coffee_summary")
       .select("*")
-      .eq("coffee_id", coffeeId)
-      .single(),
-
-    // Fetch canonical flavor node IDs from coffee_directory_mv for similar coffee matching
-    supabase
-      .from("coffee_directory_mv")
-      .select("canon_flavor_node_ids")
       .eq("coffee_id", coffeeId)
       .single(),
   ]);
@@ -279,10 +271,6 @@ export async function fetchCoffeeBySlug(
       })
       .filter((e): e is CoffeeEstate => e !== null) || [];
 
-  // Extract canonical flavor node IDs
-  const canonFlavorIds: string[] =
-    (canonFlavorIdsResult.data?.canon_flavor_node_ids as string[]) || [];
-
   // Transform summary data
   const summaryData = summaryResult.data;
   const summary: CoffeeSummaryData = summaryData
@@ -361,8 +349,6 @@ export async function fetchCoffeeBySlug(
     regions,
     estates,
     summary,
-    canon_flavor_node_ids:
-      canonFlavorIds.length > 0 ? canonFlavorIds : undefined,
   };
 
   return coffeeDetail;

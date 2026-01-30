@@ -119,7 +119,6 @@ export default function CoffeeImageCarousel({
                     priority={index === 0}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 800px"
                     src={processedUrl}
-                    unoptimized
                     {...(blurDataUrl && {
                       placeholder: "blur",
                       blurDataURL: blurDataUrl,
@@ -176,7 +175,6 @@ export default function CoffeeImageCarousel({
                         loading="lazy"
                         sizes="100px"
                         src={coffeeImagePresets.coffeeThumbnail(imageUrl)}
-                        unoptimized
                       />
                     </CardContent>
                   </Card>

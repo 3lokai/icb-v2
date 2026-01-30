@@ -1,27 +1,18 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  startTransition,
-} from "react";
+import { createContext, useContext } from "react";
 import { useSearch } from "@/hooks/use-search";
 
 type SearchContextType = ReturnType<typeof useSearch> & {
-  openSearch: (query?: string, ratingIntent?: boolean) => void;
-  ratingIntent: boolean;
+  openSearch: (query?: string) => void;
 };
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
   const search = useSearch();
-  const [ratingIntent, setRatingIntent] = useState(false);
 
-  const openSearch = (query?: string, ratingIntentMode = false) => {
-    setRatingIntent(ratingIntentMode);
+  const openSearch = (query?: string) => {
     search.open();
     if (query) {
       // Small delay to ensure modal is open before setting query
@@ -31,20 +22,9 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Reset rating intent when search closes
-  useEffect(() => {
-    if (!search.isOpen) {
-      // Use startTransition to mark as non-urgent update
-      startTransition(() => {
-        setRatingIntent(false);
-      });
-    }
-  }, [search.isOpen]);
-
   const value: SearchContextType = {
     ...search,
     openSearch,
-    ratingIntent,
   };
 
   return (

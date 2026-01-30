@@ -12,14 +12,13 @@ import {
 } from "@/components/ui/multi-select";
 import { Stack } from "@/components/primitives/stack";
 import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
+import { useCoffeeFilterMeta } from "@/hooks/use-coffee-filter-meta";
 import type { CoffeeFilterMeta } from "@/types/coffee-types";
 import type {
   CoffeeStatusEnum,
   ProcessEnum,
   RoastLevelEnum,
-  SpeciesEnum,
 } from "@/types/db-enums";
-import { SPECIES_LABELS } from "@/types/coffee-types";
 
 type CoffeeFilterContentProps = {
   filterMeta: CoffeeFilterMeta;
@@ -30,12 +29,12 @@ type CoffeeFilterContentProps = {
 /**
  * Coffee Filter Content Component
  * Reusable filter content used in both sidebar and mobile drawer
- * Uses static filter meta: always shows all options regardless of current selection.
+ * Uses dynamic filter counts that update based on active filters
  */
 export function CoffeeFilterContent({
   filterMeta: initialFilterMeta,
   showHeader = true,
-  isVisible: _isVisible = true,
+  isVisible = true,
 }: CoffeeFilterContentProps) {
   const { filters, updateFilters, resetFilters } = useCoffeeFilters();
 
@@ -204,8 +203,13 @@ export function CoffeeFilterContent({
     filters.max_price ?? 10000,
   ];
 
-  // Static filter meta: always show all options regardless of current selection
-  const filterMeta = initialFilterMeta;
+  // Fetch dynamic filter meta based on current filters
+  // Uses static meta as initial data, updates when filters change
+  const { data: dynamicFilterMeta, isFetching: isMetaLoading } =
+    useCoffeeFilterMeta(filters, initialFilterMeta, true, isVisible);
+
+  // Use dynamic meta if available, fallback to initial static meta
+  const filterMeta = dynamicFilterMeta || initialFilterMeta;
 
   // Transform regions to MultiSelectOption format
   const regionOptions: MultiSelectOption[] = useMemo(
@@ -237,14 +241,14 @@ export function CoffeeFilterContent({
     [filterMeta.processes]
   );
 
-  // Transform canonical flavors to MultiSelectOption format
+  // Transform flavor notes to MultiSelectOption format
   const flavorOptions: MultiSelectOption[] = useMemo(
     () =>
-      filterMeta.canonicalFlavors.map((flavor) => ({
-        value: flavor.slug, // Use slug for human-readable URLs
-        label: `${flavor.descriptor} (${flavor.count})`,
+      filterMeta.flavorNotes.map((flavor) => ({
+        value: flavor.id, // flavor_keys uses the key field, which is stored as id in our meta
+        label: `${flavor.label} (${flavor.count})`,
       })),
-    [filterMeta.canonicalFlavors]
+    [filterMeta.flavorNotes]
   );
 
   // Toggle array filter values
@@ -254,22 +258,11 @@ export function CoffeeFilterContent({
       | "processes"
       | "status"
       | "flavor_keys"
-      | "canon_flavor_slugs"
-      | "canon_flavor_node_ids"
       | "roaster_ids"
-      | "roaster_slugs"
       | "region_ids"
-      | "region_slugs"
       | "estate_ids"
-      | "estate_keys"
-      | "brew_method_ids"
-      | "bean_species",
-    value:
-      | RoastLevelEnum
-      | ProcessEnum
-      | CoffeeStatusEnum
-      | SpeciesEnum
-      | string
+      | "brew_method_ids",
+    value: RoastLevelEnum | ProcessEnum | CoffeeStatusEnum | string
   ) => {
     const current = filters[filterKey] || [];
     const newValue = current.includes(value as any)
@@ -285,16 +278,10 @@ export function CoffeeFilterContent({
       | "processes"
       | "status"
       | "flavor_keys"
-      | "canon_flavor_slugs"
-      | "canon_flavor_node_ids"
       | "roaster_ids"
-      | "roaster_slugs"
       | "region_ids"
-      | "region_slugs"
       | "estate_ids"
-      | "estate_keys"
-      | "brew_method_ids"
-      | "bean_species",
+      | "brew_method_ids",
     value: string
   ) => {
     const filterArray = filters[filterKey] as string[] | undefined;
@@ -312,8 +299,7 @@ export function CoffeeFilterContent({
       | "region_ids"
       | "estate_ids"
       | "brew_method_ids"
-      | "flavor_keys"
-      | "canon_flavor_node_ids";
+      | "flavor_keys";
     getValue: (item: T) => string;
     totalCount?: number;
   };
@@ -446,47 +432,13 @@ export function CoffeeFilterContent({
               />
               <span className="text-caption font-medium transition-colors">
                 {roast.label}{" "}
-                <span className="text-muted-foreground/50 font-normal">
+                <span
+                  className={`text-muted-foreground/50 font-normal ${
+                    isMetaLoading ? "opacity-50" : ""
+                  }`}
+                >
                   ({roast.count})
                 </span>
-              </span>
-            </label>
-          ))}
-        </Stack>
-      </Stack>
-
-      {/* Species */}
-      <Stack gap="3">
-        <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-          htmlFor="bean_species"
-        >
-          Species
-        </label>
-        <Stack gap="1" className="pr-2 custom-scrollbar max-h-48">
-          {(filterMeta.species?.length
-            ? filterMeta.species
-            : (Object.entries(SPECIES_LABELS) as [SpeciesEnum, string][]).map(
-                ([value, label]) => ({ value, label, count: 0 })
-              )
-          ).map((item) => (
-            <label
-              className="group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors hover:text-accent"
-              key={item.value}
-            >
-              <input
-                checked={isFilterSelected("bean_species", item.value)}
-                className="h-3.5 w-3.5 rounded border-border/60 text-accent focus:ring-accent/30"
-                onChange={() => toggleArrayFilter("bean_species", item.value)}
-                type="checkbox"
-              />
-              <span className="text-caption font-medium transition-colors">
-                {item.label}{" "}
-                {item.count !== undefined && item.count > 0 && (
-                  <span className="text-muted-foreground/50 font-normal">
-                    ({item.count})
-                  </span>
-                )}
               </span>
             </label>
           ))}
@@ -545,16 +497,16 @@ export function CoffeeFilterContent({
         <Stack gap="3">
           <label
             className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-            htmlFor="canon_flavor_slugs"
+            htmlFor="flavor_keys"
           >
             Flavor Profiles
           </label>
           <MultiSelect
             options={flavorOptions}
-            defaultValue={filters.canon_flavor_slugs || []}
+            defaultValue={filters.flavor_keys || []}
             onValueChange={(values) => {
               updateFilters({
-                canon_flavor_slugs: values.length > 0 ? values : undefined,
+                flavor_keys: values.length > 0 ? values : undefined,
               });
             }}
             placeholder="Select flavor profiles..."
@@ -661,7 +613,11 @@ export function CoffeeFilterContent({
                 />
                 <span className="text-caption font-medium transition-colors">
                   {status.label}{" "}
-                  <span className="text-muted-foreground/50 font-normal">
+                  <span
+                    className={`text-muted-foreground/50 font-normal ${
+                      isMetaLoading ? "opacity-50" : ""
+                    }`}
+                  >
                     ({status.count})
                   </span>
                 </span>

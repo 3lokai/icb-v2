@@ -32,7 +32,6 @@ export default function RegionCard({ region }: RegionCardProps) {
           itemProp="image"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 400px"
           src={coffeeImagePresets.regionCard(region.image_url)}
-          unoptimized
         />
 
         <div className="region-overlay" />

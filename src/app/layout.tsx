@@ -4,20 +4,29 @@ import "./globals.css";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAnalytics as NextGoogleAnalytics } from "@next/third-parties/google";
+import { CookieNotice } from "@/components/common/CookieNotice";
 import { Analytics as GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { env } from "../../env";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import dynamic from "next/dynamic";
 import StructuredData from "@/components/seo/StructuredData";
 import { Toaster } from "@/components/ui/sonner";
 import { organizationSchema, websiteSchema } from "@/lib/seo/schema";
 import { SearchProvider } from "@/providers/SearchProvider";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/Footer";
 
 // Lazy load SearchCommand to reduce initial bundle size
 // Only loads when search modal is opened (cmdk is ~50-100KB)
 // Note: No ssr: false needed - SearchCommand is already client-only
+const SearchCommand = dynamic(() =>
+  import("@/components/search/SearchCommand").then((mod) => ({
+    default: mod.SearchCommand,
+  }))
+);
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -102,7 +111,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -191,9 +200,15 @@ export default async function RootLayout({
             <AuthProvider>
               <SearchProvider>
                 <ModalProvider>
-                  {children}
-                  <GoogleAnalytics />
+                  <div className="surface-0 relative flex min-h-screen flex-col">
+                    <Header />
+                    <GoogleAnalytics />
+                    <main className="flex-1">{children}</main>
+                    <Footer />
+                  </div>
+                  <SearchCommand />
                   <Toaster />
+                  <CookieNotice />
                 </ModalProvider>
               </SearchProvider>
             </AuthProvider>

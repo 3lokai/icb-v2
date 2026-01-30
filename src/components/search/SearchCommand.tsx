@@ -34,19 +34,13 @@ export function SearchCommand() {
     open,
     close,
     setQuery,
-    ratingIntent,
   } = useSearchContext();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSelectItem = (item: SearchableItem) => {
     close();
-    // If rating intent is active and item is a coffee, append ?rate=true
-    const url =
-      ratingIntent && item.type === "coffee"
-        ? `${item.url}?rate=true`
-        : item.url;
-    router.push(url);
+    router.push(item.url);
   };
 
   // Focus input when modal opens

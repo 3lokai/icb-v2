@@ -1,9 +1,8 @@
 -- Migration: Update get_coffee_filter_meta to use coffee_directory_mv
 -- Created: 2026-01-13
--- Updated: 2026-01-15 - Added canonical flavor filtering (family/subcategory/descriptor)
 -- Description: Updates RPC function to use coffee_directory_mv materialized view
 --              Replaces EXISTS subqueries for junction tables with array operators
---              for better performance. Supports hierarchical canonical flavor filtering.
+--              for better performance
 
 -- Drop the function if it exists (in case of previous failed attempts)
 DROP FUNCTION IF EXISTS public.get_coffee_filter_meta CASCADE;
@@ -18,11 +17,6 @@ CREATE OR REPLACE FUNCTION public.get_coffee_filter_meta(
   p_estate_ids UUID[] DEFAULT NULL,
   p_brew_method_canonical_keys grind_enum[] DEFAULT NULL,
   p_flavor_keys TEXT[] DEFAULT NULL,
-  -- ✅ Canonical flavor filters (hierarchical)
-  p_canon_flavor_families TEXT[] DEFAULT NULL,
-  p_canon_flavor_subcategories TEXT[] DEFAULT NULL,
-  p_canon_flavor_node_ids UUID[] DEFAULT NULL,
-  -- Boolean and numeric filters
   p_in_stock_only BOOLEAN DEFAULT FALSE,
   p_has_250g_only BOOLEAN DEFAULT FALSE,
   p_min_price NUMERIC DEFAULT NULL,
@@ -68,14 +62,6 @@ BEGIN
       -- flavor_keys: use contains (@>) - coffee must have ALL selected flavors
       AND (p_flavor_keys IS NULL OR c.flavor_keys @> p_flavor_keys)
       
-      -- ✅ Canonical flavor filters using overlaps (&&) - coffee must have ANY match
-      -- Family level (e.g., "Fruity", "Sweet", "Nutty")
-      AND (p_canon_flavor_families IS NULL OR c.canon_flavor_families && p_canon_flavor_families)
-      -- Subcategory level (e.g., "Berry", "Citrus", "Chocolate")
-      AND (p_canon_flavor_subcategories IS NULL OR c.canon_flavor_subcategories && p_canon_flavor_subcategories)
-      -- Descriptor level by node ID (most specific)
-      AND (p_canon_flavor_node_ids IS NULL OR c.canon_flavor_node_ids && p_canon_flavor_node_ids)
-      
       -- region_ids: use overlaps (&&) - coffee must have ANY selected region
       AND (p_region_ids IS NULL OR c.region_ids && p_region_ids)
       
@@ -93,7 +79,6 @@ BEGIN
   IF base_filtered_coffee_ids IS NULL OR array_length(base_filtered_coffee_ids, 1) = 0 THEN
     RETURN json_build_object(
       'flavorNotes', '[]'::json,
-      'canonicalFlavors', '[]'::json,
       'regions', '[]'::json,
       'estates', '[]'::json,
       'brewMethods', '[]'::json,
@@ -139,64 +124,12 @@ BEGIN
             AND (NOT p_has_250g_only OR c.has_250g_bool = TRUE)
             AND (p_min_price IS NULL OR c.best_normalized_250g >= p_min_price)
             AND (p_max_price IS NULL OR c.best_normalized_250g <= p_max_price)
-            -- Keep canonical flavor filters when counting raw flavor notes
-            AND (p_canon_flavor_families IS NULL OR c.canon_flavor_families && p_canon_flavor_families)
-            AND (p_canon_flavor_subcategories IS NULL OR c.canon_flavor_subcategories && p_canon_flavor_subcategories)
-            AND (p_canon_flavor_node_ids IS NULL OR c.canon_flavor_node_ids && p_canon_flavor_node_ids)
             AND (p_region_ids IS NULL OR c.region_ids && p_region_ids)
             AND (p_estate_ids IS NULL OR c.estate_ids && p_estate_ids)
             AND (selected_canon_keys IS NULL OR c.brew_method_canonical_keys @> selected_canon_keys)
         )
         GROUP BY fn.id, fn.key, fn.label
         HAVING COUNT(DISTINCT cfn.coffee_id) > 0
-      ) sub
-    ),
-    'canonicalFlavors', (
-      -- ✅ Count canonical flavors grouped by family > subcategory > descriptor
-      -- Excludes canonical flavor filters from count
-      SELECT json_agg(
-        json_build_object(
-          'id', sub.id,
-          'slug', sub.slug,
-          'descriptor', sub.descriptor,
-          'subcategory', sub.subcategory,
-          'family', sub.family,
-          'count', sub.coffee_count
-        ) ORDER BY sub.family ASC, sub.subcategory ASC, sub.coffee_count DESC
-      )
-      FROM (
-        SELECT 
-          csn.id,
-          csn.slug,
-          csn.descriptor,
-          csn.subcategory,
-          csn.family,
-          COUNT(DISTINCT c.coffee_id) AS coffee_count
-        FROM coffee_directory_mv c
-        CROSS JOIN LATERAL unnest(c.canon_flavor_node_ids) AS node_id
-        JOIN canon_sensory_nodes csn ON csn.id = node_id
-        WHERE c.coffee_id = ANY(
-          SELECT DISTINCT c2.coffee_id
-          FROM coffee_directory_mv c2
-          WHERE c2.coffee_id = ANY(base_filtered_coffee_ids)
-            AND (p_search_query IS NULL OR c2.name ILIKE '%' || p_search_query || '%')
-            AND (p_roast_levels IS NULL OR c2.roast_level = ANY(p_roast_levels::roast_level_enum[]))
-            AND (p_processes IS NULL OR c2.process = ANY(p_processes::process_enum[]))
-            AND (p_statuses IS NULL OR c2.status = ANY(p_statuses::coffee_status_enum[]))
-            AND (p_roaster_ids IS NULL OR c2.roaster_id = ANY(p_roaster_ids))
-            AND (NOT p_in_stock_only OR c2.in_stock_count > 0)
-            AND (NOT p_has_250g_only OR c2.has_250g_bool = TRUE)
-            AND (p_min_price IS NULL OR c2.best_normalized_250g >= p_min_price)
-            AND (p_max_price IS NULL OR c2.best_normalized_250g <= p_max_price)
-            AND (p_flavor_keys IS NULL OR c2.flavor_keys @> p_flavor_keys)
-            AND (p_region_ids IS NULL OR c2.region_ids && p_region_ids)
-            AND (p_estate_ids IS NULL OR c2.estate_ids && p_estate_ids)
-            AND (selected_canon_keys IS NULL OR c2.brew_method_canonical_keys @> selected_canon_keys)
-            -- Exclude canonical flavor filters for counting available options
-        )
-        AND csn.node_type = 'flavor'
-        GROUP BY csn.id, csn.slug, csn.descriptor, csn.subcategory, csn.family
-        HAVING COUNT(DISTINCT c.coffee_id) > 0
       ) sub
     ),
     'regions', (
@@ -229,9 +162,6 @@ BEGIN
             AND (p_min_price IS NULL OR c.best_normalized_250g >= p_min_price)
             AND (p_max_price IS NULL OR c.best_normalized_250g <= p_max_price)
             AND (p_flavor_keys IS NULL OR c.flavor_keys @> p_flavor_keys)
-            AND (p_canon_flavor_families IS NULL OR c.canon_flavor_families && p_canon_flavor_families)
-            AND (p_canon_flavor_subcategories IS NULL OR c.canon_flavor_subcategories && p_canon_flavor_subcategories)
-            AND (p_canon_flavor_node_ids IS NULL OR c.canon_flavor_node_ids && p_canon_flavor_node_ids)
             AND (p_estate_ids IS NULL OR c.estate_ids && p_estate_ids)
             AND (selected_canon_keys IS NULL OR c.brew_method_canonical_keys @> selected_canon_keys)
         )
@@ -269,9 +199,6 @@ BEGIN
             AND (p_min_price IS NULL OR c.best_normalized_250g >= p_min_price)
             AND (p_max_price IS NULL OR c.best_normalized_250g <= p_max_price)
             AND (p_flavor_keys IS NULL OR c.flavor_keys @> p_flavor_keys)
-            AND (p_canon_flavor_families IS NULL OR c.canon_flavor_families && p_canon_flavor_families)
-            AND (p_canon_flavor_subcategories IS NULL OR c.canon_flavor_subcategories && p_canon_flavor_subcategories)
-            AND (p_canon_flavor_node_ids IS NULL OR c.canon_flavor_node_ids && p_canon_flavor_node_ids)
             AND (p_region_ids IS NULL OR c.region_ids && p_region_ids)
             AND (selected_canon_keys IS NULL OR c.brew_method_canonical_keys @> selected_canon_keys)
         )
@@ -310,9 +237,6 @@ BEGIN
             AND (p_min_price IS NULL OR c.best_normalized_250g >= p_min_price)
             AND (p_max_price IS NULL OR c.best_normalized_250g <= p_max_price)
             AND (p_flavor_keys IS NULL OR c.flavor_keys @> p_flavor_keys)
-            AND (p_canon_flavor_families IS NULL OR c.canon_flavor_families && p_canon_flavor_families)
-            AND (p_canon_flavor_subcategories IS NULL OR c.canon_flavor_subcategories && p_canon_flavor_subcategories)
-            AND (p_canon_flavor_node_ids IS NULL OR c.canon_flavor_node_ids && p_canon_flavor_node_ids)
             AND (p_region_ids IS NULL OR c.region_ids && p_region_ids)
             AND (p_estate_ids IS NULL OR c.estate_ids && p_estate_ids)
         )
@@ -351,9 +275,6 @@ BEGIN
             AND (p_min_price IS NULL OR c2.best_normalized_250g >= p_min_price)
             AND (p_max_price IS NULL OR c2.best_normalized_250g <= p_max_price)
             AND (p_flavor_keys IS NULL OR c2.flavor_keys @> p_flavor_keys)
-            AND (p_canon_flavor_families IS NULL OR c2.canon_flavor_families && p_canon_flavor_families)
-            AND (p_canon_flavor_subcategories IS NULL OR c2.canon_flavor_subcategories && p_canon_flavor_subcategories)
-            AND (p_canon_flavor_node_ids IS NULL OR c2.canon_flavor_node_ids && p_canon_flavor_node_ids)
             AND (p_region_ids IS NULL OR c2.region_ids && p_region_ids)
             AND (p_estate_ids IS NULL OR c2.estate_ids && p_estate_ids)
             AND (selected_canon_keys IS NULL OR c2.brew_method_canonical_keys @> selected_canon_keys)
@@ -395,9 +316,6 @@ BEGIN
           AND (p_min_price IS NULL OR c.best_normalized_250g >= p_min_price)
           AND (p_max_price IS NULL OR c.best_normalized_250g <= p_max_price)
           AND (p_flavor_keys IS NULL OR c.flavor_keys @> p_flavor_keys)
-          AND (p_canon_flavor_families IS NULL OR c.canon_flavor_families && p_canon_flavor_families)
-          AND (p_canon_flavor_subcategories IS NULL OR c.canon_flavor_subcategories && p_canon_flavor_subcategories)
-          AND (p_canon_flavor_node_ids IS NULL OR c.canon_flavor_node_ids && p_canon_flavor_node_ids)
           AND (p_region_ids IS NULL OR c.region_ids && p_region_ids)
           AND (p_estate_ids IS NULL OR c.estate_ids && p_estate_ids)
           AND (selected_canon_keys IS NULL OR c.brew_method_canonical_keys @> selected_canon_keys)
@@ -445,9 +363,6 @@ BEGIN
           AND (p_min_price IS NULL OR c.best_normalized_250g >= p_min_price)
           AND (p_max_price IS NULL OR c.best_normalized_250g <= p_max_price)
           AND (p_flavor_keys IS NULL OR c.flavor_keys @> p_flavor_keys)
-          AND (p_canon_flavor_families IS NULL OR c.canon_flavor_families && p_canon_flavor_families)
-          AND (p_canon_flavor_subcategories IS NULL OR c.canon_flavor_subcategories && p_canon_flavor_subcategories)
-          AND (p_canon_flavor_node_ids IS NULL OR c.canon_flavor_node_ids && p_canon_flavor_node_ids)
           AND (p_region_ids IS NULL OR c.region_ids && p_region_ids)
           AND (p_estate_ids IS NULL OR c.estate_ids && p_estate_ids)
           AND (selected_canon_keys IS NULL OR c.brew_method_canonical_keys @> selected_canon_keys)
@@ -490,9 +405,6 @@ BEGIN
           AND (p_min_price IS NULL OR c.best_normalized_250g >= p_min_price)
           AND (p_max_price IS NULL OR c.best_normalized_250g <= p_max_price)
           AND (p_flavor_keys IS NULL OR c.flavor_keys @> p_flavor_keys)
-          AND (p_canon_flavor_families IS NULL OR c.canon_flavor_families && p_canon_flavor_families)
-          AND (p_canon_flavor_subcategories IS NULL OR c.canon_flavor_subcategories && p_canon_flavor_subcategories)
-          AND (p_canon_flavor_node_ids IS NULL OR c.canon_flavor_node_ids && p_canon_flavor_node_ids)
           AND (p_region_ids IS NULL OR c.region_ids && p_region_ids)
           AND (p_estate_ids IS NULL OR c.estate_ids && p_estate_ids)
           AND (selected_canon_keys IS NULL OR c.brew_method_canonical_keys @> selected_canon_keys)
@@ -520,7 +432,6 @@ BEGIN
   -- Return NULL arrays as empty arrays
   RETURN COALESCE(result, json_build_object(
     'flavorNotes', '[]'::json,
-    'canonicalFlavors', '[]'::json,
     'regions', '[]'::json,
     'estates', '[]'::json,
     'brewMethods', '[]'::json,
@@ -535,11 +446,4 @@ $$;
 
 COMMENT ON FUNCTION public.get_coffee_filter_meta IS
   'Returns filter metadata with counts for coffee directory filtering.
-   Updated to use coffee_directory_mv materialized view with array operators for junction table filtering.
-   
-   Canonical flavor filtering parameters:
-   - p_canon_flavor_families: Filter by top-level flavor families (e.g., "Fruity", "Sweet")
-   - p_canon_flavor_subcategories: Filter by subcategories (e.g., "Berry", "Citrus")
-   - p_canon_flavor_node_ids: Filter by specific descriptor node UUIDs
-   
-   Returns canonicalFlavors array with full hierarchy info (id, slug, descriptor, subcategory, family, count).';
+   Updated to use coffee_directory_mv materialized view with array operators for junction table filtering.';

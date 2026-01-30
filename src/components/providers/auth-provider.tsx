@@ -19,10 +19,7 @@ type AuthContextType = {
     password: string,
     metadata?: { full_name?: string }
   ) => Promise<{ data: any; error: any }>;
-  signInWithOAuth: (
-    provider: "google" | "facebook",
-    returnTo?: string
-  ) => Promise<{ error: any }>;
+  signInWithOAuth: (provider: "google" | "facebook") => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
   refreshUser: () => Promise<void>;
 };
@@ -70,11 +67,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { data, error };
   };
 
-  const signInWithOAuth = async (
-    provider: "google" | "facebook",
-    returnTo?: string
-  ) => {
-    const { error } = await auth.signInWithOAuth(provider, returnTo);
+  const signInWithOAuth = async (provider: "google" | "facebook") => {
+    const { error } = await auth.signInWithOAuth(provider);
     // OAuth redirects, so we don't need to refresh user here
     return { error };
   };

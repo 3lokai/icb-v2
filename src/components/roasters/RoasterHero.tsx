@@ -24,7 +24,7 @@ export function RoasterHero({ roaster }: RoasterHeroProps) {
   }
 
   return (
-    <div className="surface-1 rounded-lg card-padding">
+    <div className="card-shell card-padding">
       <div className="flex flex-col gap-6 md:flex-row md:items-start">
         {/* Logo */}
         <div className="flex-shrink-0">
@@ -39,7 +39,6 @@ export function RoasterHero({ roaster }: RoasterHeroProps) {
                 src={roasterImagePresets.roasterLogo(
                   `roasters/${roaster.slug}-logo`
                 )}
-                unoptimized
               />
             </div>
           ) : (

@@ -1,80 +1,74 @@
-@layer components;
+@layer components {
+  /* Typography Hierarchy */
+  
+  /* Hero/Display - For landing page heroes */
+  .text-hero {
+    @apply font-serif text-5xl md:text-6xl lg:text-7xl font-light leading-none tracking-tighter;
+  }
+  
+  /* Display - For page headers */
+  .text-display {
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-normal leading-tight tracking-tight;
+  }
 
-/* Typography Hierarchy */
+  /* Title - For section headers */
+  .text-title {
+    @apply font-serif text-2xl md:text-3xl font-medium leading-tight tracking-tight;
+  }
 
-/* Hero/Display - For landing page heroes */
-.text-hero {
-  /* Quiet authority: Editorial size, normal weight */
-  @apply font-serif text-4xl md:text-5xl lg:text-6xl font-normal leading-tight tracking-tight;
+  /* Heading - For card headers, subsections */
+  .text-heading {
+    @apply font-serif text-xl md:text-2xl font-medium leading-snug tracking-tight;
+  }
+
+  /* Subheading - For smaller headers */
+  .text-subheading {
+    @apply font-sans text-lg md:text-xl font-semibold leading-snug;
+  }
+
+  /* Body text variants */
+  .text-body {
+    @apply text-base leading-relaxed;
+  }
+
+  .text-body-large {
+    @apply text-lg leading-relaxed;
+  }
+
+  .text-body-muted {
+    @apply text-base leading-relaxed text-muted-foreground;
+  }
+
+  /* Small text */
+  .text-caption {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .text-overline {
+    @apply text-xs capitalize font-medium tracking-widest;
+  }
+
+  /* Label - For metadata, tags, small caps */
+  .text-label {
+    @apply text-xs capitalize font-medium tracking-widest text-muted-foreground;
+  }
+
+  /* Micro text - For minimal background elements */
+  .text-micro {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    @apply text-muted-foreground;
+  }
+
+  /* Utility: Balanced text wrapping for titles */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Utility: Prevent orphans in paragraphs */
+  .text-pretty {
+    text-wrap: pretty;
+  }
 }
-
-/* Display - For page headers */
-.text-display {
-  @apply font-serif text-3xl md:text-4xl lg:text-5xl font-normal leading-tight tracking-tight;
-}
-
-/* Title - For section headers */
-.text-title {
-  @apply font-serif text-2xl md:text-3xl font-medium leading-tight tracking-tight;
-}
-
-/* Heading - For card headers, subsections */
-.text-heading {
-  @apply font-serif text-xl md:text-2xl font-medium leading-snug tracking-tight;
-}
-
-/* Subheading - For smaller headers */
-.text-subheading {
-  /* Stricter rules: Medium only, no semibold */
-  @apply font-sans text-lg md:text-xl font-medium leading-snug;
-}
-
-/* Body text variants */
-.text-body {
-  /* Stricter rules: Normal weight for body */
-  @apply text-base font-normal leading-relaxed;
-}
-
-.text-body-large {
-  @apply text-lg font-normal leading-relaxed;
-}
-
-.text-body-muted {
-  /* Prevent "unreadable trifecta": Keep normal weight even if muted */
-  @apply text-base font-normal leading-relaxed text-muted-foreground;
-}
-
-/* Small text */
-.text-caption {
-  @apply text-sm text-muted-foreground font-normal;
-}
-
-.text-overline {
-  /* Refined tracking: Print UI feel, not SaaS dashboard */
-  @apply text-xs capitalize font-medium tracking-wide;
-}
-
-/* Label - For metadata, tags, small caps */
-.text-label {
-  @apply text-xs capitalize font-medium tracking-wide text-muted-foreground;
-}
-
-/* Micro text - For minimal background elements */
-.text-micro {
-  font-size: 0.75rem; /* 12px */
-  line-height: 1.2;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  @apply text-muted-foreground;
-}
-
-/* Utility: Balanced text wrapping for titles */
-.text-balance {
-  text-wrap: balance;
-}
-
-/* Utility: Prevent orphans in paragraphs */
-.text-pretty {
-  text-wrap: pretty;
-}
-

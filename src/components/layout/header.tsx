@@ -34,34 +34,15 @@ import { useSearchContext } from "@/providers/SearchProvider";
 // Regex for splitting names into parts (defined at top level for performance)
 const NAME_SPLIT_REGEX = /\s+/;
 
-// Base nav items (without Profile - it's added conditionally)
-const baseNavItems = [
+const navItems = [
+  { name: "Coffees", link: "/coffees" },
+  { name: "Roasters", link: "/roasters" },
   {
-    name: "Explore",
-    link: "/explore",
+    name: "Tools",
+    link: "/tools",
     children: [
-      { name: "Coffees", link: "/coffees" },
-      { name: "Roasters", link: "/roasters" },
-      {
-        name: "Estates",
-        link: "/estates",
-        disabled: true,
-        badge: "Coming Soon",
-      },
-      {
-        name: "Regions",
-        link: "/regions",
-        disabled: true,
-        badge: "Coming Soon",
-      },
-    ],
-  },
-  {
-    name: "Learn",
-    link: "/learn",
-    children: [
-      { name: "Brew Calculator", link: "/tools/coffee-calculator" },
-      { name: "Expert recipes", link: "/tools/expert-recipes" },
+      { name: "Expert Recipes", link: "/tools/expert-recipes" },
+      { name: "Coffee Calculator", link: "/tools/coffee-calculator" },
       { name: "Glossary", link: "/learn/glossary" },
     ],
   },
@@ -106,30 +87,6 @@ export function Header() {
     profile?.full_name ?? user?.email?.split("@")[0] ?? "User";
   const avatarUrl = profile?.avatar_url ?? null;
   const initials = getInitials(profile?.full_name ?? user?.email ?? null);
-
-  // Build nav items with conditional Profile link
-  type NavItem = {
-    name: string;
-    link: string;
-    disabled?: boolean;
-    badge?: string;
-    children?: {
-      name: string;
-      link: string;
-      disabled?: boolean;
-      badge?: string;
-    }[];
-  };
-
-  const navItems: NavItem[] = [
-    {
-      name: "Profile",
-      link: user
-        ? "/profile" // Will redirect to /profile/[username] via page.tsx
-        : "/profile/anon", // Direct link to anon profile
-    },
-    ...baseNavItems,
-  ];
 
   return (
     <Navbar className="top-0">
@@ -200,17 +157,14 @@ export function Header() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link
-                        className="flex items-center"
-                        href={`/profile/${profile?.username}`}
-                      >
+                      <Link className="flex items-center" href="/dashboard">
                         <Icon
                           className="mr-2"
                           color="muted"
-                          name="User"
+                          name="SquaresFour"
                           size={16}
                         />
-                        My Profile
+                        Dashboard
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -221,10 +175,52 @@ export function Header() {
                         <Icon
                           className="mr-2"
                           color="muted"
-                          name="GearSix"
+                          name="User"
                           size={16}
                         />
-                        Settings
+                        Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link
+                        className="flex items-center"
+                        href="/dashboard/preferences"
+                      >
+                        <Icon
+                          className="mr-2"
+                          color="muted"
+                          name="Coffee"
+                          size={16}
+                        />
+                        Coffee Preferences
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link
+                        className="flex items-center"
+                        href="/dashboard/notifications"
+                      >
+                        <Icon
+                          className="mr-2"
+                          color="muted"
+                          name="Bell"
+                          size={16}
+                        />
+                        Notifications
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link
+                        className="flex items-center"
+                        href="/dashboard/privacy"
+                      >
+                        <Icon
+                          className="mr-2"
+                          color="muted"
+                          name="Shield"
+                          size={16}
+                        />
+                        Privacy & Data
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
@@ -310,7 +306,7 @@ export function Header() {
         </MobileNavHeader>
         <MobileNavMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu}>
           {navItems.map((item) =>
-            "children" in item && item.children && item.children.length > 0 ? (
+            item.children && item.children.length > 0 ? (
               <MobileNavDropdown
                 item={item}
                 key={item.link}

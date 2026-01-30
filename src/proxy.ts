@@ -41,10 +41,17 @@ export async function proxy(request: NextRequest) {
 
   // Protect routes that require authentication
   if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
-    // Include the current path as 'from' so user returns after auth
-    const authUrl = new URL("/auth", request.url);
-    authUrl.searchParams.set("from", request.nextUrl.pathname);
-    return NextResponse.redirect(authUrl);
+    return NextResponse.redirect(new URL("/auth", request.url));
+  }
+
+  // Protect profile routes
+  if (request.nextUrl.pathname.startsWith("/profile") && !user) {
+    return NextResponse.redirect(
+      new URL(
+        `/auth?from=${encodeURIComponent(request.nextUrl.pathname)}`,
+        request.url
+      )
+    );
   }
 
   // Redirect authenticated users away from auth pages (but allow callback and onboarding)

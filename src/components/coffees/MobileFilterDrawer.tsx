@@ -7,7 +7,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { CoffeeFilterContent } from "./CoffeeFilterSidebar";
-import { cn } from "@/lib/utils";
 import type { CoffeeFilterMeta } from "@/types/coffee-types";
 
 type MobileFilterDrawerProps = {
@@ -28,10 +27,7 @@ export function MobileFilterDrawer({
 }: MobileFilterDrawerProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        className={cn("surface-2 overflow-y-auto md:hidden")}
-        side="left"
-      >
+      <SheetContent className="overflow-y-auto md:hidden" side="left">
         <SheetHeader>
           <SheetTitle>Filters</SheetTitle>
         </SheetHeader>

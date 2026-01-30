@@ -16,13 +16,8 @@
     animation: marquee-vertical var(--duration, 40s) linear infinite;
   }
 
-  .animate-marquee-single {
-    animation: marquee-single var(--duration, 20s) linear infinite;
-  }
-
   .group:hover .animate-marquee,
-  .group:hover .animate-marquee-vertical,
-  .group:hover .animate-marquee-single {
+  .group:hover .animate-marquee-vertical {
     animation-play-state: paused;
   }
 
@@ -155,15 +150,6 @@
   }
   to {
     transform: translateY(calc(-100% - var(--gap)));
-  }
-}
-
-@keyframes marquee-single {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
   }
 }
 

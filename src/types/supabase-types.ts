@@ -218,51 +218,6 @@ export type Database = {
         };
         Relationships: [];
       };
-      canon_sensory_nodes: {
-        Row: {
-          created_at: string;
-          description: string | null;
-          descriptor: string;
-          family: string;
-          id: string;
-          is_indian: boolean;
-          node_type: string;
-          notes: string | null;
-          slug: string;
-          sort_order: number;
-          subcategory: string;
-          updated_at: string;
-        };
-        Insert: {
-          created_at?: string;
-          description?: string | null;
-          descriptor: string;
-          family: string;
-          id?: string;
-          is_indian?: boolean;
-          node_type?: string;
-          notes?: string | null;
-          slug: string;
-          sort_order?: number;
-          subcategory: string;
-          updated_at?: string;
-        };
-        Update: {
-          created_at?: string;
-          description?: string | null;
-          descriptor?: string;
-          family?: string;
-          id?: string;
-          is_indian?: boolean;
-          node_type?: string;
-          notes?: string | null;
-          slug?: string;
-          sort_order?: number;
-          subcategory?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
       coffee_brew_methods: {
         Row: {
           brew_method_id: string;
@@ -283,13 +238,6 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "brew_methods";
             referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "coffee_brew_methods_coffee_id_fkey";
-            columns: ["coffee_id"];
-            isOneToOne: false;
-            referencedRelation: "coffee_directory_mv";
-            referencedColumns: ["coffee_id"];
           },
           {
             foreignKeyName: "coffee_brew_methods_coffee_id_fkey";
@@ -328,13 +276,6 @@ export type Database = {
             foreignKeyName: "coffee_estates_coffee_id_fkey";
             columns: ["coffee_id"];
             isOneToOne: false;
-            referencedRelation: "coffee_directory_mv";
-            referencedColumns: ["coffee_id"];
-          },
-          {
-            foreignKeyName: "coffee_estates_coffee_id_fkey";
-            columns: ["coffee_id"];
-            isOneToOne: false;
             referencedRelation: "coffee_summary";
             referencedColumns: ["coffee_id"];
           },
@@ -368,13 +309,6 @@ export type Database = {
           flavor_note_id?: string;
         };
         Relationships: [
-          {
-            foreignKeyName: "coffee_flavor_notes_coffee_id_fkey";
-            columns: ["coffee_id"];
-            isOneToOne: false;
-            referencedRelation: "coffee_directory_mv";
-            referencedColumns: ["coffee_id"];
-          },
           {
             foreignKeyName: "coffee_flavor_notes_coffee_id_fkey";
             columns: ["coffee_id"];
@@ -443,13 +377,6 @@ export type Database = {
             foreignKeyName: "coffee_images_coffee_id_fkey";
             columns: ["coffee_id"];
             isOneToOne: false;
-            referencedRelation: "coffee_directory_mv";
-            referencedColumns: ["coffee_id"];
-          },
-          {
-            foreignKeyName: "coffee_images_coffee_id_fkey";
-            columns: ["coffee_id"];
-            isOneToOne: false;
             referencedRelation: "coffee_summary";
             referencedColumns: ["coffee_id"];
           },
@@ -479,13 +406,6 @@ export type Database = {
           region_id?: string;
         };
         Relationships: [
-          {
-            foreignKeyName: "coffee_regions_coffee_id_fkey";
-            columns: ["coffee_id"];
-            isOneToOne: false;
-            referencedRelation: "coffee_directory_mv";
-            referencedColumns: ["coffee_id"];
-          },
           {
             foreignKeyName: "coffee_regions_coffee_id_fkey";
             columns: ["coffee_id"];
@@ -712,36 +632,6 @@ export type Database = {
           },
         ];
       };
-      flavor_note_to_canon: {
-        Row: {
-          canon_node_id: string;
-          flavor_note_id: string;
-        };
-        Insert: {
-          canon_node_id: string;
-          flavor_note_id: string;
-        };
-        Update: {
-          canon_node_id?: string;
-          flavor_note_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "flavor_note_to_canon_canon_node_id_fkey";
-            columns: ["canon_node_id"];
-            isOneToOne: false;
-            referencedRelation: "canon_sensory_nodes";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "flavor_note_to_canon_flavor_note_id_fkey";
-            columns: ["flavor_note_id"];
-            isOneToOne: false;
-            referencedRelation: "flavor_notes";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       flavor_notes: {
         Row: {
           group_key: string | null;
@@ -799,48 +689,6 @@ export type Database = {
           updated_at?: string;
           user_agent?: string | null;
           user_id?: string | null;
-        };
-        Relationships: [];
-      };
-      gear_catalog: {
-        Row: {
-          brand: string | null;
-          category: string;
-          created_at: string | null;
-          created_by: string | null;
-          id: string;
-          image_url: string | null;
-          is_verified: boolean | null;
-          model: string | null;
-          name: string;
-          updated_at: string | null;
-          usage_count: number | null;
-        };
-        Insert: {
-          brand?: string | null;
-          category: string;
-          created_at?: string | null;
-          created_by?: string | null;
-          id?: string;
-          image_url?: string | null;
-          is_verified?: boolean | null;
-          model?: string | null;
-          name: string;
-          updated_at?: string | null;
-          usage_count?: number | null;
-        };
-        Update: {
-          brand?: string | null;
-          category?: string;
-          created_at?: string | null;
-          created_by?: string | null;
-          id?: string;
-          image_url?: string | null;
-          is_verified?: boolean | null;
-          model?: string | null;
-          name?: string;
-          updated_at?: string | null;
-          usage_count?: number | null;
         };
         Relationships: [];
       };
@@ -1060,7 +908,6 @@ export type Database = {
       };
       regions: {
         Row: {
-          canon_region_id: string | null;
           country: string | null;
           display_name: string | null;
           id: string;
@@ -1068,7 +915,6 @@ export type Database = {
           subregion: string;
         };
         Insert: {
-          canon_region_id?: string | null;
           country?: string | null;
           display_name?: string | null;
           id?: string;
@@ -1076,22 +922,13 @@ export type Database = {
           subregion: string;
         };
         Update: {
-          canon_region_id?: string | null;
           country?: string | null;
           display_name?: string | null;
           id?: string;
           state?: string | null;
           subregion?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: "regions_canon_region_id_fkey";
-            columns: ["canon_region_id"];
-            isOneToOne: false;
-            referencedRelation: "canon_regions";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
       reviews: {
         Row: {
@@ -1152,6 +989,7 @@ export type Database = {
           avg_packaging: number | null;
           avg_rating: number | null;
           avg_value_for_money: number | null;
+          canon_estate_id: string | null;
           created_at: string;
           default_concurrency: number | null;
           description: string | null;
@@ -1202,6 +1040,7 @@ export type Database = {
           avg_packaging?: number | null;
           avg_rating?: number | null;
           avg_value_for_money?: number | null;
+          canon_estate_id?: string | null;
           created_at?: string;
           default_concurrency?: number | null;
           description?: string | null;
@@ -1252,6 +1091,7 @@ export type Database = {
           avg_packaging?: number | null;
           avg_rating?: number | null;
           avg_value_for_money?: number | null;
+          canon_estate_id?: string | null;
           created_at?: string;
           default_concurrency?: number | null;
           description?: string | null;
@@ -1295,7 +1135,15 @@ export type Database = {
           use_llm?: boolean | null;
           website?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "roasters_canon_estate_id_fkey";
+            columns: ["canon_estate_id"];
+            isOneToOne: false;
+            referencedRelation: "canon_estates";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       role_audit_log: {
         Row: {
@@ -1472,13 +1320,6 @@ export type Database = {
             foreignKeyName: "sensory_params_coffee_id_fkey";
             columns: ["coffee_id"];
             isOneToOne: true;
-            referencedRelation: "coffee_directory_mv";
-            referencedColumns: ["coffee_id"];
-          },
-          {
-            foreignKeyName: "sensory_params_coffee_id_fkey";
-            columns: ["coffee_id"];
-            isOneToOne: true;
             referencedRelation: "coffee_summary";
             referencedColumns: ["coffee_id"];
           },
@@ -1538,48 +1379,6 @@ export type Database = {
           },
         ];
       };
-      user_gear: {
-        Row: {
-          created_at: string | null;
-          gear_id: string;
-          id: string;
-          notes: string | null;
-          sort_order: number | null;
-          user_id: string;
-        };
-        Insert: {
-          created_at?: string | null;
-          gear_id: string;
-          id?: string;
-          notes?: string | null;
-          sort_order?: number | null;
-          user_id: string;
-        };
-        Update: {
-          created_at?: string | null;
-          gear_id?: string;
-          id?: string;
-          notes?: string | null;
-          sort_order?: number | null;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "user_gear_gear_id_fkey";
-            columns: ["gear_id"];
-            isOneToOne: false;
-            referencedRelation: "gear_catalog";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "user_gear_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "user_profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       user_notification_preferences: {
         Row: {
           coffee_updates: boolean | null;
@@ -1626,11 +1425,9 @@ export type Database = {
           avatar_url: string | null;
           bio: string | null;
           city: string | null;
-          convertkit_subscriber_id: number | null;
           country: string | null;
           created_at: string | null;
           deleted_at: string | null;
-          email: string | null;
           email_verified: boolean | null;
           experience_level: string | null;
           full_name: string;
@@ -1649,11 +1446,9 @@ export type Database = {
           avatar_url?: string | null;
           bio?: string | null;
           city?: string | null;
-          convertkit_subscriber_id?: number | null;
           country?: string | null;
           created_at?: string | null;
           deleted_at?: string | null;
-          email?: string | null;
           email_verified?: boolean | null;
           experience_level?: string | null;
           full_name: string;
@@ -1672,11 +1467,9 @@ export type Database = {
           avatar_url?: string | null;
           bio?: string | null;
           city?: string | null;
-          convertkit_subscriber_id?: number | null;
           country?: string | null;
           created_at?: string | null;
           deleted_at?: string | null;
-          email?: string | null;
           email_verified?: boolean | null;
           experience_level?: string | null;
           full_name?: string;
@@ -1719,88 +1512,6 @@ export type Database = {
           user_id?: string;
         };
         Relationships: [];
-      };
-      user_station_photos: {
-        Row: {
-          created_at: string | null;
-          height: number | null;
-          id: string;
-          image_url: string;
-          sort_order: number | null;
-          user_id: string;
-          width: number | null;
-        };
-        Insert: {
-          created_at?: string | null;
-          height?: number | null;
-          id?: string;
-          image_url: string;
-          sort_order?: number | null;
-          user_id: string;
-          width?: number | null;
-        };
-        Update: {
-          created_at?: string | null;
-          height?: number | null;
-          id?: string;
-          image_url?: string;
-          sort_order?: number | null;
-          user_id?: string;
-          width?: number | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "user_station_photos_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "user_profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      user_taste_profile_cache: {
-        Row: {
-          created_at: string | null;
-          last_computed_at: string | null;
-          review_count_at_compute: number | null;
-          top_brew_methods: string[] | null;
-          top_flavor_note_ids: string[] | null;
-          top_roast_levels: string[] | null;
-          total_reviews: number | null;
-          updated_at: string | null;
-          user_id: string;
-        };
-        Insert: {
-          created_at?: string | null;
-          last_computed_at?: string | null;
-          review_count_at_compute?: number | null;
-          top_brew_methods?: string[] | null;
-          top_flavor_note_ids?: string[] | null;
-          top_roast_levels?: string[] | null;
-          total_reviews?: number | null;
-          updated_at?: string | null;
-          user_id: string;
-        };
-        Update: {
-          created_at?: string | null;
-          last_computed_at?: string | null;
-          review_count_at_compute?: number | null;
-          top_brew_methods?: string[] | null;
-          top_flavor_note_ids?: string[] | null;
-          top_roast_levels?: string[] | null;
-          total_reviews?: number | null;
-          updated_at?: string | null;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "user_taste_profile_cache_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: true;
-            referencedRelation: "user_profiles";
-            referencedColumns: ["id"];
-          },
-        ];
       };
       variants: {
         Row: {
@@ -1874,13 +1585,6 @@ export type Database = {
             foreignKeyName: "variants_coffee_id_fkey";
             columns: ["coffee_id"];
             isOneToOne: false;
-            referencedRelation: "coffee_directory_mv";
-            referencedColumns: ["coffee_id"];
-          },
-          {
-            foreignKeyName: "variants_coffee_id_fkey";
-            columns: ["coffee_id"];
-            isOneToOne: false;
             referencedRelation: "coffee_summary";
             referencedColumns: ["coffee_id"];
           },
@@ -1895,63 +1599,6 @@ export type Database = {
       };
     };
     Views: {
-      coffee_directory_mv: {
-        Row: {
-          bean_species: Database["public"]["Enums"]["species_enum"] | null;
-          best_normalized_250g: number | null;
-          best_variant_id: string | null;
-          brew_method_canonical_keys:
-            | Database["public"]["Enums"]["grind_enum"][]
-            | null;
-          canon_flavor_descriptors: string[] | null;
-          canon_flavor_families: string[] | null;
-          canon_flavor_node_ids: string[] | null;
-          canon_flavor_slugs: string[] | null;
-          canon_flavor_subcategories: string[] | null;
-          coffee_id: string | null;
-          decaf: boolean | null;
-          direct_buy_url: string | null;
-          estate_ids: string[] | null;
-          flavor_keys: string[] | null;
-          has_250g_bool: boolean | null;
-          has_sensory: boolean | null;
-          hq_city: string | null;
-          hq_country: string | null;
-          hq_state: string | null;
-          image_url: string | null;
-          in_stock_count: number | null;
-          is_limited: boolean | null;
-          min_price_in_stock: number | null;
-          name: string | null;
-          process: Database["public"]["Enums"]["process_enum"] | null;
-          process_raw: string | null;
-          rating_avg: number | null;
-          rating_count: number | null;
-          region_ids: string[] | null;
-          roast_level: Database["public"]["Enums"]["roast_level_enum"] | null;
-          roast_level_raw: string | null;
-          roast_style_raw: string | null;
-          roaster_id: string | null;
-          roaster_name: string | null;
-          roaster_slug: string | null;
-          sensory_public: Json | null;
-          sensory_updated_at: string | null;
-          slug: string | null;
-          status: Database["public"]["Enums"]["coffee_status_enum"] | null;
-          tags: string[] | null;
-          website: string | null;
-          weights_available: number[] | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "coffees_roaster_id_fkey";
-            columns: ["roaster_id"];
-            isOneToOne: false;
-            referencedRelation: "roasters";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       coffee_summary: {
         Row: {
           best_normalized_250g: number | null;
@@ -1973,6 +1620,58 @@ export type Database = {
           sensory_updated_at: string | null;
           slug: string | null;
           status: Database["public"]["Enums"]["coffee_status_enum"] | null;
+          weights_available: number[] | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "coffees_roaster_id_fkey";
+            columns: ["roaster_id"];
+            isOneToOne: false;
+            referencedRelation: "roasters";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      coffee_directory_mv: {
+        Row: {
+          bean_species: Database["public"]["Enums"]["species_enum"] | null;
+          best_normalized_250g: number | null;
+          best_variant_id: string | null;
+          brew_method_canonical_keys:
+            | Database["public"]["Enums"]["grind_enum"][]
+            | null;
+          coffee_id: string | null;
+          decaf: boolean;
+          direct_buy_url: string | null;
+          estate_ids: string[] | null;
+          flavor_keys: string[] | null;
+          has_250g_bool: boolean | null;
+          has_sensory: boolean | null;
+          hq_city: string | null;
+          hq_country: string | null;
+          hq_state: string | null;
+          image_url: string | null;
+          in_stock_count: number | null;
+          is_limited: boolean;
+          min_price_in_stock: number | null;
+          name: string | null;
+          process: Database["public"]["Enums"]["process_enum"] | null;
+          process_raw: string | null;
+          rating_avg: number | null;
+          rating_count: number;
+          region_ids: string[] | null;
+          roast_level: Database["public"]["Enums"]["roast_level_enum"] | null;
+          roast_level_raw: string | null;
+          roast_style_raw: string | null;
+          roaster_id: string | null;
+          roaster_name: string | null;
+          roaster_slug: string | null;
+          sensory_public: Json | null;
+          sensory_updated_at: string | null;
+          slug: string | null;
+          status: Database["public"]["Enums"]["coffee_status_enum"] | null;
+          tags: string[] | null;
+          website: string | null;
           weights_available: number[] | null;
         };
         Relationships: [
@@ -2113,22 +1812,6 @@ export type Database = {
         };
         Relationships: [];
       };
-      user_recommended_coffees: {
-        Row: {
-          coffee_id: string | null;
-          coffee_image_url: string | null;
-          coffee_name: string | null;
-          coffee_slug: string | null;
-          comment: string | null;
-          rating: number | null;
-          review_id: string | null;
-          reviewed_at: string | null;
-          roaster_name: string | null;
-          roaster_slug: string | null;
-          user_id: string | null;
-        };
-        Relationships: [];
-      };
       variant_computed: {
         Row: {
           coffee_id: string | null;
@@ -2145,13 +1828,6 @@ export type Database = {
           weight_g: number | null;
         };
         Relationships: [
-          {
-            foreignKeyName: "variants_coffee_id_fkey";
-            columns: ["coffee_id"];
-            isOneToOne: false;
-            referencedRelation: "coffee_directory_mv";
-            referencedColumns: ["coffee_id"];
-          },
           {
             foreignKeyName: "variants_coffee_id_fkey";
             columns: ["coffee_id"];
@@ -2187,13 +1863,6 @@ export type Database = {
             foreignKeyName: "variants_coffee_id_fkey";
             columns: ["coffee_id"];
             isOneToOne: false;
-            referencedRelation: "coffee_directory_mv";
-            referencedColumns: ["coffee_id"];
-          },
-          {
-            foreignKeyName: "variants_coffee_id_fkey";
-            columns: ["coffee_id"];
-            isOneToOne: false;
             referencedRelation: "coffee_summary";
             referencedColumns: ["coffee_id"];
           },
@@ -2220,7 +1889,6 @@ export type Database = {
         };
         Returns: boolean;
       };
-      backfill_user_profile_emails: { Args: never; Returns: number };
       cleanup_expired_llm_cache: { Args: never; Returns: number };
       coffee_editor_save: {
         Args: {
@@ -2241,15 +1909,11 @@ export type Database = {
       get_coffee_filter_meta: {
         Args: {
           p_brew_method_canonical_keys?: Database["public"]["Enums"]["grind_enum"][];
-          p_canon_flavor_families?: string[];
-          p_canon_flavor_node_ids?: string[];
-          p_canon_flavor_subcategories?: string[];
           p_estate_ids?: string[];
           p_flavor_keys?: string[];
           p_has_250g_only?: boolean;
           p_in_stock_only?: boolean;
           p_max_price?: number;
-          p_min_price?: number;
           p_processes?: string[];
           p_region_ids?: string[];
           p_roast_levels?: string[];
@@ -2303,20 +1967,6 @@ export type Database = {
           total_runs: number;
         }[];
       };
-      get_similar_coffees: {
-        Args: {
-          p_canon_flavor_node_ids?: string[];
-          p_coffee_id: string;
-          p_estate_ids?: string[];
-          p_limit?: number;
-          p_process?: Database["public"]["Enums"]["process_enum"];
-          p_region_ids?: string[];
-          p_roast_level?: Database["public"]["Enums"]["roast_level_enum"];
-          p_roaster_id?: string;
-          p_seed?: string;
-        };
-        Returns: Json;
-      };
       get_user_role: {
         Args: { user_uuid?: string };
         Returns: Database["public"]["Enums"]["user_role_enum"];
@@ -2331,13 +1981,6 @@ export type Database = {
           user_id: string;
         }[];
       };
-      get_user_profile_full: {
-        Args: {
-          p_username: string;
-          p_viewer_id?: string;
-        };
-        Returns: Json;
-      };
       has_permission: {
         Args: { required_role: Database["public"]["Enums"]["user_role_enum"] };
         Returns: boolean;
@@ -2345,11 +1988,6 @@ export type Database = {
       map_roast_legacy: {
         Args: { raw: string };
         Returns: Database["public"]["Enums"]["roast_level_enum"];
-      };
-      refresh_coffee_directory_mv: { Args: never; Returns: undefined };
-      refresh_user_taste_profile_cache: {
-        Args: { p_user_id: string };
-        Returns: undefined;
       };
       rpc_check_content_hash: {
         Args: { p_content_hash: string };
@@ -2483,8 +2121,6 @@ export type Database = {
         };
         Returns: string;
       };
-      show_limit: { Args: never; Returns: number };
-      show_trgm: { Args: { "": string }; Returns: string[] };
       update_coffee_ratings_for_entity: {
         Args: { p_entity_id: string };
         Returns: undefined;
@@ -2535,7 +2171,6 @@ export type Database = {
           city: string;
           country: string;
           created_at: string;
-          email: string;
           email_verified: boolean;
           experience_level: string;
           full_name: string;

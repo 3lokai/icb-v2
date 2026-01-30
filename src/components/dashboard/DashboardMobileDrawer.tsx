@@ -7,7 +7,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { DashboardSidebarContent } from "./DashboardSidebar";
-import { cn } from "@/lib/utils";
 
 type DashboardMobileDrawerProps = {
   open: boolean;
@@ -26,10 +25,7 @@ export function DashboardMobileDrawer({
 }: DashboardMobileDrawerProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        className={cn("surface-2 overflow-y-auto md:hidden")}
-        side="left"
-      >
+      <SheetContent className="overflow-y-auto md:hidden" side="left">
         <SheetHeader>
           <SheetTitle>Navigation</SheetTitle>
         </SheetHeader>

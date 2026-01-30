@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import {
-  useCoffeePreferences,
-  useUpdateCoffeePreferences,
-} from "@/hooks/use-profile";
+import { useQuery } from "@tanstack/react-query";
+import { useUpdateCoffeePreferences } from "@/hooks/use-profile";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -28,6 +26,7 @@ import {
 import { coffeePreferencesUpdateSchema } from "@/lib/validations/profile";
 import type { CoffeePreferencesUpdateFormData } from "@/lib/validations/profile";
 import type { Database } from "@/types/supabase-types";
+import { queryKeys } from "@/lib/query-keys";
 
 type CoffeePreferences =
   Database["public"]["Tables"]["user_coffee_preferences"]["Row"];
@@ -41,8 +40,12 @@ export function PreferencesFormClient({
 }: PreferencesFormClientProps) {
   const updatePreferences = useUpdateCoffeePreferences();
 
-  // Use hook with server-fetched initialData
-  const { data: preferences } = useCoffeePreferences(initialPreferences);
+  // Use TanStack Query with initialData to avoid refetching
+  const { data: preferences } = useQuery({
+    queryKey: queryKeys.profile.coffeePreferences,
+    initialData: initialPreferences,
+    staleTime: 5 * 60 * 1000,
+  });
 
   const [formData, setFormData] = useState<
     Partial<CoffeePreferencesUpdateFormData>

@@ -60,8 +60,7 @@ export type RoasterFilters = {
   states?: string[];
   countries?: string[];
   active_only?: boolean;
-  roaster_slugs?: string[]; // Slugs from roasters table (human-readable URLs)
-  roaster_ids?: string[]; // Internal use, resolved from slugs
+  roaster_ids?: string[];
 };
 
 export type RoasterFilterMeta = {

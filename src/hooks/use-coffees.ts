@@ -1,4 +1,4 @@
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
 import { queryKeys } from "@/lib/query-keys";
 import type {
@@ -32,7 +32,7 @@ async function fetchCoffeesFromAPI(
 /**
  * TanStack Query hook for fetching coffees
  * @param params - Query parameters (filters, page, limit, sort)
- * @param options - Optional TanStack Query options
+ * @param initialData - Optional initial data for SSR hydration
  */
 export function useCoffees(
   params: {
@@ -41,16 +41,13 @@ export function useCoffees(
     limit: number;
     sort: CoffeeSort;
   },
-  options?: Omit<
-    UseQueryOptions<CoffeeListResponse, Error>,
-    "queryKey" | "queryFn"
-  >
+  initialData?: CoffeeListResponse
 ) {
   const { filters, page, limit, sort } = params;
   return useQuery({
     queryKey: queryKeys.coffees.list(filters, page, limit, sort),
     queryFn: () => fetchCoffeesFromAPI(filters, page, limit, sort),
+    placeholderData: initialData,
     staleTime: 60 * 1000, // 1 minute
-    ...options,
   });
 }

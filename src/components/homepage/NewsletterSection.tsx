@@ -1,61 +1,8 @@
 // src/components/home/NewsletterSection.tsx
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
+import { Icon } from "@/components/common/Icon";
 import { NewsletterForm } from "../common/NewsletterForm";
-
-function ComingSoonBadge() {
-  return (
-    <div className="pointer-events-none absolute -right-6 -top-6 select-none opacity-80 mix-blend-multiply dark:mix-blend-screen md:-right-4 md:-top-4">
-      <svg
-        viewBox="0 0 140 140"
-        className="h-32 w-32 rotate-12 text-muted-foreground duration-500 hover:rotate-45"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* Outer text path */}
-        <path
-          id="textPath"
-          d="M70 15 A 55 55 0 1 1 70 125 A 55 55 0 1 1 70 15"
-          stroke="transparent"
-        />
-        <text className="fill-current text-caption font-bold uppercase tracking-[0.25em]">
-          <textPath href="#textPath" startOffset="50%" textAnchor="middle">
-            • Coming Soon • Coming Soon
-          </textPath>
-        </text>
-
-        {/* Inner decoration */}
-        <circle
-          cx="70"
-          cy="70"
-          r="40"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeDasharray="2 4"
-          className="opacity-40"
-        />
-        <circle
-          cx="70"
-          cy="70"
-          r="34"
-          stroke="currentColor"
-          strokeWidth="0.5"
-          className="opacity-20"
-        />
-
-        {/* Center icon - Theme Logo */}
-        <image
-          href="/logo-icon.svg"
-          x="40"
-          y="40"
-          width="60"
-          height="60"
-          className="opacity-25"
-        />
-      </svg>
-    </div>
-  );
-}
 
 export default function NewsletterSection() {
   return (
@@ -81,8 +28,6 @@ export default function NewsletterSection() {
             {/* corner vignette */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-muted/30" />
           </div>
-
-          <ComingSoonBadge />
 
           <div className="relative p-6 md:p-10">
             <div className="mx-auto max-w-xl text-center">

@@ -4,8 +4,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Country, State, City } from "country-state-city";
-import { useProfile, useUpdateProfile } from "@/hooks/use-profile";
-import { AvatarUpload } from "@/components/ui/avatar-upload";
+import { useQuery } from "@tanstack/react-query";
+import { useUpdateProfile } from "@/hooks/use-profile";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -31,6 +31,7 @@ import { popularBrewingMethods } from "@/lib/utils/coffee-constants";
 import { profileUpdateSchema } from "@/lib/validations/profile";
 import type { ProfileUpdateFormData } from "@/lib/validations/profile";
 import type { PrivateProfileDTO } from "@/data/user-dto";
+import { queryKeys } from "@/lib/query-keys";
 
 type ProfileFormClientProps = {
   initialProfile: PrivateProfileDTO;
@@ -40,8 +41,12 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
   const router = useRouter();
   const updateProfile = useUpdateProfile();
 
-  // Use hook with server-fetched initialData
-  const { data: profile } = useProfile(initialProfile);
+  // Use TanStack Query with initialData to avoid refetching
+  const { data: profile } = useQuery({
+    queryKey: queryKeys.profile.current,
+    initialData: initialProfile,
+    staleTime: 5 * 60 * 1000,
+  });
 
   const [formData, setFormData] = useState<Partial<ProfileUpdateFormData>>({
     fullName: "",
@@ -220,22 +225,6 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
 
         <FieldGroup>
           <Stack gap="8">
-            {/* Avatar Upload */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
-              <FieldLabel>Avatar</FieldLabel>
-              <div className="flex flex-col gap-2">
-                <AvatarUpload
-                  currentAvatarUrl={profile?.avatar_url}
-                  name={formData.fullName || profile?.full_name || "User"}
-                  userId={profile?.id}
-                  size="md"
-                />
-                <FieldDescription>
-                  Click or drag an image to upload. Max 2MB, JPEG, PNG, or WebP.
-                </FieldDescription>
-              </div>
-            </div>
-
             <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8 md:items-start">
               <FieldLabel htmlFor="fullName">
                 Full Name <span className="text-destructive">*</span>

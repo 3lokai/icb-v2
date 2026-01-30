@@ -2,6 +2,7 @@
 
 import type { CoffeeDetail } from "@/types/coffee-types";
 import { Stack } from "@/components/primitives/stack";
+import { Section } from "@/components/primitives/section";
 import { SensoryRadarChart } from "./SensoryRadarChart";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/common/Icon";
@@ -23,8 +24,13 @@ export function CoffeeSensoryProfile({
       coffee.sensory.bitterness !== null ||
       coffee.sensory.clarity !== null);
 
+  const hasFlavorNotes = coffee.flavor_notes.length > 0;
+
   return (
-    <div className={cn("border-t border-border/60", className)}>
+    <Section
+      contained={false}
+      className={cn("border-t border-border/60", className)}
+    >
       <Stack gap="6">
         <div>
           <div className="inline-flex items-center gap-4 mb-3">
@@ -33,8 +39,8 @@ export function CoffeeSensoryProfile({
               Taste Experience
             </span>
           </div>
-          <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-            Flavor <span className="text-accent italic">Profile.</span>
+          <h2 className="text-title text-balance leading-[1.1] tracking-tight font-serif italic">
+            Flavor <span className="text-accent">Profile.</span>
           </h2>
           <p className="text-body text-muted-foreground leading-relaxed max-w-2xl mt-4">
             Our sensory profile maps the defining characteristics of this
@@ -69,7 +75,33 @@ export function CoffeeSensoryProfile({
             </div>
           )}
         </div>
+
+        {/* Flavor Notes */}
+        <Stack gap="3">
+          <div className="inline-flex items-center gap-4">
+            <span className="h-px w-6 bg-accent/40" />
+            <span className="text-label text-muted-foreground uppercase tracking-widest font-bold">
+              Tasting Notes
+            </span>
+          </div>
+          {hasFlavorNotes ? (
+            <div className="flex flex-wrap gap-2">
+              {coffee.flavor_notes.map((note) => (
+                <div
+                  key={note.id}
+                  className="px-3 py-1.5 rounded-full border border-border/60 bg-card text-label font-medium hover:border-accent/40 transition-colors"
+                >
+                  {note.label}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <span className="text-body text-muted-foreground italic">
+              Specific flavor notes haven't been cataloged yet.
+            </span>
+          )}
+        </Stack>
       </Stack>
-    </div>
+    </Section>
   );
 }

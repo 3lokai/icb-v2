@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import {
-  useNotificationPreferences,
-  useUpdateNotificationPreferences,
-} from "@/hooks/use-profile";
+import { useQuery } from "@tanstack/react-query";
+import { useUpdateNotificationPreferences } from "@/hooks/use-profile";
 import { Button } from "@/components/ui/button";
 import {
   FieldDescription,
@@ -26,6 +24,7 @@ import { Stack } from "@/components/primitives/stack";
 import { notificationPreferencesUpdateSchema } from "@/lib/validations/profile";
 import type { NotificationPreferencesUpdateFormData } from "@/lib/validations/profile";
 import type { Database } from "@/types/supabase-types";
+import { queryKeys } from "@/lib/query-keys";
 
 type NotificationPreferences =
   Database["public"]["Tables"]["user_notification_preferences"]["Row"];
@@ -39,8 +38,12 @@ export function NotificationsFormClient({
 }: NotificationsFormClientProps) {
   const updatePreferences = useUpdateNotificationPreferences();
 
-  // Use hook with server-fetched initialData
-  const { data: preferences } = useNotificationPreferences(initialPreferences);
+  // Use TanStack Query with initialData to avoid refetching
+  const { data: preferences } = useQuery({
+    queryKey: queryKeys.profile.notifications,
+    initialData: initialPreferences,
+    staleTime: 5 * 60 * 1000,
+  });
 
   const [formData, setFormData] = useState<
     Partial<NotificationPreferencesUpdateFormData>

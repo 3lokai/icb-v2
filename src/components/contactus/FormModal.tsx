@@ -492,11 +492,7 @@ export function FormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-fade-in sm:p-6">
-      <div
-        className={cn(
-          "surface-2 relative w-full max-w-2xl max-h-[90vh] flex flex-col rounded-[2.5rem] animate-in fade-in zoom-in duration-300 overflow-hidden"
-        )}
-      >
+      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col rounded-[2.5rem] border border-border bg-card shadow-2xl animate-in fade-in zoom-in duration-300 overflow-hidden">
         {/* Decorative stripe */}
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60" />
 

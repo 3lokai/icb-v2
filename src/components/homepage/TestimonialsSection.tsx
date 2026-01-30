@@ -200,6 +200,15 @@ export default function TestimonialsSection() {
               </Stack>
             </div>
             <div className="md:col-span-4 flex md:justify-end pb-2">
+              <Link className="hidden md:block" href="/reviews">
+                <Button className="group" variant="outline">
+                  View All Reviews
+                  <Icon
+                    className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                    name="ArrowRight"
+                  />
+                </Button>
+              </Link>
               <div className="flex md:hidden items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
                 <span className="h-1 w-1 rounded-full bg-accent/40" />
                 Verified Feedback
