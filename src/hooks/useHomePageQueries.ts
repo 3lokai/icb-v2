@@ -84,3 +84,20 @@ export function useFeaturedRoasters(limit: number = 6) {
     staleTime: 60 * 1000, // 1 minute
   });
 }
+
+/**
+ * Hook for fetching all roasters (directory listing)
+ */
+export function useRoasterDirectory(limit: number = 100) {
+  return useQuery({
+    queryKey: queryKeys.roasters.list(
+      { active_only: true },
+      1,
+      limit,
+      "name_asc"
+    ),
+    queryFn: () =>
+      fetchRoastersFromAPI({ active_only: true }, 1, limit, "name_asc"),
+    staleTime: 5 * 60 * 1000, // 5 minutes - directory data doesn't change often
+  });
+}

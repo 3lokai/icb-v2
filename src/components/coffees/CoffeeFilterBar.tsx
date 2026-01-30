@@ -8,8 +8,13 @@ import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
 
 /**
  * Coffee Filter Bar Component
- * Quick filter chips for common filters
- * URL sync is handled automatically by CoffeeDirectory component
+ * Quick filter chips for common filters.
+ * URL sync is handled automatically by CoffeeDirectory component.
+ *
+ * @deprecated Replaced by CoffeeFacetedFilterBar (top-aligned faceted bar with
+ * search, primary filters, and Refine panel). Applied filter badges are now
+ * shown in CoffeeFacetedFilterBar. This component is no longer used by
+ * CoffeeDirectory.
  */
 export function CoffeeFilterBar() {
   const { filters, updateFilters, resetFilters } = useCoffeeFilters();

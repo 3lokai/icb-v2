@@ -167,6 +167,7 @@ export function RoasterDetailPage({
                       src={roasterImagePresets.roasterLogo(
                         `roasters/${roaster.slug}-logo`
                       )}
+                      unoptimized
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-muted-foreground/40">

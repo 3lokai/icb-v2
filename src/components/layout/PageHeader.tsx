@@ -35,6 +35,7 @@ export function PageHeader({
           priority
           sizes="100vw"
           src={backgroundImage}
+          unoptimized
         />
       </div>
 

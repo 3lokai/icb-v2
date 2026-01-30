@@ -26,11 +26,15 @@ export async function fetchCoffeeFilterMetaWithFilters(
     p_roast_levels: filters.roast_levels?.length ? filters.roast_levels : null,
     p_processes: filters.processes?.length ? filters.processes : null,
     p_statuses: filters.status?.length ? filters.status : null,
+    p_bean_species: filters.bean_species?.length ? filters.bean_species : null,
     p_roaster_ids: filters.roaster_ids?.length ? filters.roaster_ids : null,
     p_region_ids: filters.region_ids?.length ? filters.region_ids : null,
     p_estate_ids: filters.estate_ids?.length ? filters.estate_ids : null,
     p_brew_method_canonical_keys: brewMethodCanonicalKeys,
     p_flavor_keys: filters.flavor_keys?.length ? filters.flavor_keys : null,
+    p_canon_flavor_node_ids: filters.canon_flavor_node_ids?.length
+      ? filters.canon_flavor_node_ids
+      : null,
     p_in_stock_only: filters.in_stock_only === true,
     p_has_250g_only: filters.has_250g_only === true,
     p_min_price:
@@ -48,6 +52,7 @@ export async function fetchCoffeeFilterMetaWithFilters(
   if (!data) {
     return {
       flavorNotes: [],
+      canonicalFlavors: [],
       regions: [],
       estates: [],
       brewMethods: [],
@@ -55,6 +60,7 @@ export async function fetchCoffeeFilterMetaWithFilters(
       roastLevels: [],
       processes: [],
       statuses: [],
+      species: [],
       totals: { coffees: 0, roasters: 0 },
     };
   }
@@ -63,6 +69,7 @@ export async function fetchCoffeeFilterMetaWithFilters(
   const normalized = data as CoffeeFilterMeta;
   return {
     flavorNotes: normalized.flavorNotes || [],
+    canonicalFlavors: normalized.canonicalFlavors || [],
     regions: normalized.regions || [],
     estates: normalized.estates || [],
     brewMethods: normalized.brewMethods || [],
@@ -70,6 +77,7 @@ export async function fetchCoffeeFilterMetaWithFilters(
     roastLevels: normalized.roastLevels || [],
     processes: normalized.processes || [],
     statuses: normalized.statuses || [],
+    species: normalized.species || [],
     totals: normalized.totals || { coffees: 0, roasters: 0 },
   };
 }
