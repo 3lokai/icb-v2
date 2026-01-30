@@ -130,8 +130,8 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
             <TabsContent value="overview">
               <Stack gap="4" className="max-w-4xl">
                 {/* Hero: Coffee Image + Stats + Buy */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                  <div className="w-full max-w-sm mx-auto md:ml-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                  <div className="w-full max-w-sm mx-auto md:ml-auto order-2 md:order-1">
                     <CoffeeImageCarousel
                       images={coffee.images}
                       coffeeName={coffee.name}
@@ -139,7 +139,10 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                     />
                   </div>
 
-                  <Stack gap="6">
+                  <Stack
+                    gap="6"
+                    className="order-1 md:order-2 text-left items-start"
+                  >
                     {stats &&
                     stats.review_count !== null &&
                     stats.review_count > 0 ? (

@@ -66,7 +66,7 @@ export function PageHeader({
               </Stack>
             </div>
             {rightSideContent && (
-              <div className="md:col-span-4 flex md:justify-end pb-2">
+              <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
                 {rightSideContent}
               </div>
             )}

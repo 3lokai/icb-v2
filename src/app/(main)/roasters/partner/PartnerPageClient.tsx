@@ -744,7 +744,7 @@ export default function PartnerPageClient({
                     </p>
                   </Stack>
                 </div>
-                <div className="md:col-span-4 flex md:justify-end pb-2">
+                <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
                   <div className="flex items-center gap-3 text-micro text-accent/60 uppercase tracking-[0.3em] font-bold">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                     24-48 Hours
@@ -782,7 +782,7 @@ export default function PartnerPageClient({
                       </p>
                     </Stack>
                   </div>
-                  <div className="md:col-span-4 flex md:justify-end pb-2">
+                  <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
                     <div className="flex items-center gap-3 text-micro text-accent/60 uppercase tracking-[0.3em] font-bold">
                       <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                       Limited Time
@@ -824,7 +824,7 @@ export default function PartnerPageClient({
                     </p>
                   </Stack>
                 </div>
-                <div className="md:col-span-4 flex md:justify-end pb-2">
+                <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
                   <div className="flex items-center gap-3 text-micro text-accent/60 uppercase tracking-[0.3em] font-bold">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
                     Full Control

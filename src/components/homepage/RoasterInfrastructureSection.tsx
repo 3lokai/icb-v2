@@ -19,19 +19,19 @@ export default function RoasterInfrastructureSection() {
 
   return (
     <Section spacing="default" className="overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-        {/* Left Column: Dense List (Visual) */}
-        <div className="relative h-[500px] w-full overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+        {/* Left Column: Dense List (Visual) - order-2 on mobile so copy appears first */}
+        <div className="relative h-[320px] sm:h-[400px] md:h-[500px] w-full min-w-0 overflow-hidden order-2 md:order-1">
           {/* Gradient Overlays for smooth fade in/out */}
           <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
 
           {/* Marquee Content */}
           <div
-            className="absolute inset-x-0 top-0 animate-marquee-vertical hover:[animation-play-state:paused]"
+            className="absolute inset-x-0 top-0 min-w-0 animate-marquee-vertical hover:[animation-play-state:paused]"
             style={{ "--duration": "60s" } as React.CSSProperties}
           >
-            <div className="grid grid-cols-2 p-6 gap-4">
+            <div className="grid grid-cols-2 p-6 gap-4 min-w-0">
               {displayRoasters.map((roaster, i) => (
                 <div
                   key={`${roaster.id}-${i}`}
@@ -67,8 +67,8 @@ export default function RoasterInfrastructureSection() {
           </div>
         </div>
 
-        {/* Right Column: Copy & Stats */}
-        <div className="flex flex-col justify-center">
+        {/* Right Column: Copy & Stats - order-1 on mobile so copy appears first */}
+        <div className="flex flex-col justify-center items-start text-left order-1 md:order-2">
           <Stack gap="6">
             <div className="inline-flex items-center gap-4">
               <span className="h-px w-8 md:w-12 bg-accent/60" />
