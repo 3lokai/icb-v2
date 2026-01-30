@@ -22,7 +22,6 @@ type PartnerPageClientProps = {
 };
 
 // InteractiveBentoCard component (reused from ContactForms pattern)
-// InteractiveBentoCard component (reused from ContactForms pattern)
 const InteractiveBentoCard = ({
   icon,
   title,
@@ -162,26 +161,26 @@ const BenefitsSection = ({
   const benefits = [
     {
       icon: "RocketLaunch" as IconName,
-      title: "Early Mover Advantage",
+      title: "Early Presence",
       description:
-        "Be featured when coffee enthusiasts discover the platform. Get visibility before competition floods in.",
-      buttonText: "Get Started",
+        "Be listed while discovery habits are still forming. Early roasters establish context, credibility, and visibility as users begin comparing coffees across brands.",
+      buttonText: "Get listed",
       tier: "free" as const,
     },
     {
       icon: "TrendUp" as IconName,
-      title: "Growing Fast",
+      title: "Real Momentum",
       description:
-        "60+ roasters, 2,000+ coffees, and momentum building daily. Real data, real roasters, real impact.",
-      buttonText: "Join Now",
+        "A growing catalogue of Indian specialty coffees, active user ratings, and continuous discovery activity — all visible, verifiable, and brand-neutral. No inflated promises. Just traction you can see.",
+      buttonText: "View the directory",
       tier: "verified" as const,
     },
     {
       icon: "Handshake" as IconName,
-      title: "Shape the Platform",
+      title: "Help Shape the Platform",
       description:
-        "Direct input on features. Your feedback drives our roadmap. We build what roasters actually need.",
-      buttonText: "Partner With Us",
+        "Founding roasters have direct input on structure, taxonomy, and features — ensuring the platform reflects how Indian specialty coffee actually works. We build with roasters, not around them.",
+      buttonText: "Partner with us",
       tier: "premium" as const,
     },
   ];
@@ -212,19 +211,19 @@ const HowItWorksSection = () => {
       number: "01",
       title: "Submit Your Details",
       description:
-        "Fill out a quick form with your roastery info, website, and contact details.",
+        "Share your roastery details, website, and contact information. We verify accuracy — not marketing claims.",
     },
     {
       number: "02",
       title: "Choose Your Tier",
       description:
-        "Start free or upgrade to Verified/Premium for enhanced features.",
+        "Start free, or opt for Verified / Premium for additional visibility and profile controls.",
     },
     {
       number: "03",
       title: "Go Live",
       description:
-        "Your profile goes live within 24-48 hours. Start getting discovered.",
+        "Your roaster profile goes live within 24–48 hours and becomes discoverable across the platform.",
     },
   ];
 
@@ -449,33 +448,39 @@ const FeaturesGrid = () => {
   const features = [
     {
       icon: "CheckCircle" as IconName,
-      title: "Verified Badge",
-      description: "Build trust with a platform-verified checkmark.",
+      title: "Verified Listing",
+      description:
+        "Your roastery is reviewed and marked as active, helping users trust the information they see.",
     },
     {
       icon: "ArrowSquareOut" as IconName,
       title: "Direct Traffic",
-      description: "We drive coffee lovers to YOUR website. Zero commission.",
+      description:
+        "We link directly to your website and purchase pages. No commissions. No intermediaries.",
     },
     {
       icon: "Image" as IconName,
       title: "Rich Profiles",
-      description: "Upload photos, tell your story, showcase your process.",
+      description:
+        "Add photos, share your story, and document your sourcing and roasting approach.",
     },
     {
       icon: "Star" as IconName,
       title: "Community Reviews",
-      description: "Let customers share their experiences with your beans.",
+      description:
+        "Ratings and feedback from verified users, tied to specific coffees — not generic brand scores.",
     },
     {
       icon: "GearSix" as IconName,
-      title: "Product Management",
-      description: "Add, edit, and organize your coffee listings easily.",
+      title: "Coffee & Product Management",
+      description:
+        "Add, update, and manage your coffee listings as they change through the year.",
     },
     {
       icon: "TrendUp" as IconName,
       title: "Performance Insights",
-      description: "Understand what coffees resonate with your audience.",
+      description:
+        "See how users discover and interact with your coffees — quietly, without vanity metrics.",
     },
   ];
 
@@ -543,9 +548,9 @@ const FinalCTA = ({
               <span className="text-accent italic">Discovered?</span>
             </h2>
             <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
-              Join 60+ roasters already listed on India&apos;s fastest-growing
-              coffee platform. Let&apos;s build the future of Indian speciality
-              coffee together.
+              Join 60+ roasters already listed on IndianCoffeeBeans. Build
+              long-term discovery for your coffees — without ads, commissions,
+              or rankings.
             </p>
           </Stack>
 
@@ -558,7 +563,7 @@ const FinalCTA = ({
                 onCtaClick("verified");
               }}
             >
-              Claim Your Founding Spot
+              Claim A Founding Spot
             </Button>
             <Button
               size="lg"
@@ -573,7 +578,7 @@ const FinalCTA = ({
             </Button>
           </div>
 
-          <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground border-t border-border/10 pt-8 mt-4">
+          <p className="text-micro font-bold tracking-widest text-muted-foreground border-t border-border/10 pt-8 mt-4">
             Questions? Email us at{" "}
             <a
               href="mailto:contact@indiancoffeebeans.com"
@@ -642,13 +647,13 @@ export default function PartnerPageClient({
       <PageHeader
         title={
           <>
-            Be Among the <span className="text-accent italic">First.</span>
+            Be <span className="text-accent italic">Discovered.</span>
             <br />
-            Grow With Us.
+            On a <span className="text-accent italic">Neutral </span>Ground.
           </>
         }
-        overline="FOUNDING ROASTERS WANTED"
-        description="We're building India's most comprehensive coffee platform. Join as a founding roaster and help shape the future of Indian specialty coffee discovery."
+        overline="FOUNDING ROASTERS"
+        description="IndianCoffeeBeans is a discovery and reputation layer for Indian specialty coffee. Your coffees are explored through structured data and user ratings - not ads or rankings."
         rightSideContent={
           <div className="flex flex-col sm:flex-row gap-4">
             <Button
@@ -667,14 +672,14 @@ export default function PartnerPageClient({
               className="transition-transform duration-300 hover:-translate-y-1"
               onClick={scrollToPricing}
             >
-              See Pricing
+              How Discovery Works
             </Button>
           </div>
         }
       />
 
       <PageShell className="-mt-20 relative z-30">
-        <Stack gap="16">
+        <Stack gap="4">
           {/* Stats Bar */}
           <Section spacing="tight">
             <StatsBar />
@@ -684,29 +689,26 @@ export default function PartnerPageClient({
           <Section spacing="default">
             <Stack gap="8">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-                <div className="md:col-span-8">
+                <div className="md:col-span-12">
                   <Stack gap="6">
                     <div className="inline-flex items-center gap-4">
                       <span className="h-px w-8 md:w-12 bg-accent/60" />
                       <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                        The Benefits
+                        THE BENEFITS
                       </span>
                     </div>
                     <h2 className="text-title md:text-display text-balance leading-[1] tracking-tight">
                       Why Partner With{" "}
-                      <span className="text-accent italic">Us?</span>
+                      <span className="text-accent italic">
+                        IndianCoffeeBeans?
+                      </span>
                     </h2>
                     <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
-                      Join India&apos;s fastest-growing coffee platform and get
-                      discovered by thousands of coffee enthusiasts.
+                      A neutral discovery layer for Indian specialty coffee —
+                      built to surface coffees fairly, not promote brands
+                      aggressively.
                     </p>
                   </Stack>
-                </div>
-                <div className="md:col-span-4 flex md:justify-end pb-2">
-                  <div className="flex items-center gap-3 text-micro text-accent/60 uppercase tracking-[0.3em] font-bold">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                    Growing Fast
-                  </div>
                 </div>
               </div>
               <BenefitsSection
@@ -714,6 +716,9 @@ export default function PartnerPageClient({
                   setActiveForm(tier);
                 }}
               />
+              <p className="text-micro text-muted-foreground/70 text-center md:text-left pt-2 border-t border-border/30 mt-2">
+                IndianCoffeeBeans does not sell coffee, run ads, or rank brands.
+              </p>
             </Stack>
           </Section>
 
@@ -734,8 +739,8 @@ export default function PartnerPageClient({
                       <span className="text-accent italic">3 Steps.</span>
                     </h2>
                     <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
-                      From submission to going live, we make it easy to join the
-                      platform and start getting discovered.
+                      From submission to going live, we keep onboarding simple
+                      and transparent — no back-and-forth, no gatekeeping.
                     </p>
                   </Stack>
                 </div>
@@ -747,6 +752,9 @@ export default function PartnerPageClient({
                 </div>
               </div>
               <HowItWorksSection />
+              <p className="text-micro text-muted-foreground/70 text-center md:text-left pt-4 border-t border-border/30 mt-2">
+                No commissions. No exclusivity. You control your presence.
+              </p>
             </Stack>
           </Section>
 
@@ -811,8 +819,8 @@ export default function PartnerPageClient({
                       <span className="text-accent italic">Included?</span>
                     </h2>
                     <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
-                      Everything you need to showcase your roastery and connect
-                      with coffee enthusiasts across India.
+                      Everything you need to present your roastery clearly and
+                      connect with serious coffee drinkers across India.
                     </p>
                   </Stack>
                 </div>
@@ -824,6 +832,10 @@ export default function PartnerPageClient({
                 </div>
               </div>
               <FeaturesGrid />
+              <p className="text-micro text-muted-foreground/70 text-center md:text-left pt-4 border-t border-border/30 mt-2">
+                No ads. No sponsored placement. Discovery is driven by data and
+                user activity.
+              </p>
             </Stack>
           </Section>
 
