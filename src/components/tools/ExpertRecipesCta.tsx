@@ -95,8 +95,8 @@ export default function ExpertRecipesCta() {
               </div>
 
               {/* Right: "The Toolkit" Card */}
-              <div className="md:col-span-12 lg:col-span-5 lg:mt-0 mt-4">
-                <div className="relative overflow-hidden rounded-2xl border border-border bg-background/40 p-6 md:p-8 transition-all hover:bg-background/60 hover:border-border/80">
+              <div className="md:col-span-12 lg:col-span-5 lg:mt-0 mt-4 flex flex-col items-start text-left">
+                <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-background/40 p-6 md:p-8 transition-all hover:bg-background/60 hover:border-border/80 text-left">
                   <Stack gap="6">
                     <div className="flex items-center justify-between">
                       <span className="text-overline text-muted-foreground font-semibold tracking-wider">

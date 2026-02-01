@@ -1,7 +1,6 @@
 "use client";
 
 import { Icon } from "@/components/common/Icon";
-import { PageHeader } from "@/components/layout/PageHeader";
 import { useMemo, useState } from "react";
 import { RoasterDirectoryFAQ } from "@/components/faqs/RoasterDirectoryFAQs";
 import { Badge } from "@/components/ui/badge";
@@ -76,117 +75,95 @@ export function RoasterDirectory({
   const items = data?.items || [];
 
   return (
-    <>
-      <PageHeader
-        backgroundImage="/images/hero-roasters.avif"
-        backgroundImageAlt="Roastery background"
-        description="Discover specialty coffee roasters from across India. Connect with the artisans dedicated to bringing out the best in every bean."
-        overline="Artisan Roaster Directory"
-        rightSideContent={
-          <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-widest font-medium">
-            <span className="h-1 w-1 rounded-full bg-accent/40" />
-            Manually Reviewed
-            <span className="h-1 w-1 rounded-full bg-accent/40" />
+    <div className="container mx-auto p-4 pt-16 md:pt-24">
+      {/* Section Header */}
+      <div className="mb-12">
+        <Stack gap="6">
+          <div className="inline-flex items-center gap-4">
+            <span className="h-px w-8 md:w-12 bg-accent/60" />
+            <span className="text-overline text-muted-foreground tracking-[0.15em]">
+              The Directory
+            </span>
           </div>
-        }
-        title={
-          <>
-            India&apos;s <span className="text-accent italic">Passionate</span>{" "}
-            Roasters.
-          </>
-        }
+
+          <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+            Explore India&apos;s{" "}
+            <span className="text-accent italic">Roaster Network</span>
+          </h2>
+
+          <p className="max-w-md text-pretty text-body-large text-muted-foreground leading-relaxed">
+            Discover specialty coffee roasters from across the country. Filter
+            by location, search by name, or browse to find your next favorite
+            roaster.
+          </p>
+        </Stack>
+      </div>
+
+      {/* Results Count */}
+      {data && (
+        <div className="mb-6 text-center">
+          <p className="text-muted-foreground text-caption italic">
+            Showing {items.length} of {data.total} roasters
+          </p>
+        </div>
+      )}
+
+      {/* Mobile Filter Toggle Button */}
+      <div className="mb-4 md:hidden">
+        <Button
+          aria-label="Open filters"
+          className="w-full justify-start h-12"
+          onClick={() => setIsDrawerOpen(true)}
+          variant="outline"
+        >
+          <Icon className="mr-2" name="Funnel" size={16} />
+          Filters
+          {activeFilterCount > 0 && (
+            <Badge className="ml-2" variant="secondary">
+              {activeFilterCount}
+            </Badge>
+          )}
+        </Button>
+      </div>
+
+      {/* Filter Bar */}
+      <RoasterFilterBar />
+
+      {/* Mobile Filter Drawer */}
+      <MobileFilterDrawer
+        filterMeta={filterMeta}
+        onOpenChange={setIsDrawerOpen}
+        open={isDrawerOpen}
       />
 
-      <div className="container mx-auto p-4 pt-16 md:pt-24">
-        {/* Section Header */}
-        <div className="mb-12">
-          <Stack gap="6">
-            <div className="inline-flex items-center gap-4">
-              <span className="h-px w-8 md:w-12 bg-accent/60" />
-              <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                The Directory
-              </span>
-            </div>
+      {/* Main Content Area */}
+      <div className="flex flex-col gap-12 md:flex-row md:gap-16">
+        {/* Filter Sidebar */}
+        <RoasterFilterSidebar filterMeta={filterMeta} />
 
-            <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-              Explore India&apos;s{" "}
-              <span className="text-accent italic">Roaster Network</span>
-            </h2>
+        {/* Roaster Grid */}
+        <div className="flex-1">
+          <Stack gap="8">
+            {isFetching && !data && (
+              <div className="py-12 text-center">
+                <p className="text-muted-foreground">Loading roasters...</p>
+              </div>
+            )}
 
-            <p className="max-w-md text-pretty text-body-large text-muted-foreground leading-relaxed">
-              Discover specialty coffee roasters from across the country. Filter
-              by location, search by name, or browse to find your next favorite
-              roaster.
-            </p>
+            <RoasterGrid isLoading={isFetching} items={items} />
+
+            {/* Pagination */}
+            {data && data.totalPages > 1 && (
+              <RoasterPagination totalPages={data.totalPages} />
+            )}
           </Stack>
         </div>
-
-        {/* Results Count */}
-        {data && (
-          <div className="mb-6 text-center">
-            <p className="text-muted-foreground text-caption italic">
-              Showing {items.length} of {data.total} roasters
-            </p>
-          </div>
-        )}
-
-        {/* Mobile Filter Toggle Button */}
-        <div className="mb-4 md:hidden">
-          <Button
-            aria-label="Open filters"
-            className="w-full justify-start h-12"
-            onClick={() => setIsDrawerOpen(true)}
-            variant="outline"
-          >
-            <Icon className="mr-2" name="Funnel" size={16} />
-            Filters
-            {activeFilterCount > 0 && (
-              <Badge className="ml-2" variant="secondary">
-                {activeFilterCount}
-              </Badge>
-            )}
-          </Button>
-        </div>
-
-        {/* Filter Bar */}
-        <RoasterFilterBar />
-
-        {/* Mobile Filter Drawer */}
-        <MobileFilterDrawer
-          filterMeta={filterMeta}
-          onOpenChange={setIsDrawerOpen}
-          open={isDrawerOpen}
-        />
-
-        {/* Main Content Area */}
-        <div className="flex flex-col gap-12 md:flex-row md:gap-16">
-          {/* Filter Sidebar */}
-          <RoasterFilterSidebar filterMeta={filterMeta} />
-
-          {/* Roaster Grid */}
-          <div className="flex-1">
-            <Stack gap="8">
-              {isFetching && !data && (
-                <div className="py-12 text-center">
-                  <p className="text-muted-foreground">Loading roasters...</p>
-                </div>
-              )}
-
-              <RoasterGrid isLoading={isFetching} items={items} />
-
-              {/* Pagination */}
-              {data && data.totalPages > 1 && (
-                <RoasterPagination totalPages={data.totalPages} />
-              )}
-            </Stack>
-          </div>
-        </div>
-
-        {/* FAQ Section */}
-        <div className="mt-24 border-t border-border/40 pt-16">
-          <RoasterDirectoryFAQ />
-        </div>
       </div>
-    </>
+
+      {/* FAQ Section */}
+      <div className="mt-24 border-t border-border/40 pt-16">
+        <RoasterDirectoryFAQ />
+      </div>
+    </div>
   );
 }

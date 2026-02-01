@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { RoasterDirectory } from "@/components/roasters/RoasterDirectory";
 import { fetchRoasterFilterMeta } from "@/lib/data/fetch-roaster-filter-meta";
 import { fetchRoasters } from "@/lib/data/fetch-roasters";
@@ -99,19 +101,12 @@ export async function generateMetadata({
   };
 }
 
-/**
- * Roaster Directory Page (Server Component)
- * Fetches initial data on server and renders client component
- */
-export default async function RoastersPage({
-  searchParams,
+async function RoastersPageContent({
+  params,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: { [key: string]: string | string[] | undefined };
 }) {
-  const params = await searchParams;
   const urlSearchParams = new URLSearchParams();
-
-  // Convert searchParams to URLSearchParams
   for (const [key, value] of Object.entries(params)) {
     if (value) {
       if (Array.isArray(value)) {
@@ -122,17 +117,14 @@ export default async function RoastersPage({
     }
   }
 
-  // Parse search params using the same helper as API route
   const { filters, page, limit, sort } =
     parseRoasterSearchParams(urlSearchParams);
 
-  // Fetch initial data and filter meta in parallel for better performance
   const [initialData, filterMeta] = await Promise.all([
     fetchRoasters(filters, page, limit, sort),
     fetchRoasterFilterMeta(),
   ]);
 
-  // Generate structured data for filtered views
   const hasFilters = Object.keys(filters).length > 0;
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
@@ -166,6 +158,57 @@ export default async function RoastersPage({
         initialPage={page}
         initialSort={sort}
       />
+    </>
+  );
+}
+
+function RoastersPageContentFallback() {
+  return (
+    <div className="container mx-auto px-4 py-12 md:py-20">
+      <div className="animate-pulse space-y-6">
+        <div className="h-8 w-48 bg-muted rounded" />
+        <div className="h-4 w-full max-w-2xl bg-muted rounded" />
+        <div className="h-4 w-3/4 max-w-xl bg-muted rounded" />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Roaster Directory Page (Server Component)
+ * PageHeader streams immediately; data-dependent content streams in via Suspense
+ */
+export default async function RoastersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+
+  return (
+    <>
+      <PageHeader
+        backgroundImage="/images/hero-roasters.avif"
+        backgroundImageAlt="Roastery background"
+        description="Discover specialty coffee roasters from across India. Connect with the artisans dedicated to bringing out the best in every bean."
+        overline="Artisan Roaster Directory"
+        rightSideContent={
+          <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-widest font-medium">
+            <span className="h-1 w-1 rounded-full bg-accent/40" />
+            Manually Reviewed
+            <span className="h-1 w-1 rounded-full bg-accent/40" />
+          </div>
+        }
+        title={
+          <>
+            India&apos;s <span className="text-accent italic">Passionate</span>{" "}
+            Roasters.
+          </>
+        }
+      />
+      <Suspense fallback={<RoastersPageContentFallback />}>
+        <RoastersPageContent params={params} />
+      </Suspense>
     </>
   );
 }
