@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { CoffeeDirectory } from "@/components/coffees/CoffeeDirectory";
 import { CollectionGrid } from "@/components/collections/CollectionGrid";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -109,19 +110,12 @@ export async function generateMetadata({
   };
 }
 
-/**
- * Coffee Directory Page (Server Component)
- * Fetches initial data on server and renders client component
- */
-export default async function CoffeesPage({
-  searchParams,
+async function CoffeesPageContent({
+  params,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: { [key: string]: string | string[] | undefined };
 }) {
-  const params = await searchParams;
   const urlSearchParams = new URLSearchParams();
-
-  // Convert searchParams to URLSearchParams
   for (const [key, value] of Object.entries(params)) {
     if (value) {
       if (Array.isArray(value)) {
@@ -132,17 +126,14 @@ export default async function CoffeesPage({
     }
   }
 
-  // Parse search params using the same helper as API route
   const { filters, page, limit, sort } =
     parseCoffeeSearchParams(urlSearchParams);
 
-  // Fetch initial data and filter meta in parallel for better performance
   const [initialData, filterMeta] = await Promise.all([
     fetchCoffees(filters, page, limit, sort),
     fetchCoffeeFilterMeta(),
   ]);
 
-  // Generate structured data for filtered views
   const hasFilters = Object.keys(filters).length > 0;
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
@@ -169,6 +160,53 @@ export default async function CoffeesPage({
           }}
         />
       )}
+      <CollectionGrid
+        maxItems={8}
+        cardVariant="small"
+        overline="Optional Quick Start"
+        title="Start with a"
+        titleAccent="Collection"
+        description="Hand-picked groupings based on common brewing and flavour patterns."
+        ctaText="Browse All Coffees"
+        ctaHref="/coffees"
+        mobileDecorativeText="Quick Start"
+      />
+      <CoffeeDirectory
+        filterMeta={filterMeta}
+        initialData={initialData}
+        initialFilters={filters}
+        initialPage={page}
+        initialSort={sort}
+      />
+    </>
+  );
+}
+
+function CoffeesPageContentFallback() {
+  return (
+    <div className="container mx-auto px-4 py-12 md:py-20">
+      <div className="animate-pulse space-y-6">
+        <div className="h-8 w-48 bg-muted rounded" />
+        <div className="h-4 w-full max-w-2xl bg-muted rounded" />
+        <div className="h-4 w-3/4 max-w-xl bg-muted rounded" />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Coffee Directory Page (Server Component)
+ * PageHeader streams immediately; data-dependent content streams in via Suspense
+ */
+export default async function CoffeesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+
+  return (
+    <>
       <PageHeader
         backgroundImage="/images/hero-coffees.avif"
         backgroundImageAlt="Coffee beans background"
@@ -188,25 +226,9 @@ export default async function CoffeesPage({
           </>
         }
       />
-      {/* Optional Quick Start Section */}
-      <CollectionGrid
-        maxItems={8}
-        cardVariant="small"
-        overline="Optional Quick Start"
-        title="Start with a"
-        titleAccent="Collection"
-        description="Hand-picked groupings based on common brewing and flavour patterns."
-        ctaText="Browse All Coffees"
-        ctaHref="/coffees"
-        mobileDecorativeText="Quick Start"
-      />
-      <CoffeeDirectory
-        filterMeta={filterMeta}
-        initialData={initialData}
-        initialFilters={filters}
-        initialPage={page}
-        initialSort={sort}
-      />
+      <Suspense fallback={<CoffeesPageContentFallback />}>
+        <CoffeesPageContent params={params} />
+      </Suspense>
     </>
   );
 }
