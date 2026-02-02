@@ -1,6 +1,8 @@
 // src/lib/analytics/filter-tracking.ts
 // Analytics utilities for filter usage and cache metrics
 
+import { hasAnalyticsConsent } from "./index";
+
 export type FilterAnalyticsEvent =
   | "filter_applied"
   | "filter_cleared"
@@ -21,11 +23,11 @@ export type FilterAnalyticsPayload = {
 };
 
 export function trackFilterEvent(payload: FilterAnalyticsPayload) {
-  // Example: send to Google Analytics, Segment, or custom endpoint
-  if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", payload.event, payload);
-  }
-  // Optionally, log to console for dev
+  if (!hasAnalyticsConsent()) return;
+  if (typeof window === "undefined" || !window.gtag) return;
+
+  window.gtag("event", payload.event, payload);
+
   if (process.env.NODE_ENV === "development") {
     console.log("[FilterAnalytics]", payload);
   }
