@@ -483,6 +483,42 @@ export function trackRoasterConversion(
   });
 }
 
+// GA4 E-commerce: view_item (product detail page view)
+export function trackCoffeeViewItem(params: {
+  coffeeId: string;
+  coffeeName: string;
+  roasterName?: string;
+  price?: number;
+  currency?: string;
+  inStock: boolean;
+  rating?: number;
+  ratingCount?: number;
+}): void {
+  if (!hasAnalyticsConsent()) return;
+  if (typeof window === "undefined" || !window.gtag) return;
+
+  markUserEngagement("content_read");
+
+  const item = {
+    item_id: params.coffeeId,
+    item_name: params.coffeeName,
+    item_brand: params.roasterName || undefined,
+    price: params.price ?? 0,
+    quantity: 1,
+  };
+
+  window.gtag("event", "view_item", {
+    currency: params.currency ?? "INR",
+    value: params.price ?? 0,
+    items: [item],
+    // Custom params for reports (optional)
+    coffee_id: params.coffeeId,
+    in_stock: params.inStock,
+    rating: params.rating,
+    rating_count: params.ratingCount,
+  });
+}
+
 // Coffee Purchase Intent Events
 export function trackCoffeePurchaseIntent(
   coffeeId: string,

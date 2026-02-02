@@ -127,7 +127,7 @@ export default async function RootLayout({
                 (function() {
                   // Check if we should initialize GA (production check)
                   var isProd = ${process.env.NODE_ENV === "production" ? "true" : "false"};
-                  var enableAnalytics = ${process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true" ? "true" : "false"};
+                  var enableAnalytics = ${env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true" ? "true" : "false"};
                   var hostname = typeof window !== "undefined" ? window.location.hostname : "";
                   var shouldInit = enableAnalytics || (isProd && hostname !== "localhost" && hostname !== "127.0.0.1" && !hostname.startsWith("localhost:") && !hostname.startsWith("127.0.0.1:"));
                   

@@ -27,6 +27,8 @@ const envSchema = z.object({
   // Google Analytics (GA4) configuration
   // GA4 Measurement ID (G-XXXX) - used by @next/third-parties/google for GA4 integration
   NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
+  // When "true", enables GA even on localhost (useful for testing). Otherwise GA runs only in production on real hostnames.
+  NEXT_PUBLIC_ENABLE_ANALYTICS: z.string().optional(),
   // Legacy: kept for backward compatibility, maps to GA_MEASUREMENT_ID
   NEXT_PUBLIC_GA_ID: z.string().optional(),
 

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { RoasterDetail } from "@/types/roaster-types";
 import { roasterImagePresets } from "@/lib/imagekit";
@@ -18,7 +19,10 @@ import { ReviewSection } from "@/components/reviews";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
 import { trackRoasterClick } from "@/lib/analytics";
-import { trackRoasterConversion } from "@/lib/analytics/enhanced-tracking";
+import {
+  trackRoasterConversion,
+  trackRoasterEngagement,
+} from "@/lib/analytics/enhanced-tracking";
 
 type RoasterDetailPageProps = {
   roaster: RoasterDetail;
@@ -40,6 +44,14 @@ export function RoasterDetailPage({
   className,
 }: RoasterDetailPageProps) {
   const router = useRouter();
+
+  // GA: tag roaster slug page with profile_view (roaster_engagement)
+  useEffect(() => {
+    trackRoasterEngagement(roaster.id, "profile_view", {
+      coffeeCount: roaster.coffee_count ?? undefined,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per roaster view
+  }, [roaster.id]);
 
   // Build location info
   const locationParts: string[] = [];

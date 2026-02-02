@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import { Icon } from "@/components/common/Icon";
+import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
@@ -30,6 +31,24 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
 
   const { data: reviews } = useReviews("coffee", coffee.id);
   const { data: stats } = useReviewStats("coffee", coffee.id);
+
+  // GA4 e-commerce: tag product slug page with view_item (fire once per product view)
+  useEffect(() => {
+    trackCoffeeViewItem({
+      coffeeId: coffee.id,
+      coffeeName: coffee.name,
+      roasterName: coffee.roaster?.name,
+      price:
+        coffee.summary.min_price_in_stock ??
+        coffee.summary.best_normalized_250g ??
+        undefined,
+      currency: "INR",
+      inStock: (coffee.summary.in_stock_count ?? 0) > 0,
+      rating: coffee.rating_avg ?? undefined,
+      ratingCount: coffee.rating_count,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per coffee view, not on every prop change
+  }, [coffee.id]);
 
   const handleScrollToRating = useCallback(() => {
     // Scroll to rating section
