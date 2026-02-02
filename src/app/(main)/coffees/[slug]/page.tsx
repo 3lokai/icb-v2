@@ -73,58 +73,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     availability: (coffee.summary.in_stock_count ?? 0) > 0,
   };
 
-  // Generate structured data
-  const productSchema = generateSchemaOrg({
-    type: "Product",
-    name: coffee.name,
-    description,
-    image: ogImage,
-    url: canonical,
-    brand: coffee.roaster?.name,
-    price:
-      coffee.summary.best_normalized_250g ||
-      coffee.summary.min_price_in_stock ||
-      undefined,
-    currency: "INR",
-    availability:
-      (coffee.summary.in_stock_count ?? 0) > 0 ? "InStock" : "OutOfStock",
-    aggregateRating:
-      coffee.rating_avg && coffee.rating_count > 0
-        ? {
-            ratingValue: coffee.rating_avg,
-            ratingCount: coffee.rating_count,
-          }
-        : undefined,
-  });
-
-  // Breadcrumb schema
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: baseUrl,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Coffees",
-        item: `${baseUrl}/coffees`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: coffee.name,
-        item: canonical,
-      },
-    ],
-  };
-
-  // Note: Structured data is rendered via <StructuredData> component in the page
-  // to avoid duplication and reduce HTML size
+  // Structured data is rendered via <StructuredData> in the page component
   return generateSEOMetadata({
     title,
     description,

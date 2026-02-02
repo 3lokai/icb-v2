@@ -43,95 +43,93 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
     <div className={cn("w-full bg-background min-h-screen", className)}>
       <PageShell maxWidth="5xl">
         <Stack gap="6" className="py-8 md:py-12">
-          {/* 📌 GLOBAL HEADER (ALWAYS VISIBLE) */}
-          <header className="sticky top-24 z-30 bg-background/80 backdrop-blur-md pt-4 pb-6 border-b border-border/40">
-            <Stack gap="4">
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <Stack gap="1">
-                  <h1 className="text-display font-serif italic leading-none text-balance">
-                    {coffee.name}
-                  </h1>
-                  <Cluster gap="2" align="center">
-                    {coffee.roaster && (
-                      <Link
-                        href={`/roasters/${coffee.roaster.slug}`}
-                        className="text-body-muted hover:text-foreground transition-colors font-medium"
-                      >
-                        {coffee.roaster.name}
-                      </Link>
-                    )}
-                  </Cluster>
-                  <div className="text-label uppercase tracking-widest mt-1">
-                    {[
-                      coffee.estates?.[0]?.name ||
-                        coffee.regions?.[0]?.display_name,
-                      capitalizeFirstLetter(
-                        coffee.process_raw || coffee.process || ""
-                      ),
-                      capitalizeFirstLetter(
-                        coffee.roast_level_raw || coffee.roast_level || ""
-                      ),
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </div>
-                </Stack>
-
-                <Cluster gap="3">
-                  <Button
-                    size="lg"
-                    className="shadow-xl bg-primary hover:scale-[1.02] transition-transform min-w-[160px]"
-                    onClick={handleScrollToRating}
-                  >
-                    Rate this coffee
-                  </Button>
-                  {coffee.direct_buy_url && (
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      asChild
-                      className="text-muted-foreground min-w-[160px]"
-                    >
-                      <a
-                        href={coffee.direct_buy_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Buy from roaster
-                      </a>
-                    </Button>
-                  )}
-                </Cluster>
-              </div>
-            </Stack>
-          </header>
-
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="mb-6 bg-muted/20 p-1 rounded-full w-fit">
-              <TabsTrigger value="overview" className="rounded-full px-6">
-                Overview
-              </TabsTrigger>
-              <TabsTrigger value="details" className="rounded-full px-6">
-                Details
-              </TabsTrigger>
-              <TabsTrigger value="flavor" className="rounded-full px-6">
-                Flavor
-              </TabsTrigger>
-              <TabsTrigger value="pricing" className="rounded-full px-6">
-                Pricing
-              </TabsTrigger>
-            </TabsList>
+            <header className="bg-background pt-4 pb-4 border-b border-border/40">
+              <Stack gap="6">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                  <Stack gap="1">
+                    <h1 className="text-display font-serif italic leading-none text-balance">
+                      {coffee.name}
+                    </h1>
+                    <Cluster gap="2" align="center">
+                      {coffee.roaster && (
+                        <Link
+                          href={`/roasters/${coffee.roaster.slug}`}
+                          className="text-body-muted hover:text-foreground transition-colors font-medium"
+                        >
+                          {coffee.roaster.name}
+                        </Link>
+                      )}
+                    </Cluster>
+                    <div className="text-label uppercase tracking-widest mt-1">
+                      {[
+                        coffee.estates?.[0]?.name ||
+                          coffee.regions?.[0]?.display_name,
+                        capitalizeFirstLetter(
+                          coffee.process_raw || coffee.process || ""
+                        ),
+                        capitalizeFirstLetter(
+                          coffee.roast_level_raw || coffee.roast_level || ""
+                        ),
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </div>
+                  </Stack>
+
+                  <Cluster gap="3">
+                    <Button
+                      size="lg"
+                      className="shadow-xl bg-primary hover:scale-[1.02] transition-transform min-w-[160px]"
+                      onClick={handleScrollToRating}
+                    >
+                      Rate this coffee
+                    </Button>
+                    {coffee.direct_buy_url && (
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        asChild
+                        className="text-muted-foreground min-w-[160px]"
+                      >
+                        <a
+                          href={coffee.direct_buy_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Buy from roaster
+                        </a>
+                      </Button>
+                    )}
+                  </Cluster>
+                </div>
+                <TabsList className="mb-0 bg-muted/20 p-1 rounded-full w-fit">
+                  <TabsTrigger value="overview" className="rounded-full px-6">
+                    Overview
+                  </TabsTrigger>
+                  <TabsTrigger value="details" className="rounded-full px-6">
+                    Details
+                  </TabsTrigger>
+                  <TabsTrigger value="flavor" className="rounded-full px-6">
+                    Flavor
+                  </TabsTrigger>
+                  <TabsTrigger value="pricing" className="rounded-full px-6">
+                    Pricing
+                  </TabsTrigger>
+                </TabsList>
+              </Stack>
+            </header>
 
             {/* 🟦 OVERVIEW TAB (CORE EXPERIENCE) */}
             <TabsContent value="overview">
               <Stack gap="4" className="max-w-4xl">
                 {/* Hero: Coffee Image + Stats + Buy */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-                  <div className="w-full max-w-sm mx-auto md:ml-auto order-2 md:order-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                  <div className="w-full max-w-sm mx-auto md:mx-0 md:ml-auto order-1 md:order-1">
                     <CoffeeImageCarousel
                       images={coffee.images}
                       coffeeName={coffee.name}
@@ -141,7 +139,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
 
                   <Stack
                     gap="6"
-                    className="order-1 md:order-2 text-left items-start"
+                    className="order-2 md:order-2 text-left items-start"
                   >
                     {stats &&
                     stats.review_count !== null &&
