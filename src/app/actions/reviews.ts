@@ -51,12 +51,26 @@ function devErrorMessage(err: unknown): string {
   return `${msg}${details}${hint}`;
 }
 
-function revalidateEntityPaths(
+async function revalidateEntityPaths(
+  supabase: Awaited<ReturnType<typeof createServiceRoleClient>>,
   entityType: "coffee" | "roaster",
   entityId: string
 ) {
   if (entityType === "coffee") {
-    revalidatePath(`/coffees/${entityId}`);
+    const { data: coffee } = await supabase
+      .from("coffees")
+      .select("slug, roasters(slug)")
+      .eq("id", entityId)
+      .single();
+    if (
+      coffee?.slug &&
+      coffee?.roasters &&
+      typeof coffee.roasters === "object" &&
+      "slug" in coffee.roasters
+    ) {
+      const roasterSlug = (coffee.roasters as { slug: string }).slug;
+      revalidatePath(`/roasters/${roasterSlug}/coffees/${coffee.slug}`);
+    }
     revalidatePath("/coffees");
   } else {
     revalidatePath(`/roasters/${entityId}`);
@@ -275,7 +289,7 @@ export async function createReview(
       };
     }
 
-    revalidateEntityPaths(input.entity_type, input.entity_id);
+    await revalidateEntityPaths(supabase, input.entity_type, input.entity_id);
 
     // Send Slack notification (fire and forget)
     sendSlackNotification("review", {
@@ -383,7 +397,7 @@ export async function deleteReview(
       };
     }
 
-    revalidateEntityPaths(input.entity_type, input.entity_id);
+    await revalidateEntityPaths(supabase, input.entity_type, input.entity_id);
 
     return { success: true };
   } catch (error) {

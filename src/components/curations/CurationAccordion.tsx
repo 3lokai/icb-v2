@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Card, CardContent } from "@/components/ui/card";
+import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import {
   Accordion,
   AccordionContent,
@@ -143,9 +145,21 @@ function SelectionGrid({
           <CardContent className="p-5 md:p-6 flex-1 flex flex-col justify-center">
             <Stack gap="3">
               <Stack gap="1">
-                <h3 className="text-subheading font-serif leading-snug">
-                  {selection.name}
-                </h3>
+                {selection.roasterSlug && selection.coffeeSlug ? (
+                  <Link
+                    href={coffeeDetailHref(
+                      selection.roasterSlug,
+                      selection.coffeeSlug
+                    )}
+                    className="text-subheading font-serif leading-snug hover:text-accent transition-colors"
+                  >
+                    {selection.name}
+                  </Link>
+                ) : (
+                  <h3 className="text-subheading font-serif leading-snug">
+                    {selection.name}
+                  </h3>
+                )}
                 <p className="text-label text-accent">{selection.roaster}</p>
               </Stack>
               <p className="text-body text-muted-foreground font-serif italic line-clamp-2">

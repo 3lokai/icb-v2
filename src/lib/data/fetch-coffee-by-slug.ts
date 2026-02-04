@@ -13,33 +13,29 @@ import type {
   FlavorNote,
 } from "@/types/coffee-component-types";
 
+type CoffeeRow = {
+  id: string;
+  slug: string | null;
+  name: string | null;
+  roaster_id: string | null;
+  [key: string]: unknown;
+};
+
 /**
- * Fetch a single coffee by slug with all related data
- * Returns null if coffee not found
+ * Build full CoffeeDetail from a coffees table row.
+ * Fetches all related data (roaster, variants, images, etc.) and assembles CoffeeDetail.
+ * Used by fetchCoffeeBySlug, fetchCoffeeByRoasterAndSlug, and fetchCoffeesBySlugOnly.
  */
-export async function fetchCoffeeBySlug(
-  slug: string
+async function buildCoffeeDetailFromRow(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  coffeeData: CoffeeRow
 ): Promise<CoffeeDetail | null> {
-  // Try to use service role client if available (bypasses RLS for server-side queries)
-  // Fallback to regular client if service role key is not set
-  const supabase = process.env.SUPABASE_SECRET_KEY
-    ? await createServiceRoleClient()
-    : await createClient();
-
-  // Fetch coffee from coffees table
-  const { data: coffeeData, error: coffeeError } = await supabase
-    .from("coffees")
-    .select("*")
-    .eq("slug", slug)
-    .single();
-
-  if (coffeeError || !coffeeData) {
+  if (!coffeeData.slug || !coffeeData.name || !coffeeData.roaster_id) {
     return null;
   }
 
   const coffeeId = coffeeData.id;
 
-  // Fetch all related data in parallel for better performance
   const [
     roasterResult,
     variantsResult,
@@ -52,7 +48,6 @@ export async function fetchCoffeeBySlug(
     summaryResult,
     canonFlavorIdsResult,
   ] = await Promise.all([
-    // Fetch roaster
     supabase
       .from("roasters")
       .select(
@@ -61,36 +56,30 @@ export async function fetchCoffeeBySlug(
       .eq("id", coffeeData.roaster_id)
       .single(),
 
-    // Fetch variants
     supabase
       .from("variants")
       .select("*")
       .eq("coffee_id", coffeeId)
       .order("weight_g", { ascending: true }),
 
-    // Fetch images using existing helper
     fetchAllCoffeeImages(supabase, [coffeeId]),
 
-    // Fetch sensory data
     supabase
       .from("sensory_params")
       .select("*")
       .eq("coffee_id", coffeeId)
       .maybeSingle(),
 
-    // Fetch flavor notes via junction table
     supabase
       .from("coffee_flavor_notes")
       .select("flavor_note_id, flavor_notes(id, key, label, group_key)")
       .eq("coffee_id", coffeeId),
 
-    // Fetch brew methods via junction table
     supabase
       .from("coffee_brew_methods")
       .select("brew_method_id, brew_methods(id, key, label)")
       .eq("coffee_id", coffeeId),
 
-    // Fetch regions via junction table with percentage
     supabase
       .from("coffee_regions")
       .select(
@@ -98,7 +87,6 @@ export async function fetchCoffeeBySlug(
       )
       .eq("coffee_id", coffeeId),
 
-    // Fetch estates via junction table with percentage
     supabase
       .from("coffee_estates")
       .select(
@@ -106,14 +94,12 @@ export async function fetchCoffeeBySlug(
       )
       .eq("coffee_id", coffeeId),
 
-    // Fetch summary data from coffee_summary view
     supabase
       .from("coffee_summary")
       .select("*")
       .eq("coffee_id", coffeeId)
       .single(),
 
-    // Fetch canonical flavor node IDs from coffee_directory_mv for similar coffee matching
     supabase
       .from("coffee_directory_mv")
       .select("canon_flavor_node_ids")
@@ -121,13 +107,10 @@ export async function fetchCoffeeBySlug(
       .single(),
   ]);
 
-  // Handle errors
   if (roasterResult.error || !roasterResult.data) {
-    console.error("Error fetching roaster:", roasterResult.error);
     return null;
   }
 
-  // Transform roaster data
   const roasterData = roasterResult.data;
   const roaster: CoffeeRoasterEmbedded = {
     id: roasterData.id,
@@ -148,7 +131,6 @@ export async function fetchCoffeeBySlug(
     default_concurrency: roasterData.default_concurrency,
   };
 
-  // Transform variants
   const variants: CoffeeVariant[] =
     variantsResult.data?.map((v) => ({
       id: v.id,
@@ -172,11 +154,8 @@ export async function fetchCoffeeBySlug(
       price_last_checked_at: v.price_last_checked_at,
     })) || [];
 
-  // Transform images
-  const imagesMap = imagesResult;
-  const images: CoffeeImage[] = imagesMap.get(coffeeId) || [];
+  const images: CoffeeImage[] = imagesResult.get(coffeeId) || [];
 
-  // Transform sensory data
   const sensory: CoffeeSensory | null = sensoryResult.data
     ? {
         acidity: sensoryResult.data.acidity,
@@ -193,7 +172,6 @@ export async function fetchCoffeeBySlug(
       }
     : null;
 
-  // Transform flavor notes
   const flavorNotes: FlavorNote[] =
     flavorNotesResult.data
       ?.map((row) => {
@@ -213,7 +191,6 @@ export async function fetchCoffeeBySlug(
       })
       .filter((fn): fn is FlavorNote => fn !== null) || [];
 
-  // Transform brew methods
   const brewMethods: BrewMethod[] =
     brewMethodsResult.data
       ?.map((row) => {
@@ -231,7 +208,6 @@ export async function fetchCoffeeBySlug(
       })
       .filter((bm): bm is BrewMethod => bm !== null) || [];
 
-  // Transform regions
   const regions: CoffeeRegion[] =
     regionsResult.data
       ?.map((row) => {
@@ -254,7 +230,6 @@ export async function fetchCoffeeBySlug(
       })
       .filter((r): r is CoffeeRegion => r !== null) || [];
 
-  // Transform estates
   const estates: CoffeeEstate[] =
     estatesResult.data
       ?.map((row) => {
@@ -279,11 +254,9 @@ export async function fetchCoffeeBySlug(
       })
       .filter((e): e is CoffeeEstate => e !== null) || [];
 
-  // Extract canonical flavor node IDs
   const canonFlavorIds: string[] =
     (canonFlavorIdsResult.data?.canon_flavor_node_ids as string[]) || [];
 
-  // Transform summary data
   const summaryData = summaryResult.data;
   const summary: CoffeeSummaryData = summaryData
     ? {
@@ -327,31 +300,30 @@ export async function fetchCoffeeBySlug(
         seo_desc: coffeeData.seo_desc ?? null,
       };
 
-  // Build CoffeeDetail object
-  const coffeeDetail: CoffeeDetail = {
+  return {
     id: coffeeData.id,
     slug: coffeeData.slug,
     name: coffeeData.name,
     roaster_id: coffeeData.roaster_id,
-    description_md: coffeeData.description_md,
-    direct_buy_url: coffeeData.direct_buy_url,
-    status: coffeeData.status,
-    is_coffee: coffeeData.is_coffee,
-    is_limited: coffeeData.is_limited,
-    decaf: coffeeData.decaf,
-    crop_year: coffeeData.crop_year,
-    harvest_window: coffeeData.harvest_window,
-    roast_level: coffeeData.roast_level,
-    roast_level_raw: coffeeData.roast_level_raw,
-    roast_style_raw: coffeeData.roast_style_raw,
-    process: coffeeData.process,
-    process_raw: coffeeData.process_raw,
-    bean_species: coffeeData.bean_species,
-    default_grind: coffeeData.default_grind,
-    varieties: coffeeData.varieties,
-    tags: coffeeData.tags,
-    rating_avg: coffeeData.rating_avg,
-    rating_count: coffeeData.rating_count,
+    description_md: coffeeData.description_md as string | null,
+    direct_buy_url: coffeeData.direct_buy_url as string | null,
+    status: coffeeData.status as CoffeeDetail["status"],
+    is_coffee: coffeeData.is_coffee as boolean | null,
+    is_limited: Boolean(coffeeData.is_limited),
+    decaf: Boolean(coffeeData.decaf),
+    crop_year: coffeeData.crop_year as number | null,
+    harvest_window: coffeeData.harvest_window as string | null,
+    roast_level: coffeeData.roast_level as CoffeeDetail["roast_level"],
+    roast_level_raw: coffeeData.roast_level_raw as string | null,
+    roast_style_raw: coffeeData.roast_style_raw as string | null,
+    process: coffeeData.process as CoffeeDetail["process"],
+    process_raw: coffeeData.process_raw as string | null,
+    bean_species: coffeeData.bean_species as CoffeeDetail["bean_species"],
+    default_grind: coffeeData.default_grind as CoffeeDetail["default_grind"],
+    varieties: coffeeData.varieties as string[] | null,
+    tags: coffeeData.tags as string[] | null,
+    rating_avg: coffeeData.rating_avg as number | null,
+    rating_count: Number(coffeeData.rating_count) || 0,
     roaster,
     variants,
     images,
@@ -364,6 +336,88 @@ export async function fetchCoffeeBySlug(
     canon_flavor_node_ids:
       canonFlavorIds.length > 0 ? canonFlavorIds : undefined,
   };
+}
 
-  return coffeeDetail;
+function getSupabase() {
+  return process.env.SUPABASE_SECRET_KEY
+    ? createServiceRoleClient()
+    : createClient();
+}
+
+/**
+ * Fetch a single coffee by slug with all related data (legacy: slug only, may be ambiguous).
+ * Returns null if coffee not found.
+ */
+export async function fetchCoffeeBySlug(
+  slug: string
+): Promise<CoffeeDetail | null> {
+  const supabase = await getSupabase();
+  const { data: coffeeData, error: coffeeError } = await supabase
+    .from("coffees")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (coffeeError || !coffeeData) {
+    return null;
+  }
+
+  return buildCoffeeDetailFromRow(supabase, coffeeData as CoffeeRow);
+}
+
+/**
+ * Fetch a single coffee by roaster slug and coffee slug (nested URL).
+ * Returns null if roaster or coffee not found.
+ */
+export async function fetchCoffeeByRoasterAndSlug(
+  roasterSlug: string,
+  coffeeSlug: string
+): Promise<CoffeeDetail | null> {
+  const supabase = await getSupabase();
+
+  const { data: roaster, error: roasterError } = await supabase
+    .from("roasters")
+    .select("id")
+    .eq("slug", roasterSlug)
+    .single();
+
+  if (roasterError || !roaster) {
+    return null;
+  }
+
+  const { data: coffeeData, error: coffeeError } = await supabase
+    .from("coffees")
+    .select("*")
+    .eq("slug", coffeeSlug)
+    .eq("roaster_id", roaster.id)
+    .single();
+
+  if (coffeeError || !coffeeData) {
+    return null;
+  }
+
+  return buildCoffeeDetailFromRow(supabase, coffeeData as CoffeeRow);
+}
+
+/**
+ * Fetch all coffees with the given slug (for legacy /coffees/[slug] redirect vs disambiguation).
+ * Returns array of CoffeeDetail; may be 0, 1, or many.
+ */
+export async function fetchCoffeesBySlugOnly(
+  slug: string
+): Promise<CoffeeDetail[]> {
+  const supabase = await getSupabase();
+  const { data: rows, error } = await supabase
+    .from("coffees")
+    .select("*")
+    .eq("slug", slug);
+
+  if (error || !rows || rows.length === 0) {
+    return [];
+  }
+
+  const results = await Promise.all(
+    rows.map((row) => buildCoffeeDetailFromRow(supabase, row as CoffeeRow))
+  );
+  return results.filter((c): c is CoffeeDetail => c !== null);
 }

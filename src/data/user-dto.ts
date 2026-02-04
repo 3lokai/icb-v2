@@ -258,6 +258,8 @@ export type MyReview = {
     id: string;
     slug: string;
     name: string;
+    /** Roaster slug for coffee reviews (used for nested coffee detail URL) */
+    roaster_slug?: string;
   };
 };
 
@@ -337,7 +339,7 @@ export async function getMyReviews(): Promise<MyReview[]> {
     coffeeReviews.length > 0
       ? supabase
           .from("coffees")
-          .select("id, slug, name")
+          .select("id, slug, name, roasters(slug)")
           .in(
             "id",
             coffeeReviews.map((r) => r.entity_id)
@@ -401,6 +403,21 @@ export async function getMyReviews(): Promise<MyReview[]> {
       continue;
     }
 
+    const entityData =
+      review.entity_type === "coffee" && "roasters" in entity
+        ? {
+            id: entity.id,
+            slug: entity.slug,
+            name: entity.name,
+            roaster_slug:
+              (entity.roasters as { slug?: string } | null)?.slug ?? "",
+          }
+        : {
+            id: entity.id,
+            slug: entity.slug,
+            name: entity.name,
+          };
+
     enrichedReviews.push({
       id: review.id,
       entity_type: review.entity_type,
@@ -417,11 +434,7 @@ export async function getMyReviews(): Promise<MyReview[]> {
       created_at: review.created_at,
       updated_at: review.updated_at,
       identity_key: review.identity_key || null,
-      entity: {
-        id: entity.id,
-        slug: entity.slug,
-        name: entity.name,
-      },
+      entity: entityData,
     });
   }
 

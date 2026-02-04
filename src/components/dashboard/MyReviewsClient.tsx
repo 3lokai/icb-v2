@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { MyReview } from "@/data/user-dto";
+import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { formatDistanceToNow } from "date-fns";
 import { queryKeys } from "@/lib/query-keys";
 
@@ -182,7 +183,9 @@ function ReviewItem({ review }: { review: MyReview }) {
 
   const entityUrl =
     review.entity_type === "coffee"
-      ? `/coffees/${review.entity.slug}`
+      ? review.entity.roaster_slug
+        ? coffeeDetailHref(review.entity.roaster_slug, review.entity.slug)
+        : `/coffees/${review.entity.slug}`
       : `/roasters/${review.entity.slug}`;
 
   return (

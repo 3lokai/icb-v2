@@ -251,7 +251,7 @@ function mapCoffeeToSearchableItem(options: {
     type: "coffee",
     title: coffee.name,
     description,
-    url: `/coffees/${coffee.slug}`,
+    url: `/roasters/${roaster.slug}/coffees/${coffee.slug}`,
     imageUrl,
     searchableText,
     flavorNotes: flavorNoteLabels.length > 0 ? flavorNoteLabels : undefined,

@@ -20,6 +20,7 @@ import { Stack } from "../primitives/stack";
 import { useModal } from "@/components/providers/modal-provider";
 import { QuickRating } from "@/components/reviews";
 import { trackCoffeeDiscovery } from "@/lib/analytics/enhanced-tracking";
+import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 
 type CoffeeCardProps = {
   coffee: CoffeeSummary;
@@ -250,8 +251,8 @@ function CoffeeCardComponent({
     [coffee.name, coffee.roaster_name]
   );
 
-  // Early returns
-  if (!coffee || !coffee.slug || !coffee.name) {
+  // Early returns (need roaster_slug for nested coffee detail URL)
+  if (!coffee || !coffee.slug || !coffee.name || !coffee.roaster_slug) {
     return null;
   }
 
@@ -294,8 +295,8 @@ function CoffeeCardComponent({
         responseTime: undefined,
       });
     }
-    // Navigate
-    router.push(`/coffees/${coffee.slug}`);
+    // Navigate to nested coffee detail URL (slug is truthy from early return)
+    router.push(coffeeDetailHref(coffee.roaster_slug, coffee.slug!));
   };
 
   // Hero variant - large, interactive rating, spacious

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import { getAllLandingPageSlugs } from "@/lib/discovery/landing-pages";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
@@ -24,6 +25,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/curations`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/about`,
@@ -92,17 +99,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       supabase = await createClient();
     }
 
-    // Fetch coffees and roasters in parallel
-    const [coffeesResult, roastersResult] = await Promise.all([
-      // Fetch active and seasonal coffees (exclude draft, hidden, archived, etc.)
+    // Fetch coffees (with roaster slug for nested URL), roasters, and curators in parallel
+    const [coffeesResult, roastersResult, curatorsResult] = await Promise.all([
+      // Fetch active and seasonal coffees with roaster slug for nested URL
       supabase
         .from("coffees")
-        .select("slug, updated_at")
+        .select("slug, updated_at, roasters(slug)")
         .in("status", ["active", "seasonal"])
         .not("slug", "is", null),
       // Fetch active roasters only
       supabase
         .from("roasters")
+        .select("slug, updated_at")
+        .eq("is_active", true)
+        .not("slug", "is", null),
+      // Fetch active curators for curation pages
+      supabase
+        .from("curators")
         .select("slug, updated_at")
         .eq("is_active", true)
         .not("slug", "is", null),
@@ -121,17 +134,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         roastersResult.error
       );
     }
+    if (curatorsResult.error) {
+      console.error(
+        "Failed to fetch curators for sitemap:",
+        curatorsResult.error
+      );
+    }
 
-    // Generate dynamic coffee routes
+    // Generate dynamic coffee routes (nested: /roasters/{roasterSlug}/coffees/{coffeeSlug})
+    type CoffeeRowWithRoaster = {
+      slug: string | null;
+      updated_at: string | null;
+      roasters: { slug?: string } | null;
+    };
+    const getRoasterSlug = (c: CoffeeRowWithRoaster) =>
+      (c.roasters &&
+      typeof c.roasters === "object" &&
+      !Array.isArray(c.roasters)
+        ? c.roasters.slug
+        : null) ?? null;
     const coffeeRoutes: MetadataRoute.Sitemap =
-      coffeesResult.data?.map((coffee) => ({
-        url: `${baseUrl}/coffees/${coffee.slug}`,
-        lastModified: coffee.updated_at
-          ? new Date(coffee.updated_at)
-          : new Date(),
-        changeFrequency: "weekly" as const,
-        priority: 0.8,
-      })) ?? [];
+      (coffeesResult.data as CoffeeRowWithRoaster[] | null)
+        ?.filter((c) => c.slug && getRoasterSlug(c))
+        .map((coffee) => ({
+          url: `${baseUrl}/roasters/${getRoasterSlug(coffee)!}/coffees/${coffee.slug}`,
+          lastModified: coffee.updated_at
+            ? new Date(coffee.updated_at)
+            : new Date(),
+          changeFrequency: "weekly" as const,
+          priority: 0.8,
+        })) ?? [];
 
     // Generate dynamic roaster routes
     const roasterRoutes: MetadataRoute.Sitemap =
@@ -144,6 +176,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       })) ?? [];
 
+    // Generate dynamic curation (curator) routes
+    const curationRoutes: MetadataRoute.Sitemap =
+      curatorsResult.data?.map((curator) => ({
+        url: `${baseUrl}/curations/${curator.slug}`,
+        lastModified: curator.updated_at
+          ? new Date(curator.updated_at)
+          : new Date(),
+        changeFrequency: "monthly" as const,
+        priority: 0.75,
+      })) ?? [];
+
+    // Discovery landing pages (brew method, roast level, price bucket)
+    const discoverySlugs = getAllLandingPageSlugs();
+    const discoveryRoutes: MetadataRoute.Sitemap = discoverySlugs.map(
+      (slug) => ({
+        url: `${baseUrl}/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.75,
+      })
+    );
+
     // TODO: Add article routes when article system is implemented
     // Example structure:
     // const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
@@ -154,7 +208,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // }));
 
     // Combine all routes
-    return [...staticRoutes, ...coffeeRoutes, ...roasterRoutes];
+    return [
+      ...staticRoutes,
+      ...coffeeRoutes,
+      ...roasterRoutes,
+      ...curationRoutes,
+      ...discoveryRoutes,
+    ];
   } catch (error) {
     // If database queries fail, fallback to static routes only
     console.error("Failed to fetch dynamic sitemap routes:", error);

@@ -25,6 +25,9 @@ export type CurationSelection = {
   roaster: string;
   note: string;
   image?: string;
+  /** When present, selection card links to nested coffee detail page */
+  coffeeSlug?: string;
+  roasterSlug?: string;
 };
 
 export type CurationList = {

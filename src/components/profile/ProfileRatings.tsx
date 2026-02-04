@@ -6,6 +6,7 @@ import { Cluster } from "@/components/primitives/cluster";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 
 type Rating = {
   id: string;
@@ -15,6 +16,8 @@ type Rating = {
   date: string;
   comment?: string;
   image?: string;
+  coffeeSlug?: string;
+  roasterSlug?: string;
 };
 
 type ProfileRatingsProps = {
@@ -72,16 +75,19 @@ export function ProfileRatings({
         </Card>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {ratings.slice(0, 6).map((rating) => (
-            <Card
-              key={rating.id}
-              className="border-border/40 hover:border-accent/40 hover:bg-muted/5 transition-all group cursor-pointer rounded-2xl"
-            >
+          {ratings.slice(0, 6).map((rating) => {
+            const cardContent = (
               <CardContent className="p-5">
                 <Stack gap="3">
                   <Cluster align="start">
                     <Stack gap="1">
-                      <h3 className="text-body font-serif font-medium leading-tight">
+                      <h3
+                        className={
+                          rating.roasterSlug && rating.coffeeSlug
+                            ? "text-body font-serif font-medium leading-tight group-hover:text-accent transition-colors"
+                            : "text-body font-serif font-medium leading-tight"
+                        }
+                      >
                         {rating.name}
                       </h3>
                       <p className="text-micro text-muted-foreground uppercase tracking-tight">
@@ -105,8 +111,29 @@ export function ProfileRatings({
                   </p>
                 </Stack>
               </CardContent>
-            </Card>
-          ))}
+            );
+
+            return (
+              <Card
+                key={rating.id}
+                className="border-border/40 hover:border-accent/40 hover:bg-muted/5 transition-all group rounded-2xl"
+              >
+                {rating.roasterSlug && rating.coffeeSlug ? (
+                  <Link
+                    href={coffeeDetailHref(
+                      rating.roasterSlug,
+                      rating.coffeeSlug
+                    )}
+                    className="block"
+                  >
+                    {cardContent}
+                  </Link>
+                ) : (
+                  cardContent
+                )}
+              </Card>
+            );
+          })}
         </div>
       )}
     </Stack>

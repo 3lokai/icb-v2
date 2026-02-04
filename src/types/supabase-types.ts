@@ -2203,6 +2203,7 @@ export type Database = {
           canon_flavor_slugs: string[] | null;
           canon_flavor_subcategories: string[] | null;
           coffee_id: string | null;
+          created_at: string | null;
           decaf: boolean | null;
           direct_buy_url: string | null;
           estate_ids: string[] | null;
@@ -2233,6 +2234,7 @@ export type Database = {
           slug: string | null;
           status: Database["public"]["Enums"]["coffee_status_enum"] | null;
           tags: string[] | null;
+          updated_at: string | null;
           website: string | null;
           weights_available: number[] | null;
         };
