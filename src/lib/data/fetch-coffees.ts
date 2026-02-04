@@ -282,7 +282,10 @@ function applySortingToQuery(query: any, sort: CoffeeSort): any {
         nullsFirst: false,
       });
     case "newest":
-      return query.order("coffee_id", { ascending: false });
+      return query.order("created_at", {
+        ascending: false,
+        nullsFirst: false,
+      });
     case "relevance":
       return query.order("name", { ascending: true });
     default:

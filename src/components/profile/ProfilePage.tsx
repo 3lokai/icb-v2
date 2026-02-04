@@ -37,7 +37,7 @@ export function ProfilePage({
     return null;
   }
 
-  // Transform ratings for component
+  // Transform ratings for component (include slugs for nested coffee links)
   const formattedRatings = ratings.map((rating) => ({
     id: rating.id,
     name: rating.coffee_name,
@@ -46,24 +46,31 @@ export function ProfilePage({
     date: formatDistanceToNow(new Date(rating.created_at), { addSuffix: true }),
     comment: rating.comment || undefined,
     image: rating.image_url || undefined,
+    coffeeSlug: rating.coffee_slug || undefined,
+    roasterSlug: rating.roaster_slug || undefined,
   }));
 
-  // Transform selections for component
-  const formattedSelections = selections.map((selection) => {
-    // Ensure we preserve the image_url even if it's an empty string (convert to undefined)
-    const imageUrl =
-      selection.image_url && selection.image_url.trim() !== ""
-        ? selection.image_url
-        : undefined;
+  // Transform selections for component (include slugs for nested coffee links)
+  // Only show coffees with rating > 3
+  const formattedSelections = selections
+    .filter((selection) => selection.rating > 3)
+    .map((selection) => {
+      const imageUrl =
+        selection.image_url && selection.image_url.trim() !== ""
+          ? selection.image_url
+          : undefined;
 
-    return {
-      id: selection.review_id,
-      name: selection.coffee_name,
-      roaster: selection.roaster_name,
-      note: selection.comment || "Recommended",
-      image: imageUrl,
-    };
-  });
+      return {
+        id: selection.review_id,
+        name: selection.coffee_name,
+        roaster: selection.roaster_name,
+        note: selection.comment || "Recommended",
+        image: imageUrl,
+        coffeeSlug: selection.coffee_slug || undefined,
+        roasterSlug: selection.roaster_slug || undefined,
+        coffeeId: selection.coffee_id,
+      };
+    });
 
   // Transform taste profile for component
   // Map roast levels to display labels

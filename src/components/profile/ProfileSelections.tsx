@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
 import { Icon } from "@/components/common/Icon";
@@ -10,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import { coffeeImagePresets } from "@/lib/imagekit";
+import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { AddSelection } from "./AddSelection";
 import { ShareSection } from "./ShareSection";
 import { QuickRating } from "@/components/reviews/QuickRating";
@@ -20,6 +22,9 @@ type Selection = {
   roaster: string;
   note: string;
   image?: string;
+  coffeeSlug?: string;
+  roasterSlug?: string;
+  coffeeId?: string;
 };
 
 type ProfileSelectionsProps = {
@@ -98,9 +103,21 @@ export function ProfileSelections({
               <CardContent className="p-8 flex-1 flex flex-col">
                 <Stack gap="4" className="h-full">
                   <Stack gap="1">
-                    <h3 className="text-heading font-serif leading-[1.1]">
-                      {selection.name}
-                    </h3>
+                    {selection.roasterSlug && selection.coffeeSlug ? (
+                      <Link
+                        href={coffeeDetailHref(
+                          selection.roasterSlug,
+                          selection.coffeeSlug
+                        )}
+                        className="text-heading font-serif leading-[1.1] hover:text-accent transition-colors"
+                      >
+                        {selection.name}
+                      </Link>
+                    ) : (
+                      <h3 className="text-heading font-serif leading-[1.1]">
+                        {selection.name}
+                      </h3>
+                    )}
                     <p className="text-label mt-1">{selection.roaster}</p>
                   </Stack>
                   <div className="relative mt-2">
@@ -156,7 +173,7 @@ export function ProfileSelections({
           {editingSelection && (
             <QuickRating
               entityType="coffee"
-              entityId={editingSelection.id}
+              entityId={editingSelection.coffeeId ?? editingSelection.id}
               onClose={() => setEditingSelection(null)}
               variant="modal"
             />

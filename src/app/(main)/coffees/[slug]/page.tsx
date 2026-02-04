@@ -1,167 +1,79 @@
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { fetchCoffeeBySlug } from "@/lib/data/fetch-coffee-by-slug";
-import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
-import { generateSchemaOrg } from "@/lib/seo/schema";
-import StructuredData from "@/components/seo/StructuredData";
-import { CoffeeDetailPage } from "@/components/coffees/CoffeeDetailPage";
-import { coffeeImagePresets } from "@/lib/imagekit";
+import { notFound, permanentRedirect } from "next/navigation";
+import Link from "next/link";
+import { fetchCoffeesBySlugOnly } from "@/lib/data/fetch-coffee-by-slug";
+import { coffeeDetailHref } from "@/lib/utils/coffee-url";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
 /**
- * Generate metadata for coffee detail page
+ * Legacy coffee detail route: /coffees/[slug]
+ * - 0 matches → notFound()
+ * - 1 match → 301 redirect to /roasters/{roasterSlug}/coffees/{coffeeSlug}
+ * - 2+ matches → disambiguation page
  */
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export default async function LegacyCoffeeSlugPage({ params }: Props) {
   const { slug } = await params;
-  const coffee = await fetchCoffeeBySlug(slug);
+  const coffees = await fetchCoffeesBySlugOnly(slug);
 
-  if (!coffee) {
-    return {
-      title: "Coffee Not Found",
-      description: "The coffee you're looking for doesn't exist.",
-    };
-  }
-
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
-  const canonical = `${baseUrl}/coffees/${slug}`;
-
-  // Build title
-  const title = coffee.roaster
-    ? `${coffee.name} by ${coffee.roaster.name} | Indian Coffee Beans`
-    : `${coffee.name} | Indian Coffee Beans`;
-
-  // Build description
-  const description =
-    coffee.summary.seo_desc ||
-    `Discover ${coffee.name}${coffee.roaster ? ` by ${coffee.roaster.name}` : ""}. ${coffee.roast_level_raw || coffee.roast_level || ""} roast, ${coffee.process_raw || coffee.process || ""} process. ${
-      coffee.flavor_notes.length > 0
-        ? `Flavor notes: ${coffee.flavor_notes
-            .slice(0, 3)
-            .map((n) => n.label)
-            .join(", ")}.`
-        : ""
-    } Available at Indian Coffee Beans.`;
-
-  // Get first image for OG
-  const ogImage =
-    coffee.images.length > 0 && coffee.images[0].imagekit_url
-      ? coffeeImagePresets.coffeeOG(coffee.images[0].imagekit_url)
-      : undefined;
-
-  // Build keywords
-  const keywords: string[] = [
-    coffee.name,
-    ...(coffee.roaster ? [coffee.roaster.name] : []),
-    ...(coffee.roast_level_raw ? [coffee.roast_level_raw] : []),
-    ...(coffee.process_raw ? [coffee.process_raw] : []),
-    ...coffee.flavor_notes.map((n) => n.label),
-    "Indian coffee",
-    "specialty coffee",
-    "coffee beans",
-  ];
-
-  // Product details for OG
-  const productDetails = {
-    price: coffee.summary.min_price_in_stock
-      ? `${coffee.summary.min_price_in_stock}`
-      : undefined,
-    currency: "INR",
-    availability: (coffee.summary.in_stock_count ?? 0) > 0,
-  };
-
-  // Structured data is rendered via <StructuredData> in the page component
-  return generateSEOMetadata({
-    title,
-    description,
-    keywords,
-    image: ogImage,
-    type: "product",
-    canonical,
-    productDetails,
-  });
-}
-
-/**
- * Coffee Detail Page (Server Component)
- */
-export default async function CoffeeDetailPageServer({ params }: Props) {
-  const { slug } = await params;
-  const coffee = await fetchCoffeeBySlug(slug);
-
-  if (!coffee) {
+  if (coffees.length === 0) {
     notFound();
   }
 
-  // Generate structured data
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
-  const canonical = `${baseUrl}/coffees/${slug}`;
+  if (coffees.length === 1) {
+    const coffee = coffees[0];
+    if (coffee.roaster?.slug && coffee.slug) {
+      permanentRedirect(coffeeDetailHref(coffee.roaster.slug, coffee.slug));
+    }
+    notFound();
+  }
 
-  const description =
-    coffee.summary.seo_desc ||
-    `Discover ${coffee.name}${coffee.roaster ? ` by ${coffee.roaster.name}` : ""}. ${coffee.roast_level_raw || coffee.roast_level || ""} roast, ${coffee.process_raw || coffee.process || ""} process.`;
-
-  const ogImage =
-    coffee.images.length > 0 && coffee.images[0].imagekit_url
-      ? coffeeImagePresets.coffeeOG(coffee.images[0].imagekit_url)
-      : undefined;
-
-  const productSchema = generateSchemaOrg({
-    type: "Product",
-    name: coffee.name,
-    description,
-    image: ogImage,
-    url: canonical,
-    brand: coffee.roaster?.name,
-    price:
-      coffee.summary.best_normalized_250g ||
-      coffee.summary.min_price_in_stock ||
-      undefined,
-    currency: "INR",
-    availability:
-      (coffee.summary.in_stock_count ?? 0) > 0 ? "InStock" : "OutOfStock",
-    aggregateRating:
-      coffee.rating_avg && coffee.rating_count > 0
-        ? {
-            ratingValue: coffee.rating_avg,
-            ratingCount: coffee.rating_count,
-          }
-        : undefined,
-  });
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: baseUrl,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Coffees",
-        item: `${baseUrl}/coffees`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: coffee.name,
-        item: canonical,
-      },
-    ],
-  };
-
+  // Disambiguation: multiple roasters have a coffee with this slug
   return (
-    <>
-      <StructuredData schema={[productSchema, breadcrumbSchema]} />
-      <CoffeeDetailPage coffee={coffee} />
-    </>
+    <div className="w-full max-w-2xl mx-auto px-4 py-12">
+      <h1 className="text-display font-serif italic mb-2">
+        Multiple roasters have a coffee with this name
+      </h1>
+      <p className="text-body text-muted-foreground mb-8">
+        Choose the roaster to view the coffee.
+      </p>
+      <ul className="space-y-3">
+        {coffees.map((coffee) => (
+          <li key={coffee.id}>
+            {coffee.roaster?.slug && coffee.slug ? (
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                asChild
+              >
+                <Link
+                  href={coffeeDetailHref(coffee.roaster.slug, coffee.slug)}
+                  className="inline-flex flex-col items-start gap-0.5 py-3"
+                >
+                  <span className="font-medium">{coffee.name}</span>
+                  <span className="text-caption text-muted-foreground">
+                    {coffee.roaster?.name}
+                  </span>
+                </Link>
+              </Button>
+            ) : (
+              <span className="text-muted-foreground">
+                {coffee.name} — {coffee.roaster?.name}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
+        <Button asChild variant="outline">
+          <Link href="/coffees">Browse All Coffees</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/roasters">Browse Roasters</Link>
+        </Button>
+      </div>
+    </div>
   );
 }
