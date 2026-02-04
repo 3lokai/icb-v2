@@ -101,11 +101,22 @@ export async function generateMetadata({
       description,
       type: "website",
       url: fullUrl,
+      images: [
+        {
+          url: `${baseUrl}/api/og?title=${encodeURIComponent(title)}&type=website`,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [
+        `${baseUrl}/api/og?title=${encodeURIComponent(title)}&type=website`,
+      ],
     },
   };
 }

@@ -49,6 +49,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com", // For collection placeholders
       },
+      {
+        protocol: "https",
+        hostname: "www.redditstatic.com", // For Reddit logo/favicons
+      },
     ],
     qualities: [75, 80, 85, 90],
   },
