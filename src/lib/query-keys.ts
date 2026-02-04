@@ -89,6 +89,13 @@ export const queryKeys = {
       ["reviews", "latest", entityType, entityId] as const,
     myReviews: ["reviews", "my"] as const,
   },
+
+  // Curations (curators and curation lists)
+  curations: {
+    all: ["curations"] as const,
+    list: () => ["curations", "list"] as const,
+    detail: (slug: string) => ["curations", "detail", slug] as const,
+  },
 } as const;
 
 // Type helper for query keys

@@ -631,6 +631,251 @@ export type Database = {
           },
         ];
       };
+      curation_lists: {
+        Row: {
+          created_at: string;
+          curator_id: string;
+          description: string | null;
+          id: string;
+          is_active: boolean;
+          is_default: boolean;
+          slug: string;
+          sort_order: number;
+          title: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          curator_id: string;
+          description?: string | null;
+          id?: string;
+          is_active?: boolean;
+          is_default?: boolean;
+          slug: string;
+          sort_order?: number;
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          curator_id?: string;
+          description?: string | null;
+          id?: string;
+          is_active?: boolean;
+          is_default?: boolean;
+          slug?: string;
+          sort_order?: number;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "curation_lists_curator_id_fkey";
+            columns: ["curator_id"];
+            isOneToOne: false;
+            referencedRelation: "curators";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      curation_selections: {
+        Row: {
+          coffee_id: string | null;
+          coffee_name: string;
+          created_at: string;
+          curation_list_id: string;
+          curator_note: string | null;
+          id: string;
+          image_url: string | null;
+          roaster_id: string | null;
+          roaster_name: string;
+          sort_order: number;
+        };
+        Insert: {
+          coffee_id?: string | null;
+          coffee_name: string;
+          created_at?: string;
+          curation_list_id: string;
+          curator_note?: string | null;
+          id?: string;
+          image_url?: string | null;
+          roaster_id?: string | null;
+          roaster_name: string;
+          sort_order?: number;
+        };
+        Update: {
+          coffee_id?: string | null;
+          coffee_name?: string;
+          created_at?: string;
+          curation_list_id?: string;
+          curator_note?: string | null;
+          id?: string;
+          image_url?: string | null;
+          roaster_id?: string | null;
+          roaster_name?: string;
+          sort_order?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "curation_selections_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffee_directory_mv";
+            referencedColumns: ["coffee_id"];
+          },
+          {
+            foreignKeyName: "curation_selections_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffee_summary";
+            referencedColumns: ["coffee_id"];
+          },
+          {
+            foreignKeyName: "curation_selections_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffees";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "curation_selections_curation_list_id_fkey";
+            columns: ["curation_list_id"];
+            isOneToOne: false;
+            referencedRelation: "curation_lists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "curation_selections_roaster_id_fkey";
+            columns: ["roaster_id"];
+            isOneToOne: false;
+            referencedRelation: "roasters";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      curator_gallery_images: {
+        Row: {
+          alt: string | null;
+          curator_id: string;
+          id: string;
+          image_url: string;
+          sort_order: number;
+        };
+        Insert: {
+          alt?: string | null;
+          curator_id: string;
+          id?: string;
+          image_url: string;
+          sort_order?: number;
+        };
+        Update: {
+          alt?: string | null;
+          curator_id?: string;
+          id?: string;
+          image_url?: string;
+          sort_order?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "curator_gallery_images_curator_id_fkey";
+            columns: ["curator_id"];
+            isOneToOne: false;
+            referencedRelation: "curators";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      curator_links: {
+        Row: {
+          curator_id: string;
+          id: string;
+          platform: Database["public"]["Enums"]["link_platform_enum"];
+          sort_order: number;
+          url: string;
+        };
+        Insert: {
+          curator_id: string;
+          id?: string;
+          platform: Database["public"]["Enums"]["link_platform_enum"];
+          sort_order?: number;
+          url: string;
+        };
+        Update: {
+          curator_id?: string;
+          id?: string;
+          platform?: Database["public"]["Enums"]["link_platform_enum"];
+          sort_order?: number;
+          url?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "curator_links_curator_id_fkey";
+            columns: ["curator_id"];
+            isOneToOne: false;
+            referencedRelation: "curators";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      curators: {
+        Row: {
+          created_at: string;
+          curator_type: Database["public"]["Enums"]["curator_type_enum"];
+          id: string;
+          is_active: boolean;
+          location: string | null;
+          logo_url: string | null;
+          name: string;
+          philosophy: string | null;
+          quote: string | null;
+          slug: string;
+          story: string | null;
+          tags: string[] | null;
+          updated_at: string;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          curator_type: Database["public"]["Enums"]["curator_type_enum"];
+          id?: string;
+          is_active?: boolean;
+          location?: string | null;
+          logo_url?: string | null;
+          name: string;
+          philosophy?: string | null;
+          quote?: string | null;
+          slug: string;
+          story?: string | null;
+          tags?: string[] | null;
+          updated_at?: string;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          curator_type?: Database["public"]["Enums"]["curator_type_enum"];
+          id?: string;
+          is_active?: boolean;
+          location?: string | null;
+          logo_url?: string | null;
+          name?: string;
+          philosophy?: string | null;
+          quote?: string | null;
+          slug?: string;
+          story?: string | null;
+          tags?: string[] | null;
+          updated_at?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "curators_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "user_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       enrichments: {
         Row: {
           applied: boolean;
@@ -1143,6 +1388,55 @@ export type Database = {
           works_with_milk?: boolean | null;
         };
         Relationships: [];
+      };
+      roaster_members: {
+        Row: {
+          created_at: string;
+          id: string;
+          invited_by: string | null;
+          member_role: Database["public"]["Enums"]["member_role_enum"];
+          roaster_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          invited_by?: string | null;
+          member_role?: Database["public"]["Enums"]["member_role_enum"];
+          roaster_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          invited_by?: string | null;
+          member_role?: Database["public"]["Enums"]["member_role_enum"];
+          roaster_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "roaster_members_invited_by_fkey";
+            columns: ["invited_by"];
+            isOneToOne: false;
+            referencedRelation: "user_profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "roaster_members_roaster_id_fkey";
+            columns: ["roaster_id"];
+            isOneToOne: false;
+            referencedRelation: "roasters";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "roaster_members_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "user_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       roasters: {
         Row: {
@@ -2208,6 +2502,10 @@ export type Database = {
       };
     };
     Functions: {
+      add_user_gear: {
+        Args: { p_gear_id: string; p_notes?: string; p_user_id: string };
+        Returns: string;
+      };
       anonymize_user_reviews: {
         Args: { p_user_id: string };
         Returns: undefined;
@@ -2221,6 +2519,7 @@ export type Database = {
         Returns: boolean;
       };
       backfill_user_profile_emails: { Args: never; Returns: number };
+      can_edit_roaster: { Args: { p_roaster_id: string }; Returns: boolean };
       cleanup_expired_llm_cache: { Args: never; Returns: number };
       coffee_editor_save: {
         Args: {
@@ -2234,12 +2533,23 @@ export type Database = {
         };
         Returns: undefined;
       };
+      create_gear_item: {
+        Args: {
+          p_brand?: string;
+          p_category: string;
+          p_created_by?: string;
+          p_model?: string;
+          p_name: string;
+        };
+        Returns: string;
+      };
       format_brew_method_label: {
         Args: { grind_key: string };
         Returns: string;
       };
       get_coffee_filter_meta: {
         Args: {
+          p_bean_species?: string[];
           p_brew_method_canonical_keys?: Database["public"]["Enums"]["grind_enum"][];
           p_canon_flavor_families?: string[];
           p_canon_flavor_node_ids?: string[];
@@ -2282,6 +2592,10 @@ export type Database = {
           price_updates: number;
         }[];
       };
+      get_roaster_member_role: {
+        Args: { p_roaster_id: string };
+        Returns: Database["public"]["Enums"]["member_role_enum"];
+      };
       get_roaster_performance_30d: {
         Args: never;
         Returns: {
@@ -2317,6 +2631,10 @@ export type Database = {
         };
         Returns: Json;
       };
+      get_user_profile_full: {
+        Args: { p_username: string; p_viewer_id?: string };
+        Returns: Json;
+      };
       get_user_role: {
         Args: { user_uuid?: string };
         Returns: Database["public"]["Enums"]["user_role_enum"];
@@ -2331,17 +2649,11 @@ export type Database = {
           user_id: string;
         }[];
       };
-      get_user_profile_full: {
-        Args: {
-          p_username: string;
-          p_viewer_id?: string;
-        };
-        Returns: Json;
-      };
       has_permission: {
         Args: { required_role: Database["public"]["Enums"]["user_role_enum"] };
         Returns: boolean;
       };
+      is_roaster_owner: { Args: { p_roaster_id: string }; Returns: boolean };
       map_roast_legacy: {
         Args: { raw: string };
         Returns: Database["public"]["Enums"]["roast_level_enum"];
@@ -2349,6 +2661,10 @@ export type Database = {
       refresh_coffee_directory_mv: { Args: never; Returns: undefined };
       refresh_user_taste_profile_cache: {
         Args: { p_user_id: string };
+        Returns: undefined;
+      };
+      remove_user_gear: {
+        Args: { p_user_gear_id: string; p_user_id: string };
         Returns: undefined;
       };
       rpc_check_content_hash: {
@@ -2483,6 +2799,22 @@ export type Database = {
         };
         Returns: string;
       };
+      search_gear_catalog: {
+        Args: {
+          p_category?: string;
+          p_limit?: number;
+          p_search_query?: string;
+        };
+        Returns: {
+          brand: string;
+          category: string;
+          id: string;
+          is_verified: boolean;
+          model: string;
+          name: string;
+          usage_count: number;
+        }[];
+      };
       show_limit: { Args: never; Returns: number };
       show_trgm: { Args: { "": string }; Returns: string[] };
       update_coffee_ratings_for_entity: {
@@ -2511,6 +2843,7 @@ export type Database = {
           p_coffee_updates?: boolean;
           p_email_frequency?: string;
           p_new_roasters?: boolean;
+          p_newsletter?: boolean;
           p_platform_updates?: boolean;
           p_user_id: string;
         };
@@ -2518,16 +2851,20 @@ export type Database = {
       };
       upsert_user_profile: {
         Args: {
+          p_bio?: string;
           p_city?: string;
           p_country?: string;
           p_experience_level?: string;
-          p_full_name: string;
+          p_full_name?: string;
           p_gender?: string;
+          p_is_public_profile?: boolean;
           p_newsletter_subscribed?: boolean;
           p_onboarding_completed?: boolean;
           p_preferred_brewing_methods?: string[];
+          p_show_location?: boolean;
           p_state?: string;
           p_user_id: string;
+          p_username?: string;
         };
         Returns: {
           avatar_url: string;
@@ -2561,6 +2898,7 @@ export type Database = {
         | "hidden"
         | "coming_soon"
         | "archived";
+      curator_type_enum: "cafe" | "barista" | "community" | "others";
       grind_enum:
         | "whole"
         | "filter"
@@ -2577,6 +2915,13 @@ export type Database = {
         | "south_indian_filter"
         | "pour_over"
         | "syphon";
+      link_platform_enum:
+        | "instagram"
+        | "website"
+        | "twitter"
+        | "youtube"
+        | "facebook";
+      member_role_enum: "owner" | "editor" | "viewer";
       platform_enum:
         | "shopify"
         | "woocommerce"
@@ -2777,6 +3122,7 @@ export const Constants = {
         "coming_soon",
         "archived",
       ],
+      curator_type_enum: ["cafe", "barista", "community", "others"],
       grind_enum: [
         "whole",
         "filter",
@@ -2794,6 +3140,14 @@ export const Constants = {
         "pour_over",
         "syphon",
       ],
+      link_platform_enum: [
+        "instagram",
+        "website",
+        "twitter",
+        "youtube",
+        "facebook",
+      ],
+      member_role_enum: ["owner", "editor", "viewer"],
       platform_enum: [
         "shopify",
         "woocommerce",

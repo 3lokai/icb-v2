@@ -247,125 +247,63 @@ export function CoffeeFilterContent({
     [filterMeta.canonicalFlavors]
   );
 
-  // Toggle array filter values
-  const toggleArrayFilter = (
-    filterKey:
-      | "roast_levels"
-      | "processes"
-      | "status"
-      | "flavor_keys"
-      | "canon_flavor_slugs"
-      | "canon_flavor_node_ids"
-      | "roaster_ids"
-      | "roaster_slugs"
-      | "region_ids"
-      | "region_slugs"
-      | "estate_ids"
-      | "estate_keys"
-      | "brew_method_ids"
-      | "bean_species",
-    value:
-      | RoastLevelEnum
-      | ProcessEnum
-      | CoffeeStatusEnum
-      | SpeciesEnum
-      | string
-  ) => {
-    const current = filters[filterKey] || [];
-    const newValue = current.includes(value as any)
-      ? current.filter((v) => v !== value)
-      : [...current, value];
-    updateFilters({ [filterKey]: newValue.length > 0 ? newValue : undefined });
-  };
+  // Brew methods as MultiSelect options
+  const brewOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.brewMethods.map((b) => ({
+        value: b.id,
+        label: `${b.label} (${b.count})`,
+      })),
+    [filterMeta.brewMethods]
+  );
 
-  // Check if filter is selected
-  const isFilterSelected = (
-    filterKey:
-      | "roast_levels"
-      | "processes"
-      | "status"
-      | "flavor_keys"
-      | "canon_flavor_slugs"
-      | "canon_flavor_node_ids"
-      | "roaster_ids"
-      | "roaster_slugs"
-      | "region_ids"
-      | "region_slugs"
-      | "estate_ids"
-      | "estate_keys"
-      | "brew_method_ids"
-      | "bean_species",
-    value: string
-  ) => {
-    const filterArray = filters[filterKey] as string[] | undefined;
-    return filterArray?.includes(value) ?? false;
-  };
+  // Roasters as MultiSelect options
+  const roasterOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.roasters.map((r) => ({
+        value: r.id,
+        label: `${r.label} (${r.count})`,
+      })),
+    [filterMeta.roasters]
+  );
 
-  // Helper to render filter section with counts
-  type FilterSectionOptions<
-    T extends { id: string; label: string; count: number },
-  > = {
-    title: string;
-    items: T[];
-    filterKey:
-      | "roaster_ids"
-      | "region_ids"
-      | "estate_ids"
-      | "brew_method_ids"
-      | "flavor_keys"
-      | "canon_flavor_node_ids";
-    getValue: (item: T) => string;
-    totalCount?: number;
-  };
+  // Roast levels as MultiSelect options
+  const roastOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.roastLevels.map((r) => ({
+        value: r.value,
+        label: `${r.label} (${r.count})`,
+      })),
+    [filterMeta.roastLevels]
+  );
 
-  const renderFilterSection = <
-    T extends { id: string; label: string; count: number },
-  >(
-    options: FilterSectionOptions<T>
-  ) => {
-    const { title, items, filterKey, getValue, totalCount } = options;
-    if (!items || items.length === 0) {
-      return null;
-    }
+  // Species as MultiSelect options
+  const speciesOptions: MultiSelectOption[] = useMemo(() => {
+    const items = filterMeta.species?.length
+      ? filterMeta.species
+      : (Object.entries(SPECIES_LABELS) as [SpeciesEnum, string][]).map(
+          ([value, label]) => ({ value, label, count: 0 })
+        );
+    return items.map((item) => ({
+      value: item.value,
+      label:
+        item.count !== undefined && item.count > 0
+          ? `${item.label} (${item.count})`
+          : item.label,
+    }));
+  }, [filterMeta.species]);
 
-    return (
-      <Stack gap="3">
-        <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-          htmlFor={filterKey}
-        >
-          {title}
-          {totalCount !== undefined && (
-            <span className="ml-2 font-normal">({totalCount})</span>
-          )}
-        </label>
-        <Stack
-          gap="1"
-          className="max-h-64 overflow-y-auto pr-2 custom-scrollbar"
-        >
-          {items.map((item) => (
-            <label
-              className="group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors hover:text-accent"
-              key={item.id}
-            >
-              <input
-                checked={isFilterSelected(filterKey, getValue(item))}
-                className="h-3.5 w-3.5 rounded border-border/60 text-accent focus:ring-accent/30"
-                onChange={() => toggleArrayFilter(filterKey, getValue(item))}
-                type="checkbox"
-              />
-              <span className="text-caption font-medium transition-colors">
-                {item.label}{" "}
-                <span className="text-muted-foreground/50 font-normal">
-                  ({item.count})
-                </span>
-              </span>
-            </label>
-          ))}
-        </Stack>
-      </Stack>
-    );
-  };
+  // Status as MultiSelect options (active and seasonal only)
+  const statusOptions: MultiSelectOption[] = useMemo(
+    () =>
+      filterMeta.statuses
+        .filter((s) => s.value === "active" || s.value === "seasonal")
+        .map((s) => ({
+          value: s.value,
+          label: `${s.label} (${s.count})`,
+        })),
+    [filterMeta.statuses]
+  );
 
   return (
     <Stack gap="8" className="w-full">
@@ -408,90 +346,106 @@ export function CoffeeFilterContent({
       </Stack>
 
       {/* Brew Methods */}
-      {renderFilterSection({
-        title: "Brew Methods",
-        items: filterMeta.brewMethods,
-        filterKey: "brew_method_ids",
-        getValue: (item) => item.id,
-      })}
+      {brewOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="brew_method_ids"
+          >
+            Brew Methods
+          </label>
+          <MultiSelect
+            options={brewOptions}
+            defaultValue={filters.brew_method_ids || []}
+            onValueChange={(values) => {
+              updateFilters({
+                brew_method_ids: values.length > 0 ? values : undefined,
+              });
+            }}
+            placeholder="Select brew methods..."
+            searchable={true}
+            className="w-full"
+            modalPopover={true}
+          />
+        </Stack>
+      )}
 
       {/* Roasters */}
-      {renderFilterSection({
-        title: "Roasters",
-        items: filterMeta.roasters,
-        filterKey: "roaster_ids",
-        getValue: (item) => item.id,
-        totalCount: filterMeta.totals.roasters,
-      })}
+      {roasterOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="roaster_ids"
+          >
+            Roasters
+          </label>
+          <MultiSelect
+            options={roasterOptions}
+            defaultValue={filters.roaster_ids || []}
+            onValueChange={(values) => {
+              updateFilters({
+                roaster_ids: values.length > 0 ? values : undefined,
+              });
+            }}
+            placeholder="Select roasters..."
+            searchable={true}
+            className="w-full"
+            modalPopover={true}
+          />
+        </Stack>
+      )}
 
       {/* Roast Levels */}
-      <Stack gap="3">
-        <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-          htmlFor="roast_levels"
-        >
-          Roast Level
-        </label>
-        <Stack gap="1" className="pr-2 custom-scrollbar">
-          {filterMeta.roastLevels.map((roast) => (
-            <label
-              className="group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors hover:text-accent"
-              key={roast.value}
-            >
-              <input
-                checked={isFilterSelected("roast_levels", roast.value)}
-                className="h-3.5 w-3.5 rounded border-border/60 text-accent focus:ring-accent/30"
-                onChange={() => toggleArrayFilter("roast_levels", roast.value)}
-                type="checkbox"
-              />
-              <span className="text-caption font-medium transition-colors">
-                {roast.label}{" "}
-                <span className="text-muted-foreground/50 font-normal">
-                  ({roast.count})
-                </span>
-              </span>
-            </label>
-          ))}
+      {roastOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="roast_levels"
+          >
+            Roast Level
+          </label>
+          <MultiSelect
+            options={roastOptions}
+            defaultValue={filters.roast_levels || []}
+            onValueChange={(values) => {
+              updateFilters({
+                roast_levels:
+                  values.length > 0 ? (values as RoastLevelEnum[]) : undefined,
+              });
+            }}
+            placeholder="Select roast level..."
+            searchable={true}
+            className="w-full"
+            modalPopover={true}
+          />
         </Stack>
-      </Stack>
+      )}
 
       {/* Species */}
-      <Stack gap="3">
-        <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-          htmlFor="bean_species"
-        >
-          Species
-        </label>
-        <Stack gap="1" className="pr-2 custom-scrollbar max-h-48">
-          {(filterMeta.species?.length
-            ? filterMeta.species
-            : (Object.entries(SPECIES_LABELS) as [SpeciesEnum, string][]).map(
-                ([value, label]) => ({ value, label, count: 0 })
-              )
-          ).map((item) => (
-            <label
-              className="group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors hover:text-accent"
-              key={item.value}
-            >
-              <input
-                checked={isFilterSelected("bean_species", item.value)}
-                className="h-3.5 w-3.5 rounded border-border/60 text-accent focus:ring-accent/30"
-                onChange={() => toggleArrayFilter("bean_species", item.value)}
-                type="checkbox"
-              />
-              <span className="text-caption font-medium transition-colors">
-                {item.label}{" "}
-                {item.count !== undefined && item.count > 0 && (
-                  <span className="text-muted-foreground/50 font-normal">
-                    ({item.count})
-                  </span>
-                )}
-              </span>
-            </label>
-          ))}
+      {speciesOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="bean_species"
+          >
+            Species
+          </label>
+          <MultiSelect
+            options={speciesOptions}
+            defaultValue={filters.bean_species || []}
+            onValueChange={(values) => {
+              updateFilters({
+                bean_species:
+                  values.length > 0 ? (values as SpeciesEnum[]) : undefined,
+              });
+            }}
+            placeholder="Select species..."
+            searchable={true}
+            className="w-full"
+            modalPopover={true}
+          />
         </Stack>
-      </Stack>
+      )}
 
       {/* Price Range */}
       <Stack gap="3">
@@ -560,6 +514,7 @@ export function CoffeeFilterContent({
             placeholder="Select flavor profiles..."
             searchable={true}
             className="w-full"
+            modalPopover={true}
           />
         </Stack>
       )}
@@ -584,6 +539,7 @@ export function CoffeeFilterContent({
             placeholder="Select regions..."
             searchable={true}
             className="w-full"
+            modalPopover={true}
           />
         </Stack>
       )}
@@ -608,6 +564,7 @@ export function CoffeeFilterContent({
             placeholder="Select estates..."
             searchable={true}
             className="w-full"
+            modalPopover={true}
           />
         </Stack>
       )}
@@ -633,42 +590,38 @@ export function CoffeeFilterContent({
             placeholder="Select processing methods..."
             searchable={true}
             className="w-full"
+            modalPopover={true}
           />
         </Stack>
       )}
 
       {/* Status */}
-      <Stack gap="3">
-        <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-          htmlFor="status"
-        >
-          Status
-        </label>
-        <Stack gap="1">
-          {filterMeta.statuses
-            .filter((s) => s.value === "active" || s.value === "seasonal")
-            .map((status) => (
-              <label
-                className="group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors hover:text-accent"
-                key={status.value}
-              >
-                <input
-                  checked={isFilterSelected("status", status.value)}
-                  className="h-3.5 w-3.5 rounded border-border/60 text-accent focus:ring-accent/30"
-                  onChange={() => toggleArrayFilter("status", status.value)}
-                  type="checkbox"
-                />
-                <span className="text-caption font-medium transition-colors">
-                  {status.label}{" "}
-                  <span className="text-muted-foreground/50 font-normal">
-                    ({status.count})
-                  </span>
-                </span>
-              </label>
-            ))}
+      {statusOptions.length > 0 && (
+        <Stack gap="3">
+          <label
+            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            htmlFor="status"
+          >
+            Status
+          </label>
+          <MultiSelect
+            options={statusOptions}
+            defaultValue={filters.status || []}
+            onValueChange={(values) => {
+              updateFilters({
+                status:
+                  values.length > 0
+                    ? (values as CoffeeStatusEnum[])
+                    : undefined,
+              });
+            }}
+            placeholder="Select status..."
+            searchable={true}
+            className="w-full"
+            modalPopover={true}
+          />
         </Stack>
-      </Stack>
+      )}
 
       {/* Boolean Filters */}
       <Stack gap="4">
