@@ -219,6 +219,15 @@ export function Footer() {
                         Contact Us
                       </Link>
                     </li>
+                    <li>
+                      <Link
+                        className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
+                        href="/how-icb-works"
+                      >
+                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                        How ICB Works
+                      </Link>
+                    </li>
                     {/* Separator */}
                     <li className="pt-2">
                       <div className="h-px w-full bg-border/60" />

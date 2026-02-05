@@ -13,6 +13,7 @@ import { trackEvent } from "@/lib/analytics/index";
 import { toast } from "sonner";
 import { PartnerFAQs } from "@/components/faqs/PartnerFAQs";
 import PartnerFormModal from "./PartnerFormModal";
+import Link from "next/link";
 
 type PartnerPageClientProps = {
   submitForm: (
@@ -449,8 +450,19 @@ const FeaturesGrid = () => {
     {
       icon: "CheckCircle" as IconName,
       title: "Verified Listing",
-      description:
-        "Your roastery is marked as a verified partner, indicating profile ownership and active participation. Verification does not affect rankings, ratings, or reviews.",
+      description: (
+        <>
+          Your roastery is marked as a verified partner, indicating profile
+          ownership and active participation. Verification does not affect
+          rankings, ratings, or reviews.{" "}
+          <Link
+            href="/how-icb-works"
+            className="text-accent hover:underline font-medium"
+          >
+            Learn more.
+          </Link>
+        </>
+      ),
     },
     {
       icon: "ArrowSquareOut" as IconName,
@@ -497,9 +509,9 @@ const FeaturesGrid = () => {
             </div>
             <div>
               <h4 className="text-heading italic mb-2">{feature.title}</h4>
-              <p className="text-caption text-muted-foreground leading-relaxed">
+              <div className="text-caption text-muted-foreground leading-relaxed">
                 {feature.description}
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -717,7 +729,13 @@ export default function PartnerPageClient({
                 }}
               />
               <p className="text-micro text-muted-foreground/70 text-center md:text-left pt-2 border-t border-border/30 mt-2">
-                IndianCoffeeBeans does not sell coffee, run ads, or rank brands.
+                IndianCoffeeBeans does not sell coffee, run ads, or rank brands.{" "}
+                <Link
+                  href="/how-icb-works"
+                  className="text-accent hover:underline font-medium"
+                >
+                  Learn how we maintain neutrality.
+                </Link>
               </p>
             </Stack>
           </Section>

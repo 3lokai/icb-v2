@@ -26,77 +26,12 @@
     animation-play-state: paused;
   }
 
-  /* Animation delay utilities */
-  .delay-0 {
-    animation-delay: 0ms;
-  }
-  .delay-50 {
-    animation-delay: 50ms;
-  }
-  .delay-100 {
-    animation-delay: 100ms;
-  }
-  .delay-150 {
-    animation-delay: 150ms;
-  }
+  /* Animation delay utilities (used by animate-fade-in-scale, animate-float) */
   .delay-200 {
     animation-delay: 200ms;
   }
-  .delay-250 {
-    animation-delay: 250ms;
-  }
   .delay-300 {
     animation-delay: 300ms;
-  }
-  .delay-350 {
-    animation-delay: 350ms;
-  }
-  .delay-400 {
-    animation-delay: 400ms;
-  }
-  .delay-450 {
-    animation-delay: 450ms;
-  }
-
-  /* Scrollbar variants */
-  .scrollbar-hidden {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-hidden::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-  }
-
-  .scrollbar-coffee::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--accent), var(--primary));
-    border: none;
-  }
-
-  .scrollbar-coffee::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--primary), var(--accent));
-  }
-
-  /* Z-Index Hierarchy */
-  .announcement-bar {
-    z-index: 50; /* Higher than header */
-  }
-
-  .sticky-header {
-    z-index: 40; /* Below announcement bar */
-  }
-
-  .header-dropdown {
-    z-index: 100; /* Above everything in header area */
-  }
-
-  .mobile-menu {
-    z-index: 45; /* Between header and dropdowns */
   }
 }
 
@@ -164,25 +99,6 @@
   }
   100% {
     transform: translateX(-100%);
-  }
-}
-
-/* Print Styles */
-@media print {
-  body * {
-    visibility: hidden;
-  }
-
-  .recipe-card,
-  .recipe-card * {
-    visibility: visible;
-  }
-
-  .recipe-card {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
   }
 }
 
