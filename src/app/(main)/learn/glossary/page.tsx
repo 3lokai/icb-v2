@@ -1,4 +1,17 @@
+import type { Metadata } from "next";
 import { getGlossaryTermsServer } from "@/lib/glossary/server";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+
+export const metadata: Metadata = generateSEOMetadata({
+  title: "Coffee Glossary - Indian Specialty Coffee Terms",
+  description:
+    "Confused by washed vs natural, or Arabica vs Robusta? This glossary helps you decode the coffee lingo — from brew to bean.",
+  keywords: ["coffee glossary", "coffee terms", "specialty coffee", "brewing"],
+  canonical: `${baseUrl}/learn/glossary`,
+});
 
 export default function GlossaryPage() {
   const terms = getGlossaryTermsServer();

@@ -1,11 +1,17 @@
 import { redirect } from "next/navigation";
 import { serverAuth } from "@/lib/supabase/auth-helpers";
 import { createClient } from "@/lib/supabase/server";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+
+export const metadata = generateSEOMetadata({
   title: "Profile | Indian Coffee Beans",
   description: "Your personal coffee record and discovery profile.",
-};
+  canonical: `${baseUrl}/profile`,
+  noIndex: true,
+});
 
 export default async function ProfileRedirectPage() {
   // Get current user

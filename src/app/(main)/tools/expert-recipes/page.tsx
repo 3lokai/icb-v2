@@ -1,10 +1,7 @@
 // src/app/tools/expert-recipes/page.tsx
 
 import Link from "next/link";
-import {
-  ExpertRecipesFAQ,
-  expertRecipesFAQs,
-} from "@/components/faqs/ExpertRecipesFAQs";
+import { ExpertRecipesFAQ } from "@/components/faqs/ExpertRecipesFAQs";
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Stack } from "@/components/primitives/stack";
@@ -16,7 +13,7 @@ import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { generateMetadata } from "@/lib/seo/metadata";
-import { generateFAQSchema, generateHowToSchema } from "@/lib/seo/schema";
+import { generateHowToSchema } from "@/lib/seo/schema";
 
 // SEO Metadata
 export const metadata = generateMetadata({
@@ -41,11 +38,16 @@ export const metadata = generateMetadata({
   type: "website",
 });
 
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+const expertRecipesImage = `${baseUrl}/images/hero-experts.avif`;
+
 // Structured Data Schemas
 const expertRecipesHowToSchema = generateHowToSchema({
   name: "How to Brew Coffee Using Expert Championship Recipes",
   description:
     "Learn to brew exceptional coffee using championship-winning techniques from world coffee experts and competition winners.",
+  image: "/images/hero-experts.avif",
   totalTime: "PT10M",
   equipment: [
     "Coffee brewing device (V60, AeroPress, French Press, etc.)",
@@ -87,15 +89,13 @@ const expertRecipesHowToSchema = generateHowToSchema({
   ],
 });
 
-const expertRecipesFAQSchema = generateFAQSchema(expertRecipesFAQs);
-
 const expertRecipesCollectionSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Expert Coffee Brewing Recipes Collection",
   description:
     "Curated collection of championship coffee brewing recipes from world experts and competition winners",
-  url: "https://indiancoffeebeans.com/tools/expert-recipes",
+  url: `${baseUrl}/tools/expert-recipes`,
   numberOfItems: 8,
   itemListElement: [
     {
@@ -104,6 +104,7 @@ const expertRecipesCollectionSchema = {
       author: "James Hoffmann",
       description:
         "World Barista Champion 2007 V60 brewing method focusing on clarity and even extraction",
+      image: expertRecipesImage,
     },
     {
       "@type": "Recipe",
@@ -111,6 +112,7 @@ const expertRecipesCollectionSchema = {
       author: "Tetsu Kasuya",
       description:
         "2016 World Brewers Cup Champion systematic brewing method for flavor control",
+      image: expertRecipesImage,
     },
     {
       "@type": "Recipe",
@@ -118,6 +120,7 @@ const expertRecipesCollectionSchema = {
       author: "Scott Rao",
       description:
         "Coffee consultant's uniform extraction technique for consistent results",
+      image: expertRecipesImage,
     },
   ],
 };
@@ -127,11 +130,7 @@ export default function ExpertRecipesPage() {
     <div className="pb-20">
       {/* Structured Data */}
       <StructuredData
-        schema={[
-          expertRecipesHowToSchema,
-          expertRecipesFAQSchema,
-          expertRecipesCollectionSchema,
-        ]}
+        schema={[expertRecipesHowToSchema, expertRecipesCollectionSchema]}
       />
 
       {/* Page Header */}

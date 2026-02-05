@@ -15,12 +15,20 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { username } = await params;
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+
   // Handle "anon" specially - redirect to the anon profile page
   // This ensures the static /profile/anon route works in production
   if (username === "anon") {
+    const anonUrl = `${baseUrl}/profile/anon`;
     return {
       title: "My Profile | Indian Coffee Beans",
       description: "View your anonymous profile, ratings, and recommendations.",
+      alternates: {
+        canonical: anonUrl,
+        languages: { en: anonUrl, "x-default": anonUrl },
+      },
     };
   }
 
@@ -28,16 +36,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const profileData = await fetchUserProfileByUsername(username);
 
   if (!profileData?.profile) {
+    const notFoundUrl = `${baseUrl}/profile/${username}`;
     return {
       title: "Profile Not Found | Indian Coffee Beans",
       description: "The requested profile could not be found.",
+      alternates: {
+        canonical: notFoundUrl,
+        languages: { en: notFoundUrl, "x-default": notFoundUrl },
+      },
     };
   }
 
   const { profile } = profileData;
   const displayName = profile.full_name || profile.username || "User";
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
   const profileUrl = `${baseUrl}/profile/${username}`;
   const ogImageUrl = `${baseUrl}/api/og/profile/${username}/selections`;
 
@@ -46,6 +57,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       profile.bio ||
       `View ${displayName}'s coffee profile, ratings, and recommendations.`,
+    alternates: {
+      canonical: profileUrl,
+      languages: { en: profileUrl, "x-default": profileUrl },
+    },
     openGraph: {
       title: `${displayName} | Indian Coffee Beans`,
       description:

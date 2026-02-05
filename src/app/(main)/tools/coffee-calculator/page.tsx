@@ -2,10 +2,7 @@
 // Enhanced version with improved UX and micro-interactions
 
 import Link from "next/link";
-import {
-  CoffeeCalculatorFAQ,
-  coffeeCalculatorFAQs,
-} from "@/components/faqs/CoffeeCalculatorFAQs";
+import { CoffeeCalculatorFAQ } from "@/components/faqs/CoffeeCalculatorFAQs";
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Cluster } from "@/components/primitives/cluster";
@@ -15,7 +12,7 @@ import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeCalculatorContainer } from "@/components/tools/CoffeeCalculatorContainer";
 import { Button } from "@/components/ui/button";
 import { generateMetadata } from "@/lib/seo/metadata";
-import { generateFAQSchema, generateHowToSchema } from "@/lib/seo/schema";
+import { generateHowToSchema } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
 import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
 
@@ -83,8 +80,6 @@ const calculatorHowToSchema = generateHowToSchema({
   ],
 });
 
-const calculatorFAQSchema = generateFAQSchema(coffeeCalculatorFAQs);
-
 const calculatorToolSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
@@ -113,13 +108,7 @@ export default function CoffeeCalculatorPage() {
   return (
     <div className="pb-20">
       {/* Structured Data */}
-      <StructuredData
-        schema={[
-          calculatorHowToSchema,
-          calculatorFAQSchema,
-          calculatorToolSchema,
-        ]}
-      />
+      <StructuredData schema={[calculatorHowToSchema, calculatorToolSchema]} />
 
       {/* Page Header */}
       <PageHeader

@@ -3,11 +3,17 @@ import { cookies } from "next/headers";
 import { fetchAnonProfile } from "@/lib/data/fetch-user-profile";
 import { ProfilePage } from "@/components/profile/ProfilePage";
 import type { Metadata } from "next";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+
+export const metadata: Metadata = generateSEOMetadata({
   title: "My Profile | Indian Coffee Beans",
   description: "View your anonymous profile, ratings, and recommendations.",
-};
+  canonical: `${baseUrl}/profile/anon`,
+  noIndex: true,
+});
 
 export default async function AnonProfilePage() {
   // Get anon_id from cookies

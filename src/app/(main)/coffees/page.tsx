@@ -92,6 +92,7 @@ export async function generateMetadata({
     ],
     alternates: {
       canonical: fullUrl,
+      languages: { en: fullUrl, "x-default": fullUrl },
     },
     robots: shouldIndex
       ? { index: true, follow: true }

@@ -93,6 +93,11 @@ const REDDIT_TESTIMONIALS: Testimonial[] = [
   },
 ];
 
+// Reviewed entity for schema.org Review.itemReviewed (required)
+const SITE_BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+const SITE_NAME = "Indian Coffee Beans";
+
 // Split into two rows
 const firstRow = REDDIT_TESTIMONIALS.slice(0, 6);
 const secondRow = REDDIT_TESTIMONIALS.slice(6, 12);
@@ -117,6 +122,16 @@ const TestimonialCard = ({
       itemScope
       itemType="https://schema.org/Review"
     >
+      {/* Required itemReviewed: the WebSite being reviewed */}
+      <span
+        className="sr-only"
+        itemProp="itemReviewed"
+        itemScope
+        itemType="https://schema.org/WebSite"
+      >
+        <link itemProp="url" href={SITE_BASE_URL} />
+        <meta itemProp="name" content={SITE_NAME} />
+      </span>
       {/* Reddit icon to indicate source */}
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">

@@ -81,7 +81,7 @@ export const metadata: Metadata = {
         url: "https://indiancoffeebeans.com/api/og?title=Indian%20Coffee%20Beans&type=website&image=https://indiancoffeebeans.com/logo-icon.svg",
         width: 1200,
         height: 630,
-        alt: "Indian Coffee Beans - India's First Specialty Coffee Directory",
+        alt: "India's First Specialty Coffee Directory",
       },
     ],
   },
