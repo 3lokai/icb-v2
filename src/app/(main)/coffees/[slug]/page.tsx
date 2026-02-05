@@ -1,12 +1,27 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { fetchCoffeesBySlugOnly } from "@/lib/data/fetch-coffee-by-slug";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { Button } from "@/components/ui/button";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  return generateSEOMetadata({
+    title: "Coffee Disambiguation | Indian Coffee Beans",
+    description:
+      "Multiple roasters have a coffee with this name. Choose a roaster to view the coffee.",
+    canonical: `${baseUrl}/coffees/${slug}`,
+  });
+}
 
 /**
  * Legacy coffee detail route: /coffees/[slug]

@@ -43,13 +43,6 @@ export const metadata: Metadata = {
   description:
     "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
   metadataBase: new URL("https://indiancoffeebeans.com"),
-  alternates: {
-    canonical: "https://indiancoffeebeans.com",
-    languages: {
-      en: "https://indiancoffeebeans.com",
-      "x-default": "https://indiancoffeebeans.com",
-    },
-  },
   icons: {
     icon: [
       { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
