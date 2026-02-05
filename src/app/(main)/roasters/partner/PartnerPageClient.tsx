@@ -217,7 +217,7 @@ const HowItWorksSection = () => {
       number: "02",
       title: "Choose Your Tier",
       description:
-        "Start free, or opt for Verified / Premium for additional visibility and profile controls.",
+        "Start free, or opt for Verified / Premium for profile ownership and controls.",
     },
     {
       number: "03",
@@ -450,7 +450,7 @@ const FeaturesGrid = () => {
       icon: "CheckCircle" as IconName,
       title: "Verified Listing",
       description:
-        "Your roastery is reviewed and marked as active, helping users trust the information they see.",
+        "Your roastery is marked as a verified partner, indicating profile ownership and active participation. Verification does not affect rankings, ratings, or reviews.",
     },
     {
       icon: "ArrowSquareOut" as IconName,

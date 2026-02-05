@@ -3,34 +3,34 @@ import { FAQSection } from "@/components/common/FAQ";
 
 const homepageFAQs = [
   {
-    question: "What is IndianCoffeeBeans.com?",
+    question: "What is IndianCoffeeBeans (ICB)?",
     answer:
-      "India's first comprehensive directory for specialty coffee beans, roasters, and brewing knowledge.",
+      "IndianCoffeeBeans (ICB) is a community-driven platform to rate Indian specialty coffee and discover beans by taste, roast, and brew method — built on one of the most comprehensive directories covering India’s coffee regions, roasters, and estates.",
   },
   {
-    question: "How do I find coffee roasters near me in India?",
+    question: "How does rating coffees work on ICB?",
     answer:
-      "Use our roaster directory with filters for location, including major cities across Karnataka, Tamil Nadu, Kerala, and other coffee regions.",
+      "Pick a coffee you’ve brewed, rate it, and optionally add tasting notes and brew details. Ratings and reviews help other coffee drinkers compare coffees across roasters, and they also improve your personal recommendations inside ICB.",
   },
   {
-    question: "Can I buy coffee directly through your site?",
+    question: "Do I need an account to rate or review?",
     answer:
-      "We connect you with verified roasters and their online stores. Each listing includes direct purchase links and contact information.",
+      "You can browse everything without an account. For ratings and reviews, ICB may ask you to sign in so your taste profile and recommendations can be saved and improved over time.",
   },
   {
-    question: "Is IndianCoffeeBeans.com free to use?",
+    question: "Are listings or reviews paid or sponsored?",
     answer:
-      "Yes, our platform is completely free for users to explore roasters, coffees, regions, and educational content. We aim to promote Indian specialty coffee.",
+      "No. ICB is not a marketplace and does not accept paid reviews. Roasters can claim or update their profile information, but community ratings and reviews are not influenced by sponsorships.",
   },
   {
-    question: "How often is the directory updated?",
+    question: "How do recommendations work?",
     answer:
-      "We regularly update our directories with new roasters, coffee beans, and regional information to ensure you have access to the latest and most accurate data. Contact us via our contact page if you notice any outdated information.",
+      "Recommendations are based on what you rate highly and the coffee attributes you tend to like (for example: roast level, processing, and flavor profile). As you add more ratings, ICB gets better at suggesting coffees similar to what you enjoy.",
   },
   {
-    question: "Can I submit my roastery or coffee farm to be featured?",
+    question: "Can roasters update their profiles or submit coffees?",
     answer:
-      "Yes, we welcome submissions from Indian specialty coffee roasters and farms. Please visit our Contact page for submission guidelines and criteria.",
+      "Yes. Roasters can request edits, add missing coffees, and keep their information accurate. Use the contact page to submit updates, and we’ll review and publish changes to maintain quality and consistency.",
   },
 ];
 
@@ -38,7 +38,7 @@ export function HomepageFAQ() {
   return (
     <FAQSection
       badge="Help & Support"
-      description="Find answers to common questions about IndianCoffeeBeans.com and how we help you navigate the landscape."
+      description="Quick answers on how ICB works, how ratings shape your taste profile, and how roasters keep listings accurate."
       items={homepageFAQs}
       overline="The Details"
       title={
