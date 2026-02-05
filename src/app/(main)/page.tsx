@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import HeroSection from "@/components/homepage/HeroSection";
+import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGridLazy";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
@@ -44,20 +45,6 @@ const EducationSection = dynamic(
   {
     loading: () => (
       <div className="flex min-h-[300px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
-  }
-);
-
-const HomeCollectionGrid = dynamic(
-  () =>
-    import("@/components/homepage/HomeCollectionGrid").then((mod) => ({
-      default: mod.HomeCollectionGrid,
-    })),
-  {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
         <LoadingSpinner size="md" />
       </div>
     ),
@@ -127,17 +114,17 @@ export async function generateMetadata(): Promise<Metadata> {
     process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
 
   return generatePageMetadata({
-    title: "Indian Coffee Beans - India's First Specialty Coffee Directory",
+    title: "IndianCoffeeBeans (ICB) — Rate Coffee, Build Your Taste Profile",
     description:
-      "Discover premium coffee beans and roasters from India. Explore the rich world of Indian specialty coffee, find your perfect brew, and connect with local roasters.",
+      "Rate Indian specialty coffees, track your brews, and build a taste profile. Discover beans from Indian roasters with community reviews and recommendations.",
     keywords: [
-      "indian coffee",
-      "specialty coffee india",
-      "indian roasters",
-      "coffee directory",
-      "filter coffee",
-      "brew guides",
+      "indian specialty coffee",
+      "coffee ratings",
+      "coffee reviews",
+      "indian coffee roasters",
       "coffee beans india",
+      "taste profile",
+      "brew methods",
     ],
     image: `${baseUrl}/logo-icon.svg`,
     type: "website",
@@ -167,7 +154,7 @@ export default async function Home() {
         </Suspense>
         <HowItWorksSection />
         <UserProfileTeaser />
-        <HomeCollectionGrid tier="core" />
+        <HomeCollectionGridLazy tier="core" />
         <NewArrivalsSection />
         <NewsletterSection />
         <RoasterInfrastructureSection />

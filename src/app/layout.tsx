@@ -43,6 +43,13 @@ export const metadata: Metadata = {
   description:
     "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
   metadataBase: new URL("https://indiancoffeebeans.com"),
+  alternates: {
+    canonical: "https://indiancoffeebeans.com",
+    languages: {
+      en: "https://indiancoffeebeans.com",
+      "x-default": "https://indiancoffeebeans.com",
+    },
+  },
   icons: {
     icon: [
       { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -81,7 +88,7 @@ export const metadata: Metadata = {
         url: "https://indiancoffeebeans.com/api/og?title=Indian%20Coffee%20Beans&type=website&image=https://indiancoffeebeans.com/logo-icon.svg",
         width: 1200,
         height: 630,
-        alt: "Indian Coffee Beans - India's First Specialty Coffee Directory",
+        alt: "India's First Specialty Coffee Directory",
       },
     ],
   },

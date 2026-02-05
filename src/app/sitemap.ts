@@ -2,84 +2,94 @@ import type { MetadataRoute } from "next";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { getAllLandingPageSlugs } from "@/lib/discovery/landing-pages";
 
+/** Add self-referencing hreflang to a sitemap entry (single-language site). */
+function withHreflang<T extends { url: string }>(
+  entry: T
+): T & { alternates: { languages: Record<string, string> } } {
+  return {
+    ...entry,
+    alternates: { languages: { en: entry.url, "x-default": entry.url } },
+  };
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
 
   // Static routes that don't change based on database content
   const staticRoutes: MetadataRoute.Sitemap = [
-    {
+    withHreflang({
       url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/coffees`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/roasters`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/curations`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.85,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/learn/glossary`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/tools/coffee-calculator`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/tools/expert-recipes`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.3,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/terms`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.3,
-    },
-    {
+    }),
+    withHreflang({
       url: `${baseUrl}/data-deletion`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.3,
-    },
+    }),
   ];
 
   // Fetch dynamic routes from Supabase
@@ -156,41 +166,47 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const coffeeRoutes: MetadataRoute.Sitemap =
       (coffeesResult.data as CoffeeRowWithRoaster[] | null)
         ?.filter((c) => c.slug && getRoasterSlug(c))
-        .map((coffee) => ({
-          url: `${baseUrl}/roasters/${getRoasterSlug(coffee)!}/coffees/${coffee.slug}`,
-          lastModified: coffee.updated_at
-            ? new Date(coffee.updated_at)
-            : new Date(),
-          changeFrequency: "weekly" as const,
-          priority: 0.8,
-        })) ?? [];
+        .map((coffee) =>
+          withHreflang({
+            url: `${baseUrl}/roasters/${getRoasterSlug(coffee)!}/coffees/${coffee.slug}`,
+            lastModified: coffee.updated_at
+              ? new Date(coffee.updated_at)
+              : new Date(),
+            changeFrequency: "weekly" as const,
+            priority: 0.8,
+          })
+        ) ?? [];
 
     // Generate dynamic roaster routes
     const roasterRoutes: MetadataRoute.Sitemap =
-      roastersResult.data?.map((roaster) => ({
-        url: `${baseUrl}/roasters/${roaster.slug}`,
-        lastModified: roaster.updated_at
-          ? new Date(roaster.updated_at)
-          : new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.8,
-      })) ?? [];
+      roastersResult.data?.map((roaster) =>
+        withHreflang({
+          url: `${baseUrl}/roasters/${roaster.slug}`,
+          lastModified: roaster.updated_at
+            ? new Date(roaster.updated_at)
+            : new Date(),
+          changeFrequency: "monthly" as const,
+          priority: 0.8,
+        })
+      ) ?? [];
 
     // Generate dynamic curation (curator) routes
     const curationRoutes: MetadataRoute.Sitemap =
-      curatorsResult.data?.map((curator) => ({
-        url: `${baseUrl}/curations/${curator.slug}`,
-        lastModified: curator.updated_at
-          ? new Date(curator.updated_at)
-          : new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.75,
-      })) ?? [];
+      curatorsResult.data?.map((curator) =>
+        withHreflang({
+          url: `${baseUrl}/curations/${curator.slug}`,
+          lastModified: curator.updated_at
+            ? new Date(curator.updated_at)
+            : new Date(),
+          changeFrequency: "monthly" as const,
+          priority: 0.75,
+        })
+      ) ?? [];
 
     // Discovery landing pages (brew method, roast level, price bucket)
     const discoverySlugs = getAllLandingPageSlugs();
-    const discoveryRoutes: MetadataRoute.Sitemap = discoverySlugs.map(
-      (slug) => ({
+    const discoveryRoutes: MetadataRoute.Sitemap = discoverySlugs.map((slug) =>
+      withHreflang({
         url: `${baseUrl}/${slug}`,
         lastModified: new Date(),
         changeFrequency: "weekly" as const,

@@ -171,6 +171,12 @@ export function generateMetadata({
       : { index: true, follow: true },
     alternates: {
       canonical: canonical || undefined,
+      ...(canonical && {
+        languages: {
+          en: canonical,
+          "x-default": canonical,
+        },
+      }),
     },
     openGraph,
     twitter: {

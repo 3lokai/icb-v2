@@ -44,6 +44,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { GRIND_TYPES } from "@/lib/utils/coffee-constants";
 import type {
@@ -134,6 +135,7 @@ export function ReviewCapture({
   // Using startTransition to defer state updates and avoid linter warnings
   const hasSyncedRef = useRef(false);
   const hasShownLimitModalRef = useRef(false);
+  const hasShownSuccessToastRef = useRef(false);
 
   useEffect(() => {
     if (userReview && !isEditMode && !hasSyncedRef.current) {
@@ -173,7 +175,10 @@ export function ReviewCapture({
     if (isError && error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
-      if (errorMessage > "ANON_LIMIT_REACHED") {
+      if (
+        errorMessage === "ANON_LIMIT_REACHED" ||
+        errorMessage.includes("ANON_LIMIT_REACHED")
+      ) {
         // Only show modal if it hasn't been shown yet in this session
         if (!hasShownLimitModalRef.current) {
           // Use setTimeout to avoid synchronous setState in effect
@@ -193,6 +198,17 @@ export function ReviewCapture({
       }, 0);
     }
   }, [isError, error, reviewCount, isSuccess, identityKey]);
+
+  // Show success toast on successful submission (once per submit)
+  useEffect(() => {
+    if (isSuccess && !hasShownSuccessToastRef.current) {
+      hasShownSuccessToastRef.current = true;
+      toast.success("Your review has been submitted and added to your profile");
+    }
+    if (!isSuccess && !isLoading) {
+      hasShownSuccessToastRef.current = false;
+    }
+  }, [isSuccess, isLoading]);
 
   // Check if limit is reached before creating review (only for anonymous users)
   const checkLimitBeforeCreate = useCallback(() => {
