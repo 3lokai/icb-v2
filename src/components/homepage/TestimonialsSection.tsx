@@ -241,8 +241,8 @@ export default function TestimonialsSection() {
           </Marquee>
 
           {/* Gradient fade edges - matching Magic UI style */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-muted/30" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-muted/30" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-[color-mix(in_oklch,var(--muted)_30%,var(--background))]" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-[color-mix(in_oklch,var(--muted)_30%,var(--background))]" />
         </div>
 
         <div className="mt-8 text-center md:hidden">

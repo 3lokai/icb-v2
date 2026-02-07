@@ -133,7 +133,7 @@ export function HomeCollectionGrid({
       )}
 
       {/* 4-Column Parallax Grid */}
-      <div className="overflow-hidden lg:pb-[200px] lg:-mb-[200px] pt-4 -mt-4">
+      <div className="overflow-visible lg:pb-[200px] lg:-mb-[200px] pt-4 -mt-4">
         <div
           ref={gridRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start"
