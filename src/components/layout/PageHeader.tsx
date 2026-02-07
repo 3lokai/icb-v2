@@ -25,12 +25,12 @@ export function PageHeader({
   backgroundImageAlt = "Coffee beans background",
 }: PageHeaderProps) {
   return (
-    <section className="relative -mx-4 -mt-8 flex min-h-[80vh] items-center justify-center overflow-hidden md:-mx-6 md:-mt-12 lg:-mx-8 lg:-mt-16 md:min-h-[65vh]">
-      {/* Background Image */}
-      <div className="absolute inset-x-0 top-20 bottom-0 z-0">
+    <section className="relative -mt-8 flex min-h-[80vh] w-screen max-w-none items-center justify-center overflow-hidden md:-mt-12 lg:-mt-16 md:min-h-[65vh] ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
+      {/* Background Image - full bleed, contain so image isn't over-cropped */}
+      <div className="absolute inset-0 z-0 bg-black/80">
         <Image
           alt={backgroundImageAlt}
-          className="object-cover"
+          className="object-cover object-center"
           fill
           priority
           sizes="100vw"
@@ -39,9 +39,10 @@ export function PageHeader({
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-x-0 top-20 bottom-0 z-10 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
 
-      <div className="container relative z-20 mx-auto px-4 py-12 md:py-20">
+      {/* Content aligned with PageShell (max-w-7xl + same horizontal padding) */}
+      <div className="relative z-20 mx-auto w-full max-w-7xl px-4 py-12 md:px-6 md:py-20 lg:px-8">
         <div className="mx-auto max-w-6xl w-full">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
             <div className="md:col-span-8">

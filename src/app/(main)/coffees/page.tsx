@@ -291,7 +291,7 @@ export default async function CoffeesPage({
   return (
     <>
       <PageHeader
-        backgroundImage="/images/hero-coffees.avif"
+        backgroundImage="/images/hero-bg.avif"
         backgroundImageAlt="Coffee beans background"
         description="Discover over hundreds of specialty coffee beans from roasters across India. Verified data, verified roasters, verified taste."
         overline="Specialty Coffee Directory"
