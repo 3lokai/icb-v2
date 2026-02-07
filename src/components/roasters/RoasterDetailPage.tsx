@@ -457,7 +457,7 @@ export function RoasterDetailPage({
                   </h2>
                 </div>
                 <Prose className="max-w-none">
-                  <p className="text-body-large text-muted-foreground font-serif leading-relaxed whitespace-pre-line italic opacity-90">
+                  <p className="text-body-large text-muted-foreground font-sans leading-relaxed whitespace-pre-line italic opacity-90">
                     {roaster.description}
                   </p>
                 </Prose>
