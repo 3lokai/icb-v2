@@ -11,9 +11,12 @@ export function HeroCTAs() {
   const { openSearch } = useSearchContext();
 
   return (
-    <Stack gap="8" className="animate-fade-in-scale delay-300 w-full">
-      <div className="flex flex-col gap-2 items-start">
-        <Cluster gap="4" align="center" className="justify-start">
+    <Stack
+      gap="8"
+      className="animate-fade-in-scale delay-300 w-full items-center"
+    >
+      <div className="flex flex-col gap-2 items-center">
+        <Cluster gap="4" align="center" className="justify-center">
           {/* Primary CTA - Start rating coffees */}
           <Button
             onClick={() => openSearch(undefined, true)}
@@ -36,13 +39,13 @@ export function HeroCTAs() {
           </Button>
         </Cluster>
         {/* Footnote for both buttons */}
-        <p className="text-micro text-white/60 text-left">
+        <p className="text-micro text-white/60 text-center">
           No sign-up required
         </p>
       </div>
 
       {/* Editorial Footer */}
-      <div className="flex flex-wrap items-center justify-start gap-x-8 gap-y-4 pt-4">
+      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-4">
         <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-[0.2em] font-medium">
           <span className="h-1 w-1 rounded-full bg-accent/60" />
           800+ coffees rated

@@ -415,7 +415,7 @@ const PricingTiers = ({
               size="lg"
               variant={tierData.featured ? "default" : "outline"}
               className={cn(
-                "w-full h-12 rounded-xl font-bold uppercase tracking-widest text-micro transition-all duration-300",
+                "w-full h-12 rounded-xl font-bold uppercase tracking-widest text-micro transition-all duration-300 cursor-pointer",
                 tierData.featured
                   ? "bg-accent hover:bg-accent/90 shadow-xl shadow-accent/20 hover:-translate-y-1"
                   : "hover:border-accent hover:text-accent hover:bg-accent/5"
@@ -569,7 +569,7 @@ const FinalCTA = ({
           <div className="flex flex-col sm:flex-row gap-6">
             <Button
               size="lg"
-              className="h-14 px-8 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-[0.2em] text-micro shadow-2xl shadow-accent/20 transition-all hover:-translate-y-1"
+              className="h-14 px-8 cursor-pointer bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-[0.2em] text-micro shadow-2xl shadow-accent/20 transition-all hover:-translate-y-1"
               onClick={() => {
                 trackEvent("partner_cta_clicked", "partner_page", "verified");
                 onCtaClick("verified");
@@ -580,7 +580,7 @@ const FinalCTA = ({
             <Button
               size="lg"
               variant="outline"
-              className="h-14 px-8 border-border hover:border-accent hover:text-accent font-bold uppercase tracking-[0.2em] text-micro transition-all hover:-translate-y-1"
+              className="h-14 px-8 cursor-pointer border-border hover:border-accent hover:text-accent font-bold uppercase tracking-[0.2em] text-micro transition-all hover:-translate-y-1"
               onClick={() => {
                 trackEvent("partner_cta_clicked", "partner_page", "free");
                 onCtaClick("free");
@@ -670,7 +670,7 @@ export default function PartnerPageClient({
           <div className="flex flex-col sm:flex-row gap-4">
             <Button
               size="lg"
-              className="transition-transform duration-300 hover:-translate-y-1 shadow-lg shadow-primary/20 bg-linear-to-r from-primary to-primary/90"
+              className="cursor-pointer transition-transform duration-300 hover:-translate-y-1 shadow-lg shadow-primary/20 bg-linear-to-r from-primary to-primary/90"
               onClick={() => {
                 trackEvent("partner_cta_clicked", "partner_page", "verified");
                 setActiveForm("verified");
@@ -681,7 +681,7 @@ export default function PartnerPageClient({
             <Button
               size="lg"
               variant="outline"
-              className="transition-transform duration-300 hover:-translate-y-1"
+              className="cursor-pointer transition-transform duration-300 hover:-translate-y-1"
               onClick={scrollToPricing}
             >
               How Discovery Works

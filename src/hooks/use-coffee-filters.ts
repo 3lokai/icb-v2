@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useCallback, useTransition } from "react";
+import { useMemo, useCallback, useRef, useEffect } from "react";
 import {
   buildCoffeeQueryString,
   parseCoffeeSearchParams,
@@ -20,16 +20,37 @@ const DEFAULT_PAGE = 1;
 export function useCoffeeFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [, startTransition] = useTransition();
+  const scrollRestoreYRef = useRef<number | null>(null);
+  const shouldRestoreScrollRef = useRef(false);
 
   // Parse current URL params
   const { filters, page, sort, limit } = useMemo(() => {
     return parseCoffeeSearchParams(searchParams);
   }, [searchParams]);
 
+  // Restore scroll after URL update (only when we triggered the change via replace)
+  useEffect(() => {
+    if (!shouldRestoreScrollRef.current || scrollRestoreYRef.current == null) {
+      return;
+    }
+    const y = scrollRestoreYRef.current;
+    shouldRestoreScrollRef.current = false;
+    scrollRestoreYRef.current = null;
+    requestAnimationFrame(() => {
+      window.scrollTo(0, y);
+    });
+  }, [searchParams]);
+
+  const saveScrollAndReplace = useCallback(
+    (url: string) => {
+      shouldRestoreScrollRef.current = true;
+      scrollRestoreYRef.current = window.scrollY;
+      router.replace(url, { scroll: false });
+    },
+    [router]
+  );
+
   // Update filters by updating URL
-  // Use startTransition so MultiSelect can receive multiple selections before re-render
-  // (immediate router.replace would close the popover after each selection)
   const updateFilters = useCallback(
     (
       updates:
@@ -48,25 +69,23 @@ export function useCoffeeFilters() {
         current.limit
       );
 
-      startTransition(() => {
-        router.replace(`/coffees?${queryString}`, { scroll: false });
-      });
+      saveScrollAndReplace(`/coffees?${queryString}`);
     },
-    [router, searchParams]
+    [searchParams, saveScrollAndReplace]
   );
 
   // Reset all filters
   const resetFilters = useCallback(() => {
-    router.replace(`/coffees`, { scroll: false });
-  }, [router]);
+    saveScrollAndReplace("/coffees");
+  }, [saveScrollAndReplace]);
 
   // Update page
   const setPage = useCallback(
     (newPage: number) => {
       const queryString = buildCoffeeQueryString(filters, newPage, sort, limit);
-      router.replace(`/coffees?${queryString}`, { scroll: false });
+      saveScrollAndReplace(`/coffees?${queryString}`);
     },
-    [filters, sort, limit, router]
+    [filters, sort, limit, saveScrollAndReplace]
   );
 
   // Update sort
@@ -78,9 +97,9 @@ export function useCoffeeFilters() {
         newSort,
         limit
       );
-      router.replace(`/coffees?${queryString}`, { scroll: false });
+      saveScrollAndReplace(`/coffees?${queryString}`);
     },
-    [filters, limit, router]
+    [filters, limit, saveScrollAndReplace]
   );
 
   return {
