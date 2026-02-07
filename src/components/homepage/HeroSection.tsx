@@ -28,7 +28,7 @@ export default function HeroSection() {
       <div className="hero-content relative z-10 text-left w-full max-w-2xl">
         <Stack gap="8">
           {/* Server-rendered heading for optimal LCP */}
-          <HeroHeading rightAligned={false} />
+          <HeroHeading />
 
           {/* Client-side search component - dynamically loaded */}
           <HeroSearch />
