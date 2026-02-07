@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { fetchRoasterBySlug } from "@/lib/data/fetch-roaster-by-slug";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
-import { generateSchemaOrg } from "@/lib/seo/schema";
+import { generateSchemaOrg, generateBreadcrumbSchema } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
 import { RoasterDetailPage } from "@/components/roasters/RoasterDetailPage";
 import { roasterImagePresets } from "@/lib/imagekit";
@@ -113,30 +113,11 @@ export default async function RoasterDetailPageServer({ params }: Props) {
         : undefined,
   });
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: baseUrl,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Roasters",
-        item: `${baseUrl}/roasters`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: roaster.name,
-        item: canonical,
-      },
-    ],
-  };
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: baseUrl },
+    { name: "Roasters", url: `${baseUrl}/roasters` },
+    { name: roaster.name, url: canonical },
+  ]);
 
   return (
     <>

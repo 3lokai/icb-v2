@@ -22,9 +22,9 @@ export default function RoasterInfrastructureSection() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
         {/* Left Column: Dense List (Visual) - order-2 on mobile so copy appears first */}
         <div className="relative h-[320px] sm:h-[400px] md:h-[500px] w-full min-w-0 overflow-hidden order-2 md:order-1">
-          {/* Gradient Overlays for smooth fade in/out */}
-          <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
+          {/* Gradient Overlays: match main page background (bg-muted/30 on surface-0) */}
+          <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent z-10 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent z-10 pointer-events-none" />
 
           {/* Marquee Content */}
           <div

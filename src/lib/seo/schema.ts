@@ -1,4 +1,17 @@
 // lib/seo/schema.ts
+
+/** Base URL for the site; use for absolute breadcrumb and schema URLs */
+export function getSeoBaseUrl(): string {
+  return process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+}
+
+/** Build absolute URL from path (e.g. "/roasters" or "roasters/foo") for breadcrumbs */
+export function breadcrumbUrl(path: string): string {
+  const base = getSeoBaseUrl();
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${p}`;
+}
+
 type SchemaOrgProps = {
   type: "Product" | "LocalBusiness" | "Article" | "WebPage";
   name: string;
@@ -208,6 +221,43 @@ export const aboutPageSchema = {
   name: "About IndianCoffeeBeans.com",
   description: "India's first independent directory for specialty coffee.",
   url: "https://indiancoffeebeans.com/about",
+};
+
+export const howICBWorksPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "How IndianCoffeeBeans Works - Transparency & Neutrality",
+  description:
+    "Learn about our mission, how we curate coffee, our commitment to neutrality, and how you can use our platform to find your perfect brew.",
+  url: "https://indiancoffeebeans.com/how-icb-works",
+};
+
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+
+export const howICBWorksBreadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: baseUrl,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "About",
+      item: `${baseUrl}/about`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "How ICB Works",
+      item: `${baseUrl}/how-icb-works`,
+    },
+  ],
 };
 
 export const privacyPageSchema = {

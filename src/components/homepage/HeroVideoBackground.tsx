@@ -16,32 +16,32 @@ export function HeroVideoBackground() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Ensure video plays once loaded
+  // Ensure video plays once loaded (works on all viewport sizes)
   useEffect(() => {
     if (!shouldLoadVideo) return;
 
     const video = videoRef.current;
-    if (!video) {
-      return;
-    }
+    if (!video) return;
 
     const playVideo = async () => {
       try {
         await video.play();
       } catch (error) {
-        // Autoplay was prevented, try again after user interaction
         console.warn("Video autoplay prevented:", error);
       }
     };
 
-    // Try to play when video can play through
+    const tryPlay = () => {
+      // readyState 2 = HAVE_CURRENT_DATA, 3 = HAVE_FUTURE_DATA, 4 = HAVE_ENOUGH_DATA
+      if (video.readyState >= 2) playVideo();
+    };
+
+    video.addEventListener("canplay", tryPlay);
     video.addEventListener("canplaythrough", playVideo);
-    // Also try immediately if already loaded
-    if (video.readyState >= 3) {
-      playVideo();
-    }
+    tryPlay(); // if already loaded (e.g. cached or fast network)
 
     return () => {
+      video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("canplaythrough", playVideo);
     };
   }, [shouldLoadVideo]);
@@ -55,7 +55,7 @@ export function HeroVideoBackground() {
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           ref={videoRef}
           src="/videos/hero-video.mp4"
           poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23000;stop-opacity:0.6'/%3E%3Cstop offset='50%25' style='stop-color:%23000;stop-opacity:0.5'/%3E%3Cstop offset='100%25' style='stop-color:%23000;stop-opacity:0.7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='%231a1a1a'/%3E%3Crect width='100%25' height='100%25' fill='url(%23grad)'/%3E%3C/svg%3E"

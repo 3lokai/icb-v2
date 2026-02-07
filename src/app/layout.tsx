@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Playfair_Display } from "next/font/google";
+import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -19,12 +19,12 @@ import { SearchProvider } from "@/providers/SearchProvider";
 // Only loads when search modal is opened (cmdk is ~50-100KB)
 // Note: No ssr: false needed - SearchCommand is already client-only
 
-const playfair = Playfair_Display({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "700"], // Reduced from 4 weights to 2 for faster FCP (removed 600, 900)
+  weight: ["400", "500", "600", "700"],
   variable: "--font-display",
-  display: "optional", // Use optional to prevent FOIT and improve FCP
-  preload: true, // Preload critical font
+  display: "optional",
+  preload: true,
 });
 
 const dmSans = DM_Sans({
@@ -109,7 +109,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html
-      className={`${playfair.variable} ${dmSans.variable}`}
+      className={`${fraunces.variable} ${dmSans.variable}`}
       lang="en"
       suppressHydrationWarning
     >

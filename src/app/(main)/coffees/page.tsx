@@ -5,8 +5,13 @@ import { CollectionGrid } from "@/components/collections/CollectionGrid";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { fetchCoffeeFilterMeta } from "@/lib/data/fetch-coffee-filter-meta";
 import { fetchCoffees } from "@/lib/data/fetch-coffees";
+import type { CoffeeFilters } from "@/types/coffee-types";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
-import { generateCollectionPageSchema } from "@/lib/seo/schema";
+import {
+  generateCollectionPageSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/seo/schema";
+import StructuredData from "@/components/seo/StructuredData";
 
 /**
  * Generate metadata for coffee directory page
@@ -122,6 +127,64 @@ export async function generateMetadata({
   };
 }
 
+/** Maps for breadcrumb labels (one primary filter level on /coffees) */
+const BREW_METHOD_LABELS: Record<string, string> = {
+  aeropress: "AeroPress",
+  pour_over: "Pour Over",
+  french_press: "French Press",
+  espresso: "Espresso",
+  south_indian_filter: "South Indian Filter",
+  channi: "Channi",
+  coffee_filter: "Coffee Filter",
+};
+const ROAST_LEVEL_LABELS: Record<string, string> = {
+  light: "Light",
+  medium: "Medium",
+  dark: "Dark",
+};
+
+function buildCoffeesPageBreadcrumbs(
+  filters: CoffeeFilters,
+  currentUrl: string,
+  baseUrl: string
+): Array<{ name: string; url: string }> {
+  const items: Array<{ name: string; url: string }> = [
+    { name: "Home", url: baseUrl },
+    { name: "Coffees", url: `${baseUrl}/coffees` },
+  ];
+  if (filters.brew_method_ids?.length) {
+    const value = filters.brew_method_ids
+      .map((id) => BREW_METHOD_LABELS[id] ?? id)
+      .join(", ");
+    items.push({ name: "Brew Method", url: `${baseUrl}/coffees` });
+    items.push({ name: value, url: currentUrl });
+  } else if (filters.roast_levels?.length) {
+    const value = filters.roast_levels
+      .map((r) => ROAST_LEVEL_LABELS[r] ?? r)
+      .join(", ");
+    items.push({ name: "Roast Level", url: `${baseUrl}/coffees` });
+    items.push({ name: value, url: currentUrl });
+  } else if (
+    filters.max_price !== undefined ||
+    filters.min_price !== undefined
+  ) {
+    const value =
+      filters.max_price !== undefined &&
+      (filters.min_price === undefined || filters.min_price === 0)
+        ? `Under ₹${filters.max_price}`
+        : filters.min_price !== undefined && filters.max_price !== undefined
+          ? `₹${filters.min_price}–₹${filters.max_price}`
+          : filters.min_price !== undefined
+            ? `From ₹${filters.min_price}`
+            : "Price range";
+    items.push({ name: "Price Range", url: `${baseUrl}/coffees` });
+    items.push({ name: value, url: currentUrl });
+  } else {
+    items[items.length - 1]!.url = currentUrl;
+  }
+  return items;
+}
+
 async function CoffeesPageContent({
   params,
 }: {
@@ -162,6 +225,13 @@ async function CoffeesPageContent({
       )
     : null;
 
+  const breadcrumbItems = buildCoffeesPageBreadcrumbs(
+    filters,
+    currentUrl.toString(),
+    baseUrl
+  );
+  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+
   return (
     <>
       {collectionSchema && (
@@ -172,6 +242,7 @@ async function CoffeesPageContent({
           }}
         />
       )}
+      <StructuredData schema={breadcrumbSchema} />
       <CollectionGrid
         maxItems={8}
         cardVariant="small"
@@ -220,7 +291,7 @@ export default async function CoffeesPage({
   return (
     <>
       <PageHeader
-        backgroundImage="/images/hero-coffees.avif"
+        backgroundImage="/images/hero-bg.avif"
         backgroundImageAlt="Coffee beans background"
         description="Discover over hundreds of specialty coffee beans from roasters across India. Verified data, verified roasters, verified taste."
         overline="Specialty Coffee Directory"

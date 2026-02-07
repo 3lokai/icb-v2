@@ -18,17 +18,6 @@ const NewArrivalsSection = dynamic(
   }
 );
 
-const NewsletterSection = dynamic(
-  () => import("@/components/homepage/NewsletterSection"),
-  {
-    loading: () => (
-      <div className="flex min-h-[200px] items-center justify-center">
-        <LoadingSpinner size="sm" />
-      </div>
-    ),
-  }
-);
-
 const RoasterInfrastructureSection = dynamic(
   () => import("@/components/homepage/RoasterInfrastructureSection"),
   {
@@ -156,7 +145,6 @@ export default async function Home() {
         <UserProfileTeaser />
         <HomeCollectionGridLazy tier="core" />
         <NewArrivalsSection />
-        <NewsletterSection />
         <RoasterInfrastructureSection />
         <EducationSection />
         <TestimonialsSection />

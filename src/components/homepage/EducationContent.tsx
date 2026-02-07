@@ -1,17 +1,26 @@
-// src/components/home/EducationSection.tsx
+// src/components/homepage/EducationContent.tsx
+"use client";
 
 import Image from "next/image";
+import { Icon, IconName } from "@/components/common/Icon";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
-import { Icon, IconName } from "../common/Icon";
+import { cn } from "@/lib/utils";
+import { motion } from "motion/react";
 
 function ComingSoonBadge() {
   return (
-    <div className="pointer-events-none absolute right-0 top-0 select-none opacity-80 mix-blend-multiply dark:mix-blend-screen md:-right-4 md:-top-4">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
+      whileInView={{ opacity: 0.85, scale: 1, rotate: 12 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" as const }}
+      className="pointer-events-none absolute -right-4 -top-4 md:-right-8 md:-top-8 select-none mix-blend-multiply dark:mix-blend-screen z-20"
+    >
       <svg
         viewBox="0 0 140 140"
-        className="h-32 w-32 rotate-12 text-muted-foreground duration-500 hover:rotate-45"
+        className="h-28 w-28 md:h-32 md:w-32 text-muted-foreground"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -56,17 +65,26 @@ function ComingSoonBadge() {
           className="opacity-25"
         />
       </svg>
-    </div>
+    </motion.div>
   );
 }
 
-const educationItems = [
+type EducationColor = "primary" | "accent";
+
+const educationItems: {
+  id: string;
+  title: string;
+  description: string;
+  icon: IconName;
+  color: EducationColor;
+}[] = [
   {
     id: "varieties",
     title: "Bean Varieties",
     description:
       "Learn about India's Arabica and Robusta varieties and what makes them special.",
     icon: "CoffeeBean",
+    color: "primary",
   },
   {
     id: "brewing",
@@ -74,6 +92,7 @@ const educationItems = [
     description:
       "Master brewing techniques specifically tailored to bring out the best in Indian coffees.",
     icon: "Coffee",
+    color: "accent",
   },
   {
     id: "glossary",
@@ -81,131 +100,236 @@ const educationItems = [
     description:
       "Decode coffee terminology with our comprehensive glossary of industry terms.",
     icon: "BookOpen",
+    color: "primary",
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { x: -20, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
 export default function EducationSection() {
   return (
-    <Section spacing="default" contained={false}>
-      <div className="surface-0 card-padding overflow-hidden rounded-2xl">
-        <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-            {/* Left Column: Content - first on mobile, left on desktop */}
-            <div className="order-1 lg:order-1">
-              <Stack gap="8">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-                  <div className="md:col-span-8 relative">
-                    <ComingSoonBadge />
-                    <Stack gap="6">
-                      <div className="inline-flex items-center gap-4">
-                        <span className="h-px w-8 md:w-12 bg-accent/60" />
-                        <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                          Knowledge Base
-                        </span>
-                      </div>
-                      <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                        Unlock the World of{" "}
-                        <span className="text-accent italic">
-                          Indian Coffee.
-                        </span>
-                      </h2>
-                      <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                        Dive into India&apos;s rich coffee heritage, from
-                        cultivation techniques in the Western Ghats to
-                        traditional brewing methods that enhance the unique
-                        flavors of Indian beans.
-                      </p>
-                    </Stack>
-                  </div>
-                  <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
-                    <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
-                      <span className="h-1 w-1 rounded-full bg-accent/40" />
-                      Heritage & Craft
-                      <span className="h-1 w-1 rounded-full bg-accent/40" />
-                    </div>
-                  </div>
+    <Section spacing="loose">
+      <div className="relative mx-auto max-w-6xl w-full">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+          <motion.div
+            className="absolute -left-20 top-1/4 h-64 w-64 rounded-full bg-primary/5 blur-3xl"
+            animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut" as const,
+            }}
+          />
+          <motion.div
+            className="absolute -right-20 bottom-1/4 h-48 w-48 rounded-full bg-accent/5 blur-3xl"
+            animate={{ scale: [1.1, 1, 1.1], opacity: [0.4, 0.6, 0.4] }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut" as const,
+            }}
+          />
+        </div>
+
+        <Stack gap="12">
+          {/* Two-column layout: Content left, Image right */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column: Header + List */}
+            <div className="order-1">
+              <Stack gap="12">
+                {/* Header Section - Left aligned */}
+                <div className="relative">
+                  <ComingSoonBadge />
+                  <Stack gap="6">
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      whileInView={{ x: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      className="inline-flex items-center gap-4"
+                    >
+                      <span className="h-px w-8 md:w-12 bg-primary/70" />
+                      <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
+                        Knowledge Base
+                      </span>
+                    </motion.div>
+
+                    <motion.h2
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.1 }}
+                      className="text-title text-balance leading-[1.1] tracking-tight"
+                    >
+                      Unlock the World of{" "}
+                      <span className="text-accent italic font-serif">
+                        Indian Coffee
+                      </span>
+                    </motion.h2>
+
+                    <motion.p
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 }}
+                      className="max-w-xl text-pretty text-body-large text-muted-foreground leading-relaxed font-light"
+                    >
+                      From the misty plantations of the Western Ghats to your
+                      cup — dive into the heritage, science, and craft behind
+                      India&apos;s finest coffee.
+                    </motion.p>
+                  </Stack>
                 </div>
 
-                <Stack gap="4">
-                  {educationItems.map((item, index) => (
-                    <div
-                      className={`surface-1 card-padding card-hover group animate-fade-in-scale rounded-lg delay-${index * 100}`}
-                      key={item.id}
-                    >
-                      <div className="flex items-start">
-                        <div className="mr-4 h-12 w-12 flex-center rounded-lg border border-primary/20 bg-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/15">
-                          <Icon
-                            className="text-primary"
-                            name={item.icon as IconName}
-                            size={20}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="mb-2 text-heading transition-colors duration-200 group-hover:text-accent">
-                            {item.title}
-                          </h3>
-                          <p className="text-caption">{item.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </Stack>
-
-                <Button
-                  disabled
-                  className="opacity-50 cursor-not-allowed pointer-events-none"
-                  size="lg"
-                  variant="default"
+                {/* Simple List with Icons */}
+                <motion.ul
+                  className="flex flex-col gap-5"
+                  variants={containerVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
                 >
-                  Explore Educational Content
-                  <Icon className="ml-2" name="ArrowRight" size={16} />
-                </Button>
+                  {educationItems.map((item, index) => (
+                    <motion.li
+                      key={item.id}
+                      variants={itemVariants}
+                      className="flex items-start gap-4"
+                    >
+                      {/* Animated Icon */}
+                      <motion.div
+                        animate={{ y: [0, -3, 0] }}
+                        transition={{
+                          duration: 3,
+                          ease: "easeInOut" as const,
+                          repeat: Infinity,
+                          delay: index * 0.3,
+                        }}
+                        className={cn(
+                          "h-10 w-10 flex-center rounded-lg flex-shrink-0",
+                          item.color === "accent"
+                            ? "bg-accent/10 text-accent"
+                            : "bg-primary/10 text-primary"
+                        )}
+                      >
+                        <Icon name={item.icon} size={20} color={item.color} />
+                      </motion.div>
+
+                      {/* Text Content */}
+                      <div className="pt-0.5">
+                        <h3
+                          className={cn(
+                            "text-subheading tracking-tight mb-1",
+                            item.color === "accent"
+                              ? "text-accent"
+                              : "text-primary"
+                          )}
+                        >
+                          {item.title}
+                        </h3>
+                        <p className="text-body text-muted-foreground leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+
+                {/* CTA Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <Button
+                    disabled
+                    className="opacity-50 cursor-not-allowed pointer-events-none"
+                    size="lg"
+                    variant="default"
+                  >
+                    Explore Educational Content
+                    <Icon className="ml-2" name="ArrowRight" size={16} />
+                  </Button>
+                </motion.div>
               </Stack>
             </div>
 
-            {/* Right Column: Image with floating fact card - second on mobile, right on desktop */}
-            <div className="relative order-2 lg:order-2">
-              <div className="relative mx-auto aspect-square max-w-[500px]">
+            {/* Right Column: Image with floating card (hidden on mobile) */}
+            <div className="relative order-2 hidden lg:block">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="relative mx-auto aspect-square max-w-[480px]"
+              >
                 {/* Main Image */}
-                <div className="group relative h-full w-full overflow-hidden rounded-2xl shadow-2xl">
+                <div className="relative h-full w-full overflow-hidden rounded-2xl shadow-2xl">
                   <Image
                     alt="Open coffee education journal on wooden café table"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    height={500}
+                    className="h-full w-full object-cover"
+                    height={480}
                     priority
                     src="/images/home/open-book-cafe.png"
-                    width={500}
+                    width={480}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </div>
 
                 {/* Floating "Did You Know" Card */}
-                <div className="-top-4 -right-4 absolute z-20 hidden max-w-xs animate-float rounded-2xl lg:block">
-                  <div className="surface-1 card-padding shadow-xl rounded-lg">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 }}
+                  animate={{ y: [0, -8, 0] }}
+                  className="absolute -bottom-6 -left-6 z-20 hidden max-w-xs lg:block"
+                >
+                  <div className="surface-1 p-4 shadow-xl rounded-xl border border-border/50">
                     <div className="flex items-start gap-3">
-                      <div className="h-8 w-8 flex-center flex-shrink-0 rounded-full border border-accent/30 bg-accent/20">
-                        <Icon className="text-accent" name="Coffee" size={16} />
+                      <div className="h-8 w-8 flex-center flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 text-accent">
+                        <Icon name="Coffee" size={16} color="accent" />
                       </div>
                       <div>
-                        <h4 className="mb-1 font-medium text-accent-foreground text-caption">
+                        <h4 className="mb-1 font-medium text-foreground text-caption">
                           Did You Know?
                         </h4>
                         <p className="text-muted-foreground text-overline leading-relaxed">
-                          India&apos;s famed Monsooned Malabar coffee gets its
-                          unique flavor from monsoon winds.
+                          India&apos;s famed Monsooned Malabar gets its unique
+                          flavour from monsoon winds.
                         </p>
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Decorative floating elements */}
-                <div className="absolute bottom-6 left-6 h-16 w-16 animate-pulse rounded-full bg-primary/10 blur-xl" />
-                <div className="absolute top-1/3 right-8 h-12 w-12 animate-float rounded-full bg-accent/10 blur-lg delay-200" />
-              </div>
+                <div className="absolute top-6 right-6 h-16 w-16 animate-pulse rounded-full bg-accent/10 blur-xl" />
+              </motion.div>
             </div>
           </div>
-        </div>
+        </Stack>
       </div>
     </Section>
   );

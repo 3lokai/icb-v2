@@ -2,14 +2,36 @@
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/primitives/page-shell";
 import { FAQSection } from "@/components/common/FAQ";
+import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeGridTeaser } from "./CoffeeGridTeaser";
 import { UtilityCard } from "./UtilityCard";
 import { RelatedLinks } from "./RelatedLinks";
 import type { LandingPageConfig } from "@/lib/discovery/landing-pages";
+import { generateBreadcrumbSchema } from "@/lib/seo/schema";
 
 type DiscoveryLandingLayoutProps = {
   config: LandingPageConfig;
 };
+
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+
+/** Short page label for breadcrumb from config (e.g. "AeroPress", "Light Roast", "Under ₹500") */
+function getDiscoveryPageLabel(config: LandingPageConfig): string {
+  if (config.type === "price_bucket" && config.displayRange) {
+    return config.displayRange;
+  }
+  if (config.type === "brew_method") {
+    return config.h1
+      .replace("Best Coffees for ", "")
+      .replace(" in India", "")
+      .trim();
+  }
+  if (config.type === "roast_level") {
+    return config.h1.replace(" Coffee in India", "").trim();
+  }
+  return config.h1;
+}
 
 /**
  * DiscoveryLandingLayout - Server component
@@ -18,6 +40,21 @@ type DiscoveryLandingLayoutProps = {
 export function DiscoveryLandingLayout({
   config,
 }: DiscoveryLandingLayoutProps) {
+  const categoryLabel =
+    config.type === "brew_method"
+      ? "Brew Method"
+      : config.type === "roast_level"
+        ? "Roast Level"
+        : "Price Range";
+  const pageLabel = getDiscoveryPageLabel(config);
+  const canonical = `${BASE_URL}/${config.slug}`;
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: BASE_URL },
+    { name: "Coffees", url: `${BASE_URL}/coffees` },
+    { name: categoryLabel, url: `${BASE_URL}/coffees` },
+    { name: pageLabel, url: canonical },
+  ]);
+
   // Determine overline text based on page type
   const overline =
     config.type === "brew_method"
@@ -40,6 +77,7 @@ export function DiscoveryLandingLayout({
 
   return (
     <PageShell maxWidth="7xl">
+      <StructuredData schema={breadcrumbSchema} />
       {/* 1. Hero Section - Contained within PageShell */}
       <div className="[&>section]:mx-0">
         <PageHeader

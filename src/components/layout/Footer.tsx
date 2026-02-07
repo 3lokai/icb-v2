@@ -58,13 +58,14 @@ export function Footer() {
                   </p>
                 </div>
 
-                <p className="max-w-xs text-body-large leading-relaxed text-muted-foreground">
-                  The definitive resource for discovering and exploring
-                  India&apos;s finest coffee beans and roasters.
+                <p className="max-w-xs text-caption leading-relaxed text-muted-foreground">
+                  A neutral discovery and review platform for Indian specialty
+                  coffee, built around structured data, real reviews, and
+                  transparent exploration
                 </p>
 
                 <Stack gap="3">
-                  <p className="flex items-center gap-3 text-body text-muted-foreground transition-colors hover:text-foreground">
+                  <p className="flex items-center gap-3 text-caption text-muted-foreground transition-colors hover:text-foreground">
                     <Icon
                       className="text-accent/60"
                       name="Envelope"
@@ -72,7 +73,7 @@ export function Footer() {
                     />
                     support@indiancoffeebeans.com
                   </p>
-                  <p className="flex items-center gap-3 text-body text-muted-foreground transition-colors hover:text-foreground">
+                  <p className="flex items-center gap-3 text-caption text-muted-foreground transition-colors hover:text-foreground">
                     <Icon className="text-accent/60" name="MapPin" size={16} />
                     Hyderabad, Telangana, India
                   </p>
@@ -138,7 +139,7 @@ export function Footer() {
                     ].map(({ href, label }) => (
                       <li key={label}>
                         <Link
-                          className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
+                          className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
                           href={href}
                         >
                           <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -147,7 +148,7 @@ export function Footer() {
                       </li>
                     ))}
                     <li>
-                      <div className="flex items-center gap-2 text-body text-muted-foreground">
+                      <div className="flex items-center gap-2 text-caption text-muted-foreground">
                         <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0" />
                         <span>Regions</span>
                         <span className="rounded-full bg-accent/10 px-2 py-0.5 text-micro font-medium text-accent">
@@ -173,7 +174,7 @@ export function Footer() {
                     ].map(({ href, label }) => (
                       <li key={label}>
                         <Link
-                          className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
+                          className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
                           href={href}
                         >
                           <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -182,7 +183,7 @@ export function Footer() {
                       </li>
                     ))}
                     <li>
-                      <div className="flex items-center gap-2 text-body text-muted-foreground">
+                      <div className="flex items-center gap-2 text-caption text-muted-foreground">
                         <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0" />
                         <span>Learn</span>
                         <span className="rounded-full bg-accent/10 px-2 py-0.5 text-micro font-medium text-accent">
@@ -203,7 +204,7 @@ export function Footer() {
                   <ul className="space-y-3">
                     <li>
                       <Link
-                        className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
+                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
                         href="/about"
                       >
                         <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -212,11 +213,20 @@ export function Footer() {
                     </li>
                     <li>
                       <Link
-                        className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
+                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
                         href="/contact"
                       >
                         <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
                         Contact Us
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
+                        href="/how-icb-works"
+                      >
+                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                        How ICB Works
                       </Link>
                     </li>
                     {/* Separator */}
@@ -225,7 +235,7 @@ export function Footer() {
                     </li>
                     <li>
                       <Link
-                        className="group flex items-center gap-2 text-body text-muted-foreground transition-colors hover:text-accent"
+                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
                         href="/roasters/partner"
                       >
                         <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />

@@ -13,8 +13,16 @@ type SectionProps = {
 };
 
 /**
- * Section - Vertical spacing primitive with optional header
- * Use for major page sections with consistent spacing
+ * Section - Vertical spacing primitive with optional header.
+ * Use for major page sections with consistent spacing.
+ *
+ * Spacing scale:
+ * - tight: py-6/10/14 — compact sections
+ * - default: py-10/14/20 — standard section rhythm (most homepage sections)
+ * - loose: py-14/20/28 — extra breathing room (e.g. HowItWorks, FAQ on homepage)
+ *
+ * Homepage note: Hero does not use Section (full-viewport with custom padding).
+ * Use default for most sections; loose for key content sections that need more space.
  */
 export function Section({
   children,

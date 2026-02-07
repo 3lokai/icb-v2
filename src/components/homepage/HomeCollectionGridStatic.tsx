@@ -86,7 +86,7 @@ export function HomeCollectionGridStatic({
         </div>
       )}
 
-      <div className="overflow-hidden lg:pb-[200px] lg:-mb-[200px] pt-4 -mt-4">
+      <div className="overflow-visible lg:pb-[200px] lg:-mb-[200px] pt-4 -mt-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
           {columns.map((colItems, colIndex) => (
             <div

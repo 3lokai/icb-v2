@@ -78,7 +78,13 @@ export default function AboutPage() {
                         Our platform focuses on what matters: transparent
                         information about beans, processing methods, flavor
                         profiles, and brewing recommendations — all in one
-                        place.
+                        place.{" "}
+                        <Link
+                          href="/how-icb-works"
+                          className="text-accent hover:underline font-medium"
+                        >
+                          See how it works.
+                        </Link>
                       </p>
                     </div>
                   </Stack>
@@ -318,6 +324,17 @@ export default function AboutPage() {
                         </h3>
                         <p className="text-caption leading-relaxed text-muted-foreground">
                           {user.description}
+                          {user.title === "Self-Researchers" && (
+                            <>
+                              {" "}
+                              <Link
+                                href="/how-icb-works"
+                                className="text-accent hover:underline font-medium"
+                              >
+                                Learn more.
+                              </Link>
+                            </>
+                          )}
                         </p>
                       </Stack>
                     </div>

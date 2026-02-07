@@ -175,10 +175,12 @@ function RatingFooter({
         {/* Left: Rating number block */}
         <div className="flex flex-col">
           <div className="text-title font-medium">{ratingDisplay}</div>
-          <div className="text-label">Rating</div>
-          {hasOverallRating && coffee.rating_count > 0 && (
-            <div className="text-caption">({coffee.rating_count})</div>
-          )}
+          <div className="flex flex-row items-baseline gap-1">
+            <span className="text-label">Rating</span>
+            {hasOverallRating && coffee.rating_count > 0 && (
+              <span className="text-caption">({coffee.rating_count})</span>
+            )}
+          </div>
         </div>
 
         {/* Right: Action block */}
