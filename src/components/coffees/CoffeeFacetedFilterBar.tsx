@@ -432,7 +432,7 @@ export function CoffeeFacetedFilterBar({
                 size="sm"
                 className="w-full justify-between sm:w-auto"
               >
-                Refine Search
+                Advanced Filters
                 <Icon
                   name="CaretDown"
                   size={16}

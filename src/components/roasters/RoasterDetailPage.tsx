@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import type { RoasterDetail } from "@/types/roaster-types";
 import { roasterImagePresets } from "@/lib/imagekit";
 import { Icon } from "@/components/common/Icon";
+import { useImageColor } from "@/hooks/useImageColor";
 
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
@@ -44,6 +45,27 @@ export function RoasterDetailPage({
   className,
 }: RoasterDetailPageProps) {
   const router = useRouter();
+
+  // Memoize logo URL for color extraction
+  const logoUrl = useMemo(() => {
+    if (!roaster?.slug) return null;
+    return roasterImagePresets.roasterLogo(`roasters/${roaster.slug}-logo`);
+  }, [roaster]);
+
+  // Extract dominant color to determine background variant
+  const { isDark } = useImageColor(logoUrl);
+
+  // Background gradient classes based on logo color analysis + theme (same as RoasterCard)
+  const defaultBg =
+    "bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)]";
+  const darkContrastBg =
+    "bg-[radial-gradient(circle_at_center,oklch(0.24_0.014_59.46)_0%,oklch(0.195_0.01_59.58)_100%)]";
+  const lightContrastBg =
+    "bg-[radial-gradient(circle_at_center,oklch(0.965_0.015_79.92)_0%,oklch(0.982_0.009_79.92)_100%)]";
+
+  const logoBgClass = isDark
+    ? `${darkContrastBg} dark:${defaultBg}`
+    : `${defaultBg} dark:${lightContrastBg}`;
 
   // GA: tag roaster slug page with profile_view (roaster_engagement)
   useEffect(() => {
@@ -168,7 +190,12 @@ export function RoasterDetailPage({
             {/* Left Column: Image */}
             <div className="order-1 lg:col-span-3">
               <Stack gap="6">
-                <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-border/60 bg-muted/30 shadow-sm transition-all duration-300 hover:shadow-md">
+                <div
+                  className={cn(
+                    "relative aspect-square w-full overflow-hidden rounded-2xl border border-border/60 shadow-sm transition-all duration-300 hover:shadow-md",
+                    logoBgClass
+                  )}
+                >
                   {roaster.slug ? (
                     <Image
                       alt={`${roaster.name} logo`}
@@ -430,7 +457,7 @@ export function RoasterDetailPage({
                   </h2>
                 </div>
                 <Prose className="max-w-none">
-                  <p className="text-body-large text-muted-foreground font-serif leading-relaxed whitespace-pre-line italic opacity-90">
+                  <p className="text-body-large text-muted-foreground font-sans leading-relaxed whitespace-pre-line italic opacity-90">
                     {roaster.description}
                   </p>
                 </Prose>

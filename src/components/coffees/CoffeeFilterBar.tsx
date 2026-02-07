@@ -51,7 +51,7 @@ export function CoffeeFilterBar() {
     <div className="mb-8 space-y-6">
       <div className="flex flex-wrap items-center gap-4">
         <span className="shrink-0 font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
-          Refine Results:
+          Advanced Filters:
         </span>
         <Cluster gap="2">
           <Button

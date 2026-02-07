@@ -1,6 +1,6 @@
 "use client";
 // src/components/cards/RoasterCard.tsx
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import { Card, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,7 @@ import { Stack } from "../primitives/stack";
 import { roasterImagePresets } from "@/lib/imagekit";
 import { RoasterTrackingLink } from "../common/TrackingLink";
 import { Icon } from "../common/Icon";
+import { useImageColor } from "@/hooks/useImageColor";
 
 type RoasterCardProps = {
   roaster: RoasterSummary;
@@ -32,6 +33,15 @@ export default function RoasterCard({
 }: RoasterCardProps) {
   const [hasError, setHasError] = useState(false);
 
+  // Memoize logo URL for color extraction
+  const logoUrl = useMemo(() => {
+    if (!roaster?.slug) return null;
+    return roasterImagePresets.roasterLogo(`roasters/${roaster.slug}-logo`);
+  }, [roaster]);
+
+  // Extract dominant color to determine background variant
+  const { isDark } = useImageColor(logoUrl);
+
   if (!roaster) {
     return null;
   }
@@ -53,6 +63,33 @@ export default function RoasterCard({
     .toUpperCase();
 
   const ariaLabel = `View coffees from ${roaster.name} roaster`;
+
+  // Background gradient classes based on logo color analysis + theme
+  // isDark = true means logo is light/white
+  // isDark = false means logo is dark/colored
+  //
+  // Option A (inverse contrast per theme):
+  // Light mode: Light logo → dark bg, Dark logo → default
+  // Dark mode:  Dark logo → light bg, Light logo → default
+  //
+  // Using oklch values from design system
+  const defaultBg =
+    "bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)]";
+  // Dark contrast: dark theme background colors
+  const darkContrastBg =
+    "bg-[radial-gradient(circle_at_center,oklch(0.24_0.014_59.46)_0%,oklch(0.195_0.01_59.58)_100%)]";
+
+  // In light mode: isDark=true gets dark bg, isDark=false gets default
+  // In dark mode: isDark=false gets light bg, isDark=true gets default
+  const logoBgClass = isDark
+    ? cn(
+        darkContrastBg,
+        "dark:bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)]"
+      )
+    : cn(
+        defaultBg,
+        "dark:bg-[radial-gradient(circle_at_center,oklch(0.965_0.015_79.92)_0%,oklch(0.982_0.009_79.92)_100%)]"
+      );
 
   // Compact variant - dense, horizontal row card
   if (variant === "compact") {
@@ -152,8 +189,13 @@ export default function RoasterCard({
         itemScope
         itemType="https://schema.org/Organization"
       >
-        {/* Logo Container - Editorial Plate with gradient background */}
-        <div className="relative w-full overflow-hidden bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)] dark:bg-[radial-gradient(circle_at_center,var(--card)_0%,var(--background)_100%)] flex items-center justify-center border-b border-border/40">
+        {/* Logo Container - Dynamic gradient based on logo color */}
+        <div
+          className={cn(
+            "relative w-full overflow-hidden flex items-center justify-center border-b border-border/40 transition-colors duration-300",
+            logoBgClass
+          )}
+        >
           {/* Subtle Plate Texture */}
           <div
             aria-hidden="true"

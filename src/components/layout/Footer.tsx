@@ -73,10 +73,6 @@ export function Footer() {
                     />
                     support@indiancoffeebeans.com
                   </p>
-                  <p className="flex items-center gap-3 text-caption text-muted-foreground transition-colors hover:text-foreground">
-                    <Icon className="text-accent/60" name="MapPin" size={16} />
-                    Hyderabad, Telangana, India
-                  </p>
                 </Stack>
 
                 <Cluster gap="3">

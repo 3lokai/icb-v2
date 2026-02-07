@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getGlossaryTermsServer } from "@/lib/glossary/server";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import { PageHeader } from "@/components/layout/PageHeader";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
@@ -54,13 +55,11 @@ export default function GlossaryPage() {
 
   return (
     <>
-      <h1 className="mb-4 text-display text-balance">
-        Coffee Glossary - Indian Specialty Coffee Terms
-      </h1>
-      <p className="mb-12 max-w-2xl text-body text-muted-foreground">
-        Confused by washed vs natural, or Arabica vs Robusta? This glossary
-        helps you decode the coffee lingo — from brew to bean.
-      </p>
+      <PageHeader
+        title="Coffee Glossary"
+        overline="Learn"
+        description="Confused by washed vs natural, or Arabica vs Robusta? This glossary helps you decode the coffee lingo — from brew to bean."
+      />
 
       <div className="mb-4 text-muted-foreground text-caption">
         Found {terms.length} terms in {Object.keys(termsByCategory).length}{" "}
