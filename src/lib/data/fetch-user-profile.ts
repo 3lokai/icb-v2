@@ -85,6 +85,7 @@ export async function fetchUserProfileByUsername(
 
   return {
     ...profileData,
+    user_coffees: profileData.user_coffees ?? [],
     coffee_preferences: coffeePreferences,
   };
 }
@@ -144,6 +145,7 @@ export async function fetchAnonProfile(
       },
       gear: [],
       station_photos: [],
+      user_coffees: [],
       coffee_preferences: null,
     };
   }
@@ -254,6 +256,7 @@ export async function fetchAnonProfile(
     },
     gear: [],
     station_photos: [],
+    user_coffees: [],
     coffee_preferences: null,
   };
 

@@ -1832,6 +1832,62 @@ export type Database = {
           },
         ];
       };
+      user_coffees: {
+        Row: {
+          added_at: string;
+          coffee_id: string;
+          id: string;
+          photo: string | null;
+          status: Database["public"]["Enums"]["user_coffee_status_enum"];
+          user_id: string;
+        };
+        Insert: {
+          added_at?: string;
+          coffee_id: string;
+          id?: string;
+          photo?: string | null;
+          status?: Database["public"]["Enums"]["user_coffee_status_enum"];
+          user_id: string;
+        };
+        Update: {
+          added_at?: string;
+          coffee_id?: string;
+          id?: string;
+          photo?: string | null;
+          status?: Database["public"]["Enums"]["user_coffee_status_enum"];
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_coffees_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffee_directory_mv";
+            referencedColumns: ["coffee_id"];
+          },
+          {
+            foreignKeyName: "user_coffees_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffee_summary";
+            referencedColumns: ["coffee_id"];
+          },
+          {
+            foreignKeyName: "user_coffees_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffees";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_coffees_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "user_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       user_gear: {
         Row: {
           created_at: string | null;
@@ -2930,7 +2986,8 @@ export type Database = {
         | "custom"
         | "other"
         | "godaddy/ols"
-        | "wix";
+        | "wix"
+        | "zohocommerce";
       process_enum:
         | "washed"
         | "natural"
@@ -2975,6 +3032,7 @@ export type Database = {
         | "blend_chicory"
         | "filter_coffee_mix"
         | "excelsa";
+      user_coffee_status_enum: "logged" | "brewing" | "finished" | "rated";
       user_role_enum:
         | "admin"
         | "operator"
@@ -3157,6 +3215,7 @@ export const Constants = {
         "other",
         "godaddy/ols",
         "wix",
+        "zohocommerce",
       ],
       process_enum: [
         "washed",
@@ -3206,6 +3265,7 @@ export const Constants = {
         "filter_coffee_mix",
         "excelsa",
       ],
+      user_coffee_status_enum: ["logged", "brewing", "finished", "rated"],
       user_role_enum: [
         "admin",
         "operator",
