@@ -43,6 +43,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     }),
     withHreflang({
+      url: `${baseUrl}/tools`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.75,
+    }),
+    withHreflang({
+      url: `${baseUrl}/roasters/partner`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.75,
+    }),
+    withHreflang({
+      url: `${baseUrl}/roasters/terms`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.4,
+    }),
+    withHreflang({
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: "monthly",
