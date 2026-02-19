@@ -145,13 +145,22 @@ export function generateMetadata({
 }: MetadataProps): Metadata {
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+
+  // Resolve relative canonical paths to absolute URLs
+  // e.g. "/about" → "https://indiancoffeebeans.com/about"
+  const resolvedCanonical = canonical
+    ? canonical.startsWith("http")
+      ? canonical
+      : `${baseUrl}${canonical.startsWith("/") ? "" : "/"}${canonical}`
+    : undefined;
+
   const mergedKeywords = mergeKeywords(keywords);
   const ogImageUrl = buildOGImageUrl(baseUrl, title, image, type);
   const openGraph = buildBaseOpenGraph({
     title,
     description,
     ogImageUrl,
-    canonical,
+    canonical: resolvedCanonical,
     baseUrl,
     type,
   });
@@ -170,11 +179,11 @@ export function generateMetadata({
       ? { index: false, follow: false }
       : { index: true, follow: true },
     alternates: {
-      canonical: canonical || undefined,
-      ...(canonical && {
+      canonical: resolvedCanonical || undefined,
+      ...(resolvedCanonical && {
         languages: {
-          en: canonical,
-          "x-default": canonical,
+          en: resolvedCanonical,
+          "x-default": resolvedCanonical,
         },
       }),
     },
