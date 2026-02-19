@@ -7,7 +7,11 @@ import { CoffeeGridTeaser } from "./CoffeeGridTeaser";
 import { UtilityCard } from "./UtilityCard";
 import { RelatedLinks } from "./RelatedLinks";
 import type { LandingPageConfig } from "@/lib/discovery/landing-pages";
-import { generateBreadcrumbSchema } from "@/lib/seo/schema";
+import {
+  generateBreadcrumbSchema,
+  generateCollectionPageSchema,
+  generateFAQSchema,
+} from "@/lib/seo/schema";
 
 type DiscoveryLandingLayoutProps = {
   config: LandingPageConfig;
@@ -55,6 +59,21 @@ export function DiscoveryLandingLayout({
     { name: pageLabel, url: canonical },
   ]);
 
+  const collectionPageSchema = generateCollectionPageSchema(
+    config.h1,
+    config.intro,
+    canonical
+  );
+
+  const faqSchema =
+    config.faqs.length > 0 ? generateFAQSchema(config.faqs) : null;
+
+  const schemas = [
+    breadcrumbSchema,
+    collectionPageSchema,
+    ...(faqSchema ? [faqSchema] : []),
+  ];
+
   // Determine overline text based on page type
   const overline =
     config.type === "brew_method"
@@ -77,17 +96,15 @@ export function DiscoveryLandingLayout({
 
   return (
     <PageShell maxWidth="7xl">
-      <StructuredData schema={breadcrumbSchema} />
-      {/* 1. Hero Section - Contained within PageShell */}
-      <div className="[&>section]:mx-0">
-        <PageHeader
-          title={config.h1}
-          description={config.intro}
-          overline={overline}
-          backgroundImage={backgroundImage}
-          rightSideContent={rightSideContent}
-        />
-      </div>
+      <StructuredData schema={schemas} />
+      {/* 1. Hero Section - PageHeader breaks out of PageShell via its own ml/mr calc for full bleed */}
+      <PageHeader
+        title={config.h1}
+        description={config.intro}
+        overline={overline}
+        backgroundImage={backgroundImage}
+        rightSideContent={rightSideContent}
+      />
 
       {/* Header Nudge - Subtle guidance under header */}
       {config.headerNudge && (
@@ -134,6 +151,7 @@ export function DiscoveryLandingLayout({
       {config.faqs.length > 0 && (
         <FAQSection
           items={config.faqs}
+          includeStructuredData={false}
           overline={config.faqOverline || "Common Questions"}
           title={
             config.faqTitle?.includes("*") ? (

@@ -25,6 +25,8 @@ type FAQSectionProps = {
   badge: string;
   className?: string;
   contained?: boolean;
+  /** When false, skip rendering FAQ JSON-LD (e.g. when parent outputs it). Default true. */
+  includeStructuredData?: boolean;
 };
 
 type SimpleFAQProps = {
@@ -75,12 +77,13 @@ export function FAQSection({
   badge,
   className,
   contained = true,
+  includeStructuredData = true,
 }: FAQSectionProps) {
   const schema = generateFAQSchema(items);
 
   return (
     <Section spacing="loose" className={className} contained={contained}>
-      <StructuredData schema={schema} />
+      {includeStructuredData && <StructuredData schema={schema} />}
       <div className="mb-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end border-b border-border/10 pb-8">
           <div className="md:col-span-8">

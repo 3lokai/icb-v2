@@ -3,6 +3,23 @@
  * Used for profile page components and data fetching
  */
 
+// User coffee status (tried/tasted list)
+export type UserCoffeeStatus = "logged" | "brewing" | "finished" | "rated";
+
+// One entry in the user's tried/tasted coffee list (from user_coffees + joins)
+export interface UserCoffee {
+  id: string;
+  coffee_id: string;
+  status: UserCoffeeStatus;
+  added_at: string;
+  photo: string | null;
+  coffee_name: string;
+  coffee_slug: string;
+  roaster_name: string;
+  roaster_slug: string;
+  image_url: string | null; // first coffee image for display
+}
+
 // Profile data structure returned from RPC
 export interface UserProfileFull {
   profile: UserProfileData | null;
@@ -11,6 +28,7 @@ export interface UserProfileFull {
   taste_profile: TasteProfileData;
   gear: ProfileGear[];
   station_photos: StationPhoto[];
+  user_coffees: UserCoffee[];
   coffee_preferences?: CoffeePreferences | null;
 }
 
