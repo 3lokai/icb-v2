@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dashboard/", "/api/"],
+        disallow: ["/dashboard/", "/api/", "/auth/"],
       },
     ],
     sitemap: `${process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com"}/sitemap.xml`,

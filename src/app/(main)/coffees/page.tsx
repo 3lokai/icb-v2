@@ -67,12 +67,16 @@ export async function generateMetadata({
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
 
-  // Build full URL with query params for canonical and OpenGraph
+  // Build full URL with query params for OpenGraph (not for canonical)
   const currentUrl = new URL(`${baseUrl}/coffees`);
   urlSearchParams.forEach((value, key) => {
     currentUrl.searchParams.set(key, value);
   });
   const fullUrl = currentUrl.toString();
+
+  // Canonical always points to the clean base path (no query params)
+  // This prevents infinite filter combinations from creating unique canonical URLs
+  const canonicalUrl = `${baseUrl}/coffees`;
 
   // Determine if page should be indexed (index page 1, noindex pages > 1)
   const hasComplexFilters =
@@ -96,8 +100,8 @@ export async function generateMetadata({
       "coffee filters",
     ],
     alternates: {
-      canonical: fullUrl,
-      languages: { en: fullUrl, "x-default": fullUrl },
+      canonical: canonicalUrl,
+      languages: { en: canonicalUrl, "x-default": canonicalUrl },
     },
     robots: shouldIndex
       ? { index: true, follow: true }
