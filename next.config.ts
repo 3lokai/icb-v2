@@ -53,6 +53,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "www.redditstatic.com", // For Reddit logo/favicons
       },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io", // Sanity CDN for blog/learn images
+      },
     ],
     qualities: [75, 80, 85, 90],
   },

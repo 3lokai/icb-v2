@@ -312,9 +312,9 @@ export default function EducationSection() {
                         <Icon name="Coffee" size={16} color="accent" />
                       </div>
                       <div>
-                        <h4 className="mb-1 font-medium text-foreground text-caption">
+                        <p className="mb-1 font-medium text-foreground text-caption">
                           Did You Know?
-                        </h4>
+                        </p>
                         <p className="text-muted-foreground text-overline leading-relaxed">
                           India&apos;s famed Monsooned Malabar gets its unique
                           flavour from monsoon winds.

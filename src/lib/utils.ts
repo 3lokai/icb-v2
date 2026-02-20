@@ -17,3 +17,13 @@ export function capitalizeFirstLetter(str: string | null | undefined): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 }
+
+/**
+ * Slugify heading text for anchor IDs. Must match between TOC and ArticleContent.
+ */
+export function slugifyHeading(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]/g, "");
+}

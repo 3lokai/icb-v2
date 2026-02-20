@@ -25,7 +25,7 @@ export function PageHeader({
   backgroundImageAlt = "Coffee beans background",
 }: PageHeaderProps) {
   return (
-    <section className="relative -mt-8 flex min-h-[80vh] w-screen max-w-none items-center justify-center overflow-hidden md:-mt-12 lg:-mt-16 md:min-h-[65vh] ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
+    <section className="relative flex min-h-[80vh] w-screen max-w-none items-center justify-center overflow-hidden md:min-h-[65vh] ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
       {/* Background Image - full bleed, contain so image isn't over-cropped */}
       <div className="absolute inset-0 z-0 bg-black/80">
         <Image

@@ -43,7 +43,6 @@ export function CollectionCard({
     <Link
       href={getCollectionFilterUrl(collection)}
       onClick={handleClick}
-      aria-label={`Explore ${collection.name} collection`}
       className={cn(
         "group relative overflow-hidden",
         "surface-1 rounded-lg card-hover",
@@ -72,7 +71,6 @@ export function CollectionCard({
             }
             priority={collection.featured}
             onError={() => setImageError(true)}
-            unoptimized
           />
         )}
       </div>

@@ -140,7 +140,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
     },
     sort: "rating_desc",
-    imageUrl: "/images/collections/beginner-friendly.jpg",
+    imageUrl: "/images/collections/beginner-friendly.webp",
     featured: false,
     sortOrder: 1,
   },
@@ -162,7 +162,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
         CANON_FLAVOR_SLUGS.nuts,
       ],
     },
-    imageUrl: "/images/collections/milk-friendly.jpg",
+    imageUrl: "/images/collections/milk-friendly.webp",
     featured: true, // Hero collection
     sortOrder: 2,
   },
@@ -186,7 +186,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
         CANON_FLAVOR_SLUGS.fruity,
       ],
     },
-    imageUrl: "/images/collections/fruity-filter.jpg",
+    imageUrl: "/images/collections/fruity-filter.webp",
     featured: false,
     sortOrder: 3,
   },
@@ -204,7 +204,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       processes: ["washed", "pulped_natural"],
       in_stock_only: true,
     },
-    imageUrl: "/images/collections/south-indian-filter.jpg",
+    imageUrl: "/images/collections/south-indian-filter.webp",
     featured: false,
     sortOrder: 4,
   },
@@ -222,7 +222,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       canon_flavor_slugs: [CANON_FLAVOR_SLUGS.balanced_acidity],
     },
     sort: "rating_desc",
-    imageUrl: "/images/collections/balanced-medium.jpg",
+    imageUrl: "/images/collections/balanced-medium.webp",
     featured: false,
     sortOrder: 5,
   },
@@ -244,7 +244,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
       canon_flavor_slugs: [CANON_FLAVOR_SLUGS.bright_acidity],
     },
-    imageUrl: "/images/collections/light-bright.jpg",
+    imageUrl: "/images/collections/light-bright.webp",
     sortOrder: 6,
   },
 
@@ -266,7 +266,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
         CANON_FLAVOR_SLUGS.earthy,
       ],
     },
-    imageUrl: "/images/collections/low-acidity.jpg",
+    imageUrl: "/images/collections/low-acidity.webp",
     sortOrder: 7,
   },
 
@@ -283,7 +283,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       canon_flavor_slugs: [CANON_FLAVOR_SLUGS.full_body],
     },
     sort: "rating_desc",
-    imageUrl: "/images/collections/bold-dark.jpg",
+    imageUrl: "/images/collections/bold-dark.webp",
     sortOrder: 8,
   },
 
@@ -305,7 +305,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
     },
     sort: "newest",
-    imageUrl: "/images/collections/default-filter.jpg",
+    imageUrl: "/images/collections/default-filter.webp",
     sortOrder: 9,
   },
 
@@ -322,7 +322,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       // estate_ids: [...], // Add when available
     },
     sort: "rating_desc",
-    imageUrl: "/images/collections/default-filter.jpg",
+    imageUrl: "/images/collections/default-filter.webp",
     sortOrder: 10,
   },
 
@@ -339,7 +339,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
     },
     sort: "rating_desc",
-    imageUrl: "/images/collections/default-filter.jpg",
+    imageUrl: "/images/collections/default-filter.webp",
     sortOrder: 11,
   },
 
@@ -358,7 +358,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
     },
     sort: "best_value",
-    imageUrl: "/images/collections/default-filter.jpg",
+    imageUrl: "/images/collections/default-filter.webp",
     sortOrder: 12,
   },
 
@@ -375,7 +375,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
     },
     sort: "newest",
-    imageUrl: "/images/collections/default-filter.jpg",
+    imageUrl: "/images/collections/default-filter.webp",
     sortOrder: 13,
   },
 ];
