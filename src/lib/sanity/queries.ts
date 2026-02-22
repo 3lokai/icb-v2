@@ -118,6 +118,19 @@ export const FEATURED_ARTICLES_QUERY = `
   }
 `;
 
+export const PILLAR_CATEGORIES_QUERY = `
+  *[_type == "category" && defined(slug.current) && kind == "pillar"] {
+    _id,
+    name,
+    "slug": slug.current,
+    description,
+    kind,
+    color,
+    "articleCount": count(*[_type == "article" && category._ref == ^._id])
+  }
+  | order(name asc)
+`;
+
 export const ALL_CATEGORIES_QUERY = `
   *[_type == "category" && defined(slug.current)] {
     _id,

@@ -30,7 +30,7 @@ export function DetailedAuthor({ author }: DetailedAuthorProps) {
 
         {/* Info */}
         <div className="flex-1">
-          <div className="mb-2 text-overline text-accent uppercase tracking-widest">
+          <div className="mb-2 text-overline text-accent uppercase tracking-[0.15em]">
             About the author
           </div>
           <h3 className="mb-4 text-title font-bold text-foreground">

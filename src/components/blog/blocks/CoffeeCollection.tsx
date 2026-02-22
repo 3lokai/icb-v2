@@ -107,7 +107,7 @@ export function CoffeeCollection({ value }: CoffeeCollectionProps) {
       {(title || description) && (
         <div className="mb-12 text-center space-y-3">
           {title && (
-            <h4 className="text-title-large font-bold text-foreground tracking-tight underline decoration-primary/20 decoration-4 underline-offset-8">
+            <h4 className="text-title font-bold text-foreground tracking-tight underline decoration-primary/20 decoration-4 underline-offset-8">
               {title}
             </h4>
           )}

@@ -103,7 +103,7 @@ export default async function ArticlePage({ params }: Props) {
             {/* Top-level FAQ Section (if field is populated) */}
             {article.faqItems && article.faqItems.length > 0 && (
               <section className="mt-16 border-t pt-12">
-                <h4 className="text-title font-bold mb-8">
+                <h4 className="text-title font-semibold mb-8">
                   Frequently Asked Questions
                 </h4>
                 <Accordion
@@ -133,7 +133,7 @@ export default async function ArticlePage({ params }: Props) {
             <footer className="mt-20 space-y-12">
               <div className="flex flex-col gap-6 border-t pt-10 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h4 className="mb-2 text-title font-bold">
+                  <h4 className="mb-2 text-title font-semibold">
                     Enjoyed this article?
                   </h4>
                   <p className="text-body text-muted-foreground">

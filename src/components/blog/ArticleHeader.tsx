@@ -98,7 +98,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
                   <div className="text-body font-semibold text-white">
                     {displayAuthor.name}
                   </div>
-                  <div className="text-overline uppercase tracking-wider text-white/50">
+                  <div className="text-overline uppercase tracking-[0.15em] text-white/50">
                     Author
                   </div>
                 </div>
@@ -109,7 +109,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
               {/* Date */}
               <div className="text-left">
-                <div className="text-overline uppercase tracking-wider text-white/50 mb-0.5">
+                <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
                   Published
                 </div>
                 <div className="text-body text-white">
@@ -122,7 +122,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
               {/* Reading Time */}
               <div className="text-left">
-                <div className="text-overline uppercase tracking-wider text-white/50 mb-0.5">
+                <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
                   Reading
                 </div>
                 <div className="text-body text-white">
@@ -137,7 +137,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
                   {brewingMethod && (
                     <div className="text-left">
-                      <div className="text-overline uppercase tracking-wider text-white/50 mb-0.5">
+                      <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
                         Method
                       </div>
                       <div className="text-body text-white">
@@ -148,7 +148,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
                   {brewTime && (
                     <div className="text-left">
-                      <div className="text-overline uppercase tracking-wider text-white/50 mb-0.5">
+                      <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
                         Time
                       </div>
                       <div className="text-body text-white">{brewTime}</div>
@@ -157,7 +157,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
                   {difficulty && (
                     <div className="text-left">
-                      <div className="text-overline uppercase tracking-wider text-white/50 mb-0.5">
+                      <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
                         Difficulty
                       </div>
                       <div className="text-body text-white capitalize">

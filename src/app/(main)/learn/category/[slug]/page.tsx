@@ -6,8 +6,19 @@ import {
 import { Article, Category } from "@/types/blog-types";
 import { PageShell } from "@/components/primitives/page-shell";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Stack } from "@/components/primitives/stack";
+import { Section } from "@/components/primitives/section";
 import { PostCard } from "@/components/blog/PostCard";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 export default async function CategoryPage({
   params,
@@ -33,28 +44,57 @@ export default async function CategoryPage({
     <>
       <PageHeader
         title={category.name}
-        overline="Category"
+        overline="Field Guide Layer"
         description={
-          category.description || `Explore all articles in ${category.name}`
+          category.description ||
+          `Explore detailed intelligence on ${category.name}`
         }
+        backgroundImage="/images/hero-bg.avif"
       />
 
-      <PageShell className="py-12 md:py-20">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article) => (
-            <PostCard key={article._id} article={article} />
-          ))}
-        </div>
+      <PageShell className="py-0">
+        <Section contained={false} spacing="tight">
+          <Breadcrumb className="mb-12">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/learn">Field Guide</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{category.name}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
 
-        {articles.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-20 text-center">
-            <h3 className="text-title-large mb-2">No articles yet</h3>
-            <p className="text-muted-foreground">
-              We haven't published anything in this category yet. Check back
-              soon!
-            </p>
-          </div>
-        )}
+          <Stack gap="12">
+            <div className="flex items-center justify-between border-b pb-6">
+              <h2 className="text-title font-semibold tracking-tight">
+                All Entries
+              </h2>
+              <div className="text-caption font-medium text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
+                {articles.length} articles
+              </div>
+            </div>
+
+            {articles.length > 0 ? (
+              <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
+                {articles.map((article) => (
+                  <PostCard key={article._id} article={article} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-20 text-center">
+                <h3 className="text-title mb-2">No articles yet</h3>
+                <p className="text-muted-foreground">
+                  We haven't published anything in this category yet. Check back
+                  soon!
+                </p>
+              </div>
+            )}
+          </Stack>
+        </Section>
       </PageShell>
     </>
   );

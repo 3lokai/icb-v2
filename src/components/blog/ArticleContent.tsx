@@ -69,7 +69,10 @@ const createComponents = (
       const title = raw?.map((c) => c?.text ?? "").join("") ?? "";
       const id = title ? slugifyHeading(title) : undefined;
       return (
-        <h2 id={id} className="mb-4 mt-10 text-title font-bold tracking-tight">
+        <h2
+          id={id}
+          className="mb-4 mt-10 text-title font-semibold tracking-tight"
+        >
           {children}
         </h2>
       );
@@ -79,7 +82,10 @@ const createComponents = (
       const title = raw?.map((c) => c?.text ?? "").join("") ?? "";
       const id = title ? slugifyHeading(title) : undefined;
       return (
-        <h3 id={id} className="mb-3 mt-8 text-title font-bold tracking-tight">
+        <h3
+          id={id}
+          className="mb-3 mt-8 text-title font-semibold tracking-tight"
+        >
           {children}
         </h3>
       );
@@ -90,7 +96,7 @@ const createComponents = (
       </p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="my-8 border-l-4 border-accent pl-6 italic text-heading text-muted-foreground">
+      <blockquote className="my-8 border-l-4 border-accent pl-6 italic text-body-large text-muted-foreground">
         {children}
       </blockquote>
     ),

@@ -1,7 +1,7 @@
-import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { fetchAnonProfile } from "@/lib/data/fetch-user-profile";
 import { ProfilePage } from "@/components/profile/ProfilePage";
+import { EnsureAnonIdAndRefresh } from "@/components/profile/EnsureAnonIdAndRefresh";
 import type { Metadata } from "next";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 
@@ -21,21 +21,24 @@ export default async function AnonProfilePage() {
   const anonId = cookieStore.get("icb_anon_id")?.value;
 
   if (!anonId) {
-    // No anon_id found - redirect to home or show empty state
-    // For now, show not found. In future, could redirect to home with message
-    notFound();
+    return <EnsureAnonIdAndRefresh />;
   }
 
   // Fetch anon profile data (will return default profile even if empty)
   const profileData = await fetchAnonProfile(anonId);
 
   if (!profileData) {
+    const { notFound } = await import("next/navigation");
     notFound();
   }
 
   // Show profile with isOwner=true (they own their local anon profile)
-  // and isAnonymous=true
+  // and isAnonymous=true (profileData is non-null after check above)
   return (
-    <ProfilePage profileData={profileData} isOwner={true} isAnonymous={true} />
+    <ProfilePage
+      profileData={profileData as NonNullable<typeof profileData>}
+      isOwner={true}
+      isAnonymous={true}
+    />
   );
 }

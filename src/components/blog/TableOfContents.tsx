@@ -119,7 +119,7 @@ export function TableOfContents({ body, toc }: TableOfContentsProps) {
   return (
     <nav className="hidden lg:block w-full z-10" aria-label="Table of contents">
       <Stack gap="6">
-        <h4 className="text-overline text-muted-foreground tracking-widest">
+        <h4 className="text-overline text-muted-foreground tracking-[0.15em]">
           Table of Contents
         </h4>
         <ul className="space-y-4">

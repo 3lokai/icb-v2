@@ -88,7 +88,7 @@ export function PostCard({ article, featured = false }: PostCardProps) {
         <h3
           className={cn(
             "mb-3 font-semibold tracking-tight transition-colors group-hover:text-primary",
-            featured ? "text-display" : "text-title"
+            featured ? "text-title" : "text-heading"
           )}
         >
           {title}

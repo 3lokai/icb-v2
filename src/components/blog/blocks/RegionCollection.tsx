@@ -49,7 +49,7 @@ export function RegionCollection({ value }: RegionCollectionProps) {
         </div>
       </motion.div>
 
-      <h4 className="font-bold text-title-large mb-4 text-foreground tracking-tight underline decoration-emerald-500/20 decoration-4 underline-offset-8">
+      <h4 className="font-bold text-title mb-4 text-foreground tracking-tight underline decoration-emerald-500/20 decoration-4 underline-offset-8">
         {title || "Coffee Regions"}
       </h4>
 
