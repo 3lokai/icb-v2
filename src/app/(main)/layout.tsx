@@ -37,7 +37,7 @@ export default function MainLayout({
         <AnnouncementBanner />
       </Suspense>
       <Header />
-      <main className="flex-1 overflow-x-hidden">{children}</main>
+      <main className="flex-1 overflow-x-clip">{children}</main>
       <Footer />
       <SearchCommand />
       <CookieNotice />

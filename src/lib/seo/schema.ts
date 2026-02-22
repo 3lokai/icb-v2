@@ -187,6 +187,47 @@ export function generateSchemaOrg({
   return schema; // <--- RETURN schema object directly
 }
 
+/** BlogPosting JSON-LD for learn article pages */
+export function blogArticleSchema(props: {
+  title: string;
+  description?: string;
+  image?: string;
+  url: string;
+  authorName: string;
+  datePublished: string;
+  dateModified?: string;
+}): Record<string, unknown> {
+  const baseUrl = getSeoBaseUrl();
+  const url = props.url.startsWith("http")
+    ? props.url
+    : `${baseUrl}${props.url.startsWith("/") ? "" : "/"}${props.url}`;
+  const image = props.image?.startsWith("http")
+    ? props.image
+    : props.image
+      ? `${baseUrl}${props.image}`
+      : undefined;
+  const schema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: props.title,
+    description: props.description ?? undefined,
+    url,
+    author: {
+      "@type": "Person",
+      name: props.authorName,
+    },
+    datePublished: props.datePublished,
+    publisher: {
+      "@type": "Organization",
+      name: "Indian Coffee Beans",
+      url: baseUrl,
+    },
+  };
+  if (image) schema.image = image;
+  if (props.dateModified) schema.dateModified = props.dateModified;
+  return schema;
+}
+
 export const contactPageSchema = {
   "@context": "https://schema.org",
   "@type": "ContactPage",

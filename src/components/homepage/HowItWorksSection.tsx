@@ -203,7 +203,7 @@ export default function HowItWorksSection() {
 
                     <h3
                       className={cn(
-                        "mb-4 text-heading-small tracking-tight transition-colors duration-300",
+                        "mb-4 text-subheading tracking-tight transition-colors duration-300",
                         step.color === "accent"
                           ? "group-hover:text-accent"
                           : "group-hover:text-primary"

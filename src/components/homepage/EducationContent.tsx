@@ -129,7 +129,7 @@ const itemVariants = {
 
 export default function EducationSection() {
   return (
-    <Section spacing="loose">
+    <Section id="learn" spacing="loose">
       <div className="relative mx-auto max-w-6xl w-full">
         {/* Background decorative elements */}
         <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
@@ -312,9 +312,9 @@ export default function EducationSection() {
                         <Icon name="Coffee" size={16} color="accent" />
                       </div>
                       <div>
-                        <h4 className="mb-1 font-medium text-foreground text-caption">
+                        <p className="mb-1 font-medium text-foreground text-caption">
                           Did You Know?
-                        </h4>
+                        </p>
                         <p className="text-muted-foreground text-overline leading-relaxed">
                           India&apos;s famed Monsooned Malabar gets its unique
                           flavour from monsoon winds.

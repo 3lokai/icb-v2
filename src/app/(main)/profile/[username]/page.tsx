@@ -6,6 +6,7 @@ import {
 } from "@/lib/data/fetch-user-profile";
 import { serverAuth } from "@/lib/supabase/auth-helpers";
 import { ProfilePage } from "@/components/profile/ProfilePage";
+import { EnsureAnonIdAndRefresh } from "@/components/profile/EnsureAnonIdAndRefresh";
 import type { Metadata } from "next";
 
 type Props = {
@@ -100,8 +101,7 @@ export default async function UserProfilePage({ params }: Props) {
     const anonId = cookieStore.get("icb_anon_id")?.value;
 
     if (!anonId) {
-      // No anon_id found - show not found
-      notFound();
+      return <EnsureAnonIdAndRefresh />;
     }
 
     // Fetch anon profile data

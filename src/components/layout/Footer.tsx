@@ -164,6 +164,7 @@ export function Footer() {
                   </h4>
                   <ul className="space-y-3">
                     {[
+                      { href: "/learn", label: "Articles" },
                       { href: "/tools/coffee-calculator", label: "Calculator" },
                       { href: "/tools/expert-recipes", label: "Recipes" },
                       { href: "/learn/glossary", label: "Glossary" },
@@ -178,15 +179,6 @@ export function Footer() {
                         </Link>
                       </li>
                     ))}
-                    <li>
-                      <div className="flex items-center gap-2 text-caption text-muted-foreground">
-                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0" />
-                        <span>Learn</span>
-                        <span className="rounded-full bg-accent/10 px-2 py-0.5 text-micro font-medium text-accent">
-                          Coming Soon
-                        </span>
-                      </div>
-                    </li>
                   </ul>
                 </Stack>
               </div>

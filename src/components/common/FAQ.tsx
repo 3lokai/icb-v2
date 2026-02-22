@@ -1,4 +1,6 @@
 // src/components/common/FAQ.tsx
+"use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +12,7 @@ import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateFAQSchema } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
+import { motion } from "motion/react";
 import type { ReactNode } from "react";
 
 type FAQItem = {
@@ -45,7 +48,13 @@ export function FAQ({ items, className }: SimpleFAQProps) {
   }
 
   return (
-    <div className={cn("my-8", className)}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5 }}
+      className={cn("my-8", className)}
+    >
       <Accordion className="w-full backdrop-blur-sm" collapsible type="single">
         {items.map((item) => {
           const itemId = item.question
@@ -54,17 +63,17 @@ export function FAQ({ items, className }: SimpleFAQProps) {
             .replace(/[^a-z0-9-]/g, "");
           return (
             <AccordionItem key={itemId} value={itemId}>
-              <AccordionTrigger className="text-left text-base! md:text-lg! font-semibold">
+              <AccordionTrigger className="text-left text-body font-bold text-foreground">
                 {item.question}
               </AccordionTrigger>
-              <AccordionContent className="text-caption leading-relaxed">
+              <AccordionContent className="text-body text-muted-foreground leading-relaxed">
                 {item.answer}
               </AccordionContent>
             </AccordionItem>
           );
         })}
       </Accordion>
-    </div>
+    </motion.div>
   );
 }
 

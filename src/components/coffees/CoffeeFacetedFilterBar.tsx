@@ -294,6 +294,7 @@ export function CoffeeFacetedFilterBar({
     !!filters.roaster_ids?.length || // Backward compat
     !!filters.in_stock_only ||
     !!filters.has_250g_only ||
+    filters.works_with_milk === true ||
     !!filters.min_price ||
     !!filters.max_price;
 
@@ -647,7 +648,7 @@ export function CoffeeFacetedFilterBar({
                   <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
                     Options
                   </label>
-                  <div className="flex flex-wrap gap-6">
+                  <div className="flex flex-wrap items-center gap-6">
                     <label className="flex cursor-pointer items-center gap-2">
                       <Switch
                         checked={filters.in_stock_only ?? false}
@@ -672,6 +673,19 @@ export function CoffeeFacetedFilterBar({
                       />
                       <span className="text-caption font-medium">
                         Has 250g Option
+                      </span>
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2">
+                      <Switch
+                        checked={filters.works_with_milk === true}
+                        onCheckedChange={(checked) =>
+                          updateFilters({
+                            works_with_milk: checked ? true : undefined,
+                          })
+                        }
+                      />
+                      <span className="text-caption font-medium">
+                        Works with milk
                       </span>
                     </label>
                   </div>
@@ -798,6 +812,24 @@ export function CoffeeFacetedFilterBar({
                     aria-label="Remove Has 250g"
                     className="ml-1 rounded-full transition-colors hover:bg-accent/20"
                     onClick={() => updateFilters({ has_250g_only: undefined })}
+                    type="button"
+                  >
+                    <Icon name="X" size={10} />
+                  </button>
+                </Badge>
+              )}
+              {filters.works_with_milk === true && (
+                <Badge
+                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  variant="secondary"
+                >
+                  Works with milk
+                  <button
+                    aria-label="Remove works with milk filter"
+                    className="ml-1 rounded-full transition-colors hover:bg-accent/20"
+                    onClick={() =>
+                      updateFilters({ works_with_milk: undefined })
+                    }
                     type="button"
                   >
                     <Icon name="X" size={10} />

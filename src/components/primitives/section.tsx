@@ -10,6 +10,7 @@ type SectionProps = {
   spacing?: "tight" | "default" | "loose";
   contained?: boolean; // Whether to wrap in PageShell
   className?: string;
+  id?: string;
 };
 
 /**
@@ -31,6 +32,7 @@ export function Section({
   spacing = "default",
   contained = true,
   className,
+  id,
 }: SectionProps) {
   const spacingClasses = {
     tight: "py-6 md:py-10 lg:py-14",
@@ -60,11 +62,15 @@ export function Section({
 
   if (contained) {
     return (
-      <section className={sectionClassName}>
+      <section className={sectionClassName} id={id}>
         <PageShell>{content}</PageShell>
       </section>
     );
   }
 
-  return <section className={sectionClassName}>{content}</section>;
+  return (
+    <section className={sectionClassName} id={id}>
+      {content}
+    </section>
+  );
 }

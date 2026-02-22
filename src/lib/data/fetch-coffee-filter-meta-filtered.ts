@@ -41,6 +41,10 @@ export async function fetchCoffeeFilterMetaWithFilters(
       filters.min_price && filters.min_price > 0 ? filters.min_price : null,
     p_max_price:
       filters.max_price && filters.max_price > 0 ? filters.max_price : null,
+    p_works_with_milk:
+      filters.works_with_milk !== undefined && filters.works_with_milk !== null
+        ? filters.works_with_milk
+        : null,
   });
 
   if (error) {

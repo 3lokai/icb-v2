@@ -1,0 +1,24 @@
+# Indian Coffee Beans
+
+> Mapping the Indian specialty coffee landscape.
+
+Indian Coffee Beans (ICB) is the definitive directory for specialty coffee in India, providing a unified search across hundreds of coffees, roasteries, and processing methods.
+
+- [Field Guide & Educational Hub](/learn): Guides on regions, processing, and brewing.
+- [Coffee Directory](/coffees): Search and filter hundreds of Indian specialty coffee beans.
+- [Roaster Directory](/roasters): Explore profiles of Indian specialty coffee roasters.
+- [Coffee Tools](/tools): Brewing calculators and expert recipes.
+- [Glossary](/learn/glossary): Decoding coffee terminology from bean to brew.
+
+## Mission
+To help coffee enthusiasts discover, compare, and learn about Indian specialty coffee through data-driven insights and curated information.
+
+## API Endpoints for Discovery
+These endpoints provide structured JSON data for programmatic discovery:
+- [`/api/coffees`](/api/coffees): Paginated coffee list with support for filters (roast, process, region, works with milk).
+- [`/api/coffees/[slug]`](/api/coffees): Single coffee detail by slug.
+- [`/api/coffees/filter-meta`](/api/coffees/filter-meta): Filter options and counts (same query params as list).
+- [`/api/roasters`](/api/roasters): Directory of roasters with location data and catalog counts.
+- [`/api/roasters/[slug]`](/api/roasters): Single roaster detail by slug.
+- [`/api/roasters/filter-meta`](/api/roasters/filter-meta): Roaster filter options and counts.
+- [`/api/search-index`](/api/search-index): Unified search index for coffees and roasters (client-side discovery).
