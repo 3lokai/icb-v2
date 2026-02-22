@@ -546,6 +546,7 @@ export type Database = {
           updated_at: string;
           varieties: string[] | null;
           vendor_sku: string | null;
+          works_with_milk: boolean | null;
         };
         Insert: {
           bean_species?: Database["public"]["Enums"]["species_enum"] | null;
@@ -583,6 +584,7 @@ export type Database = {
           updated_at: string;
           varieties?: string[] | null;
           vendor_sku?: string | null;
+          works_with_milk?: boolean | null;
         };
         Update: {
           bean_species?: Database["public"]["Enums"]["species_enum"] | null;
@@ -620,6 +622,7 @@ export type Database = {
           updated_at?: string;
           varieties?: string[] | null;
           vendor_sku?: string | null;
+          works_with_milk?: boolean | null;
         };
         Relationships: [
           {
@@ -2293,6 +2296,7 @@ export type Database = {
           updated_at: string | null;
           website: string | null;
           weights_available: number[] | null;
+          works_with_milk: boolean | null;
         };
         Relationships: [
           {
@@ -2624,6 +2628,7 @@ export type Database = {
           p_roaster_ids?: string[];
           p_search_query?: string;
           p_statuses?: string[];
+          p_works_with_milk?: boolean | null;
         };
         Returns: Json;
       };

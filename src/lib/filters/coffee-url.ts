@@ -230,6 +230,10 @@ export function parseCoffeeSearchParams(searchParams: URLSearchParams): {
     filters.has_sensory_only = true;
   }
 
+  if (parseBooleanFlag(searchParams, "worksWithMilk")) {
+    filters.works_with_milk = true;
+  }
+
   // Numeric filters
   const minPrice = parseNumericFilter(searchParams, "minPrice");
   if (minPrice !== undefined) {
@@ -348,6 +352,7 @@ export function buildCoffeeQueryString(
   addBooleanFlag(params, "limitedOnly", filters.limited_only);
   addBooleanFlag(params, "decafOnly", filters.decaf_only);
   addBooleanFlag(params, "hasSensoryOnly", filters.has_sensory_only);
+  addBooleanFlag(params, "worksWithMilk", filters.works_with_milk === true);
 
   // Numeric filters
   addNumericFilter(params, "minPrice", filters.min_price);

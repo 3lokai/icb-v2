@@ -32,6 +32,7 @@ export function mapCoffeeSummaryToCard(summary: CoffeeSummary): CoffeeCardData {
     decaf: summary.decaf,
     isLimited: summary.is_limited,
     hasSensory: summary.has_sensory ?? null,
+    worksWithMilk: summary.works_with_milk ?? null,
 
     // Social proof
     ratingAvg: summary.rating_avg ?? null,

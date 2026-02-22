@@ -115,6 +115,8 @@ export type CoffeeFilters = {
   in_stock_only?: boolean;
   has_250g_only?: boolean;
   has_sensory_only?: boolean;
+  /** true = only "works with milk", false = only "better black", undefined/null = no filter */
+  works_with_milk?: boolean | null;
 
   // Numeric
   min_price?: number;
@@ -220,6 +222,7 @@ export type CoffeeSummary = {
   rating_avg: number | null;
   rating_count: number;
   tags: string[] | null;
+  works_with_milk?: boolean | null;
 
   // From roasters table
   roaster_slug: string;
@@ -264,6 +267,7 @@ export type CoffeeCardData = {
   decaf: boolean;
   isLimited: boolean;
   hasSensory: boolean | null;
+  worksWithMilk?: boolean | null;
 
   // Social proof
   ratingAvg: number | null;

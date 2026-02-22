@@ -203,6 +203,10 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
     filteredQuery = filteredQuery.eq("decaf", true);
   }
 
+  if (filters.works_with_milk === true) {
+    filteredQuery = filteredQuery.eq("works_with_milk", true);
+  }
+
   if (filters.has_sensory_only === true) {
     filteredQuery = filteredQuery.eq("has_sensory", true);
   }
@@ -400,6 +404,7 @@ function transformToCoffeeSummary(row: any): CoffeeSummary {
     rating_avg: row.rating_avg ?? null,
     rating_count: row.rating_count ?? 0,
     tags: row.tags ?? null,
+    works_with_milk: row.works_with_milk ?? null,
 
     // From roasters table (now in MV)
     roaster_slug: row.roaster_slug ?? "",

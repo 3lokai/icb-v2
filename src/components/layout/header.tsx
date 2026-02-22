@@ -60,6 +60,7 @@ const baseNavItems = [
     name: "Learn",
     link: "/learn",
     children: [
+      { name: "Articles", link: "/learn" },
       { name: "Brew Calculator", link: "/tools/coffee-calculator" },
       { name: "Expert recipes", link: "/tools/expert-recipes" },
       { name: "Glossary", link: "/learn/glossary" },

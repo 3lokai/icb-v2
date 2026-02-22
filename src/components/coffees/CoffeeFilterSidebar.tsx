@@ -659,6 +659,23 @@ export function CoffeeFilterContent({
               }
             />
           </label>
+          <label
+            className="group flex cursor-pointer items-center justify-between"
+            htmlFor="works_with_milk"
+          >
+            <span className="text-caption font-medium transition-colors group-hover:text-accent">
+              Works with milk
+            </span>
+            <Switch
+              id="works_with_milk"
+              checked={filters.works_with_milk === true}
+              onCheckedChange={(checked) =>
+                updateFilters({
+                  works_with_milk: checked ? true : undefined,
+                })
+              }
+            />
+          </label>
         </Stack>
       </Stack>
     </Stack>

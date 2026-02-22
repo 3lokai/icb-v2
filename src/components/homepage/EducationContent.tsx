@@ -129,7 +129,7 @@ const itemVariants = {
 
 export default function EducationSection() {
   return (
-    <Section spacing="loose">
+    <Section id="learn" spacing="loose">
       <div className="relative mx-auto max-w-6xl w-full">
         {/* Background decorative elements */}
         <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">

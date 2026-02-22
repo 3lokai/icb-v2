@@ -1,0 +1,211 @@
+# Indian Coffee Beans (Full Documentation)
+
+> Mapping the Indian specialty coffee landscape.
+
+Indian Coffee Beans (ICB) is the definitive directory for specialty coffee in India, providing a unified search across hundreds of coffees, roasteries, and processing methods.
+
+- [Field Guide & Educational Hub](/learn): Guides on regions, processing, and brewing.
+- [Coffee Directory](/coffees): Search and filter hundreds of Indian specialty coffee beans.
+- [Roaster Directory](/roasters): Explore profiles of Indian specialty coffee roasters.
+- [Coffee Tools](/tools): Brewing calculators and expert recipes.
+- [Glossary](/learn/glossary): Decoding coffee terminology from bean to brew.
+
+## Mission
+To help coffee enthusiasts discover, compare, and learn about Indian specialty coffee through data-driven insights and curated information.
+
+---
+
+## Educational Hub: Content Pillars
+
+The platform focuses on five key knowledge layers:
+1. **Origins and Estates**: Deep dives into Indian coffee-growing regions and specific estates.
+2. **Processing and Flavors**: Understanding how processing methods (Washed, Natural, Honey) impact flavor profiles.
+3. **Brewing Behaviour**: Technical guides on extraction, grind sizes, and brewing methods.
+4. **Ecosystem Intelligence**: Data-driven insights into the Indian coffee industry.
+5. **Field Notes and Buying Guides**: Curated recommendations and beginner-friendly starting points.
+
+---
+
+## Coffee Glossary
+A comprehensive guide to coffee terminology used across the platform.
+
+### A
+- **Aeropress**: A manual brewing device using air pressure for clean, fast extractions.
+- **Arabica**: A coffee species known for sweet, nuanced flavor and lower caffeine.
+- **Anaerobic Fermentation**: Processing in oxygen-free tanks for exotic flavors.
+
+### B
+- **Baba Budan**: 17th-century saint who introduced coffee to India.
+- **Blend**: Mix of two or more coffee beans for balance and consistency.
+- **Bloom**: Initial gas release when hot water hits coffee grounds.
+- **Body**: Texture or weight of coffee in the mouth.
+
+### C
+- **Chemex**: Pour-over glass coffeemaker known for elegant design and clean brews.
+- **Cold Brew**: Cold water steeping (12–24h) for smooth, low-acid coffee.
+- **Crema**: Golden foam layer atop espresso.
+- **Cupping**: Standardized evaluation of coffee aroma and flavor.
+
+### D
+- **Decaf**: Coffee with most caffeine removed.
+- **Degassing**: Release of CO2 from roasted beans.
+- **Doser**: Grinder mechanism for dispensing measured doses.
+- **Drip Machine**: Automatic brewer using gravity and paper filters.
+
+### E
+- **Espresso**: Concentrated short shot made with high pressure.
+- **Extraction**: Process of dissolving coffee compounds into water.
+- **Excelsa**: Rare variety (sub-type of Liberica) adding tart, fruity complexity.
+
+### F
+- **Filter Coffee**: Often refers to South Indian filter coffee brewed with a metal press.
+- **Flat White**: Espresso with steamed milk and a thin foam layer.
+- **French Press**: Immersion brewing method using a plunger with metal mesh.
+
+### G
+- **Grind Size**: Varies from fine to coarse; critical for extraction control.
+- **Green Coffee**: Unroasted coffee beans.
+- **Group Head**: Part of espresso machine dispensing hot water.
+
+### H
+- **Honey Process**: Processed with mucilage left on, resulting in sweetness.
+
+### L
+- **Latte**: Espresso with plenty of steamed milk and light foam.
+- **Liberica**: Rare species with large beans and woody flavor; grown in parts of India.
+- **Light Roast**: Preserves bright acidity and origin characteristics.
+
+### M
+- **Medium Roast**: Balanced roast with sweetness and origin clarity.
+- **Micro-lot**: Small, distinct batch of high-quality coffee.
+- **Mocha**: Espresso, milk, and chocolate.
+- **Moka Pot**: Stovetop pressure brewer.
+
+### N
+- **Natural Process**: Beans dried inside the cherry for fruity, wine-like flavors.
+
+### P
+- **Peaberry**: Mutation where only one round seed develops in the cherry.
+- **Pourover**: Manual brewing by pouring water over grounds in a filter.
+
+### R
+- **Ristretto**: Very short, concentrated espresso.
+- **Robusta**: Species known for high caffeine and bold bitterness.
+- **Roast Level**: Describes how long beans were roasted (Light to Dark).
+
+### S
+- **Single Origin**: Sourced from one farm, region, or country.
+- **Siphon**: Vacuum/vapor pressure brewing method in glass chambers.
+
+### T
+- **Tamper**: Tool for compressing grounds in a portafilter.
+- **Tasting Notes**: Descriptive terms (e.g., chocolatey, fruity) for flavor.
+- **Turkish Coffee**: Very fine grounds simmered in water; served unfiltered.
+
+### V
+- **Varietal**: Sub-type of a coffee species (e.g., Typica, Geisha).
+
+### W
+- **Washed Process**: Fermented and washed before drying for a clean profile.
+- **Works with milk**: Tasting preference indicating a coffee is recommended with milk (from user ratings); filterable in the directory.
+- **Better black**: Tasting preference indicating a coffee is recommended drunk black (from user ratings).
+
+---
+
+## Data Layer & API Reference
+
+APIs return JSON. On error, responses use status 4xx/5xx with a body such as `{ "error": "message" }`.
+
+### 1. Coffee Directory API (`/api/coffees`)
+Returns a paginated list of coffee beans with advanced filtering.
+
+**Query Parameters:**
+- `q` (string): Search term.
+- `page` (int): Page number (default: 1).
+- `limit` (int): Items per page (default: 15).
+- `sort` (string): `relevance`, `price_asc`, `price_desc`, `newest`, `best_value`, `rating_desc`, `name_asc`.
+- `roastLevels` (csv): `light`, `medium_light`, `medium`, `medium_dark`, `dark`.
+- `processes` (csv): `washed`, `natural`, `honey`, `anaerobic`, `others`.
+- `beanSpecies` (csv): `arabica`, `robusta`, `blend`, `liberica`, `excelsa`.
+- `flavors` (csv): Slugs from the flavor wheel (e.g., `chocolate`, `berry`).
+- `regions` (csv): Origin region slugs (e.g., `chikmagalur`, `wayanad`).
+- `roasters` (csv): Roaster slugs.
+- `estates` (csv): Estate keys (origin).
+- `statuses` (csv): e.g. `in_stock`, `out_of_stock`.
+- `brewMethodIds` (csv): Brew method IDs.
+- `coffeeIds` (csv): Restrict to specific coffee IDs.
+- `inStockOnly` (1|0): Filter by availability.
+- `decafOnly` (1|0): Filter for decaf beans.
+- `limitedOnly` (1|0): Filter for limited edition releases.
+- `worksWithMilk` (1|0): Filter for coffees that work well with milk.
+- `has250gOnly` (1|0): Only coffees with a 250g option.
+- `hasSensoryOnly` (1|0): Only coffees with sensory data.
+- `minPrice` (number): Minimum price in INR.
+- `maxPrice` (number): Maximum price in INR.
+
+**Response:** Paginated envelope `{ items: CoffeeSummary[], page, limit, total, totalPages }`.
+
+**Data Model (`CoffeeSummary`):**
+- `coffee_id`: UUID.
+- `name`: Product name.
+- `slug`: URL slug.
+- `roaster_name`: Name of the roastery.
+- `min_price_in_stock`: Lowest available price in INR.
+- `process`: Processing method.
+- `roast_level`: Visual roast indicator.
+- `image_url`: Primary product image.
+- `rating_avg`: 1-5 star average.
+- `works_with_milk`: boolean | null — whether the coffee is recommended with milk (from ratings).
+
+### 2. Roaster Directory API (`/api/roasters`)
+Directory of Indian specialty coffee roasters (paginated).
+
+**Query Parameters:**
+- `q` (string): Search by roaster name.
+- `page` (int): Page number (default: 1).
+- `limit` (int): Items per page (default: 15).
+- `sort` (string): `relevance`, `name_asc`, `name_desc`, `coffee_count_desc`.
+- `cities` (csv): Filter by headquarters city.
+- `states` (csv): Filter by state.
+- `countries` (csv): Filter by country.
+- `roasters` (csv): Roaster slugs (restrict to specific roasters).
+- `activeOnly` (1|0): Show only currently active roasters.
+
+**Response:** Paginated envelope `{ items: RoasterSummary[], page, limit, total, totalPages }`.
+
+**Data Model (`RoasterSummary`):**
+- `id`: UUID.
+- `slug`: URL slug.
+- `name`: Roaster name.
+- `hq_city`: Headquarters city.
+- `hq_state`, `hq_country`: Location.
+- `website`: Roaster website URL.
+- `coffee_count`: Number of beans listed in the directory.
+- `avg_coffee_rating`: Performance across catalog.
+
+### 3. Unified Search (`/api/search-index`)
+Returns the complete client-side search index for **coffees and roasters** (no articles), optimized for fuzzy search. Requires `SUPABASE_SECRET_KEY` in the environment; returns 503 if not set.
+
+**Response:** Array of `SearchableItem`:
+- `id`: string.
+- `type`: `"coffee"` | `"roaster"`.
+- `title`: string.
+- `description`: string.
+- `url`: string.
+- `imageUrl` (optional): string.
+- `searchableText`: Flattened text for search.
+- `flavorNotes` (optional): string[].
+- `tags`: string[].
+- `metadata`: `metadata.coffee` (roasterName, region, price, bestNormalized250g, rating, roastLevel, process) and/or `metadata.roaster` (region, coffeeCount).
+
+### 4. Single Coffee (`/api/coffees/[slug]`)
+Returns full coffee detail by slug (variants, images, sensory, regions, estates, flavor notes, brew methods).
+
+### 5. Single Roaster (`/api/roasters/[slug]`)
+Returns full roaster profile by slug.
+
+### 6. Coffee Filter Meta (`/api/coffees/filter-meta`)
+Filter options and counts for the coffee directory. Accepts the same query parameters as `/api/coffees` (including `worksWithMilk`, etc.) and returns counts per filter bucket (e.g. roast levels, processes, regions). Use for “what can I filter by and how many results?”.
+
+### 7. Roaster Filter Meta (`/api/roasters/filter-meta`)
+Filter options and counts for the roaster directory. Same query params as `/api/roasters`.
