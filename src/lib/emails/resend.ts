@@ -35,7 +35,7 @@ export async function sendWelcomeEmail({
     const ccEmail = "gta3lok.ai@gmail.com";
 
     await resend.emails.send({
-      from: "thrlok.gt@indiancoffeebeans.com",
+      from: "thrilok.gt@indiancoffeebeans.com",
       to: email,
       cc: ccEmail,
       subject: "Welcome to IndianCoffeeBeans!",
@@ -90,7 +90,7 @@ export async function sendNewsletterWelcomeEmail({
     const userName = name || "Coffee Lover";
 
     await resend.emails.send({
-      from: "thrlok.gt@indiancoffeebeans.com",
+      from: "thrilok.gt@indiancoffeebeans.com",
       to: email,
       subject: "Thanks for subscribing to IndianCoffeeBeans newsletter!",
       text: `Hey ${userName},

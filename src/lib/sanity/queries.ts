@@ -175,3 +175,27 @@ export const ARTICLES_BY_SERIES_QUERY = `
     ${ARTICLE_PROJECTION}
   }
 `;
+
+// Minimal queries for sitemap (non-draft articles only)
+export const SITEMAP_ARTICLES_QUERY = `
+  *[_type == "article" && defined(slug.current) && draft != true] {
+    "slug": slug.current,
+    updatedAt,
+    _updatedAt,
+    updated
+  }
+`;
+
+export const SITEMAP_CATEGORIES_QUERY = `
+  *[_type == "category" && defined(slug.current)] {
+    "slug": slug.current,
+    _updatedAt
+  } | order(name asc)
+`;
+
+export const SITEMAP_SERIES_QUERY = `
+  *[_type == "series" && defined(slug.current)] {
+    "slug": slug.current,
+    _updatedAt
+  } | order(name asc)
+`;

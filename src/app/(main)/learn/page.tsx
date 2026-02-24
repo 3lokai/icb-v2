@@ -47,7 +47,7 @@ export default async function LearnPage() {
         }
         overline="Knowledge Base"
         description="Master the art of Indian specialty coffee. From origin stories to brewing guides, explore our curated intelligence layers."
-        backgroundImage="/images/hero-bg.avif"
+        backgroundImage="/images/hero-learn.avif"
       />
 
       <PageShell className="py-0">
