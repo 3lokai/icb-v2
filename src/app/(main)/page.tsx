@@ -115,7 +115,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "taste profile",
       "brew methods",
     ],
-    image: `${baseUrl}/logo-icon.svg`,
+    image: `${baseUrl}/favicon/android-chrome-512x512.png`,
     type: "website",
     canonical: baseUrl,
   });

@@ -1,6 +1,12 @@
 import type { MetadataRoute } from "next";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { getAllLandingPageSlugs } from "@/lib/discovery/landing-pages";
+import { client } from "@/lib/sanity/client";
+import {
+  SITEMAP_ARTICLES_QUERY,
+  SITEMAP_CATEGORIES_QUERY,
+  SITEMAP_SERIES_QUERY,
+} from "@/lib/sanity/queries";
 
 /** Add self-referencing hreflang to a sitemap entry (single-language site). */
 function withHreflang<T extends { url: string }>(
@@ -77,6 +83,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
+    }),
+    withHreflang({
+      url: `${baseUrl}/learn`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.85,
     }),
     withHreflang({
       url: `${baseUrl}/learn/glossary`,
@@ -238,14 +250,65 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     );
 
-    // TODO: Add article routes when article system is implemented
-    // Example structure:
-    // const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
-    //   url: `${baseUrl}/learn/${article.slug}`,
-    //   lastModified: article.updated_at ? new Date(article.updated_at) : new Date(article.created_at),
-    //   changeFrequency: "monthly" as const,
-    //   priority: 0.7,
-    // }));
+    // Learn routes from Sanity (articles, categories, series)
+    let learnRoutes: MetadataRoute.Sitemap = [];
+    try {
+      type SitemapArticle = {
+        slug: string;
+        updatedAt?: string | null;
+        _updatedAt?: string | null;
+        updated?: string | null;
+      };
+      type SitemapCategory = { slug: string; _updatedAt?: string | null };
+      type SitemapSeries = { slug: string; _updatedAt?: string | null };
+
+      const [articles, categories, series] = await Promise.all([
+        client.fetch<SitemapArticle[]>(SITEMAP_ARTICLES_QUERY),
+        client.fetch<SitemapCategory[]>(SITEMAP_CATEGORIES_QUERY),
+        client.fetch<SitemapSeries[]>(SITEMAP_SERIES_QUERY),
+      ]);
+
+      const articleRoutes: MetadataRoute.Sitemap = (articles ?? [])
+        .filter((a) => a?.slug)
+        .map((article) => {
+          const lastModified =
+            article.updatedAt || article.updated || article._updatedAt;
+          return withHreflang({
+            url: `${baseUrl}/learn/${article.slug}`,
+            lastModified: lastModified ? new Date(lastModified) : new Date(),
+            changeFrequency: "monthly" as const,
+            priority: 0.7,
+          });
+        });
+
+      const categoryRoutes: MetadataRoute.Sitemap = (categories ?? [])
+        .filter((c) => c?.slug)
+        .map((cat) =>
+          withHreflang({
+            url: `${baseUrl}/learn/category/${cat.slug}`,
+            lastModified: cat._updatedAt
+              ? new Date(cat._updatedAt)
+              : new Date(),
+            changeFrequency: "weekly" as const,
+            priority: 0.75,
+          })
+        );
+
+      const seriesRoutes: MetadataRoute.Sitemap = (series ?? [])
+        .filter((s) => s?.slug)
+        .map((s) =>
+          withHreflang({
+            url: `${baseUrl}/learn/series/${s.slug}`,
+            lastModified: s._updatedAt ? new Date(s._updatedAt) : new Date(),
+            changeFrequency: "weekly" as const,
+            priority: 0.75,
+          })
+        );
+
+      learnRoutes = [...articleRoutes, ...categoryRoutes, ...seriesRoutes];
+    } catch (sanityError) {
+      console.error("Failed to fetch learn routes for sitemap:", sanityError);
+    }
 
     // Combine all routes
     return [
@@ -254,6 +317,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...roasterRoutes,
       ...curationRoutes,
       ...discoveryRoutes,
+      ...learnRoutes,
     ];
   } catch (error) {
     // If database queries fail, fallback to static routes only

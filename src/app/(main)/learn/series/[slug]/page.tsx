@@ -35,6 +35,7 @@ export default async function SeriesPage({
           series.description ||
           `Follow this series to master everything about ${series.name}`
         }
+        backgroundImage="/images/hero-learn.avif"
       />
 
       <PageShell className="py-12 md:py-20">

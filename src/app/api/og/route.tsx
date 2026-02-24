@@ -13,28 +13,38 @@ export async function GET(req: NextRequest) {
     const type = searchParams.get("type") ?? "website";
     const imageUrl = searchParams.get("image") ?? null;
 
-    // Default to logo-icon.svg if no image provided
+    // Default to favicon PNG (avoids large logo-icon.svg fetch)
     const baseUrl =
       process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
-    const defaultLogoUrl = `${baseUrl}/logo-icon.svg`;
+    const defaultLogoUrl = `${baseUrl}/favicon/android-chrome-512x512.png`;
     const finalImageUrl = imageUrl || defaultLogoUrl;
-    const isLogoImage = finalImageUrl.includes("logo-icon.svg");
+    const isFaviconPng =
+      /\/favicon\/[^/]+\.png$/i.test(finalImageUrl) ||
+      finalImageUrl.includes("favicon/");
+    const isLogoIconSvg = finalImageUrl.includes("logo-icon.svg");
+    const isLogoImage = isFaviconPng || isLogoIconSvg;
 
-    // Fetch logo SVG if it's the default logo
+    // Logo for corner: use favicon PNG URL directly, or fetch+base64 only for SVG
     let logoSrc: string | null = null;
     if (isLogoImage) {
-      try {
-        const logoResponse = await fetch(finalImageUrl);
-        if (logoResponse.ok) {
-          const logoText = await logoResponse.text();
-          // Encode SVG as base64 for use in img src
-          // In edge runtime, we use btoa for base64 encoding
-          const logoBase64 = btoa(logoText);
-          logoSrc = `data:image/svg+xml;base64,${logoBase64}`;
+      if (isFaviconPng) {
+        logoSrc = finalImageUrl;
+      } else if (isLogoIconSvg) {
+        try {
+          const logoResponse = await fetch(finalImageUrl);
+          if (logoResponse.ok) {
+            const logoText = await logoResponse.text();
+            const bytes = new TextEncoder().encode(logoText);
+            let binary = "";
+            const len = bytes.length;
+            for (let i = 0; i < len; i++)
+              binary += String.fromCharCode(bytes[i]!);
+            const logoBase64 = btoa(binary);
+            logoSrc = `data:image/svg+xml;base64,${logoBase64}`;
+          }
+        } catch (e) {
+          console.error("Failed to fetch logo:", e);
         }
-      } catch (e) {
-        // Fallback to gradient if logo fetch fails
-        console.error("Failed to fetch logo:", e);
       }
     }
 

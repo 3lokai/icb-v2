@@ -35,8 +35,8 @@ function buildOGImageUrl(
   image: string | undefined,
   type: string
 ): string {
-  // Default to logo-icon.svg when no image is provided
-  const defaultImage = `${baseUrl}/logo-icon.svg`;
+  // Default to favicon PNG for OG (smaller, no SVG fetch)
+  const defaultImage = `${baseUrl}/favicon/android-chrome-512x512.png`;
 
   if (image) {
     if (image.startsWith("http")) {

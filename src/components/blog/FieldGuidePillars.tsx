@@ -16,23 +16,23 @@ import { Category } from "@/types/blog-types";
 const pillarVisuals: Record<string, { icon: IconName; image: string }> = {
   "origins-and-estates": {
     icon: "MapPin",
-    image: "/images/collections/fruity-filter.webp",
+    image: "/images/learn/pillars/origins-and-estates.webp",
   },
   "processing-and-flavors": {
     icon: "Coffee",
-    image: "/images/collections/light-bright.webp",
+    image: "/images/learn/pillars/processing-and-flavors.webp",
   },
   "brewing-behaviour": {
     icon: "Flask",
-    image: "/images/collections/balanced-medium.webp",
+    image: "/images/learn/pillars/brewing-behaviour.webp",
   },
   "ecosystem-intelligence": {
     icon: "Graph",
-    image: "/images/collections/bold-dark.webp",
+    image: "/images/learn/pillars/ecosystem-intelligence.webp",
   },
   "field-notes-and-buying-guides": {
     icon: "CheckCircle",
-    image: "/images/collections/beginner-friendly.webp",
+    image: "/images/learn/pillars/field-notes-and-buying-guides.webp",
   },
 };
 

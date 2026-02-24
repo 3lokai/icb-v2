@@ -40,6 +40,19 @@ export default async function CategoryPage({
     { slug }
   );
 
+  const pillarImages: Record<string, string> = {
+    "origins-and-estates": "/images/learn/pillars/origins-and-estates.webp",
+    "processing-and-flavors":
+      "/images/learn/pillars/processing-and-flavors.webp",
+    "brewing-behaviour": "/images/learn/pillars/brewing-behaviour.webp",
+    "ecosystem-intelligence":
+      "/images/learn/pillars/ecosystem-intelligence.webp",
+    "field-notes-and-buying-guides":
+      "/images/learn/pillars/field-notes-and-buying-guides.webp",
+  };
+
+  const backgroundImage = pillarImages[slug] || "/images/hero-learn.avif";
+
   return (
     <>
       <PageHeader
@@ -49,7 +62,7 @@ export default async function CategoryPage({
           category.description ||
           `Explore detailed intelligence on ${category.name}`
         }
-        backgroundImage="/images/hero-bg.avif"
+        backgroundImage={backgroundImage}
       />
 
       <PageShell className="py-0">
