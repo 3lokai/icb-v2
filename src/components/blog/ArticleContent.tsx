@@ -19,6 +19,7 @@ import { RoasterCollection } from "./blocks/RoasterCollection";
 import { RegionCollection } from "./blocks/RegionCollection";
 import { FAQBlock } from "./blocks/FAQBlock";
 import { SeriesNavigation } from "./blocks/SeriesNavigation";
+import { DataChart } from "./blocks/DataChart";
 
 interface ArticleContentProps {
   body: any[];
@@ -57,6 +58,7 @@ const createComponents = (
     regionCollection: RegionCollection,
     faqBlock: (props) => <FAQBlock {...props} articleFaqs={articleFaqs} />,
     seriesNavigation: SeriesNavigation,
+    dataChart: DataChart,
   },
   block: {
     h1: ({ children }) => (

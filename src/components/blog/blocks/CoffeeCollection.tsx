@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import CoffeeCard from "@/components/cards/CoffeeCard";
 import { CoffeeCardSkeleton } from "@/components/cards/CoffeeCardSkeleton";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
+import Link from "next/link";
 
 interface CoffeeCollectionProps {
   value: {

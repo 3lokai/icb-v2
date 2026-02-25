@@ -29,6 +29,8 @@ export type Author = {
   bio?: string;
   slug?: string;
   avatar?: SanityImage;
+  supabaseUserId?: string;
+  instagram?: string;
 };
 
 export type Category = {

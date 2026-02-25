@@ -37,7 +37,9 @@ export const ARTICLE_PROJECTION = `
     name,
     bio,
     "slug": slug.current,
-    avatar
+    avatar,
+    supabaseUserId,
+    instagram
   },
   featured,
   draft,
@@ -172,6 +174,25 @@ export const ARTICLES_BY_SERIES_QUERY = `
     )
   ]
   | order(series.part asc, date desc) {
+    ${ARTICLE_PROJECTION}
+  }
+`;
+
+export const AUTHOR_BY_SLUG_OR_ID_QUERY = `
+  *[_type == "author" && (slug.current == $slug || _id == $slug)][0] {
+    _id,
+    name,
+    bio,
+    "slug": slug.current,
+    avatar,
+    supabaseUserId,
+    instagram
+  }
+`;
+
+export const ARTICLES_BY_AUTHOR_QUERY = `
+  *[_type == "article" && authorRef._ref == $authorId && defined(slug.current)]
+  | order(date desc) {
     ${ARTICLE_PROJECTION}
   }
 `;
