@@ -14,6 +14,12 @@ import { SeriesCard } from "@/components/blog/SeriesCard";
 import { FieldGuidePillars } from "@/components/blog/FieldGuidePillars";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
+import { BentoGrid, BentoCard } from "@/components/ui/bento-grid";
+import { Icon } from "@/components/common/Icon";
+import { format } from "date-fns";
+import { urlFor } from "@/lib/sanity/image";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -27,14 +33,29 @@ export default async function LearnPage() {
       client.fetch<Category[]>(PILLAR_CATEGORIES_QUERY),
     ]);
 
-  const mainFeatured = featuredArticles[0] || articles[0];
+  // Use all articles, featured articles will be highlighted in the grid
+  // Sort by date to keep the feed chronological
+  const displayArticles = [...articles].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 
-  // If we have very few articles, show all of them in the latest list as well
-  // Otherwise, filter out the featured one to avoid redundancy
-  const remainingArticles =
-    articles.length <= 3
-      ? articles
-      : articles.filter((a) => a._id !== mainFeatured?._id);
+  // Helper to get icon for category
+  const getCategoryIcon = (categorySlug: string) => {
+    switch (categorySlug) {
+      case "seed-to-farm":
+        return "Plant";
+      case "roasting-craft":
+        return "Fire";
+      case "brewing-science":
+        return "Flask";
+      case "tasting-sensory":
+        return "Eye";
+      case "industry-culture":
+        return "Buildings";
+      default:
+        return "BookOpen";
+    }
+  };
 
   return (
     <>
@@ -77,34 +98,7 @@ export default async function LearnPage() {
             </Stack>
           </Section>
 
-          {/* Featured Article */}
-          {mainFeatured && (
-            <Section contained={false} spacing="tight">
-              <Stack gap="8">
-                <div className="flex flex-col gap-4">
-                  <div className="inline-flex items-center gap-4">
-                    <span className="h-px w-8 md:w-12 bg-primary/70" />
-                    <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
-                      Editor&apos;s Pick
-                    </span>
-                  </div>
-                  <h2 className="text-title font-semibold tracking-tight text-balance">
-                    Don&apos;t miss{" "}
-                    <span className="text-accent italic font-serif">
-                      this story
-                    </span>
-                  </h2>
-                  <p className="max-w-2xl text-body-large text-muted-foreground">
-                    Our top pick from the Field Guide—deep dives and essential
-                    reads.
-                  </p>
-                </div>
-                <PostCard article={mainFeatured} featured />
-              </Stack>
-            </Section>
-          )}
-
-          {/* Recent Articles Grid */}
+          {/* Field Guide Feed (Bento Grid) */}
           <Section contained={false} spacing="default">
             <Stack gap="12">
               <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between border-b border-border/50 pb-6">
@@ -112,29 +106,91 @@ export default async function LearnPage() {
                   <div className="inline-flex items-center gap-4">
                     <span className="h-px w-8 md:w-12 bg-primary/70" />
                     <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
-                      Fresh from the Field
+                      Field Guide Feed
                     </span>
                   </div>
                   <h2 className="text-title font-semibold tracking-tight text-balance">
                     Latest{" "}
                     <span className="text-accent italic font-serif">
-                      entries
+                      insights
                     </span>
                   </h2>
                   <p className="max-w-2xl text-body-large text-muted-foreground">
-                    Freshly ground insights and stories from the field.
+                    Our curated selection of stories, guides, and research from
+                    across the coffee spectrum.
                   </p>
                 </div>
                 <div className="text-caption font-medium text-muted-foreground bg-muted/50 px-3 py-1 rounded-full self-start md:self-auto">
-                  {remainingArticles.length} articles
+                  {displayArticles.length} entries
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-                {remainingArticles.map((article) => (
-                  <PostCard key={article._id} article={article} />
-                ))}
-              </div>
+              <BentoGrid className="grid-flow-dense md:auto-rows-[22rem]">
+                {displayArticles.map((article) => {
+                  const isFeatured = article.featured;
+                  const displayAuthor =
+                    article.authorRef?.name || article.author.name;
+                  return (
+                    <BentoCard
+                      key={article._id}
+                      name={
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center gap-2 text-caption opacity-70">
+                            <span>
+                              {format(new Date(article.date), "MMM d, yyyy")}
+                            </span>
+                            <span className="h-1 w-1 rounded-full bg-current" />
+                            <span>
+                              {article.metadata?.readingTime || 5} min read
+                            </span>
+                          </div>
+                          <div
+                            className={cn(
+                              "font-semibold tracking-tight leading-tight",
+                              isFeatured ? "text-2xl md:text-3xl" : "text-xl"
+                            )}
+                          >
+                            {article.title}
+                          </div>
+                          <div className="text-caption opacity-60 mt-1">
+                            By {displayAuthor}
+                          </div>
+                        </div>
+                      }
+                      className={
+                        isFeatured
+                          ? "lg:col-span-2 md:col-span-2"
+                          : "lg:col-span-1 md:col-span-1"
+                      }
+                      background={
+                        <div className="absolute inset-0 z-0">
+                          {article.cover && (
+                            <Image
+                              src={urlFor(article.cover)
+                                .width(800)
+                                .height(isFeatured ? 600 : 450)
+                                .url()}
+                              alt={article.title}
+                              fill
+                              className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent transition-opacity duration-500 group-hover:via-background/40" />
+                        </div>
+                      }
+                      Icon={(props) => (
+                        <Icon
+                          name={getCategoryIcon(article.category?.slug) as any}
+                          color="accent"
+                          {...props}
+                        />
+                      )}
+                      href={`/learn/${article.slug}`}
+                      cta="Read Article"
+                    />
+                  );
+                })}
+              </BentoGrid>
             </Stack>
           </Section>
 

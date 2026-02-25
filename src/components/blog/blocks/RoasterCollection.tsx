@@ -1,10 +1,12 @@
-import Link from "next/link";
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import RoasterCard from "@/components/cards/RoasterCard";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
+import Link from "next/link";
 
 interface RoasterCollectionProps {
   value: {

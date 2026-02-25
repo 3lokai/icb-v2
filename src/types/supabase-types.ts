@@ -2261,6 +2261,8 @@ export type Database = {
           canon_flavor_node_ids: string[] | null;
           canon_flavor_slugs: string[] | null;
           canon_flavor_subcategories: string[] | null;
+          canon_estate_names: string[] | null;
+          canon_region_names: string[] | null;
           coffee_id: string | null;
           created_at: string | null;
           decaf: boolean | null;

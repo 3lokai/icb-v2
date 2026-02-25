@@ -1,3 +1,5 @@
+"use client";
+
 import { PortableText } from "@portabletext/react";
 import { Icon, type IconName } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";

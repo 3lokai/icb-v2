@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity/image";
 import { cn } from "@/lib/utils";

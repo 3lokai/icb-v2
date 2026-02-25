@@ -10,11 +10,11 @@ interface BentoGridProps extends ComponentPropsWithoutRef<"div"> {
 }
 
 interface BentoCardProps extends ComponentPropsWithoutRef<"div"> {
-  name: string;
+  name: ReactNode;
   className: string;
   background: ReactNode;
   Icon: React.ElementType;
-  description: string;
+  description?: ReactNode;
   href: string;
   cta: string;
 }
@@ -50,7 +50,6 @@ const BentoCard = ({
       "transform-gpu dark:border-border/40 dark:bg-card/40",
       className
     )}
-    key={name}
     {...props}
   >
     <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -82,10 +81,14 @@ const BentoCard = ({
           <div className="h-px flex-1 mx-4 bg-border/40" />
         </div>
 
-        <h4 className="text-heading text-foreground tracking-tight">{name}</h4>
-        <p className="max-w-lg text-pretty text-body-muted text-sm leading-relaxed">
-          {description}
-        </p>
+        <div className="text-heading text-foreground tracking-tight">
+          {name}
+        </div>
+        {description != null && description !== "" ? (
+          <div className="max-w-lg text-pretty text-body-muted text-sm leading-relaxed">
+            {description}
+          </div>
+        ) : null}
       </div>
 
       <div

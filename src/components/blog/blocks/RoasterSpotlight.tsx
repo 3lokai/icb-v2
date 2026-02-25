@@ -1,11 +1,13 @@
-import Image from "next/image";
-import Link from "next/link";
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { urlFor } from "@/lib/sanity/image";
 import { motion } from "motion/react";
+import Image from "next/image";
+import Link from "next/link";
 
 interface RoasterSpotlightProps {
   value: {

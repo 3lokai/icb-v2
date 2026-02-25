@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Author } from "@/types/blog-types";
 import { urlFor } from "@/lib/sanity/image";
 
@@ -9,6 +10,10 @@ interface DetailedAuthorProps {
 }
 
 export function DetailedAuthor({ author }: DetailedAuthorProps) {
+  const authorHref = author.slug ?? author._id;
+  const showVisitProfile = !!author.supabaseUserId;
+  const showViewAllPosts = !!authorHref;
+
   return (
     <div className="my-16 overflow-hidden rounded-2xl border bg-card p-8 shadow-sm">
       <div className="flex flex-col items-center gap-8 md:flex-row md:items-start md:text-left text-center">
@@ -42,14 +47,25 @@ export function DetailedAuthor({ author }: DetailedAuthorProps) {
           </p>
 
           <div className="mt-8 flex justify-center md:justify-start gap-4">
-            {/* We could add social links here if they were in the schema */}
-            <button className="text-body font-semibold text-primary hover:underline">
-              Follow author
-            </button>
-            <span className="text-muted-foreground/30">•</span>
-            <button className="text-body font-semibold text-muted-foreground hover:text-foreground">
-              View all posts
-            </button>
+            {showVisitProfile && (
+              <Link
+                href={`/profile/${author.supabaseUserId}`}
+                className="text-body font-semibold text-primary hover:underline"
+              >
+                Visit profile
+              </Link>
+            )}
+            {showVisitProfile && showViewAllPosts && (
+              <span className="text-muted-foreground/30">•</span>
+            )}
+            {showViewAllPosts && (
+              <Link
+                href={`/learn/author/${authorHref}#posts`}
+                className="text-body font-semibold text-muted-foreground hover:text-foreground"
+              >
+                View all posts
+              </Link>
+            )}
           </div>
         </div>
       </div>
