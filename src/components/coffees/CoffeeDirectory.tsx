@@ -134,14 +134,16 @@ function CoffeeDirectoryComponent({
       {/* Top-aligned faceted filter bar (search + primary filters + Refine panel) */}
       <CoffeeFacetedFilterBar filterMeta={filterMeta} isVisible={true} />
 
-      {/* Results Count (Moved for better flow) */}
-      {data && (
-        <div className="mt-6 text-center">
+      {/* Results Count - always reserve space to prevent CLS when data loads */}
+      <div className="mt-6 min-h-[1.5rem] flex items-center justify-center text-center">
+        {data ? (
           <p className="text-muted-foreground">
             Showing {items.length} of {data.total} coffees
           </p>
-        </div>
-      )}
+        ) : (
+          <p className="text-muted-foreground">Loading…</p>
+        )}
+      </div>
 
       {/* Mobile Filter Drawer (fallback for full filter UI on small screens) */}
       <MobileFilterDrawer
@@ -150,15 +152,9 @@ function CoffeeDirectoryComponent({
         open={isDrawerOpen}
       />
 
-      {/* Main Content - no sidebar, full width grid */}
+      {/* Main Content - no sidebar, full width grid (skeletons shown by CoffeeGrid when loading) */}
       <div className="mt-8">
         <Stack gap="8">
-          {isFetching && !data && (
-            <div className="py-12 text-center">
-              <p className="text-muted-foreground">Loading coffees...</p>
-            </div>
-          )}
-
           <CoffeeGrid isLoading={isFetching} items={items} />
 
           {/* Pagination */}

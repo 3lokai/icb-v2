@@ -12,6 +12,7 @@ import {
   generateBreadcrumbSchema,
 } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
+import { CoffeesPageContentSkeleton } from "@/components/coffees/CoffeesPageContentSkeleton";
 
 /**
  * Generate metadata for coffee directory page
@@ -269,18 +270,6 @@ async function CoffeesPageContent({
   );
 }
 
-function CoffeesPageContentFallback() {
-  return (
-    <div className="container mx-auto px-4 py-12 md:py-20">
-      <div className="animate-pulse space-y-6">
-        <div className="h-8 w-48 bg-muted rounded" />
-        <div className="h-4 w-full max-w-2xl bg-muted rounded" />
-        <div className="h-4 w-3/4 max-w-xl bg-muted rounded" />
-      </div>
-    </div>
-  );
-}
-
 /**
  * Coffee Directory Page (Server Component)
  * PageHeader streams immediately; data-dependent content streams in via Suspense
@@ -313,7 +302,7 @@ export default async function CoffeesPage({
           </>
         }
       />
-      <Suspense fallback={<CoffeesPageContentFallback />}>
+      <Suspense fallback={<CoffeesPageContentSkeleton />}>
         <CoffeesPageContent params={params} />
       </Suspense>
     </>
