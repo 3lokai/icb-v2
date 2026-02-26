@@ -33,6 +33,15 @@ export type Author = {
   instagram?: string;
 };
 
+export type CategoryMetadata = {
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  ogImage?: SanityImage;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+};
+
 export type Category = {
   _id: string;
   name: string;
@@ -41,6 +50,17 @@ export type Category = {
   kind?: "pillar" | "topic";
   color?: string;
   articleCount?: number;
+  metadata?: CategoryMetadata;
+  cover?: SanityImage;
+};
+
+export type SeriesMetadata = {
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  ogImage?: SanityImage;
+  canonicalUrl?: string;
+  noIndex?: boolean;
 };
 
 export type Series = {
@@ -48,6 +68,8 @@ export type Series = {
   name: string;
   slug: string;
   description?: string;
+  metadata?: SeriesMetadata;
+  cover?: SanityImage;
 };
 
 export type FAQItem = {
@@ -100,7 +122,10 @@ export type Article = {
     wordCount: number;
     metaTitle?: string;
     metaDescription?: string;
+    keywords?: string[];
     ogImage?: SanityImage;
+    canonicalUrl?: string;
+    noIndex?: boolean;
   };
   toc?: TOCItem[];
   series?: {

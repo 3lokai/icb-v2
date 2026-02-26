@@ -8,8 +8,14 @@ import { DetailedAuthor } from "@/components/blog/DetailedAuthor";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
-import { blogArticleSchema } from "@/lib/seo/schema";
+import {
+  blogArticleSchema,
+  generateFAQSchema,
+  generateHowToSchema,
+  generateRecipeSchema,
+} from "@/lib/seo/schema";
 import { urlFor } from "@/lib/sanity/image";
+import { extractStepsFromBody } from "@/lib/sanity/portable-text-utils";
 import ArticleContent from "@/components/blog/ArticleContent";
 import StructuredData from "@/components/seo/StructuredData";
 import {
@@ -31,19 +37,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  const defaultCanonical = `${baseUrl}/learn/${article.slug}`;
+
   return generateSEOMetadata({
     title: article.metadata?.metaTitle || article.title,
     description:
       article.metadata?.metaDescription ||
       article.description ||
       article.excerpt,
+    keywords: article.metadata?.keywords ?? article.tags,
     image: article.metadata?.ogImage
       ? urlFor(article.metadata.ogImage).width(1200).url()
       : article.cover
         ? urlFor(article.cover).width(1200).url()
         : undefined,
     type: "article",
-    canonical: `${baseUrl}/learn/${article.slug}`,
+    canonical: article.metadata?.canonicalUrl || defaultCanonical,
+    noIndex: article.metadata?.noIndex,
     articleDetails: {
       publishedTime: article.date,
       modifiedTime: article.updatedAt || article.updated || article._updatedAt,
@@ -64,26 +74,88 @@ export default async function ArticlePage({ params }: Props) {
     process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
   const articleUrl = `${baseUrl}/learn/${article.slug}`;
   const displayAuthor = article.authorRef || article.author;
+  const articleTitle = article.metadata?.metaTitle || article.title;
+  const articleDescription =
+    article.metadata?.metaDescription || article.description || article.excerpt;
+  const articleImage = article.metadata?.ogImage
+    ? urlFor(article.metadata.ogImage).width(1200).url()
+    : article.cover
+      ? urlFor(article.cover).width(1200).url()
+      : undefined;
+
   const articleJsonLd = blogArticleSchema({
-    title: article.metadata?.metaTitle || article.title,
-    description:
-      article.metadata?.metaDescription ||
-      article.description ||
-      article.excerpt,
-    image: article.metadata?.ogImage
-      ? urlFor(article.metadata.ogImage).width(1200).url()
-      : article.cover
-        ? urlFor(article.cover).width(1200).url()
-        : undefined,
+    title: articleTitle,
+    description: articleDescription,
+    image: articleImage,
     url: articleUrl,
     authorName: displayAuthor.name,
     datePublished: article.date,
     dateModified: article.updatedAt || article.updated || article._updatedAt,
   });
 
+  // Build array of schemas: Article + optional FAQ, HowTo, Recipe
+  const schemas: Record<string, unknown>[] = [articleJsonLd];
+
+  // FAQ schema when faqItems exist
+  if (article.faqItems && article.faqItems.length > 0) {
+    schemas.push(generateFAQSchema(article.faqItems));
+  }
+
+  // Extract steps from body for HowTo/Recipe
+  const extractedSteps = article.body?.length
+    ? extractStepsFromBody(article.body)
+    : [];
+  const hasSteps = extractedSteps.length > 0;
+
+  // HowTo schema for instructional content (tutorials, brewing guides)
+  const isHowTo =
+    article.contentType === "howto" ||
+    article.contentType === "tutorial" ||
+    article.hasSteps;
+  if (isHowTo && hasSteps) {
+    schemas.push(
+      generateHowToSchema({
+        name: articleTitle,
+        description: articleDescription || "",
+        image: articleImage,
+        totalTime: article.brewTime,
+        equipment: article.equipment,
+        ingredients: article.ingredients,
+        steps: extractedSteps.map((s) => ({
+          text: s.text,
+          name: s.name,
+        })),
+      })
+    );
+  }
+
+  // Recipe schema for brewing recipes (ingredients + servings + steps)
+  const hasRecipeData =
+    article.ingredients &&
+    article.ingredients.length > 0 &&
+    typeof article.servings === "number" &&
+    hasSteps;
+  if (hasRecipeData) {
+    schemas.push(
+      generateRecipeSchema({
+        name: articleTitle,
+        description: articleDescription,
+        image: articleImage,
+        author: displayAuthor.name,
+        totalTime: article.brewTime,
+        servings: article.servings,
+        ingredients: article.ingredients,
+        instructions: extractedSteps.map((s) => ({
+          text: s.text,
+          name: s.name,
+        })),
+      })
+    );
+  }
+
   return (
     <div className="pb-24">
-      <StructuredData schema={articleJsonLd} />
+      <StructuredData schema={schemas} />
       <ArticleHeader article={article} />
 
       <div className="mt-12 md:mt-20">

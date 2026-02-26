@@ -37,6 +37,11 @@ const menuItems = [
     url: "/dashboard/privacy",
     icon: "Shield",
   },
+  {
+    title: "Developer",
+    url: "/dashboard/developer",
+    icon: "Code",
+  },
 ] as const;
 
 type DashboardSidebarContentProps = {

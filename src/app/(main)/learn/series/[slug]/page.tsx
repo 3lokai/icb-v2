@@ -1,22 +1,53 @@
 import { client } from "@/lib/sanity/client";
-import { ARTICLES_BY_SERIES_QUERY } from "@/lib/sanity/queries";
+import {
+  ARTICLES_BY_SERIES_QUERY,
+  SERIES_BY_SLUG_QUERY,
+} from "@/lib/sanity/queries";
 import { Article, Series } from "@/types/blog-types";
 import { PageShell } from "@/components/primitives/page-shell";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PostCard } from "@/components/blog/PostCard";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import { urlFor } from "@/lib/sanity/image";
 
-export default async function SeriesPage({
-  params,
-}: {
+type Props = {
   params: Promise<{ slug: string }>;
-}) {
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const series = await client.fetch<Series>(SERIES_BY_SLUG_QUERY, { slug });
+
+  if (!series) return {};
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  const defaultCanonical = `${baseUrl}/learn/series/${series.slug}`;
+
+  return generateSEOMetadata({
+    title: series.metadata?.metaTitle || series.name,
+    description:
+      series.metadata?.metaDescription ||
+      series.description ||
+      `Follow this series to master everything about ${series.name}`,
+    keywords: series.metadata?.keywords,
+    image: series.metadata?.ogImage
+      ? urlFor(series.metadata.ogImage).width(1200).url()
+      : series.cover
+        ? urlFor(series.cover).width(1200).url()
+        : undefined,
+    type: "website",
+    canonical: series.metadata?.canonicalUrl || defaultCanonical,
+    noIndex: series.metadata?.noIndex,
+  });
+}
+
+export default async function SeriesPage({ params }: Props) {
   const { slug } = await params;
 
-  const series = await client.fetch<Series>(
-    `*[_type == "series" && slug.current == $slug][0] { _id, name, "slug": slug.current, description }`,
-    { slug }
-  );
+  const series = await client.fetch<Series>(SERIES_BY_SLUG_QUERY, { slug });
 
   if (!series) {
     notFound();
@@ -35,7 +66,11 @@ export default async function SeriesPage({
           series.description ||
           `Follow this series to master everything about ${series.name}`
         }
-        backgroundImage="/images/hero-learn.avif"
+        backgroundImage={
+          series.cover
+            ? urlFor(series.cover).width(1200).url()
+            : "/images/hero-learn.avif"
+        }
       />
 
       <PageShell className="py-12 md:py-20">
