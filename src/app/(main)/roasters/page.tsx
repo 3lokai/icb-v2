@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { RoasterDirectory } from "@/components/roasters/RoasterDirectory";
+import { RoastersPageContentSkeleton } from "@/components/roasters/RoastersPageContentSkeleton";
 import { fetchRoasterFilterMeta } from "@/lib/data/fetch-roaster-filter-meta";
 import { fetchRoasters } from "@/lib/data/fetch-roasters";
 import { parseRoasterSearchParams } from "@/lib/filters/roaster-url";
@@ -177,18 +178,6 @@ async function RoastersPageContent({
   );
 }
 
-function RoastersPageContentFallback() {
-  return (
-    <div className="container mx-auto px-4 py-12 md:py-20">
-      <div className="animate-pulse space-y-6">
-        <div className="h-8 w-48 bg-muted rounded" />
-        <div className="h-4 w-full max-w-2xl bg-muted rounded" />
-        <div className="h-4 w-3/4 max-w-xl bg-muted rounded" />
-      </div>
-    </div>
-  );
-}
-
 /**
  * Roaster Directory Page (Server Component)
  * PageHeader streams immediately; data-dependent content streams in via Suspense
@@ -221,7 +210,7 @@ export default async function RoastersPage({
           </>
         }
       />
-      <Suspense fallback={<RoastersPageContentFallback />}>
+      <Suspense fallback={<RoastersPageContentSkeleton />}>
         <RoastersPageContent params={params} />
       </Suspense>
     </>

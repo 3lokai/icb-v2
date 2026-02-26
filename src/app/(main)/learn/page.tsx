@@ -9,7 +9,6 @@ import {
 import { Article, Category, Series } from "@/types/blog-types";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/primitives/page-shell";
-import { PostCard } from "@/components/blog/PostCard";
 import { SeriesCard } from "@/components/blog/SeriesCard";
 import { FieldGuidePillars } from "@/components/blog/FieldGuidePillars";
 import { Stack } from "@/components/primitives/stack";
@@ -24,7 +23,7 @@ import { cn } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export default async function LearnPage() {
-  const [articles, featuredArticles, _categories, series, pillarCategories] =
+  const [articles, _featuredArticles, _categories, series, pillarCategories] =
     await Promise.all([
       client.fetch<Article[]>(ALL_ARTICLES_QUERY),
       client.fetch<Article[]>(FEATURED_ARTICLES_QUERY),
@@ -135,13 +134,18 @@ export default async function LearnPage() {
                       key={article._id}
                       name={
                         <div className="flex flex-col gap-2">
-                          <div className="flex items-center gap-2 text-caption opacity-70">
-                            <span>
-                              {format(new Date(article.date), "MMM d, yyyy")}
-                            </span>
-                            <span className="h-1 w-1 rounded-full bg-current" />
-                            <span>
-                              {article.metadata?.readingTime || 5} min read
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 text-caption opacity-70">
+                              <span>
+                                {format(new Date(article.date), "MMM d, yyyy")}
+                              </span>
+                              <span className="h-1 w-1 rounded-full bg-current" />
+                              <span>
+                                {article.metadata?.readingTime || 5} min read
+                              </span>
+                            </div>
+                            <span className="text-caption opacity-60 shrink-0">
+                              By {displayAuthor}
                             </span>
                           </div>
                           <div
@@ -151,9 +155,6 @@ export default async function LearnPage() {
                             )}
                           >
                             {article.title}
-                          </div>
-                          <div className="text-caption opacity-60 mt-1">
-                            By {displayAuthor}
                           </div>
                         </div>
                       }
@@ -186,7 +187,6 @@ export default async function LearnPage() {
                         />
                       )}
                       href={`/learn/${article.slug}`}
-                      cta="Read Article"
                     />
                   );
                 })}

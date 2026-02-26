@@ -19,12 +19,45 @@ import {
 } from "@/components/ui/breadcrumb";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { Metadata } from "next";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import { urlFor } from "@/lib/sanity/image";
 
-export default async function CategoryPage({
-  params,
-}: {
+type Props = {
   params: Promise<{ slug: string }>;
-}) {
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const category = await client.fetch<Category>(CATEGORY_BY_SLUG_QUERY, {
+    slug,
+  });
+
+  if (!category) return {};
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://www.indiancoffeebeans.com";
+  const defaultCanonical = `${baseUrl}/learn/category/${category.slug}`;
+
+  return generateSEOMetadata({
+    title: category.metadata?.metaTitle || category.name,
+    description:
+      category.metadata?.metaDescription ||
+      category.description ||
+      `Explore detailed intelligence on ${category.name}`,
+    keywords: category.metadata?.keywords,
+    image: category.metadata?.ogImage
+      ? urlFor(category.metadata.ogImage).width(1200).url()
+      : category.cover
+        ? urlFor(category.cover).width(1200).url()
+        : undefined,
+    type: "website",
+    canonical: category.metadata?.canonicalUrl || defaultCanonical,
+    noIndex: category.metadata?.noIndex,
+  });
+}
+
+export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
 
   const category = await client.fetch<Category>(CATEGORY_BY_SLUG_QUERY, {
@@ -51,7 +84,9 @@ export default async function CategoryPage({
       "/images/learn/pillars/field-notes-and-buying-guides.webp",
   };
 
-  const backgroundImage = pillarImages[slug] || "/images/hero-learn.avif";
+  const backgroundImage = category.cover
+    ? urlFor(category.cover).width(1200).url()
+    : pillarImages[slug] || "/images/hero-learn.avif";
 
   return (
     <>

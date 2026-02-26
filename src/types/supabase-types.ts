@@ -63,6 +63,82 @@ export type Database = {
         };
         Relationships: [];
       };
+      api_key_daily_usage: {
+        Row: {
+          key_id: string;
+          date: string;
+          request_count: number;
+          error_count: number;
+        };
+        Insert: {
+          key_id: string;
+          date: string;
+          request_count?: number;
+          error_count?: number;
+        };
+        Update: {
+          key_id?: string;
+          date?: string;
+          request_count?: number;
+          error_count?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "api_key_daily_usage_key_id_fkey";
+            columns: ["key_id"];
+            isOneToOne: false;
+            referencedRelation: "api_keys";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      api_keys: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          key_prefix: string;
+          key_hash: string;
+          is_active: boolean;
+          rate_limit_rpm: number;
+          created_at: string;
+          last_used_at: string | null;
+          expires_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name: string;
+          key_prefix: string;
+          key_hash: string;
+          is_active?: boolean;
+          rate_limit_rpm?: number;
+          created_at?: string;
+          last_used_at?: string | null;
+          expires_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          name?: string;
+          key_prefix?: string;
+          key_hash?: string;
+          is_active?: boolean;
+          rate_limit_rpm?: number;
+          created_at?: string;
+          last_used_at?: string | null;
+          expires_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "api_keys_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       brew_methods: {
         Row: {
           canonical_key: Database["public"]["Enums"]["grind_enum"] | null;
@@ -912,6 +988,38 @@ export type Database = {
         };
         Relationships: [];
       };
+      external_user_identities: {
+        Row: {
+          id: string;
+          key_id: string;
+          external_user_id: string;
+          anon_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          key_id: string;
+          external_user_id: string;
+          anon_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          key_id?: string;
+          external_user_id?: string;
+          anon_id?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "external_user_identities_key_id_fkey";
+            columns: ["key_id"];
+            isOneToOne: false;
+            referencedRelation: "api_keys";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       estates: {
         Row: {
           altitude_max_m: number | null;
@@ -1352,6 +1460,7 @@ export type Database = {
           id: string;
           rating: number | null;
           recommend: boolean | null;
+          source_key_id: string | null;
           status: Database["public"]["Enums"]["review_status"];
           updated_at: string;
           user_id: string | null;
@@ -1368,6 +1477,7 @@ export type Database = {
           id?: string;
           rating?: number | null;
           recommend?: boolean | null;
+          source_key_id?: string | null;
           status?: Database["public"]["Enums"]["review_status"];
           updated_at?: string;
           user_id?: string | null;
@@ -1384,6 +1494,7 @@ export type Database = {
           id?: string;
           rating?: number | null;
           recommend?: boolean | null;
+          source_key_id?: string | null;
           status?: Database["public"]["Enums"]["review_status"];
           updated_at?: string;
           user_id?: string | null;
@@ -3009,7 +3120,7 @@ export type Database = {
         | "other"
         | "washed_natural";
       review_entity_type: "coffee" | "roaster";
-      review_status: "active" | "deleted" | "flagged";
+      review_status: "active" | "deleted" | "flagged" | "pending_external";
       roast_level_enum:
         | "light"
         | "light_medium"
@@ -3239,7 +3350,7 @@ export const Constants = {
         "washed_natural",
       ],
       review_entity_type: ["coffee", "roaster"],
-      review_status: ["active", "deleted", "flagged"],
+      review_status: ["active", "deleted", "flagged", "pending_external"],
       roast_level_enum: [
         "light",
         "light_medium",

@@ -86,6 +86,10 @@ Indian Coffee Beans Directory is a modern web platform that helps coffee enthusi
    NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=your_imagekit_url
    NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
    IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
+
+   # Upstash Redis (required for external API rate limiting and usage tracking)
+   UPSTASH_REDIS_REST_URL=your_upstash_redis_rest_url
+   UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_rest_token
    ```
 
 4. **Set up Git hooks**

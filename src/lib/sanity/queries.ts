@@ -78,7 +78,18 @@ export const ARTICLE_PROJECTION = `
     wordCount,
     metaTitle,
     metaDescription,
-    ogImage
+    keywords,
+    ogImage{
+      asset->{
+        _id,
+        url,
+        metadata { dimensions { width, height } }
+      },
+      hotspot,
+      crop
+    },
+    canonicalUrl,
+    noIndex
   },
   toc[]{
     title,
@@ -153,17 +164,77 @@ export const CATEGORY_BY_SLUG_QUERY = `
     "slug": slug.current,
     description,
     kind,
-    color
+    color,
+    metadata{
+      metaTitle,
+      metaDescription,
+      keywords,
+      ogImage{
+        asset->{
+          _id,
+          url,
+          metadata { dimensions { width, height } }
+        },
+        hotspot,
+        crop
+      },
+      canonicalUrl,
+      noIndex
+    },
+    cover{
+      asset->{
+        _id,
+        url,
+        metadata { dimensions { width, height } }
+      },
+      hotspot,
+      crop
+    }
+  }
+`;
+
+export const SERIES_BY_SLUG_PROJECTION = `
+  _id,
+  name,
+  "slug": slug.current,
+  description,
+  metadata{
+    metaTitle,
+    metaDescription,
+    keywords,
+    ogImage{
+      asset->{
+        _id,
+        url,
+        metadata { dimensions { width, height } }
+      },
+      hotspot,
+      crop
+    },
+    canonicalUrl,
+    noIndex
+  },
+  cover{
+    asset->{
+      _id,
+      url,
+      metadata { dimensions { width, height } }
+    },
+    hotspot,
+    crop
   }
 `;
 
 export const ALL_SERIES_QUERY = `
   *[_type == "series" && defined(slug.current)] {
-    _id,
-    name,
-    "slug": slug.current,
-    description
+    ${SERIES_BY_SLUG_PROJECTION}
   } | order(name asc)
+`;
+
+export const SERIES_BY_SLUG_QUERY = `
+  *[_type == "series" && slug.current == $slug][0] {
+    ${SERIES_BY_SLUG_PROJECTION}
+  }
 `;
 
 export const ARTICLES_BY_SERIES_QUERY = `

@@ -99,14 +99,16 @@ export function RoasterDirectory({
         </Stack>
       </div>
 
-      {/* Results Count */}
-      {data && (
-        <div className="mb-6 text-center">
+      {/* Results Count - always reserve space to prevent CLS when data loads */}
+      <div className="mb-6 min-h-[1.5rem] flex items-center justify-center text-center">
+        {data ? (
           <p className="text-muted-foreground text-caption italic">
             Showing {items.length} of {data.total} roasters
           </p>
-        </div>
-      )}
+        ) : (
+          <p className="text-muted-foreground text-caption italic">Loading…</p>
+        )}
+      </div>
 
       {/* Mobile Filter Toggle Button */}
       <div className="mb-4 md:hidden">
@@ -141,15 +143,9 @@ export function RoasterDirectory({
         {/* Filter Sidebar */}
         <RoasterFilterSidebar filterMeta={filterMeta} />
 
-        {/* Roaster Grid */}
+        {/* Roaster Grid (skeletons shown by RoasterGrid when loading) */}
         <div className="flex-1">
           <Stack gap="8">
-            {isFetching && !data && (
-              <div className="py-12 text-center">
-                <p className="text-muted-foreground">Loading roasters...</p>
-              </div>
-            )}
-
             <RoasterGrid isLoading={isFetching} items={items} />
 
             {/* Pagination */}
