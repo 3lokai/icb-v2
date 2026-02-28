@@ -207,21 +207,21 @@ export function CoffeeFilterContent({
   // Static filter meta: always show all options regardless of current selection
   const filterMeta = initialFilterMeta;
 
-  // Transform regions to MultiSelectOption format
+  // Regions as MultiSelect options (slug for shareable URLs)
   const regionOptions: MultiSelectOption[] = useMemo(
     () =>
       filterMeta.regions.map((region) => ({
-        value: region.id,
+        value: region.slug,
         label: `${region.label} (${region.count})`,
       })),
     [filterMeta.regions]
   );
 
-  // Transform estates to MultiSelectOption format
+  // Estates as MultiSelect options (key for shareable URLs)
   const estateOptions: MultiSelectOption[] = useMemo(
     () =>
       filterMeta.estates.map((estate) => ({
-        value: estate.id,
+        value: estate.key,
         label: `${estate.label} (${estate.count})`,
       })),
     [filterMeta.estates]
@@ -257,11 +257,11 @@ export function CoffeeFilterContent({
     [filterMeta.brewMethods]
   );
 
-  // Roasters as MultiSelect options
+  // Roasters as MultiSelect options (slug for shareable URLs)
   const roasterOptions: MultiSelectOption[] = useMemo(
     () =>
       filterMeta.roasters.map((r) => ({
-        value: r.id,
+        value: r.slug,
         label: `${r.label} (${r.count})`,
       })),
     [filterMeta.roasters]
@@ -375,16 +375,23 @@ export function CoffeeFilterContent({
         <Stack gap="3">
           <label
             className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-            htmlFor="roaster_ids"
+            htmlFor="roaster_slugs"
           >
             Roasters
           </label>
           <MultiSelect
             options={roasterOptions}
-            defaultValue={filters.roaster_ids || []}
+            defaultValue={
+              filters.roaster_slugs ??
+              (filters.roaster_ids?.length
+                ? filterMeta.roasters
+                    .filter((r) => filters.roaster_ids?.includes(r.id))
+                    .map((r) => r.slug)
+                : [])
+            }
             onValueChange={(values) => {
               updateFilters({
-                roaster_ids: values.length > 0 ? values : undefined,
+                roaster_slugs: values.length > 0 ? values : undefined,
               });
             }}
             placeholder="Select roasters..."
@@ -524,16 +531,23 @@ export function CoffeeFilterContent({
         <Stack gap="3">
           <label
             className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-            htmlFor="region_ids"
+            htmlFor="region_slugs"
           >
             Regions
           </label>
           <MultiSelect
             options={regionOptions}
-            defaultValue={filters.region_ids || []}
+            defaultValue={
+              filters.region_slugs ??
+              (filters.region_ids?.length
+                ? filterMeta.regions
+                    .filter((r) => filters.region_ids?.includes(r.id))
+                    .map((r) => r.slug)
+                : [])
+            }
             onValueChange={(values) => {
               updateFilters({
-                region_ids: values.length > 0 ? values : undefined,
+                region_slugs: values.length > 0 ? values : undefined,
               });
             }}
             placeholder="Select regions..."
@@ -549,16 +563,23 @@ export function CoffeeFilterContent({
         <Stack gap="3">
           <label
             className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
-            htmlFor="estate_ids"
+            htmlFor="estate_keys"
           >
             Estates
           </label>
           <MultiSelect
             options={estateOptions}
-            defaultValue={filters.estate_ids || []}
+            defaultValue={
+              filters.estate_keys ??
+              (filters.estate_ids?.length
+                ? filterMeta.estates
+                    .filter((e) => filters.estate_ids?.includes(e.id))
+                    .map((e) => e.key)
+                : [])
+            }
             onValueChange={(values) => {
               updateFilters({
-                estate_ids: values.length > 0 ? values : undefined,
+                estate_keys: values.length > 0 ? values : undefined,
               });
             }}
             placeholder="Select estates..."

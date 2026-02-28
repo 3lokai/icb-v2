@@ -85,9 +85,9 @@ export function RoasterDetailPage({
   // Handle "See More" click - navigate with filter in URL
   const handleSeeMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    // Build URL with roaster filter
+    // Build URL with roaster filter (slug for shareable URLs)
     const queryString = buildCoffeeQueryString(
-      { roaster_ids: [roaster.id] },
+      { roaster_slugs: [roaster.slug] },
       1,
       "relevance",
       15
@@ -501,7 +501,7 @@ export function RoasterDetailPage({
                     >
                       <Link
                         href={`/coffees?${buildCoffeeQueryString(
-                          { roaster_ids: [roaster.id] },
+                          { roaster_slugs: [roaster.slug] },
                           1,
                           "relevance",
                           15

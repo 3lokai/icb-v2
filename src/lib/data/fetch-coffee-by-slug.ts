@@ -102,7 +102,7 @@ async function buildCoffeeDetailFromRow(
 
     supabase
       .from("coffee_directory_mv")
-      .select("canon_flavor_node_ids")
+      .select("canon_flavor_node_ids, canon_flavor_slugs")
       .eq("coffee_id", coffeeId)
       .single(),
   ]);
@@ -256,6 +256,10 @@ async function buildCoffeeDetailFromRow(
 
   const canonFlavorIds: string[] =
     (canonFlavorIdsResult.data?.canon_flavor_node_ids as string[]) || [];
+  const canonFlavorSlugs: string[] =
+    (canonFlavorIdsResult.data?.canon_flavor_slugs as string[] | null)?.filter(
+      Boolean
+    ) ?? [];
 
   const summaryData = summaryResult.data;
   const summary: CoffeeSummaryData = summaryData
@@ -335,6 +339,8 @@ async function buildCoffeeDetailFromRow(
     summary,
     canon_flavor_node_ids:
       canonFlavorIds.length > 0 ? canonFlavorIds : undefined,
+    canon_flavor_slugs:
+      canonFlavorSlugs.length > 0 ? canonFlavorSlugs : undefined,
   };
 }
 
