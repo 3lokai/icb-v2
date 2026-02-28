@@ -198,11 +198,11 @@ export function CoffeeFacetedFilterBar({
     );
   }, [filterMeta.species]);
 
-  // Refine panel options
+  // Refine panel options (slug/key for shareable URLs)
   const regionOptions: MultiSelectOption[] = useMemo(
     () =>
       filterMeta.regions.map((r) => ({
-        value: r.id,
+        value: r.slug,
         label: `${r.label} (${r.count})`,
       })),
     [filterMeta.regions]
@@ -210,7 +210,7 @@ export function CoffeeFacetedFilterBar({
   const estateOptions: MultiSelectOption[] = useMemo(
     () =>
       filterMeta.estates.map((e) => ({
-        value: e.id,
+        value: e.key,
         label: `${e.label} (${e.count})`,
       })),
     [filterMeta.estates]
@@ -510,13 +510,23 @@ export function CoffeeFacetedFilterBar({
                       </label>
                       <MultiSelect
                         options={filterMeta.roasters.map((r) => ({
-                          value: r.id,
+                          value: r.slug,
                           label: `${r.label} (${r.count})`,
                         }))}
-                        defaultValue={filters.roaster_ids || []}
+                        defaultValue={
+                          filters.roaster_slugs ??
+                          (filters.roaster_ids?.length
+                            ? filterMeta.roasters
+                                .filter((r) =>
+                                  filters.roaster_ids?.includes(r.id)
+                                )
+                                .map((r) => r.slug)
+                            : [])
+                        }
                         onValueChange={(values) =>
                           updateFilters({
-                            roaster_ids: values.length > 0 ? values : undefined,
+                            roaster_slugs:
+                              values.length > 0 ? values : undefined,
                           })
                         }
                         placeholder="Select roasters..."
@@ -532,10 +542,20 @@ export function CoffeeFacetedFilterBar({
                       </label>
                       <MultiSelect
                         options={regionOptions}
-                        defaultValue={filters.region_ids || []}
+                        defaultValue={
+                          filters.region_slugs ??
+                          (filters.region_ids?.length
+                            ? filterMeta.regions
+                                .filter((r) =>
+                                  filters.region_ids?.includes(r.id)
+                                )
+                                .map((r) => r.slug)
+                            : [])
+                        }
                         onValueChange={(values) =>
                           updateFilters({
-                            region_ids: values.length > 0 ? values : undefined,
+                            region_slugs:
+                              values.length > 0 ? values : undefined,
                           })
                         }
                         placeholder="Select regions..."
@@ -551,10 +571,19 @@ export function CoffeeFacetedFilterBar({
                       </label>
                       <MultiSelect
                         options={estateOptions}
-                        defaultValue={filters.estate_ids || []}
+                        defaultValue={
+                          filters.estate_keys ??
+                          (filters.estate_ids?.length
+                            ? filterMeta.estates
+                                .filter((e) =>
+                                  filters.estate_ids?.includes(e.id)
+                                )
+                                .map((e) => e.key)
+                            : [])
+                        }
                         onValueChange={(values) =>
                           updateFilters({
-                            estate_ids: values.length > 0 ? values : undefined,
+                            estate_keys: values.length > 0 ? values : undefined,
                           })
                         }
                         placeholder="Select estates..."
@@ -873,7 +902,7 @@ export function CoffeeFacetedFilterBar({
                   </button>
                 </Badge>
               ) : null}
-              {filters.region_ids?.length ? (
+              {filters.region_slugs?.length || filters.region_ids?.length ? (
                 <Badge
                   className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
@@ -882,14 +911,19 @@ export function CoffeeFacetedFilterBar({
                   <button
                     aria-label="Remove region"
                     className="ml-1 rounded-full transition-colors hover:bg-accent/20"
-                    onClick={() => updateFilters({ region_ids: undefined })}
+                    onClick={() =>
+                      updateFilters({
+                        region_slugs: undefined,
+                        region_ids: undefined,
+                      })
+                    }
                     type="button"
                   >
                     <Icon name="X" size={10} />
                   </button>
                 </Badge>
               ) : null}
-              {filters.roaster_ids?.length ? (
+              {filters.roaster_slugs?.length || filters.roaster_ids?.length ? (
                 <Badge
                   className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
@@ -898,7 +932,12 @@ export function CoffeeFacetedFilterBar({
                   <button
                     aria-label="Remove roaster"
                     className="ml-1 rounded-full transition-colors hover:bg-accent/20"
-                    onClick={() => updateFilters({ roaster_ids: undefined })}
+                    onClick={() =>
+                      updateFilters({
+                        roaster_slugs: undefined,
+                        roaster_ids: undefined,
+                      })
+                    }
                     type="button"
                   >
                     <Icon name="X" size={10} />

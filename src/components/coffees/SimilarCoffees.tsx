@@ -50,12 +50,14 @@ export function SimilarCoffees({ coffee }: SimilarCoffeesProps) {
     return null;
   }
 
-  // Build "View more" URL with filters
+  // Build "View more" URL with filters (prefer slugs for shareable URLs)
   const buildViewMoreUrl = (): string => {
     const params = new URLSearchParams();
 
-    // Add flavor IDs
-    if (
+    // Add flavor filters: prefer slugs, fallback to IDs
+    if (coffee.canon_flavor_slugs && coffee.canon_flavor_slugs.length > 0) {
+      params.set("flavors", coffee.canon_flavor_slugs.join(","));
+    } else if (
       coffee.canon_flavor_node_ids &&
       coffee.canon_flavor_node_ids.length > 0
     ) {

@@ -343,6 +343,19 @@ export function buildCoffeeQueryString(
   addArrayFilter(params, "roasters", filters.roaster_slugs);
   addArrayFilter(params, "regions", filters.region_slugs);
   addArrayFilter(params, "estates", filters.estate_keys);
+  // ID fallbacks (for programmatic callers that only have IDs)
+  if (!filters.roaster_slugs?.length) {
+    addArrayFilter(params, "roasterIds", filters.roaster_ids);
+  }
+  if (!filters.region_slugs?.length) {
+    addArrayFilter(params, "regionIds", filters.region_ids);
+  }
+  if (!filters.estate_keys?.length) {
+    addArrayFilter(params, "estateIds", filters.estate_ids);
+  }
+  if (!filters.canon_flavor_slugs?.length) {
+    addArrayFilter(params, "canonFlavorIds", filters.canon_flavor_node_ids);
+  }
   addArrayFilter(params, "brewMethodIds", filters.brew_method_ids);
   addArrayFilter(params, "coffeeIds", filters.coffee_ids);
 

@@ -84,6 +84,8 @@ export type CoffeeDetail = {
 
   // Canonical flavor node IDs for similar coffee matching
   canon_flavor_node_ids?: string[];
+  // Canonical flavor slugs (for shareable filter URLs)
+  canon_flavor_slugs?: string[];
 };
 
 // ----------------------------------------------------------------------------
