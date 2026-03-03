@@ -636,3 +636,43 @@ export async function getRoastersForDropdown(): Promise<
     };
   }
 }
+
+export type CoffeeForCompass = {
+  id: string;
+  name: string;
+  roaster_id: string;
+  roast_level: string | null;
+};
+
+/**
+ * Server action to fetch coffees for Coffee Compass dropdowns.
+ * Returns id, name, roaster_id, roast_level for active/seasonal coffees.
+ */
+export async function getCoffeesForCompass(): Promise<
+  CoffeeForCompass[] | { error: string }
+> {
+  try {
+    const supabase = process.env.SUPABASE_SECRET_KEY
+      ? await createServiceRoleClient()
+      : await createClient();
+
+    const { data: coffees, error } = await supabase
+      .from("coffees")
+      .select("id, name, roaster_id, roast_level")
+      .in("status", ["active", "seasonal"])
+      .not("name", "is", null)
+      .order("name", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching coffees for compass:", error);
+      return { error: "Failed to fetch coffees" };
+    }
+
+    return (coffees || []) as CoffeeForCompass[];
+  } catch (error) {
+    console.error("Error fetching coffees for compass:", error);
+    return {
+      error: error instanceof Error ? error.message : "Failed to fetch coffees",
+    };
+  }
+}

@@ -43,7 +43,7 @@ const toolsListSchema = {
   name: "Coffee Tools Collection",
   description: "Professional coffee brewing tools and calculators",
   url: "https://indiancoffeebeans.com/tools",
-  numberOfItems: 2,
+  numberOfItems: 3,
   itemListElement: [
     {
       "@type": "SoftwareApplication",
@@ -57,6 +57,13 @@ const toolsListSchema = {
       name: "Expert Coffee Recipes",
       url: "https://indiancoffeebeans.com/tools/expert-recipes",
       description: "Championship coffee brewing recipes from world experts",
+    },
+    {
+      "@type": "WebApplication",
+      name: "Coffee Compass",
+      url: "https://indiancoffeebeans.com/tools/coffee-compass",
+      description:
+        "Deterministic brew diagnosis tool — pick symptoms, get precise corrective actions",
     },
   ],
 };
@@ -82,6 +89,16 @@ const featuredTools = [
     cta: "Browse Recipes",
     color: "text-accent",
     bgColor: "bg-accent/10",
+  },
+  {
+    icon: "Compass",
+    title: "Coffee Compass",
+    description:
+      "Diagnose your brew instantly. Pick symptoms you taste — sour, bitter, watery — and get precise, method-specific fixes. No AI — pure coffee physics.",
+    href: "/tools/coffee-compass",
+    cta: "Diagnose Brew",
+    color: "text-chart-2",
+    bgColor: "bg-chart-2/10",
   },
 ];
 
@@ -187,7 +204,7 @@ export default function ToolsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {featuredTools.map((tool) => (
                 <Card
                   key={tool.title}

@@ -653,6 +653,16 @@ export function QuickRating({
             {/* Actions - show after save */}
             {isSaved && (
               <Cluster gap="2" className="pt-2 border-t border-border/20">
+                {entityType === "coffee" && rating > 0 && rating < 4 && (
+                  <Button asChild variant="outline" size="sm">
+                    <Link
+                      href={`/tools/coffee-compass?coffeeId=${encodeURIComponent(entityId)}`}
+                    >
+                      <Icon name="Compass" size={14} className="mr-1.5" />
+                      Fix Your Brew
+                    </Link>
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="sm"
