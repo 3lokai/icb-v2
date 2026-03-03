@@ -51,10 +51,20 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
   }, [coffee.id]);
 
   const handleScrollToRating = useCallback(() => {
-    // Scroll to rating section
     const ratingSection = document.getElementById("rating-section");
     if (ratingSection) {
       ratingSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.location.hash === "#rating-section") {
+      requestAnimationFrame(() => {
+        const el = document.getElementById("rating-section");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
     }
   }, []);
 

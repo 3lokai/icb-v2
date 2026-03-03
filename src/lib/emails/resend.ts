@@ -40,21 +40,18 @@ export async function sendWelcomeEmail({
       cc: ccEmail,
       subject: "Welcome to IndianCoffeeBeans!",
       text: `Hey ${userName},
+GT here, founder of IndianCoffeeBeans.com.
+Thanks for signing up! ICB is India's largest independent specialty coffee platform — 70+ roasters, 900+ coffees, and a growing community of ratings and reviews. No sponsors, no paid placements. Just data and community.
+Here's what you can do on ICB:
 
-GT here, founder of IndianCoffeeBeans.
+Explore the directory and discover Indian roasters you didn't know existed
+Rate and review coffees you've tried
+Use our tools to find your next bag
+Set up your profile and share your coffee setup with the community
 
-Thanks for signing up! What brought you here?
-
-We're just launching, so your feedback is gold. Here's what you can do:
-
-• Explore our coffee directory and discover amazing Indian roasters
-• Rate and review coffees you've tried
-• Use our tools to find your perfect coffee match
-• Share your coffee journey with our community
-
-We'd love to hear what you think - just reply to this email with any thoughts, suggestions, or questions.
-
-Cheers,  
+Every two weeks I send ICB Fortnight, a digest of what's new on the platform, what the community is talking about, and the best from the Indian coffee world. Keep an eye on your inbox.
+Btw, what brought you here? Just reply, I read everything.
+Cheers,
 GT
 
 ---
@@ -92,26 +89,25 @@ export async function sendNewsletterWelcomeEmail({
     await resend.emails.send({
       from: "thrilok.gt@indiancoffeebeans.com",
       to: email,
-      subject: "Thanks for subscribing to IndianCoffeeBeans newsletter!",
+      subject: "Welcome to ICB Fortnight",
       text: `Hey ${userName},
 
-Thanks for signing up for the IndianCoffeeBeans newsletter 🙌
+GT here, founder of IndianCoffeeBeans.com.
 
-Quick heads-up: the newsletter is still **brewing**.
+Thanks for subscribing! ICB is India's largest independent specialty coffee platform — 70+ roasters, 900+ coffees, and a growing community of ratings and reviews. No sponsors, no paid placements. Just data and community.
 
-I'm actively working on the site and the data behind it, and once things settle a bit, I'll start sending regular updates here — new roasters, interesting coffees, site updates, and the occasional coffee rant.
+Every two weeks I send ICB Fortnight — a digest of what's new on the platform, what the community is talking about, and the best from the Indian coffee world. Keep an eye on your inbox.
 
-No spam. No nonsense. Just useful coffee stuff.
+In the meantime, explore the directory at indiancoffeebeans.com — you might find a roaster from your city you didn't know existed.
 
-Appreciate your patience (and your trust).
-More coming soon.
+What brought you here? Just reply — I read everything.
 
 Cheers,
 GT
 
 —
-IndianCoffeeBeans
-Discover Indian specialty coffee`,
+IndianCoffeeBeans.com
+India's specialty coffee directory. Community-powered. Free.`,
     });
   } catch (error) {
     // Log error but don't throw - email sending should never break the app

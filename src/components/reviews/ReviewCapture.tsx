@@ -369,6 +369,18 @@ export function ReviewCapture({
                     <Icon name="Check" size={12} className="mr-1.5" />
                     Saved
                   </Badge>
+                  {entityType === "coffee" &&
+                    userReview.rating != null &&
+                    userReview.rating < 4 && (
+                      <Button asChild variant="outline" size="sm">
+                        <Link
+                          href={`/tools/coffee-compass?coffeeId=${encodeURIComponent(entityId)}`}
+                        >
+                          <Icon name="Compass" size={14} className="mr-1.5" />
+                          Fix Your Brew
+                        </Link>
+                      </Button>
+                    )}
                   <Button
                     type="button"
                     variant="ghost"
