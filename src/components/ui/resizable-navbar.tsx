@@ -312,7 +312,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
   return (
     <motion.div
       className={cn(
-        "absolute inset-0 hidden flex-row items-center justify-center gap-2 font-medium text-muted-foreground text-body transition-colors hover:text-foreground lg:flex",
+        "hidden min-w-0 flex-1 flex-row items-center justify-center gap-2 pr-6 font-medium text-muted-foreground text-body transition-colors hover:text-foreground lg:flex",
         className
       )}
       onMouseLeave={handleLeave}

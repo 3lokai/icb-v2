@@ -61,9 +61,17 @@ const baseNavItems = [
     link: "/learn",
     children: [
       { name: "Articles", link: "/learn" },
-      { name: "Brew Calculator", link: "/tools/coffee-calculator" },
-      { name: "Expert recipes", link: "/tools/expert-recipes" },
       { name: "Glossary", link: "/learn/glossary" },
+    ],
+  },
+  {
+    name: "Tools",
+    link: "/tools",
+    children: [
+      { name: "All Tools", link: "/tools" },
+      { name: "Brew Calculator", link: "/tools/coffee-calculator" },
+      { name: "Expert Recipes", link: "/tools/expert-recipes" },
+      { name: "Coffee Compass", link: "/tools/coffee-compass" },
     ],
   },
 ];
@@ -138,7 +146,7 @@ export function Header() {
         {/* Logo */}
         <Link
           aria-label="Indian Coffee Beans"
-          className="relative z-20 mr-8 flex items-center gap-2 px-2 py-1"
+          className="relative z-20 mr-8 flex shrink-0 items-center gap-2 px-2 py-1"
           href="/"
         >
           <Logo
@@ -152,7 +160,7 @@ export function Header() {
         <NavItems items={navItems} />
 
         {/* Desktop Actions */}
-        <div className="relative z-20 ml-auto flex items-center gap-2">
+        <div className="relative z-20 ml-auto flex shrink-0 items-center gap-2">
           <button
             aria-label="Search"
             className={cn(buttonVariants({ size: "icon", variant: "ghost" }))}
