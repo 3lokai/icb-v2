@@ -113,20 +113,31 @@ async function resolveRegionSlugsToIds(
  * Helper to resolve international (non-India) region IDs for filtering.
  * Used when international_only filter is set - coffees must have at least one
  * origin region outside India.
+ * Throws on DB errors; returns [] only when queries succeed but return no rows.
  */
 async function resolveInternationalRegionIds(supabase: any): Promise<string[]> {
-  const { data: canonRegions } = await supabase
+  const { data: canonRegions, error: canonError } = await supabase
     .from("canon_regions")
     .select("id")
     .neq("country", "India");
+  if (canonError) {
+    throw new Error(
+      `Failed to resolve international regions (canon_regions): ${canonError.message}`
+    );
+  }
   if (!canonRegions || canonRegions.length === 0) {
     return [];
   }
   const canonRegionIds = canonRegions.map((r: any) => r.id);
-  const { data: regions } = await supabase
+  const { data: regions, error: regionsError } = await supabase
     .from("regions")
     .select("id")
     .in("canon_region_id", canonRegionIds);
+  if (regionsError) {
+    throw new Error(
+      `Failed to resolve international regions (regions): ${regionsError.message}`
+    );
+  }
   return (regions || []).map((r: any) => r.id);
 }
 
@@ -505,16 +516,15 @@ export async function fetchCoffees(
   if (filters.international_only === true) {
     const internationalRegionIds =
       await resolveInternationalRegionIds(supabase);
-    if (internationalRegionIds.length > 0) {
-      if (resolvedFilters.region_ids?.length) {
-        const intersection = resolvedFilters.region_ids.filter((id) =>
-          internationalRegionIds.includes(id)
-        );
-        resolvedFilters.region_ids =
-          intersection.length > 0 ? intersection : internationalRegionIds;
-      } else {
-        resolvedFilters.region_ids = internationalRegionIds;
-      }
+    if (resolvedFilters.region_ids?.length) {
+      // User provided region filters: intersect with international regions only
+      // Never broaden to all international regions; empty intersection is valid
+      resolvedFilters.region_ids = resolvedFilters.region_ids.filter((id) =>
+        internationalRegionIds.includes(id)
+      );
+    } else if (internationalRegionIds.length > 0) {
+      // User did not provide region filters: use all international regions
+      resolvedFilters.region_ids = internationalRegionIds;
     }
   }
 
