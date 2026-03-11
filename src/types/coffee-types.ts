@@ -113,6 +113,7 @@ export type CoffeeFilters = {
 
   // Boolean flags
   decaf_only?: boolean;
+  international_only?: boolean;
   limited_only?: boolean;
   in_stock_only?: boolean;
   has_250g_only?: boolean;

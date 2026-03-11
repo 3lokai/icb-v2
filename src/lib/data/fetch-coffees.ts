@@ -110,6 +110,27 @@ async function resolveRegionSlugsToIds(
 }
 
 /**
+ * Helper to resolve international (non-India) region IDs for filtering.
+ * Used when international_only filter is set - coffees must have at least one
+ * origin region outside India.
+ */
+async function resolveInternationalRegionIds(supabase: any): Promise<string[]> {
+  const { data: canonRegions } = await supabase
+    .from("canon_regions")
+    .select("id")
+    .neq("country", "India");
+  if (!canonRegions || canonRegions.length === 0) {
+    return [];
+  }
+  const canonRegionIds = canonRegions.map((r: any) => r.id);
+  const { data: regions } = await supabase
+    .from("regions")
+    .select("id")
+    .in("canon_region_id", canonRegionIds);
+  return (regions || []).map((r: any) => r.id);
+}
+
+/**
  * Helper to resolve estate keys to IDs
  */
 async function resolveEstateKeysToIds(
@@ -477,6 +498,23 @@ export async function fetchCoffees(
     );
     if (regionIds.length > 0) {
       resolvedFilters.region_ids = regionIds;
+    }
+  }
+
+  // Resolve international (non-India) region IDs when international_only is set
+  if (filters.international_only === true) {
+    const internationalRegionIds =
+      await resolveInternationalRegionIds(supabase);
+    if (internationalRegionIds.length > 0) {
+      if (resolvedFilters.region_ids?.length) {
+        const intersection = resolvedFilters.region_ids.filter((id) =>
+          internationalRegionIds.includes(id)
+        );
+        resolvedFilters.region_ids =
+          intersection.length > 0 ? intersection : internationalRegionIds;
+      } else {
+        resolvedFilters.region_ids = internationalRegionIds;
+      }
     }
   }
 
