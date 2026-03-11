@@ -294,6 +294,8 @@ export function CoffeeFacetedFilterBar({
     !!filters.roaster_ids?.length || // Backward compat
     !!filters.in_stock_only ||
     !!filters.has_250g_only ||
+    !!filters.decaf_only ||
+    !!filters.international_only ||
     filters.works_with_milk === true ||
     !!filters.min_price ||
     !!filters.max_price;
@@ -706,6 +708,32 @@ export function CoffeeFacetedFilterBar({
                     </label>
                     <label className="flex cursor-pointer items-center gap-2">
                       <Switch
+                        checked={filters.decaf_only ?? false}
+                        onCheckedChange={(checked) =>
+                          updateFilters({
+                            decaf_only: checked || undefined,
+                          })
+                        }
+                      />
+                      <span className="text-caption font-medium">
+                        Decaf Only
+                      </span>
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2">
+                      <Switch
+                        checked={filters.international_only ?? false}
+                        onCheckedChange={(checked) =>
+                          updateFilters({
+                            international_only: checked || undefined,
+                          })
+                        }
+                      />
+                      <span className="text-caption font-medium">
+                        International Coffees
+                      </span>
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2">
+                      <Switch
                         checked={filters.works_with_milk === true}
                         onCheckedChange={(checked) =>
                           updateFilters({
@@ -858,6 +886,40 @@ export function CoffeeFacetedFilterBar({
                     className="ml-1 rounded-full transition-colors hover:bg-accent/20"
                     onClick={() =>
                       updateFilters({ works_with_milk: undefined })
+                    }
+                    type="button"
+                  >
+                    <Icon name="X" size={10} />
+                  </button>
+                </Badge>
+              )}
+              {filters.decaf_only && (
+                <Badge
+                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  variant="secondary"
+                >
+                  Decaf Only
+                  <button
+                    aria-label="Remove Decaf Only"
+                    className="ml-1 rounded-full transition-colors hover:bg-accent/20"
+                    onClick={() => updateFilters({ decaf_only: undefined })}
+                    type="button"
+                  >
+                    <Icon name="X" size={10} />
+                  </button>
+                </Badge>
+              )}
+              {filters.international_only && (
+                <Badge
+                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  variant="secondary"
+                >
+                  International
+                  <button
+                    aria-label="Remove International Coffees"
+                    className="ml-1 rounded-full transition-colors hover:bg-accent/20"
+                    onClick={() =>
+                      updateFilters({ international_only: undefined })
                     }
                     type="button"
                   >

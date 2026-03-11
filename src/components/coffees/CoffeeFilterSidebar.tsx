@@ -682,6 +682,38 @@ export function CoffeeFilterContent({
           </label>
           <label
             className="group flex cursor-pointer items-center justify-between"
+            htmlFor="decaf_only"
+          >
+            <span className="text-caption font-medium transition-colors group-hover:text-accent">
+              Decaf Only
+            </span>
+            <Switch
+              id="decaf_only"
+              checked={filters.decaf_only ?? false}
+              onCheckedChange={(checked) =>
+                updateFilters({ decaf_only: checked || undefined })
+              }
+            />
+          </label>
+          <label
+            className="group flex cursor-pointer items-center justify-between"
+            htmlFor="international_only"
+          >
+            <span className="text-caption font-medium transition-colors group-hover:text-accent">
+              International Coffees
+            </span>
+            <Switch
+              id="international_only"
+              checked={filters.international_only ?? false}
+              onCheckedChange={(checked) =>
+                updateFilters({
+                  international_only: checked || undefined,
+                })
+              }
+            />
+          </label>
+          <label
+            className="group flex cursor-pointer items-center justify-between"
             htmlFor="works_with_milk"
           >
             <span className="text-caption font-medium transition-colors group-hover:text-accent">
