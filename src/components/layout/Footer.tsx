@@ -121,7 +121,7 @@ export function Footer() {
             </div>
 
             {/* Link columns group - Spans 6 on md with reduced gap */}
-            <div className="grid grid-cols-1 gap-6 md:col-span-6 md:ml-8 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:col-span-6 md:ml-8 md:grid-cols-2 lg:grid-cols-4">
               {/* Column 2: Discover */}
               <div>
                 <Stack gap="6">
@@ -143,30 +143,19 @@ export function Footer() {
                         </Link>
                       </li>
                     ))}
-                    <li>
-                      <div className="flex items-center gap-2 text-caption text-muted-foreground">
-                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0" />
-                        <span>Regions</span>
-                        <span className="rounded-full bg-accent/10 px-2 py-0.5 text-micro font-medium text-accent">
-                          Coming Soon
-                        </span>
-                      </div>
-                    </li>
                   </ul>
                 </Stack>
               </div>
 
-              {/* Column 3: Resources */}
+              {/* Column 3: Learn */}
               <div>
                 <Stack gap="6">
                   <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
-                    Resources
+                    Learn
                   </h4>
                   <ul className="space-y-3">
                     {[
                       { href: "/learn", label: "Articles" },
-                      { href: "/tools/coffee-calculator", label: "Calculator" },
-                      { href: "/tools/expert-recipes", label: "Recipes" },
                       { href: "/learn/glossary", label: "Glossary" },
                     ].map(({ href, label }) => (
                       <li key={label}>
@@ -183,7 +172,37 @@ export function Footer() {
                 </Stack>
               </div>
 
-              {/* Column 4: About ICB */}
+              {/* Column 4: Tools */}
+              <div>
+                <Stack gap="6">
+                  <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
+                    Tools
+                  </h4>
+                  <ul className="space-y-3">
+                    {[
+                      { href: "/tools", label: "All Tools" },
+                      { href: "/tools/coffee-calculator", label: "Calculator" },
+                      { href: "/tools/expert-recipes", label: "Recipes" },
+                      {
+                        href: "/tools/coffee-compass",
+                        label: "Coffee Compass",
+                      },
+                    ].map(({ href, label }) => (
+                      <li key={label}>
+                        <Link
+                          className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
+                          href={href}
+                        >
+                          <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                          {label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </Stack>
+              </div>
+
+              {/* Column 5: About ICB */}
               <div>
                 <Stack gap="6">
                   <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
