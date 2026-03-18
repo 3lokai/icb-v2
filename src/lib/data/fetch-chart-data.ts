@@ -10,7 +10,8 @@ export type ChartDataItem = {
  */
 export async function fetchChartData(
   dataKey: string,
-  limit: number = 10
+  limit: number = 10,
+  region?: string
 ): Promise<ChartDataItem[]> {
   const supabase = await createClient();
 
@@ -26,10 +27,17 @@ export async function fetchChartData(
     selectFields = "canon_estate_names, roaster_name";
   if (dataKey === "estate_region_distribution")
     selectFields = "canon_estate_names, canon_region_names";
+  if (dataKey === "brew_method_distribution_light_roast")
+    selectFields = "brew_method_canonical_keys, roast_level";
 
-  const { data: coffees, error } = await supabase
-    .from("coffee_directory_mv")
-    .select(selectFields);
+  let query = supabase.from("coffee_directory_mv").select(selectFields);
+
+  if (region) {
+    // canon_region_names is an array of strings, so we use contains
+    query = query.contains("canon_region_slugs", [region]);
+  }
+
+  const { data: coffees, error } = await query;
 
   if (error) {
     console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
@@ -75,6 +83,9 @@ export async function fetchChartData(
 
     case "estate_region_distribution":
       return aggregateEstateRegionDistribution(coffees);
+
+    case "brew_method_distribution_light_roast":
+      return aggregateLightRoastBrewMethods(coffees, limit);
 
     default:
       return [];
@@ -238,6 +249,32 @@ function aggregateArrayField(
 
   return Object.entries(counts)
     .map(([label, value]) => ({ label, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, limit || undefined);
+}
+
+/**
+ * Aggregates brew methods specifically for light and light-medium roast coffees.
+ */
+function aggregateLightRoastBrewMethods(
+  data: any[],
+  limit?: number
+): ChartDataItem[] {
+  const counts: Record<string, number> = {};
+  data.forEach((item) => {
+    // Only count if it's a light or light_medium roast
+    if (item.roast_level === "light" || item.roast_level === "light_medium") {
+      const arr = item.brew_method_canonical_keys as string[] | null;
+      if (Array.isArray(arr)) {
+        arr.forEach((val) => {
+          counts[val] = (counts[val] || 0) + 1;
+        });
+      }
+    }
+  });
+
+  return Object.entries(counts)
+    .map(([label, value]) => ({ label: formatEnumLabel(label), value }))
     .sort((a, b) => b.value - a.value)
     .slice(0, limit || undefined);
 }

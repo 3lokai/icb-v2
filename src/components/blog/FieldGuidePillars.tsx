@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { Icon, IconName } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
+import { Badge } from "@/components/ui/badge";
 import { Category } from "@/types/blog-types";
 
 /**
@@ -94,6 +95,17 @@ function PillarCard({
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/5" />
+
+            {category.articleCount !== undefined &&
+              category.articleCount > 0 && (
+                <Badge
+                  variant="onMedia"
+                  className="absolute top-3 right-3 sm:top-4 sm:right-4"
+                >
+                  {category.articleCount}{" "}
+                  {category.articleCount === 1 ? "guide" : "guides"}
+                </Badge>
+              )}
 
             <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white">
               <h3 className="text-subheading sm:text-heading font-semibold leading-tight text-balance drop-shadow-lg line-clamp-2">

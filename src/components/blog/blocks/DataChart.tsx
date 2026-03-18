@@ -23,6 +23,7 @@ interface DataChartProps {
     chartType: "bar" | "pie" | "donut";
     dataKey: string;
     limit?: number;
+    region?: string;
   };
 }
 
@@ -71,11 +72,13 @@ export function DataChart({ value }: DataChartProps) {
   const { data, isLoading, error } = useQuery<ChartDataItem[]>({
     queryKey: ["chart-data", value.dataKey, value.limit],
     queryFn: async () => {
-      const res = await fetch(
-        `/api/blog/chart-data?dataKey=${value.dataKey}&limit=${
-          value.limit || 10
-        }`
-      );
+      let url = `/api/blog/chart-data?dataKey=${value.dataKey}&limit=${
+        value.limit || 10
+      }`;
+      if (value.region) {
+        url += `&region=${encodeURIComponent(value.region)}`;
+      }
+      const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch chart data");
       return res.json();
     },

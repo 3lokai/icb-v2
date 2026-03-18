@@ -79,27 +79,27 @@ export function PostCard({ article, featured = false }: PostCardProps) {
           featured ? "md:w-1/2 md:justify-center" : ""
         )}
       >
-        <div className="mb-3 flex items-center gap-2 text-caption text-muted-foreground">
-          <span>{format(new Date(date), "MMM d, yyyy")}</span>
-          <span className="h-1 w-1 rounded-full bg-muted-foreground/30" />
-          <span>{metadata?.readingTime || 5} min read</span>
-        </div>
-
         <h3
           className={cn(
-            "mb-3 font-semibold tracking-tight transition-colors group-hover:text-primary",
+            "mb-2 font-semibold tracking-tight transition-colors group-hover:text-primary",
             featured ? "text-title" : "text-heading"
           )}
         >
           {title}
         </h3>
 
+        <div className="mb-3 flex items-center gap-2 text-caption text-foreground/60">
+          <span>{format(new Date(date), "MMM d, yyyy")}</span>
+          <span className="h-1 w-1 rounded-full bg-foreground/30" />
+          <span>{metadata?.readingTime || 5} min read</span>
+        </div>
+
         <p className="line-clamp-3 text-body text-muted-foreground">
           {excerpt || article.description}
         </p>
 
         <div className="mt-6 flex items-center gap-3">
-          <div className="text-caption">{displayAuthor}</div>
+          <div className="text-caption text-foreground/60">{displayAuthor}</div>
         </div>
       </div>
     </Link>

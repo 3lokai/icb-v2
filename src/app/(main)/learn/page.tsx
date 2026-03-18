@@ -134,8 +134,16 @@ export default async function LearnPage() {
                       key={article._id}
                       name={
                         <div className="flex flex-col gap-2">
+                          <div
+                            className={cn(
+                              "font-semibold tracking-tight leading-tight",
+                              isFeatured ? "text-2xl md:text-3xl" : "text-xl"
+                            )}
+                          >
+                            {article.title}
+                          </div>
                           <div className="flex items-center justify-between gap-2">
-                            <div className="flex items-center gap-2 text-caption opacity-70">
+                            <div className="flex items-center gap-2 text-caption text-muted-foreground">
                               <span>
                                 {format(new Date(article.date), "MMM d, yyyy")}
                               </span>
@@ -144,17 +152,9 @@ export default async function LearnPage() {
                                 {article.metadata?.readingTime || 5} min read
                               </span>
                             </div>
-                            <span className="text-caption opacity-60 shrink-0">
+                            <span className="text-caption text-muted-foreground shrink-0">
                               By {displayAuthor}
                             </span>
-                          </div>
-                          <div
-                            className={cn(
-                              "font-semibold tracking-tight leading-tight",
-                              isFeatured ? "text-2xl md:text-3xl" : "text-xl"
-                            )}
-                          >
-                            {article.title}
                           </div>
                         </div>
                       }

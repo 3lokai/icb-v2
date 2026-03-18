@@ -10,6 +10,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const dataKey = searchParams.get("dataKey");
     const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const region = searchParams.get("region");
 
     if (!dataKey) {
       return NextResponse.json(
@@ -18,7 +19,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const data = await fetchChartData(dataKey, limit);
+    const data = await fetchChartData(dataKey, limit, region || undefined);
 
     return NextResponse.json(data);
   } catch (error) {
