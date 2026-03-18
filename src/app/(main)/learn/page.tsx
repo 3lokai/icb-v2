@@ -1,7 +1,6 @@
 import { client } from "@/lib/sanity/client";
 import {
   ALL_ARTICLES_QUERY,
-  FEATURED_ARTICLES_QUERY,
   ALL_CATEGORIES_QUERY,
   ALL_SERIES_QUERY,
   PILLAR_CATEGORIES_QUERY,
@@ -11,50 +10,25 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/primitives/page-shell";
 import { SeriesCard } from "@/components/blog/SeriesCard";
 import { FieldGuidePillars } from "@/components/blog/FieldGuidePillars";
+import { PostCard } from "@/components/blog/PostCard";
+import { ArticleGrid } from "@/components/blog/ArticleParallaxGrid";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
-import { BentoGrid, BentoCard } from "@/components/ui/bento-grid";
-import { Icon } from "@/components/common/Icon";
-import { format } from "date-fns";
-import { urlFor } from "@/lib/sanity/image";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export default async function LearnPage() {
-  const [articles, _featuredArticles, _categories, series, pillarCategories] =
-    await Promise.all([
-      client.fetch<Article[]>(ALL_ARTICLES_QUERY),
-      client.fetch<Article[]>(FEATURED_ARTICLES_QUERY),
-      client.fetch<Category[]>(ALL_CATEGORIES_QUERY),
-      client.fetch<Series[]>(ALL_SERIES_QUERY),
-      client.fetch<Category[]>(PILLAR_CATEGORIES_QUERY),
-    ]);
+  const [articles, _categories, series, pillarCategories] = await Promise.all([
+    client.fetch<Article[]>(ALL_ARTICLES_QUERY),
+    client.fetch<Category[]>(ALL_CATEGORIES_QUERY),
+    client.fetch<Series[]>(ALL_SERIES_QUERY),
+    client.fetch<Category[]>(PILLAR_CATEGORIES_QUERY),
+  ]);
 
-  // Use all articles, featured articles will be highlighted in the grid
-  // Sort by date to keep the feed chronological
-  const displayArticles = [...articles].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
-
-  // Helper to get icon for category
-  const getCategoryIcon = (categorySlug: string) => {
-    switch (categorySlug) {
-      case "seed-to-farm":
-        return "Plant";
-      case "roasting-craft":
-        return "Fire";
-      case "brewing-science":
-        return "Flask";
-      case "tasting-sensory":
-        return "Eye";
-      case "industry-culture":
-        return "Buildings";
-      default:
-        return "BookOpen";
-    }
-  };
+  const featuredArticles = articles.filter((a) => a.featured);
+  const regularArticles = articles
+    .filter((a) => !a.featured)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <>
@@ -97,7 +71,32 @@ export default async function LearnPage() {
             </Stack>
           </Section>
 
-          {/* Field Guide Feed (Bento Grid) */}
+          {/* Featured Section */}
+          {featuredArticles.length > 0 && (
+            <Section contained={false} spacing="default">
+              <Stack gap="12">
+                <div className="flex flex-col gap-4">
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 md:w-12 bg-primary/70" />
+                    <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
+                      Featured
+                    </span>
+                  </div>
+                  <h2 className="text-title font-semibold tracking-tight text-balance">
+                    Editor&apos;s{" "}
+                    <span className="text-accent italic font-serif">picks</span>
+                  </h2>
+                </div>
+                <div className="grid gap-8">
+                  {featuredArticles.map((article) => (
+                    <PostCard key={article._id} article={article} featured />
+                  ))}
+                </div>
+              </Stack>
+            </Section>
+          )}
+
+          {/* Field Guide Feed (Parallax Grid) */}
           <Section contained={false} spacing="default">
             <Stack gap="12">
               <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between border-b border-border/50 pb-6">
@@ -120,77 +119,11 @@ export default async function LearnPage() {
                   </p>
                 </div>
                 <div className="text-caption font-medium text-muted-foreground bg-muted/50 px-3 py-1 rounded-full self-start md:self-auto">
-                  {displayArticles.length} entries
+                  {articles.length} entries
                 </div>
               </div>
 
-              <BentoGrid className="grid-flow-dense md:auto-rows-[22rem]">
-                {displayArticles.map((article) => {
-                  const isFeatured = article.featured;
-                  const displayAuthor =
-                    article.authorRef?.name || article.author.name;
-                  return (
-                    <BentoCard
-                      key={article._id}
-                      name={
-                        <div className="flex flex-col gap-2">
-                          <div
-                            className={cn(
-                              "font-semibold tracking-tight leading-tight",
-                              isFeatured ? "text-2xl md:text-3xl" : "text-xl"
-                            )}
-                          >
-                            {article.title}
-                          </div>
-                          <div className="flex items-center justify-between gap-2">
-                            <div className="flex items-center gap-2 text-caption text-muted-foreground">
-                              <span>
-                                {format(new Date(article.date), "MMM d, yyyy")}
-                              </span>
-                              <span className="h-1 w-1 rounded-full bg-current" />
-                              <span>
-                                {article.metadata?.readingTime || 5} min read
-                              </span>
-                            </div>
-                            <span className="text-caption text-muted-foreground shrink-0">
-                              By {displayAuthor}
-                            </span>
-                          </div>
-                        </div>
-                      }
-                      className={
-                        isFeatured
-                          ? "lg:col-span-2 md:col-span-2"
-                          : "lg:col-span-1 md:col-span-1"
-                      }
-                      background={
-                        <div className="absolute inset-0 z-0">
-                          {article.cover && (
-                            <Image
-                              src={urlFor(article.cover)
-                                .width(800)
-                                .height(isFeatured ? 600 : 450)
-                                .url()}
-                              alt={article.title}
-                              fill
-                              className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent transition-opacity duration-500 group-hover:via-background/40" />
-                        </div>
-                      }
-                      Icon={(props) => (
-                        <Icon
-                          name={getCategoryIcon(article.category?.slug) as any}
-                          color="accent"
-                          {...props}
-                        />
-                      )}
-                      href={`/learn/${article.slug}`}
-                    />
-                  );
-                })}
-              </BentoGrid>
+              <ArticleGrid articles={regularArticles} />
             </Stack>
           </Section>
 
