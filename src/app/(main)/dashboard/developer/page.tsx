@@ -7,7 +7,7 @@ export default async function DeveloperPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    redirect("/auth?mode=login&from=/dashboard/developer");
+    redirect("/auth?mode=sign-in&from=/dashboard/developer");
   }
 
   const [keysResult, usageResult] = await Promise.all([

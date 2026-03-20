@@ -26,11 +26,11 @@ export default function DevelopersPage() {
           <h2 className="text-subheading font-bold">Getting started</h2>
           <ol className="list-decimal space-y-2 pl-5 text-body">
             <li>
-              <Link href="/auth?mode=signup" className="text-accent underline">
+              <Link href="/auth?mode=sign-up" className="text-accent underline">
                 Sign up
               </Link>{" "}
               or{" "}
-              <Link href="/auth?mode=login" className="text-accent underline">
+              <Link href="/auth?mode=sign-in" className="text-accent underline">
                 log in
               </Link>
               .

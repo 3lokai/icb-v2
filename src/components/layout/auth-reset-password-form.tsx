@@ -127,8 +127,8 @@ export function AuthResetPasswordForm({
         return;
       }
 
-      // Success - redirect to login
-      router.push("/auth?mode=login&reset=success");
+      // Success - redirect to sign-in
+      router.push("/auth?mode=sign-in&reset=success");
     } catch {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
@@ -199,7 +199,7 @@ export function AuthResetPasswordForm({
             <Field>
               <FieldDescription className="text-center">
                 <Link
-                  href="/auth?mode=login"
+                  href="/auth?mode=sign-in"
                   className="underline underline-offset-4 hover:no-underline"
                 >
                   Back to login
@@ -270,7 +270,7 @@ export function AuthResetPasswordForm({
           <Field>
             <FieldDescription className="text-center">
               <Link
-                href="/auth?mode=login"
+                href="/auth?mode=sign-in"
                 className="underline underline-offset-4 hover:no-underline"
               >
                 Back to login

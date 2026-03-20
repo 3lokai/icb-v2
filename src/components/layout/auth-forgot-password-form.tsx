@@ -80,7 +80,7 @@ export function AuthForgotPasswordForm({
             <Field>
               <FieldDescription className="text-center">
                 <Link
-                  href="/auth?mode=login"
+                  href="/auth?mode=sign-in"
                   className="underline underline-offset-4 hover:no-underline"
                 >
                   Back to login
@@ -138,7 +138,7 @@ export function AuthForgotPasswordForm({
             <FieldDescription className="text-center">
               Remember your password?{" "}
               <Link
-                href="/auth?mode=login"
+                href="/auth?mode=sign-in"
                 className="underline underline-offset-4 hover:no-underline"
               >
                 Sign in

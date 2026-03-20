@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    redirect("/auth?mode=login&from=/dashboard");
+    redirect("/auth?mode=sign-in&from=/dashboard");
   }
 
   // Fetch data in parallel for better performance

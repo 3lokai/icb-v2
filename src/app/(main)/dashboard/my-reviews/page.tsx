@@ -7,7 +7,7 @@ export default async function MyReviewsPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    redirect("/auth?mode=login&from=/dashboard/my-reviews");
+    redirect("/auth?mode=sign-in&from=/dashboard/my-reviews");
   }
 
   const reviews = await getMyReviews();

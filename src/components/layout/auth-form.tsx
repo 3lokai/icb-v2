@@ -26,9 +26,17 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { signIn, signUp, signInWithOAuth } = useAuth();
+  const mode = searchParams.get("mode") === "sign-up" ? "sign-up" : "sign-in";
+  const from = searchParams.get("from");
 
   // Get the return URL from search params (where user came from)
-  const returnTo = searchParams.get("from") || "/dashboard";
+  const returnTo = from || "/";
+  const isSignUpMode = mode === "sign-up";
+  const oauthAction = isSignUpMode ? "Sign up" : "Sign in";
+  const emailAction = isSignUpMode ? "Create account" : "Sign in";
+
+  const buildAuthUrl = (newMode: "sign-in" | "sign-up") =>
+    `/auth?mode=${newMode}${from ? `&from=${encodeURIComponent(from)}` : ""}`;
 
   // Get initial error from URL params
   const getInitialError = () => {
@@ -47,7 +55,9 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(getInitialError);
-  const [isAttemptingSignUp, setIsAttemptingSignUp] = useState(false);
+  const [errorType, setErrorType] = useState<"generic" | "already-registered">(
+    "generic"
+  );
 
   const [formData, setFormData] = useState({
     email: "",
@@ -58,46 +68,43 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
     setError(null);
-    setIsAttemptingSignUp(false);
+    setErrorType("generic");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
+    setErrorType("generic");
     setIsLoading(true);
-    setIsAttemptingSignUp(false);
 
     try {
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!formData.email || !emailRegex.test(formData.email)) {
         setError("Please enter a valid email address");
-        setIsLoading(false);
         return;
       }
 
       // Validate password length
       if (!formData.password || formData.password.length < 8) {
         setError("Password must be at least 8 characters long");
-        setIsLoading(false);
         return;
       }
 
-      // Try to sign in first
-      const { error: signInError } = await signIn(
-        formData.email.trim(),
-        formData.password
-      );
+      if (!isSignUpMode) {
+        const { error: signInError } = await signIn(
+          formData.email.trim(),
+          formData.password
+        );
 
-      if (!signInError) {
-        // Success - redirect to return URL or dashboard
+        if (signInError) {
+          setError("Invalid email or password");
+          return;
+        }
+
         router.push(returnTo);
         return;
       }
-
-      // If sign in failed, try to sign up (user might not exist)
-      // Supabase returns "Invalid login credentials" for both wrong password and user not found
-      setIsAttemptingSignUp(true);
 
       const { data: signUpData, error: signUpError } = await signUp(
         formData.email.trim(),
@@ -105,21 +112,18 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
       );
 
       if (signUpError) {
-        // Check if user already exists (signup failed because email is taken)
+        const lowerError = signUpError.message?.toLowerCase() ?? "";
         if (
-          signUpError.message?.toLowerCase().includes("already registered") ||
-          signUpError.message?.toLowerCase().includes("user already exists")
+          lowerError.includes("already registered") ||
+          lowerError.includes("user already exists")
         ) {
-          setError(
-            "An account with this email already exists. Please check your password or use 'Forgot password' to reset it."
-          );
+          setErrorType("already-registered");
+          setError("An account with this email already exists.");
         } else {
           setError(
             signUpError.message || "Failed to create account. Please try again."
           );
         }
-        setIsLoading(false);
-        setIsAttemptingSignUp(false);
         return;
       }
 
@@ -144,12 +148,12 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
         }
       }
 
-      // Redirect to return URL or dashboard
-      router.push(returnTo);
+      // New users should complete onboarding first
+      router.push("/auth/onboarding");
     } catch {
       setError("An unexpected error occurred. Please try again.");
+    } finally {
       setIsLoading(false);
-      setIsAttemptingSignUp(false);
     }
   };
 
@@ -159,28 +163,49 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
     // Pass the return URL to OAuth so user is redirected back after auth
     const { error } = await signInWithOAuth(provider, returnTo);
     if (error) {
-      setError(`Failed to sign in with ${provider}. Please try again.`);
+      setError(
+        `Failed to ${oauthAction.toLowerCase()} with ${provider}. Please try again.`
+      );
       setIsLoading(false);
     }
     // OAuth will redirect, so we don't need to handle success here
   };
 
   return (
-    <form className={cn(className)} onSubmit={handleSubmit} {...props}>
+    <form
+      className={cn(className)}
+      onSubmit={handleSubmit}
+      data-mode={mode}
+      {...props}
+    >
       <Stack gap="6">
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
             <h1 className="text-title font-serif tracking-tight">
-              Get started
+              {isSignUpMode ? "Create an account" : "Welcome back"}
             </h1>
             <p className="text-muted-foreground text-caption text-balance">
-              Enter your details below to continue
+              {isSignUpMode
+                ? "Enter your details below to create your account"
+                : "Sign in to continue"}
             </p>
           </div>
 
-          {error && (
+          {error && errorType === "generic" && (
             <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption">
               {error}
+            </div>
+          )}
+          {error && errorType === "already-registered" && (
+            <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption">
+              {error}{" "}
+              <Link
+                href={buildAuthUrl("sign-in")}
+                className="font-medium underline underline-offset-4 hover:no-underline"
+              >
+                Sign in instead
+              </Link>
+              .
             </div>
           )}
 
@@ -215,7 +240,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
                     fill="#EA4335"
                   />
                 </svg>
-                Continue with Google
+                {oauthAction} with Google
               </Button>
               <Button
                 variant="outline"
@@ -232,18 +257,12 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
                 >
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
-                Continue with Facebook
+                {oauthAction} with Facebook
               </Button>
             </div>
           </Field>
 
           <FieldSeparator>Or continue with email</FieldSeparator>
-
-          {isLoading && isAttemptingSignUp && !error && (
-            <div className="bg-muted text-muted-foreground rounded-md border p-3 text-caption">
-              Account not found. Creating a new account...
-            </div>
-          )}
 
           <Stack gap="4">
             <Field>
@@ -261,12 +280,14 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
             <Field>
               <div className="flex items-center">
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Link
-                  href="/auth/forgot-password"
-                  className="ml-auto text-caption underline-offset-4 hover:underline"
-                >
-                  Forgot your password?
-                </Link>
+                {!isSignUpMode && (
+                  <Link
+                    href="/auth/forgot-password"
+                    className="ml-auto text-caption underline-offset-4 hover:underline"
+                  >
+                    Forgot your password?
+                  </Link>
+                )}
               </div>
               <Input
                 id="password"
@@ -282,18 +303,28 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
 
             <Field>
               <Button type="submit" disabled={isLoading} className="w-full">
-                {isLoading && isAttemptingSignUp
-                  ? "Creating account..."
-                  : isLoading
-                    ? "Signing in..."
-                    : isAttemptingSignUp
-                      ? "Create Account"
-                      : "Continue with Email"}
+                {isLoading
+                  ? isSignUpMode
+                    ? "Creating account..."
+                    : "Signing in..."
+                  : emailAction}
               </Button>
             </Field>
           </Stack>
 
-          <div className="text-caption text-center mt-4">
+          <div className="text-caption text-center">
+            {isSignUpMode
+              ? "Already have an account? "
+              : "Don't have an account? "}
+            <Link
+              href={buildAuthUrl(isSignUpMode ? "sign-in" : "sign-up")}
+              className="underline underline-offset-4 hover:no-underline"
+            >
+              {isSignUpMode ? "Sign in" : "Sign up"}
+            </Link>
+          </div>
+
+          <div className="text-caption text-center mt-1">
             By continuing, you agree to our{" "}
             <Link href="/terms" className="underline-offset-4 hover:underline">
               Terms of Service

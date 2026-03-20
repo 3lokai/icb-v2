@@ -7,7 +7,7 @@ export default async function PreferencesPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    redirect("/auth?mode=login&from=/dashboard/preferences");
+    redirect("/auth?mode=sign-in&from=/dashboard/preferences");
   }
 
   const preferences = await getCoffeePreferences();
