@@ -2,6 +2,7 @@ import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { fetchCoffeeImages } from "./fetch-coffees";
 import type { RoasterDetail } from "@/types/roaster-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
+import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
 
 /**
  * Fetch a single roaster by slug with all related data
@@ -38,6 +39,7 @@ export async function fetchRoasterBySlug(
         "coffee_id, slug, name, roaster_id, status, process, process_raw, roast_level, roast_level_raw, roast_style_raw, direct_buy_url, has_250g_bool, has_sensory, in_stock_count, min_price_in_stock, best_variant_id, best_normalized_250g, weights_available, sensory_public, sensory_updated_at"
       )
       .eq("roaster_id", roasterId)
+      .in("status", PUBLIC_COFFEE_STATUSES)
       .order("name", { ascending: true })
       .limit(15),
 

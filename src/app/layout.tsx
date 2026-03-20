@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   description:
     "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
-  metadataBase: new URL("https://indiancoffeebeans.com"),
+  metadataBase: new URL("https://www.indiancoffeebeans.com"),
   icons: {
     icon: [
       { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -74,11 +74,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://indiancoffeebeans.com",
+    url: "https://www.indiancoffeebeans.com",
     siteName: "Indian Coffee Beans",
     images: [
       {
-        url: "https://indiancoffeebeans.com/api/og?title=Indian%20Coffee%20Beans&type=website&image=https://indiancoffeebeans.com/favicon/android-chrome-512x512.png",
+        url: "https://www.indiancoffeebeans.com/api/og?title=Indian%20Coffee%20Beans&type=website&image=https://www.indiancoffeebeans.com/favicon/android-chrome-512x512.png",
         width: 1200,
         height: 630,
         alt: "India's First Specialty Coffee Directory",

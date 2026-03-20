@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const canonical = `${baseUrl}/roasters/${slug}`;
 
   // Build title
@@ -78,7 +78,7 @@ export default async function RoasterDetailPageServer({ params }: Props) {
 
   // Generate structured data
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const canonical = `${baseUrl}/roasters/${slug}`;
 
   const description =

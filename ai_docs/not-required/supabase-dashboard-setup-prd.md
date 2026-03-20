@@ -46,10 +46,10 @@ Configure Supabase dashboard settings to support full authentication system, inc
 
 #### **General Settings**
 ```
-Site URL: https://indiancoffeebeans.com
+Site URL: https://www.indiancoffeebeans.com
 Additional Redirect URLs:
 - http://localhost:3000/auth/callback (Development)
-- https://indiancoffeebeans.com/auth/callback (Production)
+- https://www.indiancoffeebeans.com/auth/callback (Production)
 - https://www.indiancoffeebeans.com/auth/callback (Production www)
 - https://staging.indiancoffeebeans.com/auth/callback (Staging)
 
@@ -600,7 +600,7 @@ CREATE POLICY "Users can manage their own roaster ratings" ON public.roaster_rat
    ```
    Authorized JavaScript origins:
    - http://localhost:3000 (Development)
-   - https://indiancoffeebeans.com (Production)
+   - https://www.indiancoffeebeans.com (Production)
    - https://www.indiancoffeebeans.com (Production)
    
    Authorized redirect URIs:
@@ -645,14 +645,14 @@ Scopes to request:
    - https://[your-project-ref].supabase.co/auth/v1/callback
    
    Valid Origins:
-   - https://indiancoffeebeans.com
+   - https://www.indiancoffeebeans.com
    - https://www.indiancoffeebeans.com
    ```
 
 5. **App Review** (Required for production):
    - Submit app for review with "email" and "public_profile" permissions
-   - Provide privacy policy URL: https://indiancoffeebeans.com/privacy
-   - Provide terms of service URL: https://indiancoffeebeans.com/terms
+   - Provide privacy policy URL: https://www.indiancoffeebeans.com/privacy
+   - Provide terms of service URL: https://www.indiancoffeebeans.com/terms
 
 6. **Copy Credentials**: App ID and App Secret for Supabase
 
@@ -667,7 +667,7 @@ Scopes to request:
 Table: user_profiles
 Events: INSERT, UPDATE
 HTTP Method: POST
-URL: https://indiancoffeebeans.com/api/webhooks/user-profile
+URL: https://www.indiancoffeebeans.com/api/webhooks/user-profile
 Headers:
   Authorization: Bearer [your-webhook-secret]
   Content-Type: application/json
@@ -678,7 +678,7 @@ Headers:
 Table: coffee_ratings, roaster_ratings  
 Events: INSERT, UPDATE
 HTTP Method: POST
-URL: https://indiancoffeebeans.com/api/webhooks/ratings
+URL: https://www.indiancoffeebeans.com/api/webhooks/ratings
 Headers:
   Authorization: Bearer [your-webhook-secret]
   Content-Type: application/json

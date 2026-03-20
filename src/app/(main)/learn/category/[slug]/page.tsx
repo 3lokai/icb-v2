@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!category) return {};
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://www.indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const defaultCanonical = `${baseUrl}/learn/category/${category.slug}`;
 
   return generateSEOMetadata({

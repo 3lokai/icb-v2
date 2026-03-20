@@ -118,21 +118,32 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                     >
                       Rate this coffee
                     </Button>
-                    {coffee.direct_buy_url && (
+                    {coffee.status === "discontinued" ? (
                       <Button
                         variant="outline"
                         size="lg"
-                        asChild
-                        className="text-muted-foreground min-w-[160px]"
+                        disabled
+                        className="text-muted-foreground min-w-[160px] opacity-60"
                       >
-                        <a
-                          href={coffee.direct_buy_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Buy from roaster
-                        </a>
+                        Discontinued
                       </Button>
+                    ) : (
+                      coffee.direct_buy_url && (
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          asChild
+                          className="text-muted-foreground min-w-[160px]"
+                        >
+                          <a
+                            href={coffee.direct_buy_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Buy from roaster
+                          </a>
+                        </Button>
+                      )
                     )}
                   </Cluster>
                 </div>

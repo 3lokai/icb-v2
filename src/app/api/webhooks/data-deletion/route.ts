@@ -258,7 +258,7 @@ export async function POST(request: NextRequest) {
     if (!verifiedUserId) {
       // User not found - return success (idempotent)
       return NextResponse.json({
-        url: "https://indiancoffeebeans.com/data-deletion",
+        url: "https://www.indiancoffeebeans.com/data-deletion",
         confirmation_code: `icb_${Date.now()}`,
         status: "completed",
       });
@@ -277,7 +277,7 @@ export async function POST(request: NextRequest) {
 
     // Return confirmation (required by providers)
     return NextResponse.json({
-      url: "https://indiancoffeebeans.com/data-deletion",
+      url: "https://www.indiancoffeebeans.com/data-deletion",
       confirmation_code: `icb_${verifiedUserId}_${Date.now()}`,
       status: "completed",
     });
@@ -294,7 +294,7 @@ export async function POST(request: NextRequest) {
 export async function GET(_request: NextRequest) {
   return NextResponse.json({
     message: "Data deletion callback endpoint",
-    url: "https://indiancoffeebeans.com/data-deletion",
+    url: "https://www.indiancoffeebeans.com/data-deletion",
     status: "active",
   });
 }

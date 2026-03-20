@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 export const metadata: Metadata = generateSEOMetadata({
   title: "My Profile | Indian Coffee Beans",

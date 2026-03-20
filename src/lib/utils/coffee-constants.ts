@@ -1,4 +1,6 @@
 // src/lib/coffee-constants.ts
+import type { CoffeeStatusEnum } from "@/types/db-enums";
+
 export type LookupOption = {
   value: string;
   label: string;
@@ -56,6 +58,13 @@ export const COFFEE_STATUS: LookupOption[] = [
   { value: "hidden", label: "Hidden" },
   { value: "coming_soon", label: "Coming Soon" },
   { value: "archived", label: "Archived" },
+];
+
+// Coffee directory/search default visibility.
+// These are the only statuses we want shown in public listings.
+export const PUBLIC_COFFEE_STATUSES: CoffeeStatusEnum[] = [
+  "active",
+  "seasonal",
 ];
 
 // Grind types enum - matches database grind_enum

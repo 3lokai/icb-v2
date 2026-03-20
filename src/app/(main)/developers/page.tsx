@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Use the Indian Coffee Beans API to access coffee and roaster data. Get an API key and integrate with your app.",
 };
 
-const BASE_URL = "https://indiancoffeebeans.com";
+const BASE_URL = "https://www.indiancoffeebeans.com";
 
 export default function DevelopersPage() {
   return (

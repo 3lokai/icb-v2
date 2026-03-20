@@ -20,7 +20,7 @@ function withHreflang<T extends { url: string }>(
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
   // Static routes that don't change based on database content
   const staticRoutes: MetadataRoute.Sitemap = [

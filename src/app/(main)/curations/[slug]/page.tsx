@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) return { title: "Curator Not Found" };
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const title = `ICB × ${data.curator.name} | Indian Coffee Beans`;
   const description = (data.curator.story ?? "").slice(0, 160);
   const url = `${baseUrl}/curations/${slug}`;

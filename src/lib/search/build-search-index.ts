@@ -1,6 +1,7 @@
 "use server";
 
 import { createServiceRoleClient } from "@/lib/supabase/server";
+import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
 import type { SearchableItem } from "@/types/search";
 
 type CoffeeRow = {
@@ -319,7 +320,8 @@ async function fetchCoffees(supabase: any): Promise<SearchableItem[]> {
     `
     )
     .not("name", "is", null)
-    .not("slug", "is", null);
+    .not("slug", "is", null)
+    .in("status", PUBLIC_COFFEE_STATUSES);
 
   if (coffeeError) {
     throw new Error(`Failed to fetch coffees: ${coffeeError.message}`);

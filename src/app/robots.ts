@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/dashboard/", "/api/", "/auth/"],
       },
     ],
-    sitemap: `${process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com"}/sitemap.xml`,
+    sitemap: `${process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com"}/sitemap.xml`,
   };
 }

@@ -2,6 +2,7 @@ import { createServiceRoleClient } from "@/lib/supabase/server";
 import {
   BEAN_TYPES,
   COFFEE_STATUS,
+  PUBLIC_COFFEE_STATUSES,
   PROCESSING_METHODS,
   ROAST_LEVELS,
 } from "@/lib/utils/coffee-constants";
@@ -307,6 +308,7 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     supabase
       .from("coffee_summary")
       .select("roaster_id, roasters(id, name, slug)")
+      .in("status", PUBLIC_COFFEE_STATUSES)
       .not("roaster_id", "is", null)
       .then((result) => {
         if (result.error) {
@@ -350,6 +352,7 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     supabase
       .from("coffee_summary")
       .select("roast_level")
+      .in("status", PUBLIC_COFFEE_STATUSES)
       .not("roast_level", "is", null)
       .then((result) => {
         if (result.error) {
@@ -389,6 +392,7 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     supabase
       .from("coffee_summary")
       .select("process")
+      .in("status", PUBLIC_COFFEE_STATUSES)
       .not("process", "is", null)
       .then((result) => {
         if (result.error) {
@@ -428,6 +432,7 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     supabase
       .from("coffee_summary")
       .select("status")
+      .in("status", PUBLIC_COFFEE_STATUSES)
       .not("status", "is", null)
       .then((result) => {
         if (result.error) {
@@ -506,7 +511,8 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     Promise.all([
       supabase
         .from("coffee_summary")
-        .select("coffee_id", { count: "exact", head: true }),
+        .select("coffee_id", { count: "exact", head: true })
+        .in("status", PUBLIC_COFFEE_STATUSES),
       supabase
         .from("roasters")
         .select("id", { count: "exact", head: true })

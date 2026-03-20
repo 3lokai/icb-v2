@@ -12,7 +12,7 @@ type Props = {
 };
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug: roasterSlug, coffeeSlug } = await params;

@@ -95,7 +95,7 @@ const REDDIT_TESTIMONIALS: Testimonial[] = [
 
 // Reviewed entity for schema.org Review.itemReviewed (required)
 const SITE_BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 const SITE_NAME = "Indian Coffee Beans";
 
 // Split into two rows

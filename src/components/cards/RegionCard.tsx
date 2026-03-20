@@ -69,7 +69,7 @@ export default function RegionCard({ region }: RegionCardProps) {
           )}
         </div>
         <meta
-          content={`https://indiancoffeebeans.com/regions/${region.slug}`}
+          content={`https://www.indiancoffeebeans.com/regions/${region.slug}`}
           itemProp="url"
         />
       </Card>

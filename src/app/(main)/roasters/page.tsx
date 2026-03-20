@@ -56,7 +56,7 @@ export async function generateMetadata({
   }
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
   // Build full URL with query params for OpenGraph (not for canonical)
   const currentUrl = new URL(`${baseUrl}/roasters`);
@@ -143,7 +143,7 @@ async function RoastersPageContent({
 
   const hasFilters = Object.keys(filters).length > 0;
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const currentUrl = new URL(`${baseUrl}/roasters`);
   urlSearchParams.forEach((value, key) => {
     currentUrl.searchParams.set(key, value);
