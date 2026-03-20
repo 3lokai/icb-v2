@@ -42,26 +42,26 @@ const toolsListSchema = {
   "@type": "ItemList",
   name: "Coffee Tools Collection",
   description: "Professional coffee brewing tools and calculators",
-  url: "https://indiancoffeebeans.com/tools",
+  url: "https://www.indiancoffeebeans.com/tools",
   numberOfItems: 3,
   itemListElement: [
     {
       "@type": "SoftwareApplication",
       name: "Coffee Ratio Calculator",
-      url: "https://indiancoffeebeans.com/tools/coffee-calculator",
+      url: "https://www.indiancoffeebeans.com/tools/coffee-calculator",
       description:
         "Interactive coffee brewing calculator with timer and method guides",
     },
     {
       "@type": "ItemList",
       name: "Expert Coffee Recipes",
-      url: "https://indiancoffeebeans.com/tools/expert-recipes",
+      url: "https://www.indiancoffeebeans.com/tools/expert-recipes",
       description: "Championship coffee brewing recipes from world experts",
     },
     {
       "@type": "WebApplication",
       name: "Coffee Compass",
-      url: "https://indiancoffeebeans.com/tools/coffee-compass",
+      url: "https://www.indiancoffeebeans.com/tools/coffee-compass",
       description:
         "Deterministic brew diagnosis tool — pick symptoms, get precise corrective actions",
     },

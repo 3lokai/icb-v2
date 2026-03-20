@@ -37,7 +37,7 @@ const compassSchema = {
   name: "Coffee Compass",
   description:
     "Deterministic coffee brew diagnosis tool. Select symptoms, get precise corrective actions for pour-over, espresso, AeroPress, French press and more.",
-  url: "https://indiancoffeebeans.com/tools/coffee-compass",
+  url: "https://www.indiancoffeebeans.com/tools/coffee-compass",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Web Browser",
   offers: {

@@ -33,11 +33,11 @@ Replace these placeholders in the template with actual values:
 - `{{LOGO_URL}}` - Your logo image URL (32x32px recommended)
 
 **Link URLs:**
-- `{{SECTION1_LINK_URL}}` - Link to coffees page (e.g., https://indiancoffeebeans.com/coffees)
-- `{{SECTION2_LINK_URL}}` - Link to roasters page (e.g., https://indiancoffeebeans.com/roasters)
-- `{{SECTION3_LINK_URL}}` - Link to learn/education page (e.g., https://indiancoffeebeans.com/learn)
+- `{{SECTION1_LINK_URL}}` - Link to coffees page (e.g., https://www.indiancoffeebeans.com/coffees)
+- `{{SECTION2_LINK_URL}}` - Link to roasters page (e.g., https://www.indiancoffeebeans.com/roasters)
+- `{{SECTION3_LINK_URL}}` - Link to learn/education page (e.g., https://www.indiancoffeebeans.com/learn)
 
-**Note:** The site URL (https://indiancoffeebeans.com) is hardcoded in the template. Update it if your domain is different.
+**Note:** The site URL (https://www.indiancoffeebeans.com) is hardcoded in the template. Update it if your domain is different.
 
 ### 2. ConvertKit Integration
 

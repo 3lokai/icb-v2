@@ -100,7 +100,7 @@ const UserProfileTeaser = dynamic(
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
   return generatePageMetadata({
     title: "IndianCoffeeBeans (ICB) — Rate Coffee, Build Your Taste Profile",

@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
     // Default to favicon PNG (avoids large logo-icon.svg fetch)
     const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+      process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
     const defaultLogoUrl = `${baseUrl}/favicon/android-chrome-512x512.png`;
     const finalImageUrl = imageUrl || defaultLogoUrl;
     const isFaviconPng =

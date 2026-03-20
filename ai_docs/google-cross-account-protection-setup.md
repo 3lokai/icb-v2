@@ -234,7 +234,7 @@ async function registerRISCEndpoint() {
     auth: authClient,
   });
   
-  const endpointUrl = 'https://indiancoffeebeans.com/api/webhooks/risc';
+  const endpointUrl = 'https://www.indiancoffeebeans.com/api/webhooks/risc';
   
   try {
     const response = await risc.projects.flows.create({
@@ -300,7 +300,7 @@ function getKey(header: any, callback: any) {
 async function verifyRISCJWT(token: string) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, getKey, {
-      audience: 'https://indiancoffeebeans.com/api/webhooks/risc',
+      audience: 'https://www.indiancoffeebeans.com/api/webhooks/risc',
       issuer: 'https://accounts.google.com',
     }, (err, decoded) => {
       if (err) reject(err);
@@ -325,7 +325,7 @@ Add rate limiting to your RISC endpoint to prevent abuse:
 
 1. **Test endpoint accessibility**:
    ```bash
-   curl https://indiancoffeebeans.com/api/webhooks/risc
+   curl https://www.indiancoffeebeans.com/api/webhooks/risc
    ```
 
 2. **Monitor logs** for incoming events (Google will send test events periodically)

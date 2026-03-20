@@ -1,5 +1,6 @@
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import type { CoffeeImage } from "@/types/coffee-component-types";
+import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
 import type {
   CoffeeFilters,
   CoffeeListResponse,
@@ -205,9 +206,12 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
     filteredQuery = filteredQuery.in("process", filters.processes);
   }
 
-  if (filters.status?.length) {
-    filteredQuery = filteredQuery.in("status", filters.status);
-  }
+  // Default to public visibility if the caller didn't explicitly select statuses.
+  // This hides discontinued (and other non-public) coffees from listings/API.
+  const statusFilter = filters.status?.length
+    ? filters.status
+    : PUBLIC_COFFEE_STATUSES;
+  filteredQuery = filteredQuery.in("status", statusFilter);
 
   if (filters.bean_species?.length) {
     filteredQuery = filteredQuery.in("bean_species", filters.bean_species);

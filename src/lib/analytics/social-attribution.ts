@@ -83,7 +83,9 @@ export class SocialMediaURLBuilder {
 
 // Pre-built social media links for your team (READY TO USE)
 export const getSocialMediaLinks = () => {
-  const builder = new SocialMediaURLBuilder("https://indiancoffeebeans.com");
+  const builder = new SocialMediaURLBuilder(
+    "https://www.indiancoffeebeans.com"
+  );
 
   return {
     instagram: {

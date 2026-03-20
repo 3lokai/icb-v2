@@ -4,7 +4,7 @@ import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import type { LandingPageConfig } from "./landing-pages";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 /**
  * Generate metadata for discovery landing pages

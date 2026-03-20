@@ -39,7 +39,7 @@ export const metadata = generateMetadata({
 });
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 const expertRecipesImage = `${baseUrl}/images/hero-experts.avif`;
 
 // Structured Data Schemas

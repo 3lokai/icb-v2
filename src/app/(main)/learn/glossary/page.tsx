@@ -4,7 +4,7 @@ import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import { PageHeader } from "@/components/layout/PageHeader";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 export const metadata: Metadata = generateSEOMetadata({
   title: "Coffee Glossary - Indian Specialty Coffee Terms",

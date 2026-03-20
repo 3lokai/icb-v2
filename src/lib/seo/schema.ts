@@ -2,7 +2,7 @@
 
 /** Base URL for the site; use for absolute breadcrumb and schema URLs */
 export function getSeoBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  return process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 }
 
 /** Build absolute URL from path (e.g. "/roasters" or "roasters/foo") for breadcrumbs */
@@ -54,7 +54,7 @@ export function generateSchemaOrg({
 }: SchemaOrgProps): Record<string, unknown> {
   // <--- CHANGE return type
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
   // Internal Schema type for better type safety within the function
   type ProductSchemaSpecifics = {
@@ -234,11 +234,11 @@ export const contactPageSchema = {
   name: "Contact IndianCoffeeBeans.com",
   description:
     "Connect with the Indian coffee community. Submit roasters, suggest changes, or partner with us.",
-  url: "https://indiancoffeebeans.com/contact",
+  url: "https://www.indiancoffeebeans.com/contact",
   publisher: {
     "@type": "Organization",
     name: "IndianCoffeeBeans.com",
-    url: "https://indiancoffeebeans.com",
+    url: "https://www.indiancoffeebeans.com",
   },
 };
 
@@ -248,11 +248,11 @@ export const partnerPageSchema = {
   name: "Partner With Us - IndianCoffeeBeans.com",
   description:
     "Join 60+ roasters on India's premier coffee platform. Get discovered by coffee enthusiasts.",
-  url: "https://indiancoffeebeans.com/roasters/partner",
+  url: "https://www.indiancoffeebeans.com/roasters/partner",
   publisher: {
     "@type": "Organization",
     name: "IndianCoffeeBeans.com",
-    url: "https://indiancoffeebeans.com",
+    url: "https://www.indiancoffeebeans.com",
   },
 };
 
@@ -261,7 +261,7 @@ export const aboutPageSchema = {
   "@type": "AboutPage",
   name: "About IndianCoffeeBeans.com",
   description: "India's first independent directory for specialty coffee.",
-  url: "https://indiancoffeebeans.com/about",
+  url: "https://www.indiancoffeebeans.com/about",
 };
 
 export const howICBWorksPageSchema = {
@@ -270,11 +270,11 @@ export const howICBWorksPageSchema = {
   name: "How IndianCoffeeBeans Works - Transparency & Neutrality",
   description:
     "Learn about our mission, how we curate coffee, our commitment to neutrality, and how you can use our platform to find your perfect brew.",
-  url: "https://indiancoffeebeans.com/how-icb-works",
+  url: "https://www.indiancoffeebeans.com/how-icb-works",
 };
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 export const howICBWorksBreadcrumbSchema = {
   "@context": "https://schema.org",
@@ -307,7 +307,7 @@ export const privacyPageSchema = {
   name: "Privacy Policy - IndianCoffeeBeans.com",
   description:
     "How IndianCoffeeBeans.com collects, uses, and protects your personal information.",
-  url: "https://indiancoffeebeans.com/privacy",
+  url: "https://www.indiancoffeebeans.com/privacy",
 };
 
 export const dataDeletionPageSchema = {
@@ -316,7 +316,7 @@ export const dataDeletionPageSchema = {
   name: "Data Deletion Instructions - IndianCoffeeBeans.com",
   description:
     "How to request deletion of your personal data from IndianCoffeeBeans.com.",
-  url: "https://indiancoffeebeans.com/data-deletion",
+  url: "https://www.indiancoffeebeans.com/data-deletion",
 };
 
 export const termsPageSchema = {
@@ -325,7 +325,7 @@ export const termsPageSchema = {
   name: "Terms of Service - IndianCoffeeBeans.com",
   description:
     "Terms and conditions for using IndianCoffeeBeans.com directory and services.",
-  url: "https://indiancoffeebeans.com/terms",
+  url: "https://www.indiancoffeebeans.com/terms",
 };
 
 export const roastersTermsPageSchema = {
@@ -334,7 +334,7 @@ export const roastersTermsPageSchema = {
   name: "Roaster Partnership Agreement - IndianCoffeeBeans.com",
   description:
     "Terms and conditions for roaster partnerships and subscription services on IndianCoffeeBeans.com.",
-  url: "https://indiancoffeebeans.com/roasters/terms",
+  url: "https://www.indiancoffeebeans.com/roasters/terms",
 };
 
 // Organization Schema for root layout
@@ -343,8 +343,8 @@ export const organizationSchema = {
   "@type": "Organization",
   name: "IndianCoffeeBeans.com",
   alternateName: "Indian Coffee Beans Directory",
-  url: "https://indiancoffeebeans.com",
-  logo: "https://indiancoffeebeans.com/images/logo.png",
+  url: "https://www.indiancoffeebeans.com",
+  logo: "https://www.indiancoffeebeans.com/images/logo.png",
   description:
     "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
   foundingDate: "2024",
@@ -363,7 +363,7 @@ export const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "IndianCoffeeBeans.com",
-  url: "https://indiancoffeebeans.com",
+  url: "https://www.indiancoffeebeans.com",
   description:
     "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
   publisher: {
@@ -375,7 +375,7 @@ export const websiteSchema = {
     target: {
       "@type": "EntryPoint",
       urlTemplate:
-        "https://indiancoffeebeans.com/search?q={search_term_string}",
+        "https://www.indiancoffeebeans.com/search?q={search_term_string}",
     },
     "query-input": "required name=search_term_string",
   },
@@ -406,7 +406,7 @@ export function generateCollectionPageSchema(
           "@type": "ListItem",
           position: 1,
           name: "Home",
-          item: "https://indiancoffeebeans.com",
+          item: "https://www.indiancoffeebeans.com",
         },
         {
           "@type": "ListItem",
@@ -475,7 +475,7 @@ export function generateHowToSchema({
   }>;
 }) {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
   return {
     "@context": "https://schema.org",
@@ -533,7 +533,7 @@ export function generateRecipeSchema({
   }>;
 }) {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
   return {
     "@context": "https://schema.org",

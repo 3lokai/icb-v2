@@ -144,10 +144,10 @@ export function generateMetadata({
   other,
 }: MetadataProps): Metadata {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
   // Resolve relative canonical paths to absolute URLs
-  // e.g. "/about" → "https://indiancoffeebeans.com/about"
+  // e.g. "/about" → "https://www.indiancoffeebeans.com/about"
   const resolvedCanonical = canonical
     ? canonical.startsWith("http")
       ? canonical

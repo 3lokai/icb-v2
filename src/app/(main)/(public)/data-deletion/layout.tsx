@@ -22,7 +22,7 @@ export const metadata: Metadata = generateMetadata({
         name: "Data Deletion Instructions",
         description:
           "How to request deletion of your personal data from IndianCoffeeBeans.com.",
-        url: "https://indiancoffeebeans.com/data-deletion",
+        url: "https://www.indiancoffeebeans.com/data-deletion",
       })
     ),
   },

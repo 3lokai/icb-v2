@@ -164,7 +164,7 @@ export default function RoasterCard({
           </div>
 
           <meta
-            content={`https://indiancoffeebeans.com/roasters/${roaster.slug}`}
+            content={`https://www.indiancoffeebeans.com/roasters/${roaster.slug}`}
             itemProp="url"
           />
         </Card>
@@ -268,7 +268,7 @@ export default function RoasterCard({
         </div>
 
         <meta
-          content={`https://indiancoffeebeans.com/roasters/${roaster.slug}`}
+          content={`https://www.indiancoffeebeans.com/roasters/${roaster.slug}`}
           itemProp="url"
         />
       </Card>

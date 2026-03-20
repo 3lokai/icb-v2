@@ -86,7 +86,7 @@ const calculatorToolSchema = {
   name: "Coffee Ratio Calculator",
   description:
     "Interactive coffee brewing calculator with timer and method guides for perfect coffee ratios",
-  url: "https://indiancoffeebeans.com/tools/coffee-calculator",
+  url: "https://www.indiancoffeebeans.com/tools/coffee-calculator",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Web Browser",
   offers: {

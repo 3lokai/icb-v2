@@ -18,7 +18,7 @@ type DiscoveryLandingLayoutProps = {
 };
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://indiancoffeebeans.com";
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 /** Short page label for breadcrumb from config (e.g. "AeroPress", "Light Roast", "Under ₹500") */
 function getDiscoveryPageLabel(config: LandingPageConfig): string {
