@@ -10,6 +10,7 @@ import { useState, Fragment } from "react";
 import { Icon, type IconName } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics/index";
+import { capture } from "@/lib/posthog";
 import { toast } from "sonner";
 import { PartnerFAQs } from "@/components/faqs/PartnerFAQs";
 import PartnerFormModal from "./PartnerFormModal";
@@ -197,6 +198,7 @@ const BenefitsSection = ({
           buttonText={benefit.buttonText}
           onClick={() => {
             trackEvent("partner_cta_clicked", "partner_page", benefit.tier);
+            capture("partner_cta_clicked", { tier: benefit.tier });
             onCardClick(benefit.tier);
           }}
         />
@@ -426,6 +428,7 @@ const PricingTiers = ({
                   "partner_page",
                   tierData.tier
                 );
+                capture("partner_cta_clicked", { tier: tierData.tier });
                 onTierSelect(tierData.tier);
               }}
             >
@@ -572,6 +575,7 @@ const FinalCTA = ({
               className="h-14 px-8 cursor-pointer bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-[0.2em] text-micro shadow-2xl shadow-accent/20 transition-all hover:-translate-y-1"
               onClick={() => {
                 trackEvent("partner_cta_clicked", "partner_page", "verified");
+                capture("partner_cta_clicked", { tier: "verified" });
                 onCtaClick("verified");
               }}
             >
@@ -583,6 +587,7 @@ const FinalCTA = ({
               className="h-14 px-8 cursor-pointer border-border hover:border-accent hover:text-accent font-bold uppercase tracking-[0.2em] text-micro transition-all hover:-translate-y-1"
               onClick={() => {
                 trackEvent("partner_cta_clicked", "partner_page", "free");
+                capture("partner_cta_clicked", { tier: "free" });
                 onCtaClick("free");
               }}
             >
@@ -626,6 +631,7 @@ export default function PartnerPageClient({
       if (result.success) {
         setFormSubmitted(true);
         trackEvent("partner_form_submitted", "partner_page", activeForm || "");
+        capture("partner_form_submitted", { form_type: activeForm || "" });
         toast.success("Request Submitted!", {
           description: "We'll reach out within 24 hours.",
         });
@@ -673,6 +679,7 @@ export default function PartnerPageClient({
               className="cursor-pointer transition-transform duration-300 hover:-translate-y-1 shadow-lg shadow-primary/20 bg-linear-to-r from-primary to-primary/90"
               onClick={() => {
                 trackEvent("partner_cta_clicked", "partner_page", "verified");
+                capture("partner_cta_clicked", { tier: "verified" });
                 setActiveForm("verified");
               }}
             >

@@ -4,6 +4,7 @@ import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { sendSlackNotification } from "@/lib/notifications/slack";
 import { sendWelcomeEmail } from "@/lib/emails/resend";
 import { subscribeToConvertKit } from "@/lib/convertkit/client";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -172,6 +173,13 @@ export async function GET(request: NextRequest) {
         if (provider === "google") method = "google";
         else if (provider === "facebook") method = "facebook";
       }
+
+      // Track new user OAuth signup
+      getPostHogClient().capture({
+        distinctId: user.id,
+        event: "user_signed_up_oauth",
+        properties: { method, email: user.email },
+      });
 
       // Fire and forget - don't await
       sendSlackNotification("signup", {

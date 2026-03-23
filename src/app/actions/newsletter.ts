@@ -5,6 +5,7 @@ import { z } from "zod";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { sendNewsletterWelcomeEmail } from "@/lib/emails/resend";
 import { subscribeToConvertKit } from "@/lib/convertkit/client";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const newsletterSchema = z.object({
   email: z
@@ -182,6 +183,13 @@ export async function subscribeToNewsletter(formData: FormData) {
         // Already logged in subscribeToConvertKit
         console.error("[ConvertKit] Subscription sync error:", err);
       });
+
+    // Track newsletter subscription
+    getPostHogClient().capture({
+      distinctId: user?.id || email,
+      event: "newsletter_subscribed",
+      properties: { email, authenticated: !!user?.id },
+    });
 
     // Send newsletter welcome email (fire and forget)
     sendNewsletterWelcomeEmail({

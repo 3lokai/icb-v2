@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { Icon, type IconName } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { capture } from "@/lib/posthog";
 
 type ContactFormsProps = {
   submitForm: (
@@ -171,6 +172,9 @@ export default function ContactForms({
       }
 
       if (result.success) {
+        if (formType !== "newsletter") {
+          capture("contact_form_submitted", { form_type: formType });
+        }
         if (formType === "newsletter") {
           toast.success("Subscribed!", {
             description: "🎉 You have been added to our newsletter!",

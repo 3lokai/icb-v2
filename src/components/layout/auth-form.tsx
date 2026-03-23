@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { capture, posthog } from "@/lib/posthog";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import {
@@ -92,7 +93,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
       }
 
       if (!isSignUpMode) {
-        const { error: signInError } = await signIn(
+        const { data: signInData, error: signInError } = await signIn(
           formData.email.trim(),
           formData.password
         );
@@ -102,6 +103,10 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
           return;
         }
 
+        posthog.identify(signInData?.user?.id ?? formData.email.trim(), {
+          email: formData.email.trim(),
+        });
+        capture("user_signed_in", { method: "email" });
         router.push(returnTo);
         return;
       }
@@ -126,6 +131,12 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
         }
         return;
       }
+
+      // Track sign-up event
+      posthog.identify(signUpData?.user?.id || formData.email.trim(), {
+        email: formData.email.trim(),
+      });
+      capture("user_signed_up", { method: "email" });
 
       // Success - send welcome email and sync to ConvertKit (fire and forget)
       if (signUpData?.user) {

@@ -8,12 +8,16 @@ import {
   useEffect,
   useState,
 } from "react";
+import posthog from "posthog-js";
 import { auth } from "@/lib/supabase/auth-helpers";
 
 type AuthContextType = {
   user: User | null;
   isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signIn: (
+    email: string,
+    password: string
+  ) => Promise<{ data: any; error: any }>;
   signUp: (
     email: string,
     password: string,
@@ -51,11 +55,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await auth.signIn(email, password);
+    const { data, error } = await auth.signIn(email, password);
     if (!error) {
       await refreshUser();
     }
-    return { error };
+    return { data, error };
   };
 
   const signUp = async (
@@ -82,6 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = async () => {
     const { error } = await auth.signOut();
     if (!error) {
+      posthog.reset();
       setUser(null);
     }
     return { error };
@@ -110,6 +115,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Initial user fetch
     refreshUser,
   ]);
+
+  useEffect(() => {
+    if (user) {
+      posthog.identify(user.id, {
+        email: user.email,
+      });
+    }
+  }, [user]);
 
   const value = {
     user,

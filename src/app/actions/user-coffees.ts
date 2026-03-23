@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/data/auth";
 import { createClient } from "@/lib/supabase/server";
+import { getPostHogClient } from "@/lib/posthog-server";
 import {
   addUserCoffeeSchema,
   updateUserCoffeeSchema,
@@ -68,6 +69,15 @@ export async function addUserCoffee(
             : "Failed to add coffee. Please try again.",
       };
     }
+
+    getPostHogClient().capture({
+      distinctId: currentUser.id,
+      event: "coffee_logged",
+      properties: {
+        coffee_id: validationResult.data.coffeeId,
+        status: validationResult.data.status ?? "logged",
+      },
+    });
 
     revalidatePath("/", "layout");
     return { success: true, data: { id: row.id } };
