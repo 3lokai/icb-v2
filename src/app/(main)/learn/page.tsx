@@ -15,7 +15,7 @@ import { ArticleGrid } from "@/components/blog/ArticleParallaxGrid";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function LearnPage() {
   const [articles, _categories, series, pillarCategories] = await Promise.all([
