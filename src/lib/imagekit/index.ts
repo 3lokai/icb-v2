@@ -118,8 +118,10 @@ export const coffeeImagePresets = {
     if (!imagePath) {
       return getPlaceholderImage("coffee");
     }
-    // Return plain ImageKit URL without transformations
-    return getImageKitUrl(imagePath);
+    return getImageKitUrl(imagePath, {
+      width: 400,
+      quality: 70,
+    });
   },
 
   /**
@@ -130,8 +132,10 @@ export const coffeeImagePresets = {
     if (!imagePath) {
       return getPlaceholderImage("roaster");
     }
-    // Return plain ImageKit URL without transformations
-    return getImageKitUrl(imagePath);
+    return getImageKitUrl(imagePath, {
+      width: 400,
+      quality: 70,
+    });
   },
 
   /**
@@ -203,8 +207,10 @@ export const coffeeImagePresets = {
     if (!imagePath) {
       return getPlaceholderImage("coffee");
     }
-    // Return plain ImageKit URL without transformations
-    return getImageKitUrl(imagePath);
+    return getImageKitUrl(imagePath, {
+      width: 800,
+      quality: 75,
+    });
   },
 
   /**
@@ -215,8 +221,10 @@ export const coffeeImagePresets = {
     if (!imagePath) {
       return getPlaceholderImage("coffee");
     }
-    // Return plain ImageKit URL without transformations
-    return getImageKitUrl(imagePath);
+    return getImageKitUrl(imagePath, {
+      width: 100,
+      quality: 70,
+    });
   },
 
   /**
@@ -253,8 +261,10 @@ export const roasterImagePresets = {
     if (!imagePath) {
       return getPlaceholderImage("roaster");
     }
-    // Return plain ImageKit URL without transformations
-    return getImageKitUrl(imagePath);
+    return getImageKitUrl(imagePath, {
+      width: 200,
+      quality: 80,
+    });
   },
 
   /**
