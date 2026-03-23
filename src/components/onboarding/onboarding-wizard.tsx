@@ -5,6 +5,7 @@ import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { Country, State, City } from "country-state-city";
 import { saveOnboardingData } from "@/app/actions/profile";
+import { capture } from "@/lib/posthog";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import {
@@ -308,6 +309,11 @@ export function OnboardingWizard({
       }
 
       // Success - show toast and redirect to dashboard
+      capture("onboarding_completed", {
+        experience_level: formData.experienceLevel,
+        brewing_methods_count: formData.preferredBrewingMethods?.length ?? 0,
+        has_milk_preference: formData.withMilkPreference !== undefined,
+      });
       toast.success("Welcome to IndianCoffeeBeans!", {
         description: "Your profile has been set up successfully.",
       });

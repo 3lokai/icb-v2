@@ -8,6 +8,7 @@ import {
   useCallback,
   startTransition,
 } from "react";
+import { capture } from "@/lib/posthog";
 import { toast } from "sonner";
 import {
   useCreateReview,
@@ -44,6 +45,7 @@ import type { GrindEnum } from "@/types/db-enums";
 type QuickRatingProps = {
   entityType: "coffee" | "roaster";
   entityId: string;
+  slug?: string;
   initialRating?: number;
   onClose?: () => void;
   variant?: "modal" | "inline";
@@ -60,6 +62,7 @@ type QuickRatingProps = {
 export function QuickRating({
   entityType,
   entityId,
+  slug,
   initialRating,
   onClose: _onClose,
   variant = "modal",
@@ -88,6 +91,7 @@ export function QuickRating({
   const [worksWithMilk, setWorksWithMilk] = useState<boolean | null>(null);
   const [brewMethod, setBrewMethod] = useState<GrindEnum | null>(null);
   const [hoveredStar, setHoveredStar] = useState<number | null>(null);
+  const [hasStarted, setHasStarted] = useState(false);
 
   const hasAutoSavedRef = useRef(false);
   const hasShownSuccessToastRef = useRef(false);
@@ -229,6 +233,13 @@ export function QuickRating({
 
   // Rating click handler - only updates local state
   const handleRatingClick = (value: number) => {
+    if (!hasStarted) {
+      capture("rating_started", {
+        entity_type: entityType,
+        ...(slug ? { coffee_slug: slug } : {}),
+      });
+      setHasStarted(true);
+    }
     setRating(value);
   };
 

@@ -62,7 +62,20 @@ const nextConfig: NextConfig = {
   },
   // Enable compression (Vercel handles this automatically, but explicit for clarity)
   compress: true,
+  skipTrailingSlashRedirect: true,
   // Note: swcMinify is enabled by default in Next.js 15+ and cannot be disabled
+  async rewrites() {
+    return [
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://eu-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://eu.i.posthog.com/:path*",
+      },
+    ];
+  },
   async redirects() {
     return [
       {

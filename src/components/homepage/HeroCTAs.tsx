@@ -5,6 +5,7 @@ import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/common/Icon";
+import { capture } from "@/lib/posthog";
 import { useSearchContext } from "@/providers/SearchProvider";
 
 export function HeroCTAs() {
@@ -19,7 +20,12 @@ export function HeroCTAs() {
         <Cluster gap="4" align="center" className="justify-center">
           {/* Primary CTA - Start rating coffees */}
           <Button
-            onClick={() => openSearch(undefined, true)}
+            onClick={() => {
+              capture("hero_cta_clicked", {
+                cta_label: "Start rating coffees",
+              });
+              openSearch(undefined, true);
+            }}
             className="hover-lift px-8"
             variant="default"
             size="lg"
@@ -35,7 +41,16 @@ export function HeroCTAs() {
             variant="secondary"
             size="lg"
           >
-            <Link href="/coffees">Explore coffees</Link>
+            <Link
+              href="/coffees"
+              onClick={() =>
+                capture("hero_cta_clicked", {
+                  cta_label: "Explore coffees",
+                })
+              }
+            >
+              Explore coffees
+            </Link>
           </Button>
         </Cluster>
         {/* Footnote for both buttons */}

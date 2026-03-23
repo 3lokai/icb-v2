@@ -5,6 +5,7 @@ import { useState, useCallback, useEffect } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import { Icon } from "@/components/common/Icon";
 import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
+import { capture } from "@/lib/posthog";
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
@@ -46,6 +47,10 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
       inStock: (coffee.summary.in_stock_count ?? 0) > 0,
       rating: coffee.rating_avg ?? undefined,
       ratingCount: coffee.rating_count,
+    });
+    capture("coffee_page_viewed", {
+      coffee_slug: coffee.slug,
+      roaster_name: coffee.roaster?.name ?? null,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per coffee view, not on every prop change
   }, [coffee.id]);
@@ -495,6 +500,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                   entityType="coffee"
                   entityId={coffee.id}
                   variant="inline"
+                  slug={coffee.slug ?? undefined}
                 />
               </div>
             </Stack>
