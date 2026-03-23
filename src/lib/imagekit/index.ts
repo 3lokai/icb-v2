@@ -112,7 +112,7 @@ export function isImageKitConfigured(): boolean {
 export const coffeeImagePresets = {
   /**
    * CoffeeCard preset
-   * Returns original image without transformations
+   * Applies width: 400 and quality: 70 transforms
    */
   coffeeCard: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -125,8 +125,22 @@ export const coffeeImagePresets = {
   },
 
   /**
+   * CoffeeCard hero preset
+   * Applies width: 840 and quality: 70 transforms
+   */
+  coffeeCardHero: (imagePath: string | null | undefined): string => {
+    if (!imagePath) {
+      return getPlaceholderImage("coffee");
+    }
+    return getImageKitUrl(imagePath, {
+      width: 840,
+      quality: 70,
+    });
+  },
+
+  /**
    * RoasterCard preset
-   * Returns original image without transformations
+   * Applies width: 400 and quality: 70 transforms
    */
   roasterCard: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -201,7 +215,7 @@ export const coffeeImagePresets = {
 
   /**
    * Coffee detail page main carousel preset
-   * Returns original image without transformations
+   * Applies width: 800 and quality: 75 transforms
    */
   coffeeDetail: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -215,7 +229,8 @@ export const coffeeImagePresets = {
 
   /**
    * Coffee detail page thumbnail preset
-   * Returns original image without transformations
+   * Applies width: 100 and quality: 70 transforms.
+   * Consider width: 200 for sharper 2x retina thumbnails.
    */
   coffeeThumbnail: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
@@ -255,14 +270,14 @@ export const coffeeImagePresets = {
 export const roasterImagePresets = {
   /**
    * Roaster logo preset
-   * Returns original image without transformations
+   * Applies width: 320 and quality: 80 transforms
    */
   roasterLogo: (imagePath: string | null | undefined): string => {
     if (!imagePath) {
       return getPlaceholderImage("roaster");
     }
     return getImageKitUrl(imagePath, {
-      width: 200,
+      width: 320,
       quality: 80,
     });
   },

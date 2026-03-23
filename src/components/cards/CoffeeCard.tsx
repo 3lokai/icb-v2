@@ -211,8 +211,11 @@ function CoffeeCardComponent({
 
   // Memoize expensive computations
   const imageUrl = useMemo(
-    () => coffeeImagePresets.coffeeCard(coffee.image_url),
-    [coffee.image_url]
+    () =>
+      variant === "hero"
+        ? coffeeImagePresets.coffeeCardHero(coffee.image_url)
+        : coffeeImagePresets.coffeeCard(coffee.image_url),
+    [coffee.image_url, variant]
   );
 
   // Format metadata - limit to 2-3 soft signals total
