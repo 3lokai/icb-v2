@@ -1,7 +1,7 @@
 import posthog from "posthog-js";
 
 posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
-  api_host: "/ingest",
+  api_host: "https://b.indiancoffeebeans.com",
   ui_host: "https://eu.posthog.com",
   // Include the defaults option as required by PostHog
   defaults: "2026-01-30",
