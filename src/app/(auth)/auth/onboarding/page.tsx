@@ -13,7 +13,7 @@ export default async function OnboardingPage() {
 
   // Redirect to login if not authenticated
   if (!currentUser) {
-    redirect("/auth?mode=login&from=/auth/onboarding");
+    redirect("/auth?mode=sign-in&from=/auth/onboarding");
   }
 
   // Parallelize profile and coffee preferences queries for better performance

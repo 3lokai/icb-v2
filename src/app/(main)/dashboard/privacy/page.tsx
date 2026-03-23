@@ -7,7 +7,7 @@ export default async function PrivacyPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    redirect("/auth?mode=login&from=/dashboard/privacy");
+    redirect("/auth?mode=sign-in&from=/dashboard/privacy");
   }
 
   const profile = await getMyProfileDTO();

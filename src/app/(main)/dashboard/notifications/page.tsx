@@ -7,7 +7,7 @@ export default async function NotificationsPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    redirect("/auth?mode=login&from=/dashboard/notifications");
+    redirect("/auth?mode=sign-in&from=/dashboard/notifications");
   }
 
   const preferences = await getNotificationPreferences();
