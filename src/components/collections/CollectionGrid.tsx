@@ -26,6 +26,7 @@ type CollectionGridProps = {
   maxItems?: number; // Limit displayed items (default: 4)
   coffeeCountMap?: Record<string, number>; // Map of collection ID to coffee count
   cardVariant?: "default" | "small"; // Card variant (default: "default")
+  scrollToId?: string; // Element ID to scroll to after card click
   // Header props
   overline?: string;
   title?: string;
@@ -46,6 +47,7 @@ export function CollectionGrid({
   maxItems = 4,
   coffeeCountMap = {},
   cardVariant = "default",
+  scrollToId,
   overline = "Discover By Style",
   title = "Curated",
   titleAccent = "Collections.",
@@ -132,6 +134,7 @@ export function CollectionGrid({
             collection={featuredCollection}
             variant={cardVariant}
             coffeeCount={coffeeCountMap[featuredCollection.id]}
+            scrollToId={scrollToId}
           />
         </div>
       )}
@@ -151,6 +154,7 @@ export function CollectionGrid({
               collection={collection}
               variant={cardVariant}
               coffeeCount={coffeeCountMap[collection.id]}
+              scrollToId={scrollToId}
             />
           ))}
         </div>

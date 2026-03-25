@@ -251,6 +251,7 @@ async function CoffeesPageContent({
       <CollectionGrid
         maxItems={8}
         cardVariant="small"
+        scrollToId="coffee-filters"
         overline="Optional Quick Start"
         title="Start with a"
         titleAccent="Collection"
