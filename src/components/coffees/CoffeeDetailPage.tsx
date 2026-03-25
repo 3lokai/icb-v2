@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useCallback, useEffect } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
+import type { LatestReviewPerIdentity } from "@/types/review-types";
 import { Icon } from "@/components/common/Icon";
 import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
 import { capture } from "@/lib/posthog";
@@ -13,8 +14,14 @@ import { Stack } from "@/components/primitives/stack";
 import { Prose } from "@/components/primitives/prose";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ReviewList, ReviewStats, QuickRating } from "@/components/reviews";
+import {
+  ReviewList,
+  ReviewStats,
+  QuickRating,
+  ExitIntentRatingModal,
+} from "@/components/reviews";
 import { useReviews, useReviewStats } from "@/hooks/use-reviews";
+import { useExitIntentRating } from "@/hooks/use-exit-intent-rating";
 import { cn, capitalizeFirstLetter } from "@/lib/utils";
 import { SimilarCoffees } from "./SimilarCoffees";
 import { CoffeeSensoryProfile } from "./CoffeeSensoryProfile";
@@ -26,6 +33,36 @@ type CoffeeDetailPageProps = {
   coffee: CoffeeDetail;
   className?: string;
 };
+
+type CoffeeExitIntentRatingProps = {
+  coffee: CoffeeDetail;
+  reviews: LatestReviewPerIdentity[] | undefined;
+};
+
+/**
+ * Isolated so `key={coffee.id}` remounts exit-intent state when navigating between coffees.
+ */
+function CoffeeExitIntentRating({
+  coffee,
+  reviews,
+}: CoffeeExitIntentRatingProps) {
+  const { open, setOpen } = useExitIntentRating({
+    entityId: coffee.id,
+    entityType: "coffee",
+    reviews,
+    mobileDelayMs: 45_000,
+  });
+  return (
+    <ExitIntentRatingModal
+      open={open}
+      onOpenChange={setOpen}
+      entityType="coffee"
+      entityId={coffee.id}
+      coffeeName={coffee.name}
+      slug={coffee.slug}
+    />
+  );
+}
 
 export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
   const [activeTab, setActiveTab] = useState("overview");
@@ -524,6 +561,11 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
             <SimilarCoffees coffee={coffee} />
           </Section>
         </Stack>
+        <CoffeeExitIntentRating
+          key={coffee.id}
+          coffee={coffee}
+          reviews={reviews}
+        />
       </PageShell>
     </div>
   );
