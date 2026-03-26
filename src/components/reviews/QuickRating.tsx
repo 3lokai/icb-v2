@@ -30,6 +30,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -89,6 +97,7 @@ export function QuickRating({
   const [brewMethod, setBrewMethod] = useState<GrindEnum | null>(null);
   const [hoveredStar, setHoveredStar] = useState<number | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const hasAutoSavedRef = useRef(false);
   const hasShownSuccessToastRef = useRef(false);
@@ -252,6 +261,10 @@ export function QuickRating({
 
   // Delete handler
   const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
     const anonId = ensureAnonId();
     deleteReview(
       {
@@ -270,13 +283,15 @@ export function QuickRating({
           setComment("");
           setWorksWithMilk(null);
           setBrewMethod(null);
+          cleanup();
+          setShowDeleteConfirm(false);
         },
       }
     );
   };
 
   // Determine if saved
-  const isSaved = isSuccess || userReview !== null;
+  const isSaved = userReview !== null || (isSuccess && rating > 0);
   const isSaving = isLoading || isDebouncing;
 
   // Show success toast on successful submission
@@ -297,6 +312,44 @@ export function QuickRating({
 
   return (
     <>
+      <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <DialogContent
+          className={cn(
+            "surface-2 overflow-hidden rounded-[2.5rem] p-0 gap-0 sm:max-w-md"
+          )}
+        >
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-destructive/60 via-destructive to-destructive/60 opacity-60 z-10" />
+          <DialogHeader className="p-8 pb-6 border-b border-border/10 pt-10">
+            <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60 mb-1 text-left">
+              Confirm Action
+            </p>
+            <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">
+              Remove your rating?
+            </DialogTitle>
+            <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
+              Your rating and review will be removed. You can always rate this{" "}
+              {entityType} again later.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="p-8 pt-6 flex-row gap-3 justify-end sm:justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteConfirm(false)}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete Rating"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Limit Content - Show in parent modal when limit reached */}
       {isLimitReached ? (
         <div className={paddingClass}>
@@ -349,12 +402,12 @@ export function QuickRating({
                 >
                   <span className="h-px w-6 bg-accent/60" />
                   <span className="text-overline text-muted-foreground tracking-[0.1em]">
-                    {initialRating ? "Thank you" : `Rate this ${entityType}`}
+                    {isSaved ? "Thank you" : `Rate this ${entityType}`}
                   </span>
                   <span className="h-px w-6 bg-accent/60" />
                 </div>
                 <h3 className="text-title text-balance leading-tight">
-                  {initialRating ? (
+                  {isSaved ? (
                     "Rating has been submitted"
                   ) : (
                     <>
@@ -366,7 +419,7 @@ export function QuickRating({
                   )}
                 </h3>
                 <p className="text-body text-muted-foreground">
-                  {initialRating
+                  {isSaved
                     ? entityType === "coffee"
                       ? "Share your thoughts to help others find their perfect cup."
                       : "Share your thoughts to help others discover great roasters."

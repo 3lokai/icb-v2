@@ -302,11 +302,11 @@ export function ReviewCapture({
                 Confirm Action
               </p>
               <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">
-                Delete this review?
+                Remove your rating?
               </DialogTitle>
               <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
-                This will permanently remove your review from the community.
-                This action cannot be undone.
+                Your rating and review will be removed. You can always rate this{" "}
+                {entityType} again later.
               </DialogDescription>
             </DialogHeader>
 
@@ -575,11 +575,11 @@ export function ReviewCapture({
               Confirm Action
             </p>
             <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">
-              Delete this review?
+              Remove your rating?
             </DialogTitle>
             <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
-              This will permanently remove your review from the community. This
-              action cannot be undone.
+              Your rating and review will be removed. You can always rate this{" "}
+              {entityType} again later.
             </DialogDescription>
           </DialogHeader>
 
