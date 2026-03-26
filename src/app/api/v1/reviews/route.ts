@@ -120,6 +120,8 @@ export async function POST(request: Request) {
 
   const supabase = await createServiceRoleClient();
 
+  const autoRecommend = body.rating != null && body.rating >= 4 ? true : null;
+
   const { data: row, error } = await supabase
     .from("reviews")
     .insert({
@@ -127,7 +129,7 @@ export async function POST(request: Request) {
       entity_id: body.entity_id,
       user_id: null,
       anon_id: anonId,
-      recommend: body.recommend ?? null,
+      recommend: autoRecommend,
       rating: body.rating ?? null,
       value_for_money: body.value_for_money ?? null,
       works_with_milk: body.works_with_milk ?? null,

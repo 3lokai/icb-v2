@@ -72,7 +72,9 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
           )}
         </Cluster>
       ) : (
-        <p className="text-body text-muted-foreground">No Reviews yet</p>
+        <p className="text-body text-muted-foreground">
+          Be the first to review!
+        </p>
       )}
     </div>
   );

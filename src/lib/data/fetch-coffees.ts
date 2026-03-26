@@ -328,6 +328,19 @@ function applySortingToQuery(query: any, sort: CoffeeSort): any {
       });
     case "relevance":
       return query.order("name", { ascending: true });
+    case "rating_desc":
+      return query
+        .order("rating_avg", { ascending: false, nullsFirst: false })
+        .order("rating_count", { ascending: false, nullsFirst: false });
+    case "best_value":
+      return query
+        .order("rating_avg", { ascending: false, nullsFirst: false })
+        .order("best_normalized_250g", {
+          ascending: true,
+          nullsFirst: false,
+        });
+    case "name_asc":
+      return query.order("name", { ascending: true });
     default:
       return query.order("name", { ascending: true });
   }

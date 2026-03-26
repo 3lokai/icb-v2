@@ -261,6 +261,10 @@ export async function createReview(
 
     const supabase = await createServiceRoleClient();
 
+    // Selections / "recommend" is derived from rating: 4–5 stars = recommended
+    const autoRecommend =
+      input.rating != null && input.rating >= 4 ? true : null;
+
     const { data, error } = await supabase
       .from("reviews")
       .insert({
@@ -268,7 +272,7 @@ export async function createReview(
         entity_id: input.entity_id,
         user_id,
         anon_id,
-        recommend: input.recommend ?? null,
+        recommend: autoRecommend,
         rating: input.rating ?? null,
         value_for_money: input.value_for_money ?? null,
         works_with_milk: input.works_with_milk ?? null,
