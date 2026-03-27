@@ -16,7 +16,7 @@ const HeroCTAs = dynamic(() =>
 
 export default function HeroSection() {
   return (
-    <section className="relative flex min-h-[100dvh] items-center justify-start overflow-x-hidden pb-12 pt-16 px-6 sm:px-12 md:px-24">
+    <section className="relative flex min-h-[90dvh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-6 sm:px-12 md:px-24">
       {/* Background Video - Client component for lazy loading */}
       <HeroVideoBackground />
 

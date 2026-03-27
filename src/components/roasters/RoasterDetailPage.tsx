@@ -2,21 +2,24 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import type { RoasterDetail } from "@/types/roaster-types";
 import { roasterImagePresets } from "@/lib/imagekit";
-import { Icon } from "@/components/common/Icon";
+import { Icon, type IconName } from "@/components/common/Icon";
 import { useImageColor } from "@/hooks/useImageColor";
 
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
-import { Prose } from "@/components/primitives/prose";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ReviewSection } from "@/components/reviews";
+import {
+  ReviewList,
+  ReviewStats,
+  QuickRating,
+  ExitIntentRatingModal,
+} from "@/components/reviews";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
 import { trackRoasterClick } from "@/lib/analytics";
@@ -24,27 +27,159 @@ import {
   trackRoasterConversion,
   trackRoasterEngagement,
 } from "@/lib/analytics/enhanced-tracking";
+import { useReviews, useReviewStats } from "@/hooks/use-reviews";
+import { useExitIntentRating } from "@/hooks/use-exit-intent-rating";
+import { ShareRow } from "@/components/common/ShareRow";
+import { FloatingRateCTA } from "@/components/common/FloatingRateCTA";
+
+/* ─── Types ─── */
 
 type RoasterDetailPageProps = {
   roaster: RoasterDetail;
   className?: string;
 };
 
+import type { LatestReviewPerIdentity } from "@/types/review-types";
+
+type RoasterExitIntentRatingProps = {
+  roaster: RoasterDetail;
+  reviews: LatestReviewPerIdentity[] | undefined;
+};
+
+/* ─── Scrollspy Tab Bar ─── */
+
+type TabItem = { id: string; label: string };
+
+const SECTIONS: TabItem[] = [
+  { id: "overview", label: "Overview" },
+  { id: "about", label: "About" },
+  { id: "coffees", label: "Coffees" },
+  { id: "reviews", label: "Reviews" },
+];
+
+function ScrollspyTabBar({ activeId }: { activeId: string }) {
+  const handleClick = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  return (
+    <nav
+      className="sticky top-20 z-30 bg-background/80 backdrop-blur-md border-b border-border/40"
+      aria-label="Page sections"
+    >
+      <div className="max-w-5xl mx-auto px-4 md:px-6">
+        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-1">
+          {SECTIONS.map((section) => (
+            <button
+              key={section.id}
+              type="button"
+              onClick={() => handleClick(section.id)}
+              className={cn(
+                "relative px-4 py-2.5 text-caption font-medium rounded-full transition-all whitespace-nowrap",
+                activeId === section.id
+                  ? "text-primary-foreground bg-primary shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
+              )}
+            >
+              {section.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ─── Exit Intent ─── */
+
+function RoasterExitIntentRating({
+  roaster,
+  reviews,
+}: RoasterExitIntentRatingProps) {
+  const { open, setOpen } = useExitIntentRating({
+    entityId: roaster.id,
+    entityType: "roaster",
+    reviews,
+    mobileDelayMs: 45_000,
+  });
+  return (
+    <ExitIntentRatingModal
+      open={open}
+      onOpenChange={setOpen}
+      entityType="roaster"
+      entityId={roaster.id}
+      coffeeName={roaster.name}
+      slug={roaster.slug}
+    />
+  );
+}
+
+/* ─── Helpers ─── */
+
 function formatNumber(num: number | null | undefined): string {
   if (num === null || num === undefined) return "—";
   return num.toLocaleString("en-IN");
 }
 
-function formatRating(num: number | null | undefined): string {
-  if (num === null || num === undefined) return "—";
-  return num.toFixed(1);
-}
+/* ─── Main Component ─── */
 
 export function RoasterDetailPage({
   roaster,
   className,
 }: RoasterDetailPageProps) {
-  const router = useRouter();
+  const { data: reviews } = useReviews("roaster", roaster.id);
+  const { data: stats } = useReviewStats("roaster", roaster.id);
+
+  // Refs for FloatingRateCTA
+  const heroRateButtonRef = useRef<HTMLButtonElement>(null);
+  const ratingSectionRef = useRef<HTMLDivElement>(null);
+
+  // Scrollspy active section
+  const [activeSection, setActiveSection] = useState("overview");
+  const [hasUserRating, setHasUserRating] = useState(false);
+
+  useEffect(() => {
+    const sectionIds = SECTIONS.map((s) => s.id);
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length > 0) {
+          setActiveSection(visible[0].target.id);
+        }
+      },
+      { rootMargin: "-80px 0px -60% 0px", threshold: 0 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  // GA + Tracking
+  useEffect(() => {
+    trackRoasterEngagement(roaster.id, "profile_view", {
+      coffeeCount: roaster.coffee_count ?? undefined,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roaster.id]);
+
+  // Scroll Handlers
+  const handleScrollToRating = useCallback(() => {
+    ratingSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, []);
 
   // Memoize logo URL for color extraction
   const logoUrl = useMemo(() => {
@@ -52,10 +187,8 @@ export function RoasterDetailPage({
     return roasterImagePresets.roasterLogo(`roasters/${roaster.slug}-logo`);
   }, [roaster]);
 
-  // Extract dominant color to determine background variant
   const { isDark } = useImageColor(logoUrl);
 
-  // Background gradient classes based on logo color analysis + theme (same as RoasterCard)
   const defaultBg =
     "bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)]";
   const darkContrastBg =
@@ -67,37 +200,15 @@ export function RoasterDetailPage({
     ? `${darkContrastBg} dark:${defaultBg}`
     : `${defaultBg} dark:${lightContrastBg}`;
 
-  // GA: tag roaster slug page with profile_view (roaster_engagement)
-  useEffect(() => {
-    trackRoasterEngagement(roaster.id, "profile_view", {
-      coffeeCount: roaster.coffee_count ?? undefined,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per roaster view
-  }, [roaster.id]);
-
-  // Build location info
+  // Location string
   const locationParts: string[] = [];
   if (roaster.hq_city) locationParts.push(roaster.hq_city);
   if (roaster.hq_state) locationParts.push(roaster.hq_state);
   if (roaster.hq_country) locationParts.push(roaster.hq_country);
   const location = locationParts.length > 0 ? locationParts.join(", ") : null;
 
-  // Handle "See More" click - navigate with filter in URL
-  const handleSeeMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    // Build URL with roaster filter (slug for shareable URLs)
-    const queryString = buildCoffeeQueryString(
-      { roaster_slugs: [roaster.slug] },
-      1,
-      "relevance",
-      15
-    );
-    // Navigate to coffee directory
-    router.push(`/coffees?${queryString}`);
-  };
-
-  // Social Links Logic
-  const socialLinks: Array<{ label: string; url: string; icon: string }> = [];
+  // Social Links
+  const socialLinks: Array<{ label: string; url: string; icon: IconName }> = [];
   if (roaster.website) {
     socialLinks.push({ label: "Website", url: roaster.website, icon: "Globe" });
   }
@@ -129,67 +240,21 @@ export function RoasterDetailPage({
         icon: "FacebookLogo",
       });
     }
-    if (social.linkedin && typeof social.linkedin === "string") {
-      socialLinks.push({
-        label: "LinkedIn",
-        url: social.linkedin,
-        icon: "LinkedinLogo",
-      });
-    }
   }
 
-  // Stats Logic
-  const stats = [
-    {
-      label: "Total Coffees",
-      value: formatNumber(roaster.coffee_count),
-      icon: "Coffee",
-    },
-
-    {
-      label: "Avg Coffee Rating",
-      value: formatRating(roaster.avg_coffee_rating),
-      icon: "Star",
-    },
-    {
-      label: "Roaster Rating",
-      value: formatRating(roaster.avg_rating),
-      icon: "SealCheck",
-    },
-  ];
-
   return (
-    <div className={cn("w-full bg-background", className)}>
-      <PageShell maxWidth="7xl">
-        <div className="py-8 md:py-12 lg:py-16">
-          {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="mb-6 md:mb-8">
-            <Cluster gap="2" align="center" className="text-caption">
-              <Link
-                href="/"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Home
-              </Link>
-              <span className="text-muted-foreground/40">/</span>
-              <Link
-                href="/roasters"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Roasters
-              </Link>
-              <span className="text-muted-foreground/40">/</span>
-              <span className="text-foreground font-medium">
-                {roaster.name}
-              </span>
-            </Cluster>
-          </nav>
+    <div className={cn("w-full bg-background min-h-screen", className)}>
+      <ScrollspyTabBar activeId={activeSection} />
 
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 gap-12 md:gap-16 lg:grid-cols-7">
-            {/* Left Column: Image */}
-            <div className="order-1 lg:col-span-3">
-              <Stack gap="6">
+      <PageShell maxWidth="5xl">
+        <div className="flex flex-col pb-12">
+          {/* ═══════════════════════════════════════════
+              SECTION 1: HERO / OVERVIEW
+          ═══════════════════════════════════════════ */}
+          <section id="overview" className="scroll-mt-40 py-10 md:py-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-start">
+              {/* Logo Column */}
+              <div className="w-full max-w-sm mx-auto md:mx-0">
                 <div
                   className={cn(
                     "relative aspect-square w-full overflow-hidden rounded-2xl border border-border/60 shadow-sm transition-all duration-300 hover:shadow-md",
@@ -202,7 +267,7 @@ export function RoasterDetailPage({
                       className="object-contain p-8 md:p-12"
                       fill
                       priority
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+                      sizes="(max-width: 768px) 100vw, 400px"
                       src={roasterImagePresets.roasterLogo(
                         `roasters/${roaster.slug}-logo`
                       )}
@@ -214,41 +279,12 @@ export function RoasterDetailPage({
                     </div>
                   )}
                 </div>
+              </div>
 
-                {/* Visit Website (Desktop) */}
-                {roaster.website && (
-                  <div className="hidden lg:block">
-                    <Button
-                      asChild
-                      size="lg"
-                      className="w-full hover-lift shadow-md"
-                    >
-                      <a
-                        href={roaster.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => {
-                          trackRoasterClick(roaster.id, "website");
-                          trackRoasterConversion(roaster.id, "website_click");
-                        }}
-                      >
-                        <Icon name="Globe" size={18} className="mr-2" />
-                        Visit Roaster Website
-                        <Icon name="ArrowRight" size={14} className="ml-2" />
-                      </a>
-                    </Button>
-                  </div>
-                )}
-              </Stack>
-            </div>
-
-            {/* Right Column: Details & Content */}
-            <div className="order-2 lg:col-span-4">
-              <Stack gap="8">
-                {/* Header Section */}
-                <Stack gap="6">
-                  {/* Eyebrow */}
-                  <div className="inline-flex items-center gap-4">
+              {/* Info Column */}
+              <Stack gap="6" className="pt-2">
+                <Stack gap="1">
+                  <div className="inline-flex items-center gap-4 mb-2">
                     <span className="h-px w-8 bg-accent/60" />
                     <span className="text-overline text-muted-foreground tracking-[0.2em]">
                       {(roaster.active_coffee_count || 0) > 0
@@ -256,165 +292,72 @@ export function RoasterDetailPage({
                         : "Coffee Roaster"}
                     </span>
                   </div>
-
-                  {/* Title */}
-                  <h1 className="text-display text-balance leading-[1.1] tracking-tight font-serif italic">
+                  <h1 className="text-display font-serif italic leading-[1.1] text-balance tracking-tight">
                     {roaster.name}
                   </h1>
-
-                  {/* Stats Ribbon */}
-                  <div className="py-6 md:py-8 border-y border-border/60 bg-muted/5 rounded-lg md:rounded-xl px-4 md:px-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
-                      {stats.map((stat) => (
-                        <div
-                          key={stat.label}
-                          className="flex flex-col gap-1.5 items-center sm:items-start"
-                        >
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <Icon
-                              name={stat.icon as any}
-                              size={14}
-                              className="text-accent/60"
-                            />
-                            <span className="text-label font-bold uppercase tracking-widest leading-none">
-                              {stat.label}
-                            </span>
-                          </div>
-                          <span className="text-heading font-serif italic text-accent leading-none">
-                            {stat.value}
-                          </span>
-                        </div>
-                      ))}
+                  {location && (
+                    <div className="flex items-center gap-2 text-muted-foreground mt-1">
+                      <Icon
+                        name="MapPin"
+                        size={14}
+                        className="text-accent/60"
+                      />
+                      <span className="text-label uppercase tracking-widest">
+                        {location}
+                      </span>
                     </div>
-                  </div>
+                  )}
                 </Stack>
 
-                {/* Connect Section */}
-                {(socialLinks.length > 0 ||
-                  location ||
-                  roaster.phone ||
-                  roaster.support_email) && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                    {/* Socials Column */}
-                    {socialLinks.length > 0 && (
-                      <Stack gap="3">
-                        <span className="text-label text-muted-foreground font-bold uppercase tracking-widest">
-                          Connect
-                        </span>
-                        <div className="flex flex-wrap gap-2">
-                          {socialLinks.map((link) => {
-                            const handleSocialClick = () => {
-                              if (link.label === "Website") {
-                                trackRoasterClick(roaster.id, "website");
-                                trackRoasterConversion(
-                                  roaster.id,
-                                  "website_click"
-                                );
-                              } else {
-                                trackRoasterClick(roaster.id, "social");
-                                trackRoasterConversion(
-                                  roaster.id,
-                                  "social_click"
-                                );
-                              }
-                            };
+                {/* Rating + Basic Stats */}
+                <div className="flex flex-wrap items-center gap-4">
+                  {stats && stats.review_count ? (
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 text-amber-600 rounded-full border border-amber-500/20">
+                      <Icon name="Star" size={16} className="fill-amber-500" />
+                      <span className="text-heading">
+                        {stats.avg_rating?.toFixed(1)}
+                      </span>
+                      <span className="text-caption text-muted-foreground ml-1">
+                        ({stats.review_count})
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-body-muted italic text-caption">
+                      Be the first to rate
+                    </span>
+                  )}
 
-                            return (
-                              <a
-                                key={link.url}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group p-3 rounded-xl hover:bg-accent/10 text-muted-foreground hover:text-accent transition-all duration-200 border border-border/60 hover:border-accent/40 bg-background shadow-sm"
-                                title={link.label}
-                                onClick={handleSocialClick}
-                              >
-                                <Icon
-                                  name={link.icon as any}
-                                  size={20}
-                                  className="transition-transform group-hover:scale-110"
-                                />
-                              </a>
-                            );
-                          })}
-                        </div>
-                      </Stack>
-                    )}
-
-                    {/* Contact Details Column */}
-                    {(location || roaster.phone || roaster.support_email) && (
-                      <Stack gap="3">
-                        <span className="text-label text-muted-foreground font-bold uppercase tracking-widest">
-                          Location & Contact
-                        </span>
-                        <Stack gap="3">
-                          {location && (
-                            <div className="flex items-start gap-3 text-body-small text-muted-foreground group">
-                              <Icon
-                                name="MapPin"
-                                size={16}
-                                className="mt-0.5 text-accent/60 flex-shrink-0 transition-colors group-hover:text-accent"
-                              />
-                              <span className="leading-tight">{location}</span>
-                            </div>
-                          )}
-                          {roaster.phone && (
-                            <div className="flex items-center gap-3 text-body-small group">
-                              <Icon
-                                name="Phone"
-                                size={16}
-                                className="text-accent/60 flex-shrink-0 transition-colors group-hover:text-accent"
-                              />
-                              <a
-                                href={`tel:${roaster.phone}`}
-                                className="text-muted-foreground hover:text-accent transition-colors underline-offset-4 hover:underline"
-                                onClick={() => {
-                                  trackRoasterClick(roaster.id, "phone");
-                                  trackRoasterConversion(
-                                    roaster.id,
-                                    "phone_click"
-                                  );
-                                }}
-                              >
-                                {roaster.phone}
-                              </a>
-                            </div>
-                          )}
-                          {roaster.support_email && (
-                            <div className="flex items-center gap-3 text-body-small group">
-                              <Icon
-                                name="Envelope"
-                                size={16}
-                                className="text-accent/60 flex-shrink-0 transition-colors group-hover:text-accent"
-                              />
-                              <a
-                                href={`mailto:${roaster.support_email}`}
-                                className="text-muted-foreground hover:text-accent transition-colors underline-offset-4 hover:underline"
-                                onClick={() => {
-                                  trackRoasterClick(roaster.id, "email");
-                                  trackRoasterConversion(
-                                    roaster.id,
-                                    "email_click"
-                                  );
-                                }}
-                              >
-                                {roaster.support_email}
-                              </a>
-                            </div>
-                          )}
-                        </Stack>
-                      </Stack>
-                    )}
+                  <div className="px-3 py-1.5 rounded-full border border-border/40 bg-muted/20">
+                    <span className="font-medium text-body">
+                      {formatNumber(roaster.coffee_count)}
+                    </span>
+                    <span className="text-caption text-muted-foreground ml-1.5">
+                      Coffees Cataloged
+                    </span>
                   </div>
-                )}
+                </div>
 
-                {/* Visit Website (Mobile) */}
-                {roaster.website && (
-                  <div className="lg:hidden">
+                {/* CTAs */}
+                <Cluster gap="3" className="pt-2">
+                  <Button
+                    ref={heroRateButtonRef}
+                    size="lg"
+                    className="shadow-xl bg-primary hover:scale-[1.02] transition-transform min-w-[170px]"
+                    onClick={handleScrollToRating}
+                  >
+                    <Icon
+                      name="Star"
+                      size={18}
+                      className="mr-2 fill-amber-300 text-amber-300"
+                    />
+                    Rate Roaster
+                  </Button>
+                  {roaster.website && (
                     <Button
-                      asChild
+                      variant="outline"
                       size="lg"
-                      className="w-full hover-lift shadow-sm"
+                      asChild
+                      className="text-muted-foreground min-w-[170px]"
                     >
                       <a
                         href={roaster.website}
@@ -426,51 +369,70 @@ export function RoasterDetailPage({
                         }}
                       >
                         <Icon name="Globe" size={18} className="mr-2" />
-                        Visit Roaster Website
-                        <Icon name="ArrowRight" size={14} className="ml-2" />
+                        Website
                       </a>
                     </Button>
-                  </div>
+                  )}
+                </Cluster>
+
+                {/* Socials */}
+                {socialLinks.length > 0 && (
+                  <Cluster gap="2" className="pt-2">
+                    {socialLinks.map((link) => (
+                      <a
+                        key={link.url}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2.5 rounded-full hover:bg-accent/10 text-muted-foreground hover:text-accent transition-all border border-border/40 bg-background shadow-sm"
+                        title={link.label}
+                      >
+                        <Icon name={link.icon} size={18} />
+                      </a>
+                    ))}
+                  </Cluster>
                 )}
               </Stack>
             </div>
-          </div>
+          </section>
 
-          {/* Story Section */}
+          {/* ═══════════════════════════════════════════
+              SECTION 2: ROASTER STORY
+          ═══════════════════════════════════════════ */}
           {roaster.description && (
-            <Section
-              spacing="default"
-              contained={false}
-              className="border-t border-border/60 bg-muted/5 mt-16 md:mt-24"
+            <section
+              id="about"
+              className="scroll-mt-40 py-10 md:py-14 border-t border-border/20"
             >
-              <Stack gap="6">
-                <div>
-                  <div className="inline-flex items-center gap-4 mb-3">
-                    <span className="h-px w-6 bg-accent/40" />
-                    <span className="text-overline text-muted-foreground tracking-[0.2em]">
+              <div className="surface-1 rounded-2xl p-6 md:p-8 border-l-4 border-l-accent/40">
+                <Stack gap="4">
+                  <div className="inline-flex items-center gap-4 mb-1">
+                    <span className="h-px w-8 bg-accent/60" />
+                    <span className="text-overline text-muted-foreground tracking-[0.15em]">
                       Our Story
                     </span>
-                    <span className="h-px w-6 bg-accent/40" />
                   </div>
-                  <h2 className="text-title text-balance leading-tight font-serif italic">
-                    The <span className="text-accent">Roaster's Story.</span>
+                  <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                    The{" "}
+                    <span className="text-accent italic">
+                      Roaster&apos;s Story
+                    </span>
                   </h2>
-                </div>
-                <Prose className="max-w-none">
-                  <p className="text-body-large text-muted-foreground font-sans leading-relaxed whitespace-pre-line italic opacity-90">
+                  <p className="whitespace-pre-line text-body-large text-muted-foreground/80 leading-relaxed italic">
                     {roaster.description}
                   </p>
-                </Prose>
-              </Stack>
-            </Section>
+                </Stack>
+              </div>
+            </section>
           )}
 
-          {/* Coffees List Section */}
+          {/* ═══════════════════════════════════════════
+              SECTION 3: COFFEES SELECTION
+          ═══════════════════════════════════════════ */}
           {roaster.coffees && roaster.coffees.length > 0 && (
-            <Section
-              spacing="default"
-              contained={false}
-              className="border-t border-border/60"
+            <section
+              id="coffees"
+              className="scroll-mt-40 py-10 md:py-14 border-t border-border/20"
             >
               <Stack gap="8">
                 <div>
@@ -506,7 +468,6 @@ export function RoasterDetailPage({
                           "relevance",
                           15
                         )}`}
-                        onClick={handleSeeMoreClick}
                         className="inline-flex items-center gap-2"
                       >
                         Explore All Coffees
@@ -516,39 +477,50 @@ export function RoasterDetailPage({
                   </div>
                 )}
               </Stack>
-            </Section>
+            </section>
           )}
 
-          {/* Empty State */}
-          {(!roaster.coffees || roaster.coffees.length === 0) && (
-            <Section
-              spacing="default"
-              contained={false}
-              className="border-t border-border/60"
-            >
-              <div className="text-center">
-                <div className="border border-dashed border-border/40 rounded-3xl p-16 bg-muted/20">
-                  <Icon
-                    name="Coffee"
-                    size={48}
-                    className="mx-auto mb-4 text-muted-foreground/40"
-                  />
-                  <p className="text-body text-muted-foreground font-serif italic">
-                    No coffees currently listed for this roaster.
-                  </p>
-                </div>
-              </div>
-            </Section>
-          )}
-
-          {/* Reviews Section */}
-          <Section
-            spacing="default"
-            contained={false}
-            className="border-t border-border/60"
+          {/* ═══════════════════════════════════════════
+              SECTION 4: RATE & REVIEW
+          ═══════════════════════════════════════════ */}
+          <section
+            id="reviews"
+            ref={ratingSectionRef}
+            className="scroll-mt-40 py-10 md:py-14 border-t border-border/20"
           >
-            <ReviewSection entityType="roaster" entityId={roaster.id} />
-          </Section>
+            <Stack gap="8">
+              {/* Review Stats */}
+              <ReviewStats stats={stats || null} />
+
+              {/* Rating form */}
+              <div className="surface-2 rounded-2xl p-8 border border-accent/20">
+                <QuickRating
+                  entityType="roaster"
+                  entityId={roaster.id}
+                  variant="inline"
+                  slug={roaster.slug ?? undefined}
+                  onSavedStateChange={setHasUserRating}
+                />
+                {hasUserRating && (
+                  <ShareRow
+                    entityType="roaster"
+                    name={roaster.name}
+                    slug={roaster.slug ?? ""}
+                  />
+                )}
+              </div>
+
+              {/* Community Reviews */}
+              {reviews && reviews.length > 0 && (
+                <Section contained={false} spacing="tight">
+                  <ReviewList
+                    entityType="roaster"
+                    reviews={reviews.slice(0, 10)}
+                  />
+                </Section>
+              )}
+            </Stack>
+          </section>
 
           {/* Claim Your Page CTA */}
           <div className="text-center py-12 md:py-16 border-t border-border/40">
@@ -571,7 +543,21 @@ export function RoasterDetailPage({
             </p>
           </div>
         </div>
+
+        {/* Exit Intent Modal */}
+        <RoasterExitIntentRating
+          key={roaster.id}
+          roaster={roaster}
+          reviews={reviews}
+        />
       </PageShell>
+
+      {/* Floating Rate CTA */}
+      <FloatingRateCTA
+        heroButtonRef={heroRateButtonRef}
+        ratingSectionRef={ratingSectionRef}
+        entityType="roaster"
+      />
     </div>
   );
 }

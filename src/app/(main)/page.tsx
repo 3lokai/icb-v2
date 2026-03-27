@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import HeroSection from "@/components/homepage/HeroSection";
+import NewAdditionsStrip from "@/components/homepage/NewAdditionsStrip";
 import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGridLazy";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
@@ -125,22 +126,34 @@ export default async function Home() {
   return (
     <div className="surface-0 flex min-h-screen flex-col">
       <main className="flex-1 bg-muted/30">
-        {/* Wrap HeroSection in Suspense for streaming SSR - allows h1 to render earlier */}
-        <Suspense
-          fallback={
-            <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
-              <div className="hero-content">
-                <h1 className="text-hero text-white text-balance leading-[1.1]">
-                  Discover India's{" "}
-                  <span className="text-accent italic">Finest Coffee</span>{" "}
-                  Beans.
-                </h1>
-              </div>
-            </section>
-          }
-        >
-          <HeroSection />
-        </Suspense>
+        <div className="relative">
+          {/* Wrap HeroSection in Suspense for streaming SSR - allows h1 to render earlier */}
+          <Suspense
+            fallback={
+              <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
+                <div className="hero-content">
+                  <h1 className="text-hero text-white text-balance leading-[1.1]">
+                    Discover India's{" "}
+                    <span className="text-accent italic">Finest Coffee</span>{" "}
+                    Beans.
+                  </h1>
+                </div>
+              </section>
+            }
+          >
+            <HeroSection />
+          </Suspense>
+
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20">
+            <div className="pointer-events-auto">
+              <Suspense
+                fallback={<div className="h-10 w-full bg-foreground/5" />}
+              >
+                <NewAdditionsStrip />
+              </Suspense>
+            </div>
+          </div>
+        </div>
         <HowItWorksSection />
         <UserProfileTeaser />
         <HomeCollectionGridLazy tier="core" />

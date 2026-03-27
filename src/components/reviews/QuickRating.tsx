@@ -55,6 +55,7 @@ type QuickRatingProps = {
   slug?: string;
   initialRating?: number;
   onClose?: () => void;
+  onSavedStateChange?: (isSaved: boolean) => void;
   variant?: "modal" | "inline";
 };
 
@@ -72,6 +73,7 @@ export function QuickRating({
   slug,
   initialRating,
   onClose: _onClose,
+  onSavedStateChange,
   variant = "modal",
 }: QuickRatingProps) {
   const [isLimitReached, setIsLimitReached] = useState(false);
@@ -294,6 +296,10 @@ export function QuickRating({
   const isSaved = userReview !== null || (isSuccess && rating > 0);
   const isSaving = isLoading || isDebouncing;
 
+  useEffect(() => {
+    onSavedStateChange?.(isSaved);
+  }, [isSaved, onSavedStateChange]);
+
   // Show success toast on successful submission
   useEffect(() => {
     if (isSuccess && !hasShownSuccessToastRef.current) {
@@ -371,7 +377,8 @@ export function QuickRating({
             </h3>
             <p className="text-body text-muted-foreground mt-2 text-left">
               You&apos;ve reached the limit for anonymous reviews. Sign in to
-              continue rating coffees and track your tasting journey.
+              continue rating coffees, track your tasting journey, and share
+              your reviews as well!
             </p>
           </div>
           <div

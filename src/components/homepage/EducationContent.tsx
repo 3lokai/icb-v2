@@ -2,72 +2,13 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Icon, IconName } from "@/components/common/Icon";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
-
-function ComingSoonBadge() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
-      whileInView={{ opacity: 0.85, scale: 1, rotate: 12 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" as const }}
-      className="pointer-events-none absolute -right-4 -top-4 md:-right-8 md:-top-8 select-none mix-blend-multiply dark:mix-blend-screen z-20"
-    >
-      <svg
-        viewBox="0 0 140 140"
-        className="h-28 w-28 md:h-32 md:w-32 text-muted-foreground"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* Outer text path */}
-        <path
-          id="textPath-edu"
-          d="M70 15 A 55 55 0 1 1 70 125 A 55 55 0 1 1 70 15"
-          stroke="transparent"
-        />
-        <text className="fill-current text-caption font-bold uppercase tracking-[0.25em]">
-          <textPath href="#textPath-edu" startOffset="50%" textAnchor="middle">
-            • Coming Soon • Coming Soon
-          </textPath>
-        </text>
-
-        {/* Inner decoration */}
-        <circle
-          cx="70"
-          cy="70"
-          r="40"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeDasharray="2 4"
-          className="opacity-40"
-        />
-        <circle
-          cx="70"
-          cy="70"
-          r="34"
-          stroke="currentColor"
-          strokeWidth="0.5"
-          className="opacity-20"
-        />
-
-        {/* Center icon - Theme Logo */}
-        <image
-          href="/logo-icon.svg"
-          x="40"
-          y="40"
-          width="60"
-          height="60"
-          className="opacity-25"
-        />
-      </svg>
-    </motion.div>
-  );
-}
 
 type EducationColor = "primary" | "accent";
 
@@ -161,7 +102,6 @@ export default function EducationSection() {
               <Stack gap="12">
                 {/* Header Section - Left aligned */}
                 <div className="relative">
-                  <ComingSoonBadge />
                   <Stack gap="6">
                     <motion.div
                       initial={{ x: -20, opacity: 0 }}
@@ -262,14 +202,11 @@ export default function EducationSection() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.5 }}
                 >
-                  <Button
-                    disabled
-                    className="opacity-50 cursor-not-allowed pointer-events-none"
-                    size="lg"
-                    variant="default"
-                  >
-                    Explore Educational Content
-                    <Icon className="ml-2" name="ArrowRight" size={16} />
+                  <Button asChild size="lg" variant="default">
+                    <Link href="/learn">
+                      Explore Educational Content
+                      <Icon className="ml-2" name="ArrowRight" size={16} />
+                    </Link>
                   </Button>
                 </motion.div>
               </Stack>

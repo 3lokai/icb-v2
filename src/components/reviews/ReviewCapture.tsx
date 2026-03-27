@@ -546,7 +546,8 @@ export function ReviewCapture({
             </DialogTitle>
             <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
               You&apos;ve reached the limit for anonymous reviews. Sign in to
-              continue rating coffees and track your tasting journey.
+              continue rating coffees, track your tasting journey, and share
+              your reviews as well!
             </DialogDescription>
           </DialogHeader>
 
