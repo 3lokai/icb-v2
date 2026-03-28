@@ -28,7 +28,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -86,9 +85,7 @@ export function ReviewCapture({
   const defaultFormData: CreateReviewInput = {
     entity_type: entityType,
     entity_id: entityId,
-    recommend: null,
     rating: initialRating ?? null,
-    value_for_money: null,
     works_with_milk: null,
     brew_method: null,
     comment: null,
@@ -143,9 +140,7 @@ export function ReviewCapture({
         setFormData({
           entity_type: entityType,
           entity_id: entityId,
-          recommend: userReview.recommend,
           rating: userReview.rating,
-          value_for_money: userReview.value_for_money,
           works_with_milk: userReview.works_with_milk,
           brew_method: userReview.brew_method,
           comment: userReview.comment,
@@ -270,9 +265,7 @@ export function ReviewCapture({
           setFormData({
             entity_type: entityType,
             entity_id: entityId,
-            recommend: null,
             rating: null,
-            value_for_money: null,
             works_with_milk: null,
             brew_method: null,
             comment: null,
@@ -309,11 +302,11 @@ export function ReviewCapture({
                 Confirm Action
               </p>
               <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">
-                Delete this review?
+                Remove your rating?
               </DialogTitle>
               <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
-                This will permanently remove your review from the community.
-                This action cannot be undone.
+                Your rating and review will be removed. You can always rate this{" "}
+                {entityType} again later.
               </DialogDescription>
             </DialogHeader>
 
@@ -433,33 +426,13 @@ export function ReviewCapture({
                     </Stack>
                   )}
 
-                  {(userReview.value_for_money !== null ||
-                    userReview.works_with_milk !== null ||
+                  {(userReview.works_with_milk !== null ||
                     userReview.brew_method) && (
                     <Stack gap="3">
                       <span className="text-label text-muted-foreground uppercase tracking-wider font-medium">
                         Details
                       </span>
                       <Cluster gap="2" className="flex-wrap">
-                        {userReview.value_for_money !== null && (
-                          <Badge
-                            variant="outline"
-                            className="text-caption py-1.5 px-3 border-border/40"
-                          >
-                            <Icon
-                              name={
-                                userReview.value_for_money
-                                  ? "ThumbsUp"
-                                  : "ThumbsDown"
-                              }
-                              size={12}
-                              className="mr-2 opacity-70"
-                            />
-                            {userReview.value_for_money
-                              ? "Good value"
-                              : "Pricey for the quality"}
-                          </Badge>
-                        )}
                         {userReview.works_with_milk !== null && (
                           <Badge
                             variant="outline"
@@ -573,7 +546,8 @@ export function ReviewCapture({
             </DialogTitle>
             <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
               You&apos;ve reached the limit for anonymous reviews. Sign in to
-              continue rating coffees and track your tasting journey.
+              continue rating coffees, track your tasting journey, and share
+              your reviews as well!
             </DialogDescription>
           </DialogHeader>
 
@@ -602,11 +576,11 @@ export function ReviewCapture({
               Confirm Action
             </p>
             <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">
-              Delete this review?
+              Remove your rating?
             </DialogTitle>
             <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
-              This will permanently remove your review from the community. This
-              action cannot be undone.
+              Your rating and review will be removed. You can always rate this{" "}
+              {entityType} again later.
             </DialogDescription>
           </DialogHeader>
 
@@ -663,161 +637,164 @@ export function ReviewCapture({
               </p>
             </Stack>
 
-            {/* Rating, Comment & Additional Details */}
             <Stack gap="8" className="pt-8 border-t border-border/40">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {/* Left Column: Rating and Comment */}
-                <Stack gap="8">
-                  {/* Rating */}
-                  <Stack gap="4">
-                    <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                      Overall rating*
-                    </label>
-                    <div
-                      className="flex items-center gap-2"
-                      onMouseLeave={() => setHoveredStar(null)}
-                    >
-                      {[1, 2, 3, 4, 5].map((star) => {
-                        const isFilled = hoveredStar
-                          ? star <= hoveredStar
-                          : formData.rating && star <= formData.rating;
-                        return (
-                          <button
-                            key={star}
-                            type="button"
-                            onClick={() => handleRatingClick(star)}
-                            onMouseEnter={() => setHoveredStar(star)}
-                            disabled={isLoading || isDeleting}
-                            className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            <Icon
-                              name="Star"
-                              size={28}
-                              className={cn(
-                                "transition-all duration-200",
-                                isFilled
-                                  ? "text-amber-500 fill-amber-500 drop-shadow-sm"
-                                  : "text-muted-foreground/30"
-                              )}
-                            />
-                          </button>
-                        );
-                      })}
-                      {formData.rating && (
-                        <span className="text-body font-medium text-muted-foreground ml-1">
-                          {formData.rating}/5
-                        </span>
-                      )}
-                    </div>
-                  </Stack>
-
-                  {/* Comment */}
-                  <Stack gap="4">
-                    <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                      Your review
-                    </label>
-                    <Textarea
-                      placeholder={`Tell us what makes this ${entityType} special...`}
-                      value={formData.comment ?? ""}
-                      onChange={(e) => handleCommentChange(e.target.value)}
-                      disabled={isLoading || isDeleting}
-                      className="min-h-[120px] resize-none border-border/60 focus:border-primary/50 transition-colors bg-muted/5"
-                      maxLength={1000}
-                    />
-                    {formData.comment && formData.comment.length > 0 && (
-                      <p className="text-caption text-muted-foreground text-right">
-                        {formData.comment.length.toLocaleString()}/1,000
-                      </p>
+              {/* Rating */}
+              <Stack gap="4">
+                <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                  Overall rating*
+                </label>
+                <Stack gap="2">
+                  <div
+                    className="flex items-center gap-2"
+                    onMouseLeave={() => setHoveredStar(null)}
+                  >
+                    {[1, 2, 3, 4, 5].map((star) => {
+                      const isFilled = hoveredStar
+                        ? star <= hoveredStar
+                        : formData.rating && star <= formData.rating;
+                      return (
+                        <button
+                          key={star}
+                          type="button"
+                          aria-label={`Rate ${star} out of 5`}
+                          aria-pressed={formData.rating === star}
+                          onClick={() => handleRatingClick(star)}
+                          onMouseEnter={() => setHoveredStar(star)}
+                          disabled={isLoading || isDeleting}
+                          className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <Icon
+                            name="Star"
+                            size={28}
+                            aria-hidden
+                            className={cn(
+                              "transition-all duration-200",
+                              isFilled
+                                ? "text-amber-500 fill-amber-500 drop-shadow-sm"
+                                : "text-muted-foreground/30"
+                            )}
+                          />
+                        </button>
+                      );
+                    })}
+                    {formData.rating && (
+                      <span className="text-body font-medium text-muted-foreground ml-1">
+                        {formData.rating}/5
+                      </span>
                     )}
-                  </Stack>
+                  </div>
+                  <p className="text-micro">
+                    {entityType === "coffee"
+                      ? "Ratings of 4+ will add it to Your Selections."
+                      : "Ratings of 4+ count as recommending this roaster."}
+                  </p>
                 </Stack>
+              </Stack>
 
-                {/* Right Column: Additional Details */}
-                <Stack gap="8">
-                  {/* Add to My Recommendations Checkbox */}
-                  <Stack gap="4">
-                    <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                      Selections
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <Checkbox
-                        id="recommend"
-                        checked={formData.recommend === true}
-                        onCheckedChange={(checked) => {
-                          const newFormData = {
-                            ...formData,
-                            recommend: checked === true ? true : null,
-                          };
-                          setFormData(newFormData);
-                        }}
-                        disabled={isLoading || isDeleting}
-                      />
-                      <label
-                        htmlFor="recommend"
-                        className="text-body text-foreground cursor-pointer select-none"
-                      >
-                        Add to &quot;My Recommendations&quot;
-                      </label>
-                    </div>
-                  </Stack>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-8">
-                    {/* Value for Money */}
+              {/* Comment */}
+              <Stack gap="4">
+                <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                  Your review
+                </label>
+                <Textarea
+                  placeholder={`Tell us what makes this ${entityType} special...`}
+                  value={formData.comment ?? ""}
+                  onChange={(e) => handleCommentChange(e.target.value)}
+                  disabled={isLoading || isDeleting}
+                  className="min-h-[120px] resize-none border-border/60 focus:border-primary/50 transition-colors bg-muted/5"
+                  maxLength={1000}
+                />
+                {formData.comment && formData.comment.length > 0 && (
+                  <p className="text-caption text-muted-foreground text-right">
+                    {formData.comment.length.toLocaleString()}/1,000
+                  </p>
+                )}
+              </Stack>
+
+              {entityType === "coffee" && (
+                <Stack gap="6" className="pt-6 border-t border-border/30">
+                  <p className="text-body italic text-muted-foreground/80">
+                    Help the community brew this better (optional)
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Stack gap="4">
                       <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                        Value for money
+                        Brew method
+                      </label>
+                      <Select
+                        value={formData.brew_method ?? "none"}
+                        onValueChange={(value) =>
+                          handleDetailChange(
+                            "brew_method",
+                            value === "none" ? null : (value as any)
+                          )
+                        }
+                        disabled={isLoading || isDeleting}
+                      >
+                        <SelectTrigger className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5">
+                          <SelectValue placeholder="Select method" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">None</SelectItem>
+                          {GRIND_TYPES.map((grind) => (
+                            <SelectItem key={grind.value} value={grind.value}>
+                              {grind.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </Stack>
+
+                    <Stack gap="4">
+                      <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
+                        Black / Milk
                       </label>
                       <Cluster gap="2" className="flex-wrap">
                         <Button
                           type="button"
                           variant={
-                            formData.value_for_money === true
+                            formData.works_with_milk === false
                               ? "default"
                               : "outline"
                           }
                           size="sm"
                           onClick={() =>
-                            handleDetailChange("value_for_money", true)
+                            handleDetailChange("works_with_milk", false)
                           }
                           disabled={isLoading || isDeleting}
                           className={cn(
                             "h-9 px-4",
-                            formData.value_for_money === true && "shadow-sm"
+                            formData.works_with_milk === false && "shadow-sm"
                           )}
                         >
-                          <Icon name="ThumbsUp" size={14} className="mr-1.5" />
-                          Good
+                          Black
                         </Button>
                         <Button
                           type="button"
                           variant={
-                            formData.value_for_money === false
+                            formData.works_with_milk === true
                               ? "default"
                               : "outline"
                           }
                           size="sm"
                           onClick={() =>
-                            handleDetailChange("value_for_money", false)
+                            handleDetailChange("works_with_milk", true)
                           }
                           disabled={isLoading || isDeleting}
                           className={cn(
                             "h-9 px-4",
-                            formData.value_for_money === false && "shadow-sm"
+                            formData.works_with_milk === true && "shadow-sm"
                           )}
                         >
-                          <Icon
-                            name="ThumbsDown"
-                            size={14}
-                            className="mr-1.5"
-                          />
-                          Poor
+                          Milk
                         </Button>
-                        {formData.value_for_money !== null && (
+                        {formData.works_with_milk !== null && (
                           <Button
                             type="button"
                             variant="ghost"
                             size="sm"
                             onClick={() =>
-                              handleDetailChange("value_for_money", null)
+                              handleDetailChange("works_with_milk", null)
                             }
                             disabled={isLoading || isDeleting}
                             className="h-9 px-3 text-muted-foreground hover:text-foreground"
@@ -827,135 +804,44 @@ export function ReviewCapture({
                         )}
                       </Cluster>
                     </Stack>
-
-                    {/* Coffee-specific: Works with milk */}
-                    {entityType === "coffee" && (
-                      <Stack gap="4">
-                        <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                          Profile suitability
-                        </label>
-                        <Cluster gap="2" className="flex-wrap">
-                          <Button
-                            type="button"
-                            variant={
-                              formData.works_with_milk === false
-                                ? "default"
-                                : "outline"
-                            }
-                            size="sm"
-                            onClick={() =>
-                              handleDetailChange("works_with_milk", false)
-                            }
-                            disabled={isLoading || isDeleting}
-                            className={cn(
-                              "h-9 px-4",
-                              formData.works_with_milk === false && "shadow-sm"
-                            )}
-                          >
-                            Black
-                          </Button>
-                          <Button
-                            type="button"
-                            variant={
-                              formData.works_with_milk === true
-                                ? "default"
-                                : "outline"
-                            }
-                            size="sm"
-                            onClick={() =>
-                              handleDetailChange("works_with_milk", true)
-                            }
-                            disabled={isLoading || isDeleting}
-                            className={cn(
-                              "h-9 px-4",
-                              formData.works_with_milk === true && "shadow-sm"
-                            )}
-                          >
-                            Milk
-                          </Button>
-                          {formData.works_with_milk !== null && (
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() =>
-                                handleDetailChange("works_with_milk", null)
-                              }
-                              disabled={isLoading || isDeleting}
-                              className="h-9 px-3 text-muted-foreground hover:text-foreground"
-                            >
-                              Clear
-                            </Button>
-                          )}
-                        </Cluster>
-                      </Stack>
-                    )}
-
-                    {/* Coffee-specific: Brew method */}
-                    {entityType === "coffee" && (
-                      <Stack
-                        gap="4"
-                        className="sm:col-span-2 lg:col-span-1 xl:col-span-2"
-                      >
-                        <label className="text-label text-muted-foreground uppercase tracking-widest font-medium">
-                          Brew method used
-                        </label>
-                        <Select
-                          value={formData.brew_method ?? "none"}
-                          onValueChange={(value) =>
-                            handleDetailChange(
-                              "brew_method",
-                              value === "none" ? null : (value as any)
-                            )
-                          }
-                          disabled={isLoading || isDeleting}
-                        >
-                          <SelectTrigger className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5">
-                            <SelectValue placeholder="Select method" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="none">None</SelectItem>
-                            {GRIND_TYPES.map((grind) => (
-                              <SelectItem key={grind.value} value={grind.value}>
-                                {grind.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </Stack>
-                    )}
                   </div>
                 </Stack>
+              )}
+
+              {/* Submit Button */}
+              <div
+                className={cn(
+                  "pt-4",
+                  entityType === "coffee" ? "border-t border-border/40" : ""
+                )}
+              >
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (checkLimitBeforeCreate()) return;
+                    createReview(formData, {
+                      onSuccess: () => setIsEditMode(false),
+                    });
+                  }}
+                  disabled={isLoading || isDeleting}
+                  className="w-full sm:w-auto"
+                  size="lg"
+                >
+                  {isLoading ? (
+                    <>
+                      <Icon
+                        name="Circle"
+                        size={16}
+                        className="mr-2 animate-spin"
+                      />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>Submit Review</>
+                  )}
+                </Button>
               </div>
             </Stack>
-
-            {/* Submit Button */}
-            <div className="pt-4 border-t border-border/40">
-              <Button
-                type="button"
-                onClick={() => {
-                  if (checkLimitBeforeCreate()) return;
-                  createReview(formData);
-                  setIsEditMode(false);
-                }}
-                disabled={isLoading || isDeleting}
-                className="w-full sm:w-auto"
-                size="lg"
-              >
-                {isLoading ? (
-                  <>
-                    <Icon
-                      name="Circle"
-                      size={16}
-                      className="mr-2 animate-spin"
-                    />
-                    Submitting...
-                  </>
-                ) : (
-                  <>Submit Review</>
-                )}
-              </Button>
-            </div>
           </Stack>
         </CardContent>
       </Card>

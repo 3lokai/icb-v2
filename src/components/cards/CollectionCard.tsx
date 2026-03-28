@@ -18,6 +18,7 @@ type CollectionCardProps = {
   variant?: "default" | "small";
   coffeeCount?: number; // Optional: pass actual count from DB
   onClick?: () => void;
+  scrollToId?: string; // Element ID to scroll to after navigation
 };
 
 // ============================================================================
@@ -29,6 +30,7 @@ export function CollectionCard({
   variant = "default",
   coffeeCount,
   onClick,
+  scrollToId,
 }: CollectionCardProps) {
   const isSmall = variant === "small";
   const [imageError, setImageError] = useState(false);
@@ -41,7 +43,9 @@ export function CollectionCard({
 
   return (
     <Link
-      href={getCollectionFilterUrl(collection)}
+      href={`${getCollectionFilterUrl(collection)}${
+        scrollToId ? `#${scrollToId}` : ""
+      }`}
       onClick={handleClick}
       className={cn(
         "group relative overflow-hidden",

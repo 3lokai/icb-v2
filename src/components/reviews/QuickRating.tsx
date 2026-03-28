@@ -29,7 +29,14 @@ import { Cluster } from "@/components/primitives/cluster";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -48,6 +55,7 @@ type QuickRatingProps = {
   slug?: string;
   initialRating?: number;
   onClose?: () => void;
+  onSavedStateChange?: (isSaved: boolean) => void;
   variant?: "modal" | "inline";
 };
 
@@ -65,6 +73,7 @@ export function QuickRating({
   slug,
   initialRating,
   onClose: _onClose,
+  onSavedStateChange,
   variant = "modal",
 }: QuickRatingProps) {
   const [isLimitReached, setIsLimitReached] = useState(false);
@@ -86,12 +95,11 @@ export function QuickRating({
   // Form state
   const [rating, setRating] = useState<number>(initialRating ?? 0);
   const [comment, setComment] = useState<string>("");
-  const [recommend, setRecommend] = useState<boolean | null>(null);
-  const [valueForMoney, setValueForMoney] = useState<boolean | null>(null);
   const [worksWithMilk, setWorksWithMilk] = useState<boolean | null>(null);
   const [brewMethod, setBrewMethod] = useState<GrindEnum | null>(null);
   const [hoveredStar, setHoveredStar] = useState<number | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const hasAutoSavedRef = useRef(false);
   const hasShownSuccessToastRef = useRef(false);
@@ -151,8 +159,6 @@ export function QuickRating({
       startTransition(() => {
         setRating(userReview.rating ?? 0);
         setComment(userReview.comment ?? "");
-        setRecommend(userReview.recommend ?? null);
-        setValueForMoney(userReview.value_for_money ?? null);
         setWorksWithMilk(userReview.works_with_milk ?? null);
         setBrewMethod(userReview.brew_method ?? null);
       });
@@ -194,9 +200,7 @@ export function QuickRating({
       createReview({
         entity_type: entityType,
         entity_id: entityId,
-        recommend: null,
         rating: initialRating,
-        value_for_money: null,
         works_with_milk: null,
         brew_method: null,
         comment: null,
@@ -250,9 +254,7 @@ export function QuickRating({
     createReview({
       entity_type: entityType,
       entity_id: entityId,
-      recommend: recommend,
       rating: rating,
-      value_for_money: valueForMoney,
       works_with_milk: worksWithMilk,
       brew_method: brewMethod,
       comment: comment || null,
@@ -261,6 +263,10 @@ export function QuickRating({
 
   // Delete handler
   const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
     const anonId = ensureAnonId();
     deleteReview(
       {
@@ -277,18 +283,22 @@ export function QuickRating({
           }
           setRating(0);
           setComment("");
-          setRecommend(null);
-          setValueForMoney(null);
           setWorksWithMilk(null);
           setBrewMethod(null);
+          cleanup();
+          setShowDeleteConfirm(false);
         },
       }
     );
   };
 
   // Determine if saved
-  const isSaved = isSuccess || userReview !== null;
+  const isSaved = userReview !== null || (isSuccess && rating > 0);
   const isSaving = isLoading || isDebouncing;
+
+  useEffect(() => {
+    onSavedStateChange?.(isSaved);
+  }, [isSaved, onSavedStateChange]);
 
   // Show success toast on successful submission
   useEffect(() => {
@@ -308,6 +318,44 @@ export function QuickRating({
 
   return (
     <>
+      <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <DialogContent
+          className={cn(
+            "surface-2 overflow-hidden rounded-[2.5rem] p-0 gap-0 sm:max-w-md"
+          )}
+        >
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-destructive/60 via-destructive to-destructive/60 opacity-60 z-10" />
+          <DialogHeader className="p-8 pb-6 border-b border-border/10 pt-10">
+            <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60 mb-1 text-left">
+              Confirm Action
+            </p>
+            <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">
+              Remove your rating?
+            </DialogTitle>
+            <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
+              Your rating and review will be removed. You can always rate this{" "}
+              {entityType} again later.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="p-8 pt-6 flex-row gap-3 justify-end sm:justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteConfirm(false)}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete Rating"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Limit Content - Show in parent modal when limit reached */}
       {isLimitReached ? (
         <div className={paddingClass}>
@@ -329,7 +377,8 @@ export function QuickRating({
             </h3>
             <p className="text-body text-muted-foreground mt-2 text-left">
               You&apos;ve reached the limit for anonymous reviews. Sign in to
-              continue rating coffees and track your tasting journey.
+              continue rating coffees, track your tasting journey, and share
+              your reviews as well!
             </p>
           </div>
           <div
@@ -360,12 +409,12 @@ export function QuickRating({
                 >
                   <span className="h-px w-6 bg-accent/60" />
                   <span className="text-overline text-muted-foreground tracking-[0.1em]">
-                    {initialRating ? "Thank you" : `Rate this ${entityType}`}
+                    {isSaved ? "Thank you" : `Rate this ${entityType}`}
                   </span>
                   <span className="h-px w-6 bg-accent/60" />
                 </div>
                 <h3 className="text-title text-balance leading-tight">
-                  {initialRating ? (
+                  {isSaved ? (
                     "Rating has been submitted"
                   ) : (
                     <>
@@ -377,7 +426,7 @@ export function QuickRating({
                   )}
                 </h3>
                 <p className="text-body text-muted-foreground">
-                  {initialRating
+                  {isSaved
                     ? entityType === "coffee"
                       ? "Share your thoughts to help others find their perfect cup."
                       : "Share your thoughts to help others discover great roasters."
@@ -389,45 +438,60 @@ export function QuickRating({
             )}
 
             {/* Rating Stars */}
-            <div
-              className={cn(
-                "flex items-center gap-3",
-                isInline ? "justify-start" : "justify-center"
-              )}
-              onMouseLeave={() => setHoveredStar(null)}
-            >
-              {[1, 2, 3, 4, 5].map((star) => {
-                const isFilled = hoveredStar
-                  ? star <= hoveredStar
-                  : rating >= star;
-                return (
-                  <button
-                    key={star}
-                    type="button"
-                    onClick={() => handleRatingClick(star)}
-                    onMouseEnter={() => setHoveredStar(star)}
-                    disabled={isSaving || isDeleting}
-                    className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <Icon
-                      name="Star"
-                      size={36}
-                      className={cn(
-                        "transition-all duration-200",
-                        isFilled
-                          ? "text-amber-500 fill-amber-500 drop-shadow-sm"
-                          : "text-muted-foreground/30"
-                      )}
-                    />
-                  </button>
-                );
-              })}
-              {rating > 0 && (
-                <span className="text-body font-medium text-muted-foreground ml-2">
-                  {rating}/5
-                </span>
-              )}
-            </div>
+            <Stack gap="2">
+              <div
+                className={cn(
+                  "flex items-center gap-3",
+                  isInline ? "justify-start" : "justify-center"
+                )}
+                onMouseLeave={() => setHoveredStar(null)}
+              >
+                {[1, 2, 3, 4, 5].map((star) => {
+                  const isFilled = hoveredStar
+                    ? star <= hoveredStar
+                    : rating >= star;
+                  return (
+                    <button
+                      key={star}
+                      type="button"
+                      aria-label={`Rate ${star} out of 5`}
+                      aria-pressed={rating === star}
+                      onClick={() => handleRatingClick(star)}
+                      onMouseEnter={() => setHoveredStar(star)}
+                      disabled={isSaving || isDeleting}
+                      className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Icon
+                        name="Star"
+                        size={36}
+                        aria-hidden
+                        className={cn(
+                          "transition-all duration-200",
+                          isFilled
+                            ? "text-amber-500 fill-amber-500 drop-shadow-sm"
+                            : "text-muted-foreground/30"
+                        )}
+                      />
+                    </button>
+                  );
+                })}
+                {rating > 0 && (
+                  <span className="text-body font-medium text-muted-foreground ml-2">
+                    {rating}/5
+                  </span>
+                )}
+              </div>
+              <p
+                className={cn(
+                  "text-micro",
+                  isInline ? "text-left" : "text-center"
+                )}
+              >
+                {entityType === "coffee"
+                  ? "Ratings of 4+ will add it to Your Selections."
+                  : "Ratings of 4+ count as recommending this roaster."}
+              </p>
+            </Stack>
 
             {/* Comment - always visible */}
             <Stack gap="3">
@@ -446,111 +510,84 @@ export function QuickRating({
               )}
             </Stack>
 
-            {/* Additional Details */}
-            <Stack gap="6" className="pt-2 border-t border-border/40">
-              {/* 2 Column Layout for Non-Mobile */}
-              <div className="flex flex-col md:flex-row md:flex-wrap gap-6">
-                {/* First Row, Column 1: Brew method */}
-                {entityType === "coffee" && (
-                  <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
-                    <Stack gap="3">
-                      <label className="text-label uppercase tracking-widest">
-                        Brew method used
-                      </label>
-                      <Select
-                        value={brewMethod ?? "none"}
-                        onValueChange={(value) =>
-                          setBrewMethod(
-                            value === "none" ? null : (value as GrindEnum)
-                          )
-                        }
-                        disabled={isSaving || isDeleting}
-                      >
-                        <SelectTrigger className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5">
-                          <SelectValue placeholder="How did you brew this coffee?" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {GRIND_TYPES.filter(
-                            (grind) => grind.value !== "whole"
-                          ).map((grind) => (
-                            <SelectItem key={grind.value} value={grind.value}>
-                              {grind.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </Stack>
-                  </div>
-                )}
-
-                {/* First Row, Column 2: Add to Recommendations */}
-                <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
+            {entityType === "coffee" && (
+              <Stack gap="6" className="pt-6 border-t border-border/30">
+                <p
+                  className={cn(
+                    "text-body italic text-muted-foreground/80",
+                    isInline ? "text-left" : "text-center"
+                  )}
+                >
+                  Help the community brew this better (optional)
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Stack gap="3">
                     <label className="text-label uppercase tracking-widest">
-                      Recommendations
+                      Brew method
                     </label>
-                    <div className="flex items-center gap-2">
-                      <Checkbox
-                        id="recommend"
-                        checked={recommend === true}
-                        onCheckedChange={(checked) => {
-                          setRecommend(checked === true ? true : null);
-                        }}
-                        disabled={isSaving || isDeleting}
-                      />
-                      <label
-                        htmlFor="recommend"
-                        className="text-caption text-foreground cursor-pointer select-none"
-                      >
-                        Add to &quot;My Selections&quot;
-                      </label>
-                    </div>
+                    <Select
+                      value={brewMethod ?? "none"}
+                      onValueChange={(value) =>
+                        setBrewMethod(
+                          value === "none" ? null : (value as GrindEnum)
+                        )
+                      }
+                      disabled={isSaving || isDeleting}
+                    >
+                      <SelectTrigger className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5">
+                        <SelectValue placeholder="How did you brew this coffee?" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">No brew method</SelectItem>
+                        {GRIND_TYPES.filter(
+                          (grind) => grind.value !== "whole"
+                        ).map((grind) => (
+                          <SelectItem key={grind.value} value={grind.value}>
+                            {grind.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </Stack>
-                </div>
-
-                {/* Second Row, Column 1: Value for Money */}
-                <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
                   <Stack gap="3">
                     <label className="text-label uppercase tracking-widest">
-                      Value for money
+                      Black / Milk
                     </label>
                     <Cluster gap="2" className="flex-wrap">
                       <Button
                         type="button"
-                        variant={valueForMoney === true ? "default" : "outline"}
+                        variant={
+                          worksWithMilk === false ? "default" : "outline"
+                        }
                         size="sm"
-                        onClick={() => setValueForMoney(true)}
+                        onClick={() => setWorksWithMilk(false)}
                         disabled={isSaving || isDeleting}
                         className={cn(
                           "h-9 px-4",
-                          valueForMoney === true && "shadow-sm"
+                          worksWithMilk === false && "shadow-sm"
                         )}
                       >
-                        <Icon name="ThumbsUp" size={14} className="mr-1.5" />
-                        Good
+                        Black
                       </Button>
                       <Button
                         type="button"
-                        variant={
-                          valueForMoney === false ? "default" : "outline"
-                        }
+                        variant={worksWithMilk === true ? "default" : "outline"}
                         size="sm"
-                        onClick={() => setValueForMoney(false)}
+                        onClick={() => setWorksWithMilk(true)}
                         disabled={isSaving || isDeleting}
                         className={cn(
                           "h-9 px-4",
-                          valueForMoney === false && "shadow-sm"
+                          worksWithMilk === true && "shadow-sm"
                         )}
                       >
-                        <Icon name="ThumbsDown" size={14} className="mr-1.5" />
-                        Poor
+                        Milk
                       </Button>
-                      {valueForMoney !== null && (
+                      {worksWithMilk !== null && (
                         <Button
                           type="button"
                           variant="ghost"
                           size="sm"
-                          onClick={() => setValueForMoney(null)}
+                          onClick={() => setWorksWithMilk(null)}
                           disabled={isSaving || isDeleting}
                           className="h-9 px-3 text-muted-foreground hover:text-foreground"
                         >
@@ -560,63 +597,8 @@ export function QuickRating({
                     </Cluster>
                   </Stack>
                 </div>
-
-                {/* Second Row, Column 2: Profile suitability - coffee only */}
-                {entityType === "coffee" && (
-                  <div className="flex-1 min-w-0 md:min-w-[calc(50%-0.75rem)]">
-                    <Stack gap="3">
-                      <label className="text-label uppercase tracking-widest">
-                        Profile suitability
-                      </label>
-                      <Cluster gap="2" className="flex-wrap">
-                        <Button
-                          type="button"
-                          variant={
-                            worksWithMilk === false ? "default" : "outline"
-                          }
-                          size="sm"
-                          onClick={() => setWorksWithMilk(false)}
-                          disabled={isSaving || isDeleting}
-                          className={cn(
-                            "h-9 px-4",
-                            worksWithMilk === false && "shadow-sm"
-                          )}
-                        >
-                          Black
-                        </Button>
-                        <Button
-                          type="button"
-                          variant={
-                            worksWithMilk === true ? "default" : "outline"
-                          }
-                          size="sm"
-                          onClick={() => setWorksWithMilk(true)}
-                          disabled={isSaving || isDeleting}
-                          className={cn(
-                            "h-9 px-4",
-                            worksWithMilk === true && "shadow-sm"
-                          )}
-                        >
-                          Milk
-                        </Button>
-                        {worksWithMilk !== null && (
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setWorksWithMilk(null)}
-                            disabled={isSaving || isDeleting}
-                            className="h-9 px-3 text-muted-foreground hover:text-foreground"
-                          >
-                            Clear
-                          </Button>
-                        )}
-                      </Cluster>
-                    </Stack>
-                  </div>
-                )}
-              </div>
-            </Stack>
+              </Stack>
+            )}
 
             {/* Status indicator */}
             {isSaving && (

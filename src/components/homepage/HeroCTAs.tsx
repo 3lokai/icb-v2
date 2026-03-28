@@ -1,14 +1,44 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { animate, useInView, useReducedMotion } from "motion/react";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/common/Icon";
 import { capture } from "@/lib/posthog";
+import type { PublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 import { useSearchContext } from "@/providers/SearchProvider";
 
-export function HeroCTAs() {
+function AnimatedStatValue({ value }: { value: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
+  const reduceMotion = useReducedMotion();
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    if (!inView) return;
+
+    const controls = animate(0, value, {
+      duration: 1.25,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, value, reduceMotion]);
+
+  const shown = reduceMotion ? value : display;
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      {shown}
+    </span>
+  );
+}
+
+export function HeroCTAs({ totals }: { totals: PublicDirectoryTotals }) {
   const { openSearch } = useSearchContext();
 
   return (
@@ -61,18 +91,21 @@ export function HeroCTAs() {
 
       {/* Editorial Footer */}
       <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-4">
-        <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-[0.2em] font-medium">
-          <span className="h-1 w-1 rounded-full bg-accent/60" />
-          800+ coffees rated
+        <div className="flex items-center gap-3 text-micro text-white/85 uppercase tracking-[0.2em] font-semibold">
+          <span className="h-1 w-1 shrink-0 rounded-full bg-accent/60" />
+          <span>
+            <AnimatedStatValue value={totals.coffees} /> coffees listed
+          </span>
         </div>
-        <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-[0.2em] font-medium">
-          <span className="h-1 w-1 rounded-full bg-accent/60" />
-          60+ Indian roasters
+        <div className="flex items-center gap-3 text-micro text-white/85 uppercase tracking-[0.2em] font-semibold">
+          <span className="h-1 w-1 shrink-0 rounded-full bg-accent/60" />
+          <span>
+            <AnimatedStatValue value={totals.roasters} /> Indian roasters
+          </span>
         </div>
-        <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-[0.2em] font-medium">
-          <span className="h-1 w-1 rounded-full bg-accent/60" />
+        <div className="flex items-center gap-3 text-micro text-white/85 uppercase tracking-[0.2em] font-semibold">
+          <span className="h-1 w-1 shrink-0 rounded-full bg-accent/60" />
           Community-driven, not sponsored
-          <span className="h-1 w-1 rounded-full bg-accent/60" />
         </div>
       </div>
     </Stack>

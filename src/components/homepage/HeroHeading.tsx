@@ -2,7 +2,6 @@
 import { Stack } from "@/components/primitives/stack";
 import { Announcement, AnnouncementTitle } from "@/components/ui/announcement";
 import { Icon } from "@/components/common/Icon";
-import { cn } from "@/lib/utils";
 
 export function HeroHeading() {
   return (

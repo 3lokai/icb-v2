@@ -103,16 +103,12 @@ export function Footer() {
                       <a
                         key={social.label}
                         aria-label={`Follow us on ${social.label}`}
-                        className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background transition-all hover:bg-accent/10 hover:border-accent/20 hover:-translate-y-0.5"
+                        className="flex items-center justify-center text-muted-foreground transition-all hover:text-accent hover:-translate-y-0.5"
                         href={social.href}
                         rel={isMailto ? undefined : "noopener noreferrer"}
                         target={isMailto ? undefined : "_blank"}
                       >
-                        <Icon
-                          className="text-primary/70"
-                          name={social.icon as any}
-                          size={18}
-                        />
+                        <Icon name={social.icon as any} size={20} />
                       </a>
                     );
                   })}

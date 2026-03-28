@@ -301,7 +301,10 @@ export function CoffeeFacetedFilterBar({
     !!filters.max_price;
 
   return (
-    <div className="w-full rounded-xl border border-border/60 bg-card p-4 text-card-foreground shadow-sm md:p-6">
+    <div
+      id="coffee-filters"
+      className="w-full rounded-xl border border-border/60 bg-card p-4 text-card-foreground shadow-sm md:p-6"
+    >
       <Stack gap="6" className="w-full">
         {/* Top Row: Search and Sort (Visible on all devices) */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
