@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { ensureAnonId } from "@/lib/reviews/anon-id";
+import { getAnonId } from "@/lib/reviews/anon-id";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
 
 const SESSION_STORAGE_KEY = "icb_exit_rating_dismissed";
@@ -83,7 +83,7 @@ export function useExitIntentRating({
         if (user) {
           setIdentityKey(`user:${user.id}`);
         } else {
-          const anonId = ensureAnonId();
+          const anonId = getAnonId();
           if (anonId) {
             setIdentityKey(`anon:${anonId}`);
           } else {
@@ -92,7 +92,7 @@ export function useExitIntentRating({
         }
       } catch {
         if (cancelled) return;
-        const anonId = ensureAnonId();
+        const anonId = getAnonId();
         setIdentityKey(anonId ? `anon:${anonId}` : null);
       }
     }

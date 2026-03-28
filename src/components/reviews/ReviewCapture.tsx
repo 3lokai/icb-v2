@@ -656,6 +656,8 @@ export function ReviewCapture({
                         <button
                           key={star}
                           type="button"
+                          aria-label={`Rate ${star} out of 5`}
+                          aria-pressed={formData.rating === star}
                           onClick={() => handleRatingClick(star)}
                           onMouseEnter={() => setHoveredStar(star)}
                           disabled={isLoading || isDeleting}
@@ -664,6 +666,7 @@ export function ReviewCapture({
                           <Icon
                             name="Star"
                             size={28}
+                            aria-hidden
                             className={cn(
                               "transition-all duration-200",
                               isFilled
@@ -816,8 +819,9 @@ export function ReviewCapture({
                   type="button"
                   onClick={() => {
                     if (checkLimitBeforeCreate()) return;
-                    createReview(formData);
-                    setIsEditMode(false);
+                    createReview(formData, {
+                      onSuccess: () => setIsEditMode(false),
+                    });
                   }}
                   disabled={isLoading || isDeleting}
                   className="w-full sm:w-auto"

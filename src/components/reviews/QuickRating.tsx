@@ -454,6 +454,8 @@ export function QuickRating({
                     <button
                       key={star}
                       type="button"
+                      aria-label={`Rate ${star} out of 5`}
+                      aria-pressed={rating === star}
                       onClick={() => handleRatingClick(star)}
                       onMouseEnter={() => setHoveredStar(star)}
                       disabled={isSaving || isDeleting}
@@ -462,6 +464,7 @@ export function QuickRating({
                       <Icon
                         name="Star"
                         size={36}
+                        aria-hidden
                         className={cn(
                           "transition-all duration-200",
                           isFilled
@@ -535,6 +538,7 @@ export function QuickRating({
                         <SelectValue placeholder="How did you brew this coffee?" />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="none">No brew method</SelectItem>
                         {GRIND_TYPES.filter(
                           (grind) => grind.value !== "whole"
                         ).map((grind) => (

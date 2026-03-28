@@ -312,37 +312,45 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
 function applySortingToQuery(query: any, sort: CoffeeSort): any {
   switch (sort) {
     case "price_asc":
-      return query.order("best_normalized_250g", {
-        ascending: true,
-        nullsFirst: false,
-      });
+      return query
+        .order("best_normalized_250g", { ascending: true, nullsFirst: false })
+        .order("coffee_id", { ascending: true });
     case "price_desc":
-      return query.order("best_normalized_250g", {
-        ascending: false,
-        nullsFirst: false,
-      });
+      return query
+        .order("best_normalized_250g", {
+          ascending: false,
+          nullsFirst: false,
+        })
+        .order("coffee_id", { ascending: true });
     case "newest":
-      return query.order("created_at", {
-        ascending: false,
-        nullsFirst: false,
-      });
+      return query
+        .order("created_at", { ascending: false, nullsFirst: false })
+        .order("coffee_id", { ascending: true });
     case "relevance":
-      return query.order("name", { ascending: true });
+      return query
+        .order("name", { ascending: true })
+        .order("coffee_id", { ascending: true });
     case "rating_desc":
       return query
         .order("rating_avg", { ascending: false, nullsFirst: false })
-        .order("rating_count", { ascending: false, nullsFirst: false });
+        .order("rating_count", { ascending: false, nullsFirst: false })
+        .order("coffee_id", { ascending: true });
     case "best_value":
       return query
         .order("rating_avg", { ascending: false, nullsFirst: false })
         .order("best_normalized_250g", {
           ascending: true,
           nullsFirst: false,
-        });
+        })
+        .order("coffee_id", { ascending: true });
     case "name_asc":
-      return query.order("name", { ascending: true });
+      return query
+        .order("name", { ascending: true })
+        .order("coffee_id", { ascending: true });
     default:
-      return query.order("name", { ascending: true });
+      return query
+        .order("name", { ascending: true })
+        .order("coffee_id", { ascending: true });
   }
 }
 

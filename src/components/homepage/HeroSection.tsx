@@ -1,5 +1,6 @@
 // Server component for optimal LCP
 import dynamic from "next/dynamic";
+import { fetchPublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 import { Stack } from "@/components/primitives/stack";
 import { HeroHeading } from "./HeroHeading";
 import { HeroVideoBackground } from "./HeroVideoBackground";
@@ -14,7 +15,9 @@ const HeroCTAs = dynamic(() =>
   import("./HeroCTAs").then((mod) => ({ default: mod.HeroCTAs }))
 );
 
-export default function HeroSection() {
+export default async function HeroSection() {
+  const totals = await fetchPublicDirectoryTotals();
+
   return (
     <section className="relative flex min-h-[90dvh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-6 sm:px-12 md:px-24">
       {/* Background Video - Client component for lazy loading */}
@@ -34,7 +37,7 @@ export default function HeroSection() {
           <HeroSearch />
 
           {/* CTA Buttons - Client-side for search interaction */}
-          <HeroCTAs />
+          <HeroCTAs totals={totals} />
         </Stack>
       </div>
     </section>

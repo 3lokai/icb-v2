@@ -132,6 +132,7 @@ export function useCreateReview() {
   const pendingMutationRef = useRef<{
     input: CreateReviewInput;
     anonId: string | null;
+    mutateOptions?: { onSuccess?: () => void };
   } | null>(null);
   const [isDebouncing, setIsDebouncing] = useState(false);
   const [lastSuccess, setLastSuccess] = useState(false);
@@ -189,7 +190,7 @@ export function useCreateReview() {
   });
 
   const createReviewDebounced = useCallback(
-    (input: CreateReviewInput) => {
+    (input: CreateReviewInput, mutateOptions?: { onSuccess?: () => void }) => {
       // Reset success state when user makes new changes
       setLastSuccess(false);
 
@@ -202,17 +203,27 @@ export function useCreateReview() {
       const anonId = ensureAnonId();
 
       // Store pending mutation
-      pendingMutationRef.current = { input, anonId };
+      pendingMutationRef.current = { input, anonId, mutateOptions };
 
       // Set debouncing state
       setIsDebouncing(true);
 
       // Set new debounce timer (600ms - middle of 500-800ms range)
       debounceTimerRef.current = setTimeout(() => {
-        if (pendingMutationRef.current) {
+        const pending = pendingMutationRef.current;
+        pendingMutationRef.current = null;
+        if (pending) {
           setIsDebouncing(false);
-          mutation.mutate(pendingMutationRef.current);
-          pendingMutationRef.current = null;
+          const {
+            input: varsInput,
+            anonId: varsAnonId,
+            mutateOptions: opts,
+          } = pending;
+          const perCallOnSuccess = opts?.onSuccess;
+          mutation.mutate(
+            { input: varsInput, anonId: varsAnonId },
+            perCallOnSuccess ? { onSuccess: perCallOnSuccess } : undefined
+          );
         } else {
           setIsDebouncing(false);
         }

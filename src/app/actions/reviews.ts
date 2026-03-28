@@ -27,12 +27,23 @@ function isUuid(value: string): boolean {
 }
 
 /**
+ * Explicit recommend wins; otherwise derive from 4+ star rating for legacy callers.
+ */
+function resolvedRecommend(input: CreateReviewInput): boolean | null {
+  return input.recommend != null
+    ? input.recommend
+    : input.rating != null && input.rating >= 4
+      ? true
+      : null;
+}
+
+/**
  * Ensure request has at least one meaningful signal.
  * Prevents empty rows that pollute stats and UI.
  */
 function hasAnySignal(input: CreateReviewInput): boolean {
   return (
-    (input.recommend !== undefined && input.recommend !== null) ||
+    resolvedRecommend(input) != null ||
     (input.rating !== undefined && input.rating !== null) ||
     (input.value_for_money !== undefined && input.value_for_money !== null) ||
     (input.works_with_milk !== undefined && input.works_with_milk !== null) ||
@@ -261,9 +272,7 @@ export async function createReview(
 
     const supabase = await createServiceRoleClient();
 
-    // Selections / "recommend" is derived from rating: 4–5 stars = recommended
-    const autoRecommend =
-      input.rating != null && input.rating >= 4 ? true : null;
+    const recommend = resolvedRecommend(input);
 
     const { data, error } = await supabase
       .from("reviews")
@@ -272,7 +281,7 @@ export async function createReview(
         entity_id: input.entity_id,
         user_id,
         anon_id,
-        recommend: autoRecommend,
+        recommend,
         rating: input.rating ?? null,
         value_for_money: input.value_for_money ?? null,
         works_with_milk: input.works_with_milk ?? null,
