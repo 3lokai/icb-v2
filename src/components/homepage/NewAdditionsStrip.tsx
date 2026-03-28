@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { fetchRecentAdditions } from "@/lib/data/fetch-recent-additions";
-import { Marquee } from "@/components/ui/marquee";
+import { MarqueeFixedSpeed } from "@/components/ui/marquee-fixed-speed";
 import { Badge } from "@/components/ui/badge";
 
 function DotDivider() {
@@ -16,11 +16,7 @@ export default async function NewAdditionsStrip() {
 
   return (
     <section className="border-y border-border/40 bg-foreground text-background">
-      <Marquee
-        className="[--duration:45s] py-3 [--gap:2rem]"
-        pauseOnHover
-        repeat={3}
-      >
+      <MarqueeFixedSpeed className="py-3 [--gap:2rem]" pauseOnHover repeat={3}>
         {newCoffees.map((group) => (
           <div
             className="inline-flex items-center gap-3 whitespace-nowrap"
@@ -79,7 +75,7 @@ export default async function NewAdditionsStrip() {
             <DotDivider />
           </div>
         ))}
-      </Marquee>
+      </MarqueeFixedSpeed>
     </section>
   );
 }
