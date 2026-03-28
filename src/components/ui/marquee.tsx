@@ -66,7 +66,6 @@ export function Marquee({
           style={{
             animationDuration: "var(--duration, 40s)",
             animationDirection: reverse ? "reverse" : "normal",
-            animationPlayState: "running",
           }}
         >
           {children}

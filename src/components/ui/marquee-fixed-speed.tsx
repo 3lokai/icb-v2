@@ -102,7 +102,6 @@ export function MarqueeFixedSpeed({
               : {
                   animationDuration: `${durationSec}s`,
                   animationDirection: reverse ? "reverse" : "normal",
-                  animationPlayState: "running",
                 }
           }
         >
