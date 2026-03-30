@@ -91,7 +91,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
-    if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
+    if (process.env.VERCEL_ENV !== "production") {
       return [
         {
           source: "/:path*",
