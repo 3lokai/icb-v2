@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Country, State, City } from "country-state-city";
 import { saveOnboardingData } from "@/app/actions/profile";
 import { capture } from "@/lib/posthog";
+import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,8 +36,20 @@ import {
   step2Schema,
 } from "@/lib/validations/onboarding";
 import type { PrivateProfileDTO } from "@/data/user-dto";
+import type { CoffeeFilters, CoffeeSort } from "@/types/coffee-types";
 
 const TOTAL_STEPS = 2;
+const DEFAULT_COFFEE_SORT: CoffeeSort = "rating_desc";
+const BREW_METHOD_MAP: Record<string, string> = {
+  "Pour Over": "pour_over",
+  "French Press": "french_press",
+  Espresso: "espresso",
+  AeroPress: "aeropress",
+  "Cold Brew": "cold_brew",
+  Chemex: "pour_over",
+  V60: "pour_over",
+  "Moka Pot": "moka_pot",
+};
 
 type CoffeePreferences = {
   with_milk_preference?: boolean | null;
@@ -47,6 +60,47 @@ type CoffeePreferences = {
 interface OnboardingWizardProps {
   initialProfile?: PrivateProfileDTO;
   initialCoffeePreferences?: CoffeePreferences;
+}
+
+function buildPersonalizedCoffeeUrl(formData: OnboardingFormData): string {
+  const filters: CoffeeFilters = {
+    in_stock_only: true,
+  };
+  let sort: CoffeeSort = DEFAULT_COFFEE_SORT;
+
+  if (formData.experienceLevel === "beginner") {
+    filters.roast_levels = ["medium"];
+    filters.processes = ["washed"];
+  } else if (formData.experienceLevel === "enthusiast") {
+    filters.roast_levels = ["light", "medium"];
+  } else if (formData.experienceLevel === "expert") {
+    sort = "newest";
+  }
+
+  if (formData.preferredBrewingMethods?.length) {
+    const brewMethodIds = [
+      ...new Set(
+        formData.preferredBrewingMethods
+          .map((method) => BREW_METHOD_MAP[method])
+          .filter((method): method is string => Boolean(method))
+      ),
+    ];
+
+    if (brewMethodIds.length > 0) {
+      filters.brew_method_ids = brewMethodIds;
+    }
+  }
+
+  if (formData.withMilkPreference) {
+    filters.works_with_milk = true;
+  }
+
+  if (formData.decafOnly) {
+    filters.decaf_only = true;
+  }
+
+  const queryString = buildCoffeeQueryString(filters, 1, sort, 15);
+  return `/coffees?${queryString}`;
 }
 
 export function OnboardingWizard({
@@ -308,16 +362,19 @@ export function OnboardingWizard({
         return;
       }
 
-      // Success - show toast and redirect to dashboard
+      const personalizedCoffeeUrl = buildPersonalizedCoffeeUrl(onboardingData);
+
+      // Success - show toast and redirect to personalized coffees
       capture("onboarding_completed", {
         experience_level: formData.experienceLevel,
         brewing_methods_count: formData.preferredBrewingMethods?.length ?? 0,
         has_milk_preference: formData.withMilkPreference !== undefined,
       });
       toast.success("Welcome to IndianCoffeeBeans!", {
-        description: "Your profile has been set up successfully.",
+        description:
+          "Thanks for signing up. Here are some coffees based on your preferences.",
       });
-      router.push("/dashboard");
+      router.push(personalizedCoffeeUrl);
     } catch {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);

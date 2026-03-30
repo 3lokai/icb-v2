@@ -54,6 +54,8 @@ export function CoffeeSensoryProfile({
                 bitterness: coffee.sensory.bitterness,
                 clarity: coffee.sensory.clarity,
               }}
+              source={coffee.sensory.source}
+              confidence={coffee.sensory.confidence}
               size={280}
             />
           ) : (

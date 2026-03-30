@@ -101,7 +101,6 @@ export function QuickRating({
   const [hasStarted, setHasStarted] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const hasAutoSavedRef = useRef(false);
   const hasShownSuccessToastRef = useRef(false);
 
   // Resolve identity
@@ -186,35 +185,6 @@ export function QuickRating({
     }
     return false;
   }, [identityKey, isLimitReached]);
-
-  // Auto-save initial rating when modal opens with initialRating
-  useEffect(() => {
-    if (
-      initialRating &&
-      !hasAutoSavedRef.current &&
-      !userReview &&
-      identityKey &&
-      !isLimitReached
-    ) {
-      hasAutoSavedRef.current = true;
-      createReview({
-        entity_type: entityType,
-        entity_id: entityId,
-        rating: initialRating,
-        works_with_milk: null,
-        brew_method: null,
-        comment: null,
-      });
-    }
-  }, [
-    initialRating,
-    userReview,
-    identityKey,
-    entityType,
-    entityId,
-    createReview,
-    isLimitReached,
-  ]);
 
   // Handle limit error from API
   useEffect(() => {
