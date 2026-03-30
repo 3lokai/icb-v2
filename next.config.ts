@@ -90,6 +90,18 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async headers() {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
+      return [
+        {
+          source: "/:path*",
+          headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+        },
+      ];
+    }
+
+    return [];
+  },
   // Optimize webpack to prevent duplicate JS bundles
   webpack: (config, { isServer }) => {
     if (!isServer) {

@@ -1,5 +1,15 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import type {
+  SensoryConfidenceEnum,
+  SensorySourceEnum,
+} from "@/types/db-enums";
 import { cn } from "@/lib/utils";
 
 type SensoryData = {
@@ -12,6 +22,8 @@ type SensoryData = {
 
 type SensoryRadarChartProps = {
   data: SensoryData;
+  source?: SensorySourceEnum | null;
+  confidence?: SensoryConfidenceEnum | null;
   size?: number;
   className?: string;
 };
@@ -28,6 +40,8 @@ const MAX_VALUE = 5;
 
 export function SensoryRadarChart({
   data,
+  source = null,
+  confidence = null,
   size = 240,
   className,
 }: SensoryRadarChartProps) {
@@ -76,6 +90,35 @@ export function SensoryRadarChart({
         .join(" ") + " Z"
     );
   });
+
+  const sourceMeta: Record<
+    SensorySourceEnum,
+    { label: string; description: string; badgeClassName: string }
+  > = {
+    roaster: {
+      label: "Roaster Data",
+      description: "Sensory values are provided directly by the roaster.",
+      badgeClassName:
+        "border-emerald-500/30 bg-emerald-500/10 text-emerald-700",
+    },
+    icb_inferred: {
+      label: "ICB Estimate",
+      description:
+        "Sensory values are inferred by IndianCoffeeBeans from available signals.",
+      badgeClassName:
+        "border-muted-foreground/20 bg-muted text-muted-foreground",
+    },
+    icb_manual: {
+      label: "ICB Curated",
+      description:
+        "Sensory values are manually curated by the IndianCoffeeBeans team.",
+      badgeClassName: "border-accent/30 bg-accent/10 text-accent",
+    },
+  };
+
+  const confidenceLabel = confidence
+    ? `${confidence.charAt(0).toUpperCase()}${confidence.slice(1)} confidence`
+    : "Confidence not specified";
 
   return (
     <div className={cn("flex flex-col items-center", className)}>
@@ -197,6 +240,33 @@ export function SensoryRadarChart({
           );
         })}
       </svg>
+      {source && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              className="mt-3 inline-flex cursor-help items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              aria-label={`Sensory source: ${sourceMeta[source].label}`}
+            >
+              <Badge
+                variant="outline"
+                className={cn(
+                  "px-3 py-1 text-caption uppercase tracking-wide",
+                  sourceMeta[source].badgeClassName
+                )}
+              >
+                {sourceMeta[source].label}
+              </Badge>
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" sideOffset={8} className="max-w-56">
+            <p className="font-medium">{confidenceLabel}</p>
+            <p className="mt-1 text-caption opacity-90">
+              {sourceMeta[source].description}
+            </p>
+          </TooltipContent>
+        </Tooltip>
+      )}
     </div>
   );
 }
