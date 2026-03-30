@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useSearchContext } from "@/providers/SearchProvider";
 import { GRIND_TYPES } from "@/lib/utils/coffee-constants";
 import type {
   CreateReviewInput,
@@ -68,6 +69,7 @@ export function ReviewCapture({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const pathname = usePathname();
+  const { openSearch } = useSearchContext();
 
   const { data: reviews } = useReviews(entityType, entityId);
   const {
@@ -397,6 +399,34 @@ export function ReviewCapture({
                   </Button>
                 </Cluster>
               </Cluster>
+
+              {identityKey?.startsWith("user:") && (
+                <Stack gap="4" className="pt-4 border-t border-border/20">
+                  <p className="text-caption text-muted-foreground text-left">
+                    {entityType === "coffee"
+                      ? "More ratings = better recommendations for you"
+                      : "Help others discover great roasters"}
+                  </p>
+                  <Cluster gap="2" className="flex-wrap">
+                    <Button
+                      type="button"
+                      onClick={() => openSearch(undefined, true)}
+                      size="sm"
+                    >
+                      <Icon name="Plus" size={14} className="mr-2" />
+                      {entityType === "coffee"
+                        ? "Rate another coffee"
+                        : "Rate another"}
+                    </Button>
+                    <Button asChild variant="outline" size="sm">
+                      <Link href="/profile">
+                        <Icon name="User" size={14} className="mr-2" />
+                        View my profile
+                      </Link>
+                    </Button>
+                  </Cluster>
+                </Stack>
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                 <Stack gap="4">
