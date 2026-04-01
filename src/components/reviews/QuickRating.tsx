@@ -46,6 +46,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { GRIND_TYPES } from "@/lib/utils/coffee-constants";
+import { useSearchContext } from "@/providers/SearchProvider";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
 import type { GrindEnum } from "@/types/db-enums";
 
@@ -79,6 +80,7 @@ export function QuickRating({
   const [isLimitReached, setIsLimitReached] = useState(false);
 
   const pathname = usePathname();
+  const { openSearch } = useSearchContext();
 
   const { data: reviews } = useReviews(entityType, entityId);
   const {
@@ -613,9 +615,54 @@ export function QuickRating({
               </Button>
             )}
 
+            {/* Post-save continuation — signed-in only (anon flow keeps limit / sign-up prompts) */}
+            {isSaved && identityKey?.startsWith("user:") && !isSaving && (
+              <Stack gap="4" className="pt-4 border-t border-border/20">
+                <p
+                  className={cn(
+                    "text-caption text-muted-foreground",
+                    isInline ? "text-left" : "text-center"
+                  )}
+                >
+                  {entityType === "coffee"
+                    ? "More ratings = better recommendations for you"
+                    : "Help others discover great roasters"}
+                </p>
+                <Button
+                  type="button"
+                  onClick={() => openSearch(undefined, true)}
+                  className={isInline ? "w-full sm:w-auto" : "w-full"}
+                  size="lg"
+                >
+                  <Icon name="Plus" size={16} className="mr-2" />
+                  {entityType === "coffee"
+                    ? "Rate another coffee"
+                    : "Rate another"}
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className={isInline ? "w-full sm:w-auto" : "w-full"}
+                  size="lg"
+                >
+                  <Link href="/profile">
+                    <Icon name="User" size={16} className="mr-2" />
+                    View my profile
+                  </Link>
+                </Button>
+              </Stack>
+            )}
+
             {/* Actions - show after save */}
             {isSaved && (
-              <Cluster gap="2" className="pt-2 border-t border-border/20">
+              <Cluster
+                gap="2"
+                className={cn(
+                  identityKey?.startsWith("user:")
+                    ? "pt-4"
+                    : "pt-2 border-t border-border/20"
+                )}
+              >
                 {entityType === "coffee" && rating > 0 && rating < 4 && (
                   <Button asChild variant="outline" size="sm">
                     <Link

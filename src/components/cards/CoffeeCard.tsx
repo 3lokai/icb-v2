@@ -83,7 +83,7 @@ function RoastLevelIndicator({
     return 3; // Default to medium
   };
 
-  const beanCount = getBeanCount(roastLevelRaw || roastLevel);
+  const beanCount = getBeanCount(roastLevel ?? roastLevelRaw);
   const beans = Array.from({ length: 5 }, (_, i) => i < beanCount);
 
   return (

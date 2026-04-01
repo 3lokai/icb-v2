@@ -1,6 +1,12 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { DiscoveryLandingLayout } from "@/components/discovery/DiscoveryLandingLayout";
+import { generateDiscoveryMetadata } from "@/lib/discovery/generate-metadata";
+import {
+  getAllLandingPageSlugs,
+  getLandingPageConfig,
+} from "@/lib/discovery/landing-pages";
 import { fetchCoffeesBySlugOnly } from "@/lib/data/fetch-coffee-by-slug";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { Button } from "@/components/ui/button";
@@ -13,8 +19,16 @@ type Props = {
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
+export async function generateStaticParams() {
+  return getAllLandingPageSlugs().map((slug) => ({ slug }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const landing = getLandingPageConfig(slug);
+  if (landing) {
+    return generateDiscoveryMetadata(landing);
+  }
   return generateSEOMetadata({
     title: "Coffee Disambiguation | Indian Coffee Beans",
     description:
@@ -25,13 +39,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /**
- * Legacy coffee detail route: /coffees/[slug]
- * - 0 matches → notFound()
- * - 1 match → 301 redirect to /roasters/{roasterSlug}/coffees/{coffeeSlug}
- * - 2+ matches → disambiguation page
+ * /coffees/[slug]
+ * - Known discovery slugs → discovery landing layout
+ * - Otherwise legacy coffee slug: redirect or disambiguate when multiple roasters share a coffee slug
  */
-export default async function LegacyCoffeeSlugPage({ params }: Props) {
+export default async function CoffeesSlugPage({ params }: Props) {
   const { slug } = await params;
+
+  const landing = getLandingPageConfig(slug);
+  if (landing) {
+    return <DiscoveryLandingLayout config={landing} />;
+  }
+
   const coffees = await fetchCoffeesBySlugOnly(slug);
 
   if (coffees.length === 0) {
@@ -46,13 +65,12 @@ export default async function LegacyCoffeeSlugPage({ params }: Props) {
     notFound();
   }
 
-  // Disambiguation: multiple roasters have a coffee with this slug
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 py-12">
-      <h1 className="text-display font-serif italic mb-2">
+    <div className="mx-auto w-full max-w-2xl px-4 py-12">
+      <h1 className="text-display mb-2 font-serif italic">
         Multiple roasters have a coffee with this name
       </h1>
-      <p className="text-body text-muted-foreground mb-8">
+      <p className="text-body mb-8 text-muted-foreground">
         Choose the roaster to view the coffee.
       </p>
       <ul className="space-y-3">

@@ -9,6 +9,8 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   capture_exceptions: true,
   // Turn on debug in development mode
   debug: process.env.NODE_ENV === "development",
+  // Avoid lazy-loading the session recorder in dev (often fails under Turbopack / ad blockers → "could not load recorder")
+  disable_session_recording: process.env.NODE_ENV === "development",
 });
 
 // IMPORTANT: Never combine this approach with other client-side PostHog initialization approaches,

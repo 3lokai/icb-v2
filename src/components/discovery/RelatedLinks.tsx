@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Section } from "@/components/primitives/section";
 import {
+  discoveryPagePath,
   getLandingPageConfig,
   type LandingPageType,
 } from "@/lib/discovery/landing-pages";
@@ -68,7 +69,7 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
         {relatedPages.map((page) => (
           <Link
             key={page.slug}
-            href={`/${page.slug}`}
+            href={discoveryPagePath(page.slug)}
             className="group block h-full"
           >
             <Card className="h-full hover-lift transition-all duration-300 border-border/50 bg-card/40 hover:bg-card/60 overflow-hidden relative">
@@ -80,7 +81,11 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
                     ? "bg-accent"
                     : page.type === "roast_level"
                       ? "bg-primary"
-                      : "bg-muted-foreground"
+                      : page.type === "price_bucket"
+                        ? "bg-muted-foreground"
+                        : page.type === "process"
+                          ? "bg-emerald-600/80"
+                          : "bg-sky-600/80"
                 )}
               />
 
@@ -88,7 +93,7 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
                 <Stack gap="6" className="h-full flex-col">
                   <div>
                     <span className="text-micro font-bold tracking-widest text-muted-foreground uppercase">
-                      {page.type.replace("_", " ")}
+                      {page.type.replaceAll("_", " ")}
                     </span>
                     <h3 className="text-heading font-serif mt-2 group-hover:text-accent transition-colors">
                       {page.teaserTitle}

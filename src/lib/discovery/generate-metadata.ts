@@ -2,67 +2,135 @@
 import type { Metadata } from "next";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import type { LandingPageConfig } from "./landing-pages";
+import { discoveryPagePath } from "./landing-pages";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 /**
- * Generate metadata for discovery landing pages
- * Follows PRD format exactly
- * Uses existing generateSEOMetadata utility for OG images, keywords, etc.
+ * Build SEO title for discovery landing pages
  */
-export function generateDiscoveryMetadata(config: LandingPageConfig): Metadata {
-  // Build title per PRD format
-  let title: string;
+function buildDiscoveryTitle(config: LandingPageConfig): string {
   if (config.type === "roast_level") {
-    // Format: "{Roast} Roast Coffee in India – Discover & Compare | Indian Coffee Beans"
     const roastName = config.h1.replace(" Coffee in India", "").trim();
-    title = `${roastName} Coffee in India – Discover & Compare | Indian Coffee Beans`;
-  } else if (config.type === "brew_method") {
-    // Format: "Best Coffees for {Method} in India – Discover & Compare | Indian Coffee Beans"
-    const methodName = config.h1
-      .replace("Best Coffees for ", "")
-      .replace(" in India", "")
-      .trim();
-    title = `Best Coffees for ${methodName} in India – Discover & Compare | Indian Coffee Beans`;
-  } else {
-    // Format: "Best Coffees Under {Price} in India – Discover & Compare | Indian Coffee Beans"
-    const priceText = config.h1
-      .replace("Best Coffees ", "")
-      .replace(" in India", "")
-      .trim();
-    title = `Best Coffees ${priceText} in India – Discover & Compare | Indian Coffee Beans`;
+    return `${roastName} Coffee in India – Discover & Compare | Indian Coffee Beans`;
   }
-
-  // Build description - decision-oriented, not marketing fluff
-  const description = config.intro;
-
-  // Build canonical URL
-  const canonical = `${BASE_URL}/${config.slug}`;
-
-  // Build keywords based on page type
-  const keywords: string[] = [];
   if (config.type === "brew_method") {
     const methodName = config.h1
       .replace("Best Coffees for ", "")
       .replace(" in India", "")
       .trim();
-    keywords.push(methodName, `${methodName} coffee`, "brewing methods");
-  } else if (config.type === "roast_level") {
-    const roastName = config.h1.replace(" Coffee in India", "").trim();
-    keywords.push(roastName, `${roastName} roast`, "roast levels");
-  } else {
-    keywords.push("coffee price", "budget coffee", "affordable coffee");
+    return `Best Coffees for ${methodName} in India – Discover & Compare | Indian Coffee Beans`;
   }
+  if (config.type === "price_bucket") {
+    const priceText = config.h1
+      .replace("Best Coffees ", "")
+      .replace(" in India", "")
+      .trim();
+    return `Best Coffees ${priceText} in India – Discover & Compare | Indian Coffee Beans`;
+  }
+  if (config.type === "process") {
+    const processName = config.h1.replace(" Coffee in India", "").trim();
+    return `${processName} in India – Discover & Compare | Indian Coffee Beans`;
+  }
+  if (config.type === "region") {
+    const regionName = config.h1.replace(" Coffee in India", "").trim();
+    return `${regionName} in India – Discover & Compare | Indian Coffee Beans`;
+  }
+  return `${config.h1} | Indian Coffee Beans`;
+}
 
-  // Use existing SEO metadata generator
-  // This handles OG images, keywords merging, robots, OpenGraph, Twitter cards
+/**
+ * Build keyword list by page type (expanded for SEO)
+ */
+function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
+  const base = [
+    "Indian coffee",
+    "specialty coffee India",
+    "buy coffee online India",
+    "Indian Coffee Beans",
+  ];
+
+  if (config.type === "brew_method") {
+    const methodName = config.h1
+      .replace("Best Coffees for ", "")
+      .replace(" in India", "")
+      .trim();
+    return [
+      ...base,
+      methodName,
+      `${methodName} coffee`,
+      `${methodName} India`,
+      "brewing methods",
+      "coffee brewing India",
+      "specialty coffee brewing",
+    ];
+  }
+  if (config.type === "roast_level") {
+    const roastName = config.h1.replace(" Coffee in India", "").trim();
+    return [
+      ...base,
+      roastName,
+      `${roastName} roast`,
+      "roast levels",
+      "coffee roast India",
+      `${roastName.toLowerCase()} roast beans`,
+    ];
+  }
+  if (config.type === "price_bucket") {
+    return [
+      ...base,
+      "coffee price India",
+      "budget coffee",
+      "affordable specialty coffee",
+      "coffee under 500",
+      "mid range coffee India",
+      "coffee value",
+    ];
+  }
+  if (config.type === "process") {
+    const label = config.h1.replace(" Coffee in India", "").trim();
+    return [
+      ...base,
+      label,
+      `${label} coffee`,
+      "coffee processing",
+      "coffee process India",
+      "Indian coffee processing",
+      "coffee fermentation",
+      "specialty coffee process",
+    ];
+  }
+  if (config.type === "region") {
+    const regionName = config.h1.replace(" Coffee in India", "").trim();
+    return [
+      ...base,
+      regionName,
+      `${regionName} coffee`,
+      `${regionName} arabica`,
+      "Indian coffee regions",
+      "single origin India",
+      "coffee origin India",
+    ];
+  }
+  return base;
+}
+
+/**
+ * Generate metadata for discovery landing pages
+ */
+export function generateDiscoveryMetadata(config: LandingPageConfig): Metadata {
+  const title = buildDiscoveryTitle(config);
+  const description = config.intro;
+  const canonical = `${BASE_URL}${discoveryPagePath(config.slug)}`;
+  const keywords = buildDiscoveryKeywords(config);
+
   return generateSEOMetadata({
     title,
     description,
     keywords,
     type: "website",
     canonical,
-    noIndex: false, // All discovery pages should be indexed
+    noIndex: false,
   });
 }

@@ -90,9 +90,9 @@ function CoffeeDirectoryComponent({
   }
 
   return (
-    <div className="container mx-auto p-4 pt-16 md:pt-24">
+    <div className="w-full">
       {/* Section Header */}
-      <div className="mb-12">
+      <div className="mb-0">
         <Stack gap="6">
           <div className="inline-flex items-center gap-4">
             <span className="h-px w-8 md:w-12 bg-accent/60" />

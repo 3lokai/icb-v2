@@ -130,13 +130,32 @@ export default async function Home() {
           {/* Wrap HeroSection in Suspense for streaming SSR - allows h1 to render earlier */}
           <Suspense
             fallback={
-              <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
-                <div className="hero-content">
-                  <h1 className="text-hero text-white text-balance leading-[1.1]">
-                    Discover India's{" "}
-                    <span className="text-accent italic">Finest Coffee</span>{" "}
-                    Beans.
-                  </h1>
+              // Matches HeroSkeleton visually so there's no flash between SSR → client states.
+              // Can't use HeroSkeleton directly here (it imports HeroVideoBackground, a client component).
+              <section className="relative flex min-h-[90dvh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-6 sm:px-12 md:px-24">
+                <div className="absolute inset-0 z-0 bg-black/70" />
+                <div className="hero-content relative z-10 w-full max-w-2xl text-left">
+                  <div className="flex flex-col gap-8">
+                    <div className="flex justify-center">
+                      <div className="h-8 w-64 max-w-full animate-pulse rounded-full bg-white/10" />
+                    </div>
+                    <div className="space-y-4">
+                      <div className="mx-auto h-12 w-full max-w-lg animate-pulse rounded-lg bg-white/10" />
+                      <div className="mx-auto h-6 w-full max-w-md animate-pulse rounded-lg bg-white/5" />
+                    </div>
+                    <div className="h-12 w-full animate-pulse rounded-xl bg-white/10" />
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="flex flex-wrap justify-center gap-4">
+                        <div className="h-11 w-44 animate-pulse rounded-lg bg-white/15" />
+                        <div className="h-11 w-40 animate-pulse rounded-lg bg-white/10" />
+                      </div>
+                      <div className="h-4 w-32 animate-pulse rounded bg-white/10" />
+                      <div className="flex flex-wrap justify-center gap-6 pt-4">
+                        <div className="h-3 w-28 animate-pulse rounded bg-white/10" />
+                        <div className="h-3 w-32 animate-pulse rounded bg-white/10" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </section>
             }

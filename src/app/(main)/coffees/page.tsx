@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CoffeeDirectory } from "@/components/coffees/CoffeeDirectory";
-import { CollectionGrid } from "@/components/collections/CollectionGrid";
+import { DiscoveryPillGrid } from "@/components/discovery/DiscoveryPillGrid";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { fetchCoffeeFilterMeta } from "@/lib/data/fetch-coffee-filter-meta";
 import { fetchCoffees } from "@/lib/data/fetch-coffees";
@@ -79,15 +79,9 @@ export async function generateMetadata({
   // This prevents infinite filter combinations from creating unique canonical URLs
   const canonicalUrl = `${baseUrl}/coffees`;
 
-  // Determine if page should be indexed (index page 1, noindex pages > 1)
-  const hasComplexFilters =
-    (filters.roaster_ids?.length ?? 0) > 0 ||
-    (filters.region_ids?.length ?? 0) > 0 ||
-    (filters.estate_ids?.length ?? 0) > 0 ||
-    (filters.flavor_keys?.length ?? 0) > 0 ||
-    (filters.canon_flavor_node_ids?.length ?? 0) > 0 ||
-    (filters.brew_method_ids?.length ?? 0) > 0;
-  const shouldIndex = page === 1 && !hasComplexFilters;
+  // Index only the bare /coffees URL — any query string = noindex (avoid filter URL indexation)
+  const hasAnySearchParams = urlSearchParams.toString().length > 0;
+  const shouldIndex = page === 1 && !hasAnySearchParams;
 
   return {
     title,
@@ -190,6 +184,10 @@ function buildCoffeesPageBreadcrumbs(
   return items;
 }
 
+import { PageShell } from "@/components/primitives/page-shell";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
+
 async function CoffeesPageContent({
   params,
 }: {
@@ -248,25 +246,30 @@ async function CoffeesPageContent({
         />
       )}
       <StructuredData schema={breadcrumbSchema} />
-      <CollectionGrid
-        maxItems={8}
-        cardVariant="small"
-        scrollToId="coffee-filters"
-        overline="Optional Quick Start"
-        title="Start with a"
-        titleAccent="Collection"
-        description="Hand-picked groupings based on common brewing and flavour patterns."
-        ctaText="Browse All Coffees"
-        ctaHref="/coffees"
-        mobileDecorativeText="Quick Start"
-      />
-      <CoffeeDirectory
-        filterMeta={filterMeta}
-        initialData={initialData}
-        initialFilters={filters}
-        initialPage={page}
-        initialSort={sort}
-      />
+
+      <PageShell maxWidth="7xl">
+        <Stack gap="12">
+          {/* Top Discovery Hub - Tight Section */}
+          <Section
+            spacing="tight"
+            contained={false}
+            className="border-b border-border/40 pb-12"
+          >
+            <DiscoveryPillGrid />
+          </Section>
+
+          {/* Main Directory Display */}
+          <Section spacing="default" contained={false} className="pt-0">
+            <CoffeeDirectory
+              filterMeta={filterMeta}
+              initialData={initialData}
+              initialFilters={filters}
+              initialPage={page}
+              initialSort={sort}
+            />
+          </Section>
+        </Stack>
+      </PageShell>
     </>
   );
 }
