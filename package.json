@@ -21,7 +21,8 @@
     "supabase:migration:down": "supabase migration down",
     "supabase:db:pull": "supabase db pull",
     "supabase:db:push": "supabase db push",
-    "migrate:convertkit": "tsx scripts/migrate-to-convertkit.ts"
+    "migrate:convertkit": "tsx scripts/migrate-to-convertkit.ts",
+    "optimize:discovery-images": "node scripts/optimize-discovery-images.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -101,6 +102,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4",
     "prettier": "^3.4.2",
+    "sharp": "^0.34.5",
     "supabase": "^2.72.8",
     "tailwindcss": "^4",
     "tsx": "^4.19.2",
