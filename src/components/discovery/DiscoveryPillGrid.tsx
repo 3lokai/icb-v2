@@ -57,6 +57,8 @@ export const DISCOVERY_PILL_ROWS: DiscoveryPillRow[] = [
       { label: "Chikmagalur", href: "/coffees/chikmagalur" },
       { label: "Coorg", href: "/coffees/coorg" },
       { label: "Araku", href: "/coffees/araku" },
+      { label: "Koraput (Odisha)", href: "/coffees/koraput" },
+      { label: "Northeast India", href: "/coffees/northeast-india" },
       { label: "Nilgiris", href: "/coffees/nilgiris" },
       { label: "Wayanad", href: "/coffees/wayanad" },
     ],

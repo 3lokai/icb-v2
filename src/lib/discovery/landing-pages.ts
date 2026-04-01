@@ -1162,6 +1162,102 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     },
     related: ["coorg", "nilgiris", "french-press"],
   },
+  {
+    slug: "koraput",
+    type: "region",
+    h1: "Koraput (Odisha) Coffee in India",
+    intro:
+      "Discover specialty coffees from Koraput and Odisha’s Eastern Ghats—emerging highland terroir with smallholder and estate lots worth exploring.",
+    headerNudge:
+      "Often fruit-forward or chocolate-toned depending on process and roast.",
+    teaserTitle: "Koraput & Odisha coffees",
+    teaserDescription:
+      "Eastern Ghats origin lots listed on Indian Coffee Beans.",
+    gridNudge:
+      "Compare with Araku (AP) or Northeast lots for a tour of non-Karnataka origins.",
+    heroBadge: "Origin",
+    faqOverline: "Koraput",
+    faqTitle: "About *Koraput* coffee",
+    faqDescription: "Odisha’s coffee-growing pocket in brief.",
+    faqBadge: "Regions",
+    filter: {
+      region_slugs: ["koraput"],
+    },
+    sortOrder: "rating_desc",
+    faqs: [
+      {
+        question: "Where is Koraput coffee grown?",
+        answer:
+          "Koraput is a hilly district in southern Odisha; coffee grows at elevation in the Eastern Ghats alongside tribal and smallholder farming contexts.",
+      },
+      {
+        question: "Why list it separately from “Odisha”?",
+        answer:
+          "Our directory keys off canonical origin regions; Koraput is the main specialty-relevant pocket we surface for Odisha in the dataset.",
+      },
+      {
+        question: "What flavours are common?",
+        answer:
+          "Profiles vary by harvest and process—look for tasting notes on each coffee and compare roasters.",
+      },
+    ],
+    utilityCard: {
+      type: "tips",
+      title: "Explore regions",
+      description: "More on Indian origins on the learn hub.",
+      href: "/learn",
+      ctaText: "Learn",
+    },
+    related: ["araku", "northeast-india", "light-roast"],
+  },
+  {
+    slug: "northeast-india",
+    type: "region",
+    h1: "Northeast India Coffee in India",
+    intro:
+      "Browse Indian specialty coffees from the Northeast—distinct hill terroirs and small-lot profiles beyond the traditional Western Ghats belt.",
+    headerNudge:
+      "Expect different flavour cues from Karnataka/Kerala classics—great for curious palates.",
+    teaserTitle: "Northeast India coffees",
+    teaserDescription:
+      "Meghalaya hill regions in our directory; more NE origins may appear over time.",
+    gridNudge:
+      "Pour-over and AeroPress suit lighter roasts; espresso works when roasters target fuller profiles.",
+    heroBadge: "Origin",
+    faqOverline: "Northeast",
+    faqTitle: "About *Northeast India* coffee",
+    faqDescription: "What this filter includes on ICB.",
+    faqBadge: "Regions",
+    filter: {
+      region_slugs: ["garo-hills", "khasi-hills", "west-khasi-hills"],
+    },
+    sortOrder: "rating_desc",
+    faqs: [
+      {
+        question: "What does “Northeast India” include here?",
+        answer:
+          "We aggregate coffees linked to Meghalaya’s Garo, Khasi, and West Khasi Hills canonical regions—where we currently have structured origin data.",
+      },
+      {
+        question: "Will more Northeast states appear?",
+        answer:
+          "As roasters list more traceable lots from Assam, Nagaland, Manipur, and elsewhere, we can expand this view.",
+      },
+      {
+        question: "How does it differ from Eastern Ghats coffees?",
+        answer:
+          "Terroir and varieties differ; compare with Araku or Koraput pages for a side-by-side exploration.",
+      },
+    ],
+    utilityCard: {
+      type: "tips",
+      title: "Explore regions",
+      description: "Learn hub content on Indian coffee geography.",
+      href: "/learn",
+      ctaText: "Learn",
+    },
+    related: ["koraput", "araku", "medium-roast"],
+  },
 ];
 
 /**

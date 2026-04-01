@@ -38,8 +38,17 @@ function AnimatedStatValue({ value }: { value: number }) {
   );
 }
 
-export function HeroCTAs({ totals }: { totals: PublicDirectoryTotals }) {
+type HeroVariant = "control" | "discovery";
+
+type HeroCTAsProps = {
+  totals: PublicDirectoryTotals;
+  heroVariant?: HeroVariant;
+};
+
+export function HeroCTAs({ totals, heroVariant = "control" }: HeroCTAsProps) {
   const { openSearch } = useSearchContext();
+
+  const variantProp = { hero_variant: heroVariant };
 
   return (
     <Stack
@@ -48,45 +57,69 @@ export function HeroCTAs({ totals }: { totals: PublicDirectoryTotals }) {
     >
       <div className="flex flex-col gap-2 items-center">
         <Cluster gap="4" align="center" className="justify-center">
-          {/* Primary CTA - Start rating coffees */}
-          <Button
-            onClick={() => {
-              capture("hero_cta_clicked", {
-                cta_label: "Start rating coffees",
-              });
-              openSearch(undefined, true);
-            }}
-            className="hover-lift px-8"
-            variant="default"
-            size="lg"
-          >
-            <Icon className="mr-2" name="Coffee" size={18} />
-            Start rating coffees
-          </Button>
+          {heroVariant === "discovery" ? (
+            <>
+              <Button
+                asChild
+                className="hover-lift px-8 whitespace-nowrap"
+                variant="default"
+                size="lg"
+              >
+                <Link
+                  href="/coffees"
+                  onClick={() =>
+                    capture("hero_cta_clicked", {
+                      cta_label: "Explore coffees",
+                      ...variantProp,
+                    })
+                  }
+                >
+                  <Icon className="mr-2" name="Compass" size={18} />
+                  Explore coffees
+                </Link>
+              </Button>
+            </>
+          ) : (
+            <>
+              {/* Primary CTA - Start rating coffees */}
+              <Button
+                onClick={() => {
+                  capture("hero_cta_clicked", {
+                    cta_label: "Start rating coffees",
+                    ...variantProp,
+                  });
+                  openSearch(undefined, true);
+                }}
+                className="hover-lift px-8"
+                variant="default"
+                size="lg"
+              >
+                <Icon className="mr-2" name="Coffee" size={18} />
+                Start rating coffees
+              </Button>
 
-          {/* Secondary CTA - Explore coffees */}
-          <Button
-            asChild
-            className="hover-lift px-8 whitespace-nowrap"
-            variant="secondary"
-            size="lg"
-          >
-            <Link
-              href="/coffees"
-              onClick={() =>
-                capture("hero_cta_clicked", {
-                  cta_label: "Explore coffees",
-                })
-              }
-            >
-              Explore coffees
-            </Link>
-          </Button>
+              {/* Secondary CTA - Explore coffees */}
+              <Button
+                asChild
+                className="hover-lift px-8 whitespace-nowrap"
+                variant="secondary"
+                size="lg"
+              >
+                <Link
+                  href="/coffees"
+                  onClick={() =>
+                    capture("hero_cta_clicked", {
+                      cta_label: "Explore coffees",
+                      ...variantProp,
+                    })
+                  }
+                >
+                  Explore coffees
+                </Link>
+              </Button>
+            </>
+          )}
         </Cluster>
-        {/* Footnote for both buttons */}
-        <p className="text-micro text-white/60 text-center">
-          No sign-up required
-        </p>
       </div>
 
       {/* Editorial Footer */}

@@ -146,7 +146,7 @@ export function HeroSearch() {
               }
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Find your brew | Search by name, roast, region or flavor"
+            placeholder="Search by name, roast, region or flavor"
             ref={inputRef}
             type="text"
             value={searchQuery}
