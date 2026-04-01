@@ -80,13 +80,53 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/under-500",
-        destination: "/budget-coffee",
+        destination: "/coffees/budget",
         permanent: true, // 301 redirect
       },
       {
         source: "/500-1000",
-        destination: "/mid-range-coffee",
+        destination: "/coffees/mid-range",
         permanent: true, // 301 redirect
+      },
+      {
+        source: "/aeropress-coffee",
+        destination: "/coffees/aeropress",
+        permanent: true,
+      },
+      {
+        source: "/v60-coffee",
+        destination: "/coffees/v60",
+        permanent: true,
+      },
+      {
+        source: "/french-press-coffee",
+        destination: "/coffees/french-press",
+        permanent: true,
+      },
+      {
+        source: "/light-roast",
+        destination: "/coffees/light-roast",
+        permanent: true,
+      },
+      {
+        source: "/medium-roast",
+        destination: "/coffees/medium-roast",
+        permanent: true,
+      },
+      {
+        source: "/dark-roast",
+        destination: "/coffees/dark-roast",
+        permanent: true,
+      },
+      {
+        source: "/budget-coffee",
+        destination: "/coffees/budget",
+        permanent: true,
+      },
+      {
+        source: "/mid-range-coffee",
+        destination: "/coffees/mid-range",
+        permanent: true,
       },
     ];
   },

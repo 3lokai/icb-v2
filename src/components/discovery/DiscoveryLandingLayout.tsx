@@ -6,7 +6,10 @@ import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeGridTeaser } from "./CoffeeGridTeaser";
 import { UtilityCard } from "./UtilityCard";
 import { RelatedLinks } from "./RelatedLinks";
-import type { LandingPageConfig } from "@/lib/discovery/landing-pages";
+import {
+  discoveryPagePath,
+  type LandingPageConfig,
+} from "@/lib/discovery/landing-pages";
 import {
   generateBreadcrumbSchema,
   generateCollectionPageSchema,
@@ -34,6 +37,9 @@ function getDiscoveryPageLabel(config: LandingPageConfig): string {
   if (config.type === "roast_level") {
     return config.h1.replace(" Coffee in India", "").trim();
   }
+  if (config.type === "process" || config.type === "region") {
+    return config.h1.replace(" Coffee in India", "").trim();
+  }
   return config.h1;
 }
 
@@ -49,9 +55,13 @@ export function DiscoveryLandingLayout({
       ? "Brew Method"
       : config.type === "roast_level"
         ? "Roast Level"
-        : "Price Range";
+        : config.type === "price_bucket"
+          ? "Price Range"
+          : config.type === "process"
+            ? "Process"
+            : "Region";
   const pageLabel = getDiscoveryPageLabel(config);
-  const canonical = `${BASE_URL}/${config.slug}`;
+  const canonical = `${BASE_URL}${discoveryPagePath(config.slug)}`;
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: BASE_URL },
     { name: "Coffees", url: `${BASE_URL}/coffees` },
@@ -80,7 +90,11 @@ export function DiscoveryLandingLayout({
       ? "Brew Method"
       : config.type === "roast_level"
         ? "Roast Profile"
-        : "Price Range";
+        : config.type === "price_bucket"
+          ? "Price Range"
+          : config.type === "process"
+            ? "Processing Method"
+            : "Origin Region";
 
   // Create right side badge content if heroBadge is provided
   const rightSideContent = config.heroBadge ? (
@@ -111,6 +125,14 @@ export function DiscoveryLandingLayout({
         <div className="mx-auto max-w-6xl w-full px-4 md:px-0 py-4">
           <p className="text-caption text-muted-foreground italic">
             {config.headerNudge}
+          </p>
+        </div>
+      )}
+
+      {config.type === "price_bucket" && (
+        <div className="mx-auto max-w-6xl w-full px-4 md:px-0 pb-2">
+          <p className="text-caption text-muted-foreground">
+            Prices normalized to 250g equivalent
           </p>
         </div>
       )}
