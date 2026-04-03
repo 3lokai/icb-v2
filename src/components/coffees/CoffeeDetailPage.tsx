@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useCallback, useEffect, useRef } from "react";
+import { Fragment, useState, useCallback, useEffect, useRef } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
 import { Icon } from "@/components/common/Icon";
@@ -28,6 +28,13 @@ import CoffeeImageCarousel from "@/components/layout/carousel-image";
 import { CoffeeVariantSelector } from "./CoffeeVariantSelector";
 import { FloatingRateCTA } from "@/components/common/FloatingRateCTA";
 import { ShareRow } from "@/components/common/ShareRow";
+import { discoveryPagePath } from "@/lib/discovery/landing-pages";
+import {
+  discoverySlugForBrewMethodKey,
+  discoverySlugForProcess,
+  discoverySlugForRegionDisplayOrSubregion,
+  discoverySlugForRoastLevel,
+} from "@/lib/utils/coffee-constants";
 
 /* ─── Types ─── */
 
@@ -123,6 +130,32 @@ function trimDescription(text: string | null, maxLen = 160): string | null {
   return (lastSpace > 0 ? trimmed.slice(0, lastSpace) : trimmed) + "…";
 }
 
+const discoveryPhraseLinkClass =
+  "text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors";
+
+/** Link to /coffees/[slug] when a programmatic landing exists; else plain text. */
+function DiscoveryInlineLink({
+  slug,
+  children,
+  className,
+}: {
+  slug: string | null;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  if (!slug) {
+    return <span className={className}>{children}</span>;
+  }
+  return (
+    <Link
+      href={discoveryPagePath(slug)}
+      className={cn(discoveryPhraseLinkClass, className)}
+    >
+      {children}
+    </Link>
+  );
+}
+
 /* ─── Main Component ─── */
 
 export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
@@ -211,6 +244,54 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
 
   const trimmedDesc = trimDescription(coffee.description_md);
 
+  const estateName = coffee.estates?.[0]?.name;
+  const firstRegion = coffee.regions[0];
+  const originLine =
+    estateName ||
+    firstRegion?.display_name ||
+    (firstRegion &&
+      [firstRegion.country, firstRegion.state, firstRegion.subregion]
+        .filter(Boolean)
+        .join(", ")) ||
+    firstRegion?.subregion ||
+    null;
+  const originSlug = estateName
+    ? null
+    : firstRegion
+      ? discoverySlugForRegionDisplayOrSubregion(firstRegion)
+      : null;
+
+  const heroMetaParts: React.ReactNode[] = [];
+  if (originLine) {
+    heroMetaParts.push(
+      <DiscoveryInlineLink key="origin" slug={originSlug}>
+        {originLine}
+      </DiscoveryInlineLink>
+    );
+  }
+  if (coffee.process) {
+    heroMetaParts.push(
+      <DiscoveryInlineLink
+        key="process"
+        slug={discoverySlugForProcess(coffee.process)}
+      >
+        {capitalizeFirstLetter(coffee.process_raw || coffee.process || "")}
+      </DiscoveryInlineLink>
+    );
+  }
+  if (coffee.roast_level) {
+    heroMetaParts.push(
+      <DiscoveryInlineLink
+        key="roast"
+        slug={discoverySlugForRoastLevel(coffee.roast_level)}
+      >
+        {capitalizeFirstLetter(
+          coffee.roast_level_raw || coffee.roast_level || ""
+        )}
+      </DiscoveryInlineLink>
+    );
+  }
+
   return (
     <div className={cn("w-full bg-background min-h-screen", className)}>
       {/* ─── Scrollspy Tab Bar ─── */}
@@ -250,18 +331,12 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                     )}
                   </Cluster>
                   <div className="text-label uppercase tracking-widest mt-1">
-                    {[
-                      coffee.estates?.[0]?.name ||
-                        coffee.regions?.[0]?.display_name,
-                      capitalizeFirstLetter(
-                        coffee.process_raw || coffee.process || ""
-                      ),
-                      capitalizeFirstLetter(
-                        coffee.roast_level_raw || coffee.roast_level || ""
-                      ),
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
+                    {heroMetaParts.map((node, i) => (
+                      <Fragment key={i}>
+                        {i > 0 ? " · " : null}
+                        {node}
+                      </Fragment>
+                    ))}
                   </div>
                 </Stack>
 
@@ -319,17 +394,23 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                   {coffee.roast_level && (
                     <Stack gap="1">
                       <span className="text-label">Roast</span>
-                      <span className="font-medium">
+                      <DiscoveryInlineLink
+                        slug={discoverySlugForRoastLevel(coffee.roast_level)}
+                        className="font-medium"
+                      >
                         {coffee.roast_level_raw || coffee.roast_level}
-                      </span>
+                      </DiscoveryInlineLink>
                     </Stack>
                   )}
                   {coffee.process && (
                     <Stack gap="1">
                       <span className="text-label">Process</span>
-                      <span className="font-medium">
+                      <DiscoveryInlineLink
+                        slug={discoverySlugForProcess(coffee.process)}
+                        className="font-medium"
+                      >
                         {coffee.process_raw || coffee.process}
-                      </span>
+                      </DiscoveryInlineLink>
                     </Stack>
                   )}
                   {coffee.regions.length > 0 && (
@@ -338,16 +419,26 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                         Region{coffee.regions.length > 1 ? "s" : ""}
                       </span>
                       <span className="font-medium">
-                        {coffee.regions
-                          .map(
-                            (region) =>
-                              region.display_name ||
-                              [region.country, region.state, region.subregion]
-                                .filter(Boolean)
-                                .join(", ") ||
-                              region.subregion
-                          )
-                          .join(", ")}
+                        {coffee.regions.map((region, i) => {
+                          const label =
+                            region.display_name ||
+                            [region.country, region.state, region.subregion]
+                              .filter(Boolean)
+                              .join(", ") ||
+                            region.subregion;
+                          return (
+                            <Fragment key={region.id}>
+                              {i > 0 ? ", " : null}
+                              <DiscoveryInlineLink
+                                slug={discoverySlugForRegionDisplayOrSubregion(
+                                  region
+                                )}
+                              >
+                                {label}
+                              </DiscoveryInlineLink>
+                            </Fragment>
+                          );
+                        })}
                       </span>
                     </Stack>
                   )}
@@ -358,6 +449,23 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                       </span>
                       <span className="font-medium">
                         {coffee.estates.map((estate) => estate.name).join(", ")}
+                      </span>
+                    </Stack>
+                  )}
+                  {coffee.brew_methods && coffee.brew_methods.length > 0 && (
+                    <Stack gap="1" className="col-span-2">
+                      <span className="text-label">Suggested brew methods</span>
+                      <span className="font-medium">
+                        {coffee.brew_methods.map((bm, i) => (
+                          <Fragment key={bm.id}>
+                            {i > 0 ? ", " : null}
+                            <DiscoveryInlineLink
+                              slug={discoverySlugForBrewMethodKey(bm.key)}
+                            >
+                              {bm.label}
+                            </DiscoveryInlineLink>
+                          </Fragment>
+                        ))}
                       </span>
                     </Stack>
                   )}
@@ -468,12 +576,41 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                               Region / Estate
                             </span>
                             <span className="text-body font-medium">
-                              {[
-                                ...coffee.estates.map((e) => e.name),
-                                ...coffee.regions
-                                  .map((r) => r.display_name)
-                                  .filter(Boolean),
-                              ].join(", ") || "—"}
+                              {coffee.estates.length === 0 &&
+                              coffee.regions.length === 0 ? (
+                                "—"
+                              ) : (
+                                <>
+                                  {coffee.estates.map((e, i) => (
+                                    <Fragment key={e.id}>
+                                      {i > 0 ? ", " : null}
+                                      {e.name}
+                                    </Fragment>
+                                  ))}
+                                  {coffee.regions.map((r, i) => {
+                                    const label =
+                                      r.display_name ||
+                                      [r.country, r.state, r.subregion]
+                                        .filter(Boolean)
+                                        .join(", ") ||
+                                      r.subregion;
+                                    return (
+                                      <Fragment key={r.id}>
+                                        {i > 0 || coffee.estates.length > 0
+                                          ? ", "
+                                          : null}
+                                        <DiscoveryInlineLink
+                                          slug={discoverySlugForRegionDisplayOrSubregion(
+                                            r
+                                          )}
+                                        >
+                                          {label}
+                                        </DiscoveryInlineLink>
+                                      </Fragment>
+                                    );
+                                  })}
+                                </>
+                              )}
                             </span>
                           </Stack>
                         </div>
@@ -508,9 +645,14 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                               <span className="text-label uppercase tracking-widest font-bold">
                                 Roast Level
                               </span>
-                              <span className="text-body font-medium">
+                              <DiscoveryInlineLink
+                                slug={discoverySlugForRoastLevel(
+                                  coffee.roast_level
+                                )}
+                                className="text-body font-medium"
+                              >
                                 {coffee.roast_level_raw || coffee.roast_level}
-                              </span>
+                              </DiscoveryInlineLink>
                             </Stack>
                           </div>
                         )}
@@ -524,9 +666,12 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                             <span className="text-label uppercase tracking-widest font-bold">
                               Processing
                             </span>
-                            <span className="text-body font-medium">
+                            <DiscoveryInlineLink
+                              slug={discoverySlugForProcess(coffee.process)}
+                              className="text-body font-medium"
+                            >
                               {coffee.process_raw || coffee.process || "—"}
-                            </span>
+                            </DiscoveryInlineLink>
                           </Stack>
                         </div>
                         {coffee.bean_species && (

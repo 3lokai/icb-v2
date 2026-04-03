@@ -8,17 +8,17 @@ import { getUsageForKey } from "@/lib/api/usage";
  * Requires API key.
  */
 export async function GET(request: Request) {
-  const auth = await validateApiKey(request);
-  if ("error" in auth) return auth.error;
-
   try {
+    const auth = await validateApiKey(request);
+    if ("error" in auth) return auth.error;
+
     const usage = await getUsageForKey(auth.keyId);
     return NextResponse.json(usage);
   } catch (error) {
-    console.error("[API v1 /usage] Error:", error);
+    console.error("[API v1 /usage] Unhandled error:", error);
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : "Failed to fetch usage",
+        error: error instanceof Error ? error.message : "Internal server error",
       },
       { status: 500 }
     );

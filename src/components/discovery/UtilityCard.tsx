@@ -1,10 +1,9 @@
 // src/components/discovery/UtilityCard.tsx
 import Link from "next/link";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/common/Icon";
 import type { UtilityCardConfig } from "@/lib/discovery/landing-pages";
-import { Stack } from "../primitives/stack";
+import { Stack } from "@/components/primitives/stack";
 
 type UtilityCardProps = {
   config: UtilityCardConfig;
@@ -23,33 +22,45 @@ export function UtilityCard({ config }: UtilityCardProps) {
         : "Lightbulb";
 
   return (
-    <Card className="hover-lift overflow-hidden border-border/50 bg-card/50 backdrop-blur-[2px] transition-all duration-300">
-      <CardHeader className="pb-4">
+    <div className="surface-1 relative overflow-hidden rounded-2xl card-padding card-hover hover-lift transition-all duration-500 shadow-sm border border-border/40">
+      {/* Decorative background blurs */}
+      <div className="absolute top-0 right-0 h-40 w-40 rounded-full bg-primary/5 blur-3xl opacity-60" />
+      <div className="absolute bottom-0 right-1/4 h-32 w-32 rounded-full bg-accent/5 blur-2xl opacity-60" />
+
+      <Stack gap="6" className="relative z-10 font-sans">
         <Stack gap="4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/5 text-primary">
-              <Icon name={iconName} size={20} />
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm ring-1 ring-white/10">
+              <Icon name={iconName} size={24} />
             </div>
-            <h3 className="text-heading font-serif tracking-tight">
-              {config.title}
-            </h3>
+            <Stack gap="2">
+              <h3 className="text-heading font-serif tracking-tight leading-none text-balance">
+                {config.title}
+              </h3>
+              <div className="h-0.5 w-8 rounded-full bg-accent/60" />
+            </Stack>
           </div>
+          <p className="text-body-large text-muted-foreground leading-relaxed">
+            {config.description}
+          </p>
         </Stack>
-      </CardHeader>
-      <CardContent>
-        <p className="text-body-large text-muted-foreground mb-6 leading-relaxed">
-          {config.description}
-        </p>
-        <Button asChild variant="outline" className="group w-full sm:w-auto">
+
+        <Button
+          asChild
+          variant="outline"
+          className="group w-full sm:w-auto h-11 px-6 border-border/60 hover:bg-accent/5 hover:border-accent/30 hover:text-accent transition-all duration-300"
+        >
           <Link href={config.href}>
-            {config.ctaText}
+            <span className="font-semibold tracking-wide">
+              {config.ctaText}
+            </span>
             <Icon
-              className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+              className="ml-2.5 h-4 w-4 transition-transform group-hover:translate-x-1"
               name="ArrowRight"
             />
           </Link>
         </Button>
-      </CardContent>
-    </Card>
+      </Stack>
+    </div>
   );
 }

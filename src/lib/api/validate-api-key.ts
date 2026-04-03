@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { createServiceRoleClient } from "@/lib/supabase/server";
+import { createApiRouteClient } from "@/lib/supabase/api-route";
 import { incrementUsage } from "@/lib/api/usage";
 
 const API_KEY_PREFIX = "icb_live_";
@@ -72,7 +72,7 @@ export async function validateApiKey(
   }
 
   const keyHash = hashApiKey(rawKey);
-  const supabase = await createServiceRoleClient();
+  const supabase = createApiRouteClient();
 
   const { data: keyRow, error: keyError } = await supabase
     .from("api_keys")

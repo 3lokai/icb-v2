@@ -878,6 +878,7 @@ export type RecipeFilters = {
   difficulty?: ExpertRecipe["difficulty"];
   expert?: string;
   recommendedUse?: ExpertRecipe["recommendedUse"];
+  roast?: RoastLevel;
   tags?: string[];
   flavorNotes?: string[];
 };
@@ -916,6 +917,12 @@ export function filterRecipes(filters: RecipeFilters): ExpertRecipe[] {
   if (filters.flavorNotes && filters.flavorNotes.length > 0) {
     recipes = recipes.filter((recipe) =>
       filters.flavorNotes!.some((note) => recipe.flavorNotes.includes(note))
+    );
+  }
+
+  if (filters.roast) {
+    recipes = recipes.filter((recipe) =>
+      recipe.roastRecommendation.includes(filters.roast!)
     );
   }
 

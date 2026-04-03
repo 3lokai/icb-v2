@@ -51,6 +51,23 @@ export type LandingPageConfig = {
   headerNudge?: string; // Appears under header/intro
   gridNudge?: string; // Appears above coffee grid
   utilityNudge?: string; // Appears near utility card
+  /** Brew method pages: starting point for grind, ratio, and time */
+  brewParams?: {
+    grindSize: string;
+    grindSub: string;
+    ratio: string;
+    brewTime: string;
+  };
+  /** Region pages: snapshot stats for RegionSnapshot */
+  regionSnapshot?: {
+    state: string;
+    elevation: string;
+    knownFor: string;
+  };
+  /** Price bucket pages: three bullets for ValueTips */
+  valueTips?: string[];
+  /** Process pages: optional deep link for ProcessExplainer CTA */
+  blogArticleHref?: string;
 };
 
 /** Canonical path for discovery landing pages (under /coffees) */
@@ -80,6 +97,12 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     heroBadge: "Light to Medium Roast",
     utilityNudge:
       "Dialling in grind size and water temperature makes a big difference with AeroPress.",
+    brewParams: {
+      grindSize: "Medium-fine",
+      grindSub: "Similar to table salt",
+      ratio: "1:15",
+      brewTime: "2–3 min",
+    },
     faqOverline: "AeroPress Queries",
     faqTitle: "Brewing with *AeroPress*",
     faqDescription:
@@ -133,6 +156,12 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     heroBadge: "Light to Medium Roast",
     utilityNudge:
       "Mastering the pour technique and bloom phase transforms your V60 results.",
+    brewParams: {
+      grindSize: "Medium-fine",
+      grindSub: "A touch finer than sea salt",
+      ratio: "1:16",
+      brewTime: "3–4 min",
+    },
     faqOverline: "V60 Queries",
     faqTitle: "Brewing with *V60*",
     faqDescription:
@@ -185,6 +214,12 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     heroBadge: "Pour Over",
     utilityNudge:
       "A slightly coarser grind than V60 often works best for Chemex’s slower flow.",
+    brewParams: {
+      grindSize: "Medium-coarse",
+      grindSub: "Closer to coarse sand",
+      ratio: "1:16",
+      brewTime: "4–5 min",
+    },
     faqOverline: "Chemex Queries",
     faqTitle: "Brewing with *Chemex*",
     faqDescription:
@@ -235,6 +270,12 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     heroBadge: "Pour Over",
     utilityNudge:
       "Slightly finer grind than Chemex is common; tune to your drawdown time.",
+    brewParams: {
+      grindSize: "Medium-fine",
+      grindSub: "Between V60 and Chemex",
+      ratio: "1:16",
+      brewTime: "3–4 min",
+    },
     faqOverline: "Kalita Queries",
     faqTitle: "Brewing with *Kalita Wave*",
     faqDescription:
@@ -283,6 +324,12 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
       "A coarse grind and consistent 4-minute steep time are key to French Press success.",
+    brewParams: {
+      grindSize: "Coarse",
+      grindSub: "Similar to sea salt",
+      ratio: "1:15",
+      brewTime: "4 min steep",
+    },
     faqOverline: "French Press Queries",
     faqTitle: "Brewing with *French Press*",
     faqDescription:
@@ -591,6 +638,11 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     heroBadge: "Best Value",
     utilityNudge:
       "Proper brewing technique maximizes flavor, regardless of price point.",
+    valueTips: [
+      "Prioritize coffees with clear origin, roast date, and processing notes.",
+      "250g bags often give the best per-cup value when you compare normalized prices.",
+      "Use the directory filters to match roast and brew method to your setup—no need to overspend to get a great cup.",
+    ],
     faqOverline: "Budget Coffee Queries",
     faqTitle: "Finding *Great Value* Coffee",
     faqDescription:
@@ -647,6 +699,11 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     heroBadge: "Premium Selection",
     utilityNudge:
       "Store properly and brew with care to fully appreciate these premium coffees.",
+    valueTips: [
+      "Look for unique processing (natural, honey, anaerobic) and transparent farm or estate names.",
+      "Limited lots often land in this band—compare tasting notes across roasters before you commit.",
+      "Check freshness and brew recipes on the label; premium beans reward careful grinding and water.",
+    ],
     faqOverline: "Premium Coffee Queries",
     faqTitle: "Exploring *Premium* Coffee",
     faqDescription:
@@ -712,6 +769,7 @@ export const LANDING_PAGES: LandingPageConfig[] = [
       processes: ["natural" as ProcessEnum],
     },
     sortOrder: "rating_desc",
+    blogArticleHref: "/learn",
     faqs: [
       {
         question: "What is natural process coffee?",
@@ -759,6 +817,7 @@ export const LANDING_PAGES: LandingPageConfig[] = [
       processes: ["washed" as ProcessEnum],
     },
     sortOrder: "rating_desc",
+    blogArticleHref: "/learn",
     faqs: [
       {
         question: "What is washed coffee?",
@@ -807,6 +866,7 @@ export const LANDING_PAGES: LandingPageConfig[] = [
       processes: ["honey" as ProcessEnum],
     },
     sortOrder: "rating_desc",
+    blogArticleHref: "/learn",
     faqs: [
       {
         question: "What is honey process?",
@@ -854,6 +914,7 @@ export const LANDING_PAGES: LandingPageConfig[] = [
       processes: ["anaerobic" as ProcessEnum],
     },
     sortOrder: "rating_desc",
+    blogArticleHref: "/learn",
     faqs: [
       {
         question: "What does anaerobic mean here?",
@@ -902,6 +963,7 @@ export const LANDING_PAGES: LandingPageConfig[] = [
       processes: ["monsooned" as ProcessEnum],
     },
     sortOrder: "rating_desc",
+    blogArticleHref: "/learn",
     faqs: [
       {
         question: "What is monsooned coffee?",
@@ -942,6 +1004,12 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     gridNudge:
       "Compare processes and roast levels across roasters on the directory.",
     heroBadge: "Origin",
+    regionSnapshot: {
+      state: "Karnataka",
+      elevation: "Roughly 900–1,500 m in many specialty lots",
+      knownFor:
+        "Heritage estates, washed arabica, and wide roast-style variety",
+    },
     faqOverline: "Chikmagalur",
     faqTitle: "About *Chikmagalur* coffee",
     faqDescription: "What to expect from this region.",
@@ -989,6 +1057,11 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     gridNudge:
       "Pair with process filters to find naturals or washed estate lots.",
     heroBadge: "Origin",
+    regionSnapshot: {
+      state: "Karnataka (Kodagu district)",
+      elevation: "Roughly 800–1,600 m depending on lot",
+      knownFor: "Full-bodied cups, popular in espresso and milk drinks",
+    },
     faqOverline: "Coorg",
     faqTitle: "About *Coorg* coffee",
     faqDescription: "Flavour and buying tips.",
@@ -1035,6 +1108,11 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     teaserDescription: "Highland lots from the Eastern Ghats.",
     gridNudge: "Light roasts often highlight florals—check tasting notes.",
     heroBadge: "Origin",
+    regionSnapshot: {
+      state: "Andhra Pradesh (Eastern Ghats)",
+      elevation: "Often ~900–1,300 m in valley areas",
+      knownFor: "Bright, floral-forward lots in lighter roasts",
+    },
     faqOverline: "Araku",
     faqTitle: "About *Araku* coffee",
     faqDescription: "Terroir and flavour cues.",
@@ -1082,6 +1160,11 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     gridNudge:
       "Compare with Wayanad and Karnataka origins for terroir contrast.",
     heroBadge: "Origin",
+    regionSnapshot: {
+      state: "Tamil Nadu",
+      elevation: "Often ~1,200–2,000 m on higher slopes",
+      knownFor: "Cool-climate arabica with clarity in lighter roasts",
+    },
     faqOverline: "Nilgiris",
     faqTitle: "About *Nilgiris* coffee",
     faqDescription: "Regional snapshot.",
@@ -1128,6 +1211,11 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     teaserDescription: "Kerala highland lots from Indian roasters.",
     gridNudge: "Use brew method filters to match your routine.",
     heroBadge: "Origin",
+    regionSnapshot: {
+      state: "Kerala",
+      elevation: "Roughly 700–1,200 m in many growing areas",
+      knownFor: "Chocolate and spice tones, approachable daily cups",
+    },
     faqOverline: "Wayanad",
     faqTitle: "About *Wayanad* coffee",
     faqDescription: "Regional overview.",
@@ -1176,6 +1264,11 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     gridNudge:
       "Compare with Araku (AP) or Northeast lots for a tour of non-Karnataka origins.",
     heroBadge: "Origin",
+    regionSnapshot: {
+      state: "Odisha (Koraput district)",
+      elevation: "Roughly 800–1,500 m in Eastern Ghats pockets",
+      knownFor: "Emerging specialty lots from tribal and smallholder contexts",
+    },
     faqOverline: "Koraput",
     faqTitle: "About *Koraput* coffee",
     faqDescription: "Odisha’s coffee-growing pocket in brief.",
@@ -1224,6 +1317,11 @@ export const LANDING_PAGES: LandingPageConfig[] = [
     gridNudge:
       "Pour-over and AeroPress suit lighter roasts; espresso works when roasters target fuller profiles.",
     heroBadge: "Origin",
+    regionSnapshot: {
+      state: "Meghalaya (Garo, Khasi & West Khasi Hills)",
+      elevation: "Roughly 800–1,700 m across hill areas",
+      knownFor: "Distinct hill terroir beyond the classic Western Ghats belt",
+    },
     faqOverline: "Northeast",
     faqTitle: "About *Northeast India* coffee",
     faqDescription: "What this filter includes on ICB.",

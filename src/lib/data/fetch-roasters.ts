@@ -1,3 +1,4 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import type {
   RoasterFilters,
@@ -195,14 +196,17 @@ export async function fetchRoasters(
   filters: RoasterFilters,
   page: number,
   limit: number,
-  sort: RoasterSort
+  sort: RoasterSort,
+  supabaseClient?: SupabaseClient
 ): Promise<RoasterListResponse> {
   // Try to use service role client if available (bypasses RLS for server-side queries)
   // Fallback to regular client if service role key is not set
   // Both clients have compatible query interfaces, so we can use them interchangeably
-  const supabase = process.env.SUPABASE_SECRET_KEY
-    ? await createServiceRoleClient()
-    : await createClient();
+  const supabase =
+    supabaseClient ??
+    (process.env.SUPABASE_SECRET_KEY
+      ? await createServiceRoleClient()
+      : await createClient());
 
   let query = supabase
     .from("roasters")

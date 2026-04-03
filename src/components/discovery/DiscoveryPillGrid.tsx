@@ -13,6 +13,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Cluster } from "@/components/primitives/cluster";
+import { Stack } from "@/components/primitives/stack";
 import { Icon, type IconName } from "@/components/common/Icon";
 export type DiscoveryPillRow = {
   title: string;
@@ -237,18 +238,19 @@ function DiscoveryPillCategoryCard({
 
               {/* Content Overlay */}
               <div className="relative z-10 flex h-full flex-col p-4 sm:p-5">
-                <div className="mt-auto">
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white shadow-lg shadow-accent/20 ring-1 ring-white/20 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+                <div className="flex flex-col mt-auto">
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white shadow-lg shadow-accent/20 ring-1 ring-white/20 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                     <Icon className="h-5 w-5" name={meta.icon} size={20} />
                   </div>
 
-                  <h3 className="text-subheading font-semibold leading-tight text-balance text-white drop-shadow-lg sm:text-heading">
+                  <h3 className="text-subheading font-semibold leading-tight text-white drop-shadow-lg sm:text-heading">
                     {row.title}
                   </h3>
-                  <p className="mt-1.5 text-pretty text-micro leading-snug text-white/75 drop-shadow-md line-clamp-2">
+                  <div className="my-2 h-0.5 w-8 rounded-full bg-accent/80 transition-all duration-500 group-hover:w-12" />
+                  <p className="text-pretty text-micro leading-snug text-white/80 drop-shadow-md line-clamp-2">
                     {meta.subtext}
                   </p>
-                  <div className="mt-2 flex items-center gap-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1">
+                  <div className="mt-4 flex items-center gap-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1">
                     <span className="text-micro font-bold uppercase tracking-widest text-accent">
                       Explore
                     </span>
@@ -261,17 +263,20 @@ function DiscoveryPillCategoryCard({
 
           {/* Back — pills */}
           <div className="absolute inset-0 h-full w-full rounded-xl border border-border/40 bg-card/95 p-4 shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)] backdrop-blur-sm sm:p-5">
-            <div className="flex h-full min-h-0 flex-col">
-              <div className="mb-4 flex items-center gap-2 shrink-0">
-                <div className="h-6 w-6 rounded-lg bg-accent/10 flex items-center justify-center">
-                  <Icon name={meta.icon} size={14} color="accent" />
+            <Stack gap="4" className="h-full min-h-0">
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                  <Icon name={meta.icon} size={16} color="accent" />
                 </div>
-                <h3 className="text-body font-semibold leading-snug text-accent sm:text-subheading">
-                  {row.title}
-                </h3>
+                <div className="flex flex-col">
+                  <h3 className="text-body font-semibold leading-none text-accent sm:text-subheading">
+                    {row.title}
+                  </h3>
+                  <div className="mt-1 h-0.5 w-6 rounded-full bg-accent/30" />
+                </div>
               </div>
               <Cluster
-                gap="1"
+                gap="2"
                 className="min-h-0 flex-1 flex-wrap content-start justify-start overflow-y-auto"
               >
                 {row.pills.map((pill) => (
@@ -279,15 +284,15 @@ function DiscoveryPillCategoryCard({
                     key={pill.href}
                     href={pill.href}
                     className={cn(
-                      "inline-flex max-w-full items-center rounded-full border border-border/40 bg-background/50 px-2.5 py-0.5 text-micro font-medium text-muted-foreground",
-                      "transition-all duration-200 hover:border-accent/40 hover:bg-accent/5 hover:text-foreground hover:scale-105 active:scale-95"
+                      "inline-flex max-w-full items-center rounded-full border border-accent/10 bg-accent/5 px-3 py-1 text-micro font-medium text-muted-foreground",
+                      "transition-all duration-200 hover:border-accent/30 hover:bg-accent/10 hover:text-foreground hover:scale-105 active:scale-95"
                     )}
                   >
                     {pill.label}
                   </Link>
                 ))}
               </Cluster>
-            </div>
+            </Stack>
           </div>
         </motion.div>
       </div>

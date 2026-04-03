@@ -1,3 +1,4 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import type { CoffeeFilterMeta, CoffeeFilters } from "@/types/coffee-types";
 import type { GrindEnum } from "@/types/db-enums";
@@ -10,9 +11,10 @@ import type { GrindEnum } from "@/types/db-enums";
  * Uses PostgreSQL RPC function to avoid HTTP header overflow errors with large coffee ID arrays
  */
 export async function fetchCoffeeFilterMetaWithFilters(
-  filters: CoffeeFilters
+  filters: CoffeeFilters,
+  supabaseClient?: SupabaseClient
 ): Promise<CoffeeFilterMeta> {
-  const supabase = await createServiceRoleClient();
+  const supabase = supabaseClient ?? (await createServiceRoleClient());
 
   // Call RPC function with filter parameters
   // Note: brew_method_ids in filters are actually canonical_keys (from UI selection)
