@@ -14,7 +14,16 @@ export type ExpertKey =
   | "carolina-aeropress"
   | "intelligentsia-pourover"
   | "hoffman-chemex"
-  | "george-aeropress-2024";
+  | "george-aeropress-2024"
+  | "onyx-kalita-wave"
+  | "lance-hedrick-v60"
+  | "tim-wendelboe-aeropress"
+  | "traditional-south-indian"
+  | "blue-bottle-french-press"
+  | "classic-inverted-aeropress"
+  | "japanese-iced-v60"
+  | "standard-cold-brew"
+  | "classic-moka-pot";
 
 export type RecipeStep = {
   time: string; // e.g., "0:00", "0:45", "1:15"
@@ -845,6 +854,790 @@ export const EXPERT_RECIPES: Record<ExpertKey, ExpertRecipe> = {
       "competition",
     ]),
   },
+
+  "onyx-kalita-wave": {
+    id: "onyx-kalita-wave",
+    slug: "onyx-kalita-wave",
+    title: "Onyx Kalita Wave Recipe",
+    expert: {
+      name: "Onyx Coffee Lab",
+      title: "Specialty Coffee Roaster",
+      achievement: "US Coffee Championships Winners",
+    },
+    method: "kalitawave",
+    difficulty: "Intermediate",
+    difficultyIndex: 2,
+
+    coffee: 25,
+    water: 400,
+    ratio: "1:16",
+    grind: "Medium-fine",
+    temperature: "93°C",
+    totalTime: "3:30",
+
+    roastRecommendation: ["light", "medium"],
+    strengthLevel: "average",
+    flavorProfile: "Balanced, bright, clear cup with smooth finish",
+    flavorNotes: ["balanced", "bright", "clear", "smooth"],
+    recommendedUse: "everyday",
+
+    story:
+      "Onyx Coffee Lab's Kalita Wave recipe focuses on an even extraction and a flat-bottom brewer advantages. This method highlights clarity and balance across light-roasted coffees.",
+    keyTechnique:
+      "Heavy spiral pulse pouring to ensure constant agitation and even extraction",
+    tips: [
+      "Use 600µm medium-fine grind",
+      "Rinse filter well to ensure a clean taste",
+      "Pour in consistent heavy spirals during pulses",
+    ],
+
+    steps: [
+      {
+        time: "0:00",
+        timeSeconds: 0,
+        instruction:
+          "Bloom with 50g of water, making sure all grounds are saturated",
+        waterAmount: 50,
+        pourNumber: 1,
+      },
+      {
+        time: "0:30",
+        timeSeconds: 30,
+        instruction: "Heavy spiral pour to 160g",
+        waterAmount: 110,
+        pourNumber: 2,
+      },
+      {
+        time: "0:45",
+        timeSeconds: 45,
+        instruction: "Spiral pour to 220g",
+        waterAmount: 60,
+        pourNumber: 3,
+      },
+      {
+        time: "1:05",
+        timeSeconds: 65,
+        instruction: "Spiral pour to 280g",
+        waterAmount: 60,
+        pourNumber: 4,
+      },
+      {
+        time: "1:30",
+        timeSeconds: 90,
+        instruction: "Spiral pour to 340g",
+        waterAmount: 60,
+        pourNumber: 5,
+      },
+      {
+        time: "2:00",
+        timeSeconds: 120,
+        instruction:
+          "Final spiral pour to 400g, allow to drain until approx 3:30",
+        waterAmount: 60,
+        pourNumber: 6,
+      },
+    ],
+
+    sourceUrlType: "blog",
+    equipmentRecommendations: [
+      "Kalita Wave",
+      "Gooseneck kettle",
+      "Digital scale",
+      "Medium-fine grinder",
+    ],
+
+    tags: new Set([
+      "kalita-wave",
+      "onyx",
+      "intermediate",
+      "balanced",
+      "everyday",
+    ]),
+  },
+
+  "lance-hedrick-v60": {
+    id: "lance-hedrick-v60",
+    slug: "lance-hedrick-v60",
+    title: "Lance Hedrick V60 Technique",
+    expert: {
+      name: "Lance Hedrick",
+      title: "Coffee Expert & Educator",
+      achievement: "World Latte Art Champion Finalist",
+    },
+    method: "v60",
+    difficulty: "Intermediate",
+    difficultyIndex: 2,
+
+    coffee: 15,
+    water: 250,
+    ratio: "1:16.7",
+    grind: "Medium-fine",
+    temperature: "95°C",
+    totalTime: "3:00",
+
+    roastRecommendation: ["light"],
+    strengthLevel: "average",
+    flavorProfile: "High clarity, sweet, balanced extraction",
+    flavorNotes: ["sweet", "clear", "balanced", "vibrant"],
+    recommendedUse: "experiment",
+
+    story:
+      "Lance Hedrick advocates for an extended bloom time to properly off-gas light/gassy coffees, followed by a single slow pour to maintain bed stability. His technique often incorporates excavation using a spoon.",
+    keyTechnique:
+      "Extended bloom (up to 2 mins) and wet WDT spoon excavation for max saturation",
+    tips: [
+      "Use a spoon to scoop/excavate grounds during the bloom",
+      "Let bloom rest up to 2 minutes for very fresh/light roasts",
+      "Keep remaining pour steady at ~6-8g per second",
+    ],
+
+    steps: [
+      {
+        time: "Before",
+        timeSeconds: 0,
+        instruction:
+          "Make a small divot in the coffee bed center after adding grounds",
+      },
+      {
+        time: "0:00",
+        timeSeconds: 0,
+        instruction: "Pour 45g of water for bloom (3x coffee weight).",
+        waterAmount: 45,
+        pourNumber: 1,
+      },
+      {
+        time: "0:10",
+        timeSeconds: 10,
+        instruction:
+          "Excavate/stir the slurry heavily with a spoon to ensure full saturation.",
+      },
+      {
+        time: "1:00",
+        timeSeconds: 60,
+        instruction:
+          "Begin single steady pour at 6-8g/s in the center until 250g total is reached.",
+        waterAmount: 205,
+        pourNumber: 2,
+      },
+      {
+        time: "3:00",
+        timeSeconds: 180,
+        instruction: "Draw-down should finish around 2:30-3:00.",
+      },
+    ],
+
+    sourceUrlType: "video",
+    equipmentRecommendations: [
+      "Hario V60",
+      "Gooseneck kettle",
+      "Spoon for excavation",
+    ],
+
+    tags: new Set([
+      "v60",
+      "lance-hedrick",
+      "intermediate",
+      "long-bloom",
+      "experiment",
+    ]),
+  },
+
+  "tim-wendelboe-aeropress": {
+    id: "tim-wendelboe-aeropress",
+    slug: "tim-wendelboe-aeropress",
+    title: "Tim Wendelboe AeroPress",
+    expert: {
+      name: "Tim Wendelboe",
+      title: "Roaster & Cafe Owner",
+      achievement: "World Barista Champion 2004",
+    },
+    method: "aeropress",
+    difficulty: "Beginner",
+    difficultyIndex: 1,
+
+    coffee: 14,
+    water: 200,
+    ratio: "1:14.3",
+    grind: "Fine",
+    temperature: "96°C",
+    totalTime: "1:30",
+
+    roastRecommendation: ["light"],
+    strengthLevel: "average",
+    flavorProfile: "Clean, delicate, highlighting light roast complexity",
+    flavorNotes: ["clean", "delicate", "bright", "sweet"],
+    recommendedUse: "everyday",
+
+    story:
+      "Tim Wendelboe, founder of the World AeroPress Championships, uses incredibly simple and clean methods at his Oslo cafe to highlight the subtle traits of light roasted coffee without over-complicating the brew.",
+    keyTechnique:
+      "Simple standard orientation with precise, minimal stirring (exactly 3 stirs)",
+    tips: [
+      "Stir exactly 3 times back-to-front after pouring, no more",
+      "Place plunger on top slightly to create vacuum and stop drip-through",
+      "Press gently just using body weight",
+    ],
+
+    steps: [
+      {
+        time: "Setup",
+        timeSeconds: 0,
+        instruction:
+          "Rinse filter with running tap water for 10 seconds. Use standard (non-inverted) method",
+      },
+      {
+        time: "0:00",
+        timeSeconds: 0,
+        instruction: "Pour 200g water quickly over 14g coffee",
+        waterAmount: 200,
+      },
+      {
+        time: "0:20",
+        timeSeconds: 20,
+        instruction:
+          "Stir exactly 3 times, back to front. Place plunger on top to stop dripping",
+      },
+      {
+        time: "1:00",
+        timeSeconds: 60,
+        instruction:
+          "Remove plunger, stir exactly 3 times again, then replace plunger",
+      },
+      {
+        time: "1:05",
+        timeSeconds: 65,
+        instruction: "Press down gently with body weight until 1:30",
+      },
+    ],
+
+    sourceUrlType: "blog",
+    equipmentRecommendations: [
+      "AeroPress",
+      "AeroPress paper filter",
+      "Comandante Grinder",
+    ],
+
+    tags: new Set([
+      "aeropress",
+      "tim-wendelboe",
+      "beginner",
+      "clean",
+      "everyday",
+    ]),
+  },
+
+  "traditional-south-indian": {
+    id: "traditional-south-indian",
+    slug: "traditional-south-indian",
+    title: "Traditional South Indian Filter",
+    expert: {
+      name: "Traditional Origin",
+      title: "Cultural Heritage Method",
+      achievement: "Authentic Indian Household Preparation",
+    },
+    method: "southindianfilter",
+    difficulty: "Beginner",
+    difficultyIndex: 1,
+
+    coffee: 30,
+    water: 120,
+    ratio: "1:4 decoction",
+    grind: "Medium-fine",
+    temperature: "100°C",
+    totalTime: "30:00",
+
+    roastRecommendation: ["dark", "medium"],
+    strengthLevel: "robust",
+    flavorProfile: "Strong, heavy, chicory-sweetened classic profile",
+    flavorNotes: ["strong", "thick", "chicory", "aromatic"],
+    recommendedUse: "everyday",
+
+    story:
+      "A staple in South India, this method produces a thick 'decoction' using a stainless-steel drip brewer. Traditionally mixed with frothy boiling milk and sugar, the coffee usually contains 20-30% chicory, adding a distinct sweet and woody flavor.",
+    keyTechnique:
+      "Slow dripping decoction, traditionally frothed using a 'dabarah' and tumbler",
+    tips: [
+      "Use an 80/20 or 70/30 coffee to chicory blend for authenticity",
+      "Do not overly compress the coffee grounds; just tamp lightly",
+      "Aerating by pouring from height between vessels creates signature froth",
+    ],
+
+    steps: [
+      {
+        time: "Setup",
+        timeSeconds: 0,
+        instruction:
+          "Place coffee in upper chamber of the filter. Gently press with the plunger/umbrella",
+      },
+      {
+        time: "0:00",
+        timeSeconds: 0,
+        instruction: "Pour 120ml boiling water over the umbrella plate",
+        waterAmount: 120,
+      },
+      {
+        time: "15:00-30:00",
+        timeSeconds: 900,
+        instruction:
+          "Allow the decoction to drip undisturbed into the lower chamber",
+      },
+      {
+        time: "Serve",
+        timeSeconds: 1800,
+        instruction:
+          "Mix 1 part decoction with 3 parts hot milk and sugar. Pour high between cups to froth",
+      },
+    ],
+
+    sourceUrlType: "blog",
+    equipmentRecommendations: [
+      "South Indian Filter (brass/steel)",
+      "Dabarah and Tumbler",
+    ],
+
+    tags: new Set([
+      "south-indian-filter",
+      "traditional",
+      "beginner",
+      "chicory",
+      "milk-based",
+      "everyday",
+    ]),
+  },
+
+  "blue-bottle-french-press": {
+    id: "blue-bottle-french-press",
+    slug: "blue-bottle-french-press",
+    title: "Blue Bottle Traditional French Press",
+    expert: {
+      name: "Blue Bottle Coffee",
+      title: "Specialty Coffee Roaster",
+      achievement: "Pioneer of Modern Coffee Experiences",
+    },
+    method: "frenchpress",
+    difficulty: "Beginner",
+    difficultyIndex: 1,
+
+    coffee: 30,
+    water: 350,
+    ratio: "1:11.7",
+    grind: "Coarse",
+    temperature: "96°C",
+    totalTime: "4:00",
+
+    roastRecommendation: ["medium", "dark"],
+    strengthLevel: "robust",
+    flavorProfile: "Rich, dense, and full-bodied",
+    flavorNotes: ["rich", "full-bodied", "dense", "comforting"],
+    recommendedUse: "everyday",
+
+    story:
+      "Blue Bottle's traditional French Press recipe provides a comforting, highly extracted full-bodied cup typical of immersion. Using a coarser grind and strong ratio, this simple approach results in exceptional mouthfeel.",
+    keyTechnique:
+      "Straightforward saturation and traditional plunging for max heavy body",
+    tips: [
+      "Grind coarse like sea salt to avoid over-extraction and sludge",
+      "Ensure all grounds are wetted evenly",
+      "Pour or serve immediately after plunging to stop extraction",
+    ],
+
+    steps: [
+      {
+        time: "Setup",
+        timeSeconds: 0,
+        instruction:
+          "Warm the press with hot water, discard, and add 30g ground coffee",
+      },
+      {
+        time: "0:00",
+        timeSeconds: 0,
+        instruction:
+          "Pour just enough water to saturate grounds and wait 30 seconds for bloom",
+        waterAmount: 60,
+      },
+      {
+        time: "0:30",
+        timeSeconds: 30,
+        instruction: "Add the remaining water aggressively to mix grounds",
+        waterAmount: 290,
+      },
+      {
+        time: "0:45",
+        timeSeconds: 45,
+        instruction: "Place lid on top (plunger up) to retain heat",
+      },
+      {
+        time: "4:00",
+        timeSeconds: 240,
+        instruction:
+          "Press the plunger slowly (taking ~20s) to the bottom. Serve immediately",
+      },
+    ],
+
+    sourceUrlType: "brand",
+    equipmentRecommendations: [
+      "French Press",
+      "Coarse Grinder",
+      "Digital Scale",
+    ],
+
+    tags: new Set([
+      "french-press",
+      "blue-bottle",
+      "beginner",
+      "full-body",
+      "everyday",
+    ]),
+  },
+
+  "classic-inverted-aeropress": {
+    id: "classic-inverted-aeropress",
+    slug: "classic-inverted-aeropress",
+    title: "Classic Inverted AeroPress",
+    expert: {
+      name: "Popular Method",
+      title: "Community Favorite",
+      achievement: "Widely used globally",
+    },
+    method: "aeropress",
+    difficulty: "Beginner",
+    difficultyIndex: 1,
+
+    coffee: 15,
+    water: 250,
+    ratio: "1:16.7",
+    grind: "Medium-fine",
+    temperature: "90°C",
+    totalTime: "2:30",
+
+    roastRecommendation: ["light", "medium", "dark"],
+    strengthLevel: "average",
+    flavorProfile: "Full-bodied, smooth, well-rounded",
+    flavorNotes: ["smooth", "full-bodied", "consistent", "versatile"],
+    recommendedUse: "everyday",
+
+    story:
+      "The inverted method was created by the coffee community to solve the 'drip-through' issue of the standard AeroPress method. By brewing upside down, it acts as a true full-immersion brewer before being flipped and pressed.",
+    keyTechnique:
+      "Inverted assembly allows for complete immersion and longer steep times without premature leaking",
+    tips: [
+      "Be extremely careful when flipping to avoid spills",
+      "Stir thoroughly to ensure all grounds are saturated",
+      "Push excess air out before flipping for better stability",
+    ],
+
+    steps: [
+      {
+        time: "Setup",
+        timeSeconds: 0,
+        instruction:
+          "Push plunger just inside the chamber and stand it inverted. Add 15g coffee",
+      },
+      {
+        time: "0:00",
+        timeSeconds: 0,
+        instruction: "Pour 50g water to bloom and stir gently",
+        waterAmount: 50,
+        pourNumber: 1,
+      },
+      {
+        time: "0:30",
+        timeSeconds: 30,
+        instruction:
+          "Fill the rest of the chamber to 250g water and stir again",
+        waterAmount: 200,
+        pourNumber: 2,
+      },
+      {
+        time: "1:30",
+        timeSeconds: 90,
+        instruction: "Attach the rinsed filter and cap",
+      },
+      {
+        time: "2:00",
+        timeSeconds: 120,
+        instruction:
+          "Carefully flip the AeroPress onto your mug and press down slowly for 30s",
+      },
+    ],
+
+    sourceUrlType: "blog",
+    equipmentRecommendations: [
+      "AeroPress",
+      "AeroPress paper filter",
+      "Sturdy mug",
+    ],
+
+    tags: new Set([
+      "aeropress",
+      "inverted",
+      "popular",
+      "beginner",
+      "immersion",
+      "everyday",
+    ]),
+  },
+
+  "japanese-iced-v60": {
+    id: "japanese-iced-v60",
+    slug: "japanese-iced-v60",
+    title: "Japanese Iced Coffee (Flash Brew)",
+    expert: {
+      name: "Popular Method",
+      title: "Community Favorite",
+      achievement: "Best for immediate cold coffee",
+    },
+    method: "v60",
+    difficulty: "Intermediate",
+    difficultyIndex: 2,
+
+    coffee: 20,
+    water: 300,
+    ratio: "1:15",
+    grind: "Fine",
+    temperature: "95°C",
+    totalTime: "2:30",
+
+    roastRecommendation: ["light", "medium"],
+    strengthLevel: "average",
+    flavorProfile: "Crisp, bright, aromatic, and refreshing",
+    flavorNotes: ["crisp", "bright", "refreshing", "aromatic"],
+    recommendedUse: "everyday",
+
+    story:
+      "Also known as Flash Brew, this method replaces half of the brewing water with ice in the carafe. Brewing hot coffee directly over ice instantly chills it, locking in volatile aromatics that are often lost in cold brew.",
+    keyTechnique:
+      "Brewing directly onto ice with a finer grind to compensate for less hot water extraction",
+    tips: [
+      "Grind finer than usual, since you are extracting with half the hot water",
+      "Ensure your total hot water (150g) + ice weight (150g) equals your target ratio",
+      "Swirl the carafe immediately after brewing to melt any remaining ice",
+    ],
+
+    steps: [
+      {
+        time: "Setup",
+        timeSeconds: 0,
+        instruction:
+          "Place 150g of ice directly into your carafe. Rinse V60 filter separately before placing it on top",
+      },
+      {
+        time: "0:00",
+        timeSeconds: 0,
+        instruction: "Pour 60g hot water to bloom the 20g of coffee",
+        waterAmount: 60,
+        pourNumber: 1,
+      },
+      {
+        time: "0:45",
+        timeSeconds: 45,
+        instruction:
+          "Pour remaining 90g of hot water in steady concentric circles",
+        waterAmount: 90,
+        pourNumber: 2,
+      },
+      {
+        time: "2:00",
+        timeSeconds: 120,
+        instruction: "Wait for the draw-down to finish over the ice",
+      },
+      {
+        time: "2:30",
+        timeSeconds: 150,
+        instruction:
+          "Remove V60, swirl the carafe vigorously to flash chill, and serve",
+      },
+    ],
+
+    sourceUrlType: "blog",
+    equipmentRecommendations: [
+      "Hario V60",
+      "Ice cubes",
+      "Carafe",
+      "Digital Scale",
+    ],
+
+    tags: new Set([
+      "v60",
+      "iced",
+      "flash-brew",
+      "popular",
+      "summer",
+      "everyday",
+    ]),
+  },
+
+  "standard-cold-brew": {
+    id: "standard-cold-brew",
+    slug: "standard-cold-brew",
+    title: "Classic Cold Brew Concentrate",
+    expert: {
+      name: "Popular Method",
+      title: "Community Favorite",
+      achievement: "Standard cafe preparation",
+    },
+    method: "coldbrew",
+    difficulty: "Beginner",
+    difficultyIndex: 1,
+
+    coffee: 100,
+    water: 800,
+    ratio: "1:8",
+    grind: "Extra-coarse",
+    temperature: "Room Temp",
+    totalTime: "18-24 Hours",
+
+    roastRecommendation: ["medium", "dark"],
+    strengthLevel: "robust",
+    flavorProfile: "Smooth, sweet, very low acidity, chocolatey",
+    flavorNotes: ["smooth", "sweet", "low-acid", "chocolatey"],
+    recommendedUse: "everyday",
+
+    story:
+      "Cold brew has exploded in popularity due to its incredibly smooth and forgiving nature. By replacing heat with time, the extraction yields a less acidic and naturally sweeter concentrate.",
+    keyTechnique:
+      "Long ambient-temperature steeping followed by fine filtration",
+    tips: [
+      "Use an extra-coarse grind to make filtration easier",
+      "Dilute the resulting concentrate 1:1 with water or milk",
+      "It tastes better steeped at room temperature than in the fridge",
+    ],
+
+    steps: [
+      {
+        time: "Setup",
+        timeSeconds: 0,
+        instruction:
+          "Add 100g extra-coarse coffee to a large jar or cold brew maker",
+      },
+      {
+        time: "0:00",
+        timeSeconds: 0,
+        instruction:
+          "Pour 800g of room temperature/cold filtered water over the grounds",
+        waterAmount: 800,
+      },
+      {
+        time: "0:05",
+        timeSeconds: 5,
+        instruction: "Stir thoroughly to ensure all dry pockets are wetted",
+      },
+      {
+        time: "18 Hours",
+        timeSeconds: 64800,
+        instruction: "Cover and let steep at room temperature for 18-24 hours",
+      },
+      {
+        time: "Filter",
+        timeSeconds: 86400,
+        instruction: "Filter the mixture through a paper filter or fine sieve",
+      },
+    ],
+
+    sourceUrlType: "blog",
+    equipmentRecommendations: [
+      "Large Jar or Cold Brew Maker",
+      "Paper/Cloth filter",
+      "Extra-coarse grinder",
+    ],
+
+    tags: new Set([
+      "cold-brew",
+      "popular",
+      "beginner",
+      "smooth",
+      "summer",
+      "everyday",
+    ]),
+  },
+
+  "classic-moka-pot": {
+    id: "classic-moka-pot",
+    slug: "classic-moka-pot",
+    title: "Traditional Moka Pot",
+    expert: {
+      name: "Popular Method",
+      title: "Community Favorite",
+      achievement: "Italian Household Staple",
+    },
+    method: "mokapot",
+    difficulty: "Intermediate",
+    difficultyIndex: 2,
+
+    coffee: 15,
+    water: 150,
+    ratio: "Fill to valve",
+    grind: "Fine (Espresso-ish)",
+    temperature: "Medium-Low Heat",
+    totalTime: "5:00",
+
+    roastRecommendation: ["medium", "dark"],
+    strengthLevel: "robust",
+    flavorProfile: "Intense, rich, syrupy, pseudo-espresso",
+    flavorNotes: ["intense", "rich", "syrupy", "bold"],
+    recommendedUse: "everyday",
+
+    story:
+      "Invented by Alfonso Bialetti in 1933, the Moka Pot quickly became a staple in Italian homes. It produces a strong, dense coffee similar to espresso by passing boiling water pressurized by steam through the grounds.",
+    keyTechnique:
+      "Using pre-heated water in the boiler to prevent baking the coffee",
+    tips: [
+      "Start with hot/boiling water in the base to reduce time on the stove",
+      "Do not tamp the coffee, just level visually",
+      "Remove from heat immediately when you hear the gurgling sound",
+    ],
+
+    steps: [
+      {
+        time: "Setup",
+        timeSeconds: 0,
+        instruction:
+          "Boil water separately. Fill the Moka pot bottom chamber up to the safety valve",
+      },
+      {
+        time: "Basket",
+        timeSeconds: 0,
+        instruction:
+          "Fill the filter basket with coffee and level it off without tamping. Place it into the base",
+      },
+      {
+        time: "Assembly",
+        timeSeconds: 0,
+        instruction:
+          "Carefully screw the top half on (base will be hot, use a towel)",
+      },
+      {
+        time: "Heat",
+        timeSeconds: 0,
+        instruction:
+          "Place on stove over medium-low heat. Leave the lid open to watch",
+      },
+      {
+        time: "Finish",
+        timeSeconds: 300,
+        instruction:
+          "Once liquid reaches the spout and starts to sputter/gurgle, remove from heat and close the lid",
+      },
+      {
+        time: "Cool",
+        timeSeconds: 310,
+        instruction:
+          "Run the base under cold water to instantly stop the brewing",
+      },
+    ],
+
+    sourceUrlType: "blog",
+    equipmentRecommendations: ["Bialetti Moka Pot", "Towel", "Stove"],
+
+    tags: new Set([
+      "moka-pot",
+      "traditional",
+      "popular",
+      "intense",
+      "italian",
+      "everyday",
+    ]),
+  },
 };
 
 // Utility functions for recipe filtering and display
@@ -1016,6 +1809,41 @@ export const EXPERTS = [
     recipes: ["intelligentsia-pourover"],
     bio: "Third-wave coffee pioneer and industry leader in specialty coffee",
   },
+  {
+    name: "Tim Wendelboe",
+    recipes: ["tim-wendelboe-aeropress"],
+    bio: "World Barista Champion 2004, renowned roaster from Oslo, Norway",
+  },
+  {
+    name: "Lance Hedrick",
+    recipes: ["lance-hedrick-v60"],
+    bio: "Coffee Expert & Educator, World Latte Art Champion Finalist",
+  },
+  {
+    name: "Onyx Coffee Lab",
+    recipes: ["onyx-kalita-wave"],
+    bio: "Acclaimed US specialty coffee roaster and competition champions",
+  },
+  {
+    name: "Blue Bottle Coffee",
+    recipes: ["blue-bottle-french-press"],
+    bio: "Pioneers of modern specialty coffee experience and cafe culture",
+  },
+  {
+    name: "Traditional Origin",
+    recipes: ["traditional-south-indian"],
+    bio: "Cultural heritage methods passed down through generations",
+  },
+  {
+    name: "Popular Method",
+    recipes: [
+      "classic-inverted-aeropress",
+      "japanese-iced-v60",
+      "standard-cold-brew",
+      "classic-moka-pot",
+    ],
+    bio: "Tried and true brewing techniques favored by the global coffee community.",
+  },
 ];
 
 // Recipe categories for organization
@@ -1024,11 +1852,20 @@ export const RECIPE_CATEGORIES = {
     "hoffman-v60",
     "scott-rao-v60",
     "tetsu-kasuya-46",
+    "lance-hedrick-v60",
     "hoffman-chemex",
     "intelligentsia-pourover",
   ],
-  "AeroPress Champions": ["carolina-aeropress", "george-aeropress-2024"],
-  "Full Immersion": ["hoffman-french-press"],
+  "Flat Bottom Brewers": ["onyx-kalita-wave"],
+  "AeroPress Champions": [
+    "carolina-aeropress",
+    "george-aeropress-2024",
+    "tim-wendelboe-aeropress",
+  ],
+  "Full Immersion": ["hoffman-french-press", "blue-bottle-french-press"],
+  "Cold & Iced Coffee": ["japanese-iced-v60", "standard-cold-brew"],
+  "Traditional Methods": ["traditional-south-indian", "classic-moka-pot"],
+  "Community Favorites": ["classic-inverted-aeropress"],
 } as const;
 
 // Difficulty explanations

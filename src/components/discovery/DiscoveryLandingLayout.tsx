@@ -8,8 +8,8 @@ import { CoffeeGridTeaser } from "./CoffeeGridTeaser";
 import { UtilityCard } from "./UtilityCard";
 import { RelatedLinks } from "./RelatedLinks";
 import { BrewParamsStrip } from "./BrewParamsStrip";
-import { FlavourBlock } from "./FlavourBlock";
 import { RoastScale } from "./RoastScale";
+import { RoastProfileSection } from "./RoastProfileSection";
 import { ProcessExplainer } from "./ProcessExplainer";
 import { DiscoveryRecipeSection } from "./DiscoveryRecipeSection";
 import { FlavourImpact } from "./FlavourImpact";
@@ -145,19 +145,20 @@ export function DiscoveryLandingLayout({
         </div>
       )}
 
-      <Stack gap="12">
+      <div className="flex flex-col">
         {config.type === "brew_method" && config.brewParams && (
           <BrewParamsStrip brewParams={config.brewParams} />
         )}
 
-        {config.type === "roast_level" && (
-          <>
-            <FlavourBlock roastLevel={config.slug} />
-            <RoastScale currentRoastSlug={config.slug} />
-          </>
+        {config.type === "roast_level" && config.roastProfile && (
+          <RoastProfileSection roastProfile={config.roastProfile} />
         )}
 
-        {config.type === "price_bucket" && <PriceDisclosure />}
+        {config.type === "price_bucket" && (
+          <div className="py-6 md:py-10">
+            <PriceDisclosure />
+          </div>
+        )}
 
         {config.type === "process" && (
           <ProcessExplainer
@@ -218,18 +219,22 @@ export function DiscoveryLandingLayout({
 
         {/* 3. Utility Card (if configured and not redundant) */}
         {config.utilityCard && config.utilityCard.type !== "brew_guide" && (
-          <Stack gap="4">
-            {config.utilityNudge && (
-              <div className="mx-auto max-w-6xl w-full px-4 md:px-0">
+          <div className="py-10 md:py-14 px-4 md:px-0 mx-auto max-w-6xl w-full">
+            <Stack gap="4">
+              {config.utilityNudge && (
                 <div className="border-l-2 border-accent/20 pl-4 py-1">
                   <p className="text-caption text-muted-foreground/80 italic leading-relaxed">
                     {config.utilityNudge}
                   </p>
                 </div>
-              </div>
-            )}
-            <UtilityCard config={config.utilityCard} />
-          </Stack>
+              )}
+              <UtilityCard config={config.utilityCard} />
+            </Stack>
+          </div>
+        )}
+
+        {config.type === "roast_level" && (
+          <RoastScale currentRoastSlug={config.slug} />
         )}
 
         {/* 4. FAQ Section */}
@@ -264,7 +269,7 @@ export function DiscoveryLandingLayout({
         {config.related.length > 0 && (
           <RelatedLinks relatedSlugs={config.related} />
         )}
-      </Stack>
+      </div>
     </PageShell>
   );
 }

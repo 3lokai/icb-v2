@@ -1,5 +1,9 @@
+"use client";
+
+import { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion, useReducedMotion } from "motion/react";
 import { discoveryPagePath } from "@/lib/discovery/landing-pages";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
@@ -20,14 +24,20 @@ type RoastScaleProps = {
 
 export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
   const activeIndex = STEPS.findIndex((s) => s.slug === currentRoastSlug);
+  const prefersReducedMotion = useReducedMotion();
+  const reduce = Boolean(prefersReducedMotion);
+
+  const stepTransition = reduce
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 420, damping: 28 };
 
   return (
     <Section spacing="tight" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
-        className="mb-6"
+        className="mb-8"
         overline="Roast range"
         title="Where you are on the *scale*"
-        description="Tap a step to compare roast levels—each link opens that discovery page."
+        description="Each level links to a full guide for that roast."
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />
@@ -37,64 +47,123 @@ export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
         }
       />
       <div className="mx-auto max-w-6xl w-full px-4 md:px-0">
-        <div className="surface-1 relative overflow-hidden rounded-2xl card-padding card-hover">
-          {/* Decorative background blurs */}
-          <div className="absolute top-0 left-0 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
-          <div className="absolute bottom-0 right-0 h-24 w-24 rounded-full bg-accent/5 blur-2xl" />
+        <div
+          className={cn(
+            "surface-1 relative overflow-hidden rounded-3xl border border-border/60 p-8 shadow-sm md:p-12",
+            "transition-colors duration-500 hover:border-border"
+          )}
+        >
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute left-0 top-0 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
+            <div className="absolute bottom-0 right-0 h-24 w-24 rounded-full bg-accent/5 blur-2xl" />
+          </div>
 
-          <div className="relative z-10 flex flex-wrap items-center gap-2 md:gap-0 md:justify-between">
+          <div className="relative z-10 flex flex-col items-stretch md:flex-row md:items-center md:justify-between md:gap-2">
             {STEPS.map((step, i) => {
               const isActive = step.slug === currentRoastSlug;
-              const isPast = activeIndex >= 0 && i < activeIndex;
+
               return (
-                <div key={step.slug} className="flex items-center md:flex-1">
-                  <Link
-                    href={discoveryPagePath(step.slug)}
-                    className={cn(
-                      "group flex flex-col items-center text-center min-w-[4.5rem]",
-                      isActive && "font-semibold"
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "relative flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-500",
-                        "group-hover:scale-110 group-hover:rotate-12",
-                        isActive
-                          ? "bg-accent/10 ring-1 ring-accent/30 shadow-lg shadow-accent/5"
-                          : isPast
-                            ? "opacity-80 drop-shadow-sm"
-                            : "opacity-40 grayscale"
-                      )}
-                      aria-current={isActive ? "true" : undefined}
-                    >
-                      <Image
-                        src={`/images/discovery/roasts/${step.slug.replace("-roast", "")}.png`}
-                        alt={step.label}
-                        width={36}
-                        height={36}
-                        className={cn(
-                          "object-contain transition-all duration-500 pointer-events-none",
-                          isActive
-                            ? "scale-110 rotate-3 drop-shadow-md"
-                            : "scale-90"
+                <Fragment key={step.slug}>
+                  <div className="relative flex w-full flex-col items-center md:flex-1">
+                    {isActive && (
+                      <>
+                        {reduce ? (
+                          <div
+                            className="absolute -inset-4 -z-0 hidden rounded-[2rem] bg-accent/5 md:block"
+                            aria-hidden
+                          />
+                        ) : (
+                          <motion.div
+                            layoutId="roast-scale-active-bg"
+                            className="absolute -inset-4 -z-0 hidden rounded-[2rem] bg-accent/5 md:block"
+                            initial={{ opacity: 0, scale: 0.92 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={stepTransition}
+                            aria-hidden
+                          />
                         )}
-                      />
-                    </div>
-                    <span
+                      </>
+                    )}
+
+                    <Link
+                      href={discoveryPagePath(step.slug)}
                       className={cn(
-                        "mt-2.5 text-micro max-w-[5rem] leading-snug transition-colors",
-                        isActive
-                          ? "text-foreground font-bold"
-                          : "text-muted-foreground"
+                        "group relative z-10 flex flex-col items-center rounded-2xl text-center outline-none transition-colors",
+                        "focus-visible:ring-[3px] focus-visible:ring-ring/50"
                       )}
+                      aria-current={isActive ? "page" : undefined}
                     >
-                      {step.label}
-                    </span>
-                  </Link>
+                      <motion.div
+                        className={cn(
+                          "mb-4 flex h-32 w-32 cursor-pointer items-center justify-center rounded-2xl border-2 transition-colors duration-300",
+                          isActive
+                            ? "border-accent bg-background shadow-lg shadow-foreground/5"
+                            : "border-transparent bg-transparent hover:border-border/80"
+                        )}
+                        animate={
+                          reduce
+                            ? undefined
+                            : {
+                                scale: isActive ? 1.06 : 1,
+                              }
+                        }
+                        whileHover={
+                          reduce ? undefined : { scale: isActive ? 1.06 : 1.04 }
+                        }
+                        transition={stepTransition}
+                      >
+                        <motion.div
+                          className="relative flex h-24 w-24 items-center justify-center"
+                          animate={
+                            reduce
+                              ? undefined
+                              : {
+                                  rotate: isActive ? 6 : 0,
+                                }
+                          }
+                          transition={stepTransition}
+                        >
+                          <Image
+                            src={`/images/discovery/roasts/${step.slug.replace("-roast", "")}.png`}
+                            alt=""
+                            aria-hidden
+                            width={88}
+                            height={88}
+                            className={cn(
+                              "object-contain pointer-events-none transition-opacity duration-300",
+                              isActive
+                                ? "opacity-100 drop-shadow-md"
+                                : "opacity-[0.72] group-hover:opacity-90"
+                            )}
+                          />
+                        </motion.div>
+                      </motion.div>
+
+                      <span
+                        className={cn(
+                          "text-caption font-bold transition-colors duration-300",
+                          isActive
+                            ? "text-foreground"
+                            : "text-muted-foreground group-hover:text-foreground"
+                        )}
+                      >
+                        {step.label}
+                      </span>
+                    </Link>
+
+                    {i < STEPS.length - 1 ? (
+                      <div
+                        className="my-4 h-12 w-0.5 shrink-0 bg-border/40 md:hidden"
+                        aria-hidden
+                      />
+                    ) : null}
+                  </div>
+
                   {i < STEPS.length - 1 ? (
                     <div
                       className={cn(
-                        "hidden md:block h-1 flex-1 mx-2 min-w-[0.5rem] -mt-10 rounded-full",
+                        "hidden h-0.5 flex-1 self-center rounded-full md:-mt-10 md:block",
+                        "min-w-[0.5rem] max-w-none",
                         activeIndex >= 0 && i < activeIndex
                           ? "bg-gradient-to-r from-accent/60 to-accent/40"
                           : activeIndex >= 0 && i === activeIndex
@@ -104,7 +173,7 @@ export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
                       aria-hidden
                     />
                   ) : null}
-                </div>
+                </Fragment>
               );
             })}
           </div>
