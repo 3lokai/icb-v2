@@ -73,7 +73,7 @@ export const processPages: LandingPageConfig[] = [
           "Natural is the most flavour-intense process — if natural feels too heavy or fermented, try honey process next. Washed is the cleanest and most restrained.",
       },
       icbDataNote:
-        "Natural process is well-represented in the ICB catalogue and consistently produces the highest community ratings among process categories. Karnataka estate naturals dominate the top-rated lots — light and light-medium roast naturals score highest.",
+        "Natural process is the highest rated process category in the ICB catalogue — community ratings average 4.64, the highest of any process. It has 116 coffees across the catalogue, making it the third largest process segment. Karnataka estate naturals dominate the top-rated lots.",
     },
 
     filter: {
@@ -178,7 +178,7 @@ export const processPages: LandingPageConfig[] = [
           "Washed is the cleanest and most restrained process — if you want more sweetness and body, try honey next. For maximum fruit intensity, try natural.",
       },
       icbDataNote:
-        "Washed is the most represented process in the ICB catalogue by volume. It's also the process with the most competition-grade lots — the highest-rated coffees on ICB from Chikmagalur and Coorg estates are predominantly washed. Light and light-medium roast washed coffees dominate the top ratings.",
+        "Washed has the highest rating volume of any process — 56 community ratings — making it the most compared process in the catalogue. Average rating is 3.78, lower than natural and anaerobic, which reflects the broader range of quality across 216 coffees from budget blends to competition-grade estate lots.",
     },
 
     filter: {
@@ -395,7 +395,7 @@ export const processPages: LandingPageConfig[] = [
           "Anaerobic is the most experimental and intense process category. If it feels too much, try natural next — similar fruit intensity but more familiar fermentation character.",
       },
       icbDataNote:
-        "Anaerobic lots are the smallest process category in the ICB catalogue by volume but attract disproportionate community interest — they're reviewed more per listing than any other process. Ratings are polarised: very high from enthusiasts, lower from drinkers who find the fermentation character off-putting. Karnataka estate anaerobics dominate the listings currently available.",
+        "Anaerobic is the fourth largest process category in the ICB catalogue with 85 coffees across multiple roasters — larger than honey and monsooned. Community ratings average 4.44, second only to natural process. Ratings are polarised between enthusiasts who score high and drinkers who find the fermentation character off-putting.",
     },
 
     filter: {

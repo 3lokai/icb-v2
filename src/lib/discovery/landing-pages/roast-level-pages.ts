@@ -11,7 +11,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Discover Indian specialty coffees roasted light to highlight origin characteristics, bright acidity, and delicate flavor notes. The least processed roast — and the most expressive of where the coffee came from.",
     headerNudge:
       "Best for those who love bright, tea-like coffees with complex origin notes.",
-    teaserTitle: "Featured Light Roasts",
+    teaserTitle: "Top Rated Light Roasts",
     teaserDescription:
       "Bright, acidic, and complex coffees roasted to preserve origin characteristics.",
     gridNudge:
@@ -68,7 +68,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         "If you're switching from dark roast or instant coffee, light roast will taste unfamiliar at first — less bitter, more acidic, almost fruity. Give it 2–3 brews before judging. If you love tea, wine, or fresh fruit juice, this is likely your roast level.",
       // ICB data callout — populate dynamically if possible, or update quarterly
       icbDataNote:
-        "On ICB, the majority of light roast coffees are washed or honey processed. Natural light roasts are less common but tend to receive higher community ratings — likely because they attract more experienced buyers.",
+        "Light roast has 192 coffees in the ICB catalogue with a community average rating of 4.08 across 26 ratings. Natural light roasts are less common than washed but tend to score higher — consistent with the natural process category's overall average of 4.64 being the highest in the catalogue.",
     },
 
     filter: {
@@ -126,7 +126,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Explore Indian specialty coffees roasted at light-medium levels — a balance of origin clarity and approachable sweetness. The everyday sweet spot for most pour-over drinkers.",
     headerNudge:
       "Great bridge roast if light feels too bright and medium feels too heavy.",
-    teaserTitle: "Featured Light-Medium Roasts",
+    teaserTitle: "Top Rated Light-Medium Roasts",
     teaserDescription:
       "Balanced cups with both origin character and gentle roast sweetness.",
     gridNudge:
@@ -239,7 +239,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Explore Indian specialty coffees with balanced medium roasts — the perfect harmony between origin character and roast development. Versatile, approachable, and consistently satisfying across any brew method.",
     headerNudge:
       "The most versatile roast — works beautifully with any brewing method.",
-    teaserTitle: "Featured Medium Roasts",
+    teaserTitle: "Top Rated Medium Roasts",
     teaserDescription:
       "Balanced chocolate, caramel, and mild acidity — the everyday sweet spot for most brew methods.",
     gridNudge:
@@ -299,7 +299,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       whoIsItFor:
         "The default roast for most coffee drinkers. If you enjoy coffee with milk, this is your level — it holds up to milk without disappearing. If you drink black coffee and want something familiar but better than commercial brands, medium roast Indian specialty is the place to start.",
       icbDataNote:
-        "Medium roast has the widest range of options in the ICB catalogue across both arabica and robusta. It's also the most reviewed roast level in our community ratings — useful if you want the most comparison data before buying.",
+        "Medium roast is the highest rated roast level in the ICB catalogue — community average of 4.49 across 53 ratings, more ratings than any other roast level. It also has the largest catalogue count at 245 coffees. If you want the most community comparison data before buying, medium roast is where to start.",
     },
 
     filter: {
@@ -357,7 +357,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Find Indian specialty coffees roasted to medium-dark — richer body, deeper sweetness, and bolder flavour while retaining some origin nuance. The roast for espresso lovers who want more than just bitterness.",
     headerNudge:
       "A great choice for fuller cups and lower perceived acidity without going fully dark.",
-    teaserTitle: "Featured Medium-Dark Roasts",
+    teaserTitle: "Top Rated Medium-Dark Roasts",
     teaserDescription:
       "Richer, rounder profiles for espresso, French Press, and milk drinks.",
     gridNudge:
@@ -469,7 +469,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Find Indian specialty coffees roasted dark for bold, intense flavour with low acidity and full body. The roast most associated with traditional Indian coffee culture — and now being reimagined by specialty roasters.",
     headerNudge:
       "Bold, full-bodied coffees with rich oils and intense flavors.",
-    teaserTitle: "Featured Dark Roasts",
+    teaserTitle: "Top Rated Dark Roasts",
     teaserDescription:
       "Low-acid, heavy-bodied cups — from specialty bittersweet to traditional South Indian boldness.",
     gridNudge:
@@ -529,7 +529,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       whoIsItFor:
         "Traditional Indian filter coffee drinkers, those who take coffee with a lot of milk and sugar, and anyone who finds lighter roasts too acidic or thin. Dark roast is also where cold brew shines — the low acidity and heavy body translate exceptionally well to cold extraction.",
       icbDataNote:
-        "Dark roast coffees on ICB are dominated by traditional blends and South Indian filter coffee products. Pure arabica dark roasts are a smaller subset — if you want dark roast with more complexity, filter by arabica varietal alongside roast level.",
+        "Dark roast has the lowest average community rating of any roast level in the ICB catalogue — 3.27 across 12 ratings — which reflects the mix of commodity blends and specialty lots in the 143-coffee segment. Traditional South Indian filter blends dominate the listings.",
     },
 
     filter: {

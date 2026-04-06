@@ -20,7 +20,8 @@ import { ValueTips } from "./ValueTips";
 import { BrewMethodProfileSection } from "./BrewMethodProfileSection";
 import { ProcessProfileSection } from "./ProcessProfileSection";
 import { PriceBucketProfileSection } from "./PriceBucketProfileSection";
-import { RegionProfileSection } from "./RegionProfileSection";
+import { RegionOverviewSection } from "./RegionOverviewSection";
+import { RegionDetailSection } from "./RegionDetailSection";
 import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import {
   discoveryPagePath,
@@ -202,12 +203,32 @@ export function DiscoveryLandingLayout({
           />
         )}
 
+        {config.type === "region" && config.regionProfile && (
+          <RegionOverviewSection
+            profile={config.regionProfile}
+            slug={config.slug}
+          />
+        )}
+
+        {config.type === "region" &&
+          !config.regionProfile &&
+          config.regionSnapshot && (
+            <RegionSnapshot
+              regionSlug={config.slug}
+              regionSnapshot={config.regionSnapshot}
+            />
+          )}
+
         {/* 2. Coffee Grid Teaser */}
         <CoffeeGridTeaser
           filters={config.filter}
           sortOrder={config.sortOrder}
           limit={12}
-          overline="Featured Selection"
+          overline={
+            config.sortOrder === "best_value"
+              ? "Best Value Selection"
+              : "Top Rated Selection"
+          }
           title={
             config.teaserTitle ||
             `Top *${config.type === "price_bucket" ? "Value" : "Rated"}* Coffees`
@@ -231,40 +252,22 @@ export function DiscoveryLandingLayout({
           <FlavourImpact processSlug={config.slug} />
         )}
 
-        {config.type === "region" && config.regionProfile ? (
-          <>
-            <RegionProfileSection
-              profile={config.regionProfile}
-              slug={config.slug}
-              guideHref={processGuideHref}
-            />
-            {config.filter.region_slugs?.length ? (
-              <div className="py-6 md:py-8">
-                <RoastersSourcing
-                  regionSlugs={config.filter.region_slugs}
-                  regionLabel={pageLabel}
-                />
-              </div>
-            ) : null}
-          </>
-        ) : (
-          config.type === "region" && (
-            <>
-              {config.regionSnapshot && (
-                <RegionSnapshot
-                  regionSlug={config.slug}
-                  regionSnapshot={config.regionSnapshot}
-                />
-              )}
-              {config.filter.region_slugs?.length ? (
-                <RoastersSourcing
-                  regionSlugs={config.filter.region_slugs}
-                  regionLabel={pageLabel}
-                />
-              ) : null}
-            </>
-          )
+        {config.type === "region" && config.regionProfile && (
+          <RegionDetailSection
+            profile={config.regionProfile}
+            slug={config.slug}
+            guideHref={processGuideHref}
+          />
         )}
+
+        {config.type === "region" && config.filter.region_slugs?.length ? (
+          <div className="py-6 md:py-8">
+            <RoastersSourcing
+              regionSlugs={config.filter.region_slugs}
+              regionLabel={pageLabel}
+            />
+          </div>
+        ) : null}
 
         {config.type === "price_bucket" && config.valueTips?.length ? (
           <ValueTips tips={config.valueTips} />

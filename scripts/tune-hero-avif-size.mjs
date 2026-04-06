@@ -21,7 +21,16 @@ async function toAvif(input, quality, effort) {
 /** Pick quality in 1..100 with minimum |bytes - TARGET| for this pipeline. */
 async function bestQualityForPipeline(pipeline) {
   let best = { q: 50, buf: null, diff: Infinity };
-  for (let q = 1; q <= 100; q += 1) {
+  for (let q = 1; q <= 100; q += 5) {
+    const buf = await toAvif(pipeline.clone(), q, 4);
+    const diff = Math.abs(buf.length - TARGET);
+    if (diff < best.diff) {
+      best = { q, buf, diff, size: buf.length };
+    }
+  }
+  const q0 = Math.max(1, best.q - 4);
+  const q1 = Math.min(100, best.q + 4);
+  for (let q = q0; q <= q1; q += 1) {
     const buf = await toAvif(pipeline.clone(), q, 4);
     const diff = Math.abs(buf.length - TARGET);
     if (diff < best.diff) {

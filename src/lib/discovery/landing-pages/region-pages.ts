@@ -1,10 +1,13 @@
 // src/lib/discovery/landing-pages/region-pages.ts
 import type { LandingPageConfig } from "./types";
 
+const REGION_HERO_BACKGROUND = "/images/discovery/regions-hero.avif";
+
 export const regionPages: LandingPageConfig[] = [
   {
     slug: "chikmagalur",
     type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Chikmagalur Coffee in India",
     intro:
       "Discover specialty coffees from Chikmagalur — Karnataka's historic coffee heartland, home to India's oldest arabica plantations, high-altitude estates, and the variety that put Indian coffee on the world map.",
@@ -108,8 +111,116 @@ export const regionPages: LandingPageConfig[] = [
   },
 
   {
+    slug: "baba-budangiri",
+    type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
+    h1: "Baba Budangiri Coffee in India",
+    intro:
+      "Discover specialty coffees from Baba Budangiri — the highland range within Chikmagalur district that gave India its coffee origin story, and still produces some of the country's highest-rated lots.",
+    headerNudge:
+      "One of India's most storied sub-regions — high altitude, heritage significance, and standout natural lots.",
+    teaserTitle: "Baba Budangiri coffees",
+    teaserDescription:
+      "High-altitude Karnataka lots from the hills where Indian coffee began.",
+    gridNudge:
+      "Light natural and light-medium washed lots dominate the top ratings — start there.",
+    heroBadge: "Origin",
+
+    regionProfile: {
+      snapshot: {
+        state: "Karnataka (Chikmagalur district)",
+        elevation: "1,200–1,800m",
+        knownFor:
+          "India's coffee origin site, high-altitude naturals, exceptional community ratings",
+      },
+      overview:
+        "Baba Budangiri is where Indian coffee began. The range — named after the Sufi saint Baba Budan who is said to have brought seven coffee beans from Yemen in the 17th century — sits within Chikmagalur district at elevations reaching 1,800 metres. It's one of India's highest coffee-growing areas and a protected forest zone. Coffee here is grown on steep slopes under dense native shade, with the altitude and microclimate producing some of the most complex lots in the Indian catalogue. Despite being within Chikmagalur district, Baba Budangiri is distinct enough in character to warrant its own attention — the elevation difference alone produces noticeably different cups from lower-altitude Chikmagalur estates.",
+      terroir: {
+        climate:
+          "Cool and misty — among India's coolest coffee-growing microclimates. Elevations above 1,500m experience near-constant cloud cover during monsoon and cooler temperatures year-round than the broader Chikmagalur district. The cold slows cherry development significantly.",
+        soil: "Rich forest soil under dense Shola forest and shade trees. Protected forest status means minimal chemical input — most production is effectively low-intervention by default.",
+        altitude:
+          "1,200 to 1,800 metres — the upper end of this range produces India's most altitude-driven lots. The steep terrain means hand-picking is the only viable harvest method, which self-selects for careful, selective picking.",
+        varieties:
+          "SL-795 is predominant in specialty lots. The elevation expresses the variety's character at its most complex — jasmine, stone fruit, and bright acidity develop more intensely than at lower Karnataka elevations.",
+      },
+      flavourProfile: {
+        typical: [
+          "Jasmine",
+          "Bright acidity",
+          "Stone fruit",
+          "Blueberry",
+          "Complex aromatics",
+          "Clean finish",
+        ],
+        indianContext:
+          "Baba Budangiri natural lots at light roast are among the most complex Indian coffees available — the altitude drives intense aromatic development that you don't find in lower-elevation Karnataka naturals. The community average rating of 4.88 across ICB reviews is the highest of any Indian region with meaningful rating data. Light natural lots dominate the top-rated coffees from this sub-region: blueberry, jasmine, and stone fruit at an intensity that rivals East African naturals. Washed lots at light-medium roast show jasmine and clean citrus — the altitude clarity is obvious.",
+        processVariation:
+          "Natural and experimental lots dominate the specialty-grade production — the cool, dry conditions during harvest season (November–February) make natural processing viable and produce exceptional results. Washed and honey lots are also well-represented. The DB shows 5 light natural lots, 5 medium-dark 'other' category lots (likely traditional blends), and a meaningful number of experimental and anaerobic lots — this is a region where producers are experimenting.",
+      },
+      roasterContext:
+        "Baba Budangiri is sourced by 16 roasters in the ICB catalogue — more than Coorg, Araku, and Wayanad. Several of India's most respected specialty roasters specifically source Baba Budangiri as a distinct sub-origin rather than folding it into generic Chikmagalur listings. When you see it named explicitly on a roaster's bag, it signals a producer who understands altitude differentiation — worth paying attention to.",
+      brewGuidance: {
+        recommended: ["v60", "aeropress", "chemex"],
+        notes:
+          "Light natural Baba Budangiri lots are best on V60 — the clean, paper-filtered pour-over preserves the jasmine and fruit intensity that defines the region's best lots. Use 90–93°C for naturals to balance the fruit without tipping into fermented heaviness. Washed lots suit both V60 and AeroPress. The altitude-driven complexity is most visible in clean brew methods — avoid French Press for the top-tier lots.",
+      },
+      nearbyRegions: ["chikmagalur", "sakleshpur"],
+      icbDataNote:
+        "Baba Budangiri has the highest average community rating of any Indian region in the ICB catalogue — 4.88 across 8 ratings, from 40 coffees across 16 roasters. Small sample size caveat applies, but the consistency is notable. Light natural lots are driving the high scores. If you want to try India's ceiling for specialty quality, this is the sub-region to explore.",
+    },
+
+    regionSnapshot: {
+      state: "Karnataka (Chikmagalur district)",
+      elevation: "1,200–1,800m",
+      knownFor:
+        "India's coffee origin site, high-altitude naturals, exceptional community ratings",
+    },
+    faqOverline: "Baba Budangiri",
+    faqTitle: "About *Baba Budangiri* coffee",
+    faqDescription:
+      "The highland range where Indian coffee began — and still excels.",
+    faqBadge: "Regions",
+    filter: {
+      region_slugs: ["baba-budangiri"],
+    },
+    sortOrder: "rating_desc",
+    faqs: [
+      {
+        question: "What is the significance of Baba Budangiri?",
+        answer:
+          "It's India's coffee origin site — named after Sufi saint Baba Budan, who is said to have brought seven coffee beans from Yemen to these hills in the 17th century. Beyond history, the range's high altitude (up to 1,800m) produces some of India's most complex specialty lots today.",
+      },
+      {
+        question: "How is Baba Budangiri different from Chikmagalur?",
+        answer:
+          "Baba Budangiri is a sub-range within Chikmagalur district, but the elevation difference is significant — up to 1,800m vs the broader district's 900–1,500m range. The extra altitude produces cooler temperatures, slower cherry development, and noticeably more complex aromatics. When a roaster labels a coffee specifically as Baba Budangiri rather than Chikmagalur, the altitude specificity is the point.",
+      },
+      {
+        question: "Why are ratings so high for Baba Budangiri coffees?",
+        answer:
+          "The community average of 4.88 on ICB (8 ratings) is the highest of any Indian region. The altitude drives intense jasmine, stone fruit, and berry character in natural lots that's genuinely world-competitive. Small sample size caveat — but the pattern is consistent.",
+      },
+      {
+        question: "What process works best here?",
+        answer:
+          "Natural at light roast is where the region excels — the cool dry harvest season makes natural processing viable and the altitude amplifies the fruit character. Washed lots at light-medium are excellent too, showing jasmine and clean citrus. Both reward pour-over methods.",
+      },
+    ],
+    utilityCard: {
+      type: "tips",
+      title: "Explore Indian coffee regions",
+      description: "Region guides and brewing tips on the learn hub.",
+      href: "/learn",
+      ctaText: "Learn",
+    },
+    related: ["chikmagalur", "light-roast", "natural", "v60"],
+  },
+
+  {
     slug: "coorg",
     type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Coorg Coffee in India",
     intro:
       "Browse Indian specialty coffees from Coorg (Kodagu) — lush Western Ghats hills, established estates, and coffees spanning classic washed arabica to modern experimental processing.",
@@ -174,7 +285,7 @@ export const regionPages: LandingPageConfig[] = [
     faqDescription: "Flavour, terroir, and buying tips for Kodagu coffee.",
     faqBadge: "Regions",
     filter: {
-      region_slugs: ["coorg"],
+      region_slugs: ["kodagu-coorg"],
     },
     sortOrder: "rating_desc",
     faqs: [
@@ -213,6 +324,7 @@ export const regionPages: LandingPageConfig[] = [
   {
     slug: "araku",
     type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Araku Valley Coffee in India",
     intro:
       "Find specialty coffees from Araku Valley — Andhra Pradesh's highland coffee origin in the Eastern Ghats, known for bright, floral lots from tribal and cooperative producers.",
@@ -279,7 +391,7 @@ export const regionPages: LandingPageConfig[] = [
       "India's GI-tagged coffee origin — terroir and flavour explained.",
     faqBadge: "Regions",
     filter: {
-      region_slugs: ["araku"],
+      region_slugs: ["araku-valley"],
     },
     sortOrder: "rating_desc",
     faqs: [
@@ -317,6 +429,7 @@ export const regionPages: LandingPageConfig[] = [
   {
     slug: "nilgiris",
     type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Nilgiris Coffee in India",
     intro:
       "Explore coffees from the Nilgiris — Tamil Nadu's Blue Mountain highlands, with cool-climate arabica, established estates, and a distinct terroir that sets it apart from Karnataka origins.",
@@ -369,7 +482,7 @@ export const regionPages: LandingPageConfig[] = [
       },
       nearbyRegions: ["wayanad", "coorg"],
       icbDataNote:
-        "Nilgiris is one of the smaller categories in the ICB catalogue — fewer roasters source from here compared to Karnataka. Representation is growing as interest in regional diversity increases. Washed light roasts dominate the available listings.",
+        "Nilgiris is currently one of the thinnest region categories in the ICB catalogue — 4 coffees across 4 roasters. It's worth tracking as a region with genuine specialty potential, but community rating data is very limited at this stage. Medium roasts dominate the available listings.",
     },
 
     regionSnapshot: {
@@ -383,7 +496,7 @@ export const regionPages: LandingPageConfig[] = [
     faqDescription: "Tamil Nadu's Blue Mountain coffee region explained.",
     faqBadge: "Regions",
     filter: {
-      region_slugs: ["nilgiris"],
+      region_slugs: ["nilgiri-hills"],
     },
     sortOrder: "rating_desc",
     faqs: [
@@ -419,8 +532,117 @@ export const regionPages: LandingPageConfig[] = [
   },
 
   {
+    slug: "shevaroy-hills",
+    type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
+    h1: "Shevaroy Hills Coffee in India",
+    intro:
+      "Find specialty coffees from the Shevaroy Hills — Tamil Nadu's largest coffee-growing region, with diverse estates, experimental processing, and a profile distinct from Karnataka's mainstream origins.",
+    headerNudge:
+      "Tamil Nadu's most significant coffee origin — medium washed lots and a growing experimental processing scene.",
+    teaserTitle: "Shevaroy Hills coffees",
+    teaserDescription:
+      "Tamil Nadu highland lots from India's most underrated coffee region.",
+    gridNudge:
+      "Medium washed and light natural lots are the starting point — experimental lots for the adventurous.",
+    heroBadge: "Origin",
+
+    regionProfile: {
+      snapshot: {
+        state: "Tamil Nadu (Salem district)",
+        elevation: "1,000–1,600m",
+        knownFor:
+          "Tamil Nadu's primary coffee origin, diverse processing, experimental lots",
+      },
+      overview:
+        "The Shevaroy Hills — also known as Shervarayan Hills — rise to 1,600 metres in Tamil Nadu's Salem district, forming one of South India's significant coffee-growing areas outside Karnataka. With 46 coffees across 15 roasters in the ICB catalogue, it's actually better represented than several Karnataka sub-regions. The area is part of the Eastern Ghats range and has a distinct growing environment from the Western Ghats origins: different rainfall patterns, different soil composition, and a growing cluster of producers experimenting with processing. Despite its size, Shevaroy Hills remains relatively unknown in specialty circles — partially because many coffees are blended into generic Tamil Nadu lots rather than origin-labelled.",
+      terroir: {
+        climate:
+          "Eastern Ghats climate with distinct wet and dry seasons — different from the Western Ghats' heavier monsoon. Lower annual rainfall than Wayanad or Coorg makes natural processing more viable. The hills' elevation moderates temperature and extends the growing season.",
+        soil: "Red laterite with good drainage on slopes. The Eastern Ghats geology differs from Western Ghats origins — different mineral composition contributes to a distinct terroir character.",
+        altitude:
+          "1,000 to 1,600 metres — the upper Shevaroy range approaches Nilgiris in elevation. Higher-altitude lots from the region tend toward cleaner, more delicate profiles.",
+        varieties:
+          "Arabica varieties dominate the specialty lots. SL-795 is present but the region also has older heritage plantings. Varietal specificity is less consistently communicated than in Karnataka.",
+      },
+      flavourProfile: {
+        typical: [
+          "Mild chocolate",
+          "Nuts",
+          "Medium body",
+          "Balanced acidity",
+          "Clean finish",
+          "Mild fruit",
+        ],
+        indianContext:
+          "Shevaroy Hills coffees at medium roast washed are clean, balanced, and approachable — a reliable everyday drinking coffee without Karnataka's intensity. The ICB catalogue shows a significant cluster of medium washed lots (6) alongside experimental and carbonic maceration lots (notable for Tamil Nadu). Light naturals from the region show fruit and brightness that's different in character from Karnataka naturals — worth comparing. The experimental processing presence is the most interesting development: several Shevaroy Hills producers are clearly investing in processing infrastructure, with carbonic maceration, anaerobic, and double-fermented lots appearing alongside traditional washed.",
+        processVariation:
+          "Medium washed lots are the backbone of Shevaroy Hills production in the specialty catalogue. But the experimental processing presence is disproportionately high for the region's size — 5 experimental lots, 2 carbonic maceration, 2 anaerobic, and 2 double-fermented lots appear in the ICB data. For a Tamil Nadu origin, this signals a progressive producer cluster worth watching.",
+      },
+      roasterContext:
+        "Shevaroy Hills is sourced by 15 roasters — comparable to Karnataka sub-regions like Sakleshpur. Some roasters label it explicitly; others fold it into Tamil Nadu or Nilgiris region descriptions. On ICB, explicitly labelled Shevaroy Hills lots are identifiable and worth comparing: the region's character is distinct from Karnataka, and the experimental processing lots in particular are interesting outliers in the Tamil Nadu specialty story.",
+      brewGuidance: {
+        recommended: ["v60", "aeropress", "french-press"],
+        notes:
+          "Medium washed Shevaroy Hills lots suit V60 and AeroPress — the balanced, approachable profile works across standard pour-over parameters. Light natural lots benefit from V60 at 90–93°C. For experimental and carbonic maceration lots, treat them like you would anaerobic — start with standard parameters and a slightly coarser grind, adjust based on tasting notes. French Press suits medium and medium-dark lots well.",
+      },
+      nearbyRegions: ["nilgiris", "coorg"],
+      icbDataNote:
+        "Shevaroy Hills is the largest Tamil Nadu region in the ICB catalogue — 46 coffees across 15 roasters, bigger than Araku Valley, Wayanad, Nilgiris, and Koraput combined. Community average rating is 3.71 across 8 ratings — lower than Karnataka origins, which reflects the range of quality across a large and diverse producer base. The experimental lots that are appearing are the most interesting development to watch.",
+    },
+
+    regionSnapshot: {
+      state: "Tamil Nadu (Salem district)",
+      elevation: "1,000–1,600m",
+      knownFor:
+        "Tamil Nadu's primary coffee origin, diverse processing, experimental lots",
+    },
+    faqOverline: "Shevaroy Hills",
+    faqTitle: "About *Shevaroy Hills* coffee",
+    faqDescription:
+      "Tamil Nadu's most significant and underrated coffee origin.",
+    faqBadge: "Regions",
+    filter: {
+      region_slugs: ["shevaroy-hills"],
+    },
+    sortOrder: "rating_desc",
+    faqs: [
+      {
+        question: "Where are the Shevaroy Hills?",
+        answer:
+          "The Shevaroy Hills (also Shervarayan Hills) rise to 1,600 metres in Tamil Nadu's Salem district, part of the Eastern Ghats range. It's Tamil Nadu's most significant coffee-growing area and the state's largest specialty origin in the ICB catalogue.",
+      },
+      {
+        question: "How does Shevaroy Hills coffee differ from Karnataka?",
+        answer:
+          "Eastern Ghats terroir — different rainfall patterns, different soil, and different microclimate from Western Ghats origins. The profile tends toward cleaner, more balanced, less intense character than Karnataka's boldest lots. Medium washed Shevaroy is approachable and reliable rather than complex and intense.",
+      },
+      {
+        question:
+          "Why is there so much experimental processing from Shevaroy Hills?",
+        answer:
+          "The data shows a cluster of carbonic maceration, anaerobic, and double-fermented lots that's disproportionate for a Tamil Nadu region. It signals a progressive producer community investing in processing infrastructure — the region's lower humidity (compared to Western Ghats) makes controlled fermentation more predictable.",
+      },
+      {
+        question: "Is it the same as Nilgiris coffee?",
+        answer:
+          "No — the Shevaroy Hills and Nilgiris are separate ranges in Tamil Nadu with different terroir. Nilgiris is cooler and higher (up to 2,000m), producing more delicate cups. Shevaroy Hills is warmer and more diverse in processing. Both are worth exploring as distinct Tamil Nadu origins.",
+      },
+    ],
+    utilityCard: {
+      type: "tips",
+      title: "Explore Indian coffee regions",
+      description: "Region guides and brewing tips on the learn hub.",
+      href: "/learn",
+      ctaText: "Learn",
+    },
+    related: ["nilgiris", "chikmagalur", "medium-roast", "washed"],
+  },
+
+  {
     slug: "wayanad",
     type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Wayanad Coffee in India",
     intro:
       "Discover specialty coffees from Wayanad — Kerala's hilly northern district where spice-country terroir meets a growing specialty coffee presence.",
@@ -472,7 +694,7 @@ export const regionPages: LandingPageConfig[] = [
       },
       nearbyRegions: ["coorg", "nilgiris"],
       icbDataNote:
-        "Wayanad is a growing category in the ICB catalogue — more roasters are adding Kerala origin lots as regional diversity becomes a selling point. Medium roasts dominate the listings, consistent with the region's profile. It's a good starting region for drinkers who find Karnataka's brightness too intense.",
+        "Wayanad is a small but growing category — currently 6 coffees across 4 roasters in the ICB catalogue. Representation is thin compared to Karnataka origins but increasing. Medium and medium-dark roasts dominate the available listings.",
     },
 
     regionSnapshot: {
@@ -524,6 +746,7 @@ export const regionPages: LandingPageConfig[] = [
   {
     slug: "koraput",
     type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Koraput Coffee in India",
     intro:
       "Discover specialty coffees from Koraput — Odisha's Eastern Ghats highland origin, where tribal smallholder farming and emerging specialty production are creating India's newest coffee story.",
@@ -627,6 +850,7 @@ export const regionPages: LandingPageConfig[] = [
   {
     slug: "northeast-india",
     type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Northeast India Coffee",
     intro:
       "Browse Indian specialty coffees from the Northeast — distinct hill terroirs from Meghalaya's Garo and Khasi Hills, beyond the traditional Western Ghats coffee belt.",
