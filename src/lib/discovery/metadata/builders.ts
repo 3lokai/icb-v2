@@ -132,15 +132,33 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
     return dedupeKeywordsPreserveOrder([...core, ...fromProfile]);
   }
   if (config.type === "price_bucket") {
-    return [
-      ...base,
-      "coffee price India",
-      "budget coffee",
-      "affordable specialty coffee",
-      "coffee under 500",
-      "mid range coffee India",
+    const priceText = config.h1
+      .replace("Best Coffees ", "")
+      .replace(" in India", "")
+      .trim();
+    const bucketExtras: Record<string, string[]> = {
+      budget: [
+        "budget coffee India",
+        "affordable specialty coffee",
+        "coffee under 500 rupees",
+      ],
+      "mid-range": [
+        "mid range coffee India",
+        "premium specialty coffee India",
+        "coffee between 500 and 1000 rupees",
+      ],
+    };
+    const extras = bucketExtras[config.slug] ?? [
+      "specialty coffee price India",
       "coffee value",
     ];
+    return dedupeKeywordsPreserveOrder([
+      ...base,
+      priceText,
+      `${priceText} coffee`,
+      "coffee price India",
+      ...extras,
+    ]);
   }
   if (config.type === "process") {
     const label = labelWithoutIndiaSuffix(config.h1);

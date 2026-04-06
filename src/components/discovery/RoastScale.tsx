@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useId } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
@@ -23,6 +23,7 @@ type RoastScaleProps = {
 };
 
 export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
+  const layoutIdSuffix = useId();
   const activeIndex = STEPS.findIndex((s) => s.slug === currentRoastSlug);
   const prefersReducedMotion = useReducedMotion();
   const reduce = Boolean(prefersReducedMotion);
@@ -74,7 +75,7 @@ export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
                           />
                         ) : (
                           <motion.div
-                            layoutId="roast-scale-active-bg"
+                            layoutId={`roast-scale-active-bg-${layoutIdSuffix}`}
                             className="absolute -inset-4 -z-0 hidden rounded-[2rem] bg-accent/5 md:block"
                             initial={{ opacity: 0, scale: 0.92 }}
                             animate={{ opacity: 1, scale: 1 }}

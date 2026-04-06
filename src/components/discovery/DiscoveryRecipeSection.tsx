@@ -7,7 +7,11 @@ import { Section } from "@/components/primitives/section";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { RecipeCard } from "@/components/cards/RecipeCard";
 import { filterRecipes, type ExpertRecipe } from "@/lib/tools/expert-recipes";
-import type { BrewingMethodKey, RoastLevel } from "@/lib/tools/brewing-guide";
+import {
+  BREWING_METHODS,
+  type BrewingMethodKey,
+  type RoastLevel,
+} from "@/lib/tools/brewing-guide";
 import {
   Dialog,
   DialogContent,
@@ -25,6 +29,58 @@ type DiscoveryRecipeSectionProps = {
   className?: string;
 };
 
+const ROAST_LEVELS = [
+  "light",
+  "medium",
+  "dark",
+] as const satisfies readonly RoastLevel[];
+
+function isRoastLevel(value: string): value is RoastLevel {
+  return (ROAST_LEVELS as readonly string[]).includes(value);
+}
+
+function isBrewingMethodKey(value: string): value is BrewingMethodKey {
+  return value in BREWING_METHODS;
+}
+
+/** Discovery brew-method landing slugs → keys used in `BREWING_METHODS` / expert recipes. */
+const DISCOVERY_BREW_SLUG_TO_METHOD: Record<string, BrewingMethodKey> = {
+  aeropress: "aeropress",
+  v60: "v60",
+  chemex: "chemex",
+  kalita: "kalitawave",
+  "french-press": "frenchpress",
+  espresso: "espresso",
+  "cold-brew": "coldbrew",
+  "moka-pot": "mokapot",
+  "filter-coffee": "southindianfilter",
+};
+
+/** Discovery roast landing slugs → coarse `RoastLevel` used by expert recipes (aligned with `ROAST_ENUM_TO_DISCOVERY_SLUG` in coffee-constants). */
+const DISCOVERY_ROAST_SLUG_TO_LEVEL: Record<string, RoastLevel> = {
+  "light-roast": "light",
+  "light-medium-roast": "light",
+  "medium-roast": "medium",
+  "medium-dark-roast": "dark",
+  "dark-roast": "dark",
+};
+
+function brewingMethodKeyForFilter(
+  methodKey: string | undefined
+): BrewingMethodKey | undefined {
+  if (methodKey === undefined || methodKey === "") return undefined;
+  if (isBrewingMethodKey(methodKey)) return methodKey;
+  return DISCOVERY_BREW_SLUG_TO_METHOD[methodKey];
+}
+
+function roastLevelForFilter(
+  roastLevel: string | undefined
+): RoastLevel | undefined {
+  if (roastLevel === undefined || roastLevel === "") return undefined;
+  if (isRoastLevel(roastLevel)) return roastLevel;
+  return DISCOVERY_ROAST_SLUG_TO_LEVEL[roastLevel];
+}
+
 export function DiscoveryRecipeSection({
   methodKey,
   roastLevel,
@@ -34,10 +90,10 @@ export function DiscoveryRecipeSection({
     null
   );
 
-  // Filter recipes based on the discovery context
+  // Filter recipes based on the discovery context (validate slugs; no unsafe casts)
   const recipes = filterRecipes({
-    method: methodKey as BrewingMethodKey,
-    roast: roastLevel as RoastLevel,
+    method: brewingMethodKeyForFilter(methodKey),
+    roast: roastLevelForFilter(roastLevel),
   }).slice(0, 3);
 
   if (recipes.length === 0) return null;

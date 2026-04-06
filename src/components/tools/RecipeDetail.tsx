@@ -191,15 +191,17 @@ From IndianCoffeeBeans.com Expert Recipes
                   </h3>
                   <div className="mt-2 h-1 w-16 rounded-full bg-accent" />
                 </div>
-                <Button
-                  className="flex items-center gap-2"
-                  onClick={() => setShowTimer(!showTimer)}
-                  size="sm"
-                  variant="outline"
-                >
-                  <Icon className="h-4 w-4" name="Timer" />
-                  {showTimer ? "Hide Timer" : "Start Timer"}
-                </Button>
+                {timerResults ? (
+                  <Button
+                    className="flex items-center gap-2"
+                    onClick={() => setShowTimer(!showTimer)}
+                    size="sm"
+                    variant="outline"
+                  >
+                    <Icon className="h-4 w-4" name="Timer" />
+                    {showTimer ? "Hide Timer" : "Start Timer"}
+                  </Button>
+                ) : null}
               </div>
               <div className="mt-6 space-y-3">
                 {recipe.steps.map((step, index) => (

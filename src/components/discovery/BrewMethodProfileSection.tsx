@@ -93,6 +93,14 @@ function RoastPairingLinks({
   );
 }
 
+/** Matches the slug filter inside `RoastPairingLinks` — used to avoid an empty pairing section. */
+function hasValidRoastPairingSlugs(slugs: string[]): boolean {
+  return slugs.some((slug) => {
+    const cfg = getLandingPageConfig(slug);
+    return cfg?.type === "roast_level";
+  });
+}
+
 export function BrewMethodProfileSection({
   profile,
   slug,
@@ -103,6 +111,9 @@ export function BrewMethodProfileSection({
   const siblingLinks = profile.siblingMethods.filter(
     (slug) => getLandingPageConfig(slug)?.type === "brew_method"
   );
+  const hasRoastPairings =
+    hasValidRoastPairingSlugs(profile.roastPairing.best) ||
+    hasValidRoastPairingSlugs(profile.roastPairing.works);
 
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
@@ -219,31 +230,33 @@ export function BrewMethodProfileSection({
         <div className="h-px w-full bg-border/40 max-w-5xl mx-auto my-8" />
 
         {/* 4. Roast pairing - Inline pill rows */}
-        <div className="max-w-5xl mx-auto w-full space-y-6">
-          <h3 className="text-heading mb-6 flex items-center gap-2">
-            <Icon name="Fire" className="h-5 w-5 text-accent/70" />
-            Roast Pairing Guide
-          </h3>
-          <Stack gap="4">
-            <RoastPairingLinks
-              icon="Star"
-              label="Best Match"
-              slugs={profile.roastPairing.best}
-            />
-            <RoastPairingLinks
-              icon="ThumbsUp"
-              label="Also Works"
-              slugs={profile.roastPairing.works}
-            />
-          </Stack>
+        {hasRoastPairings ? (
+          <div className="max-w-5xl mx-auto w-full space-y-6">
+            <h3 className="text-heading mb-6 flex items-center gap-2">
+              <Icon name="Fire" className="h-5 w-5 text-accent/70" />
+              Roast Pairing Guide
+            </h3>
+            <Stack gap="4">
+              <RoastPairingLinks
+                icon="Star"
+                label="Best Match"
+                slugs={profile.roastPairing.best}
+              />
+              <RoastPairingLinks
+                icon="ThumbsUp"
+                label="Also Works"
+                slugs={profile.roastPairing.works}
+              />
+            </Stack>
 
-          {profile.roastPairing.avoid && (
-            <p className="text-caption border-l-2 border-destructive/30 pl-4 max-w-3xl mt-6">
-              <span className="font-medium text-foreground">Avoid:</span>{" "}
-              {profile.roastPairing.avoid}
-            </p>
-          )}
-        </div>
+            {profile.roastPairing.avoid && (
+              <p className="text-caption border-l-2 border-destructive/30 pl-4 max-w-3xl mt-6">
+                <span className="font-medium text-foreground">Avoid:</span>{" "}
+                {profile.roastPairing.avoid}
+              </p>
+            )}
+          </div>
+        ) : null}
 
         {/* 5. Related brewers */}
         {siblingLinks.length > 0 ? (

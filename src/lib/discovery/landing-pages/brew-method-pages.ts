@@ -417,6 +417,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       "Full-bodied picks that shine through metal mesh — oils, depth, and medium-to-dark Indian profiles.",
     gridNudge:
       "Medium to dark roasts work best — they develop rich body during the immersion steep.",
+    heroBackgroundImage: "/images/discovery/french-press-hero.avif",
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
       "A coarse grind and consistent 4-minute steep time are key to French Press success.",

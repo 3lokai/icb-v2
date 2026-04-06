@@ -72,7 +72,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     },
 
     filter: {
-      roast_levels: ["light" as RoastLevelEnum],
+      roast_levels: ["light"] satisfies RoastLevelEnum[],
     },
     sortOrder: "rating_desc",
     faqs: [
@@ -189,7 +189,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     },
 
     filter: {
-      roast_levels: ["light_medium" as RoastLevelEnum],
+      roast_levels: ["light_medium"] satisfies RoastLevelEnum[],
     },
     sortOrder: "rating_desc",
     faqs: [
@@ -303,7 +303,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     },
 
     filter: {
-      roast_levels: ["medium" as RoastLevelEnum],
+      roast_levels: ["medium"] satisfies RoastLevelEnum[],
     },
     sortOrder: "rating_desc",
     faqs: [
@@ -420,7 +420,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     },
 
     filter: {
-      roast_levels: ["medium_dark" as RoastLevelEnum],
+      roast_levels: ["medium_dark"] satisfies RoastLevelEnum[],
     },
     sortOrder: "rating_desc",
     faqs: [
@@ -533,7 +533,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     },
 
     filter: {
-      roast_levels: ["dark" as RoastLevelEnum],
+      roast_levels: ["dark"] satisfies RoastLevelEnum[],
     },
     sortOrder: "rating_desc",
     faqs: [
