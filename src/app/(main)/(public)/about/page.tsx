@@ -100,7 +100,7 @@ export default function AboutPage() {
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 42vw"
-                    src="/images/about/coffee-beans.png"
+                    src="/images/about/coffee-beans.avif"
                   />
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function AboutPage() {
                     className="img-responsive object-contain p-8 transition-transform duration-700 group-hover:scale-105"
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    src="/images/about/indian-coffee-regions.png"
+                    src="/images/about/indian-coffee-regions.avif"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
                   <div className="absolute bottom-6 left-6 z-20">

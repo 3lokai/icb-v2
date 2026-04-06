@@ -1,6 +1,8 @@
 /**
  * Converts raster images under public/images/<folder> (recursively) to AVIF.
  * Run: node scripts/optimize-discovery-images.mjs
+ * Run: node scripts/optimize-discovery-images.mjs about contact
+ * Run: node scripts/optimize-discovery-images.mjs --files brewer_mechanism.png
  * With no args, defaults to "discovery" only (includes nested dirs e.g. discovery/brew-methods).
  */
 import { readdir, stat } from "fs/promises";
@@ -10,10 +12,17 @@ import sharp from "sharp";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const imagesRoot = join(__dirname, "..", "public", "images");
-const roots =
-  process.argv.length > 2
-    ? process.argv.slice(2).map((name) => join(imagesRoot, name))
-    : [join(imagesRoot, "discovery")];
+const argv = process.argv.slice(2);
+
+let roots;
+let explicitFiles = null;
+if (argv[0] === "--files") {
+  explicitFiles = argv.slice(1).map((p) => join(imagesRoot, p.replace(/\\/g, "/")));
+} else if (argv.length > 0) {
+  roots = argv.map((name) => join(imagesRoot, name));
+} else {
+  roots = [join(imagesRoot, "discovery")];
+}
 
 /** Card grid thumbnails: enough for ~480px display @2x */
 const MAX_WIDTH = 960;
@@ -33,14 +42,23 @@ async function* walkRasterFiles(root) {
 }
 
 const sources = [];
-for (const dir of roots) {
-  for await (const p of walkRasterFiles(dir)) {
-    sources.push(p);
+if (explicitFiles) {
+  for (const p of explicitFiles) {
+    if (/\.(png|jpe?g|webp)$/i.test(p)) sources.push(p);
+  }
+} else {
+  for (const dir of roots) {
+    for await (const p of walkRasterFiles(dir)) {
+      sources.push(p);
+    }
   }
 }
 
 if (sources.length === 0) {
-  console.log("No PNG/JPEG/WebP files under", roots.join(", "));
+  console.log(
+    "No matching raster files",
+    explicitFiles ? explicitFiles.join(", ") : roots.join(", ")
+  );
   process.exit(0);
 }
 
