@@ -27,11 +27,13 @@ export async function GET(request: Request) {
     );
     return NextResponse.json(roasterListResponse);
   } catch (error) {
-    console.error("[API v1 /roasters] Unhandled error:", error);
+    console.error(
+      "[API v1 /roasters] Unhandled error:",
+      error,
+      error instanceof Error ? error.stack : undefined
+    );
     return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : "Internal server error",
-      },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }

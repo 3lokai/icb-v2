@@ -13,6 +13,7 @@ export type {
   LandingPageType,
   PriceBucketProfileConfig,
   ProcessProfileConfig,
+  RegionProfileConfig,
   RoastLevelLandingPageConfig,
   RoastProfileConfig,
   UtilityCardConfig,

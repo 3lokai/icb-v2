@@ -33,11 +33,13 @@ export async function GET(
 
     return NextResponse.json(roaster);
   } catch (error) {
-    console.error("[API v1 /roasters/[slug]] Unhandled error:", error);
+    console.error(
+      "[API v1 /roasters/[slug]] Unhandled error:",
+      error,
+      error instanceof Error ? error.stack : undefined
+    );
     return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : "Internal server error",
-      },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }

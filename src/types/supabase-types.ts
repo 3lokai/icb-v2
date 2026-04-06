@@ -2718,6 +2718,10 @@ export type Database = {
         };
         Returns: string;
       };
+      ensure_external_identity: {
+        Args: { p_external_user_id: string; p_key_id: string };
+        Returns: string;
+      };
       format_brew_method_label: {
         Args: { grind_key: string };
         Returns: string;

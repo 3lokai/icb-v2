@@ -1,7 +1,7 @@
-import { createHash } from "node:crypto";
-import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { rpcEnsureExternalIdentity } from "@/lib/api/ensure-external-identity";
+import { getExternalUserIdHash } from "@/lib/api/external-user-id-hash";
 import { validateApiKey } from "@/lib/api/validate-api-key";
 import { createApiRouteClient } from "@/lib/supabase/api-route";
 import { isValidRating, isValidComment } from "@/types/review-types";
@@ -54,9 +54,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: message }, { status: 400 });
     }
 
+    const autoRecommend = body.rating != null && body.rating >= 4 ? true : null;
+    const recommendForInsert =
+      body.recommend !== undefined ? body.recommend : autoRecommend;
+
     const hasSignal =
       body.rating != null ||
-      body.recommend != null ||
+      recommendForInsert != null ||
       body.value_for_money != null ||
       body.works_with_milk != null ||
       (body.comment != null && body.comment.trim().length > 0);
@@ -90,27 +94,25 @@ export async function POST(request: Request) {
     if (body.anon_id) {
       anonId = body.anon_id;
     } else if (body.external_user_id) {
-      const externalIdHash = createHash("sha256")
-        .update(body.external_user_id, "utf8")
-        .digest("hex");
+      const hashed = getExternalUserIdHash(auth.keyId, body.external_user_id);
+      if (!hashed.ok) return hashed.response;
 
-      const { data: existing } = await supabase
-        .from("external_user_identities")
-        .select("anon_id")
-        .eq("key_id", auth.keyId)
-        .eq("external_user_id", externalIdHash)
-        .single();
-
-      if (existing) {
-        anonId = existing.anon_id;
-      } else {
-        anonId = randomUUID();
-        await supabase.from("external_user_identities").insert({
-          key_id: auth.keyId,
-          external_user_id: externalIdHash,
-          anon_id: anonId,
-        });
+      const ensured = await rpcEnsureExternalIdentity(
+        supabase,
+        auth.keyId,
+        hashed.hash
+      );
+      if (!ensured.ok) {
+        console.error(
+          "[API v1 /reviews] ensure_external_identity error:",
+          ensured
+        );
+        return NextResponse.json(
+          { error: "Internal server error" },
+          { status: 500 }
+        );
       }
+      anonId = ensured.anonId;
     } else {
       return NextResponse.json(
         {
@@ -120,8 +122,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const autoRecommend = body.rating != null && body.rating >= 4 ? true : null;
-
     const { data: row, error } = await supabase
       .from("reviews")
       .insert({
@@ -129,7 +129,7 @@ export async function POST(request: Request) {
         entity_id: body.entity_id,
         user_id: null,
         anon_id: anonId,
-        recommend: autoRecommend,
+        recommend: recommendForInsert,
         rating: body.rating ?? null,
         value_for_money: body.value_for_money ?? null,
         works_with_milk: body.works_with_milk ?? null,
@@ -144,7 +144,7 @@ export async function POST(request: Request) {
     if (error) {
       console.error("[API v1 /reviews] insert error:", error);
       return NextResponse.json(
-        { error: error.message || "Failed to create review" },
+        { error: "Internal server error" },
         { status: 500 }
       );
     }
@@ -153,9 +153,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[API v1 /reviews] Unhandled error:", error);
     return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : "Internal server error",
-      },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }

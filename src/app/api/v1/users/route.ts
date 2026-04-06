@@ -1,7 +1,7 @@
-import { createHash } from "node:crypto";
-import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { rpcEnsureExternalIdentity } from "@/lib/api/ensure-external-identity";
+import { getExternalUserIdHash } from "@/lib/api/external-user-id-hash";
 import { validateApiKey } from "@/lib/api/validate-api-key";
 import { createApiRouteClient } from "@/lib/supabase/api-route";
 
@@ -32,45 +32,29 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: message }, { status: 400 });
     }
 
-    const externalIdHash = createHash("sha256")
-      .update(body.external_user_id, "utf8")
-      .digest("hex");
+    const hashed = getExternalUserIdHash(auth.keyId, body.external_user_id);
+    if (!hashed.ok) return hashed.response;
 
     const supabase = createApiRouteClient();
+    const ensured = await rpcEnsureExternalIdentity(
+      supabase,
+      auth.keyId,
+      hashed.hash
+    );
 
-    const { data: existing } = await supabase
-      .from("external_user_identities")
-      .select("anon_id")
-      .eq("key_id", auth.keyId)
-      .eq("external_user_id", externalIdHash)
-      .single();
-
-    if (existing) {
-      return NextResponse.json({ anon_id: existing.anon_id });
-    }
-
-    const anonId = randomUUID();
-    const { error } = await supabase.from("external_user_identities").insert({
-      key_id: auth.keyId,
-      external_user_id: externalIdHash,
-      anon_id: anonId,
-    });
-
-    if (error) {
-      console.error("[API v1 /users] insert error:", error);
+    if (!ensured.ok) {
+      console.error("[API v1 /users] ensure_external_identity error:", ensured);
       return NextResponse.json(
-        { error: error.message || "Failed to register user" },
+        { error: "Internal server error" },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ anon_id: anonId });
+    return NextResponse.json({ anon_id: ensured.anonId });
   } catch (error) {
     console.error("[API v1 /users] Unhandled error:", error);
     return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : "Internal server error",
-      },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
