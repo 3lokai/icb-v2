@@ -11,6 +11,7 @@ export type {
   FAQItem,
   LandingPageConfig,
   LandingPageType,
+  PriceBucketProfileConfig,
   ProcessProfileConfig,
   RoastLevelLandingPageConfig,
   RoastProfileConfig,
