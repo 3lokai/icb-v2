@@ -15,7 +15,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       "A curated selection of the best coffees optimized for AeroPress brewing.",
     gridNudge:
       "New to AeroPress? Start with medium or light roasts for balanced extraction.",
-    heroBackgroundImage: "/images/discovery/aeropress-hero.jpg",
+    heroBackgroundImage: "/images/discovery/aeropress-hero.avif",
     heroBadge: "Light to Medium Roast",
     utilityNudge:
       "Dialling in grind size and water temperature makes a big difference with AeroPress.",
@@ -117,7 +117,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       "Explore coffees that excel in pour-over brewing, highlighting clarity and brightness.",
     gridNudge:
       "Light roasts shine here — they reveal complexity that darker roasts can mask.",
-    heroBackgroundImage: "/images/discovery/v60-hero.jpg",
+    heroBackgroundImage: "/images/discovery/v60-hero.avif",
     heroBadge: "Light to Medium Roast",
     utilityNudge:
       "Mastering the pour technique and bloom phase transforms your V60 results.",
@@ -220,6 +220,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       "Pour-over friendly lots that shine with Chemex's classic paper filter profile.",
     gridNudge:
       "Use a medium-coarse grind and keep a steady spiral pour for even extraction.",
+    heroBackgroundImage: "/images/discovery/chemex-hero.avif",
     heroBadge: "Pour Over",
     utilityNudge:
       "A slightly coarser grind than V60 often works best for Chemex's slower flow.",
@@ -314,6 +315,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     teaserDescription:
       "Coffees that reward Kalita's steady flow and balanced profile.",
     gridNudge: "Try a medium-fine grind and pulse pours to keep the bed flat.",
+    heroBackgroundImage: "/images/discovery/kalita-hero.avif",
     heroBadge: "Pour Over",
     utilityNudge:
       "Slightly finer grind than Chemex is common — tune to your drawdown time.",
@@ -523,7 +525,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       "Coffees selected for their espresso performance — crema quality, body, and balance under pressure.",
     gridNudge:
       "Look for medium-dark roasts from Karnataka estates — they pull rich, balanced shots with natural sweetness.",
-    heroBackgroundImage: "/images/discovery/espresso-hero.jpg",
+    heroBackgroundImage: "/images/discovery/espresso-hero.avif",
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
       "Dialling in grind size and dose is critical — small changes make a big difference in espresso.",
@@ -626,7 +628,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       "Coffees selected for their cold brew performance — smoothness, natural sweetness, and low bitterness.",
     gridNudge:
       "Medium to dark roasts with chocolatey, nutty profiles make the best cold brew. Avoid very light roasts.",
-    heroBackgroundImage: "/images/discovery/cold-brew-hero.jpg",
+    heroBackgroundImage: "/images/discovery/cold-brew-hero.avif",
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
       "Patience pays off — 16–24 hours of steeping produces the smoothest, sweetest cold brew.",
@@ -729,7 +731,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       "Coffees selected for their Moka Pot performance — bold body, intensity, and clean finish.",
     gridNudge:
       "Medium-dark roasts from Karnataka work beautifully — they deliver bold flavour without bitterness.",
-    heroBackgroundImage: "/images/discovery/moka-pot-hero.jpg",
+    heroBackgroundImage: "/images/discovery/moka-pot-hero.avif",
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
       "Medium heat and fresh, properly ground coffee are the keys to great Moka Pot coffee.",
@@ -832,7 +834,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       "A curated selection of robusta-arabica blends and traditional dark roasts for authentic filter coffee.",
     gridNudge:
       "Look for traditional blends (often with chicory) for that nostalgic café style.",
-    heroBackgroundImage: "/images/discovery/filter-coffee-hero.jpg",
+    heroBackgroundImage: "/images/discovery/filter-coffee-hero.avif",
     heroBadge: "Traditional Brew",
     utilityNudge:
       "A very fine grind and patience are required for the perfect thick decoction.",

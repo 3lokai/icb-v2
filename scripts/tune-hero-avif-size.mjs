@@ -1,6 +1,7 @@
 /**
  * Re-encode hero AVIFs to target ~100KB via quality (and mild downscale if needed).
  * Run: node scripts/tune-hero-avif-size.mjs
+ * Discovery JPG heroes → AVIF: node scripts/tune-hero-avif-size.mjs --discovery
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -8,7 +9,10 @@ import sharp from "sharp";
 
 const TARGET = 100 * 1024;
 const MAX_OK = 110 * 1024; // allow slight overshoot
-const IMAGES_DIR = path.join(process.cwd(), "public", "images");
+const DISCOVERY = process.argv.includes("--discovery");
+const IMAGES_DIR = DISCOVERY
+  ? path.join(process.cwd(), "public", "images", "discovery")
+  : path.join(process.cwd(), "public", "images");
 
 async function toAvif(input, quality, effort) {
   return input.avif({ quality, effort, chromaSubsampling: "4:2:0" }).toBuffer();
@@ -28,8 +32,10 @@ async function bestQualityForPipeline(pipeline) {
   return { q: best.q, buf: finalBuf, size: finalBuf.length };
 }
 
-async function processFile(filename) {
+async function processFile(filename, outputFilename) {
   const filePath = path.join(IMAGES_DIR, filename);
+  const outName = outputFilename ?? filename;
+  const outPath = path.join(IMAGES_DIR, outName);
   const before = (await fs.stat(filePath)).size;
   const meta = await sharp(filePath).metadata();
 
@@ -40,11 +46,11 @@ async function processFile(filename) {
   for (let attempt = 0; attempt < 12; attempt += 1) {
     const { q, buf, size } = await bestQualityForPipeline(pipeline);
     if (size <= MAX_OK) {
-      const tmp = `${filePath}.tmp`;
+      const tmp = `${outPath}.tmp`;
       await fs.writeFile(tmp, buf);
-      await fs.rename(tmp, filePath);
+      await fs.rename(tmp, outPath);
       console.log(
-        `${filename}: ${(before / 1024).toFixed(1)}KB → ${(size / 1024).toFixed(1)}KB (q=${q}, ${w}×${meta.height})`,
+        `${filename} → ${outName}: ${(before / 1024).toFixed(1)}KB → ${(size / 1024).toFixed(1)}KB (q=${q}, ${w}×${meta.height})`,
       );
       return;
     }
@@ -59,18 +65,23 @@ async function processFile(filename) {
   const { q, buf, size } = await bestQualityForPipeline(
     sharp(filePath).resize(640, null, { fit: "inside", withoutEnlargement: true }),
   );
-  const tmp = `${filePath}.tmp`;
+  const tmp = `${outPath}.tmp`;
   await fs.writeFile(tmp, buf);
-  await fs.rename(tmp, filePath);
+  await fs.rename(tmp, outPath);
   console.log(
-    `${filename}: ${(before / 1024).toFixed(1)}KB → ${(size / 1024).toFixed(1)}KB (q=${q}, forced ≤640px)`,
+    `${filename} → ${outName}: ${(before / 1024).toFixed(1)}KB → ${(size / 1024).toFixed(1)}KB (q=${q}, forced ≤640px)`,
   );
 }
 
-const files = (await fs.readdir(IMAGES_DIR))
-  .filter((f) => f.startsWith("hero-") && f.endsWith(".avif"))
-  .sort();
+const files = DISCOVERY
+  ? (await fs.readdir(IMAGES_DIR))
+      .filter((f) => /-hero\.jpe?g$/i.test(f))
+      .sort()
+  : (await fs.readdir(IMAGES_DIR))
+      .filter((f) => f.startsWith("hero-") && f.endsWith(".avif"))
+      .sort();
 
 for (const f of files) {
-  await processFile(f);
+  const outAvif = DISCOVERY ? f.replace(/\.jpe?g$/i, ".avif") : undefined;
+  await processFile(f, outAvif);
 }

@@ -16,7 +16,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Bright, acidic, and complex coffees roasted to preserve origin characteristics.",
     gridNudge:
       "Pour-over methods like V60 and AeroPress really make these coffees sing.",
-    heroBackgroundImage: "/images/discovery/light-roast-hero.jpg",
+    heroBackgroundImage: "/images/discovery/light-roast-hero.avif",
     heroBadge: "Curated Selection",
     utilityNudge:
       "Use higher water temperatures (95-100°C) to fully extract light roast complexity.",
@@ -131,7 +131,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Balanced cups with both origin character and gentle roast sweetness.",
     gridNudge:
       "Ideal for pour-over and AeroPress when you want clarity with a bit more body.",
-    heroBackgroundImage: "/images/discovery/light-medium-roast-hero.jpg",
+    heroBackgroundImage: "/images/discovery/light-medium-roast-hero.avif",
     heroBadge: "Curated Selection",
     utilityNudge:
       "Use standard brew temperatures (92–96°C) and tweak grind for sweetness.",
@@ -244,6 +244,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Balanced chocolate, caramel, and mild acidity — the everyday sweet spot for most brew methods.",
     gridNudge:
       "Perfect for beginners and experts alike — forgiving and consistently delicious.",
+    heroBackgroundImage: "/images/discovery/medium-roast-hero.avif",
     heroBadge: "Curated Selection",
     utilityNudge:
       "These coffees shine in espresso, pour-over, and French Press equally well.",
@@ -361,7 +362,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Richer, rounder profiles for espresso, French Press, and milk drinks.",
     gridNudge:
       "Great for espresso and French Press when you want boldness without heavy smokiness.",
-    heroBackgroundImage: "/images/discovery/medium-dark-roast-hero.jpg",
+    heroBackgroundImage: "/images/discovery/medium-dark-roast-hero.avif",
     heroBadge: "Curated Selection",
     utilityNudge:
       "Lower temperatures (89–93°C) can help avoid bitterness on finer grinds.",
@@ -473,6 +474,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Low-acid, heavy-bodied cups — from specialty bittersweet to traditional South Indian boldness.",
     gridNudge:
       "French Press and espresso methods really bring out the best in dark roasts.",
+    heroBackgroundImage: "/images/discovery/dark-roast-hero.avif",
     heroBadge: "Curated Selection",
     utilityNudge:
       "Use lower water temperatures (87–90°C) to avoid bitterness and extract smooth flavors.",
