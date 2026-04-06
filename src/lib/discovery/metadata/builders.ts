@@ -4,6 +4,11 @@ import type { LandingPageConfig } from "../landing-pages";
 const META_DESCRIPTION_MAX = 320;
 const ROAST_PROFILE_KEYWORD_CAP = 8;
 
+/** Strip trailing " in India" from discovery h1 while keeping e.g. "… Coffee". */
+function labelWithoutIndiaSuffix(h1: string): string {
+  return h1.replace(/\s+in India\s*$/i, "").trim();
+}
+
 function firstSentence(text: string): string {
   const t = text.trim();
   const m = t.match(/^(.+?[.!?])(\s|$)/);
@@ -73,11 +78,11 @@ export function buildDiscoveryTitle(config: LandingPageConfig): string {
     return `Best Coffees ${priceText} in India – Discover & Compare | Indian Coffee Beans`;
   }
   if (config.type === "process") {
-    const processName = config.h1.replace(" Coffee in India", "").trim();
+    const processName = labelWithoutIndiaSuffix(config.h1);
     return `${processName} in India – Discover & Compare | Indian Coffee Beans`;
   }
   if (config.type === "region") {
-    const regionName = config.h1.replace(" Coffee in India", "").trim();
+    const regionName = labelWithoutIndiaSuffix(config.h1);
     return `${regionName} in India – Discover & Compare | Indian Coffee Beans`;
   }
   return `${config.h1} | Indian Coffee Beans`;
@@ -138,7 +143,7 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
     ];
   }
   if (config.type === "process") {
-    const label = config.h1.replace(" Coffee in India", "").trim();
+    const label = labelWithoutIndiaSuffix(config.h1);
     return [
       ...base,
       label,
@@ -151,7 +156,7 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
     ];
   }
   if (config.type === "region") {
-    const regionName = config.h1.replace(" Coffee in India", "").trim();
+    const regionName = labelWithoutIndiaSuffix(config.h1);
     return [
       ...base,
       regionName,

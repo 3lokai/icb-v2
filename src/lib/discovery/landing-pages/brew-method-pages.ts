@@ -410,6 +410,9 @@ export const brewMethodPages: LandingPageConfig[] = [
       "Explore Indian specialty coffees that excel in French Press brewing. These coffees deliver full-bodied, rich cups with deep flavors and natural oils — the closest specialty equivalent to traditional Indian filter coffee.",
     headerNudge:
       "Ideal for bold, full-bodied cups that showcase natural coffee oils.",
+    teaserTitle: "Top Rated Coffees for French Press",
+    teaserDescription:
+      "Full-bodied picks that shine through metal mesh — oils, depth, and medium-to-dark Indian profiles.",
     gridNudge:
       "Medium to dark roasts work best — they develop rich body during the immersion steep.",
     heroBadge: "Medium to Dark Roast",
@@ -814,5 +817,103 @@ export const brewMethodPages: LandingPageConfig[] = [
       ctaText: "View Recipes",
     },
     related: ["espresso", "dark-roast", "medium-dark-roast", "french-press"],
+  },
+
+  {
+    slug: "filter-coffee",
+    type: "brew_method",
+    h1: "Best Coffees for South Indian Filter in India",
+    intro:
+      "Discover traditional and specialty coffees perfect for the authentic South Indian Filter. Known for its strong decoction, heavy body, and perfect pairing with milk and sugar, this classic method shines with dark roasts and chicory blends.",
+    headerNudge:
+      "The quintessential Indian brewing method — rich, intense, and meant to be enjoyed with milk.",
+    teaserTitle: "Top Rated Filter Coffees",
+    teaserDescription:
+      "A curated selection of robusta-arabica blends and traditional dark roasts for authentic filter coffee.",
+    gridNudge:
+      "Look for traditional blends (often with chicory) for that nostalgic café style.",
+    heroBackgroundImage: "/images/discovery/filter-coffee-hero.jpg",
+    heroBadge: "Traditional Brew",
+    utilityNudge:
+      "A very fine grind and patience are required for the perfect thick decoction.",
+
+    brewMethodProfile: {
+      brewerCharacteristics: {
+        mechanism: "Slow gravity drip extraction",
+        howItWorks:
+          "Finely ground coffee (sometimes mixed with chicory) is placed in the upper chamber of an Indian metal filter. Hot water is poured over an umbrella plunger which evenly distributes the water. The coffee slowly drips into the lower chamber over 15–20 minutes, yielding a thick, concentrated 'decoction'.",
+        keyAdvantage:
+          "Produces incredibly heavy-bodied, low-acid coffee with a strong punch that cuts seamlessly through milk and sugar. It is the traditional and authentic way coffee has been consumed in South India for generations.",
+        filterType:
+          "Metal perforated disc with an umbrella plunger — allows full oils and fine sediment through",
+      },
+      indianCoffeeContext:
+        "The South Indian filter is deeply rooted in local culture. While traditionally dominated by dark-roasted robusta and chicory blends (like 80/20 or 70/30), modern Indian specialty roasters are now offering 100% specialty arabica blends tailored for the filter. High-quality washed arabica from Karnataka mixed with premium robusta creates an elevated, exceptionally smooth filter coffee without the harsh bitterness of commercial blends. For absolute traditionalists, Monsooned Malabar adds the heavy body and low acidity needed to create the classic, syrupy decoction.",
+      commonMistakes: [
+        {
+          mistake: "Tamping the grounds too hard",
+          fix: "Place the umbrella plunger gently on top of the leveled grounds without applying intense pressure. Pressing down too hard will completely choke the filter, causing it to take hours to drip.",
+        },
+        {
+          mistake: "Using water straight off the boil",
+          fix: "Use water just off the boil (around 90–95°C) to prevent burning the dark roasted coffee, which can result in overly astringent flavours.",
+        },
+        {
+          mistake: "Grind size is too coarse",
+          fix: "The grind must be finer than espresso but not quite Turkish — almost like powdered sugar. If it's too coarse, the water runs through instantly and you get weak, watery coffee.",
+        },
+      ],
+      roastPairing: {
+        best: ["dark-roast", "medium-dark-roast"],
+        works: ["medium-roast"],
+        avoid:
+          "Light roasts — the slow extraction and traditional milk pairing will completely mask any delicate fruity or floral notes, resulting in a thin and flat cup.",
+      },
+      siblingMethods: ["moka-pot", "french-press"],
+      icbDataNote:
+        "South Indian Filter is heavily utilized by our community looking for traditional flavors. On ICB, many users prioritize high-quality robusta blends or 100% arabica dark roasts specifically tagged for 'traditional filter'.",
+    },
+
+    brewParams: {
+      grindSize: "Very fine",
+      grindSub: "Between espresso and Turkish",
+      ratio: "1:4 (for decoction)",
+      brewTime: "15–20 min",
+    },
+    faqOverline: "Filter Coffee Queries",
+    faqTitle: "Brewing *South Indian Filter*",
+    faqDescription:
+      "Common questions to help you master the authentic South Indian filter decoction.",
+    faqBadge: "Pro Tips",
+    filter: {
+      brew_method_ids: ["south_indian_filter"],
+    },
+    sortOrder: "rating_desc",
+    faqs: [
+      {
+        question: "Do I have to use chicory?",
+        answer:
+          "No, but chicory adds the traditional thick body and bitter-sweetness associated with hotel-style filter coffee. If you prefer 100% coffee, simply look for a specialty dark roast with high body (like a Monsooned Malabar blend).",
+      },
+      {
+        question: "Why is my decoction taking an hour to drip?",
+        answer:
+          "You likely pressed the umbrella plunger down too hard, or your grind is excessively fine (closer to flour). Lighten the pressure and ensure a slightly more granular fine grind.",
+      },
+      {
+        question: "How do I serve South Indian filter coffee?",
+        answer:
+          "Traditionally, the decoction is mixed with hot, frothy, boiled whole milk and sugar. Use the traditional dabarah and tumbler set to 'pull' the coffee by pouring it back and forth, cooling it slightly and creating a thick foam on top.",
+      },
+    ],
+    utilityCard: {
+      type: "brew_guide",
+      title: "Filter Coffee Guide",
+      description:
+        "Learn the traditional method to brew the perfect thick decoction.",
+      href: "/tools/expert-recipes?method=filtercoffee",
+      ctaText: "View Recipes",
+    },
+    related: ["dark-roast", "medium-dark-roast", "moka-pot", "french-press"],
   },
 ];

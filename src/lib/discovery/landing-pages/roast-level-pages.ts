@@ -131,6 +131,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Balanced cups with both origin character and gentle roast sweetness.",
     gridNudge:
       "Ideal for pour-over and AeroPress when you want clarity with a bit more body.",
+    heroBackgroundImage: "/images/discovery/light-medium-roast-hero.jpg",
     heroBadge: "Curated Selection",
     utilityNudge:
       "Use standard brew temperatures (92–96°C) and tweak grind for sweetness.",
@@ -238,6 +239,9 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Explore Indian specialty coffees with balanced medium roasts — the perfect harmony between origin character and roast development. Versatile, approachable, and consistently satisfying across any brew method.",
     headerNudge:
       "The most versatile roast — works beautifully with any brewing method.",
+    teaserTitle: "Featured Medium Roasts",
+    teaserDescription:
+      "Balanced chocolate, caramel, and mild acidity — the everyday sweet spot for most brew methods.",
     gridNudge:
       "Perfect for beginners and experts alike — forgiving and consistently delicious.",
     heroBadge: "Curated Selection",
@@ -357,6 +361,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Richer, rounder profiles for espresso, French Press, and milk drinks.",
     gridNudge:
       "Great for espresso and French Press when you want boldness without heavy smokiness.",
+    heroBackgroundImage: "/images/discovery/medium-dark-roast-hero.jpg",
     heroBadge: "Curated Selection",
     utilityNudge:
       "Lower temperatures (89–93°C) can help avoid bitterness on finer grinds.",
@@ -463,6 +468,9 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       "Find Indian specialty coffees roasted dark for bold, intense flavour with low acidity and full body. The roast most associated with traditional Indian coffee culture — and now being reimagined by specialty roasters.",
     headerNudge:
       "Bold, full-bodied coffees with rich oils and intense flavors.",
+    teaserTitle: "Featured Dark Roasts",
+    teaserDescription:
+      "Low-acid, heavy-bodied cups — from specialty bittersweet to traditional South Indian boldness.",
     gridNudge:
       "French Press and espresso methods really bring out the best in dark roasts.",
     heroBadge: "Curated Selection",

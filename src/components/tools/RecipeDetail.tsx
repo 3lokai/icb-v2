@@ -1,7 +1,7 @@
 // src/components/tools/RecipeDetail.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/common/Icon";
 import { BrewingTimer } from "@/components/tools/BrewTimer";
 import { Badge } from "@/components/ui/badge";
@@ -17,9 +17,25 @@ export type RecipeDetailProps = {
 export function RecipeDetail({ recipe, onClose }: RecipeDetailProps) {
   const [showTimer, setShowTimer] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState<string | null>(null);
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current != null) {
+        clearTimeout(copyTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Convert to calculator results for timer integration
   const timerResults = React.useMemo(() => {
+    const hasRoast =
+      Array.isArray(recipe.roastRecommendation) &&
+      recipe.roastRecommendation.length > 0;
+    if (!hasRoast) {
+      return null;
+    }
     try {
       return calculateBrewRatio({
         method: recipe.method,
@@ -52,11 +68,22 @@ From IndianCoffeeBeans.com Expert Recipes
     `.trim();
 
     try {
+      setCopyError(null);
       await navigator.clipboard.writeText(recipeText);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      if (copyTimeoutRef.current != null) {
+        clearTimeout(copyTimeoutRef.current);
+      }
+      copyTimeoutRef.current = setTimeout(() => {
+        setCopied(false);
+        copyTimeoutRef.current = null;
+      }, 2000);
     } catch (err) {
       console.error("Failed to copy recipe:", err);
+      setCopied(false);
+      setCopyError(
+        "Couldn't copy to clipboard. Try selecting the text manually."
+      );
     }
   };
 
@@ -122,6 +149,7 @@ From IndianCoffeeBeans.com Expert Recipes
               </div>
             </div>
             <Button
+              aria-label="Close recipe details"
               className="hover:bg-background/50"
               onClick={onClose}
               size="sm"
@@ -287,7 +315,10 @@ From IndianCoffeeBeans.com Expert Recipes
               <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
               <div className="space-y-2">
                 <Button
+                  aria-describedby={copyError ? "copy-recipe-error" : undefined}
+                  aria-invalid={copyError ? true : undefined}
                   className="hover-lift group w-full"
+                  id="copy-recipe-btn"
                   onClick={handleCopyRecipe}
                   size="sm"
                   variant="outline"
@@ -298,6 +329,15 @@ From IndianCoffeeBeans.com Expert Recipes
                   />
                   {copied ? "Copied!" : "Copy Recipe"}
                 </Button>
+                {copyError ? (
+                  <p
+                    className="text-caption text-destructive"
+                    id="copy-recipe-error"
+                    role="alert"
+                  >
+                    {copyError}
+                  </p>
+                ) : null}
 
                 {recipe.youtubeUrl && (
                   <Button

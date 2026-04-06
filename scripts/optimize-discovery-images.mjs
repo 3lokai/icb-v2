@@ -51,7 +51,19 @@ for (const inputPath of sources) {
   const outputPath = join(outDir, `${base}.avif`);
   const rel = relative(imagesRoot, inputPath).replace(/\\/g, "/");
 
-  const meta = await sharp(inputPath).metadata();
+  const inStat = await stat(inputPath);
+  if (inStat.size === 0) {
+    console.warn(`Skip (empty file): ${rel}`);
+    continue;
+  }
+
+  let meta;
+  try {
+    meta = await sharp(inputPath).metadata();
+  } catch (err) {
+    console.warn(`Skip (unreadable): ${rel}`, err.message ?? err);
+    continue;
+  }
   let pipeline = sharp(inputPath);
   if (meta.width && meta.width > MAX_WIDTH) {
     pipeline = pipeline.resize(MAX_WIDTH, null, {
@@ -62,7 +74,7 @@ for (const inputPath of sources) {
 
   await pipeline.avif({ quality: AVIF_QUALITY, effort: AVIF_EFFORT }).toFile(outputPath);
 
-  const inBytes = (await stat(inputPath)).size;
+  const inBytes = inStat.size;
   const outBytes = (await stat(outputPath)).size;
   console.log(
     `${rel} → ${base}.avif  ${Math.round(inBytes / 1024)}KB → ${Math.round(outBytes / 1024)}KB (${Math.round((1 - outBytes / inBytes) * 100)}% smaller)`

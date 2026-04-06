@@ -1,3 +1,4 @@
+import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import { cn } from "@/lib/utils";
 
 type DiscoverySectionIntroProps = {
@@ -10,15 +11,17 @@ type DiscoverySectionIntroProps = {
 };
 
 function TitleHeading({ children }: { children: React.ReactNode }) {
-  if (typeof children === "string" && children.includes("*")) {
-    const [before, accent, after] = children.split("*");
-    return (
-      <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-        {before}
-        <span className="text-accent italic">{accent}</span>
-        {after}
-      </h2>
-    );
+  if (typeof children === "string") {
+    const parts = splitEmphasisPair(children);
+    if (parts) {
+      return (
+        <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+          {parts.before}
+          <span className="text-accent italic">{parts.accent}</span>
+          {parts.after}
+        </h2>
+      );
+    }
   }
   return (
     <h2 className="text-title text-balance leading-[1.1] tracking-tight">

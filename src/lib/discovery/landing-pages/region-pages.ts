@@ -269,7 +269,7 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Andhra Pradesh (Eastern Ghats)",
+      state: "Andhra Pradesh (Visakhapatnam district)",
       elevation: "900–1,300m",
       knownFor: "Floral, citrus-forward arabica, GI-tagged origin",
     },

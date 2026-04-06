@@ -1,4 +1,5 @@
 // src/components/discovery/DiscoveryLandingLayout.tsx
+import type { ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Stack } from "@/components/primitives/stack";
@@ -20,6 +21,7 @@ import { BrewMethodProfileSection } from "./BrewMethodProfileSection";
 import { ProcessProfileSection } from "./ProcessProfileSection";
 import { PriceBucketProfileSection } from "./PriceBucketProfileSection";
 import { RegionProfileSection } from "./RegionProfileSection";
+import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import {
   discoveryPagePath,
   type LandingPageConfig,
@@ -33,6 +35,20 @@ import {
 type DiscoveryLandingLayoutProps = {
   config: LandingPageConfig;
 };
+
+function renderFaqTitleParts(title: string): ReactNode {
+  const parts = splitEmphasisPair(title);
+  if (!parts) {
+    return title;
+  }
+  return (
+    <>
+      {parts.before}
+      <span className="text-accent italic">{parts.accent}</span>
+      {parts.after}
+    </>
+  );
+}
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -280,19 +296,9 @@ export function DiscoveryLandingLayout({
             items={config.faqs}
             includeStructuredData={false}
             overline={config.faqOverline || "Common Questions"}
-            title={
-              config.faqTitle?.includes("*") ? (
-                <>
-                  {config.faqTitle.split("*")[0]}
-                  <span className="text-accent italic">
-                    {config.faqTitle.split("*")[1]}
-                  </span>
-                  {config.faqTitle.split("*")[2]}
-                </>
-              ) : (
-                config.faqTitle || "Frequently Asked Questions"
-              )
-            }
+            title={renderFaqTitleParts(
+              config.faqTitle || "Frequently Asked Questions"
+            )}
             description={
               config.faqDescription ||
               "Quick answers to help you make the best choice."

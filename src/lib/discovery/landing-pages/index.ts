@@ -19,7 +19,7 @@ export type {
   UtilityCardConfig,
   UtilityCardType,
 } from "./types";
-export { discoveryPagePath } from "./paths";
+export { discoveryPagePath, discoverySlugSchema } from "./paths";
 
 /**
  * Landing page configurations (order preserved for sitemap / static params)
@@ -32,11 +32,9 @@ export const LANDING_PAGES: LandingPageConfig[] = [
   ...regionPages,
 ];
 
-if (process.env.NODE_ENV === "development") {
-  const slugs = LANDING_PAGES.map((page) => page.slug);
-  if (new Set(slugs).size !== slugs.length) {
-    throw new Error("Duplicate discovery landing page slug in LANDING_PAGES");
-  }
+const slugs = LANDING_PAGES.map((page) => page.slug);
+if (new Set(slugs).size !== slugs.length) {
+  throw new Error("Duplicate discovery landing page slug in LANDING_PAGES");
 }
 
 /**

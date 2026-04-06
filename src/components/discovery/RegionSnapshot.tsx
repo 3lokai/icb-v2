@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import type { LandingPageConfig } from "@/lib/discovery/landing-pages";
 import { Icon } from "@/components/common/Icon";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
@@ -31,15 +32,17 @@ const STAT_ICONS = [
 ];
 
 function SnapshotHeadingTitle({ children }: { children: React.ReactNode }) {
-  if (typeof children === "string" && children.includes("*")) {
-    const [before, accent, after] = children.split("*");
-    return (
-      <>
-        {before}
-        <span className="text-accent italic">{accent}</span>
-        {after}
-      </>
-    );
+  if (typeof children === "string") {
+    const parts = splitEmphasisPair(children);
+    if (parts) {
+      return (
+        <>
+          {parts.before}
+          <span className="text-accent italic">{parts.accent}</span>
+          {parts.after}
+        </>
+      );
+    }
   }
   return <>{children}</>;
 }

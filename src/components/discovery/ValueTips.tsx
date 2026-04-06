@@ -32,8 +32,8 @@ export function ValueTips({ tips, className }: ValueTipsProps) {
       <div className="mx-auto max-w-6xl w-full px-4 md:px-0">
         <div className="surface-1 card-padding rounded-2xl">
           <ul className="space-y-4">
-            {bullets.map((tip) => (
-              <li key={tip} className="flex gap-4">
+            {bullets.map((tip, idx) => (
+              <li key={idx} className="flex gap-4">
                 <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10">
                   <Icon className="text-accent" name="CheckCircle" size={18} />
                 </span>
