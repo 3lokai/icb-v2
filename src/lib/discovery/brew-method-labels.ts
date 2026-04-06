@@ -6,6 +6,9 @@ export const BREW_METHOD_LABELS: Record<string, string> = {
   kalita: "Kalita",
   "french-press": "French Press",
   "filter-coffee": "Filter coffee",
+  espresso: "Espresso",
+  "cold-brew": "Cold brew",
+  "moka-pot": "Moka Pot",
 };
 
 export function brewSlugToLabel(slug: string): string {

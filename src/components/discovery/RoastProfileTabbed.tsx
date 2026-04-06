@@ -112,7 +112,7 @@ export function RoastProfileTabbed({
           <div className="grid gap-8 md:grid-cols-5 md:items-center">
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
               <Image
-                src="/images/discovery/bean-tab.png"
+                src="/images/discovery/bean-tab.avif"
                 alt="Coffee beans visual characteristics"
                 fill
                 className={tabImageHoverClass}
@@ -158,7 +158,7 @@ export function RoastProfileTabbed({
           <div className="grid gap-8 md:grid-cols-5 md:items-center">
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
               <Image
-                src="/images/discovery/roasting-tab.png"
+                src="/images/discovery/roasting-tab.avif"
                 alt="Coffee roasting process"
                 fill
                 className={tabImageHoverClass}
@@ -206,7 +206,7 @@ export function RoastProfileTabbed({
           <div className="grid gap-8 md:grid-cols-5 md:items-center">
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
               <Image
-                src="/images/discovery/cup-tab.png"
+                src="/images/discovery/cup-tab.avif"
                 alt="Coffee in the cup tasting notes"
                 fill
                 className={tabImageHoverClass}
@@ -267,7 +267,7 @@ export function RoastProfileTabbed({
           <div className="grid gap-8 md:grid-cols-5 md:items-start">
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
               <Image
-                src="/images/discovery/brew-tab.png"
+                src="/images/discovery/brew-tab.avif"
                 alt="Brewing instructions"
                 fill
                 className={tabImageHoverClass}

@@ -124,7 +124,7 @@ export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
                           transition={stepTransition}
                         >
                           <Image
-                            src={`/images/discovery/roasts/${step.slug.replace("-roast", "")}.png`}
+                            src={`/images/discovery/roasts/${step.slug.replace("-roast", "")}.avif`}
                             alt=""
                             aria-hidden
                             width={88}

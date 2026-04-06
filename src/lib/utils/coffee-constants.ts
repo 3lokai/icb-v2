@@ -198,6 +198,9 @@ const BREW_KEY_TO_DISCOVERY_SLUG: Record<string, string> = {
   aeropress: "aeropress",
   french_press: "french-press",
   pour_over: "v60",
+  espresso: "espresso",
+  cold_brew: "cold-brew",
+  moka_pot: "moka-pot",
 };
 
 export function discoverySlugForBrewMethodKey(

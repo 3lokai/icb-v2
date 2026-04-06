@@ -7,9 +7,11 @@ import { roastLevelPages } from "./roast-level-pages";
 import type { LandingPageConfig } from "./types";
 
 export type {
+  BrewMethodProfileConfig,
   FAQItem,
   LandingPageConfig,
   LandingPageType,
+  ProcessProfileConfig,
   RoastLevelLandingPageConfig,
   RoastProfileConfig,
   UtilityCardConfig,

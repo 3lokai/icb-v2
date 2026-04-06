@@ -62,7 +62,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         note: "Higher temperatures are needed to fully extract the complex acids in lightly roasted beans. Under-extraction is the most common mistake.",
       },
       // Brew method pairing
-      brewMethods: ["v60", "aeropress", "chemex", "kalita"],
+      brewMethods: ["v60", "aeropress", "chemex", "kalita", "espresso"],
       // Who it's for
       whoIsItFor:
         "If you're switching from dark roast or instant coffee, light roast will taste unfamiliar at first — less bitter, more acidic, almost fruity. Give it 2–3 brews before judging. If you love tea, wine, or fresh fruit juice, this is likely your roast level.",
@@ -173,7 +173,14 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         brewTime: "3–4 min (pour over), 2–2.5 min (AeroPress)",
         note: "The most forgiving roast level to brew — tolerant of minor temperature and grind variations. A good starting point if you're new to specialty coffee.",
       },
-      brewMethods: ["v60", "aeropress", "french-press", "chemex"],
+      brewMethods: [
+        "v60",
+        "aeropress",
+        "french-press",
+        "chemex",
+        "espresso",
+        "moka-pot",
+      ],
       whoIsItFor:
         "This is the entry roast for specialty coffee. If you're moving away from dark roast or commercial blends, light-medium gives you sweetness and body you're used to, with more flavour clarity than you've had before. Also the everyday roast for experienced drinkers who want consistency.",
       icbDataNote:
@@ -275,7 +282,15 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         brewTime: "3–4 min (pour over), 25–30 sec (espresso)",
         note: "Medium roast is the most versatile for brew parameters — it's tolerant of a wide range of temperatures and ratios. A good default if you're not sure where to start.",
       },
-      brewMethods: ["french-press", "aeropress", "v60", "filter-coffee"],
+      brewMethods: [
+        "french-press",
+        "aeropress",
+        "v60",
+        "filter-coffee",
+        "espresso",
+        "moka-pot",
+        "cold-brew",
+      ],
       whoIsItFor:
         "The default roast for most coffee drinkers. If you enjoy coffee with milk, this is your level — it holds up to milk without disappearing. If you drink black coffee and want something familiar but better than commercial brands, medium roast Indian specialty is the place to start.",
       icbDataNote:
@@ -384,7 +399,14 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         brewTime: "3–4 min (pour over / French Press), 25–28 sec (espresso)",
         note: "Lower temperatures than medium roast help manage bitterness. For espresso, a shorter pull time or coarser grind can balance the heavier body.",
       },
-      brewMethods: ["french-press", "filter-coffee", "aeropress"],
+      brewMethods: [
+        "french-press",
+        "filter-coffee",
+        "aeropress",
+        "espresso",
+        "moka-pot",
+        "cold-brew",
+      ],
       whoIsItFor:
         "Traditional South Indian filter coffee drinkers stepping into specialty will feel at home here — the body and boldness are familiar, but the quality of the bean is higher. Also suits espresso drinkers who find light-to-medium roast espresso too sour or thin.",
       icbDataNote:
@@ -486,7 +508,14 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         brewTime: "4 min (French Press), 25–27 sec (espresso)",
         note: "Lower water temperatures are essential with dark roast — high temperatures extract more bitter compounds from already-developed sugars. Coarser grinds also help. If your dark roast tastes ashy, try cooler water first.",
       },
-      brewMethods: ["french-press", "filter-coffee", "aeropress"],
+      brewMethods: [
+        "french-press",
+        "filter-coffee",
+        "aeropress",
+        "espresso",
+        "moka-pot",
+        "cold-brew",
+      ],
       whoIsItFor:
         "Traditional Indian filter coffee drinkers, those who take coffee with a lot of milk and sugar, and anyone who finds lighter roasts too acidic or thin. Dark roast is also where cold brew shines — the low acidity and heavy body translate exceptionally well to cold extraction.",
       icbDataNote:

@@ -15,8 +15,11 @@ import { DiscoveryRecipeSection } from "./DiscoveryRecipeSection";
 import { FlavourImpact } from "./FlavourImpact";
 import { RegionSnapshot } from "./RegionSnapshot";
 import { RoastersSourcing } from "./RoastersSourcing";
-import { PriceDisclosure } from "./PriceDisclosure";
 import { ValueTips } from "./ValueTips";
+import { BrewMethodProfileSection } from "./BrewMethodProfileSection";
+import { ProcessProfileSection } from "./ProcessProfileSection";
+import { PriceBucketProfileSection } from "./PriceBucketProfileSection";
+import { RegionProfileSection } from "./RegionProfileSection";
 import {
   discoveryPagePath,
   type LandingPageConfig,
@@ -116,8 +119,11 @@ export function DiscoveryLandingLayout({
     </div>
   ) : undefined;
 
-  // Use default hero background if not provided
-  const backgroundImage = "/images/hero-bg.avif";
+  const backgroundImage = config.heroBackgroundImage ?? "/images/hero-bg.avif";
+
+  const showUtilityCard =
+    !!config.utilityCard &&
+    (config.utilityCard.type !== "brew_guide" || config.type === "brew_method");
 
   const processGuideHref =
     config.blogArticleHref ?? config.utilityCard?.href ?? "/learn";
@@ -150,17 +156,30 @@ export function DiscoveryLandingLayout({
           <BrewParamsStrip brewParams={config.brewParams} />
         )}
 
+        {config.type === "brew_method" && config.brewMethodProfile && (
+          <BrewMethodProfileSection
+            profile={config.brewMethodProfile}
+            slug={config.slug}
+          />
+        )}
+
         {config.type === "roast_level" && config.roastProfile && (
           <RoastProfileSection roastProfile={config.roastProfile} />
         )}
 
-        {config.type === "price_bucket" && (
-          <div className="py-6 md:py-10">
-            <PriceDisclosure />
-          </div>
+        {config.type === "price_bucket" && config.priceBucketProfile && (
+          <PriceBucketProfileSection profile={config.priceBucketProfile} />
         )}
 
-        {config.type === "process" && (
+        {config.type === "process" && config.processProfile && (
+          <ProcessProfileSection
+            profile={config.processProfile}
+            slug={config.slug}
+            guideHref={processGuideHref}
+          />
+        )}
+
+        {config.type === "process" && !config.processProfile && (
           <ProcessExplainer
             processSlug={config.slug}
             guideHref={processGuideHref}
@@ -192,33 +211,51 @@ export function DiscoveryLandingLayout({
           />
         )}
 
-        {config.type === "process" && (
+        {config.type === "process" && !config.processProfile && (
           <FlavourImpact processSlug={config.slug} />
         )}
 
-        {config.type === "region" && (
+        {config.type === "region" && config.regionProfile ? (
           <>
-            {config.regionSnapshot && (
-              <RegionSnapshot
-                regionSlug={config.slug}
-                regionSnapshot={config.regionSnapshot}
-              />
-            )}
+            <RegionProfileSection
+              profile={config.regionProfile}
+              slug={config.slug}
+              guideHref={processGuideHref}
+            />
             {config.filter.region_slugs?.length ? (
-              <RoastersSourcing
-                regionSlugs={config.filter.region_slugs}
-                regionLabel={pageLabel}
-              />
+              <div className="py-6 md:py-8">
+                <RoastersSourcing
+                  regionSlugs={config.filter.region_slugs}
+                  regionLabel={pageLabel}
+                />
+              </div>
             ) : null}
           </>
+        ) : (
+          config.type === "region" && (
+            <>
+              {config.regionSnapshot && (
+                <RegionSnapshot
+                  regionSlug={config.slug}
+                  regionSnapshot={config.regionSnapshot}
+                />
+              )}
+              {config.filter.region_slugs?.length ? (
+                <RoastersSourcing
+                  regionSlugs={config.filter.region_slugs}
+                  regionLabel={pageLabel}
+                />
+              ) : null}
+            </>
+          )
         )}
 
         {config.type === "price_bucket" && config.valueTips?.length ? (
           <ValueTips tips={config.valueTips} />
         ) : null}
 
-        {/* 3. Utility Card (if configured and not redundant) */}
-        {config.utilityCard && config.utilityCard.type !== "brew_guide" && (
+        {/* 3. Utility Card (brew_guide shown on brew method pages only) */}
+        {config.utilityCard && showUtilityCard ? (
           <div className="py-10 md:py-14 px-4 md:px-0 mx-auto max-w-6xl w-full">
             <Stack gap="4">
               {config.utilityNudge && (
@@ -231,7 +268,7 @@ export function DiscoveryLandingLayout({
               <UtilityCard config={config.utilityCard} />
             </Stack>
           </div>
-        )}
+        ) : null}
 
         {config.type === "roast_level" && (
           <RoastScale currentRoastSlug={config.slug} />

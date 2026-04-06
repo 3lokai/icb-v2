@@ -13,6 +13,16 @@ import type {
 // but are no longer used in fetchCoffees - they may be used by filter meta calculations
 
 /**
+ * Discovery landing pages and /coffees filters use short slugs; `canon_regions.slug` may differ.
+ * Must match [supabase/migrations/20260106000001_seed_canon_regions.sql](supabase/migrations/20260106000001_seed_canon_regions.sql).
+ */
+const LANDING_REGION_SLUG_TO_CANON: Record<string, string> = {
+  coorg: "kodagu-coorg",
+  araku: "araku-valley",
+  nilgiris: "nilgiri-hills",
+};
+
+/**
  * Helper to get coffee IDs from junction table filters
  * Exported for use in filter meta calculations
  */
@@ -94,11 +104,14 @@ async function resolveRegionSlugsToIds(
   if (slugs.length === 0) {
     return [];
   }
+  const canonSlugs = [
+    ...new Set(slugs.map((s) => LANDING_REGION_SLUG_TO_CANON[s] ?? s)),
+  ];
   // Get canon_region IDs from slugs
   const { data: canonRegions } = await supabase
     .from("canon_regions")
     .select("id")
-    .in("slug", slugs);
+    .in("slug", canonSlugs);
   if (!canonRegions || canonRegions.length === 0) {
     return [];
   }
