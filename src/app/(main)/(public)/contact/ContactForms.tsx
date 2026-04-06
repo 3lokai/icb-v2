@@ -286,7 +286,7 @@ export default function ContactForms({
                       className="object-cover"
                       fill
                       sizes="(max-width: 1024px) 100vw, 42vw"
-                      src="/images/contact/roaster.png"
+                      src="/images/contact/roaster.avif"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-transparent pointer-events-none lg:bg-gradient-to-l" />
                   </div>

@@ -1,3 +1,4 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { fetchCoffeeImages } from "./fetch-coffees";
 import type { RoasterDetail } from "@/types/roaster-types";
@@ -9,13 +10,16 @@ import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
  * Returns null if roaster not found
  */
 export async function fetchRoasterBySlug(
-  slug: string
+  slug: string,
+  supabaseClient?: SupabaseClient
 ): Promise<RoasterDetail | null> {
   // Try to use service role client if available (bypasses RLS for server-side queries)
   // Fallback to regular client if service role key is not set
-  const supabase = process.env.SUPABASE_SECRET_KEY
-    ? await createServiceRoleClient()
-    : await createClient();
+  const supabase =
+    supabaseClient ??
+    (process.env.SUPABASE_SECRET_KEY
+      ? await createServiceRoleClient()
+      : await createClient());
 
   // Fetch roaster from roasters table
   const { data: roasterData, error: roasterError } = await supabase

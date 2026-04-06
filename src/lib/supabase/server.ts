@@ -1,6 +1,4 @@
-"use server";
-
-import 'server-only';
+import "server-only";
 
 import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";

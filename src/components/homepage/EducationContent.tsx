@@ -228,7 +228,7 @@ export default function EducationSection() {
                     className="h-full w-full object-cover"
                     height={480}
                     priority
-                    src="/images/home/open-book-cafe.png"
+                    src="/images/home/open-book-cafe.avif"
                     width={480}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />

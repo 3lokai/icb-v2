@@ -1,5 +1,4 @@
 import { createClient as createBrowserClient } from "./client";
-import { createClient as createServerClient } from "./server";
 
 // Client-side auth helpers
 export const auth = {
@@ -135,26 +134,5 @@ export const auth = {
       password: updates.password,
     });
     return { data, error };
-  },
-};
-
-// Server-side auth helpers
-export const serverAuth = {
-  async getUser() {
-    const supabase = await createServerClient();
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
-    return { user, error };
-  },
-
-  async getSession() {
-    const supabase = await createServerClient();
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.getSession();
-    return { session, error };
   },
 };

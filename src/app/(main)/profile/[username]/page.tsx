@@ -4,7 +4,7 @@ import {
   fetchUserProfileByUsername,
   fetchAnonProfile,
 } from "@/lib/data/fetch-user-profile";
-import { serverAuth } from "@/lib/supabase/auth-helpers";
+import { serverAuth } from "@/lib/supabase/auth-helpers-server";
 import { ProfilePage } from "@/components/profile/ProfilePage";
 import { EnsureAnonIdAndRefresh } from "@/components/profile/EnsureAnonIdAndRefresh";
 import type { Metadata } from "next";

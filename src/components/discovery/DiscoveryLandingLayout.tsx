@@ -1,11 +1,28 @@
 // src/components/discovery/DiscoveryLandingLayout.tsx
+import type { ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/primitives/page-shell";
+import { Stack } from "@/components/primitives/stack";
 import { FAQSection } from "@/components/common/FAQ";
 import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeGridTeaser } from "./CoffeeGridTeaser";
 import { UtilityCard } from "./UtilityCard";
 import { RelatedLinks } from "./RelatedLinks";
+import { BrewParamsStrip } from "./BrewParamsStrip";
+import { RoastScale } from "./RoastScale";
+import { RoastProfileSection } from "./RoastProfileSection";
+import { ProcessExplainer } from "./ProcessExplainer";
+import { DiscoveryRecipeSection } from "./DiscoveryRecipeSection";
+import { FlavourImpact } from "./FlavourImpact";
+import { RegionSnapshot } from "./RegionSnapshot";
+import { RoastersSourcing } from "./RoastersSourcing";
+import { ValueTips } from "./ValueTips";
+import { BrewMethodProfileSection } from "./BrewMethodProfileSection";
+import { ProcessProfileSection } from "./ProcessProfileSection";
+import { PriceBucketProfileSection } from "./PriceBucketProfileSection";
+import { RegionOverviewSection } from "./RegionOverviewSection";
+import { RegionDetailSection } from "./RegionDetailSection";
+import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import {
   discoveryPagePath,
   type LandingPageConfig,
@@ -19,6 +36,20 @@ import {
 type DiscoveryLandingLayoutProps = {
   config: LandingPageConfig;
 };
+
+function renderFaqTitleParts(title: string): ReactNode {
+  const parts = splitEmphasisPair(title);
+  if (!parts) {
+    return title;
+  }
+  return (
+    <>
+      {parts.before}
+      <span className="text-accent italic">{parts.accent}</span>
+      {parts.after}
+    </>
+  );
+}
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -105,8 +136,14 @@ export function DiscoveryLandingLayout({
     </div>
   ) : undefined;
 
-  // Use default hero background if not provided
-  const backgroundImage = "/images/hero-bg.avif";
+  const backgroundImage = config.heroBackgroundImage ?? "/images/hero-bg.avif";
+
+  const showUtilityCard =
+    !!config.utilityCard &&
+    (config.utilityCard.type !== "brew_guide" || config.type === "brew_method");
+
+  const processGuideHref =
+    config.blogArticleHref ?? config.utilityCard?.href ?? "/learn";
 
   return (
     <PageShell maxWidth="7xl">
@@ -122,85 +159,163 @@ export function DiscoveryLandingLayout({
 
       {/* Header Nudge - Subtle guidance under header */}
       {config.headerNudge && (
-        <div className="mx-auto max-w-6xl w-full px-4 md:px-0 py-4">
-          <p className="text-caption text-muted-foreground italic">
-            {config.headerNudge}
-          </p>
+        <div className="mx-auto max-w-6xl w-full px-4 md:px-0 py-6">
+          <div className="border-l-2 border-accent/30 pl-4 py-1">
+            <p className="text-caption text-muted-foreground/80 italic leading-relaxed">
+              {config.headerNudge}
+            </p>
+          </div>
         </div>
       )}
 
-      {config.type === "price_bucket" && (
-        <div className="mx-auto max-w-6xl w-full px-4 md:px-0 pb-2">
-          <p className="text-caption text-muted-foreground">
-            Prices normalized to 250g equivalent
-          </p>
-        </div>
-      )}
+      <div className="flex flex-col">
+        {config.type === "brew_method" && config.brewParams && (
+          <BrewParamsStrip brewParams={config.brewParams} />
+        )}
 
-      {/* 2. Coffee Grid Teaser */}
-      <CoffeeGridTeaser
-        filters={config.filter}
-        sortOrder={config.sortOrder}
-        limit={12}
-        overline="Featured Selection"
-        title={
-          config.teaserTitle ||
-          `Top *${config.type === "price_bucket" ? "Value" : "Rated"}* Coffees`
-        }
-        description={
-          config.teaserDescription ||
-          `A curated selection of the best coffees matching your criteria.`
-        }
-        seeAllLabel="See All Coffees"
-        nudge={config.gridNudge}
-      />
+        {config.type === "brew_method" && config.brewMethodProfile && (
+          <BrewMethodProfileSection
+            profile={config.brewMethodProfile}
+            slug={config.slug}
+          />
+        )}
 
-      {/* 3. Utility Card (if configured) */}
-      {config.utilityCard && (
-        <div className="py-12">
-          {config.utilityNudge && (
-            <div className="mx-auto max-w-6xl w-full px-4 md:px-0 pb-4">
-              <p className="text-caption text-muted-foreground italic">
-                {config.utilityNudge}
-              </p>
-            </div>
+        {config.type === "roast_level" && config.roastProfile && (
+          <RoastProfileSection roastProfile={config.roastProfile} />
+        )}
+
+        {config.type === "price_bucket" && config.priceBucketProfile && (
+          <PriceBucketProfileSection profile={config.priceBucketProfile} />
+        )}
+
+        {config.type === "process" && config.processProfile && (
+          <ProcessProfileSection
+            profile={config.processProfile}
+            slug={config.slug}
+            guideHref={processGuideHref}
+          />
+        )}
+
+        {config.type === "process" && !config.processProfile && (
+          <ProcessExplainer
+            processSlug={config.slug}
+            guideHref={processGuideHref}
+          />
+        )}
+
+        {config.type === "region" && config.regionProfile && (
+          <RegionOverviewSection
+            profile={config.regionProfile}
+            slug={config.slug}
+          />
+        )}
+
+        {config.type === "region" &&
+          !config.regionProfile &&
+          config.regionSnapshot && (
+            <RegionSnapshot
+              regionSlug={config.slug}
+              regionSnapshot={config.regionSnapshot}
+            />
           )}
-          <UtilityCard config={config.utilityCard} />
-        </div>
-      )}
 
-      {/* 4. FAQ Section */}
-      {config.faqs.length > 0 && (
-        <FAQSection
-          items={config.faqs}
-          includeStructuredData={false}
-          overline={config.faqOverline || "Common Questions"}
+        {/* 2. Coffee Grid Teaser */}
+        <CoffeeGridTeaser
+          filters={config.filter}
+          sortOrder={config.sortOrder}
+          limit={12}
+          overline={
+            config.sortOrder === "best_value"
+              ? "Best Value Selection"
+              : "Top Rated Selection"
+          }
           title={
-            config.faqTitle?.includes("*") ? (
-              <>
-                {config.faqTitle.split("*")[0]}
-                <span className="text-accent italic">
-                  {config.faqTitle.split("*")[1]}
-                </span>
-                {config.faqTitle.split("*")[2]}
-              </>
-            ) : (
-              config.faqTitle || "Frequently Asked Questions"
-            )
+            config.teaserTitle ||
+            `Top *${config.type === "price_bucket" ? "Value" : "Rated"}* Coffees`
           }
           description={
-            config.faqDescription ||
-            "Quick answers to help you make the best choice."
+            config.teaserDescription ||
+            `A curated selection of the best coffees matching your criteria.`
           }
-          badge={config.faqBadge || "Help & Support"}
-          contained={false}
+          seeAllLabel="See All Coffees"
+          nudge={config.gridNudge}
         />
-      )}
 
-      {/* 5. Related Links */}
-      {config.related.length > 0 && (
-        <RelatedLinks relatedSlugs={config.related} />
-      )}
+        {(config.type === "brew_method" || config.type === "roast_level") && (
+          <DiscoveryRecipeSection
+            methodKey={config.type === "brew_method" ? config.slug : undefined}
+            roastLevel={config.type === "roast_level" ? config.slug : undefined}
+          />
+        )}
+
+        {config.type === "process" && !config.processProfile && (
+          <FlavourImpact processSlug={config.slug} />
+        )}
+
+        {config.type === "region" && config.regionProfile && (
+          <RegionDetailSection
+            profile={config.regionProfile}
+            slug={config.slug}
+            guideHref={processGuideHref}
+          />
+        )}
+
+        {config.type === "region" && config.filter.region_slugs?.length ? (
+          <div className="py-6 md:py-8">
+            <RoastersSourcing
+              regionSlugs={config.filter.region_slugs}
+              regionLabel={pageLabel}
+            />
+          </div>
+        ) : null}
+
+        {config.type === "price_bucket" && config.valueTips?.length ? (
+          <ValueTips tips={config.valueTips} />
+        ) : null}
+
+        {/* 3. Utility Card (brew_guide shown on brew method pages only) */}
+        {config.utilityCard && showUtilityCard ? (
+          <div className="py-10 md:py-14 px-4 md:px-0 mx-auto max-w-6xl w-full">
+            <Stack gap="4">
+              {config.utilityNudge && (
+                <div className="border-l-2 border-accent/20 pl-4 py-1">
+                  <p className="text-caption text-muted-foreground/80 italic leading-relaxed">
+                    {config.utilityNudge}
+                  </p>
+                </div>
+              )}
+              <UtilityCard config={config.utilityCard} />
+            </Stack>
+          </div>
+        ) : null}
+
+        {config.type === "roast_level" && (
+          <RoastScale currentRoastSlug={config.slug} />
+        )}
+
+        {/* 4. FAQ Section */}
+        {config.faqs.length > 0 && (
+          <FAQSection
+            items={config.faqs}
+            includeStructuredData={false}
+            overline={config.faqOverline || "Common Questions"}
+            title={renderFaqTitleParts(
+              config.faqTitle || "Frequently Asked Questions"
+            )}
+            description={
+              config.faqDescription ||
+              "Quick answers to help you make the best choice."
+            }
+            badge={config.faqBadge || "Help & Support"}
+            contained={false}
+          />
+        )}
+
+        {/* 5. Related Links */}
+        {config.related.length > 0 && (
+          <RelatedLinks relatedSlugs={config.related} />
+        )}
+      </div>
     </PageShell>
   );
 }

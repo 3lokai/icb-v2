@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { serverAuth } from "@/lib/supabase/auth-helpers";
+import { serverAuth } from "@/lib/supabase/auth-helpers-server";
 import { createClient } from "@/lib/supabase/server";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 

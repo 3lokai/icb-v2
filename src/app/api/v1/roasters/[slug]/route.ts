@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { fetchRoasterBySlug } from "@/lib/data/fetch-roaster-by-slug";
 import { validateApiKey } from "@/lib/api/validate-api-key";
+import { fetchRoasterBySlug } from "@/lib/data/fetch-roaster-by-slug";
+import { createApiRouteClient } from "@/lib/supabase/api-route";
 
 /**
  * GET /api/v1/roasters/[slug]
@@ -10,10 +11,10 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const auth = await validateApiKey(request);
-  if ("error" in auth) return auth.error;
-
   try {
+    const auth = await validateApiKey(request);
+    if ("error" in auth) return auth.error;
+
     const { slug } = await params;
 
     if (!slug) {
@@ -23,7 +24,8 @@ export async function GET(
       );
     }
 
-    const roaster = await fetchRoasterBySlug(slug);
+    const supabase = createApiRouteClient();
+    const roaster = await fetchRoasterBySlug(slug, supabase);
 
     if (!roaster) {
       return NextResponse.json({ error: "Roaster not found" }, { status: 404 });
@@ -31,12 +33,13 @@ export async function GET(
 
     return NextResponse.json(roaster);
   } catch (error) {
-    console.error("[API v1 /roasters/[slug]] Error:", error);
+    console.error(
+      "[API v1 /roasters/[slug]] Unhandled error:",
+      error,
+      error instanceof Error ? error.stack : undefined
+    );
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to fetch roaster",
-      },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }

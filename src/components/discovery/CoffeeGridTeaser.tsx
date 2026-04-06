@@ -2,8 +2,8 @@
 import Link from "next/link";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { Icon } from "@/components/common/Icon";
+import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
-import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { fetchCoffees } from "@/lib/data/fetch-coffees";
 import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
@@ -59,35 +59,13 @@ export async function CoffeeGridTeaser({
 
   return (
     <Section spacing="default" contained={false}>
-      <div className="mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-          <div className="md:col-span-8">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                  {overline}
-                </span>
-              </div>
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                {title.includes("*") ? (
-                  <>
-                    {title.split("*")[0]}
-                    <span className="text-accent italic">
-                      {title.split("*")[1]}
-                    </span>
-                    {title.split("*")[2]}
-                  </>
-                ) : (
-                  title
-                )}
-              </h2>
-              <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
-                {description}
-              </p>
-            </Stack>
-          </div>
-          <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
+      <DiscoverySectionIntro
+        className="mb-12"
+        overline={overline}
+        title={title}
+        description={description}
+        rightAside={
+          <>
             <Link className="hidden md:block" href={seeAllHref}>
               <Button className="group" variant="outline">
                 {seeAllLabel}
@@ -102,9 +80,9 @@ export async function CoffeeGridTeaser({
               {result.total} Available
               <span className="h-1 w-1 rounded-full bg-accent/40" />
             </div>
-          </div>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       {/* Grid Nudge - Subtle guidance above coffee grid */}
       {nudge && (

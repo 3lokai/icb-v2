@@ -1,3 +1,4 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { fetchAllCoffeeImages } from "./fetch-coffees";
 import type { CoffeeDetail } from "@/types/coffee-types";
@@ -27,7 +28,7 @@ type CoffeeRow = {
  * Used by fetchCoffeeBySlug, fetchCoffeeByRoasterAndSlug, and fetchCoffeesBySlugOnly.
  */
 async function buildCoffeeDetailFromRow(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: SupabaseClient,
   coffeeData: CoffeeRow
 ): Promise<CoffeeDetail | null> {
   if (!coffeeData.slug || !coffeeData.name || !coffeeData.roaster_id) {
@@ -344,10 +345,10 @@ async function buildCoffeeDetailFromRow(
   };
 }
 
-function getSupabase() {
+async function getSupabase(): Promise<SupabaseClient> {
   return process.env.SUPABASE_SECRET_KEY
-    ? createServiceRoleClient()
-    : createClient();
+    ? await createServiceRoleClient()
+    : await createClient();
 }
 
 /**
@@ -355,9 +356,10 @@ function getSupabase() {
  * Returns null if coffee not found.
  */
 export async function fetchCoffeeBySlug(
-  slug: string
+  slug: string,
+  supabaseClient?: SupabaseClient
 ): Promise<CoffeeDetail | null> {
-  const supabase = await getSupabase();
+  const supabase = supabaseClient ?? (await getSupabase());
   const { data: coffeeData, error: coffeeError } = await supabase
     .from("coffees")
     .select("*")

@@ -1,29 +1,28 @@
 import { NextResponse } from "next/server";
+import { validateApiKey } from "@/lib/api/validate-api-key";
 import { fetchCoffeeFilterMetaWithFilters } from "@/lib/data/fetch-coffee-filter-meta-filtered";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
-import { validateApiKey } from "@/lib/api/validate-api-key";
+import { createApiRouteClient } from "@/lib/supabase/api-route";
 
 /**
  * GET /api/v1/coffees/filter-meta
  * Returns filter meta with counts. Requires API key.
  */
 export async function GET(request: Request) {
-  const auth = await validateApiKey(request);
-  if ("error" in auth) return auth.error;
-
   try {
+    const auth = await validateApiKey(request);
+    if ("error" in auth) return auth.error;
+
+    const supabase = createApiRouteClient();
     const { searchParams } = new URL(request.url);
     const { filters } = parseCoffeeSearchParams(searchParams);
-    const meta = await fetchCoffeeFilterMetaWithFilters(filters);
+    const meta = await fetchCoffeeFilterMetaWithFilters(filters, supabase);
     return NextResponse.json(meta);
   } catch (error) {
-    console.error("[API v1 /coffees/filter-meta] Error:", error);
+    console.error("[API v1 /coffees/filter-meta] Unhandled error:", error);
     return NextResponse.json(
       {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to fetch filter meta",
+        error: error instanceof Error ? error.message : "Internal server error",
       },
       { status: 500 }
     );

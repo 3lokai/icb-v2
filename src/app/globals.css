@@ -256,6 +256,17 @@
   }
 }
 
+@layer utilities {
+  /* Horizontal tab strips: hide scrollbar while keeping overflow scroll */
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* ===== STYLE MODULES ===== */
 @import "./styles/layout.css";
 @import "./styles/typography.css";

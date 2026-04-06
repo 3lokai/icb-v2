@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { fetchCoffeeBySlug } from "@/lib/data/fetch-coffee-by-slug";
 import { validateApiKey } from "@/lib/api/validate-api-key";
+import { fetchCoffeeBySlug } from "@/lib/data/fetch-coffee-by-slug";
+import { createApiRouteClient } from "@/lib/supabase/api-route";
 
 /**
  * GET /api/v1/coffees/[slug]
@@ -10,10 +11,10 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const auth = await validateApiKey(request);
-  if ("error" in auth) return auth.error;
-
   try {
+    const auth = await validateApiKey(request);
+    if ("error" in auth) return auth.error;
+
     const { slug } = await params;
 
     if (!slug) {
@@ -23,7 +24,8 @@ export async function GET(
       );
     }
 
-    const coffee = await fetchCoffeeBySlug(slug);
+    const supabase = createApiRouteClient();
+    const coffee = await fetchCoffeeBySlug(slug, supabase);
 
     if (!coffee) {
       return NextResponse.json({ error: "Coffee not found" }, { status: 404 });
@@ -31,11 +33,10 @@ export async function GET(
 
     return NextResponse.json(coffee);
   } catch (error) {
-    console.error("[API v1 /coffees/[slug]] Error:", error);
+    console.error("[API v1 /coffees/[slug]] Unhandled error:", error);
     return NextResponse.json(
       {
-        error:
-          error instanceof Error ? error.message : "Failed to fetch coffee",
+        error: error instanceof Error ? error.message : "Internal server error",
       },
       { status: 500 }
     );

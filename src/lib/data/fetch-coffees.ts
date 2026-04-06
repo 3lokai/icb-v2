@@ -1,3 +1,4 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import type { CoffeeImage } from "@/types/coffee-component-types";
 import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
@@ -10,6 +11,16 @@ import type {
 
 // Note: getCoffeeIdsFromJunction and getCoffeeIdsFromFlavorKeys are kept for backward compatibility
 // but are no longer used in fetchCoffees - they may be used by filter meta calculations
+
+/**
+ * Discovery landing pages and /coffees filters use short slugs; `canon_regions.slug` may differ.
+ * Must match [supabase/migrations/20260106000001_seed_canon_regions.sql](supabase/migrations/20260106000001_seed_canon_regions.sql).
+ */
+const LANDING_REGION_SLUG_TO_CANON: Record<string, string> = {
+  coorg: "kodagu-coorg",
+  araku: "araku-valley",
+  nilgiris: "nilgiri-hills",
+};
 
 /**
  * Helper to get coffee IDs from junction table filters
@@ -93,11 +104,14 @@ async function resolveRegionSlugsToIds(
   if (slugs.length === 0) {
     return [];
   }
+  const canonSlugs = [
+    ...new Set(slugs.map((s) => LANDING_REGION_SLUG_TO_CANON[s] ?? s)),
+  ];
   // Get canon_region IDs from slugs
   const { data: canonRegions } = await supabase
     .from("canon_regions")
     .select("id")
-    .in("slug", slugs);
+    .in("slug", canonSlugs);
   if (!canonRegions || canonRegions.length === 0) {
     return [];
   }
@@ -504,13 +518,17 @@ export async function fetchCoffees(
   filters: CoffeeFilters,
   page: number,
   limit: number,
-  sort: CoffeeSort
+  sort: CoffeeSort,
+  supabaseClient?: SupabaseClient
 ): Promise<CoffeeListResponse> {
   // Try to use service role client if available (bypasses RLS for server-side queries)
-  // Fallback to regular client if service role key is not set
-  const supabase = process.env.SUPABASE_SECRET_KEY
-    ? await createServiceRoleClient()
-    : await createClient();
+  // Fallback to regular client if service role key is not set.
+  // Route handlers may pass supabaseClient from createApiRouteClient().
+  const supabase =
+    supabaseClient ??
+    (process.env.SUPABASE_SECRET_KEY
+      ? await createServiceRoleClient()
+      : await createClient());
 
   // Resolve slugs to IDs for filtering (if slugs are provided)
   const resolvedFilters: CoffeeFilters = { ...filters };
@@ -620,4 +638,63 @@ export async function fetchCoffees(
     total,
     totalPages,
   };
+}
+
+export type RoasterRegionChip = {
+  roasterId: string;
+  name: string;
+  slug: string;
+};
+
+/**
+ * Distinct roasters that list at least one coffee from any of the given canon region slugs.
+ * Uses the same region slug → ID resolution as the coffee grid.
+ */
+export async function fetchRoastersForRegionSlugs(
+  regionSlugs: string[]
+): Promise<RoasterRegionChip[]> {
+  if (!regionSlugs.length) {
+    return [];
+  }
+
+  const supabase = process.env.SUPABASE_SECRET_KEY
+    ? await createServiceRoleClient()
+    : await createClient();
+
+  const regionIds = await resolveRegionSlugsToIds(supabase, regionSlugs);
+  if (regionIds.length === 0) {
+    return [];
+  }
+
+  const filters: CoffeeFilters = {
+    region_ids: regionIds,
+    status: PUBLIC_COFFEE_STATUSES,
+  };
+
+  let query = supabase
+    .from("coffee_directory_mv")
+    .select("roaster_id, roaster_name, roaster_slug")
+    .limit(500);
+
+  query = applyFiltersToQuery(query, filters);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("fetchRoastersForRegionSlugs:", error.message);
+    return [];
+  }
+
+  const byId = new Map<string, RoasterRegionChip>();
+  for (const row of data || []) {
+    const id = row.roaster_id as string | null | undefined;
+    if (!id) continue;
+    const name = (row.roaster_name as string) || "Roaster";
+    const slug = (row.roaster_slug as string) || id;
+    if (!byId.has(id)) {
+      byId.set(id, { roasterId: id, name, slug });
+    }
+  }
+
+  return Array.from(byId.values()).sort((a, b) => a.name.localeCompare(b.name));
 }
