@@ -149,7 +149,6 @@ export function ProfileHeader({
                 name={name}
                 userId={profile?.id}
                 size="lg"
-                className="grayscale group-hover:grayscale-0 transition-all duration-700"
                 disabled={!isOwner || isAnonymous}
               />
             ) : (
@@ -157,7 +156,6 @@ export function ProfileHeader({
                 currentAvatarUrl={avatarUrl}
                 name={isAnonymous ? "Anonymous User" : name}
                 size="lg"
-                className="grayscale group-hover:grayscale-0 transition-all duration-700"
                 disabled={true}
               />
             )}

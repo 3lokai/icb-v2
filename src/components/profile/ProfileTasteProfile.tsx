@@ -15,12 +15,14 @@ type TasteProfileData = {
 type ProfileTasteProfileProps = {
   profile: TasteProfileData;
   totalReviews: number;
+  isOwner?: boolean;
   isAnonymous?: boolean;
 };
 
 export function ProfileTasteProfile({
   profile,
   totalReviews,
+  isOwner = false,
   isAnonymous = false,
 }: ProfileTasteProfileProps) {
   const hasEnoughRatings = totalReviews >= 3;
@@ -40,10 +42,12 @@ export function ProfileTasteProfile({
                 INSIGHTS
               </span>
             </div>
-            <div className="flex items-center gap-1.5 text-micro text-muted-foreground/60 bg-muted/50 px-2 py-1 rounded-full border border-border/10">
-              <Icon name="LockKey" size={12} color="muted" />
-              <span>Visible only to you</span>
-            </div>
+            {isAnonymous && (
+              <div className="flex items-center gap-1.5 text-micro text-muted-foreground/60 bg-muted/50 px-2 py-1 rounded-full border border-border/10">
+                <Icon name="LockKey" size={12} color="muted" />
+                <span>Visible only to you</span>
+              </div>
+            )}
           </div>
           <Stack gap="1">
             <h2 className="text-title text-balance leading-[1.1] tracking-tight">
@@ -52,7 +56,9 @@ export function ProfileTasteProfile({
             <p className="text-caption max-w-xl">
               {isAnonymous
                 ? "A glimpse of your local preferences. Sign up to track your evolution over time."
-                : "Derived from your rating record. Not an identity, just a glimpse of your current preferences."}
+                : !isOwner
+                  ? "Derived from their public rating record—a snapshot of preferences, not a full picture."
+                  : "Derived from your rating record. Not an identity, just a glimpse of your current preferences."}
             </p>
           </Stack>
         </Stack>
@@ -65,8 +71,9 @@ export function ProfileTasteProfile({
               className="text-muted-foreground/30 mb-4"
             />
             <p className="text-body-muted italic">
-              Not enough ratings yet. Rate 3 or more coffees to see your taste
-              profile observations.
+              {isAnonymous || isOwner
+                ? "Not enough ratings yet. Rate 3 or more coffees to see your taste profile observations."
+                : "Not enough public ratings yet for taste profile observations."}
             </p>
           </Card>
         ) : !hasData ? (
@@ -77,8 +84,9 @@ export function ProfileTasteProfile({
               className="text-muted-foreground/30 mb-4"
             />
             <p className="text-body-muted italic">
-              Your taste profile is forming. Keep rating coffees to see patterns
-              emerge.
+              {isAnonymous || isOwner
+                ? "Your taste profile is forming. Keep rating coffees to see patterns emerge."
+                : "Their taste profile is forming as they rate more coffees."}
             </p>
           </Card>
         ) : (

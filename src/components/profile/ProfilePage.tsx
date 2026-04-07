@@ -147,14 +147,13 @@ export function ProfilePage({
             isAnonymous={isAnonymous}
           />
 
-          {/* 3. Taste Profile (Owner or Anon) */}
-          {(isOwner || isAnonymous) && (
-            <ProfileTasteProfile
-              profile={formattedTasteProfile}
-              totalReviews={taste_profile.total_reviews}
-              isAnonymous={isAnonymous}
-            />
-          )}
+          {/* 3. Taste Profile */}
+          <ProfileTasteProfile
+            profile={formattedTasteProfile}
+            totalReviews={taste_profile.total_reviews}
+            isOwner={isOwner}
+            isAnonymous={isAnonymous}
+          />
 
           {/* 6. Final CTA for Anon */}
           {isAnonymous && (
