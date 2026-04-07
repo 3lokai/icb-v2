@@ -102,6 +102,8 @@ export function ProfileTasteProfile({
     rating_distribution,
   } = profile;
 
+  const safeRatingDistribution = rating_distribution ?? {};
+
   const hasEnoughRatings = total_reviews >= 3;
 
   return (
@@ -138,7 +140,7 @@ export function ProfileTasteProfile({
                 {isAnonymous
                   ? "A glimpse of your local preferences. Sign up to track your evolution over time."
                   : !isOwner
-                    ? "Derived from my public rating record — a snapshot of preferences."
+                    ? "Derived from their public rating record — a snapshot of preferences."
                     : "Derived from your rating record. Not an identity, just a glimpse of your current preferences."}
               </p>
             )}
@@ -518,9 +520,10 @@ export function ProfileTasteProfile({
                   {tier >= 3 ? (
                     <Stack gap="4">
                       {[5, 4, 3, 2, 1].map((star) => {
-                        const count = rating_distribution[star.toString()] || 0;
+                        const count =
+                          safeRatingDistribution[star.toString()] || 0;
                         const maxCount = Math.max(
-                          ...Object.values(rating_distribution),
+                          ...Object.values(safeRatingDistribution),
                           1
                         );
                         const width = (count / maxCount) * 100;

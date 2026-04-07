@@ -2,8 +2,15 @@
 
 import Link from "next/link";
 import { Stack } from "@/components/primitives/stack";
-import { Icon } from "@/components/common/Icon";
+import { Icon, type IconName } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
+
+type ProfileGlanceStat = {
+  label: string;
+  value: string;
+  icon: IconName;
+  suffix?: string;
+};
 
 type ProfileAtAGlanceProps = {
   totalReviews: number;
@@ -29,6 +36,30 @@ export function ProfileAtAGlance({
   className,
 }: ProfileAtAGlanceProps) {
   const hasEnoughRatings = totalReviews >= 3;
+
+  const glanceStats: ProfileGlanceStat[] = [
+    {
+      label: "Library",
+      value: String(totalReviews),
+      icon: "Coffee",
+    },
+    {
+      label: "Palate",
+      value: avgRating != null ? String(avgRating) : "—",
+      suffix: avgRating != null ? "★" : undefined,
+      icon: "Star",
+    },
+    {
+      label: "Reach",
+      value: String(distinctRoasterCount),
+      icon: "MapPin",
+    },
+    {
+      label: "Selections",
+      value: String(selectionsCount),
+      icon: "Heart",
+    },
+  ];
 
   return (
     <aside
@@ -71,39 +102,13 @@ export function ProfileAtAGlance({
         ) : (
           <Stack gap="4">
             <div className="grid grid-cols-2 gap-3">
-              {[
-                {
-                  label: "Library",
-                  value: String(totalReviews),
-                  icon: "Coffee",
-                },
-                {
-                  label: "Palate",
-                  value: avgRating != null ? String(avgRating) : "—",
-                  suffix: avgRating != null ? "★" : undefined,
-                  icon: "Star",
-                },
-                {
-                  label: "Reach",
-                  value: String(distinctRoasterCount),
-                  icon: "MapPin",
-                },
-                {
-                  label: "Selections",
-                  value: String(selectionsCount),
-                  icon: "Heart",
-                },
-              ].map((stat) => (
+              {glanceStats.map((stat) => (
                 <div
                   key={stat.label}
                   className="rounded-2xl border border-border/10 bg-muted/20 px-3 py-3 group/stat transition-colors hover:bg-muted/30"
                 >
                   <div className="flex items-center gap-1.5 opacity-50 group-hover/stat:opacity-80 transition-opacity mb-1">
-                    <Icon
-                      name={stat.icon as any}
-                      size={10}
-                      className="text-accent"
-                    />
+                    <Icon name={stat.icon} size={10} className="text-accent" />
                     <p className="text-micro uppercase font-medium tracking-wider m-0">
                       {stat.label}
                     </p>

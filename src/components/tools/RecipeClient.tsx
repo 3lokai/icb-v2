@@ -80,7 +80,7 @@ export function ExpertRecipesClient() {
         (r) =>
           r.title.toLowerCase().includes(q) ||
           r.expert.name.toLowerCase().includes(q) ||
-          r.flavorProfile.toLowerCase().includes(q)
+          (r.flavorProfile?.toLowerCase().includes(q) ?? false)
       );
     }
 

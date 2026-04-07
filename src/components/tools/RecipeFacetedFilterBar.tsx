@@ -69,6 +69,7 @@ export function RecipeFacetedFilterBar({
             size={18}
           />
           <Input
+            aria-label="Search recipes, experts, or techniques"
             placeholder="Search recipes, experts or techniques..."
             className="pl-10 h-11 bg-background"
             value={searchQuery}
