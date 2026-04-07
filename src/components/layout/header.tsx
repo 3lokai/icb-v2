@@ -209,10 +209,7 @@ export function Header() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link
-                        className="flex items-center"
-                        href={`/profile/${profile?.username}`}
-                      >
+                      <Link className="flex items-center" href="/profile">
                         <Icon
                           className="mr-2"
                           color="muted"

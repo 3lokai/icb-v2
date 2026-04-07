@@ -78,7 +78,7 @@ export function DrinkSizeInput({
   return (
     <div className={className}>
       <div className="mb-6">
-        <div className="mb-3 flex items-center justify-between">
+        <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <fieldset>
             <legend className="sr-only">
               Step 2 of 4: Select Drink Volume
@@ -101,7 +101,7 @@ export function DrinkSizeInput({
           </fieldset>
 
           {/* Enhanced unit switcher with surface treatment */}
-          <div className="surface-1 rounded-lg p-1">
+          <div className="surface-1 self-end rounded-lg p-1 sm:self-auto">
             <div className="flex gap-1">
               {Object.keys(VOLUME_UNITS).map((unit) => (
                 <Button

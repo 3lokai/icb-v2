@@ -6,7 +6,6 @@ import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
-import { Cluster } from "@/components/primitives/cluster";
 import StructuredData from "@/components/seo/StructuredData";
 import { ExpertRecipesClient } from "@/components/tools/RecipeClient";
 import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
@@ -14,6 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { generateMetadata } from "@/lib/seo/metadata";
 import { generateHowToSchema } from "@/lib/seo/schema";
+import { filterRecipes } from "@/lib/tools/expert-recipes";
+
+const expertRecipeCount = filterRecipes({}).length;
 
 // SEO Metadata
 export const metadata = generateMetadata({
@@ -142,53 +144,54 @@ export default function ExpertRecipesPage() {
         title="Expert Coffee Recipes"
       />
 
-      <div className="container mx-auto px-4 -mt-20 relative z-30">
-        <Stack gap="12">
+      <div className="container mx-auto px-4 py-12 relative z-30">
+        <Stack gap="8" className="gap-8 md:gap-12">
           {/* Overlapping Card with Recipe Tool */}
-          <div
-            className="bg-background rounded-3xl p-6 md:p-10 border border-border/50 shadow-xl"
-            id="recipes"
-          >
+          <div id="recipes">
             <Stack gap="8">
-              {/* Header / Highlights Overlay */}
-              <div className="flex flex-col md:flex-row gap-6 items-center justify-between pb-8 border-b border-border/40">
-                <Cluster
-                  gap="6"
-                  align="center"
-                  className="justify-center md:justify-start text-caption"
-                >
-                  <div className="group flex items-center gap-2 transition-colors hover:text-primary">
-                    <div className="h-2.5 w-2.5 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                    <span className="font-medium">8 Championship Recipes</span>
+              {/* Recipe tool — homepage-style section header */}
+              <div className="border-b border-border/40 pb-8">
+                <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-12">
+                  <div className="md:col-span-8">
+                    <Stack gap="6">
+                      <div className="inline-flex items-center gap-4">
+                        <span className="h-px w-8 bg-accent/60 md:w-12" />
+                        <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                          Recipe library
+                        </span>
+                      </div>
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                        Browse championship{" "}
+                        <span className="text-accent italic">recipes.</span>
+                      </h2>
+                      <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
+                        {expertRecipeCount} curated brew guides from world-class
+                        experts. Search, filter by method and difficulty, then
+                        open a card for full steps and timing.
+                      </p>
+                    </Stack>
                   </div>
-                  <div className="group flex items-center gap-2 transition-colors hover:text-accent">
-                    <div className="h-2.5 w-2.5 rounded-full bg-accent shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                    <span className="font-medium">World-Class Experts</span>
+                  <div className="flex justify-start pb-2 md:col-span-4 md:justify-end">
+                    <Button
+                      asChild
+                      className="btn-secondary hover-lift group"
+                      size="sm"
+                      variant="outline"
+                    >
+                      <Link
+                        className="flex items-center gap-2"
+                        href="/tools/coffee-calculator"
+                      >
+                        <Icon
+                          className="transition-transform group-hover:scale-110"
+                          name="Calculator"
+                          size={16}
+                        />
+                        Try Calculator
+                      </Link>
+                    </Button>
                   </div>
-                  <div className="group flex items-center gap-2 transition-colors hover:text-chart-2">
-                    <div className="h-2.5 w-2.5 rounded-full bg-chart-2 shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                    <span className="font-medium">Step-by-Step Guides</span>
-                  </div>
-                </Cluster>
-
-                <Button
-                  asChild
-                  className="btn-secondary hover-lift group"
-                  size="sm"
-                  variant="outline"
-                >
-                  <Link
-                    className="flex items-center gap-2"
-                    href="/tools/coffee-calculator"
-                  >
-                    <Icon
-                      className="transition-transform group-hover:scale-110"
-                      name="Calculator"
-                      size={16}
-                    />
-                    Try Calculator
-                  </Link>
-                </Button>
+                </div>
               </div>
 
               {/* Recipes Client Tool */}
@@ -201,13 +204,19 @@ export default function ExpertRecipesPage() {
           {/* Featured Experts Section */}
           <Section spacing="tight">
             <Stack gap="12">
-              <div className="text-center">
-                <Stack gap="4" className="items-center">
-                  <h2 className="text-primary text-title font-serif italic">
-                    Featured Coffee Experts
+              <div className="mb-12">
+                <Stack gap="6">
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 bg-accent/60 md:w-12" />
+                    <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                      The experts
+                    </span>
+                  </div>
+                  <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                    Featured{" "}
+                    <span className="text-accent italic">coffee experts.</span>
                   </h2>
-                  <div className="h-px w-16 bg-accent/60" />
-                  <p className="mx-auto max-w-2xl text-muted-foreground text-body-large">
+                  <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                     Learn from world champions, industry leaders, and coffee
                     innovators who have shaped modern specialty coffee culture.
                   </p>
@@ -276,10 +285,10 @@ export default function ExpertRecipesPage() {
                           <Icon className="h-6 w-6 text-primary" name="User" />
                         </div>
                         <div>
-                          <h3 className="text-subheading transition-colors group-hover:text-primary">
+                          <h3 className="text-heading transition-colors group-hover:text-primary">
                             {expert.name}
                           </h3>
-                          <p className="text-muted-foreground text-caption">
+                          <p className="text-body-muted leading-relaxed">
                             {expert.title}
                           </p>
                         </div>
@@ -289,7 +298,7 @@ export default function ExpertRecipesPage() {
                         {expert.achievement}
                       </Badge>
 
-                      <p className="text-caption leading-relaxed transition-colors group-hover:text-foreground">
+                      <p className="text-body-muted leading-relaxed transition-colors group-hover:text-foreground">
                         {expert.description}
                       </p>
                     </div>
@@ -302,16 +311,21 @@ export default function ExpertRecipesPage() {
           {/* Recipe Categories */}
           <Section spacing="default">
             <Stack gap="12">
-              <div className="text-center">
-                <Stack gap="4" className="items-center">
-                  <h2 className="text-primary text-title font-serif italic">
-                    Recipe Categories
+              <div className="mb-12">
+                <Stack gap="6">
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 bg-accent/60 md:w-12" />
+                    <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                      How we group them
+                    </span>
+                  </div>
+                  <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                    Recipe{" "}
+                    <span className="text-accent italic">categories.</span>
                   </h2>
-                  <div className="h-px w-16 bg-accent/60" />
-                  <p className="mx-auto max-w-2xl text-muted-foreground text-body-large">
-                    Organized by brewing method, difficulty level, and intended
-                    use to help you find the perfect recipe for your skill
-                    level.
+                  <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
+                    Organized by difficulty and intended use so you can match a
+                    recipe to your skill level and how you like to brew.
                   </p>
                 </Stack>
               </div>
@@ -325,7 +339,7 @@ export default function ExpertRecipesPage() {
                     <h3 className="text-heading transition-colors group-hover:text-primary">
                       Everyday Brewing
                     </h3>
-                    <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
+                    <p className="text-body-muted leading-relaxed transition-colors group-hover:text-foreground">
                       Reliable, approachable recipes perfect for daily coffee
                       routine. Forgiving techniques that produce consistently
                       great results.
@@ -348,7 +362,7 @@ export default function ExpertRecipesPage() {
                       <h3 className="text-heading transition-colors group-hover:text-primary">
                         Competition Level
                       </h3>
-                      <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
+                      <p className="text-body-muted leading-relaxed transition-colors group-hover:text-foreground">
                         Championship-winning techniques requiring precision and
                         practice. Used in actual coffee competitions worldwide.
                       </p>
@@ -371,7 +385,7 @@ export default function ExpertRecipesPage() {
                       <h3 className="text-heading transition-colors group-hover:text-primary">
                         Experimental
                       </h3>
-                      <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
+                      <p className="text-body-muted leading-relaxed transition-colors group-hover:text-foreground">
                         Innovative techniques for exploring new flavor profiles
                         and pushing brewing boundaries. For adventurous coffee
                         lovers.

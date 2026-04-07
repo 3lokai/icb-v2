@@ -347,7 +347,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
           <div className="surface-1 rounded-lg p-1">
             <div className="flex gap-1">
               <Button
-                className={`h-8 w-8 p-0 transition-all duration-300 hover:scale-110 ${
+                className={`h-10 w-10 p-0 transition-all duration-300 hover:scale-110 sm:h-8 sm:w-8 ${
                   soundEnabled
                     ? "bg-primary/10 text-primary"
                     : "text-muted-foreground hover:bg-background/50"
@@ -357,15 +357,15 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
                 variant="ghost"
               >
                 {soundEnabled ? (
-                  <Icon className="h-4 w-4" name="SpeakerHigh" />
+                  <Icon className="h-5 w-5 sm:h-4 sm:w-4" name="SpeakerHigh" />
                 ) : (
-                  <Icon className="h-4 w-4" name="SpeakerSlash" />
+                  <Icon className="h-5 w-5 sm:h-4 sm:w-4" name="SpeakerSlash" />
                 )}
               </Button>
 
               {vibrationSupported && (
                 <Button
-                  className={`h-8 w-8 p-0 transition-all duration-300 hover:scale-110 ${
+                  className={`h-10 w-10 p-0 transition-all duration-300 hover:scale-110 sm:h-8 sm:w-8 ${
                     vibrationEnabled
                       ? "bg-primary/10 text-primary"
                       : "text-muted-foreground hover:bg-background/50"
@@ -374,7 +374,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
                   size="sm"
                   variant="ghost"
                 >
-                  <Icon className="h-4 w-4" name="Vibrate" />
+                  <Icon className="h-5 w-5 sm:h-4 sm:w-4" name="Vibrate" />
                 </Button>
               )}
             </div>
@@ -400,10 +400,10 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
         </div>
 
         {/* Timer Controls - Enhanced glass buttons */}
-        <div className="flex justify-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
           {isRunning ? (
             <Button
-              className="hover-lift group px-6"
+              className="h-12 flex-1 hover-lift group px-6 sm:flex-initial"
               onClick={pauseTimer}
               variant="outline"
             >
@@ -414,7 +414,10 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
               {isPaused ? "Resume" : "Pause"}
             </Button>
           ) : (
-            <Button className="hover-lift group px-6" onClick={startTimer}>
+            <Button
+              className="h-12 flex-1 hover-lift group px-6 sm:flex-initial"
+              onClick={startTimer}
+            >
               <Icon
                 className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
                 name="Play"
@@ -424,7 +427,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
           )}
 
           <Button
-            className="hover-lift group px-6"
+            className="h-12 flex-1 hover-lift group px-6 sm:flex-initial"
             onClick={resetTimer}
             variant="outline"
           >

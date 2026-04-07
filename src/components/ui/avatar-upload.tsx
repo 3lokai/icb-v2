@@ -246,7 +246,8 @@ export function AvatarUpload({
         {...getRootProps()}
         className={cn(
           "relative group cursor-pointer",
-          (disabled || isUploading) && "cursor-not-allowed opacity-50",
+          (disabled || isUploading) && "cursor-not-allowed",
+          isUploading && "opacity-50",
           className
         )}
         onClick={handleClick}

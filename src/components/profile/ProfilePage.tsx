@@ -9,6 +9,11 @@ import { ProfileRatings } from "./ProfileRatings";
 import { ProfileTasteProfile } from "./ProfileTasteProfile";
 import { ProfileSelections } from "./ProfileSelections";
 import { ProfileGearStation } from "./ProfileGearStation";
+import { ProfileAtAGlance } from "./ProfileAtAGlance";
+import {
+  ProfileScrollspyTabBar,
+  useProfileSectionScrollspy,
+} from "./ProfileSectionTabs";
 import type { UserProfileFull } from "@/types/profile-types";
 import { formatDistanceToNow } from "date-fns";
 
@@ -23,6 +28,8 @@ export function ProfilePage({
   isOwner,
   isAnonymous = false,
 }: ProfilePageProps) {
+  const activeSection = useProfileSectionScrollspy();
+
   const {
     profile,
     ratings,
@@ -37,7 +44,6 @@ export function ProfilePage({
     return null;
   }
 
-  // Transform ratings for component (include slugs for nested coffee links)
   const formattedRatings = ratings.map((rating) => ({
     id: rating.id,
     name: rating.coffee_name,
@@ -50,8 +56,6 @@ export function ProfilePage({
     roasterSlug: rating.roaster_slug || undefined,
   }));
 
-  // Transform selections for component (include slugs for nested coffee links)
-  // Only show coffees with rating > 3
   const formattedSelections = selections
     .filter((selection) => selection.rating > 3)
     .map((selection) => {
@@ -72,8 +76,6 @@ export function ProfilePage({
       };
     });
 
-  // Transform taste profile for component
-  // Map roast levels to display labels
   const roastLabels: Record<string, string> = {
     light: "Light",
     light_medium: "Light-Medium",
@@ -86,115 +88,198 @@ export function ProfilePage({
     (roast) => roastLabels[roast] || roast
   );
 
-  // Map brew methods to display labels (capitalize first letter)
   const formattedMethods = taste_profile.top_brew_methods.map((method) => {
-    // Convert snake_case to Title Case
     return method
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   });
 
-  // For tendencies, we'll use flavor notes (simplified for now)
-  // In a full implementation, you'd fetch flavor note labels from the database
-  const tendencies =
-    taste_profile.top_flavor_note_ids.length > 0
-      ? [`${taste_profile.top_flavor_note_ids.length} flavor preferences`]
-      : [];
+  const tier =
+    taste_profile.total_reviews >= 10
+      ? 3
+      : taste_profile.total_reviews >= 5
+        ? 2
+        : 1;
 
-  const formattedTasteProfile = {
+  const getPersona = () => {
+    const {
+      top_roast_levels,
+      top_processes,
+      top_species,
+      single_origin_pct,
+      distinct_roaster_count,
+      total_reviews,
+      avg_rating,
+    } = taste_profile;
+
+    const explorationIndex =
+      total_reviews > 0 ? distinct_roaster_count / total_reviews : 0;
+
+    if (
+      top_roast_levels.includes("light") &&
+      top_processes.includes("washed") &&
+      explorationIndex > 0.6
+    )
+      return "Third Wave Explorer";
+    if (
+      top_roast_levels.includes("light") &&
+      top_processes.includes("natural") &&
+      (single_origin_pct || 0) > 0.7
+    )
+      return "Natural Process Purist";
+    if (top_roast_levels.includes("dark") && (single_origin_pct || 0) < 0.3)
+      return "Classic Blend Enthusiast";
+    if (distinct_roaster_count >= 8 && total_reviews >= 10)
+      return "Roaster Hopper";
+    if (top_species.includes("robusta") && top_processes.includes("monsooned"))
+      return "South Indian Traditionalist";
+    if (total_reviews >= 5 && (avg_rating || 0) < 3.0)
+      return "Discerning Palate";
+    if (total_reviews >= 5 && (avg_rating || 0) > 4.2)
+      return "Coffee Evangelist";
+    if (explorationIndex < 0.3 && total_reviews >= 5) return "Loyal Loyalist";
+
+    return "Coffee Enthusiast";
+  };
+
+  const persona = getPersona();
+
+  const enrichedTasteProfile = {
+    ...taste_profile,
     roasts: formattedRoasts,
     methods: formattedMethods,
-    tendencies,
+    persona,
+    tier,
   };
+
+  const hasEnoughRatings = taste_profile.total_reviews >= 3;
 
   return (
     <div className="min-h-screen bg-background">
-      <Section spacing="default" className="pt-24">
-        <Stack gap="12">
-          {/* 1. Identity Header */}
-          <ProfileHeader
-            name={profile.full_name}
-            avatarUrl={profile.avatar_url || undefined}
-            city={profile.city || undefined}
-            state={profile.state || undefined}
-            country={profile.country || undefined}
-            bio={profile.bio || undefined}
-            isOwner={isOwner}
-            isAnonymous={isAnonymous}
-            coffeePreferences={coffee_preferences}
-          />
-          {/* 4. Selections (Recommendations) */}
-          <ProfileSelections
-            selections={formattedSelections}
-            username={profile.username}
-            isOwner={isOwner}
-            isAnonymous={isAnonymous}
-          />
+      <Section spacing="default" className="pt-24" contained={false}>
+        <Stack gap="8">
+          <div className="px-4 md:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_minmax(260px,320px)] lg:grid-cols-[1fr_minmax(280px,340px)] gap-8 lg:gap-12 items-start">
+              <ProfileHeader
+                name={profile.full_name}
+                avatarUrl={profile.avatar_url || undefined}
+                city={profile.city || undefined}
+                state={profile.state || undefined}
+                country={profile.country || undefined}
+                bio={profile.bio || undefined}
+                isOwner={isOwner}
+                isAnonymous={isAnonymous}
+                coffeePreferences={coffee_preferences}
+              />
+              <ProfileAtAGlance
+                totalReviews={taste_profile.total_reviews}
+                avgRating={taste_profile.avg_rating}
+                distinctRoasterCount={taste_profile.distinct_roaster_count}
+                selectionsCount={formattedSelections.length}
+                tier={tier}
+                persona={persona}
+                isOwner={isOwner}
+                isAnonymous={isAnonymous}
+                className="md:sticky md:top-28"
+              />
+            </div>
+          </div>
 
-          {/* 5. Gear & Coffee Station */}
-          <ProfileGearStation
-            gear={gear}
-            photos={station_photos}
-            username={profile.username}
-            isOwner={isOwner}
-            isAnonymous={isAnonymous}
-          />
-          {/* 2. Ratings (Hero) */}
-          <ProfileRatings
-            ratings={formattedRatings}
-            isOwner={isOwner}
-            isAnonymous={isAnonymous}
-          />
+          <ProfileScrollspyTabBar activeId={activeSection} />
 
-          {/* 3. Taste Profile (Owner or Anon) */}
-          {(isOwner || isAnonymous) && (
-            <ProfileTasteProfile
-              profile={formattedTasteProfile}
-              totalReviews={taste_profile.total_reviews}
-              isAnonymous={isAnonymous}
-            />
-          )}
+          <div className="px-4 md:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+            <Stack gap="16" className="md:gap-20">
+              <section
+                id="insights"
+                className="scroll-mt-40"
+                aria-label="Taste insights"
+              >
+                <ProfileTasteProfile
+                  profile={enrichedTasteProfile}
+                  isOwner={isOwner}
+                  isAnonymous={isAnonymous}
+                  showStatBar={!hasEnoughRatings}
+                  selectionsCount={formattedSelections.length}
+                />
+              </section>
 
-          {/* 6. Final CTA for Anon */}
-          {isAnonymous && (
-            <Section
-              spacing="default"
-              className="border-t border-border/20 pt-16 bg-muted/10 -mx-10 px-10 rounded-[3rem]"
-            >
-              <Stack gap="8" className="text-center items-center">
-                <Stack gap="2">
-                  <h2 className="text-heading font-serif italic text-accent">
-                    Ready to make it official?
-                  </h2>
-                  <p className="text-body-large text-muted-foreground max-w-lg">
-                    Join other coffee lovers tracking their journey. Your
-                    anonymous ratings will be automatically ported to your new
-                    account.
-                  </p>
-                </Stack>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/login">
-                    <Button
-                      size="lg"
-                      className="rounded-full px-8 shadow-xl hover-lift"
-                    >
-                      Create Your Profile
-                    </Button>
-                  </Link>
-                  <Link href="/coffees">
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="rounded-full px-8 hover-lift"
-                    >
-                      Explore More Coffees
-                    </Button>
-                  </Link>
+              <section
+                id="selections"
+                className="scroll-mt-40"
+                aria-label="Selections"
+              >
+                <ProfileSelections
+                  selections={formattedSelections}
+                  username={profile.username}
+                  isOwner={isOwner}
+                  isAnonymous={isAnonymous}
+                />
+              </section>
+
+              <section
+                id="ratings"
+                className="scroll-mt-40"
+                aria-label="Ratings"
+              >
+                <ProfileRatings
+                  ratings={formattedRatings}
+                  isOwner={isOwner}
+                  isAnonymous={isAnonymous}
+                />
+              </section>
+
+              <section
+                id="gear-station"
+                className="scroll-mt-40"
+                aria-label="Gear and station"
+              >
+                <ProfileGearStation
+                  gear={gear}
+                  photos={station_photos}
+                  username={profile.username}
+                  isOwner={isOwner}
+                  isAnonymous={isAnonymous}
+                />
+              </section>
+
+              {isAnonymous && (
+                <div className="border-t border-border/20 pt-16 pb-8 bg-muted/10 -mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8 rounded-[2rem] md:rounded-[3rem]">
+                  <Stack gap="8" className="text-center items-center">
+                    <Stack gap="2">
+                      <h2 className="text-heading font-serif italic text-accent m-0">
+                        Ready to make it official?
+                      </h2>
+                      <p className="text-body-large text-muted-foreground max-w-lg m-0">
+                        Join other coffee lovers tracking their journey. Your
+                        anonymous ratings will be automatically ported to your
+                        new account.
+                      </p>
+                    </Stack>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Link href="/login">
+                        <Button
+                          size="lg"
+                          className="rounded-full px-8 shadow-xl hover-lift"
+                        >
+                          Create Your Profile
+                        </Button>
+                      </Link>
+                      <Link href="/coffees">
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          className="rounded-full px-8 hover-lift"
+                        >
+                          Explore More Coffees
+                        </Button>
+                      </Link>
+                    </div>
+                  </Stack>
                 </div>
-              </Stack>
-            </Section>
-          )}
+              )}
+            </Stack>
+          </div>
         </Stack>
       </Section>
     </div>

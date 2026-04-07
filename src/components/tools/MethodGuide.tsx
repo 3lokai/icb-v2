@@ -3,7 +3,7 @@
 
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
@@ -11,6 +11,7 @@ import {
   BREWING_METHODS_ARRAY,
   type BrewingMethodKey,
 } from "@/lib/tools/brewing-guide";
+import { cn } from "@/lib/utils";
 
 type MethodGuideProps = {
   onMethodSelect: (method: BrewingMethodKey) => void;
@@ -69,38 +70,40 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
             <span className="font-medium text-accent text-overline">
               Flavor Profile
             </span>
-            <span className="text-foreground text-overline italic truncate ml-auto">
+            <span className="truncate text-right text-caption italic text-foreground ml-auto">
               {method.flavorProfile}
             </span>
           </Cluster>
         </div>
 
         {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 gap-3 text-caption rounded-lg border p-3">
+        <div className="grid grid-cols-2 gap-3 rounded-lg border p-3">
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Ratio</span>
-            <span className="font-medium text-primary">
+            <span className="text-label">Ratio</span>
+            <span className="text-caption font-medium text-primary">
               1:{method.ratios.average}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Grind</span>
-            <span className="font-medium text-overline">
+            <span className="text-label">Grind</span>
+            <span className="text-caption font-medium text-foreground">
               {method.grindSize}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Temp</span>
-            <span className="font-medium text-overline">
+            <span className="text-label">Temp</span>
+            <span className="text-caption font-medium text-foreground">
               {method.temperatures.medium}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Time</span>
-            <span className="font-medium text-overline">{method.brewTime}</span>
+            <span className="text-label">Time</span>
+            <span className="text-caption font-medium text-foreground">
+              {method.brewTime}
+            </span>
           </div>
         </div>
 
@@ -133,18 +136,20 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
           </div>
         </div>
 
-        {/* Action Button */}
-        <Button
-          className="hover-lift group w-full"
-          size="sm"
-          variant="secondary"
+        {/* CTA styling only; outer button handles activation */}
+        <span
+          aria-hidden
+          className={cn(
+            buttonVariants({ variant: "secondary", size: "sm" }),
+            "hover-lift group w-full"
+          )}
         >
           Use This Method
           <Icon
             className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5"
             name="ArrowRight"
           />
-        </Button>
+        </span>
       </Stack>
     </button>
   );

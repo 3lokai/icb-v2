@@ -33,6 +33,7 @@ export function CoffeeCalculatorFAQ() {
   return (
     <FAQSection
       badge="Brewing Science"
+      contained={false}
       description="Common questions about coffee ratios, brewing techniques, and our calculator."
       items={coffeeCalculatorFAQs}
       overline="The Details"

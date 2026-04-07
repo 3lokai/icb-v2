@@ -6,8 +6,12 @@ import { Icon } from "@/components/common/Icon";
 import { BrewingTimer } from "@/components/tools/BrewTimer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { calculateBrewRatio } from "@/lib/tools/brewing-guide";
+import {
+  BREWING_METHODS_ARRAY,
+  calculateBrewRatio,
+} from "@/lib/tools/brewing-guide";
 import type { ExpertRecipe } from "@/lib/tools/expert-recipes";
+import { Stack } from "@/components/primitives/stack";
 
 export type RecipeDetailProps = {
   recipe: ExpertRecipe;
@@ -47,6 +51,10 @@ export function RecipeDetail({ recipe, onClose }: RecipeDetailProps) {
       return null;
     }
   }, [recipe]);
+
+  const methodName =
+    BREWING_METHODS_ARRAY.find((m) => m.id === recipe.method)?.name ||
+    recipe.method;
 
   const handleCopyRecipe = async () => {
     const recipeText = `
@@ -90,24 +98,33 @@ From IndianCoffeeBeans.com Expert Recipes
   return (
     <div className="space-y-6">
       {/* Header - Enhanced with surface treatment */}
-      <div className="surface-1 relative overflow-hidden rounded-2xl p-6">
+      <div className="surface-1 relative overflow-hidden rounded-2xl p-4 md:p-6">
         <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
         <div className="relative z-10">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <h2 className="mb-2 text-title text-primary">{recipe.title}</h2>
-              <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
-              <div className="mb-6 flex items-center gap-3 text-muted-foreground">
-                <span className="font-medium">{recipe.expert.name}</span>
-                <span>•</span>
-                <span>{recipe.expert.achievement}</span>
-                {recipe.expert.year && (
-                  <>
-                    <span>•</span>
-                    <span>{recipe.expert.year}</span>
-                  </>
-                )}
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0 flex-1 space-y-4">
+              <div className="inline-flex items-center gap-4">
+                <span className="h-px w-8 bg-accent/60 md:w-12" />
+                <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                  {methodName}
+                </span>
               </div>
+              <h2 className="text-title text-balance leading-[1.1] tracking-tight text-primary">
+                {recipe.title}
+              </h2>
+              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                <span className="font-medium text-foreground">
+                  {recipe.expert.name}
+                </span>
+                <span className="text-muted-foreground"> · </span>
+                {recipe.expert.achievement}
+                {recipe.expert.year != null ? (
+                  <>
+                    <span className="text-muted-foreground"> · </span>
+                    {recipe.expert.year}
+                  </>
+                ) : null}
+              </p>
 
               {/* Recipe Summary - Enhanced surface treatment */}
               <div className="surface-1 relative overflow-hidden rounded-lg p-4">
@@ -167,13 +184,18 @@ From IndianCoffeeBeans.com Expert Recipes
           {/* Story - Surface card treatment */}
           <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
             <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
-            <div className="relative z-10">
-              <h3 className="mb-4 flex items-center gap-2 text-subheading text-primary">
-                <Icon className="h-5 w-5" name="BookOpen" />
+            <div className="relative z-10 space-y-4">
+              <div className="inline-flex items-center gap-4">
+                <span className="h-px w-8 bg-accent/60" />
+                <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                  Context
+                </span>
+              </div>
+              <h3 className="flex items-center gap-2 text-heading text-primary">
+                <Icon className="h-5 w-5 shrink-0" name="BookOpen" />
                 The Story
               </h3>
-              <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-pretty text-body text-muted-foreground leading-relaxed">
                 {recipe.story}
               </p>
             </div>
@@ -183,17 +205,22 @@ From IndianCoffeeBeans.com Expert Recipes
           <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
             <div className="absolute top-0 left-0 h-20 w-20 rounded-full bg-accent/5 blur-2xl" />
             <div className="relative z-10">
-              <div className="mb-4 flex items-center justify-between">
-                <div>
-                  <h3 className="flex items-center gap-2 text-subheading text-primary">
-                    <Icon className="h-5 w-5" name="ListChecks" />
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <Stack className="min-w-0 flex-1" gap="4">
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 bg-accent/60" />
+                    <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                      Walkthrough
+                    </span>
+                  </div>
+                  <h3 className="flex items-center gap-2 text-heading text-primary">
+                    <Icon className="h-5 w-5 shrink-0" name="ListChecks" />
                     Brewing Steps
                   </h3>
-                  <div className="mt-2 h-1 w-16 rounded-full bg-accent" />
-                </div>
+                </Stack>
                 {timerResults ? (
                   <Button
-                    className="flex items-center gap-2"
+                    className="flex shrink-0 items-center gap-2 self-start sm:self-auto"
                     onClick={() => setShowTimer(!showTimer)}
                     size="sm"
                     variant="outline"
@@ -256,12 +283,17 @@ From IndianCoffeeBeans.com Expert Recipes
           {/* Tips - Enhanced surface card */}
           <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
             <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-accent/10 blur-xl" />
-            <div className="relative z-10">
-              <h4 className="mb-4 flex items-center gap-2 font-medium text-body text-primary">
-                <Icon className="h-5 w-5" name="Lightbulb" />
+            <div className="relative z-10 space-y-4">
+              <div className="inline-flex items-center gap-4">
+                <span className="h-px w-8 bg-accent/60" />
+                <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                  Guidance
+                </span>
+              </div>
+              <h3 className="flex items-center gap-2 text-heading text-primary">
+                <Icon className="h-5 w-5 shrink-0" name="Lightbulb" />
                 Pro Tips
-              </h4>
-              <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
+              </h3>
               <div className="space-y-3">
                 {recipe.tips.map((tip, index) => (
                   <div
@@ -281,12 +313,17 @@ From IndianCoffeeBeans.com Expert Recipes
           {/* Equipment - Enhanced surface card */}
           <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
             <div className="absolute top-0 left-0 h-16 w-16 rounded-full bg-primary/10 blur-xl" />
-            <div className="relative z-10">
-              <h4 className="mb-4 flex items-center gap-2 font-medium text-body text-primary">
-                <Icon className="h-5 w-5" name="Wrench" />
+            <div className="relative z-10 space-y-4">
+              <div className="inline-flex items-center gap-4">
+                <span className="h-px w-8 bg-accent/60" />
+                <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                  Gear
+                </span>
+              </div>
+              <h3 className="flex items-center gap-2 text-heading text-primary">
+                <Icon className="h-5 w-5 shrink-0" name="Wrench" />
                 Equipment
-              </h4>
-              <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
+              </h3>
               <div className="space-y-2">
                 {recipe.equipmentRecommendations.map((equipment, index) => (
                   <div
@@ -310,11 +347,14 @@ From IndianCoffeeBeans.com Expert Recipes
           <div className="surface-2 card-padding relative overflow-hidden rounded-2xl">
             <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-primary/20 blur-xl" />
             <div className="absolute bottom-0 left-0 h-8 w-8 rounded-full bg-accent/20 blur-lg" />
-            <div className="relative z-10">
-              <h4 className="mb-4 font-medium text-body text-primary">
-                Save & Share
-              </h4>
-              <div className="mb-4 h-1 w-16 rounded-full bg-accent" />
+            <div className="relative z-10 space-y-4">
+              <div className="inline-flex items-center gap-4">
+                <span className="h-px w-8 bg-accent/60" />
+                <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                  Share
+                </span>
+              </div>
+              <h3 className="text-heading text-primary">Save & Share</h3>
               <div className="space-y-2">
                 <Button
                   aria-describedby={copyError ? "copy-recipe-error" : undefined}

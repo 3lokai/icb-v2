@@ -5,7 +5,6 @@ import Link from "next/link";
 import { CoffeeCalculatorFAQ } from "@/components/faqs/CoffeeCalculatorFAQs";
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Cluster } from "@/components/primitives/cluster";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
@@ -119,67 +118,60 @@ export default function CoffeeCalculatorPage() {
         title="Perfect Brew Calculator"
       />
 
-      <div className="container mx-auto px-4 -mt-20 relative z-30">
-        <Stack gap="12">
+      <div className="container mx-auto px-4 py-12 relative z-30">
+        <Stack gap="8" className="gap-8 md:gap-12">
           {/* Overlapping Card with Calculator */}
-          <div
-            className="bg-background rounded-3xl p-6 md:p-10 border border-border/50 shadow-xl"
-            id="calculator"
-          >
+          <div id="calculator">
             <Stack gap="8">
               {/* Feature Highlights Overlay */}
-              <div className="flex flex-col md:flex-row gap-6 items-center justify-between pb-8 border-b border-border/40">
-                <Cluster
-                  gap="6"
-                  align="center"
-                  className="justify-center md:justify-start text-caption"
-                >
-                  <div className="group flex items-center gap-2 transition-colors hover:text-primary">
-                    <div className="h-2.5 w-2.5 rounded-full bg-primary shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                    <span className="font-medium">11 Brewing Methods</span>
+              {/* Recipe tool — homepage-style section header */}
+              <div className="border-b border-border/40 pb-8">
+                <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-12">
+                  <div className="md:col-span-8">
+                    <Stack gap="6">
+                      <div className="inline-flex items-center gap-4">
+                        <span className="h-px w-8 bg-accent/60 md:w-12" />
+                        <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                          Precision Calculator
+                        </span>
+                      </div>
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                        Perfect proportions{" "}
+                        <span className="text-accent italic">every time.</span>
+                      </h2>
+                      <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
+                        Precision coffee brewing calculator for {11} brewing
+                        methods. Get exact coffee-to-water ratios, timing, and
+                        expert tips for an exceptional cup.
+                      </p>
+                    </Stack>
                   </div>
-                  <div className="group flex items-center gap-2 transition-colors hover:text-accent">
-                    <div className="h-2.5 w-2.5 rounded-full bg-accent shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                    <span className="font-medium">Interactive Timer</span>
+                  <div className="flex justify-start pb-2 md:col-span-4 md:justify-end">
+                    <Button
+                      asChild
+                      className="btn-secondary hover-lift group"
+                      size="sm"
+                      variant="outline"
+                    >
+                      <Link
+                        className="flex items-center gap-2"
+                        href="/tools/expert-recipes"
+                      >
+                        <Icon
+                          className="transition-transform group-hover:scale-110"
+                          name="BookOpen"
+                          size={16}
+                        />
+                        View Expert Recipes
+                      </Link>
+                    </Button>
                   </div>
-                  <div className="group flex items-center gap-2 transition-colors hover:text-chart-2">
-                    <div className="h-2.5 w-2.5 rounded-full bg-chart-2 shadow-sm transition-transform duration-300 group-hover:scale-125" />
-                    <span className="font-medium">Expert Tips</span>
-                  </div>
-                </Cluster>
-
-                <Button
-                  asChild
-                  className="btn-secondary hover-lift group"
-                  size="sm"
-                  variant="outline"
-                >
-                  <Link
-                    className="flex items-center gap-2"
-                    href="/tools/expert-recipes"
-                  >
-                    <Icon
-                      className="transition-transform group-hover:scale-110"
-                      name="BookOpen"
-                      size={16}
-                    />
-                    View Expert Recipes
-                  </Link>
-                </Button>
+                </div>
               </div>
 
               {/* Calculator Container */}
               <div className="pt-2">
                 <Stack gap="8">
-                  <div className="text-center">
-                    <h2 className="text-primary text-title font-serif italic mb-2">
-                      Interactive Coffee Calculator
-                    </h2>
-                    <p className="mx-auto max-w-lg text-muted-foreground text-body-large">
-                      Select your method, adjust strength, and get precise
-                      measurements with real-time brewing guidance.
-                    </p>
-                  </div>
                   <CoffeeCalculatorContainer />
                 </Stack>
               </div>
@@ -187,15 +179,21 @@ export default function CoffeeCalculatorPage() {
           </div>
 
           {/* Enhanced Features Section */}
-          <Section spacing="tight">
-            <Stack gap="12">
-              <div className="text-center">
-                <Stack gap="4" className="items-center">
-                  <h2 className="text-primary text-title font-serif italic">
-                    Why Use Our Calculator?
+          <Section contained={false} spacing="default">
+            <Stack gap="8">
+              <div>
+                <Stack gap="6">
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 bg-accent/60 md:w-12" />
+                    <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                      The Benefits
+                    </span>
+                  </div>
+                  <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                    Why use our{" "}
+                    <span className="text-accent italic">calculator?</span>
                   </h2>
-                  <div className="h-px w-16 bg-accent/60" />
-                  <p className="mx-auto max-w-2xl text-muted-foreground text-body-large">
+                  <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                     Take the guesswork out of coffee brewing with precise
                     calculations, real-time guidance, and professional
                     techniques.
@@ -249,7 +247,7 @@ export default function CoffeeCalculatorPage() {
                       <Stack gap="2">
                         <h3
                           className={cn(
-                            "text-heading font-serif transition-colors group-hover:text-accent"
+                            "text-heading transition-colors group-hover:text-accent"
                           )}
                         >
                           {feature.title}
@@ -266,18 +264,24 @@ export default function CoffeeCalculatorPage() {
           </Section>
 
           {/* Enhanced Coffee Methods Overview */}
-          <Section spacing="default">
-            <Stack gap="12">
-              <div className="text-center">
-                <Stack gap="4" className="items-center">
-                  <h2 className="text-primary text-title font-serif italic">
-                    Supported Brewing Methods
+          <Section contained={false} spacing="default">
+            <Stack gap="8">
+              <div>
+                <Stack gap="6">
+                  <div className="inline-flex items-center gap-4">
+                    <span className="h-px w-8 bg-accent/60 md:w-12" />
+                    <span className="text-overline tracking-[0.15em] text-muted-foreground">
+                      Supported Methods
+                    </span>
+                  </div>
+                  <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                    Compatible with all{" "}
+                    <span className="text-accent italic">brewing gear.</span>
                   </h2>
-                  <div className="h-px w-16 bg-accent/60" />
-                  <p className="mx-auto max-w-2xl text-muted-foreground text-body-large">
-                    From traditional Indian filter coffee to modern specialty
-                    methods, our calculator supports all popular brewing
-                    techniques.
+                  <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
+                    From traditional South Indian filter coffee to modern
+                    specialty methods, our calculator supports all popular
+                    brewing techniques.
                   </p>
                 </Stack>
               </div>
@@ -327,7 +331,7 @@ export default function CoffeeCalculatorPage() {
           </div>
 
           {/* CTA Section */}
-          <ExpertRecipesCta />
+          <ExpertRecipesCta sectionContained={false} />
         </Stack>
       </div>
     </div>
