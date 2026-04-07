@@ -123,7 +123,7 @@ export function RecipeCard({
               {recipe.difficulty}
             </Badge>
           </Cluster>
-          <h3 className="line-clamp-2 text-heading text-balance">
+          <h3 className="line-clamp-2 text-heading text-balance leading-tight">
             {recipe.title}
           </h3>
           <p className="text-body-muted font-medium">
@@ -146,11 +146,11 @@ export function RecipeCard({
           </div>
           <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
             <span className="text-label">Grind</span>
-            <span className="text-overline">{recipe.grind}</span>
+            <span className="text-caption">{recipe.grind}</span>
           </div>
           <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
             <span className="text-label">Temp</span>
-            <span className="text-overline">{recipe.temperature}</span>
+            <span className="text-caption">{recipe.temperature}</span>
           </div>
         </div>
 

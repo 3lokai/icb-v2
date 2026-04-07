@@ -9,9 +9,16 @@ import {
   type RecipeFilters,
 } from "@/lib/tools/expert-recipes";
 import { RecipeMainPanel } from "./RecipeMainPanel";
-import { RecipeSidebar } from "./RecipeSidebar";
+import { MobileRecipeFilterDrawer } from "./MobileRecipeFilterDrawer";
+import { RecipeFacetedFilterBar } from "./RecipeFacetedFilterBar";
+import { Stack } from "../primitives/stack";
+import { Button } from "../ui/button";
 
 export function ExpertRecipesClient() {
+  // Mobile drawer state
+  const [isFiltersDrawerOpen, setIsFiltersDrawerOpen] = useState(false);
+  // Search and Filter state
+  const [searchQuery, setSearchQuery] = useState("");
   // Filter state
   const [selectedMethod, setSelectedMethod] = useState<string | undefined>();
   const [selectedDifficulty, setSelectedDifficulty] = useState<
@@ -65,8 +72,26 @@ export function ExpertRecipesClient() {
       filters.expert = selectedExpert;
     }
 
-    return filterRecipes(filters);
-  }, [selectedMethod, selectedDifficulty, selectedUse, selectedExpert]);
+    let results = filterRecipes(filters);
+
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      results = results.filter(
+        (r) =>
+          r.title.toLowerCase().includes(q) ||
+          r.expert.name.toLowerCase().includes(q) ||
+          r.flavorProfile.toLowerCase().includes(q)
+      );
+    }
+
+    return results;
+  }, [
+    selectedMethod,
+    selectedDifficulty,
+    selectedUse,
+    selectedExpert,
+    searchQuery,
+  ]);
 
   // Calculate counts for each filter option
   const methodCounts = useMemo(() => {
@@ -178,12 +203,51 @@ export function ExpertRecipesClient() {
     setSelectedUse(undefined);
     setSelectedExpert(undefined);
     setSelectedRecipeId(undefined);
+    setSearchQuery("");
   };
 
   return (
-    <div className="flex gap-8">
-      {/* Sidebar */}
-      <RecipeSidebar
+    <Stack gap="8">
+      {/* Search and Filter Bar */}
+      <RecipeFacetedFilterBar
+        recipeCount={filteredRecipes.length}
+        totalCount={filterRecipes({}).length} // Total recipes available
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        selectedMethod={selectedMethod}
+        onMethodChange={setSelectedMethod}
+        selectedDifficulty={selectedDifficulty}
+        onDifficultyChange={setSelectedDifficulty}
+        selectedUse={selectedUse}
+        onUseChange={setSelectedUse}
+        selectedExpert={selectedExpert}
+        onExpertChange={setSelectedExpert}
+        onClearAll={clearAllFilters}
+      />
+
+      {/* Mobile Filter Toggle Button (Optional, but kept for consistency if needed) */}
+      <div className="md:hidden -mt-4">
+        <Button
+          aria-label="Open filter drawer"
+          className="text-muted-foreground hover:text-foreground text-caption h-auto p-0 underline decoration-muted/30 underline-offset-4"
+          onClick={() => setIsFiltersDrawerOpen(true)}
+          variant="ghost"
+        >
+          Detailed Filters
+        </Button>
+      </div>
+
+      {/* Main Content - Full Width Grid */}
+      <div className="w-full">
+        <RecipeMainPanel
+          onRecipeSelect={setSelectedRecipeId}
+          recipes={filteredRecipes}
+          selectedRecipeId={selectedRecipeId}
+        />
+      </div>
+
+      {/* Mobile Filter Drawer (Hidden on Desktop) */}
+      <MobileRecipeFilterDrawer
         difficultyCounts={difficultyCounts}
         expertCounts={expertCounts}
         methodCounts={methodCounts}
@@ -191,7 +255,9 @@ export function ExpertRecipesClient() {
         onDifficultyChange={setSelectedDifficulty}
         onExpertChange={setSelectedExpert}
         onMethodChange={setSelectedMethod}
+        onOpenChange={setIsFiltersDrawerOpen}
         onUseChange={setSelectedUse}
+        open={isFiltersDrawerOpen}
         recipeCount={filteredRecipes.length}
         selectedDifficulty={selectedDifficulty}
         selectedExpert={selectedExpert}
@@ -199,15 +265,6 @@ export function ExpertRecipesClient() {
         selectedUse={selectedUse}
         useCounts={useCounts}
       />
-
-      {/* Main Content */}
-      <div className="flex-1">
-        <RecipeMainPanel
-          onRecipeSelect={setSelectedRecipeId}
-          recipes={filteredRecipes}
-          selectedRecipeId={selectedRecipeId}
-        />
-      </div>
-    </div>
+    </Stack>
   );
 }
