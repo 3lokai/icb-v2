@@ -95,7 +95,7 @@ Made with IndianCoffeeBeans.com
         </div>
 
         {/* Main Recipe Amounts - Enhanced glass cards */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="surface-1 card-padding card-hover group text-center rounded-lg">
             <div className="mb-1 text-title text-primary transition-transform duration-300 group-hover:scale-110">
               {Math.round(results.coffeeAmount * 10) / 10}g
@@ -128,7 +128,9 @@ Made with IndianCoffeeBeans.com
               <Icon className="h-4 w-4 text-chart-1" name="Scales" />
               <span className="text-muted-foreground">Ratio</span>
             </div>
-            <span className="font-medium">{results.ratio}</span>
+            <span className="text-caption font-medium text-foreground">
+              {results.ratio}
+            </span>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-background/30 p-2 backdrop-blur-sm">
@@ -136,7 +138,9 @@ Made with IndianCoffeeBeans.com
               <Icon className="h-4 w-4 text-chart-2" name="Timer" />
               <span className="text-muted-foreground">Time</span>
             </div>
-            <span className="font-medium">{results.brewTime}</span>
+            <span className="text-caption font-medium text-foreground">
+              {results.brewTime}
+            </span>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-background/30 p-2 backdrop-blur-sm">
@@ -144,7 +148,9 @@ Made with IndianCoffeeBeans.com
               <Icon className="h-4 w-4 text-chart-3" name="Thermometer" />
               <span className="text-muted-foreground">Temperature</span>
             </div>
-            <span className="font-medium">{results.temperature}</span>
+            <span className="text-caption font-medium text-foreground">
+              {results.temperature}
+            </span>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-background/30 p-2 backdrop-blur-sm">
@@ -152,7 +158,9 @@ Made with IndianCoffeeBeans.com
               <Icon className="h-4 w-4 text-chart-4" name="Coffee" />
               <span className="text-muted-foreground">Grind</span>
             </div>
-            <span className="font-medium">{results.grindSize}</span>
+            <span className="text-caption font-medium text-foreground">
+              {results.grindSize}
+            </span>
           </div>
         </div>
 

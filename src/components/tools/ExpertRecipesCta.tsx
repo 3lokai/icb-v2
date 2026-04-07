@@ -5,9 +5,16 @@ import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 
-export default function ExpertRecipesCta() {
+type ExpertRecipesCtaProps = {
+  /** Set false when the CTA sits inside a page that already uses `container` / horizontal padding (avoids nested PageShell). */
+  sectionContained?: boolean;
+};
+
+export default function ExpertRecipesCta({
+  sectionContained = true,
+}: ExpertRecipesCtaProps) {
   return (
-    <Section spacing="default">
+    <Section contained={sectionContained} spacing="default">
       <div className="mx-auto max-w-6xl">
         <div className="group relative overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-sm transition-shadow duration-500 hover:shadow-md">
           {/* Subtle “magazine” accent: stripe + paper texture */}

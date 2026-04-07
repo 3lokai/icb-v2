@@ -132,12 +132,12 @@ export function CoffeeCalculator({
         {/* Left Column - Brewing Parameters (Surface Card) */}
         <div className="card-bordered rounded-xl bg-background p-6">
           <Stack gap="6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <h3 className="flex items-center gap-2 text-subheading">
                 <div className="h-2 w-2 rounded-full bg-primary" />
                 Brewing Parameters
               </h3>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 self-end sm:self-auto">
                 {method && (
                   <button
                     className="rounded px-2 py-1 text-muted-foreground text-overline transition-colors hover:bg-muted hover:text-foreground"

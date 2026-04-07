@@ -164,7 +164,7 @@ export default function ExpertRecipesPage() {
                         Browse championship{" "}
                         <span className="text-accent italic">recipes.</span>
                       </h2>
-                      <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                      <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                         {expertRecipeCount} curated brew guides from world-class
                         experts. Search, filter by method and difficulty, then
                         open a card for full steps and timing.
@@ -216,7 +216,7 @@ export default function ExpertRecipesPage() {
                     Featured{" "}
                     <span className="text-accent italic">coffee experts.</span>
                   </h2>
-                  <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                  <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                     Learn from world champions, industry leaders, and coffee
                     innovators who have shaped modern specialty coffee culture.
                   </p>
@@ -288,7 +288,7 @@ export default function ExpertRecipesPage() {
                           <h3 className="text-heading transition-colors group-hover:text-primary">
                             {expert.name}
                           </h3>
-                          <p className="text-body text-muted-foreground leading-relaxed">
+                          <p className="text-body-muted leading-relaxed">
                             {expert.title}
                           </p>
                         </div>
@@ -298,7 +298,7 @@ export default function ExpertRecipesPage() {
                         {expert.achievement}
                       </Badge>
 
-                      <p className="text-body text-muted-foreground leading-relaxed transition-colors group-hover:text-foreground">
+                      <p className="text-body-muted leading-relaxed transition-colors group-hover:text-foreground">
                         {expert.description}
                       </p>
                     </div>
@@ -323,7 +323,7 @@ export default function ExpertRecipesPage() {
                     Recipe{" "}
                     <span className="text-accent italic">categories.</span>
                   </h2>
-                  <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                  <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                     Organized by difficulty and intended use so you can match a
                     recipe to your skill level and how you like to brew.
                   </p>
@@ -339,7 +339,7 @@ export default function ExpertRecipesPage() {
                     <h3 className="text-heading transition-colors group-hover:text-primary">
                       Everyday Brewing
                     </h3>
-                    <p className="text-body text-muted-foreground leading-relaxed transition-colors group-hover:text-foreground">
+                    <p className="text-body-muted leading-relaxed transition-colors group-hover:text-foreground">
                       Reliable, approachable recipes perfect for daily coffee
                       routine. Forgiving techniques that produce consistently
                       great results.
@@ -362,7 +362,7 @@ export default function ExpertRecipesPage() {
                       <h3 className="text-heading transition-colors group-hover:text-primary">
                         Competition Level
                       </h3>
-                      <p className="text-body text-muted-foreground leading-relaxed transition-colors group-hover:text-foreground">
+                      <p className="text-body-muted leading-relaxed transition-colors group-hover:text-foreground">
                         Championship-winning techniques requiring precision and
                         practice. Used in actual coffee competitions worldwide.
                       </p>
@@ -385,7 +385,7 @@ export default function ExpertRecipesPage() {
                       <h3 className="text-heading transition-colors group-hover:text-primary">
                         Experimental
                       </h3>
-                      <p className="text-body text-muted-foreground leading-relaxed transition-colors group-hover:text-foreground">
+                      <p className="text-body-muted leading-relaxed transition-colors group-hover:text-foreground">
                         Innovative techniques for exploring new flavor profiles
                         and pushing brewing boundaries. For adventurous coffee
                         lovers.
