@@ -32,7 +32,7 @@ export function ProfileRatings({
   isAnonymous = false,
 }: ProfileRatingsProps) {
   return (
-    <Stack gap="8">
+    <Stack gap="8" className="pt-0 md:pt-2">
       <Cluster align="center">
         <Stack gap="6">
           <div className="inline-flex items-center gap-4">

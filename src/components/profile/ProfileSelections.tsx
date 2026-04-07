@@ -45,8 +45,8 @@ export function ProfileSelections({
   );
 
   return (
-    <div id="selections">
-      <Stack gap="8" className="pt-8">
+    <div>
+      <Stack gap="8" className="pt-0 md:pt-2">
         <Stack gap="6">
           <div className="inline-flex items-center gap-4">
             <span className="h-px w-8 md:w-12 bg-accent/60" />
@@ -78,7 +78,7 @@ export function ProfileSelections({
               className="relative group overflow-hidden border-border/40 rounded-[2rem] hover:border-accent/40 transition-all duration-500 flex flex-col sm:flex-row py-0 gap-0"
             >
               {/* Image Section */}
-              <div className="relative w-full sm:w-2/5 aspect-[4/3] min-h-[200px] bg-muted grayscale group-hover:grayscale-0 transition-all duration-700 overflow-hidden">
+              <div className="relative w-full sm:w-2/5 aspect-[4/3] min-h-[200px] bg-muted overflow-hidden">
                 {selection.image ? (
                   <Image
                     src={coffeeImagePresets.coffeeCard(selection.image)}

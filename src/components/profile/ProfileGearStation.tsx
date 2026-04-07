@@ -154,8 +154,8 @@ export function ProfileGearStation({
   };
 
   return (
-    <div id="gear-station">
-      <Stack gap="12" className="pt-8">
+    <div>
+      <Stack gap="12" className="pt-0 md:pt-2">
         <Stack gap="6">
           <div className="inline-flex items-center gap-4">
             <span className="h-px w-8 md:w-12 bg-accent/60" />

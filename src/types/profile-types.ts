@@ -77,11 +77,28 @@ export interface ProfileSelection {
 
 // Taste profile data from cache
 export interface TasteProfileData {
+  // Existing — raw cache fields
   top_roast_levels: string[];
   top_brew_methods: string[];
+  /** Canon flavor sensory node UUIDs from cache (canon_sensory_nodes.id); see coffee_directory_mv.canon_flavor_node_ids */
   top_flavor_note_ids: string[];
   total_reviews: number;
   last_computed_at: string | null;
+
+  // Resolved display data (strings resolved server-side)
+  /** Canonical flavor descriptors (canon_sensory_nodes.descriptor; slug fallback in RPC) */
+  top_flavor_labels: string[];
+  top_roasters: { name: string; slug: string }[]; // roasters.name + roasters.slug
+  top_region_names: string[]; // canon_region_names from MV
+  top_processes: string[]; // process enum values
+  top_species: string[]; // bean_species enum values
+
+  // Scalar stats
+  avg_rating: number | null;
+  recommend_rate: number | null; // 0.0–1.0 ratio
+  single_origin_pct: number | null; // 0.0–1.0 ratio
+  distinct_roaster_count: number;
+  rating_distribution: Record<string, number>; // {"1": n, "2": n, ..., "5": n}
 }
 
 // User coffee preferences (from user_coffee_preferences table)
