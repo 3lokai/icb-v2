@@ -6,10 +6,9 @@ import { useMemo } from "react";
 import type { RoasterDetail } from "@/types/roaster-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
 import { roasterImagePresets } from "@/lib/imagekit";
-import { Icon } from "@/components/common/Icon";
+import { Icon, type IconName } from "@/components/common/Icon";
 import { useImageColor } from "@/hooks/useImageColor";
 
-import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
@@ -26,7 +25,7 @@ type RoastGroup = {
   id: string;
   label: string;
   description: string;
-  icon: any;
+  icon: IconName;
   coffees: CoffeeSummary[];
 };
 
@@ -59,7 +58,7 @@ export function RoasterCoffeesSelectionPage({
     const dark: CoffeeSummary[] = [];
     const other: CoffeeSummary[] = [];
 
-    roaster.coffees.forEach((coffee) => {
+    (roaster.coffees ?? []).forEach((coffee) => {
       const level = coffee.roast_level;
       if (level === "light" || level === "light_medium") {
         light.push(coffee);
@@ -191,7 +190,7 @@ export function RoasterCoffeesSelectionPage({
                 asChild
                 className="rounded-full text-muted-foreground"
               >
-                <Link href="/coffees">Explore All Roasters</Link>
+                <Link href="/coffees">Explore All Coffees</Link>
               </Button>
             </Cluster>
           </Stack>

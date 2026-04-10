@@ -18,7 +18,7 @@ const baseUrl =
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const roaster = await fetchRoasterBySlug(slug, 50); // Fetch up to 50 coffees for metadata
+  const roaster = await fetchRoasterBySlug(slug, { limit: 50 }); // Fetch up to 50 coffees for metadata
 
   if (!roaster) {
     return {
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function RoasterCoffeesPageServer({ params }: Props) {
   const { slug } = await params;
   // Fetch more coffees than the default 15 for the dedicated catalog page
-  const roaster = await fetchRoasterBySlug(slug, 100);
+  const roaster = await fetchRoasterBySlug(slug, { limit: 100 });
 
   if (!roaster) {
     notFound();

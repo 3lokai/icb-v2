@@ -84,6 +84,11 @@ const nextConfig: NextConfig = {
         permanent: true, // 301 redirect
       },
       {
+        source: "/budget-coffee",
+        destination: "/coffees/budget",
+        permanent: true, // 301 redirect
+      },
+      {
         source: "/500-1000",
         destination: "/coffees/mid-range",
         permanent: true, // 301 redirect

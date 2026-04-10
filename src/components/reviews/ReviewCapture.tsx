@@ -158,6 +158,13 @@ export function ReviewCapture({
     }
   }, [userReview, isEditMode, entityType, entityId]);
 
+  useEffect(() => {
+    cleanup();
+    formTouchedRef.current = false;
+    hasStarStartedRef.current = false;
+    submitSucceededRef.current = false;
+  }, [entityId, entityType, cleanup]);
+
   // Cleanup debounce timer + abandon tracking on unmount
   useEffect(() => {
     return () => {

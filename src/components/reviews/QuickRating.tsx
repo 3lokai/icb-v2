@@ -168,6 +168,14 @@ export function QuickRating({
     }
   }, [userReview]);
 
+  useEffect(() => {
+    formTouchedRef.current = false;
+    submitSucceededRef.current = false;
+    startTransition(() => {
+      setHasStarted(false);
+    });
+  }, [entityId, entityType]);
+
   // Cleanup debounce + abandon tracking on unmount
   useEffect(() => {
     return () => {
