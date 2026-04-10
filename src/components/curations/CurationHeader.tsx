@@ -11,104 +11,98 @@ type CurationHeaderProps = {
   curator: Curator;
 };
 
-export function CurationHeader({
-  title,
-  subtitle,
-  curator,
-}: CurationHeaderProps) {
+export function CurationHeader({ subtitle, curator }: CurationHeaderProps) {
   return (
-    <section className="relative pt-16 pb-8 md:pt-24 md:pb-10 overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-accent/5 to-transparent -z-10" />
-      <div className="bg-noise absolute inset-0 opacity-[0.03] -z-10" />
+    <section className="relative flex min-h-[80vh] w-screen max-w-none items-center justify-center overflow-hidden md:min-h-[65vh] ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
+      {/* Background Image - Full Bleed */}
+      <div className="absolute inset-0 z-0 bg-black/80">
+        <Image
+          src="/curations/curation-header.avif"
+          alt="Curated Selections Background"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center translate-y-[-10%] sm:translate-y-0"
+        />
+      </div>
 
-      <div className="mx-auto max-w-6xl w-full px-4 md:px-6 lg:px-8">
-        <Stack gap="12">
-          {/* Top Row: Curator Profile Hub */}
-          <Cluster className="justify-between" align="end" gap="6">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 bg-accent/60" />
-                <span className="text-overline text-accent tracking-[0.15em] uppercase">
-                  Editorial feature
-                </span>
-              </div>
+      {/* Hero Overlay */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/85 via-black/65 to-black/95" />
+      <div className="bg-noise absolute inset-0 opacity-[0.05] z-15 pointer-events-none" />
 
-              <div className="flex items-center gap-6">
-                <div className="relative h-20 w-20 md:h-24 md:w-24 overflow-hidden rounded-full border-2 border-accent/20 p-1 bg-background shadow-xl">
-                  <div className="relative h-full w-full overflow-hidden rounded-full grayscale hover:grayscale-0 transition-all duration-700">
-                    <Image
-                      src={curator.logo}
-                      alt={curator.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
+      {/* Content Container */}
+      <div className="relative z-20 mx-auto w-full max-w-7xl px-4 py-12 md:px-6 md:py-20 lg:px-8">
+        <div className="mx-auto max-w-6xl w-full">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start lg:items-end">
+            {/* Left Column: Primary Content */}
+            <div className="md:col-span-8 lg:col-span-8">
+              <Stack gap="8">
+                {/* Eyebrow */}
+                <div className="flex items-center gap-4">
+                  <span className="h-px w-12 bg-accent/60" />
+                  <span className="text-overline tracking-[0.2em] uppercase !text-white/70">
+                    Curated Selections
+                  </span>
                 </div>
-                <Stack gap="1">
-                  <p className="text-subheading tracking-tight">Curated by</p>
-                  <p className="text-heading italic text-accent leading-none">
+
+                {/* Main Title Area: Logo + Name */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 md:gap-8">
+                  <div className="relative h-24 w-24 md:h-28 md:w-28 overflow-hidden rounded-full border-2 border-white/30 p-1.5 bg-white/10 shadow-2xl shrink-0 group">
+                    <div className="relative h-full w-full overflow-hidden rounded-full grayscale hover:grayscale-0 transition-all duration-700">
+                      <Image
+                        src={curator.logo}
+                        alt={curator.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+
+                  <h1 className="text-display sm:text-hero italic leading-tight tracking-tight text-balance !text-white">
                     {curator.name}
-                  </p>
-                  <Cluster gap="2" align="center" className="mt-1">
-                    <Icon
-                      name="MapPin"
-                      size={12}
-                      className="text-muted-foreground"
-                    />
-                    <span className="text-label font-bold uppercase text-muted-foreground/80">
+                    <span className="text-accent not-italic ml-1">.</span>
+                  </h1>
+                </div>
+
+                {/* Subtext: Location & Tags */}
+                <Stack gap="4">
+                  <Cluster gap="2" align="center">
+                    <Icon name="MapPin" size={16} className="!text-white/40" />
+                    <span className="text-label-large font-light uppercase tracking-[0.1em] !text-white">
                       {curator.location}
                     </span>
                   </Cluster>
+
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {curator.tags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant="onMedia"
+                        className="text-micro uppercase tracking-[0.2em] px-3 py-1.5 backdrop-blur-sm"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </Stack>
-              </div>
-            </Stack>
-
-            <div className="hidden lg:flex flex-wrap gap-2 justify-end max-w-xs">
-              {curator.tags.map((tag) => (
-                <Badge
-                  key={tag}
-                  variant="outline"
-                  className="text-micro uppercase tracking-widest bg-accent/5 py-1"
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </Cluster>
-
-          {/* Main Title Area */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-start">
-            <div className="lg:col-span-8">
-              <h1 className="text-hero text-balance leading-[1.05] tracking-tighter">
-                {title.split(" × ").map((part, i) => (
-                  <span key={part} className="block last:inline">
-                    {i > 0 && (
-                      <span className="text-accent/30 mx-2 font-serif font-light">
-                        ×
-                      </span>
-                    )}
-                    {part}
-                  </span>
-                ))}
-                <span className="text-accent">.</span>
-              </h1>
+              </Stack>
             </div>
 
-            <div className="lg:col-span-4 lg:pt-4">
-              <div className="relative">
+            {/* Right Column: Pull Quote */}
+            <div className="md:col-span-12 lg:col-span-4 lg:pb-4">
+              <div className="relative max-w-md lg:max-w-none ml-auto">
                 <Icon
                   name="Quotes"
-                  size={40}
-                  className="absolute -top-6 -left-4 text-accent/10 rotate-180 -z-10"
+                  size={48}
+                  className="absolute -top-8 -left-6 !text-white/10 rotate-180 -z-10"
                 />
-                <p className="text-body-large text-pretty text-muted-foreground leading-relaxed font-serif italic border-l-2 border-accent/20 pl-6 py-2">
+                <p className="text-body-large text-pretty font-serif italic border-l-2 border-white/20 pl-8 py-3 !text-white/80 leading-relaxed">
                   &quot;{subtitle}&quot;
                 </p>
               </div>
             </div>
           </div>
-        </Stack>
+        </div>
       </div>
     </section>
   );

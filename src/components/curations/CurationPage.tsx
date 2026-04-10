@@ -25,7 +25,7 @@ export function CurationPage({ data }: CurationPageProps) {
     <PageShell maxWidth="full" className="px-0">
       <Stack className="gap-0">
         <CurationHeader
-          title={`${curator.name}’s Selections`}
+          title="Curated Selections"
           subtitle={curator.quote || curator.story.slice(0, 100) + "..."}
           curator={curator}
         />

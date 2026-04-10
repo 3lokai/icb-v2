@@ -3,7 +3,7 @@ import { Stack } from "@/components/primitives/stack";
 
 type PageHeaderProps = {
   title: React.ReactNode;
-  description?: string;
+  description?: React.ReactNode;
   overline?: string;
   rightSideContent?: React.ReactNode;
   backgroundImage?: string;
@@ -59,9 +59,9 @@ export function PageHeader({
                   {title}
                 </h1>
                 {description && (
-                  <p className="max-w-2xl text-pretty text-body-large text-white/80 leading-relaxed">
+                  <div className="max-w-2xl text-pretty text-body-large text-white/80 leading-relaxed">
                     {description}
-                  </p>
+                  </div>
                 )}
               </Stack>
             </div>

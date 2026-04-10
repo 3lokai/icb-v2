@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
-  const title = `ICB × ${data.curator.name} | Indian Coffee Beans`;
+  const title = `${data.curator.name}’s Curated Selections | Indian Coffee Beans`;
   const description = (data.curator.story ?? "").slice(0, 160);
   const url = `${baseUrl}/curations/${slug}`;
   const ogImage = data.curator.logo?.startsWith("http")
