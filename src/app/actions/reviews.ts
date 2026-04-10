@@ -18,6 +18,13 @@ type ActionResult<T = undefined> = {
   data?: T;
 };
 
+/** Returned to the client on successful `createReview` (analytics + UI). */
+export type CreateReviewSuccessData = {
+  id: string;
+  review_count: number;
+  is_first_rating: boolean;
+};
+
 // Generic UUID (accepts v1-v8-ish variants, not just v4)
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -201,7 +208,7 @@ async function checkAnonymousReviewLimit(
 export async function createReview(
   input: CreateReviewInput,
   anonId?: string | null
-): Promise<ActionResult<{ id: string; review_count: number }>> {
+): Promise<ActionResult<CreateReviewSuccessData>> {
   try {
     // Basic validation
     if (!input.entity_id || !isUuid(input.entity_id)) {
@@ -272,6 +279,25 @@ export async function createReview(
 
     const supabase = await createServiceRoleClient();
 
+    let is_first_rating = false;
+    if (user_id) {
+      const { count, error: countError } = await supabase
+        .from("reviews")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", user_id)
+        .eq("status", "active");
+
+      if (countError) {
+        console.error(
+          "Error counting prior reviews for analytics:",
+          countError
+        );
+        is_first_rating = false;
+      } else {
+        is_first_rating = (count ?? 0) === 0;
+      }
+    }
+
     const recommend = resolvedRecommend(input);
 
     const { data, error } = await supabase
@@ -314,6 +340,7 @@ export async function createReview(
         entity_id: input.entity_id,
         rating: input.rating ?? null,
         user_type: user_id ? "authenticated" : "anonymous",
+        is_first_rating,
       },
     });
 
@@ -334,7 +361,10 @@ export async function createReview(
       review_count = await checkAnonymousReviewLimit(anon_id);
     }
 
-    return { success: true, data: { id: data.id, review_count } };
+    return {
+      success: true,
+      data: { id: data.id, review_count, is_first_rating },
+    };
   } catch (error) {
     console.error("Unexpected error creating review:", error);
     return {

@@ -4,7 +4,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { queryKeys } from "@/lib/query-keys";
-import { createReview, deleteReview } from "@/app/actions/reviews";
+import {
+  createReview,
+  deleteReview,
+  type CreateReviewSuccessData,
+} from "@/app/actions/reviews";
 import { ensureAnonId, setReviewCount } from "@/lib/reviews/anon-id";
 import type {
   CreateReviewInput,
@@ -132,7 +136,9 @@ export function useCreateReview() {
   const pendingMutationRef = useRef<{
     input: CreateReviewInput;
     anonId: string | null;
-    mutateOptions?: { onSuccess?: () => void };
+    mutateOptions?: {
+      onSuccess?: (data: CreateReviewSuccessData) => void;
+    };
   } | null>(null);
   const [isDebouncing, setIsDebouncing] = useState(false);
   const [lastSuccess, setLastSuccess] = useState(false);
@@ -157,40 +163,18 @@ export function useCreateReview() {
       }
       return result.data;
     },
-    onSuccess: (data, variables) => {
-      // Sync review count from server (server is source of truth)
-      if (data && data.review_count !== undefined) {
-        setReviewCount(data.review_count);
-      }
-      // Invalidate related queries
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.reviews.byEntity(
-          variables.input.entity_type,
-          variables.input.entity_id
-        ),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.reviews.stats(
-          variables.input.entity_type,
-          variables.input.entity_id
-        ),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.reviews.latest(
-          variables.input.entity_type,
-          variables.input.entity_id
-        ),
-      });
-      // Set success flag (will be reset when user makes new changes)
-      setLastSuccess(true);
-    },
     onError: () => {
       setLastSuccess(false);
     },
   });
 
   const createReviewDebounced = useCallback(
-    (input: CreateReviewInput, mutateOptions?: { onSuccess?: () => void }) => {
+    (
+      input: CreateReviewInput,
+      mutateOptions?: {
+        onSuccess?: (data: CreateReviewSuccessData) => void;
+      }
+    ) => {
       // Reset success state when user makes new changes
       setLastSuccess(false);
 
@@ -219,17 +203,43 @@ export function useCreateReview() {
             anonId: varsAnonId,
             mutateOptions: opts,
           } = pending;
-          const perCallOnSuccess = opts?.onSuccess;
           mutation.mutate(
             { input: varsInput, anonId: varsAnonId },
-            perCallOnSuccess ? { onSuccess: perCallOnSuccess } : undefined
+            {
+              onSuccess: (data) => {
+                if (!data) return;
+                if (data.review_count !== undefined) {
+                  setReviewCount(data.review_count);
+                }
+                queryClient.invalidateQueries({
+                  queryKey: queryKeys.reviews.byEntity(
+                    varsInput.entity_type,
+                    varsInput.entity_id
+                  ),
+                });
+                queryClient.invalidateQueries({
+                  queryKey: queryKeys.reviews.stats(
+                    varsInput.entity_type,
+                    varsInput.entity_id
+                  ),
+                });
+                queryClient.invalidateQueries({
+                  queryKey: queryKeys.reviews.latest(
+                    varsInput.entity_type,
+                    varsInput.entity_id
+                  ),
+                });
+                setLastSuccess(true);
+                opts?.onSuccess?.(data);
+              },
+            }
           );
         } else {
           setIsDebouncing(false);
         }
       }, 600);
     },
-    [mutation]
+    [mutation, queryClient]
   );
 
   // Cleanup on unmount

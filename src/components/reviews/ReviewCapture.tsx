@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { capture } from "@/lib/posthog";
 import { useSearchContext } from "@/providers/SearchProvider";
 import { GRIND_TYPES } from "@/lib/utils/coffee-constants";
 import type {
@@ -135,6 +136,9 @@ export function ReviewCapture({
   const hasSyncedRef = useRef(false);
   const hasShownLimitModalRef = useRef(false);
   const hasShownSuccessToastRef = useRef(false);
+  const formTouchedRef = useRef(false);
+  const submitSucceededRef = useRef(false);
+  const hasStarStartedRef = useRef(false);
 
   useEffect(() => {
     if (userReview && !isEditMode && !hasSyncedRef.current) {
@@ -154,12 +158,19 @@ export function ReviewCapture({
     }
   }, [userReview, isEditMode, entityType, entityId]);
 
-  // Cleanup debounce timer on unmount
+  // Cleanup debounce timer + abandon tracking on unmount
   useEffect(() => {
     return () => {
       cleanup();
+      if (formTouchedRef.current && !submitSucceededRef.current) {
+        capture("rating_form_abandoned", {
+          entity_type: entityType,
+          entity_id: entityId,
+          variant: "review_capture",
+        });
+      }
     };
-  }, [cleanup]);
+  }, [cleanup, entityType, entityId]);
 
   // Handle review count and errors
   useEffect(() => {
@@ -225,15 +236,26 @@ export function ReviewCapture({
   }, [identityKey]);
 
   const handleRatingClick = (value: number) => {
+    formTouchedRef.current = true;
+    if (!hasStarStartedRef.current) {
+      capture("rating_started", {
+        entity_type: entityType,
+        entity_id: entityId,
+        rating_value: value,
+      });
+      hasStarStartedRef.current = true;
+    }
     const newFormData = { ...formData, rating: value };
     setFormData(newFormData);
   };
 
   const handleCommentChange = (value: string) => {
+    formTouchedRef.current = true;
     setFormData({ ...formData, comment: value });
   };
 
   const handleDetailChange = (field: keyof CreateReviewInput, value: any) => {
+    formTouchedRef.current = true;
     const newFormData = { ...formData, [field]: value };
     setFormData(newFormData);
   };
@@ -541,7 +563,15 @@ export function ReviewCapture({
 
           <div className="p-8 md:p-10 pt-6 flex flex-col gap-4">
             <Button asChild className="w-full" size="lg">
-              <Link href={`/auth?from=${encodeURIComponent(pathname)}`}>
+              <Link
+                href={`/auth?from=${encodeURIComponent(pathname)}`}
+                onClick={() =>
+                  capture("anon_review_limit_cta_clicked", {
+                    entity_type: entityType,
+                    entity_id: entityId,
+                  })
+                }
+              >
                 Sign in / Sign up
               </Link>
             </Button>
@@ -583,7 +613,15 @@ export function ReviewCapture({
 
           <div className="p-8 md:p-10 pt-6 flex flex-col gap-4">
             <Button asChild className="w-full" size="lg">
-              <Link href={`/auth?from=${encodeURIComponent(pathname)}`}>
+              <Link
+                href={`/auth?from=${encodeURIComponent(pathname)}`}
+                onClick={() =>
+                  capture("anon_review_limit_cta_clicked", {
+                    entity_type: entityType,
+                    entity_id: entityId,
+                  })
+                }
+              >
                 Sign in / Sign up
               </Link>
             </Button>
@@ -849,8 +887,18 @@ export function ReviewCapture({
                   type="button"
                   onClick={() => {
                     if (checkLimitBeforeCreate()) return;
+                    submitSucceededRef.current = false;
                     createReview(formData, {
-                      onSuccess: () => setIsEditMode(false),
+                      onSuccess: (data) => {
+                        submitSucceededRef.current = true;
+                        capture("rating_form_submitted", {
+                          entity_type: entityType,
+                          entity_id: entityId,
+                          is_first_rating: data.is_first_rating,
+                          variant: "review_capture",
+                        });
+                        setIsEditMode(false);
+                      },
                     });
                   }}
                   disabled={isLoading || isDeleting}
