@@ -1,5 +1,6 @@
 import { getAllCurators } from "@/data/curations";
 import { CuratorListingPage } from "@/components/curations/CuratorListingPage";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 
 const baseUrl =
@@ -21,5 +22,20 @@ export const metadata = generateSEOMetadata({
 
 export default async function CurationsHubPage() {
   const curators = await getAllCurators();
-  return <CuratorListingPage curators={curators} />;
+
+  return (
+    <>
+      <PageHeader
+        overline="CURATED RECOMMENDATIONS"
+        title={
+          <>
+            Curations by cafés, baristas, and{" "}
+            <span className="text-accent italic">serious coffee people.</span>
+          </>
+        }
+        description="Independent coffee recommendations from people who brew, taste, and care deeply about Indian specialty coffee."
+      />
+      <CuratorListingPage curators={curators} />
+    </>
+  );
 }

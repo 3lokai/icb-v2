@@ -232,6 +232,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
       ) ?? [];
 
+    // Generate dynamic roaster coffee collection routes
+    const roasterCoffeesRoutes: MetadataRoute.Sitemap =
+      roastersResult.data?.map((roaster) =>
+        withHreflang({
+          url: `${baseUrl}/roasters/${roaster.slug}/coffees`,
+          lastModified: roaster.updated_at
+            ? new Date(roaster.updated_at)
+            : new Date(),
+          changeFrequency: "weekly" as const,
+          priority: 0.7,
+        })
+      ) ?? [];
+
     // Generate dynamic curation (curator) routes
     const curationRoutes: MetadataRoute.Sitemap =
       curatorsResult.data?.map((curator) =>
@@ -321,6 +334,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...staticRoutes,
       ...coffeeRoutes,
       ...roasterRoutes,
+      ...roasterCoffeesRoutes,
       ...curationRoutes,
       ...discoveryRoutes,
       ...learnRoutes,

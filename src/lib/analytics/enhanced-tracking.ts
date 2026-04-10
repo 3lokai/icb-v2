@@ -458,6 +458,24 @@ export function trackRoasterEngagement(
   });
 }
 
+/** Curator hub listing → profile navigation */
+export function trackCuratorEngagement(
+  curatorId: string,
+  engagementType: "listing_click" | "profile_view"
+): void {
+  markUserEngagement("content_read");
+
+  trackEnhancedEvent({
+    event_name: "curator_engagement",
+    event_category: "engagement",
+    content_id: curatorId,
+    custom_parameters: {
+      engagement_type: engagementType,
+      is_curator_engagement: true,
+    },
+  });
+}
+
 // Conversion Events (the money makers!)
 export function trackRoasterConversion(
   roasterId: string,

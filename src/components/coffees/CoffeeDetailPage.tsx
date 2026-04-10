@@ -214,6 +214,11 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
       coffee_slug: coffee.slug,
       roaster_name: coffee.roaster?.name ?? null,
     });
+    capture("rating_page_viewed", {
+      entity_type: "coffee" as const,
+      entity_id: coffee.id,
+      coffee_slug: coffee.slug,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per coffee view
   }, [coffee.id]);
 

@@ -104,6 +104,8 @@ export function QuickRating({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const hasShownSuccessToastRef = useRef(false);
+  const formTouchedRef = useRef(false);
+  const submitSucceededRef = useRef(false);
 
   // Resolve identity
   const [identityKey, setIdentityKey] = useState<string | null>(null);
@@ -166,12 +168,27 @@ export function QuickRating({
     }
   }, [userReview]);
 
-  // Cleanup on unmount
+  useEffect(() => {
+    formTouchedRef.current = false;
+    submitSucceededRef.current = false;
+    startTransition(() => {
+      setHasStarted(false);
+    });
+  }, [entityId, entityType]);
+
+  // Cleanup debounce + abandon tracking on unmount
   useEffect(() => {
     return () => {
       cleanup();
+      if (formTouchedRef.current && !submitSucceededRef.current) {
+        capture("rating_form_abandoned", {
+          entity_type: entityType,
+          entity_id: entityId,
+          variant,
+        });
+      }
     };
-  }, [cleanup]);
+  }, [cleanup, entityType, entityId, variant]);
 
   // Check limit for anon users
   const checkLimitBeforeCreate = useCallback(() => {
@@ -209,9 +226,12 @@ export function QuickRating({
 
   // Rating click handler - only updates local state
   const handleRatingClick = (value: number) => {
+    formTouchedRef.current = true;
     if (!hasStarted) {
       capture("rating_started", {
         entity_type: entityType,
+        entity_id: entityId,
+        rating_value: value,
         ...(slug ? { coffee_slug: slug } : {}),
       });
       setHasStarted(true);
@@ -223,14 +243,28 @@ export function QuickRating({
   const handleSubmit = () => {
     if (rating === 0) return; // Require rating
     if (checkLimitBeforeCreate()) return;
-    createReview({
-      entity_type: entityType,
-      entity_id: entityId,
-      rating: rating,
-      works_with_milk: worksWithMilk,
-      brew_method: brewMethod,
-      comment: comment || null,
-    });
+    submitSucceededRef.current = false;
+    createReview(
+      {
+        entity_type: entityType,
+        entity_id: entityId,
+        rating: rating,
+        works_with_milk: worksWithMilk,
+        brew_method: brewMethod,
+        comment: comment || null,
+      },
+      {
+        onSuccess: (data) => {
+          submitSucceededRef.current = true;
+          capture("rating_form_submitted", {
+            entity_type: entityType,
+            entity_id: entityId,
+            is_first_rating: data.is_first_rating,
+            variant,
+          });
+        },
+      }
+    );
   };
 
   // Delete handler
@@ -360,7 +394,15 @@ export function QuickRating({
             )}
           >
             <Button asChild className="w-full" size="lg">
-              <Link href={`/auth?from=${encodeURIComponent(pathname)}`}>
+              <Link
+                href={`/auth?from=${encodeURIComponent(pathname)}`}
+                onClick={() =>
+                  capture("anon_review_limit_cta_clicked", {
+                    entity_type: entityType,
+                    entity_id: entityId,
+                  })
+                }
+              >
                 Sign in / Sign up
               </Link>
             </Button>
@@ -470,7 +512,10 @@ export function QuickRating({
               <Textarea
                 placeholder={`Any notes to share about this ${entityType}?`}
                 value={comment}
-                onChange={(e) => setComment(e.target.value)}
+                onChange={(e) => {
+                  formTouchedRef.current = true;
+                  setComment(e.target.value);
+                }}
                 disabled={isSaving || isDeleting}
                 className="min-h-[80px] resize-none border-border/60 focus:border-primary/50 transition-colors bg-muted/5"
                 maxLength={500}
@@ -499,11 +544,12 @@ export function QuickRating({
                     </label>
                     <Select
                       value={brewMethod ?? "none"}
-                      onValueChange={(value) =>
+                      onValueChange={(value) => {
+                        formTouchedRef.current = true;
                         setBrewMethod(
                           value === "none" ? null : (value as GrindEnum)
-                        )
-                      }
+                        );
+                      }}
                       disabled={isSaving || isDeleting}
                     >
                       <SelectTrigger className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5">
@@ -532,7 +578,10 @@ export function QuickRating({
                           worksWithMilk === false ? "default" : "outline"
                         }
                         size="sm"
-                        onClick={() => setWorksWithMilk(false)}
+                        onClick={() => {
+                          formTouchedRef.current = true;
+                          setWorksWithMilk(false);
+                        }}
                         disabled={isSaving || isDeleting}
                         className={cn(
                           "h-9 px-4",
@@ -545,7 +594,10 @@ export function QuickRating({
                         type="button"
                         variant={worksWithMilk === true ? "default" : "outline"}
                         size="sm"
-                        onClick={() => setWorksWithMilk(true)}
+                        onClick={() => {
+                          formTouchedRef.current = true;
+                          setWorksWithMilk(true);
+                        }}
                         disabled={isSaving || isDeleting}
                         className={cn(
                           "h-9 px-4",
@@ -559,7 +611,10 @@ export function QuickRating({
                           type="button"
                           variant="ghost"
                           size="sm"
-                          onClick={() => setWorksWithMilk(null)}
+                          onClick={() => {
+                            formTouchedRef.current = true;
+                            setWorksWithMilk(null);
+                          }}
                           disabled={isSaving || isDeleting}
                           className="h-9 px-3 text-muted-foreground hover:text-foreground"
                         >

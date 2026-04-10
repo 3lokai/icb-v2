@@ -59,6 +59,11 @@
   @apply text-xs capitalize font-medium tracking-wide text-muted-foreground;
 }
 
+/* Label-large - Emphasized labels / step titles between caption and subheading */
+.text-label-large {
+  @apply text-sm font-semibold tracking-wide text-foreground;
+}
+
 /* Micro text - For minimal background elements */
 .text-micro {
   font-size: 0.75rem; /* 12px */

@@ -4,6 +4,7 @@
 import Link from "next/link";
 import {
   trackCoffeeDiscovery,
+  trackCuratorEngagement,
   trackRoasterEngagement,
 } from "@/lib/analytics/enhanced-tracking";
 
@@ -17,6 +18,8 @@ type TrackingLinkProps = {
   // Roaster tracking props
   roasterOnlyId?: string | null;
   coffeeCount?: number | null;
+  // Curator tracking props
+  curatorId?: string | null;
 };
 
 export function CoffeeTrackingLink({
@@ -60,6 +63,30 @@ export function RoasterTrackingLink({
 
   return (
     <Link aria-label={ariaLabel} href={href} onClick={handleClick}>
+      {children}
+    </Link>
+  );
+}
+
+export function CuratorTrackingLink({
+  href,
+  ariaLabel,
+  children,
+  curatorId,
+}: Pick<TrackingLinkProps, "href" | "ariaLabel" | "children" | "curatorId">) {
+  const handleClick = () => {
+    if (curatorId) {
+      trackCuratorEngagement(curatorId, "listing_click");
+    }
+  };
+
+  return (
+    <Link
+      aria-label={ariaLabel}
+      className="block h-full rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      href={href}
+      onClick={handleClick}
+    >
       {children}
     </Link>
   );

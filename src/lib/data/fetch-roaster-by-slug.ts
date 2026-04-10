@@ -5,14 +5,22 @@ import type { RoasterDetail } from "@/types/roaster-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
 import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
 
+export type FetchRoasterBySlugOptions = {
+  /** Max coffees to load from `coffee_summary` (default 15). */
+  limit?: number;
+  supabaseClient?: SupabaseClient;
+};
+
 /**
  * Fetch a single roaster by slug with all related data
  * Returns null if roaster not found
  */
 export async function fetchRoasterBySlug(
   slug: string,
-  supabaseClient?: SupabaseClient
+  options?: FetchRoasterBySlugOptions
 ): Promise<RoasterDetail | null> {
+  const { limit = 15, supabaseClient } = options ?? {};
+
   // Try to use service role client if available (bypasses RLS for server-side queries)
   // Fallback to regular client if service role key is not set
   const supabase =
@@ -36,7 +44,7 @@ export async function fetchRoasterBySlug(
 
   // Fetch coffees for this roaster and calculate stats in parallel
   const [coffeesResult, coffeeStatsResult] = await Promise.all([
-    // Fetch coffees from coffee_summary view (limited to 15)
+    // Fetch coffees from coffee_summary view (limited by `limit`, default 15)
     supabase
       .from("coffee_summary")
       .select(
@@ -45,7 +53,7 @@ export async function fetchRoasterBySlug(
       .eq("roaster_id", roasterId)
       .in("status", PUBLIC_COFFEE_STATUSES)
       .order("name", { ascending: true })
-      .limit(15),
+      .limit(limit),
 
     // Fetch coffee stats for aggregation
     supabase

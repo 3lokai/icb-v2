@@ -898,9 +898,11 @@ export type Database = {
       };
       curators: {
         Row: {
+          contact_email: string | null;
           created_at: string;
           curator_type: Database["public"]["Enums"]["curator_type_enum"];
           id: string;
+          instagram_url: string | null;
           is_active: boolean;
           location: string | null;
           logo_url: string | null;
@@ -910,13 +912,16 @@ export type Database = {
           slug: string;
           story: string | null;
           tags: string[] | null;
+          twitter_url: string | null;
           updated_at: string;
           user_id: string | null;
         };
         Insert: {
+          contact_email?: string | null;
           created_at?: string;
           curator_type: Database["public"]["Enums"]["curator_type_enum"];
           id?: string;
+          instagram_url?: string | null;
           is_active?: boolean;
           location?: string | null;
           logo_url?: string | null;
@@ -926,13 +931,16 @@ export type Database = {
           slug: string;
           story?: string | null;
           tags?: string[] | null;
+          twitter_url?: string | null;
           updated_at?: string;
           user_id?: string | null;
         };
         Update: {
+          contact_email?: string | null;
           created_at?: string;
           curator_type?: Database["public"]["Enums"]["curator_type_enum"];
           id?: string;
+          instagram_url?: string | null;
           is_active?: boolean;
           location?: string | null;
           logo_url?: string | null;
@@ -942,6 +950,7 @@ export type Database = {
           slug?: string;
           story?: string | null;
           tags?: string[] | null;
+          twitter_url?: string | null;
           updated_at?: string;
           user_id?: string | null;
         };

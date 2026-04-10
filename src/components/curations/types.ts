@@ -14,6 +14,9 @@ export type Curator = {
   philosophy?: string;
   curatorType: "Cafe" | "Barista" | "Community";
   quote?: string;
+  instagramUrl?: string;
+  twitterUrl?: string;
+  contactEmail?: string;
   links: CuratorLink[];
   gallery: string[];
   recentPicks?: string[];

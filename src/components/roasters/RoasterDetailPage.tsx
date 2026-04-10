@@ -21,12 +21,12 @@ import {
   ExitIntentRatingModal,
 } from "@/components/reviews";
 import CoffeeCard from "@/components/cards/CoffeeCard";
-import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
 import { trackRoasterClick } from "@/lib/analytics";
 import {
   trackRoasterConversion,
   trackRoasterEngagement,
 } from "@/lib/analytics/enhanced-tracking";
+import { capture } from "@/lib/posthog";
 import { useReviews, useReviewStats } from "@/hooks/use-reviews";
 import { useExitIntentRating } from "@/hooks/use-exit-intent-rating";
 import { ShareRow } from "@/components/common/ShareRow";
@@ -169,6 +169,11 @@ export function RoasterDetailPage({
   useEffect(() => {
     trackRoasterEngagement(roaster.id, "profile_view", {
       coffeeCount: roaster.coffee_count ?? undefined,
+    });
+    capture("rating_page_viewed", {
+      entity_type: "roaster" as const,
+      entity_id: roaster.id,
+      roaster_slug: roaster.slug,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roaster.id]);
@@ -462,12 +467,7 @@ export function RoasterDetailPage({
                       className="rounded-full px-8 hover-lift"
                     >
                       <Link
-                        href={`/coffees?${buildCoffeeQueryString(
-                          { roaster_slugs: [roaster.slug] },
-                          1,
-                          "relevance",
-                          15
-                        )}`}
+                        href={`/roasters/${roaster.slug}/coffees`}
                         className="inline-flex items-center gap-2"
                       >
                         Explore All Coffees

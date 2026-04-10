@@ -6,6 +6,8 @@ import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGrid
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
+import { getAllCurators } from "@/data/curations";
+import { fetchCommunityCoffeeReviewCount } from "@/lib/data/fetch-community-coffee-review-count";
 
 // Dynamic imports for below-the-fold components to reduce initial bundle size
 const NewArrivalsSection = dynamic(
@@ -66,6 +68,17 @@ const HomepageFAQ = dynamic(
   }
 );
 
+const CuratorSpotlight = dynamic(
+  () => import("@/components/homepage/CuratorSpotlight"),
+  {
+    loading: () => (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
 const CtaSection = dynamic(() => import("@/components/homepage/CtaSection"), {
   loading: () => (
     <div className="flex min-h-[200px] items-center justify-center">
@@ -99,6 +112,17 @@ const UserProfileTeaser = dynamic(
   }
 );
 
+const TopRatedSection = dynamic(
+  () => import("@/components/homepage/TopRatedSection"),
+  {
+    loading: () => (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -123,6 +147,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
+  const [curators, communityCoffeeReviewCount] = await Promise.all([
+    getAllCurators(),
+    fetchCommunityCoffeeReviewCount(),
+  ]);
+
   return (
     <div className="surface-0 flex min-h-screen flex-col">
       <main className="flex-1 bg-muted/30">
@@ -175,10 +204,14 @@ export default async function Home() {
         </div>
         <HowItWorksSection />
         <UserProfileTeaser />
+        <TopRatedSection
+          communityCoffeeReviewCount={communityCoffeeReviewCount}
+        />
         <HomeCollectionGridLazy tier="core" />
         <NewArrivalsSection />
         <RoasterInfrastructureSection />
         <EducationSection />
+        <CuratorSpotlight curator={curators[0] || null} />
         <TestimonialsSection />
         <HomepageFAQ />
         <CtaSection />

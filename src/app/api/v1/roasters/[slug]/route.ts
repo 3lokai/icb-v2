@@ -25,7 +25,9 @@ export async function GET(
     }
 
     const supabase = createApiRouteClient();
-    const roaster = await fetchRoasterBySlug(slug, supabase);
+    const roaster = await fetchRoasterBySlug(slug, {
+      supabaseClient: supabase,
+    });
 
     if (!roaster) {
       return NextResponse.json({ error: "Roaster not found" }, { status: 404 });
