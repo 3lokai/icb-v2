@@ -462,12 +462,7 @@ export function RoasterDetailPage({
                       className="rounded-full px-8 hover-lift"
                     >
                       <Link
-                        href={`/coffees?${buildCoffeeQueryString(
-                          { roaster_slugs: [roaster.slug] },
-                          1,
-                          "relevance",
-                          15
-                        )}`}
+                        href={`/roasters/${roaster.slug}/coffees`}
                         className="inline-flex items-center gap-2"
                       >
                         Explore All Coffees

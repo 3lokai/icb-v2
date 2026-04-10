@@ -11,6 +11,7 @@ import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
  */
 export async function fetchRoasterBySlug(
   slug: string,
+  limit: number = 15,
   supabaseClient?: SupabaseClient
 ): Promise<RoasterDetail | null> {
   // Try to use service role client if available (bypasses RLS for server-side queries)
@@ -45,7 +46,7 @@ export async function fetchRoasterBySlug(
       .eq("roaster_id", roasterId)
       .in("status", PUBLIC_COFFEE_STATUSES)
       .order("name", { ascending: true })
-      .limit(15),
+      .limit(limit),
 
     // Fetch coffee stats for aggregation
     supabase
