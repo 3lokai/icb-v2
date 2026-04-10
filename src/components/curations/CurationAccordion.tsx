@@ -6,6 +6,7 @@ import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Card, CardContent } from "@/components/ui/card";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
+import { coffeeImagePresets } from "@/lib/imagekit";
 import {
   Accordion,
   AccordionContent,
@@ -61,7 +62,7 @@ export function CurationAccordion({
           </span>
         </div>
         <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-          Our Coffee <span className="text-accent italic">Selections.</span>
+          Coffee <span className="text-accent italic">selections.</span>
         </h2>
       </Stack>
 
@@ -80,7 +81,7 @@ export function CurationAccordion({
             <AccordionTrigger className="hover:no-underline py-5 md:py-6">
               <div className="flex flex-col items-start gap-1">
                 <div className="flex items-center gap-3">
-                  <span className="text-heading font-serif leading-snug tracking-tight">
+                  <span className="text-heading leading-snug tracking-tight">
                     {curation.title}
                   </span>
                   {curation.isDefault && (
@@ -89,7 +90,7 @@ export function CurationAccordion({
                     </span>
                   )}
                 </div>
-                <span className="text-caption font-normal">
+                <span className="text-caption">
                   {curation.selections.length} coffees
                 </span>
               </div>
@@ -124,7 +125,7 @@ function SelectionGrid({
           <div className="relative w-full sm:w-2/5 aspect-[4/3] sm:aspect-auto sm:min-h-[160px] bg-muted grayscale group-hover:grayscale-0 transition-all duration-500 overflow-hidden">
             {selection.image ? (
               <Image
-                src={selection.image}
+                src={coffeeImagePresets.coffeeCard(selection.image)}
                 alt={selection.name}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
@@ -151,12 +152,12 @@ function SelectionGrid({
                       selection.roasterSlug,
                       selection.coffeeSlug
                     )}
-                    className="text-subheading font-serif leading-snug hover:text-accent transition-colors"
+                    className="text-heading leading-snug hover:text-accent transition-colors"
                   >
                     {selection.name}
                   </Link>
                 ) : (
-                  <h3 className="text-subheading font-serif leading-snug">
+                  <h3 className="text-heading leading-snug">
                     {selection.name}
                   </h3>
                 )}

@@ -1,237 +1,313 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { motion, type Variants } from "motion/react";
 import { PageShell } from "@/components/primitives/page-shell";
-import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Curator } from "./types";
+import { CuratorCard } from "@/components/cards/CuratorCard";
+import type { Curator } from "./types";
 
 type CuratorListingPageProps = {
   curators: Curator[];
 };
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.21, 0.47, 0.32, 0.98],
+    },
+  },
+};
+
 export function CuratorListingPage({ curators }: CuratorListingPageProps) {
   return (
     <PageShell maxWidth="7xl">
-      <div className="[&>section]:mx-0">
-        <PageHeader
-          overline="CURATED RECOMMENDATIONS"
-          title={
-            <>
-              Curations by cafés, baristas, and{" "}
-              <span className="text-accent italic">serious coffee people.</span>
-            </>
-          }
-          description="Independent coffee recommendations from people who brew, taste, and care deeply about Indian specialty coffee."
-        />
-      </div>
-
       <Section spacing="default">
-        <div className="max-w-2xl">
-          <Stack gap="4">
-            <h2 className="text-title font-serif">
-              What are Curations on ICB?
-            </h2>
-            <p className="text-body text-muted-foreground leading-relaxed">
-              Curations are personal coffee recommendations from cafés,
-              baristas, and community voices with a clear point of view.
-            </p>
-            <p className="text-body text-muted-foreground leading-relaxed">
-              Each curator shares coffees they&apos;ve brewed, enjoyed, and
-              stand behind — based on taste, not trends.
-            </p>
-            <p className="text-caption text-muted-foreground italic">
-              Think of it as editorial taste, not ratings.
-            </p>
-          </Stack>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+          <div className="md:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <Stack gap="6">
+                <div className="inline-flex items-center gap-4">
+                  <span className="h-px w-8 md:w-12 bg-accent/60" />
+                  <span className="text-overline text-accent tracking-[0.15em] uppercase">
+                    The ICB Philosophy
+                  </span>
+                </div>
+                <h2 className="text-display leading-tight">
+                  Taste over <span className="italic">trends.</span>
+                </h2>
+                <div className="h-0.5 w-10 bg-border/40" />
+              </Stack>
+            </motion.div>
+          </div>
+
+          <div className="md:col-span-7">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+            >
+              <Stack gap="6" className="max-w-xl">
+                <p className="text-body-large text-muted-foreground">
+                  Curations are personal coffee recommendations from cafés,
+                  baristas, and community voices with a clear point of view.
+                </p>
+                <p className="text-body text-muted-foreground/80">
+                  Each curator shares coffees they&apos;ve brewed, enjoyed, and
+                  stand behind — based on personal taste, consistent
+                  preferences, and brewing history.
+                </p>
+                <div className="pt-2">
+                  <div className="h-px w-10 bg-border/40" />
+                </div>
+              </Stack>
+            </motion.div>
+          </div>
         </div>
       </Section>
 
       {/* Main Curator Listing */}
       <Section spacing="default">
-        <Stack gap="6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border/10 pb-6">
-            <Stack gap="2">
+        <Stack gap="12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <Stack gap="3">
               <div className="inline-flex items-center gap-4">
                 <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
                   EXPLORE CURATORS
                 </span>
               </div>
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                Editorial <span className="text-accent italic">Taste.</span>
+              <h2 className="text-title text-balance leading-none">
+                Discover your next{" "}
+                <span className="text-accent italic">Favorite.</span>
               </h2>
             </Stack>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
             {curators.length === 0 ? (
               <p className="text-body text-muted-foreground col-span-full py-12 text-center">
                 No curators yet. Check back soon for curated recommendations.
               </p>
             ) : (
               curators.map((curator) => (
-                <CuratorCard key={curator.id} curator={curator} />
+                <motion.div key={curator.id} variants={itemVariants}>
+                  <CuratorCard curator={curator} />
+                </motion.div>
               ))
             )}
-          </div>
+          </motion.div>
         </Stack>
       </Section>
 
       {/* Integrity note — tone anchor */}
-
-      <div className="border-t border-border/40 pt-6">
-        <Stack gap="1">
-          <p className="text-caption text-muted-foreground font-medium">
-            Independent by design
-          </p>
-          <p className="text-caption text-muted-foreground max-w-2xl">
-            Curations on ICB aren&apos;t sponsored or influenced by brands.
-            Every recommendation reflects the curator&apos;s own brewing
-            preferences.
-          </p>
-        </Stack>
+      <div className="mx-auto max-w-4xl py-12 md:py-20">
+        <div className="border-l border-accent/30 pl-8 md:pl-12">
+          <Stack gap="6">
+            <Stack gap="3">
+              <span className="text-micro font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
+                Independent by design
+              </span>
+              <p className="text-body-large font-serif italic text-muted-foreground leading-relaxed text-pretty">
+                &quot;Curations on ICB aren&apos;t sponsored or influenced by
+                brands. Every recommendation reflects the curator&apos;s own
+                brewing preferences.&quot;
+              </p>
+            </Stack>
+            <div className="flex items-center gap-3">
+              <div className="h-px w-8 bg-border/40" />
+              <p className="text-label text-muted-foreground/60 italic">
+                The ICB Manifesto
+              </p>
+            </div>
+          </Stack>
+        </div>
       </div>
 
-      {/* CTA Section — who becomes a curator, styled like NewsletterSection */}
+      {/* CTA Section — Join the Collective */}
       <Section spacing="default">
-        <div className="mx-auto max-w-2xl">
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-            {/* Subtle magazine-paper pattern */}
+        <div className="mx-auto max-w-6xl">
+          <div className="group relative overflow-hidden rounded-[2.5rem] border border-border/60 bg-card shadow-sm transition-shadow duration-500 hover:shadow-md">
+            {/* Magazine Accents & Textures */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 opacity-[0.45]"
+              className="pointer-events-none absolute inset-0"
             >
-              <div className="absolute -top-24 left-1/2 h-48 w-[120%] -translate-x-1/2 rounded-full bg-muted/50 blur-2xl" />
-              <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px)",
-                  backgroundSize: "28px 28px",
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-muted/30" />
+              {/* Brand Stripe */}
+              <div className="absolute left-0 top-0 h-full w-1.5 md:w-2 bg-gradient-to-b from-primary via-accent to-primary/60 opacity-60" />
+
+              {/* Subtle Dot Matrix */}
+              <div className="absolute inset-0 opacity-[0.2]">
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(circle at 2px 2px, rgba(0,0,0,0.05) 1px, transparent 0)",
+                    backgroundSize: "32px 32px",
+                  }}
+                />
+              </div>
+
+              {/* Soft decorative color washes */}
+              <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-accent/5 blur-[80px]" />
+              <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-primary/5 blur-[80px]" />
             </div>
 
-            <div className="relative p-6 md:p-10">
-              <div className="mx-auto max-w-xl text-center">
-                <Stack gap="4">
-                  <div className="inline-flex flex-col items-center gap-4">
+            <div className="relative p-6 sm:p-10 md:p-14 lg:p-16">
+              <div className="grid items-center gap-10 md:gap-16 lg:grid-cols-12">
+                {/* Left: Editorial Copy */}
+                <div className="lg:col-span-7">
+                  <Stack gap="8">
                     <div className="inline-flex items-center gap-4">
-                      <span className="h-px w-8 bg-accent/60" />
+                      <span className="h-px w-8 md:w-12 bg-accent/60" />
                       <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                        Become a voice
+                        JOIN THE COLLECTIVE
                       </span>
-                      <span className="h-px w-8 bg-accent/60" />
                     </div>
-                    <h2
-                      className="text-title text-balance font-serif"
-                      id="curations-cta-heading"
-                    >
-                      Want to share your coffee recommendations?
-                    </h2>
-                  </div>
 
-                  <p className="text-body text-muted-foreground leading-relaxed">
-                    Curations on ICB come from people with a visible tasting
-                    history — cafés, baristas, and community contributors with
-                    consistent preferences.
-                  </p>
-                  <p className="text-body text-muted-foreground leading-relaxed">
-                    If you care deeply about coffee, start by building your
-                    profile and share what you brew.
-                  </p>
+                    <Stack gap="6">
+                      <h2 className="text-display text-balance leading-tight">
+                        Want to share your{" "}
+                        <span className="text-accent italic">Favorite</span>{" "}
+                        coffees?
+                      </h2>
+                      <div className="space-y-4">
+                        <p className="max-w-xl text-pretty text-body-large text-muted-foreground leading-relaxed">
+                          Curations on ICB come from people with a visible
+                          tasting history — cafés, baristas, and community
+                          contributors with consistent preferences.
+                        </p>
+                        <p className="max-w-xl text-body text-muted-foreground/80 italic">
+                          If you care deeply about specialty coffee, start by
+                          building your profile and share what you&apos;re
+                          brewing.
+                        </p>
+                      </div>
+                    </Stack>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                    <Button
-                      size="lg"
-                      className="rounded-full px-8 w-full sm:w-auto"
-                      asChild
-                    >
-                      <Link href="/profile">Build your profile</Link>
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="rounded-full px-8 w-full sm:w-auto"
-                      asChild
-                    >
-                      <Link href="/coffees">Explore coffees</Link>
-                    </Button>
+                    <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-5 pt-2">
+                      <Button
+                        asChild
+                        className="hover-lift w-full sm:w-auto px-8"
+                        variant="default"
+                        size="lg"
+                      >
+                        <Link href="/profile">Build your profile</Link>
+                      </Button>
+
+                      <Button
+                        asChild
+                        className="hover-lift w-full sm:w-auto px-8"
+                        variant="secondary"
+                        size="lg"
+                      >
+                        <Link href="/coffees">Explore coffees</Link>
+                      </Button>
+                    </div>
+                  </Stack>
+                </div>
+
+                {/* Right: The Criteria Block */}
+                <div className="lg:col-span-5 flex flex-col items-start lg:mt-0 mt-4">
+                  <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-background/40 p-6 md:p-8 transition-all hover:bg-background/60 hover:border-border/80">
+                    <Stack gap="6">
+                      <div className="flex items-center justify-between">
+                        <span className="text-overline text-muted-foreground font-semibold tracking-[0.15em] uppercase">
+                          The Verification Path
+                        </span>
+                        <div className="h-2 w-2 rounded-full bg-accent/40 animate-pulse" />
+                      </div>
+
+                      <Stack gap="6">
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                            <span className="text-micro font-bold text-accent">
+                              1
+                            </span>
+                          </div>
+                          <div>
+                            <p className="text-label-large">Verified History</p>
+                            <p className="text-caption text-muted-foreground">
+                              Consistently rate and review the beans you brew.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                            <span className="text-micro font-bold text-accent">
+                              2
+                            </span>
+                          </div>
+                          <div>
+                            <p className="text-label-large">
+                              Public Perspective
+                            </p>
+                            <p className="text-caption text-muted-foreground">
+                              Build a visible taste profile and share your
+                              preferences.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                            <span className="text-micro font-bold text-accent">
+                              3
+                            </span>
+                          </div>
+                          <div>
+                            <p className="text-label-large">Community Merit</p>
+                            <p className="text-caption text-muted-foreground">
+                              Invitations are sent based on consistent community
+                              logic.
+                            </p>
+                          </div>
+                        </div>
+                      </Stack>
+
+                      <div className="mt-2 pt-2 border-t border-border/40">
+                        <p className="text-micro text-muted-foreground italic text-center">
+                          Transparency first. Recommendations by people, for
+                          people.
+                        </p>
+                      </div>
+                    </Stack>
                   </div>
-                </Stack>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </Section>
     </PageShell>
-  );
-}
-
-function CuratorCard({ curator }: { curator: Curator }) {
-  return (
-    <Card className="group h-full flex flex-col border-border/40 hover:border-accent/30 transition-all duration-300 bg-card overflow-hidden rounded-2xl">
-      <CardContent className="p-6 flex flex-col h-full gap-5">
-        <div className="flex items-start justify-between">
-          <div className="relative w-16 h-16 rounded-xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 border border-border/50">
-            <Image
-              src={curator.logo}
-              alt={curator.name}
-              fill
-              className="object-cover"
-            />
-          </div>
-          <Badge
-            variant="secondary"
-            className="rounded-full px-3 py-1 text-micro uppercase tracking-widest font-bold bg-muted/50 border-none"
-          >
-            {curator.curatorType}
-          </Badge>
-        </div>
-
-        <Stack gap="1">
-          <h3 className="text-heading font-serif group-hover:text-accent transition-colors duration-300">
-            {curator.name}
-          </h3>
-          <p className="text-caption text-muted-foreground flex items-center gap-1.5 font-medium uppercase tracking-tight">
-            {curator.location}
-          </p>
-        </Stack>
-
-        <p className="text-body text-muted-foreground font-serif italic line-clamp-2 leading-relaxed h-[3rem]">
-          &quot;{curator.philosophy || curator.story.slice(0, 60)}...&quot;
-        </p>
-
-        <div className="mt-auto">
-          <Stack gap="3">
-            <div className="flex items-center justify-between text-micro text-muted-foreground border-t border-border/10 pt-4">
-              <span className="font-semibold uppercase tracking-widest">
-                RECENT PICKS
-              </span>
-            </div>
-
-            <div className="text-caption font-medium text-muted-foreground/80">
-              {curator.recentPicks?.join(" · ") || "Specialty Selection"}
-            </div>
-
-            <Link href={`/curations/${curator.slug}`} className="block">
-              <Button
-                variant="outline"
-                className="w-full rounded-xl group-hover:bg-accent group-hover:text-white group-hover:border-accent transition-all duration-300"
-              >
-                View curation
-              </Button>
-            </Link>
-          </Stack>
-        </div>
-      </CardContent>
-    </Card>
   );
 }

@@ -69,6 +69,17 @@ export function useNewArrivalCoffees(limit: number = 6) {
 }
 
 /**
+ * Hook for fetching top-rated coffees (directory sort: rating_avg, then rating_count)
+ */
+export function useTopRatedCoffees(limit: number = 6) {
+  return useQuery({
+    queryKey: queryKeys.coffees.list({}, 1, limit, "rating_desc"),
+    queryFn: () => fetchCoffeesFromAPI({}, 1, limit, "rating_desc"),
+    staleTime: 60 * 1000, // 1 minute
+  });
+}
+
+/**
  * Hook for fetching featured roasters (sorted by rating, active only)
  */
 export function useFeaturedRoasters(limit: number = 6) {

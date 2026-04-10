@@ -382,14 +382,40 @@ export async function fetchCoffeeImages(
 
   const { data: imagesData } = await supabase
     .from("coffee_images")
-    .select("coffee_id, imagekit_url")
+    .select("coffee_id, imagekit_url, url")
     .in("coffee_id", coffeeIds)
     .order("sort_order", { ascending: true });
 
   const imagesMap = new Map<string, string>();
   for (const img of imagesData || []) {
-    if (img.coffee_id && img.imagekit_url && !imagesMap.has(img.coffee_id)) {
-      imagesMap.set(img.coffee_id, img.imagekit_url);
+    const href = img.imagekit_url || img.url;
+    if (img.coffee_id && href && !imagesMap.has(img.coffee_id)) {
+      imagesMap.set(img.coffee_id, href);
+    }
+  }
+  return imagesMap;
+}
+
+/**
+ * First listing image per coffee from coffee_directory_mv (same source as CoffeeCard / directory).
+ */
+export async function fetchCoffeeListingImagesFromDirectoryMv(
+  supabase: SupabaseClient,
+  coffeeIds: string[]
+): Promise<Map<string, string>> {
+  if (coffeeIds.length === 0) {
+    return new Map();
+  }
+
+  const { data } = await supabase
+    .from("coffee_directory_mv")
+    .select("coffee_id, image_url")
+    .in("coffee_id", coffeeIds);
+
+  const imagesMap = new Map<string, string>();
+  for (const row of data ?? []) {
+    if (row.coffee_id && row.image_url && !imagesMap.has(row.coffee_id)) {
+      imagesMap.set(row.coffee_id, row.image_url);
     }
   }
   return imagesMap;
