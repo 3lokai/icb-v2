@@ -163,9 +163,11 @@ function SelectionGrid({
                 )}
                 <p className="text-label text-accent">{selection.roaster}</p>
               </Stack>
-              <p className="text-body text-muted-foreground font-serif italic line-clamp-2">
-                &quot;{selection.note}&quot;
-              </p>
+              {selection.note?.trim() ? (
+                <p className="text-body text-muted-foreground font-serif italic line-clamp-2">
+                  &quot;{selection.note}&quot;
+                </p>
+              ) : null}
             </Stack>
           </CardContent>
         </Card>

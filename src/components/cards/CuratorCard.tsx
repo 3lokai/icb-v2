@@ -112,7 +112,7 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
             >
               {curator.name}
             </h3>
-            <p className="text-label font-bold uppercase">{curator.location}</p>
+            <p className="text-label">{curator.location}</p>
           </Stack>
 
           {quoteText ? (
@@ -125,7 +125,7 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
             <Stack gap="4">
               <div className="flex items-center justify-between border-t border-border/10 pt-5">
                 <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60">
-                  EDITORIAL PICKS
+                  CURATOR PICKS
                 </span>
               </div>
 
@@ -144,11 +144,11 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
               <span
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "w-full text-xs font-medium shadow-sm transition-all duration-500",
-                  "group-hover:border-accent group-hover:bg-accent group-hover:text-white"
+                  "w-full shadow-sm transition-all duration-500",
+                  "group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground"
                 )}
               >
-                View Curator
+                View Selections
               </span>
             </Stack>
           </div>
