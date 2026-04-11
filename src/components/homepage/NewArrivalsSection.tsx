@@ -47,8 +47,8 @@ export default function NewArrivalsSection() {
       <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10">
-        <div className="text-center mb-16">
-          <Stack gap="4" className="items-center">
+        <div className="text-left mb-16">
+          <Stack gap="4" className="items-start">
             <div className="inline-flex items-center gap-4">
               <span className="h-px w-8 bg-accent/40" />
               <span className="text-overline text-muted-foreground tracking-[0.2em]">
@@ -56,11 +56,11 @@ export default function NewArrivalsSection() {
               </span>
               <span className="h-px w-8 bg-accent/40" />
             </div>
-            <h2 className="text-hero text-balance">
+            <h2 className="text-title lg:text-display text-balance leading-[1.1] tracking-tight">
               New{" "}
               <span className="text-accent italic font-serif">Arrivals.</span>
             </h2>
-            <p className="max-w-xl mx-auto text-body text-muted-foreground leading-relaxed mt-4">
+            <p className="max-w-xl text-body text-muted-foreground leading-relaxed mt-4">
               The latest additions to our roster of exceptional Indian coffee
               beans, featuring freshly roasted delights from across the country.
             </p>

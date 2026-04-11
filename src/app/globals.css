@@ -191,9 +191,10 @@
   }
 
   /* Noise texture overlay – fine film grain, theme-aware, respects reduced motion */
+  /* Light: cream backgrounds wash out overlay/soft-light; multiply keeps neutral grain readable */
   .bg-noise {
-    --noise-opacity: 0.06;
-    --noise-opacity-reduced: 0.02;
+    --noise-opacity: 0.07;
+    --noise-opacity-reduced: 0.028;
     position: fixed;
     inset: 0;
     width: 100%;
@@ -204,11 +205,11 @@
     pointer-events: none;
     z-index: 0;
     opacity: var(--noise-opacity);
-    mix-blend-mode: overlay;
+    mix-blend-mode: multiply;
   }
 
   .dark .bg-noise {
-    --noise-opacity: 0.045;
+    --noise-opacity: 0.07;
     --noise-opacity-reduced: 0.015;
     mix-blend-mode: soft-light;
   }

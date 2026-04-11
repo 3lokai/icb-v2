@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+
 import { Icon } from "@/components/common/Icon";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -79,12 +80,14 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
                   transition={{ delay: 0.3 }}
                   className="flex flex-wrap items-center gap-4 pt-2"
                 >
-                  <Button
-                    asChild
-                    size="lg"
-                    className="hover-lift rounded-full px-8 h-11 shadow-sm text-body"
-                  >
-                    <Link href="/curations">Meet the Collective</Link>
+                  <Button asChild variant="outline" size="lg" className="group">
+                    <Link href="/curations">
+                      Meet the Collective
+                      <Icon
+                        className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                        name="ArrowRight"
+                      />
+                    </Link>
                   </Button>
                 </motion.div>
               </Stack>
