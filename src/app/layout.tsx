@@ -114,7 +114,6 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        <div className="bg-noise" />
         <StructuredData schema={[organizationSchema, websiteSchema]} />
         {/* Google Analytics Consent Mode - Must run before Next.js GoogleAnalytics component */}
         {/* This script ONLY initializes dataLayer, gtag, and consent - NO config call */}
@@ -200,6 +199,8 @@ export default async function RootLayout({
           </QueryProvider>
         </ThemeProvider>
         <SpeedInsights />
+        {/* After app shell so it stacks above .surface-0; z-[1] keeps it under z-10+ UI (hero, nav). */}
+        <div aria-hidden className="bg-noise z-[1]" />
       </body>
     </html>
   );
