@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
 import { buildRoasterQueryString } from "@/lib/filters/roaster-url";
 import { queryKeys } from "@/lib/query-keys";
+import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
 import type {
   CoffeeFilters,
   CoffeeListResponse,
@@ -57,13 +58,19 @@ async function fetchRoastersFromAPI(
   return response.json();
 }
 
+/** Homepage coffee lists: explicit statuses so discontinued never appears (matches directory defaults). */
+const homepageCoffeeFilters: CoffeeFilters = {
+  status: PUBLIC_COFFEE_STATUSES,
+};
+
 /**
  * Hook for fetching new arrival coffees (sorted by newest)
  */
 export function useNewArrivalCoffees(limit: number = 6) {
   return useQuery({
-    queryKey: queryKeys.coffees.list({}, 1, limit, "newest"),
-    queryFn: () => fetchCoffeesFromAPI({}, 1, limit, "newest"),
+    queryKey: queryKeys.coffees.list(homepageCoffeeFilters, 1, limit, "newest"),
+    queryFn: () =>
+      fetchCoffeesFromAPI(homepageCoffeeFilters, 1, limit, "newest"),
     staleTime: 60 * 1000, // 1 minute
   });
 }
@@ -73,8 +80,14 @@ export function useNewArrivalCoffees(limit: number = 6) {
  */
 export function useTopRatedCoffees(limit: number = 6) {
   return useQuery({
-    queryKey: queryKeys.coffees.list({}, 1, limit, "rating_desc"),
-    queryFn: () => fetchCoffeesFromAPI({}, 1, limit, "rating_desc"),
+    queryKey: queryKeys.coffees.list(
+      homepageCoffeeFilters,
+      1,
+      limit,
+      "rating_desc"
+    ),
+    queryFn: () =>
+      fetchCoffeesFromAPI(homepageCoffeeFilters, 1, limit, "rating_desc"),
     staleTime: 60 * 1000, // 1 minute
   });
 }
