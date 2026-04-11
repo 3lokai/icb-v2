@@ -202,12 +202,12 @@ export default async function Home() {
             </div>
           </div>
         </div>
-        <HowItWorksSection />
-        <UserProfileTeaser />
         <TopRatedSection
           communityCoffeeReviewCount={communityCoffeeReviewCount}
         />
         <HomeCollectionGridLazy tier="core" />
+        <HowItWorksSection />
+        <UserProfileTeaser />
         <NewArrivalsSection />
         <RoasterInfrastructureSection />
         <EducationSection />
