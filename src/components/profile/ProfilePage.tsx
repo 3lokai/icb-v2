@@ -44,6 +44,10 @@ export function ProfilePage({
     return null;
   }
 
+  const profileRevalidatePath = isAnonymous
+    ? "/profile/anon"
+    : `/profile/${(profile.username?.trim() || profile.id).toLowerCase()}`;
+
   const formattedRatings = ratings.map((rating) => ({
     id: rating.id,
     name: rating.coffee_name,
@@ -212,6 +216,7 @@ export function ProfilePage({
                 <ProfileSelections
                   selections={formattedSelections}
                   username={profile.username}
+                  revalidateProfilePath={profileRevalidatePath}
                   isOwner={isOwner}
                   isAnonymous={isAnonymous}
                 />

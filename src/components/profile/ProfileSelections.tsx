@@ -1,35 +1,36 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
-import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
-import { coffeeImagePresets } from "@/lib/imagekit";
-import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { AddSelection } from "./AddSelection";
 import { ShareSection } from "./ShareSection";
 import { QuickRating } from "@/components/reviews/QuickRating";
-
-type Selection = {
-  id: string;
-  name: string;
-  roaster: string;
-  note: string;
-  image?: string;
-  coffeeSlug?: string;
-  roasterSlug?: string;
-  coffeeId?: string;
-};
+import {
+  ProfileSelectionCard,
+  type ProfileSelectionListItem,
+} from "@/components/cards/ProfileSelectionCard";
+import { useSetReviewRecommendFalse } from "@/hooks/use-reviews";
+import { ensureAnonId } from "@/lib/reviews/anon-id";
+import { cn } from "@/lib/utils";
 
 type ProfileSelectionsProps = {
-  selections: Selection[];
+  selections: ProfileSelectionListItem[];
   username: string | null;
+  /** Used with `revalidatePath` after clearing a recommendation */
+  revalidateProfilePath: string;
   isOwner?: boolean;
   isAnonymous?: boolean;
 };
@@ -37,12 +38,44 @@ type ProfileSelectionsProps = {
 export function ProfileSelections({
   selections,
   username,
+  revalidateProfilePath,
   isOwner = false,
   isAnonymous = false,
 }: ProfileSelectionsProps) {
-  const [editingSelection, setEditingSelection] = useState<Selection | null>(
-    null
-  );
+  const router = useRouter();
+  const [editingSelection, setEditingSelection] =
+    useState<ProfileSelectionListItem | null>(null);
+  const [removingSelection, setRemovingSelection] =
+    useState<ProfileSelectionListItem | null>(null);
+
+  const { mutate: clearRecommendation, isPending: isClearingRecommend } =
+    useSetReviewRecommendFalse();
+
+  const handleConfirmRemoveFromRecommendations = () => {
+    if (!removingSelection) return;
+    const anonId = ensureAnonId();
+    clearRecommendation(
+      {
+        reviewId: removingSelection.id,
+        anonId,
+        revalidateProfilePath,
+      },
+      {
+        onSuccess: () => {
+          setRemovingSelection(null);
+          router.refresh();
+          toast.success(
+            "This coffee has been removed from recommendations, but your review is still safe."
+          );
+        },
+        onError: (err) => {
+          toast.error(
+            err instanceof Error ? err.message : "Something went wrong."
+          );
+        },
+      }
+    );
+  };
 
   return (
     <div>
@@ -73,79 +106,15 @@ export function ProfileSelections({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {selections.map((selection) => (
-            <Card
+            <ProfileSelectionCard
               key={selection.id}
-              className="relative group overflow-hidden border-border/40 rounded-[2rem] hover:border-accent/40 transition-all duration-500 flex flex-col sm:flex-row py-0 gap-0"
-            >
-              {/* Image Section */}
-              <div className="relative w-full sm:w-2/5 aspect-[4/3] min-h-[200px] bg-muted overflow-hidden">
-                {selection.image ? (
-                  <Image
-                    src={coffeeImagePresets.coffeeCard(selection.image)}
-                    alt={selection.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
-                    className="object-contain group-hover:scale-110 transition-transform duration-1000"
-                    unoptimized
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Icon
-                      name="Coffee"
-                      size={40}
-                      className="text-muted-foreground/20"
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Content Section */}
-              <CardContent className="p-8 flex-1 flex flex-col">
-                <Stack gap="4" className="h-full">
-                  <Stack gap="1">
-                    {selection.roasterSlug && selection.coffeeSlug ? (
-                      <Link
-                        href={coffeeDetailHref(
-                          selection.roasterSlug,
-                          selection.coffeeSlug
-                        )}
-                        className="text-heading font-serif leading-[1.1] hover:text-accent transition-colors"
-                      >
-                        {selection.name}
-                      </Link>
-                    ) : (
-                      <h3 className="text-heading font-serif leading-[1.1]">
-                        {selection.name}
-                      </h3>
-                    )}
-                    <p className="text-label mt-1">{selection.roaster}</p>
-                  </Stack>
-                  <div className="relative mt-2">
-                    <Icon
-                      name="Quotes"
-                      size={24}
-                      className="absolute -top-4 -left-3 text-accent/10 rotate-180"
-                    />
-                    <p className="text-body italic text-muted-foreground/90 leading-relaxed font-serif">
-                      &quot;{selection.note}&quot;
-                    </p>
-                  </div>
-                </Stack>
-
-                {isOwner && (
-                  <div className="absolute top-4 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-muted-foreground bg-background/50 backdrop-blur-sm rounded-full"
-                      onClick={() => setEditingSelection(selection)}
-                    >
-                      <Icon name="PencilSimple" size={14} />
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+              selection={selection}
+              isOwner={isOwner}
+              onEdit={isOwner ? setEditingSelection : undefined}
+              onRemoveFromRecommendations={
+                isOwner ? setRemovingSelection : undefined
+              }
+            />
           ))}
 
           {isOwner && (
@@ -161,7 +130,6 @@ export function ProfileSelections({
         </div>
       </Stack>
 
-      {/* Edit Rating Dialog */}
       <Dialog
         open={!!editingSelection}
         onOpenChange={(open) => !open && setEditingSelection(null)}
@@ -178,6 +146,56 @@ export function ProfileSelections({
               variant="modal"
             />
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={!!removingSelection}
+        onOpenChange={(open) => !open && setRemovingSelection(null)}
+      >
+        <DialogContent
+          className={cn(
+            "surface-2 overflow-hidden rounded-[2.5rem] p-0 gap-0 sm:max-w-md"
+          )}
+        >
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-destructive/60 via-destructive to-destructive/60 opacity-60 z-10" />
+          <DialogHeader className="p-8 pb-6 border-b border-border/10 pt-10">
+            <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60 mb-1 text-left">
+              Confirm Action
+            </p>
+            <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">
+              Remove from public recommendations?
+            </DialogTitle>
+            <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
+              {removingSelection ? (
+                <>
+                  <span className="font-medium text-foreground">
+                    {removingSelection.name}
+                  </span>{" "}
+                  will no longer appear in your selections. Your rating and
+                  written review stay on your profile and on the coffee page.
+                </>
+              ) : null}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="p-8 pt-6 flex-row gap-3 justify-end sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setRemovingSelection(null)}
+              disabled={isClearingRecommend}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleConfirmRemoveFromRecommendations}
+              disabled={isClearingRecommend}
+            >
+              {isClearingRecommend ? "Updating…" : "Remove from selections"}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
