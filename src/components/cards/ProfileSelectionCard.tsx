@@ -89,7 +89,7 @@ export function ProfileSelectionCard({
         </Stack>
 
         {isOwner && (onEdit || onRemoveFromRecommendations) && (
-          <div className="absolute top-4 right-6 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute top-4 right-6 flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100 sm:[@media(hover:none)]:opacity-100 transition-opacity">
             {onEdit && (
               <Button
                 type="button"

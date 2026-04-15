@@ -56,19 +56,25 @@ BEGIN
     RAISE EXCEPTION 'merge_coffee_views_for_anon: p_user_id and p_anon_id are required';
   END IF;
 
-  FOR r IN
-    SELECT * FROM public.coffee_views WHERE anon_id = p_anon_id
-  LOOP
-    SELECT * INTO v_user
+  WHILE EXISTS (
+    SELECT 1 FROM public.coffee_views WHERE anon_id = p_anon_id
+  ) LOOP
+    SELECT * INTO STRICT r
     FROM public.coffee_views
-    WHERE user_id = p_user_id AND coffee_id = r.coffee_id;
+    WHERE anon_id = p_anon_id
+    LIMIT 1
+    FOR UPDATE;
 
-    IF NOT FOUND THEN
-      UPDATE public.coffee_views
-      SET user_id = p_user_id, anon_id = NULL
-      WHERE id = r.id;
-      v_relinked := v_relinked + 1;
-    ELSE
+    IF EXISTS (
+      SELECT 1
+      FROM public.coffee_views
+      WHERE user_id = p_user_id AND coffee_id = r.coffee_id
+    ) THEN
+      SELECT * INTO STRICT v_user
+      FROM public.coffee_views
+      WHERE user_id = p_user_id AND coffee_id = r.coffee_id
+      FOR UPDATE;
+
       UPDATE public.coffee_views
       SET
         view_count = v_user.view_count + r.view_count,
@@ -78,6 +84,11 @@ BEGIN
 
       DELETE FROM public.coffee_views WHERE id = r.id;
       v_merged := v_merged + 1;
+    ELSE
+      UPDATE public.coffee_views
+      SET user_id = p_user_id, anon_id = NULL
+      WHERE id = r.id;
+      v_relinked := v_relinked + 1;
     END IF;
   END LOOP;
 

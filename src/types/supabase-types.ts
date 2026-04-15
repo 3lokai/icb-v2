@@ -65,22 +65,22 @@ export type Database = {
       };
       api_key_daily_usage: {
         Row: {
-          key_id: string;
           date: string;
-          request_count: number;
           error_count: number;
+          key_id: string;
+          request_count: number;
         };
         Insert: {
-          key_id: string;
           date: string;
-          request_count?: number;
           error_count?: number;
+          key_id: string;
+          request_count?: number;
         };
         Update: {
-          key_id?: string;
           date?: string;
-          request_count?: number;
           error_count?: number;
+          key_id?: string;
+          request_count?: number;
         };
         Relationships: [
           {
@@ -94,50 +94,42 @@ export type Database = {
       };
       api_keys: {
         Row: {
-          id: string;
-          user_id: string;
-          name: string;
-          key_prefix: string;
-          key_hash: string;
-          is_active: boolean;
-          rate_limit_rpm: number;
           created_at: string;
-          last_used_at: string | null;
           expires_at: string | null;
+          id: string;
+          is_active: boolean;
+          key_hash: string;
+          key_prefix: string;
+          last_used_at: string | null;
+          name: string;
+          rate_limit_rpm: number;
+          user_id: string;
         };
         Insert: {
-          id?: string;
-          user_id: string;
-          name: string;
-          key_prefix: string;
-          key_hash: string;
-          is_active?: boolean;
-          rate_limit_rpm?: number;
           created_at?: string;
-          last_used_at?: string | null;
           expires_at?: string | null;
+          id?: string;
+          is_active?: boolean;
+          key_hash: string;
+          key_prefix: string;
+          last_used_at?: string | null;
+          name: string;
+          rate_limit_rpm?: number;
+          user_id: string;
         };
         Update: {
-          id?: string;
-          user_id?: string;
-          name?: string;
-          key_prefix?: string;
-          key_hash?: string;
-          is_active?: boolean;
-          rate_limit_rpm?: number;
           created_at?: string;
-          last_used_at?: string | null;
           expires_at?: string | null;
+          id?: string;
+          is_active?: boolean;
+          key_hash?: string;
+          key_prefix?: string;
+          last_used_at?: string | null;
+          name?: string;
+          rate_limit_rpm?: number;
+          user_id?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: "api_keys_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
       brew_methods: {
         Row: {
@@ -585,6 +577,44 @@ export type Database = {
           },
         ];
       };
+      coffee_views: {
+        Row: {
+          anon_id: string | null;
+          coffee_id: string;
+          first_viewed_at: string;
+          id: string;
+          last_viewed_at: string;
+          user_id: string | null;
+          view_count: number;
+        };
+        Insert: {
+          anon_id?: string | null;
+          coffee_id: string;
+          first_viewed_at: string;
+          id?: string;
+          last_viewed_at: string;
+          user_id?: string | null;
+          view_count?: number;
+        };
+        Update: {
+          anon_id?: string | null;
+          coffee_id?: string;
+          first_viewed_at?: string;
+          id?: string;
+          last_viewed_at?: string;
+          user_id?: string | null;
+          view_count?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "coffee_views_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffees";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       coffees: {
         Row: {
           bean_species: Database["public"]["Enums"]["species_enum"] | null;
@@ -997,38 +1027,6 @@ export type Database = {
         };
         Relationships: [];
       };
-      external_user_identities: {
-        Row: {
-          id: string;
-          key_id: string;
-          external_user_id: string;
-          anon_id: string;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          key_id: string;
-          external_user_id: string;
-          anon_id: string;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          key_id?: string;
-          external_user_id?: string;
-          anon_id?: string;
-          created_at?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "external_user_identities_key_id_fkey";
-            columns: ["key_id"];
-            isOneToOne: false;
-            referencedRelation: "api_keys";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       estates: {
         Row: {
           altitude_max_m: number | null;
@@ -1073,6 +1071,38 @@ export type Database = {
             columns: ["region_id"];
             isOneToOne: false;
             referencedRelation: "regions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      external_user_identities: {
+        Row: {
+          anon_id: string;
+          created_at: string;
+          external_user_id: string;
+          id: string;
+          key_id: string;
+        };
+        Insert: {
+          anon_id: string;
+          created_at?: string;
+          external_user_id: string;
+          id?: string;
+          key_id: string;
+        };
+        Update: {
+          anon_id?: string;
+          created_at?: string;
+          external_user_id?: string;
+          id?: string;
+          key_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "external_user_identities_key_id_fkey";
+            columns: ["key_id"];
+            isOneToOne: false;
+            referencedRelation: "api_keys";
             referencedColumns: ["id"];
           },
         ];
@@ -1384,6 +1414,7 @@ export type Database = {
           slug: string | null;
           source_raw: Json | null;
           status: string | null;
+          to_add: boolean | null;
         };
         Insert: {
           first_seen_at?: string;
@@ -1398,6 +1429,7 @@ export type Database = {
           slug?: string | null;
           source_raw?: Json | null;
           status?: string | null;
+          to_add?: boolean | null;
         };
         Update: {
           first_seen_at?: string;
@@ -1412,6 +1444,7 @@ export type Database = {
           slug?: string | null;
           source_raw?: Json | null;
           status?: string | null;
+          to_add?: boolean | null;
         };
         Relationships: [
           {
@@ -1510,7 +1543,15 @@ export type Database = {
           value_for_money?: boolean | null;
           works_with_milk?: boolean | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "reviews_source_key_id_fkey";
+            columns: ["source_key_id"];
+            isOneToOne: false;
+            referencedRelation: "api_keys";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       roaster_members: {
         Row: {
@@ -2233,34 +2274,106 @@ export type Database = {
       };
       user_taste_profile_cache: {
         Row: {
+          avg_rating: number | null;
+          breadth_score: number | null;
+          brew_pref_json: Json | null;
+          concentration_score: number | null;
+          confidence_score: number | null;
           created_at: string | null;
+          distinct_brew_method_count: number | null;
+          distinct_process_count: number | null;
+          distinct_region_count: number | null;
+          distinct_roast_count: number | null;
+          distinct_roaster_count: number | null;
+          flavor_family_pref_json: Json | null;
+          flavor_subcategory_pref_json: Json | null;
           last_computed_at: string | null;
+          orientation_score: number | null;
+          process_pref_json: Json | null;
+          rating_distribution: Json | null;
+          recommend_rate: number | null;
           review_count_at_compute: number | null;
+          roast_pref_json: Json | null;
+          selectivity_score: number | null;
+          single_origin_pct: number | null;
+          species_pref_json: Json | null;
           top_brew_methods: string[] | null;
           top_flavor_note_ids: string[] | null;
+          top_processes: string[] | null;
+          top_region_names: string[] | null;
           top_roast_levels: string[] | null;
+          top_roaster_ids: string[] | null;
+          top_species: string[] | null;
           total_reviews: number | null;
           updated_at: string | null;
           user_id: string;
         };
         Insert: {
+          avg_rating?: number | null;
+          breadth_score?: number | null;
+          brew_pref_json?: Json | null;
+          concentration_score?: number | null;
+          confidence_score?: number | null;
           created_at?: string | null;
+          distinct_brew_method_count?: number | null;
+          distinct_process_count?: number | null;
+          distinct_region_count?: number | null;
+          distinct_roast_count?: number | null;
+          distinct_roaster_count?: number | null;
+          flavor_family_pref_json?: Json | null;
+          flavor_subcategory_pref_json?: Json | null;
           last_computed_at?: string | null;
+          orientation_score?: number | null;
+          process_pref_json?: Json | null;
+          rating_distribution?: Json | null;
+          recommend_rate?: number | null;
           review_count_at_compute?: number | null;
+          roast_pref_json?: Json | null;
+          selectivity_score?: number | null;
+          single_origin_pct?: number | null;
+          species_pref_json?: Json | null;
           top_brew_methods?: string[] | null;
           top_flavor_note_ids?: string[] | null;
+          top_processes?: string[] | null;
+          top_region_names?: string[] | null;
           top_roast_levels?: string[] | null;
+          top_roaster_ids?: string[] | null;
+          top_species?: string[] | null;
           total_reviews?: number | null;
           updated_at?: string | null;
           user_id: string;
         };
         Update: {
+          avg_rating?: number | null;
+          breadth_score?: number | null;
+          brew_pref_json?: Json | null;
+          concentration_score?: number | null;
+          confidence_score?: number | null;
           created_at?: string | null;
+          distinct_brew_method_count?: number | null;
+          distinct_process_count?: number | null;
+          distinct_region_count?: number | null;
+          distinct_roast_count?: number | null;
+          distinct_roaster_count?: number | null;
+          flavor_family_pref_json?: Json | null;
+          flavor_subcategory_pref_json?: Json | null;
           last_computed_at?: string | null;
+          orientation_score?: number | null;
+          process_pref_json?: Json | null;
+          rating_distribution?: Json | null;
+          recommend_rate?: number | null;
           review_count_at_compute?: number | null;
+          roast_pref_json?: Json | null;
+          selectivity_score?: number | null;
+          single_origin_pct?: number | null;
+          species_pref_json?: Json | null;
           top_brew_methods?: string[] | null;
           top_flavor_note_ids?: string[] | null;
+          top_processes?: string[] | null;
+          top_region_names?: string[] | null;
           top_roast_levels?: string[] | null;
+          top_roaster_ids?: string[] | null;
+          top_species?: string[] | null;
           total_reviews?: number | null;
           updated_at?: string | null;
           user_id?: string;
@@ -2376,12 +2489,12 @@ export type Database = {
           brew_method_canonical_keys:
             | Database["public"]["Enums"]["grind_enum"][]
             | null;
+          canon_estate_names: string[] | null;
           canon_flavor_descriptors: string[] | null;
           canon_flavor_families: string[] | null;
           canon_flavor_node_ids: string[] | null;
           canon_flavor_slugs: string[] | null;
           canon_flavor_subcategories: string[] | null;
-          canon_estate_names: string[] | null;
           canon_region_names: string[] | null;
           coffee_id: string | null;
           created_at: string | null;
@@ -2704,6 +2817,7 @@ export type Database = {
       };
       backfill_user_profile_emails: { Args: never; Returns: number };
       can_edit_roaster: { Args: { p_roaster_id: string }; Returns: boolean };
+      cleanup_duplicate_prices: { Args: never; Returns: number };
       cleanup_expired_llm_cache: { Args: never; Returns: number };
       coffee_editor_save: {
         Args: {
@@ -2754,7 +2868,7 @@ export type Database = {
           p_roaster_ids?: string[];
           p_search_query?: string;
           p_statuses?: string[];
-          p_works_with_milk?: boolean | null;
+          p_works_with_milk?: boolean;
         };
         Returns: Json;
       };
@@ -2846,6 +2960,13 @@ export type Database = {
       map_roast_legacy: {
         Args: { raw: string };
         Returns: Database["public"]["Enums"]["roast_level_enum"];
+      };
+      merge_coffee_views_for_anon: {
+        Args: { p_anon_id: string; p_user_id: string };
+        Returns: {
+          rows_merged: number;
+          rows_relinked: number;
+        }[];
       };
       refresh_coffee_directory_mv: { Args: never; Returns: undefined };
       refresh_user_taste_profile_cache: {

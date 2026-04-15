@@ -28,18 +28,13 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
   const backgroundImage = cover
     ? urlFor(cover).width(1280).quality(75).auto("format").url()
     : undefined;
-  const coverWidth = cover?.asset?.metadata?.dimensions?.width ?? 16;
-  const coverHeight = cover?.asset?.metadata?.dimensions?.height ?? 9;
   const coverLqip = cover?.asset?.metadata?.lqip;
 
   return (
     <section className="relative flex min-h-[60vh] w-screen max-w-none items-center justify-center overflow-hidden md:min-h-[50vh] ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
       {/* Background Image */}
       {backgroundImage && (
-        <div
-          className="absolute inset-0 z-0 bg-black/80"
-          style={{ aspectRatio: `${coverWidth} / ${coverHeight}` }}
-        >
+        <div className="absolute inset-0 z-0 bg-black/80">
           <Image
             alt={title}
             className="object-cover object-center"

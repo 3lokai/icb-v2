@@ -9,6 +9,8 @@ import {
   useState,
 } from "react";
 import posthog from "posthog-js";
+import { mergeCoffeeViewsFromAnon } from "@/app/actions/coffee-views";
+import { getAnonId } from "@/lib/reviews/anon-id";
 import { auth } from "@/lib/supabase/auth-helpers";
 
 type AuthContextType = {
@@ -101,6 +103,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { subscription },
     } = auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+        if (event === "SIGNED_IN" && session?.user) {
+          const anonId = getAnonId();
+          if (anonId) {
+            void mergeCoffeeViewsFromAnon(anonId).catch((err) => {
+              console.error("[AuthProvider] mergeCoffeeViewsFromAnon:", err);
+            });
+          }
+        }
         setUser(session?.user ?? null);
       } else if (event === "SIGNED_OUT") {
         setUser(null);
