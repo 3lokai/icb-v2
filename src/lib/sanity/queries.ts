@@ -49,6 +49,7 @@ export const ARTICLE_PROJECTION = `
       _id,
       url,
       metadata {
+        lqip,
         dimensions {
           width,
           height
@@ -83,7 +84,10 @@ export const ARTICLE_PROJECTION = `
       asset->{
         _id,
         url,
-        metadata { dimensions { width, height } }
+        metadata {
+          lqip,
+          dimensions { width, height }
+        }
       },
       hotspot,
       crop

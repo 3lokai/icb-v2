@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -27,17 +25,27 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
     difficulty,
   } = article;
   const displayAuthor = authorRef || author;
-  const backgroundImage = cover ? urlFor(cover).width(1600).url() : undefined;
+  const backgroundImage = cover
+    ? urlFor(cover).width(1280).quality(75).auto("format").url()
+    : undefined;
+  const coverWidth = cover?.asset?.metadata?.dimensions?.width ?? 16;
+  const coverHeight = cover?.asset?.metadata?.dimensions?.height ?? 9;
+  const coverLqip = cover?.asset?.metadata?.lqip;
 
   return (
     <section className="relative flex min-h-[60vh] w-screen max-w-none items-center justify-center overflow-hidden md:min-h-[50vh] ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
       {/* Background Image */}
       {backgroundImage && (
-        <div className="absolute inset-0 z-0 bg-black/80">
+        <div
+          className="absolute inset-0 z-0 bg-black/80"
+          style={{ aspectRatio: `${coverWidth} / ${coverHeight}` }}
+        >
           <Image
             alt={title}
             className="object-cover object-center"
+            blurDataURL={coverLqip}
             fill
+            placeholder={coverLqip ? "blur" : "empty"}
             priority
             sizes="100vw"
             src={backgroundImage}

@@ -26,6 +26,14 @@ async function AnnouncementBanner() {
   );
 }
 
+function AnnouncementBannerSkeleton() {
+  return (
+    <div aria-hidden="true" className="w-full border-b bg-background px-4 py-3">
+      <div className="h-5 w-full" />
+    </div>
+  );
+}
+
 export default function MainLayout({
   children,
 }: {
@@ -33,7 +41,7 @@ export default function MainLayout({
 }) {
   return (
     <div className="surface-0 relative flex min-h-screen flex-col">
-      <Suspense fallback={null}>
+      <Suspense fallback={<AnnouncementBannerSkeleton />}>
         <AnnouncementBanner />
       </Suspense>
       <Header />
