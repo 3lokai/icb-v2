@@ -467,3 +467,86 @@ export async function deleteReview(
     };
   }
 }
+
+/**
+ * Set recommend=false on an existing coffee review row (in-place update).
+ * Scoped to the caller's identity and review id.
+ */
+export async function setReviewRecommendFalse(
+  reviewId: string,
+  anonId?: string | null,
+  options?: { revalidateProfilePath?: string | null }
+): Promise<ActionResult<{ entity_id: string }>> {
+  try {
+    if (!reviewId || !isUuid(reviewId)) {
+      return { success: false, error: "Invalid review id." };
+    }
+
+    const identity = await resolveIdentity(anonId);
+    if (!identity.success || !identity.data) {
+      return {
+        success: false,
+        error: identity.error || "Failed to resolve identity.",
+      };
+    }
+
+    const { user_id, anon_id } = identity.data;
+    const supabase = await createServiceRoleClient();
+
+    let updateQuery = supabase
+      .from("reviews")
+      .update({ recommend: false })
+      .eq("id", reviewId)
+      .eq("entity_type", "coffee")
+      .eq("status", "active");
+
+    if (user_id) {
+      updateQuery = updateQuery.eq("user_id", user_id);
+    } else {
+      updateQuery = updateQuery.eq("anon_id", anon_id!);
+    }
+
+    const { data: rows, error: updateError } =
+      await updateQuery.select("entity_id");
+
+    if (updateError) {
+      console.error("Error updating review recommend:", updateError);
+      return {
+        success: false,
+        error:
+          process.env.NODE_ENV === "development"
+            ? devErrorMessage(updateError)
+            : "Failed to update recommendation. Please try again.",
+      };
+    }
+
+    const row = rows?.[0];
+    if (!row?.entity_id) {
+      return {
+        success: false,
+        error:
+          process.env.NODE_ENV === "development"
+            ? "No matching review found or you do not have access."
+            : "Could not update recommendation. Please try again.",
+      };
+    }
+
+    await revalidateEntityPaths(supabase, "coffee", row.entity_id);
+
+    const profilePath = options?.revalidateProfilePath?.trim();
+    if (profilePath) {
+      revalidatePath(profilePath);
+    }
+
+    return { success: true, data: { entity_id: row.entity_id } };
+  } catch (error) {
+    console.error("Unexpected error in setReviewRecommendFalse:", error);
+    return {
+      success: false,
+      error:
+        process.env.NODE_ENV === "development"
+          ? devErrorMessage(error)
+          : "An unexpected error occurred. Please try again.",
+    };
+  }
+}

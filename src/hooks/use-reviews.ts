@@ -7,6 +7,7 @@ import { queryKeys } from "@/lib/query-keys";
 import {
   createReview,
   deleteReview,
+  setReviewRecommendFalse,
   type CreateReviewSuccessData,
 } from "@/app/actions/reviews";
 import { ensureAnonId, setReviewCount } from "@/lib/reviews/anon-id";
@@ -303,6 +304,44 @@ export function useDeleteReview() {
           variables.input.entity_id
         ),
       });
+    },
+  });
+}
+
+export type SetReviewRecommendFalseVariables = {
+  reviewId: string;
+  anonId: string | null;
+  revalidateProfilePath?: string | null;
+};
+
+/**
+ * Clears public "recommend" on a coffee review (profile selections) without deleting the review.
+ */
+export function useSetReviewRecommendFalse() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (vars: SetReviewRecommendFalseVariables) => {
+      const result = await setReviewRecommendFalse(vars.reviewId, vars.anonId, {
+        revalidateProfilePath: vars.revalidateProfilePath,
+      });
+      if (!result.success) {
+        throw new Error(result.error || "Failed to update recommendation");
+      }
+      return result.data;
+    },
+    onSuccess: (data) => {
+      if (data?.entity_id) {
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.reviews.byEntity("coffee", data.entity_id),
+        });
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.reviews.stats("coffee", data.entity_id),
+        });
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.reviews.latest("coffee", data.entity_id),
+        });
+      }
     },
   });
 }

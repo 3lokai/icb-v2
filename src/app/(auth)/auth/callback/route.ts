@@ -92,6 +92,30 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const anonFromCookie = request.cookies.get("icb_anon_id")?.value;
+    if (
+      anonFromCookie &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        anonFromCookie
+      )
+    ) {
+      try {
+        const mergeClient = await createServiceRoleClient();
+        const { error: mergeCoffeeViewsError } = await mergeClient.rpc(
+          "merge_coffee_views_for_anon",
+          { p_user_id: user.id, p_anon_id: anonFromCookie }
+        );
+        if (mergeCoffeeViewsError) {
+          console.error(
+            "[auth/callback] merge_coffee_views_for_anon:",
+            mergeCoffeeViewsError
+          );
+        }
+      } catch (mergeErr) {
+        console.error("[auth/callback] merge coffee views:", mergeErr);
+      }
+    }
+
     // Check if user has completed onboarding
     let profile;
     try {

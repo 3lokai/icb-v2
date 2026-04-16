@@ -24,7 +24,7 @@ const fraunces = Fraunces({
   weight: ["400", "500", "600", "700"],
   variable: "--font-display",
   display: "optional",
-  preload: true,
+  preload: false, // Keep serif display font off critical preload path
 });
 
 const dmSans = DM_Sans({

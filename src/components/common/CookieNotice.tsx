@@ -36,7 +36,9 @@ export function CookieNotice() {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    let cancelled = false;
+    const showIfNeeded = () => {
+      if (cancelled) return;
       const hasConsent = localStorage.getItem(STORAGE_KEY) !== null;
       if (hasConsent) {
         const stored = getStoredPreferences();
@@ -45,8 +47,25 @@ export function CookieNotice() {
       } else {
         setVisible(true);
       }
-    }, 1000);
-    return () => clearTimeout(timer);
+    };
+
+    // Defer non-critical consent UI until browser is idle to avoid
+    // competing with initial render and shifting during LCP.
+    const idleCallback =
+      typeof window !== "undefined" && "requestIdleCallback" in window
+        ? window.requestIdleCallback(showIfNeeded, { timeout: 1000 })
+        : null;
+    const timer = idleCallback === null ? setTimeout(showIfNeeded, 1000) : null;
+
+    return () => {
+      cancelled = true;
+      if (idleCallback !== null && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idleCallback);
+      }
+      if (timer !== null) {
+        clearTimeout(timer);
+      }
+    };
   }, []);
 
   const acceptAllCookies = () => {

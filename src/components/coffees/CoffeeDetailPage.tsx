@@ -6,7 +6,10 @@ import type { CoffeeDetail } from "@/types/coffee-types";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
 import { Icon } from "@/components/common/Icon";
 import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
+import { recordCoffeeView } from "@/app/actions/coffee-views";
 import { capture } from "@/lib/posthog";
+import { createClient } from "@/lib/supabase/client";
+import { ensureAnonId } from "@/lib/reviews/anon-id";
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
@@ -219,6 +222,14 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
       entity_id: coffee.id,
       coffee_slug: coffee.slug,
     });
+    void (async () => {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      const anonForAction = user ? null : ensureAnonId();
+      await recordCoffeeView(coffee.id, anonForAction);
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per coffee view
   }, [coffee.id]);
 
