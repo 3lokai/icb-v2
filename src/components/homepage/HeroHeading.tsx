@@ -1,6 +1,6 @@
 "use client";
 
-// Client component so hero variants (HeroControl / HeroDiscovery) can import it from client islands.
+// Client component used by the homepage hero from a client island.
 import { Stack } from "@/components/primitives/stack";
 import { Announcement, AnnouncementTitle } from "@/components/ui/announcement";
 import { Icon } from "@/components/common/Icon";

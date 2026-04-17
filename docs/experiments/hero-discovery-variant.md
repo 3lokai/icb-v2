@@ -6,9 +6,11 @@
 |-------|--------|
 | **PostHog feature flag** | `hero-discovery-variant` |
 | **Variants** | `control` (current hero), `discovery` (discovery-first hero with quick pills) |
-| **Code** | [`HeroSectionClient.tsx`](../../src/components/homepage/HeroSectionClient.tsx) |
+| **Code (historical)** | `HeroSectionClient.tsx` (removed after decision) |
 
 ## Local preview (`npm run dev`)
+
+_Historical note: local preview override steps below applied while the experiment was active._
 
 1. In **`.env.local`**, set **one** of:
    - `NEXT_PUBLIC_HERO_VARIANT_OVERRIDE=discovery` — new hero (pills + discovery CTAs)
@@ -65,8 +67,8 @@ Events include `hero_variant: "control" | "discovery"` on `hero_cta_clicked` whe
 
 ## Final decision log
 
-_Use this section when the experiment ends._
+Experiment closed. Homepage hero now ships the control variant only via `HeroSection` -> `HeroControl` (no runtime variant branching).
 
 | Date | Decision | Owner | Notes |
 |------|----------|-------|-------|
-| | | | |
+| 2026-04-17 | Control kept, discovery retired | GT | Removed `hero-discovery-variant` code path and discovery-only hero components from app code. |

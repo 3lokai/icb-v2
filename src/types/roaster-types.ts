@@ -27,6 +27,9 @@ export type RoasterDetail = {
   support_email: string | null;
   instagram_handle: string | null;
   social_json: Json;
+  certifications: string[] | null;
+  specialty_focus: string[] | null;
+  sourcing_model: string[] | null;
   created_at: string;
   updated_at: string;
   default_concurrency: number | null;

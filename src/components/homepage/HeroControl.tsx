@@ -30,7 +30,7 @@ export function HeroControl({ totals }: HeroControlProps) {
         <Stack gap="8">
           <HeroHeading />
           <HeroSearch />
-          <HeroCTAs heroVariant="control" totals={totals} />
+          <HeroCTAs totals={totals} />
         </Stack>
       </div>
     </section>

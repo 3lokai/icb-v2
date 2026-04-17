@@ -15,6 +15,7 @@ export type RecentlyViewedCoffeeItem = {
   coffeeId: string;
   name: string;
   coffeeSlug: string;
+  roasterId: string;
   roasterSlug: string;
   roasterName: string;
   lastViewedAt: string;
@@ -38,6 +39,7 @@ export async function fetchRecentlyViewedCoffees(
         id,
         name,
         slug,
+        roaster_id,
         roasters!inner (
           name,
           slug
@@ -76,21 +78,26 @@ export async function fetchRecentlyViewedCoffees(
       id: string;
       name: string;
       slug: string;
+      roaster_id: string;
       roasters: { name: string; slug: string };
     };
   };
 
   const coffeeIds = rows.map((r) => (r as unknown as Row).coffees.id);
 
-  const { data: images } = await supabase
+  const { data: imageRows } = await supabase
     .from("coffee_images")
-    .select("coffee_id, imagekit_url")
+    .select("coffee_id, imagekit_url, url")
     .in("coffee_id", coffeeIds)
-    .eq("sort_order", 0);
+    .order("sort_order", { ascending: true });
 
-  const imageByCoffee = new Map(
-    (images ?? []).map((img) => [img.coffee_id, img.imagekit_url])
-  );
+  const imageByCoffee = new Map<string, string>();
+  for (const imageRow of imageRows ?? []) {
+    const href = imageRow.imagekit_url || imageRow.url;
+    if (imageRow.coffee_id && href && !imageByCoffee.has(imageRow.coffee_id)) {
+      imageByCoffee.set(imageRow.coffee_id, href);
+    }
+  }
 
   return (rows as unknown as Row[]).map((row) => {
     const c = row.coffees;
@@ -99,6 +106,7 @@ export async function fetchRecentlyViewedCoffees(
       coffeeId: c.id,
       name: c.name,
       coffeeSlug: c.slug,
+      roasterId: c.roaster_id,
       roasterSlug: r.slug,
       roasterName: r.name,
       lastViewedAt: row.last_viewed_at,
