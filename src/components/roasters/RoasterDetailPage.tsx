@@ -31,6 +31,7 @@ import { useReviews, useReviewStats } from "@/hooks/use-reviews";
 import { useExitIntentRating } from "@/hooks/use-exit-intent-rating";
 import { ShareRow } from "@/components/common/ShareRow";
 import { FloatingRateCTA } from "@/components/common/FloatingRateCTA";
+import Tag, { TagList } from "@/components/common/Tag";
 
 /* ─── Types ─── */
 
@@ -122,6 +123,10 @@ function RoasterExitIntentRating({
 function formatNumber(num: number | null | undefined): string {
   if (num === null || num === undefined) return "—";
   return num.toLocaleString("en-IN");
+}
+
+function hasValues(arr: string[] | null | undefined): arr is string[] {
+  return Array.isArray(arr) && arr.length > 0;
 }
 
 /* ─── Main Component ─── */
@@ -341,6 +346,60 @@ export function RoasterDetailPage({
                     </span>
                   </div>
                 </div>
+
+                {(hasValues(roaster.certifications) ||
+                  hasValues(roaster.specialty_focus) ||
+                  hasValues(roaster.sourcing_model)) && (
+                  <div className="surface-1 rounded-xl p-4 border border-border/40">
+                    <Stack gap="3">
+                      <p className="text-overline tracking-[0.15em] text-muted-foreground">
+                        At a glance
+                      </p>
+                      {hasValues(roaster.certifications) && (
+                        <Stack gap="1.5">
+                          <p className="text-label text-muted-foreground">
+                            Certifications
+                          </p>
+                          <TagList>
+                            {roaster.certifications.map((item) => (
+                              <Tag key={item} variant="outline" size="micro">
+                                {item}
+                              </Tag>
+                            ))}
+                          </TagList>
+                        </Stack>
+                      )}
+                      {hasValues(roaster.specialty_focus) && (
+                        <Stack gap="1.5">
+                          <p className="text-label text-muted-foreground">
+                            Specialty focus
+                          </p>
+                          <TagList>
+                            {roaster.specialty_focus.map((item) => (
+                              <Tag key={item} variant="outline" size="micro">
+                                {item}
+                              </Tag>
+                            ))}
+                          </TagList>
+                        </Stack>
+                      )}
+                      {hasValues(roaster.sourcing_model) && (
+                        <Stack gap="1.5">
+                          <p className="text-label text-muted-foreground">
+                            Sourcing model
+                          </p>
+                          <TagList>
+                            {roaster.sourcing_model.map((item) => (
+                              <Tag key={item} variant="outline" size="micro">
+                                {item}
+                              </Tag>
+                            ))}
+                          </TagList>
+                        </Stack>
+                      )}
+                    </Stack>
+                  </div>
+                )}
 
                 {/* CTAs */}
                 <Cluster gap="3" className="pt-2">

@@ -610,6 +610,20 @@ export type Database = {
             foreignKeyName: "coffee_views_coffee_id_fkey";
             columns: ["coffee_id"];
             isOneToOne: false;
+            referencedRelation: "coffee_directory_mv";
+            referencedColumns: ["coffee_id"];
+          },
+          {
+            foreignKeyName: "coffee_views_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffee_summary";
+            referencedColumns: ["coffee_id"];
+          },
+          {
+            foreignKeyName: "coffee_views_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
             referencedRelation: "coffees";
             referencedColumns: ["id"];
           },
@@ -1610,6 +1624,7 @@ export type Database = {
           avg_packaging: number | null;
           avg_rating: number | null;
           avg_value_for_money: number | null;
+          certifications: string[] | null;
           created_at: string;
           default_concurrency: number | null;
           description: string | null;
@@ -1646,6 +1661,8 @@ export type Database = {
           scrape_base_url: string | null;
           slug: string;
           social_json: Json;
+          sourcing_model: string[] | null;
+          specialty_focus: string[] | null;
           support_email: string | null;
           total_ratings_count: number | null;
           updated_at: string;
@@ -1660,6 +1677,7 @@ export type Database = {
           avg_packaging?: number | null;
           avg_rating?: number | null;
           avg_value_for_money?: number | null;
+          certifications?: string[] | null;
           created_at?: string;
           default_concurrency?: number | null;
           description?: string | null;
@@ -1696,6 +1714,8 @@ export type Database = {
           scrape_base_url?: string | null;
           slug: string;
           social_json?: Json;
+          sourcing_model?: string[] | null;
+          specialty_focus?: string[] | null;
           support_email?: string | null;
           total_ratings_count?: number | null;
           updated_at?: string;
@@ -1710,6 +1730,7 @@ export type Database = {
           avg_packaging?: number | null;
           avg_rating?: number | null;
           avg_value_for_money?: number | null;
+          certifications?: string[] | null;
           created_at?: string;
           default_concurrency?: number | null;
           description?: string | null;
@@ -1746,6 +1767,8 @@ export type Database = {
           scrape_base_url?: string | null;
           slug?: string;
           social_json?: Json;
+          sourcing_model?: string[] | null;
+          specialty_focus?: string[] | null;
           support_email?: string | null;
           total_ratings_count?: number | null;
           updated_at?: string;

@@ -29,12 +29,22 @@ export async function fetchChartData(
     selectFields = "canon_estate_names, canon_region_names";
   if (dataKey === "brew_method_distribution_light_roast")
     selectFields = "brew_method_canonical_keys, roast_level";
+  if (dataKey === "price_distribution_250g")
+    selectFields = "best_normalized_250g, in_stock_count";
+  if (dataKey === "roaster_concentration") selectFields = "roaster_name";
 
   let query = supabase.from("coffee_directory_mv").select(selectFields);
 
   if (region) {
     // canon_region_names is an array of strings, so we use contains
     query = query.contains("canon_region_slugs", [region]);
+  }
+
+  if (dataKey === "price_distribution_250g") {
+    query = query
+      .gt("best_normalized_250g", 0)
+      .gt("in_stock_count", 0)
+      .lt("best_normalized_250g", 5000);
   }
 
   const { data: coffees, error } = await query;
@@ -86,6 +96,12 @@ export async function fetchChartData(
 
     case "brew_method_distribution_light_roast":
       return aggregateLightRoastBrewMethods(coffees, limit);
+
+    case "roaster_concentration":
+      return aggregateSimpleDistribution(coffees, "roaster_name", limit || 10);
+
+    case "price_distribution_250g":
+      return aggregatePriceDistribution(coffees);
 
     default:
       return [];
@@ -251,6 +267,31 @@ function aggregateArrayField(
     .map(([label, value]) => ({ label, value }))
     .sort((a, b) => b.value - a.value)
     .slice(0, limit || undefined);
+}
+
+/**
+ * Buckets normalized 250g prices into fixed ranges.
+ */
+function aggregatePriceDistribution(data: any[]): ChartDataItem[] {
+  const buckets: ChartDataItem[] = [
+    { label: "Under ₹500", value: 0 },
+    { label: "₹500–749", value: 0 },
+    { label: "₹750–999", value: 0 },
+    { label: "₹1,000–1,249", value: 0 },
+    { label: "₹1,250+", value: 0 },
+  ];
+
+  data.forEach((item) => {
+    const price = item.best_normalized_250g;
+    if (!price || price <= 0) return;
+    if (price < 500) buckets[0].value++;
+    else if (price < 750) buckets[1].value++;
+    else if (price < 1000) buckets[2].value++;
+    else if (price < 1250) buckets[3].value++;
+    else buckets[4].value++;
+  });
+
+  return buckets;
 }
 
 /**
