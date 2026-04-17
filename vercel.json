@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/upstash-keepalive",
       "schedule": "0 0 */2 * *"
+    },
+    {
+      "path": "/api/cron/usage-rollup",
+      "schedule": "10 0 * * *"
     }
   ]
 }

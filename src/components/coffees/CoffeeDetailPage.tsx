@@ -8,7 +8,6 @@ import type { LatestReviewPerIdentity } from "@/types/review-types";
 import { Icon } from "@/components/common/Icon";
 import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
 import { recordCoffeeView } from "@/app/actions/coffee-views";
-import { pushRecentCoffeeViewHint } from "@/lib/coffee-views/recent-local-hint";
 import { capture } from "@/lib/posthog";
 import { queryKeys } from "@/lib/query-keys";
 import { createClient } from "@/lib/supabase/client";
@@ -234,7 +233,6 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
       const anonForAction = user ? null : ensureAnonId();
       const res = await recordCoffeeView(coffee.id, anonForAction);
       if (res.success) {
-        pushRecentCoffeeViewHint(coffee.id);
         await queryClient.invalidateQueries({
           queryKey: queryKeys.coffees.recentlyViewed(12),
         });
