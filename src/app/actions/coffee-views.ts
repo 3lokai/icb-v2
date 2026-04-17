@@ -2,6 +2,8 @@
 
 import { cookies } from "next/headers";
 import { getCurrentUser } from "@/data/auth";
+import { fetchRecentlyViewedCoffees } from "@/lib/data/fetch-recently-viewed-coffees";
+import type { RecentlyViewedCoffeeItem } from "@/lib/data/fetch-recently-viewed-coffees";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 
 type ActionResult<T = undefined> = {
@@ -201,4 +203,19 @@ export async function mergeCoffeeViewsFromAnon(
     success: true,
     data: { rows_relinked: rowsRelinked, rows_merged: rowsMerged },
   };
+}
+
+/**
+ * Recently viewed coffees for homepage / personalization (session or anon cookie).
+ */
+export async function getRecentlyViewedCoffees(
+  limit: number = 12
+): Promise<ActionResult<RecentlyViewedCoffeeItem[]>> {
+  try {
+    const data = await fetchRecentlyViewedCoffees(limit);
+    return { success: true, data };
+  } catch (e) {
+    console.error("[getRecentlyViewedCoffees]", e);
+    return { success: false, error: "Could not load recently viewed coffees." };
+  }
 }

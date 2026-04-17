@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import posthog from "posthog-js";
-import { mergeCoffeeViewsFromAnon } from "@/app/actions/coffee-views";
+import { runPostLoginAnonMerges } from "@/app/actions/post-login-anon-merges";
 import { getAnonId } from "@/lib/reviews/anon-id";
 import { auth } from "@/lib/supabase/auth-helpers";
 
@@ -106,8 +106,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (event === "SIGNED_IN" && session?.user) {
           const anonId = getAnonId();
           if (anonId) {
-            void mergeCoffeeViewsFromAnon(anonId).catch((err) => {
-              console.error("[AuthProvider] mergeCoffeeViewsFromAnon:", err);
+            void runPostLoginAnonMerges(anonId).catch((err) => {
+              console.error("[AuthProvider] runPostLoginAnonMerges:", err);
             });
           }
         }

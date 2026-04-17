@@ -22,6 +22,7 @@
     "supabase:db:pull": "supabase db pull",
     "supabase:db:push": "supabase db push",
     "migrate:convertkit": "tsx scripts/migrate-to-convertkit.ts",
+    "sync:convertkit:user-profiles": "tsx scripts/sync-user-profiles-to-convertkit.ts",
     "optimize:discovery-images": "node scripts/optimize-discovery-images.mjs"
   },
   "dependencies": {
