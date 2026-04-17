@@ -356,7 +356,7 @@ export function RoasterDetailPage({
                         At a glance
                       </p>
                       {hasValues(roaster.certifications) && (
-                        <Stack gap="1.5">
+                        <Stack gap="2">
                           <p className="text-label text-muted-foreground">
                             Certifications
                           </p>
@@ -370,7 +370,7 @@ export function RoasterDetailPage({
                         </Stack>
                       )}
                       {hasValues(roaster.specialty_focus) && (
-                        <Stack gap="1.5">
+                        <Stack gap="2">
                           <p className="text-label text-muted-foreground">
                             Specialty focus
                           </p>
@@ -384,7 +384,7 @@ export function RoasterDetailPage({
                         </Stack>
                       )}
                       {hasValues(roaster.sourcing_model) && (
-                        <Stack gap="1.5">
+                        <Stack gap="2">
                           <p className="text-label text-muted-foreground">
                             Sourcing model
                           </p>
