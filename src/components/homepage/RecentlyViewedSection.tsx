@@ -1,18 +1,64 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import CoffeeCard from "@/components/cards/CoffeeCard";
 import { Icon } from "@/components/common/Icon";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { useRecentlyViewedCoffees } from "@/hooks/use-recently-viewed-coffees";
-import { coffeeImagePresets } from "@/lib/imagekit";
-import { coffeeDetailHref } from "@/lib/utils/coffee-url";
-import { cn } from "@/lib/utils";
+import type { CoffeeSummary } from "@/types/coffee-types";
 
 const sectionSurfaceClassName =
   "bg-background relative overflow-hidden border-y border-border/40";
+
+function mapRecentlyViewedCoffeeToSummary(coffee: {
+  coffeeId: string;
+  name: string;
+  coffeeSlug: string;
+  roasterId: string;
+  roasterSlug: string;
+  roasterName: string;
+  imageUrl: string | null;
+}): CoffeeSummary {
+  return {
+    coffee_id: coffee.coffeeId,
+    slug: coffee.coffeeSlug,
+    name: coffee.name,
+    roaster_id: coffee.roasterId,
+    status: null,
+    process: null,
+    process_raw: null,
+    roast_level: null,
+    roast_level_raw: null,
+    roast_style_raw: null,
+    direct_buy_url: null,
+    has_250g_bool: null,
+    has_sensory: null,
+    in_stock_count: null,
+    min_price_in_stock: null,
+    best_variant_id: null,
+    best_normalized_250g: null,
+    weights_available: null,
+    sensory_public: null,
+    sensory_updated_at: null,
+    decaf: false,
+    is_limited: false,
+    bean_species: null,
+    rating_avg: null,
+    rating_count: 0,
+    tags: null,
+    works_with_milk: null,
+    roaster_slug: coffee.roasterSlug,
+    roaster_name: coffee.roasterName,
+    hq_city: null,
+    hq_state: null,
+    hq_country: null,
+    website: null,
+    image_url: coffee.imageUrl,
+    flavor_keys: null,
+    brew_method_canonical_keys: null,
+  };
+}
 
 export default function RecentlyViewedSection() {
   const { data: coffees, isLoading, isError } = useRecentlyViewedCoffees(12);
@@ -60,48 +106,10 @@ export default function RecentlyViewedSection() {
 
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {coffees.map((c) => {
-              const href = coffeeDetailHref(c.roasterSlug, c.coffeeSlug);
-              const img =
-                c.imageUrl != null
-                  ? coffeeImagePresets.coffeeThumbnail(c.imageUrl)
-                  : null;
+              const summary = mapRecentlyViewedCoffeeToSummary(c);
               return (
                 <li key={c.coffeeId}>
-                  <Link
-                    href={href}
-                    className={cn(
-                      "group flex gap-4 rounded-xl border border-border/60 bg-card/50 p-3 transition-colors",
-                      "hover:border-accent/40 hover:bg-card"
-                    )}
-                  >
-                    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-muted">
-                      {img ? (
-                        <Image
-                          src={img}
-                          alt=""
-                          fill
-                          className="object-cover"
-                          sizes="80px"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                          <Icon
-                            name="Coffee"
-                            size={28}
-                            className="opacity-40"
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1 py-0.5">
-                      <p className="text-label font-medium leading-snug text-foreground group-hover:text-accent">
-                        {c.name}
-                      </p>
-                      <p className="mt-1 truncate text-caption text-muted-foreground">
-                        {c.roasterName}
-                      </p>
-                    </div>
-                  </Link>
+                  <CoffeeCard coffee={summary} variant="compact" />
                 </li>
               );
             })}

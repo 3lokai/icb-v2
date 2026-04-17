@@ -50,11 +50,6 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
-
-  /** Dev-only: force homepage hero A/B variant (see HeroSectionClient). Omit to use PostHog flag. */
-  NEXT_PUBLIC_HERO_VARIANT_OVERRIDE: z
-    .enum(["discovery", "control"])
-    .optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/data/auth";
 import { listApiKeys, getUsageForMyKeys } from "@/app/actions/api-keys";
@@ -24,6 +25,13 @@ export default async function DeveloperPage() {
         <h1 className="text-heading font-bold">Developer</h1>
         <p className="mt-1 text-muted-foreground text-caption">
           Manage API keys and view usage for the external API.
+        </p>
+        <p className="mt-2 text-caption text-muted-foreground">
+          View full{" "}
+          <Link href="/developers" className="text-accent underline">
+            API documentation
+          </Link>
+          .
         </p>
       </div>
       <DeveloperPortal initialKeys={keys} initialUsage={usage} />
