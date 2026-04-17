@@ -111,8 +111,18 @@ export async function GET(request: NextRequest) {
             mergeCoffeeViewsError
           );
         }
+        const { error: mergeReviewsError } = await mergeClient.rpc(
+          "merge_reviews_for_anon",
+          { p_user_id: user.id, p_anon_id: anonFromCookie }
+        );
+        if (mergeReviewsError) {
+          console.error(
+            "[auth/callback] merge_reviews_for_anon:",
+            mergeReviewsError
+          );
+        }
       } catch (mergeErr) {
-        console.error("[auth/callback] merge coffee views:", mergeErr);
+        console.error("[auth/callback] post-login anon merges:", mergeErr);
       }
     }
 

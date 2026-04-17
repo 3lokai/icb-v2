@@ -550,3 +550,50 @@ export async function setReviewRecommendFalse(
     };
   }
 }
+
+export type MergeReviewsForAnonResult = {
+  rows_updated: number;
+  entities_recached: number;
+};
+
+/**
+ * Reassign all anonymous reviews for this browser `anon_id` to the current user (post-login).
+ */
+export async function mergeReviewsFromAnon(
+  anonId: string | null | undefined
+): Promise<ActionResult<MergeReviewsForAnonResult>> {
+  if (!anonId || !isUuid(anonId)) {
+    return { success: false, error: "Invalid anonymous id." };
+  }
+
+  const user = await getCurrentUser();
+  if (!user) {
+    return { success: false, error: "Not authenticated." };
+  }
+
+  const supabase = await createServiceRoleClient();
+  const { data, error } = await supabase.rpc("merge_reviews_for_anon", {
+    p_user_id: user.id,
+    p_anon_id: anonId,
+  });
+
+  if (error) {
+    console.error("[mergeReviewsFromAnon] rpc:", error);
+    return { success: false, error: "Merge failed." };
+  }
+
+  const row = Array.isArray(data) ? data[0] : data;
+  const rowsUpdated =
+    row && typeof row === "object" && "rows_updated" in row
+      ? Number((row as { rows_updated: number }).rows_updated)
+      : 0;
+  const entitiesRecached =
+    row && typeof row === "object" && "entities_recached" in row
+      ? Number((row as { entities_recached: number }).entities_recached)
+      : 0;
+
+  return {
+    success: true,
+    data: { rows_updated: rowsUpdated, entities_recached: entitiesRecached },
+  };
+}

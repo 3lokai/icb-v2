@@ -123,6 +123,17 @@ const TopRatedSection = dynamic(
   }
 );
 
+const RecentlyViewedSection = dynamic(
+  () => import("@/components/homepage/RecentlyViewedSection"),
+  {
+    loading: () => (
+      <div className="flex min-h-[120px] items-center justify-center border-y border-border/40 bg-background">
+        <LoadingSpinner size="md" />
+      </div>
+    ),
+  }
+);
+
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -205,6 +216,7 @@ export default async function Home() {
         <TopRatedSection
           communityCoffeeReviewCount={communityCoffeeReviewCount}
         />
+        <RecentlyViewedSection />
         <HomeCollectionGridLazy tier="core" />
         <HowItWorksSection />
         <UserProfileTeaser />

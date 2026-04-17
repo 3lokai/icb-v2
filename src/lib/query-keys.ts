@@ -55,6 +55,8 @@ export const queryKeys = {
   // Coffee-related queries
   coffees: {
     all: ["coffees"] as const,
+    recentlyViewed: (limit: number = 12) =>
+      ["coffees", "recently-viewed", limit] as const,
     list: (
       filters: Record<string, any> | undefined,
       page: number,

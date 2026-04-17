@@ -1,13 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
 import { Fragment, useState, useCallback, useEffect, useRef } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
 import { Icon } from "@/components/common/Icon";
 import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
 import { recordCoffeeView } from "@/app/actions/coffee-views";
+import { pushRecentCoffeeViewHint } from "@/lib/coffee-views/recent-local-hint";
 import { capture } from "@/lib/posthog";
+import { queryKeys } from "@/lib/query-keys";
 import { createClient } from "@/lib/supabase/client";
 import { ensureAnonId } from "@/lib/reviews/anon-id";
 import { Cluster } from "@/components/primitives/cluster";
@@ -162,6 +165,7 @@ function DiscoveryInlineLink({
 /* ─── Main Component ─── */
 
 export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
+  const queryClient = useQueryClient();
   const { data: reviews } = useReviews("coffee", coffee.id);
   const { data: stats } = useReviewStats("coffee", coffee.id);
 
@@ -228,7 +232,13 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
         data: { user },
       } = await supabase.auth.getUser();
       const anonForAction = user ? null : ensureAnonId();
-      await recordCoffeeView(coffee.id, anonForAction);
+      const res = await recordCoffeeView(coffee.id, anonForAction);
+      if (res.success) {
+        pushRecentCoffeeViewHint(coffee.id);
+        await queryClient.invalidateQueries({
+          queryKey: queryKeys.coffees.recentlyViewed(12),
+        });
+      }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per coffee view
   }, [coffee.id]);

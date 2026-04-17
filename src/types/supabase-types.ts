@@ -2968,6 +2968,13 @@ export type Database = {
           rows_relinked: number;
         }[];
       };
+      merge_reviews_for_anon: {
+        Args: { p_anon_id: string; p_user_id: string };
+        Returns: {
+          entities_recached: number;
+          rows_updated: number;
+        }[];
+      };
       refresh_coffee_directory_mv: { Args: never; Returns: undefined };
       refresh_user_taste_profile_cache: {
         Args: { p_user_id: string };
