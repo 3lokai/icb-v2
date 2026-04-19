@@ -221,7 +221,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                 Some coffees couldn&apos;t be loaded. Try again later or browse
                 the directory.
               </p>
-            ) : (
+            ) : ratedCoffees.length > 0 ? (
               <div className="flex flex-col gap-3">
                 {ratedCoffees.map((c) => (
                   <CoffeeRowLink
@@ -240,6 +240,11 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                   />
                 ))}
               </div>
+            ) : (
+              <p className="text-caption leading-relaxed text-white/60">
+                You haven&apos;t rated any coffees yet — open one from the
+                directory and add a rating to see it here.
+              </p>
             )}
             <ProgressDots count={ratingCount} />
             {!isAuthenticated && (
@@ -261,7 +266,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                 Some coffees couldn&apos;t be loaded. Try again later or open
                 your ratings from the profile menu.
               </p>
-            ) : (
+            ) : ratedCoffees.length > 0 ? (
               <div className="flex flex-col gap-3">
                 {ratedCoffees.map((c) => (
                   <CoffeeRowLink
@@ -280,6 +285,11 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                   />
                 ))}
               </div>
+            ) : (
+              <p className="text-caption leading-relaxed text-white/60">
+                You haven&apos;t rated any coffees yet — open one from the
+                directory and add a rating to see it here.
+              </p>
             )}
             <ProgressDots count={ratingCount} />
             <div className="mt-4 border-t border-white/10 pt-5">
@@ -343,7 +353,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                   Some coffees couldn&apos;t be loaded. Browse the directory to
                   keep rating.
                 </p>
-              ) : (
+              ) : ratedCoffees.length > 0 ? (
                 ratedCoffees
                   .slice(0, 2)
                   .map((c) => (
@@ -362,6 +372,11 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                       }
                     />
                   ))
+              ) : (
+                <p className="text-caption leading-relaxed text-white/60">
+                  No ratings yet — rate a coffee from the directory to see it
+                  here.
+                </p>
               )}
             </div>
             <p className="text-caption leading-relaxed text-white/50">

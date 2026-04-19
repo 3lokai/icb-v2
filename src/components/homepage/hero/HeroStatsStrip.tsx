@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { animate, useInView, useReducedMotion } from "motion/react";
 import type { PublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 
-const SESSION_ANIMATED_KEY = "icb_hero_stats_animated";
+/** Persists for the SPA session (client bundle lifetime); avoids Web Storage APIs. */
+let heroStatsCountUpCompletedThisSession = false;
 
 function AnimatedStatValue({ value }: { value: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -14,15 +15,11 @@ function AnimatedStatValue({ value }: { value: number }) {
   const [skipAnimation, setSkipAnimation] = useState(false);
 
   useEffect(() => {
-    try {
-      if (window.sessionStorage.getItem(SESSION_ANIMATED_KEY) === "1") {
-        queueMicrotask(() => {
-          setDisplay(value);
-          setSkipAnimation(true);
-        });
-      }
-    } catch {
-      /* sessionStorage unavailable */
+    if (heroStatsCountUpCompletedThisSession) {
+      queueMicrotask(() => {
+        setDisplay(value);
+        setSkipAnimation(true);
+      });
     }
   }, [value]);
 
@@ -40,11 +37,7 @@ function AnimatedStatValue({ value }: { value: number }) {
         setDisplay(r);
         if (!sessionMarked && r >= value) {
           sessionMarked = true;
-          try {
-            window.sessionStorage.setItem(SESSION_ANIMATED_KEY, "1");
-          } catch {
-            /* sessionStorage unavailable */
-          }
+          heroStatsCountUpCompletedThisSession = true;
         }
       },
     });

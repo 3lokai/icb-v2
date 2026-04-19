@@ -46,7 +46,7 @@ export function HeroPrimaryEyebrow({ hero }: HeroPrimaryCopyProps) {
 }
 
 /**
- * Server component: SSR headline and subcopy for LCP + SEO (no client swap).
+ * Server component: Composes eyebrow and headline for complete hero primary copy.
  */
 export function HeroPrimaryHeadline({ hero }: HeroPrimaryCopyProps) {
   const { copy } = getPrimaryCopyParts(hero);

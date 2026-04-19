@@ -204,7 +204,8 @@ async function enrichRatedCoffees(
   });
 }
 
-const DISCOVERY_FALLBACK: HeroSegmentPayload = {
+/** Safe default when {@link fetchHeroSegment} fails; same shape for callers that need a graceful fallback. */
+export const HERO_SEGMENT_FALLBACK: HeroSegmentPayload = {
   segment: "discovery",
   ratingCount: 0,
   recentlyViewed: [],
@@ -293,6 +294,6 @@ export async function fetchHeroSegment(
     return payload;
   } catch (e) {
     console.error("[fetchHeroSegment]", e);
-    return { ...DISCOVERY_FALLBACK };
+    return { ...HERO_SEGMENT_FALLBACK };
   }
 }

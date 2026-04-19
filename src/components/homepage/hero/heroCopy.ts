@@ -39,9 +39,19 @@ export function getHeroPrimaryCopy(
           "You’ve been browsing — start building your coffee journey with your first rating.",
       };
     case "rating_progress": {
+      if (ratingCount <= 0) {
+        return {
+          eyebrow: name
+            ? `Your coffee journey, ${name}`
+            : "Your coffee journey",
+          headline: "You haven’t rated any Indian coffees yet",
+          subheadline:
+            "Rate a coffee to start your profile and get recommendations.",
+        };
+      }
       const coffeeWord = ratingCount === 1 ? "coffee" : "coffees";
       const headline = `You’ve rated ${ratingCount} Indian ${coffeeWord}`;
-      if (ratingCount <= 1) {
+      if (ratingCount === 1) {
         return {
           eyebrow: name
             ? `Your coffee journey, ${name}`

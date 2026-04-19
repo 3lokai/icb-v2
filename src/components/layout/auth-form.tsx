@@ -107,7 +107,6 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
           email: formData.email.trim(),
         });
         capture("user_signed_in", { method: "email" });
-        router.push(returnTo);
         const pathOnly = (() => {
           try {
             if (/^https?:\/\//i.test(returnTo)) {
@@ -120,6 +119,8 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
         })();
         if (pathOnly === "/") {
           router.refresh();
+        } else {
+          router.push(returnTo);
         }
         return;
       }
