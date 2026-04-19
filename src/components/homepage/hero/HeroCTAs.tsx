@@ -15,17 +15,18 @@ type HeroCTAsProps = {
 
 export function HeroCTAs({ hero }: HeroCTAsProps) {
   const { openSearch } = useSearchContext();
-  const { segment, recentlyViewed } = hero;
+  const { segment, recentlyViewed, isAuthenticated } = hero;
 
   const firstRecent = recentlyViewed[0];
-  const rateFirstHref = firstRecent
-    ? `/roasters/${firstRecent.roasterSlug}/coffees/${firstRecent.coffeeSlug}#reviews`
-    : "/coffees";
+  const continueLastViewedHref = firstRecent
+    ? `/roasters/${firstRecent.roasterSlug}/coffees/${firstRecent.coffeeSlug}`
+    : null;
 
-  const captureCta = (label: string) => {
+  const captureCta = (label: string, extra?: Record<string, unknown>) => {
     capture("hero_cta_clicked", {
       cta_label: label,
       hero_segment: segment,
+      ...extra,
     });
   };
 
@@ -49,7 +50,7 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
             variant="default"
           >
             <Link href="/coffees" onClick={() => captureCta("Explore coffees")}>
-              <Icon className="mr-2" name="Coffee" size={18} />
+              <Icon className="mr-2 shrink-0" name="Coffee" size={18} />
               Explore coffees
             </Link>
           </Button>
@@ -60,10 +61,10 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
             variant="outline"
           >
             <Link
-              href="/coffees/medium-roast"
-              onClick={() => captureCta("Browse by roast")}
+              href="/#top-rated"
+              onClick={() => captureCta("Top rated coffees")}
             >
-              Browse by roast
+              Top rated coffees
             </Link>
           </Button>
         </>
@@ -77,24 +78,33 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
             size="lg"
             variant="default"
           >
-            <Link
-              href={rateFirstHref}
-              onClick={() => captureCta("Rate a coffee")}
+            <Link href="/coffees" onClick={() => captureCta("Explore coffees")}>
+              <Icon className="mr-2 shrink-0" name="Coffee" size={18} />
+              Explore coffees
+            </Link>
+          </Button>
+          {continueLastViewedHref && firstRecent ? (
+            <Button
+              asChild
+              className={`${heroCtaButtonClass} min-w-0 max-w-full sm:max-w-md`}
+              size="lg"
+              variant="outline"
             >
-              <Icon className="mr-2" name="Star" size={18} />
-              Rate a coffee
-            </Link>
-          </Button>
-          <Button
-            asChild
-            className={heroCtaButtonClass}
-            size="lg"
-            variant="outline"
-          >
-            <Link href="/coffees" onClick={() => captureCta("Explore more")}>
-              Explore more
-            </Link>
-          </Button>
+              <Link
+                href={continueLastViewedHref}
+                title={firstRecent.name}
+                onClick={() =>
+                  captureCta("Continue with last viewed", {
+                    coffee_name: firstRecent.name,
+                  })
+                }
+              >
+                <span className="truncate">
+                  Continue with {firstRecent.name}
+                </span>
+              </Link>
+            </Button>
+          ) : null}
         </>
       )}
 
@@ -118,9 +128,22 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
             size="lg"
             variant="outline"
           >
-            <Link href="/coffees" onClick={() => captureCta("Explore coffees")}>
-              Explore coffees
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                href="/profile"
+                onClick={() => captureCta("View your profile")}
+              >
+                <Icon className="mr-2" name="User" size={18} />
+                View your profile
+              </Link>
+            ) : (
+              <Link
+                href="/auth"
+                onClick={() => captureCta("Save your coffee journey")}
+              >
+                Save your coffee journey
+              </Link>
+            )}
           </Button>
         </>
       )}
