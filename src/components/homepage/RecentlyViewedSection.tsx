@@ -6,7 +6,12 @@ import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { useRecentlyViewedCoffees } from "@/hooks/use-recently-viewed-coffees";
+import type { RecentlyViewedCoffeeItem } from "@/lib/data/fetch-recently-viewed-coffees";
 import type { CoffeeSummary } from "@/types/coffee-types";
+
+type RecentlyViewedSectionProps = {
+  initialCoffees?: RecentlyViewedCoffeeItem[];
+};
 
 const sectionSurfaceClassName =
   "bg-background relative overflow-hidden border-y border-border/40";
@@ -60,8 +65,14 @@ function mapRecentlyViewedCoffeeToSummary(coffee: {
   };
 }
 
-export default function RecentlyViewedSection() {
-  const { data: coffees, isLoading, isError } = useRecentlyViewedCoffees(12);
+export default function RecentlyViewedSection({
+  initialCoffees,
+}: RecentlyViewedSectionProps) {
+  const {
+    data: coffees,
+    isLoading,
+    isError,
+  } = useRecentlyViewedCoffees(12, initialCoffees);
 
   if (isLoading) {
     return (

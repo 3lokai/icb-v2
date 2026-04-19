@@ -108,6 +108,19 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
         });
         capture("user_signed_in", { method: "email" });
         router.push(returnTo);
+        const pathOnly = (() => {
+          try {
+            if (/^https?:\/\//i.test(returnTo)) {
+              return new URL(returnTo).pathname || "/";
+            }
+          } catch {
+            // ignore invalid URL
+          }
+          return returnTo.split(/[?#]/)[0] || "/";
+        })();
+        if (pathOnly === "/") {
+          router.refresh();
+        }
         return;
       }
 

@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { queryKeys } from "@/lib/query-keys";
 import {
@@ -133,6 +134,8 @@ export function useReviewStats(
  */
 export function useCreateReview() {
   const queryClient = useQueryClient();
+  const pathname = usePathname();
+  const router = useRouter();
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const pendingMutationRef = useRef<{
     input: CreateReviewInput;
@@ -231,6 +234,9 @@ export function useCreateReview() {
                   ),
                 });
                 setLastSuccess(true);
+                if (pathname === "/") {
+                  router.refresh();
+                }
                 opts?.onSuccess?.(data);
               },
             }
@@ -240,7 +246,7 @@ export function useCreateReview() {
         }
       }, 600);
     },
-    [mutation, queryClient]
+    [mutation, queryClient, pathname, router]
   );
 
   // Cleanup on unmount

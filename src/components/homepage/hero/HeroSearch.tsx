@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   startTransition,
+  useId,
   useRef,
   useState,
 } from "react";
@@ -13,10 +14,10 @@ import { Stack } from "@/components/primitives/stack";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useSearchContext } from "@/providers/SearchProvider";
 import type { SearchableItem } from "@/types/search";
-import { Input } from "../ui/input";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 
 const MAX_RESULTS = 5;
 
@@ -25,26 +26,34 @@ export function HeroSearch() {
   const searchContext = useSearchContext();
   const { openSearch, results, isReady, setQuery } = searchContext;
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const baseId = useId();
+  const inputId = `${baseId}-input`;
+  const listboxId = `${baseId}-listbox`;
 
-  // Debounced search
+  // Debounced search — only query provider when trimmed length ≥ 2
   useEffect(() => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
 
-    if (searchQuery.trim() && isReady) {
+    const trimmed = searchQuery.trim();
+
+    if (trimmed.length >= 2 && isReady) {
       debounceTimerRef.current = setTimeout(() => {
-        setQuery(searchQuery.trim());
+        setDebouncedQuery(trimmed);
+        setQuery(trimmed);
         setShowResults(true);
         setSelectedIndex(-1);
       }, 300);
     } else {
       startTransition(() => {
+        setDebouncedQuery("");
         setShowResults(false);
         setQuery("");
       });
@@ -57,10 +66,9 @@ export function HeroSearch() {
     };
   }, [searchQuery, isReady, setQuery]);
 
-  // Filter and limit results
+  // Filter and limit results — align dropdown with debounced minimum-length query
   const displayedResults = results.slice(0, MAX_RESULTS);
-  const hasResults =
-    displayedResults.length > 0 && searchQuery.trim().length >= 2;
+  const hasResults = displayedResults.length > 0 && debouncedQuery.length >= 2;
 
   const handleSearch = useCallback(() => {
     if (searchQuery.trim()) {
@@ -68,6 +76,7 @@ export function HeroSearch() {
       if (selectedIndex >= 0 && displayedResults[selectedIndex]) {
         router.push(displayedResults[selectedIndex].url);
         setSearchQuery("");
+        setDebouncedQuery("");
         setShowResults(false);
         inputRef.current?.blur();
         return;
@@ -75,10 +84,10 @@ export function HeroSearch() {
       // Otherwise open search modal with the query pre-filled
       openSearch(searchQuery.trim());
       setSearchQuery("");
+      setDebouncedQuery("");
       setShowResults(false);
       inputRef.current?.blur();
     } else {
-      // If no query, just open the search modal
       openSearch();
     }
   }, [searchQuery, selectedIndex, displayedResults, router, openSearch]);
@@ -89,6 +98,7 @@ export function HeroSearch() {
       handleSearch();
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
+      if (!hasResults || displayedResults.length === 0) return;
       setSelectedIndex((prev) =>
         prev < displayedResults.length - 1 ? prev + 1 : prev
       );
@@ -105,6 +115,7 @@ export function HeroSearch() {
   const handleResultClick = (item: SearchableItem) => {
     router.push(item.url);
     setSearchQuery("");
+    setDebouncedQuery("");
     setShowResults(false);
     inputRef.current?.blur();
   };
@@ -130,6 +141,11 @@ export function HeroSearch() {
     }
   }, [showResults]);
 
+  const listExpanded = showResults && hasResults;
+  const activeOptionId =
+    selectedIndex >= 0 ? `${baseId}-option-${selectedIndex}` : undefined;
+  const hasQuery = Boolean(searchQuery.trim());
+
   return (
     <div className="w-full animate-fade-in-scale delay-300">
       <Stack gap="6">
@@ -138,8 +154,17 @@ export function HeroSearch() {
             <Icon className="text-white/90" name="MagnifyingGlass" size={20} />
           </div>
           <Input
-            className="h-12 w-full rounded-xl bg-black/25 border-white/20 py-3 pr-32 pl-12 text-white transition-all duration-300 placeholder:text-white/60 focus:border-white/50 focus:bg-black/40 focus:outline-none focus:ring-2 focus:ring-primary/50"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            aria-activedescendant={activeOptionId}
+            aria-autocomplete="list"
+            aria-controls={listboxId}
+            aria-expanded={listExpanded}
+            aria-haspopup="listbox"
+            className="h-12 w-full rounded-xl bg-white/5 border-white/10 py-3 pr-32 pl-12 text-white transition-all duration-300 placeholder:text-white/40 focus:border-white/30 focus:bg-white/10 focus:outline-none focus:ring-0"
+            id={inputId}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setSelectedIndex(-1);
+            }}
             onFocus={() => {
               if (hasResults) {
                 setShowResults(true);
@@ -148,53 +173,68 @@ export function HeroSearch() {
             onKeyDown={handleKeyDown}
             placeholder="Search by name, roast, region or flavor"
             ref={inputRef}
+            role="combobox"
             type="text"
             value={searchQuery}
           />
-          {/* Button container with fixed width */}
           <div className="-translate-y-1/2 absolute top-1/2 right-2 flex min-w-[120px] items-center justify-end gap-1">
             {searchQuery && (
               <Button
                 aria-label="Clear search"
-                className="h-8 w-8 rounded-lg text-white/70 transition-all duration-300 hover:bg-black/30 hover:text-white"
+                className="h-8 w-8 rounded-lg text-white/50 transition-all duration-300 hover:bg-white/10 hover:text-white"
                 onClick={() => {
                   setSearchQuery("");
                   setShowResults(false);
                 }}
                 size="icon"
+                type="button"
                 variant="ghost"
               >
                 <Icon name="XCircle" size={16} />
               </Button>
             )}
             <Button
-              className="rounded-lg h-9"
-              disabled={!searchQuery.trim()}
+              aria-label={hasQuery ? "Search directory" : "Open full search"}
+              className={cn(
+                "rounded-lg h-9 bg-accent/90 hover:bg-accent text-white border-0",
+                !hasQuery && "min-w-9 px-2"
+              )}
               onClick={handleSearch}
               size="sm"
-              variant="default"
+              type="button"
             >
-              Search
+              {hasQuery ? (
+                "Search"
+              ) : (
+                <Icon aria-hidden name="MagnifyingGlass" size={18} />
+              )}
             </Button>
           </div>
 
-          {/* Search Results Dropdown */}
           {showResults && hasResults && (
             <div
-              className="absolute top-full z-50 mt-2 max-h-[400px] w-full overflow-y-auto rounded-xl on-media-scrim-strong text-white shadow-xl"
+              className="absolute top-full z-50 mt-2 max-h-[420px] w-full overflow-y-auto rounded-2xl border border-white/10 bg-black/45 p-2 shadow-2xl backdrop-blur-md"
               ref={resultsRef}
             >
-              <div className="p-2">
+              <div
+                aria-label="Search results"
+                className="max-h-[320px] overflow-y-auto p-2"
+                id={listboxId}
+                role="listbox"
+              >
                 {displayedResults.map((item, index) => (
                   <button
+                    aria-selected={index === selectedIndex}
                     className={cn(
                       "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-all border",
                       index === selectedIndex
                         ? "bg-white/10 text-white border-white/20"
                         : "border-transparent text-white/90 hover:border-white/10 hover:bg-white/5"
                     )}
+                    id={`${baseId}-option-${index}`}
                     key={`${item.type}-${item.id}`}
                     onClick={() => handleResultClick(item)}
+                    role="option"
                     type="button"
                   >
                     <Avatar className="size-10 shrink-0">
@@ -254,16 +294,19 @@ export function HeroSearch() {
                     )}
                   </button>
                 ))}
-                {results.length > MAX_RESULTS && (
+              </div>
+              {results.length > MAX_RESULTS && (
+                <div className="border-white/10 border-t p-2 pt-2">
                   <button
-                    className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-center text-white text-caption transition-colors hover:bg-white/15"
+                    aria-label={`View all ${results.length} search results`}
+                    className="w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-center text-white text-caption transition-colors hover:bg-white/15"
                     onClick={handleSearch}
                     type="button"
                   >
                     View all {results.length} results →
                   </button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           )}
         </div>

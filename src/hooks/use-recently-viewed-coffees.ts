@@ -1,8 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getRecentlyViewedCoffees } from "@/app/actions/coffee-views";
+import type { RecentlyViewedCoffeeItem } from "@/lib/data/fetch-recently-viewed-coffees";
 import { queryKeys } from "@/lib/query-keys";
 
-export function useRecentlyViewedCoffees(limit: number = 12) {
+export function useRecentlyViewedCoffees(
+  limit: number = 12,
+  initialData?: RecentlyViewedCoffeeItem[]
+) {
   return useQuery({
     queryKey: queryKeys.coffees.recentlyViewed(limit),
     queryFn: async () => {
@@ -14,6 +18,7 @@ export function useRecentlyViewedCoffees(limit: number = 12) {
       }
       return result.data;
     },
+    initialData,
     staleTime: 60 * 1000,
   });
 }
