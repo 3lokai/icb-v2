@@ -28,10 +28,11 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
   const searchParams = useSearchParams();
   const { signIn, signUp, signInWithOAuth } = useAuth();
   const mode = searchParams.get("mode") === "sign-up" ? "sign-up" : "sign-in";
-  const from = searchParams.get("from");
+  const fromRaw = searchParams.get("from");
+  const from = fromRaw != null && fromRaw.trim() !== "" ? fromRaw.trim() : null;
 
-  // Get the return URL from search params (where user came from)
-  const returnTo = from || "/";
+  // Post-auth destination: explicit `from`, otherwise homepage
+  const returnTo = from ?? "/";
   const isSignUpMode = mode === "sign-up";
   const oauthAction = isSignUpMode ? "Sign up" : "Sign in";
   const emailAction = isSignUpMode ? "Create account" : "Sign in";
@@ -108,6 +109,19 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
         });
         capture("user_signed_in", { method: "email" });
         router.push(returnTo);
+        const pathOnly = (() => {
+          try {
+            if (/^https?:\/\//i.test(returnTo)) {
+              return new URL(returnTo).pathname || "/";
+            }
+          } catch {
+            // ignore invalid URL
+          }
+          return returnTo.split(/[?#]/)[0] || "/";
+        })();
+        if (pathOnly === "/") {
+          router.refresh();
+        }
         return;
       }
 

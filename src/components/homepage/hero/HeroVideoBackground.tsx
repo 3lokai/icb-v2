@@ -2,6 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 
+/** Dark gradient placeholder shown as video poster before frames load */
+const POSTER_SVG =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23000;stop-opacity:0.6'/%3E%3Cstop offset='50%25' style='stop-color:%23000;stop-opacity:0.5'/%3E%3Cstop offset='100%25' style='stop-color:%23000;stop-opacity:0.7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='%231a1a1a'/%3E%3Crect width='100%25' height='100%25' fill='url(%23grad)'/%3E%3C/svg%3E";
+
 export function HeroVideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
@@ -55,10 +59,10 @@ export function HeroVideoBackground() {
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           ref={videoRef}
           src="/videos/hero-video.mp4"
-          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23000;stop-opacity:0.6'/%3E%3Cstop offset='50%25' style='stop-color:%23000;stop-opacity:0.5'/%3E%3Cstop offset='100%25' style='stop-color:%23000;stop-opacity:0.7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='%231a1a1a'/%3E%3Crect width='100%25' height='100%25' fill='url(%23grad)'/%3E%3C/svg%3E"
+          poster={POSTER_SVG}
         />
       ) : (
         <div className="absolute inset-0 h-full w-full bg-gradient-to-b from-black/60 via-black/50 to-black/70" />

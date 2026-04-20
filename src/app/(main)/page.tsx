@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
-import HeroSection from "@/components/homepage/HeroSection";
+import HeroSection from "@/components/homepage/hero/HeroSection";
 import NewAdditionsStrip from "@/components/homepage/NewAdditionsStrip";
 import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGridLazy";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
@@ -8,6 +8,7 @@ import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 import { getAllCurators } from "@/data/curations";
 import { fetchCommunityCoffeeReviewCount } from "@/lib/data/fetch-community-coffee-review-count";
+import { fetchRecentlyViewedCoffees } from "@/lib/data/fetch-recently-viewed-coffees";
 
 // Dynamic imports for below-the-fold components to reduce initial bundle size
 const NewArrivalsSection = dynamic(
@@ -157,11 +158,26 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default async function Home() {
-  const [curators, communityCoffeeReviewCount] = await Promise.all([
-    getAllCurators(),
-    fetchCommunityCoffeeReviewCount(),
-  ]);
+type HomePageProps = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export default async function Home({ searchParams }: HomePageProps) {
+  const sp = await searchParams;
+  const heroSegmentRaw = sp.heroSegment;
+  const devSegmentParam =
+    typeof heroSegmentRaw === "string"
+      ? heroSegmentRaw
+      : Array.isArray(heroSegmentRaw)
+        ? heroSegmentRaw[0]
+        : null;
+
+  const [curators, communityCoffeeReviewCount, recentlyViewedInitial] =
+    await Promise.all([
+      getAllCurators(),
+      fetchCommunityCoffeeReviewCount(),
+      fetchRecentlyViewedCoffees(12),
+    ]);
 
   return (
     <div className="surface-0 flex min-h-screen flex-col">
@@ -172,35 +188,33 @@ export default async function Home() {
             fallback={
               // Matches HeroSkeleton visually so there's no flash between SSR → client states.
               // Can't use HeroSkeleton directly here (it imports HeroVideoBackground, a client component).
-              <section className="relative flex min-h-[90dvh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-6 sm:px-12 md:px-24">
+              <section className="relative flex min-h-[90dvh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-4 md:px-6 lg:px-8">
                 <div className="absolute inset-0 z-0 bg-black/70" />
-                <div className="hero-content relative z-10 w-full max-w-2xl text-left">
-                  <div className="flex flex-col gap-8">
-                    <div className="flex justify-center">
-                      <div className="h-8 w-64 max-w-full animate-pulse rounded-full bg-white/10" />
-                    </div>
-                    <div className="space-y-4">
-                      <div className="mx-auto h-12 w-full max-w-lg animate-pulse rounded-lg bg-white/10" />
-                      <div className="mx-auto h-6 w-full max-w-md animate-pulse rounded-lg bg-white/5" />
-                    </div>
-                    <div className="h-12 w-full animate-pulse rounded-xl bg-white/10" />
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="flex flex-wrap justify-center gap-4">
-                        <div className="h-11 w-44 animate-pulse rounded-lg bg-white/15" />
-                        <div className="h-11 w-40 animate-pulse rounded-lg bg-white/10" />
+                <div className="relative z-10 mx-auto w-full max-w-7xl">
+                  <div className="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:gap-x-6 lg:gap-y-8 xl:gap-x-8">
+                    <div className="order-1 flex min-w-0 flex-col gap-6 lg:col-start-1 lg:row-start-1">
+                      <div className="h-8 w-56 max-w-full animate-pulse rounded-full bg-white/10" />
+                      <div className="space-y-3">
+                        <div className="h-10 w-full max-w-md animate-pulse rounded-lg bg-white/10" />
+                        <div className="h-6 w-full max-w-lg animate-pulse rounded-lg bg-white/5" />
                       </div>
-                      <div className="h-4 w-32 animate-pulse rounded bg-white/10" />
-                      <div className="flex flex-wrap justify-center gap-6 pt-4">
-                        <div className="h-3 w-28 animate-pulse rounded bg-white/10" />
-                        <div className="h-3 w-32 animate-pulse rounded bg-white/10" />
-                      </div>
+                    </div>
+                    <div className="order-3 min-h-[200px] min-w-0 rounded-2xl border border-white/10 bg-white/5 lg:order-0 lg:col-start-2 lg:row-span-2 lg:row-start-1" />
+                    <div className="order-2 flex min-w-0 flex-wrap gap-3 lg:col-start-1 lg:row-start-2">
+                      <div className="h-11 w-44 animate-pulse rounded-lg bg-white/15" />
+                      <div className="h-11 w-40 animate-pulse rounded-lg bg-white/10" />
+                    </div>
+                    <div className="order-4 flex flex-wrap gap-6 border-t border-white/10 pt-6 lg:col-span-2 lg:row-start-3">
+                      <div className="h-3 w-28 animate-pulse rounded bg-white/10" />
+                      <div className="h-3 w-32 animate-pulse rounded bg-white/10" />
+                      <div className="h-3 w-40 animate-pulse rounded bg-white/10" />
                     </div>
                   </div>
                 </div>
               </section>
             }
           >
-            <HeroSection />
+            <HeroSection devSegmentParam={devSegmentParam} />
           </Suspense>
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20">
@@ -213,10 +227,12 @@ export default async function Home() {
             </div>
           </div>
         </div>
+        {recentlyViewedInitial.length > 0 ? (
+          <RecentlyViewedSection initialCoffees={recentlyViewedInitial} />
+        ) : null}
         <TopRatedSection
           communityCoffeeReviewCount={communityCoffeeReviewCount}
         />
-        <RecentlyViewedSection />
         <HomeCollectionGridLazy tier="core" />
         <HowItWorksSection />
         <UserProfileTeaser />

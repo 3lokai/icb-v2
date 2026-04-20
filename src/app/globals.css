@@ -99,13 +99,14 @@
   /* Popover: Elevated, lighter than card */
   --popover: oklch(0.99 0.005 79.91662433125839);
   --popover-foreground: oklch(0.222 0.03 54.19662881063911);
-  --primary: oklch(0.628 0.12 60.54583395625521);
+  /* Primary: Darkened from 0.628 → 0.52 for contrast with cream --primary-foreground */
+  --primary: oklch(0.52 0.120 60.54583395625521);
   --primary-foreground: oklch(0.965 0.012 65.81314612488242);
   --secondary: oklch(0.901 0.05 84.54495899447575);
   --secondary-foreground: oklch(0.244 0.037 82.85043678077167);
   --muted: oklch(0.901 0.05 84.54495899447575);
-  /* Muted Foreground: Darker & Less Saturated for better readability */
-  --muted-foreground: oklch(0.55 0.04 80);
+  /* Muted Foreground: Darkened from 0.55 → 0.48 for better contrast on bg & card */
+  --muted-foreground: oklch(0.48 0.04 80);
   --accent: oklch(0.722 0.139 40.47530007617163);
   --accent-foreground: oklch(0.214 0.007 41.09911279419113);
   --destructive: oklch(0.653 0.177 28.096825030786775);
@@ -150,7 +151,8 @@
   --secondary-foreground: oklch(0.962 0.002 50.62823955871573);
   --muted: oklch(0.28 0.01 50.204771231643214);
   --muted-foreground: oklch(0.724 0.024 50.243804222417154);
-  --accent: oklch(0.451 0.08 45.05850434812914);
+  /* Accent: Lightened from 0.451 → 0.58 for AA Large on dark bg */
+  --accent: oklch(0.58 0.10 45.05850434812914);
   --accent-foreground: oklch(0.961 0.01 46.742404427068415);
   --destructive: oklch(0.653 0.177 28.096825030786775);
   --border: oklch(0.306 0.025 59.07380203441877);

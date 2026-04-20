@@ -28,7 +28,11 @@ export default function TopRatedSection({
 
   if (isLoading) {
     return (
-      <Section spacing="loose" className={sectionSurfaceClassName}>
+      <Section
+        id="top-rated"
+        spacing="loose"
+        className={sectionSurfaceClassName}
+      >
         <div className="relative z-10 flex min-h-[280px] items-center justify-center py-8">
           <LoadingSpinner size="lg" />
         </div>
@@ -38,7 +42,11 @@ export default function TopRatedSection({
 
   if (coffees.length === 0) {
     return (
-      <Section spacing="loose" className={sectionSurfaceClassName}>
+      <Section
+        id="top-rated"
+        spacing="loose"
+        className={sectionSurfaceClassName}
+      >
         <div className="relative z-10 py-8 text-center">
           <h2 className="mb-4 text-heading text-primary">Top Rated</h2>
           <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
@@ -51,7 +59,7 @@ export default function TopRatedSection({
   }
 
   return (
-    <Section spacing="loose" className={sectionSurfaceClassName}>
+    <Section id="top-rated" spacing="loose" className={sectionSurfaceClassName}>
       {/* Decorative background element */}
       <div className="absolute -right-24 -top-24 opacity-[0.03] select-none pointer-events-none">
         <Icon name="Star" size={400} strokeWidth={1} />

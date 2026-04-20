@@ -34,13 +34,8 @@
   @apply transition-colors duration-500 hover:border-border;
 }
 
-/* Hero section specific */
-.hero-content {
-  @apply relative z-10 text-center max-w-3xl mx-auto px-4;
-}
-
-/* LCP optimization: Ensure hero heading is immediately visible */
-.hero-content h1 {
+/* Hero LCP: heading lives inside .lcp-optimized (see HeroPrimaryCopy) */
+.lcp-optimized h1 {
   /* Force immediate visibility - no animation delays */
   opacity: 1 !important;
   transform: none !important;

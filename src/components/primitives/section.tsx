@@ -22,7 +22,8 @@ type SectionProps = {
  * - default: py-10/14/20 — standard section rhythm (most homepage sections)
  * - loose: py-14/20/28 — extra breathing room (e.g. HowItWorks, FAQ on homepage)
  *
- * Homepage note: Hero does not use Section (full-viewport with custom padding).
+ * Homepage note: Hero does not use Section (full-viewport) but uses the same
+ * horizontal padding scale as PageShell (px-4 md:px-6 lg:px-8).
  * Use default for most sections; loose for key content sections that need more space.
  */
 export function Section({
