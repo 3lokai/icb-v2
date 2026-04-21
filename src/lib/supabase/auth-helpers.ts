@@ -110,6 +110,11 @@ export const auth = {
       provider,
       options: {
         redirectTo,
+        ...(provider === "google"
+          ? {
+              scopes: "https://www.googleapis.com/auth/userinfo.email",
+            }
+          : {}),
       },
     });
     return { data, error };

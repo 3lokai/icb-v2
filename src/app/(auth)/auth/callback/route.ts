@@ -5,6 +5,7 @@ import { sendSlackNotification } from "@/lib/notifications/slack";
 import { sendWelcomeEmail } from "@/lib/emails/resend";
 import { subscribeToConvertKit } from "@/lib/convertkit/client";
 import { getPostHogClient } from "@/lib/posthog-server";
+import { trackLifecycleEvent } from "@/lib/loops";
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -111,15 +112,21 @@ export async function GET(request: NextRequest) {
             mergeCoffeeViewsError
           );
         }
-        const { error: mergeReviewsError } = await mergeClient.rpc(
-          "merge_reviews_for_anon",
-          { p_user_id: user.id, p_anon_id: anonFromCookie }
-        );
+        const { data: mergeReviewsData, error: mergeReviewsError } =
+          await mergeClient.rpc("merge_reviews_for_anon", {
+            p_user_id: user.id,
+            p_anon_id: anonFromCookie,
+          });
         if (mergeReviewsError) {
           console.error(
             "[auth/callback] merge_reviews_for_anon:",
             mergeReviewsError
           );
+        } else {
+          const merged = mergeReviewsData?.[0];
+          if (merged && merged.rows_updated > 0) {
+            void trackLifecycleEvent(user.id, "rated_coffee");
+          }
         }
       } catch (mergeErr) {
         console.error("[auth/callback] post-login anon merges:", mergeErr);
@@ -157,6 +164,7 @@ export async function GET(request: NextRequest) {
             id: user.id,
             full_name: fullName,
             avatar_url: avatarUrl,
+            email: user.email ?? null,
             email_verified: user.email_confirmed_at ? true : false,
           })
           .select()

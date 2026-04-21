@@ -2160,6 +2160,7 @@ export type Database = {
       };
       user_profiles: {
         Row: {
+          activated_at: string | null;
           avatar_url: string | null;
           bio: string | null;
           city: string | null;
@@ -2174,15 +2175,21 @@ export type Database = {
           gender: string | null;
           id: string;
           is_public_profile: boolean | null;
+          last_active_at: string | null;
+          loops_last_session_event_at: string | null;
+          loops_last_synced_at: string | null;
+          loops_phase: string;
           newsletter_subscribed: boolean | null;
           onboarding_completed: boolean | null;
           preferred_brewing_methods: string[] | null;
+          profile_building_entered_at: string | null;
           show_location: boolean | null;
           state: string | null;
           updated_at: string | null;
           username: string | null;
         };
         Insert: {
+          activated_at?: string | null;
           avatar_url?: string | null;
           bio?: string | null;
           city?: string | null;
@@ -2197,15 +2204,21 @@ export type Database = {
           gender?: string | null;
           id: string;
           is_public_profile?: boolean | null;
+          last_active_at?: string | null;
+          loops_last_session_event_at?: string | null;
+          loops_last_synced_at?: string | null;
+          loops_phase?: string;
           newsletter_subscribed?: boolean | null;
           onboarding_completed?: boolean | null;
           preferred_brewing_methods?: string[] | null;
+          profile_building_entered_at?: string | null;
           show_location?: boolean | null;
           state?: string | null;
           updated_at?: string | null;
           username?: string | null;
         };
         Update: {
+          activated_at?: string | null;
           avatar_url?: string | null;
           bio?: string | null;
           city?: string | null;
@@ -2220,9 +2233,14 @@ export type Database = {
           gender?: string | null;
           id?: string;
           is_public_profile?: boolean | null;
+          last_active_at?: string | null;
+          loops_last_session_event_at?: string | null;
+          loops_last_synced_at?: string | null;
+          loops_phase?: string;
           newsletter_subscribed?: boolean | null;
           onboarding_completed?: boolean | null;
           preferred_brewing_methods?: string[] | null;
+          profile_building_entered_at?: string | null;
           show_location?: boolean | null;
           state?: string | null;
           updated_at?: string | null;
@@ -2956,6 +2974,24 @@ export type Database = {
           p_seed?: string;
         };
         Returns: Json;
+      };
+      get_user_lifecycle_state: {
+        Args: { p_user_id: string };
+        Returns: {
+          activated_at: string | null;
+          email: string | null;
+          has_avatar: boolean;
+          has_bio: boolean;
+          has_gear: boolean;
+          has_station_photo: boolean;
+          last_active_at: string | null;
+          loops_last_session_event_at: string | null;
+          loops_last_synced_at: string | null;
+          loops_phase: string;
+          profile_building_entered_at: string | null;
+          ratings_count: number;
+          user_id: string;
+        }[];
       };
       get_user_profile_full: {
         Args: { p_username: string; p_viewer_id?: string };

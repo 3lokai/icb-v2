@@ -52,6 +52,8 @@ const eslintConfig = defineConfig([
     "**/components/ui/**",
     // Ignore auto-generated Supabase types
     "src/types/supabase-types.ts",
+    // Deno Edge Functions (linted by Supabase deploy)
+    "supabase/functions/**",
   ]),
 ]);
 
