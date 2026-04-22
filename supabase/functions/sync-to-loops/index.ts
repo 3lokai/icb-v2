@@ -204,6 +204,7 @@ Deno.serve(async (req: Request) => {
     email,
     userId,
     eventName,
+    createContact: true,
     eventProperties: {
       event_name: eventName,
       ratings_count: ratings,
@@ -234,6 +235,53 @@ Deno.serve(async (req: Request) => {
       { error: "Loops request failed", detail: t.slice(0, 500) },
       502
     );
+  }
+
+  // First time hitting exactly 3 coffee ratings (activated_at was unset)
+  if (ratings === 3 && row.activated_at == null) {
+    const activationPayload: Record<string, unknown> = {
+      email,
+      userId,
+      eventName: "user_activated",
+      createContact: true,
+      eventProperties: {
+        event_name: "user_activated",
+        ratings_count: ratings,
+      },
+      ratings_count: ratings,
+      user_phase: nextPhase,
+      has_gear: row.has_gear,
+      has_station_photo: row.has_station_photo,
+      has_bio: row.has_bio,
+      has_avatar: row.has_avatar,
+      last_active_at: lastActiveAt,
+      activated_at: activatedAt,
+    };
+
+    const activationRes = await fetch(LOOPS_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${loopsKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(activationPayload),
+    });
+
+    if (!activationRes.ok) {
+      const t = await activationRes.text();
+      console.error(
+        "Loops API error (user_activated)",
+        activationRes.status,
+        t
+      );
+      return jsonResponse(
+        {
+          error: "Loops user_activated request failed",
+          detail: t.slice(0, 500),
+        },
+        502
+      );
+    }
   }
 
   return jsonResponse({ success: true });
