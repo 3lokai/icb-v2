@@ -1,6 +1,6 @@
 "use client";
 
-import { DiscoveryPillGrid } from "@/components/discovery/DiscoveryPillGrid";
+import { DiscoveryAccordionGrid } from "@/components/discovery/DiscoveryAccordionGrid";
 import { Section } from "@/components/primitives/section";
 
 /**
@@ -13,7 +13,7 @@ export function HomeDiscoveryPillsSection() {
       spacing="default"
       className="border-t border-border/40 pb-16 pt-12"
     >
-      <DiscoveryPillGrid
+      <DiscoveryAccordionGrid
         overline="Find Your Flavor"
         title={
           <>
