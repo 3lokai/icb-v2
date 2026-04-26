@@ -21,6 +21,11 @@ export async function trackLifecycleEvent(
         "[loops] LOOPS_INTERNAL_SYNC_SECRET not set; skipping",
         eventName
       );
+    } else {
+      console.error(
+        "[loops] LOOPS_INTERNAL_SYNC_SECRET is not configured; cannot emit event",
+        { eventName, envVar: "LOOPS_INTERNAL_SYNC_SECRET" }
+      );
     }
     return;
   }
@@ -43,23 +48,24 @@ export async function trackSessionStartedIfNeeded(
   userId: string
 ): Promise<void> {
   const supabase = await createServiceRoleClient();
-  const { data, error } = await supabase
+  const now = new Date();
+  const todayStart = `${utcCalendarDay(now)}T00:00:00.000Z`;
+
+  const { data: updated, error } = await supabase
     .from("user_profiles")
-    .select("loops_last_session_event_at")
+    .update({ loops_last_session_event_at: now.toISOString() })
     .eq("id", userId)
-    .maybeSingle();
+    .or(
+      `loops_last_session_event_at.is.null,loops_last_session_event_at.lt.${todayStart}`
+    )
+    .select("id");
 
   if (error) {
-    console.error("[loops] trackSessionStartedIfNeeded select", error);
+    console.error("[loops] trackSessionStartedIfNeeded update", error);
     return;
   }
 
-  const last = data?.loops_last_session_event_at;
-  if (last) {
-    const lastDay = utcCalendarDay(new Date(last));
-    const today = utcCalendarDay(new Date());
-    if (lastDay === today) return;
-  }
+  if (!updated || updated.length === 0) return;
 
   await trackLifecycleEvent(userId, "session_started");
 }

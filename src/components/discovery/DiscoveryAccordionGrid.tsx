@@ -109,10 +109,13 @@ function DiscoveryAccordionCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+      whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.06, duration: 0.4 }}
+      transition={{
+        delay: prefersReducedMotion ? 0 : index * 0.06,
+        duration: prefersReducedMotion ? 0 : 0.4,
+      }}
       animate={{ flexGrow: isActive ? 2.5 : 1 }}
       className="relative flex min-h-[110px] flex-1 border-b border-border/30 md:border-b-0 md:border-r md:last:border-r-0"
       style={{ willChange: "flex-grow" }}
@@ -163,7 +166,7 @@ function DiscoveryAccordionCard({
           <motion.div
             className="my-2 h-0.5 rounded-full bg-accent/80"
             animate={{ width: isActive ? 48 : 32 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.25 }}
           />
           <p className="text-micro leading-snug text-white/80">
             {meta.subtext}
