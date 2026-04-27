@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "cli": {
+      "source": "loops-so/skills",
+      "sourceType": "github",
+      "computedHash": "baa38688c8d2daecea1cf34ffe3c527591983e9de856410792331bc389d50945"
+    }
+  }
+}

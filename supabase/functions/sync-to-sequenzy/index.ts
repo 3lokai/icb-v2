@@ -1,6 +1,6 @@
 import { createClient } from "npm:@supabase/supabase-js@2.49.8";
 
-const LOOPS_URL = "https://app.loops.so/api/v1/events/send";
+const SEQUENZY_URL = "https://api.sequenzy.com/api/v1/subscribers/events";
 
 type LifecycleRow = {
   user_id: string;
@@ -9,9 +9,9 @@ type LifecycleRow = {
   has_station_photo: boolean;
   has_bio: boolean;
   has_avatar: boolean;
-  loops_phase: string | null;
-  loops_last_synced_at: string | null;
-  loops_last_session_event_at: string | null;
+  sequenzy_phase: string | null;
+  sequenzy_last_synced_at: string | null;
+  sequenzy_last_session_event_at: string | null;
   activated_at: string | null;
   profile_building_entered_at: string | null;
   last_active_at: string | null;
@@ -37,10 +37,6 @@ function addDaysUtc(d: Date, days: number): Date {
   const x = new Date(d.getTime());
   x.setUTCDate(x.getUTCDate() + days);
   return x;
-}
-
-function utcCalendarDay(d: Date): string {
-  return d.toISOString().slice(0, 10);
 }
 
 /** Funnel-only phase from metrics (`dormant` is handled in `computeNextPhase`). */
@@ -72,7 +68,7 @@ function funnelPhase(
  * Dormant users always wake to `active` (do not re-run funnel into profile_building).
  */
 function computeNextPhase(row: LifecycleRow, now: Date): string {
-  if ((row.loops_phase ?? "") === "dormant") {
+  if ((row.sequenzy_phase ?? "") === "dormant") {
     return "active";
   }
   return funnelPhase(row, now);
@@ -86,21 +82,21 @@ Deno.serve(async (req: Request) => {
     return jsonResponse({ error: "Method not allowed" }, 405);
   }
 
-  const internal = Deno.env.get("INTERNAL_LOOPS_SYNC_SECRET") ?? "";
-  const headerSecret = req.headers.get("x-icb-loops-sync") ?? "";
+  const internal = Deno.env.get("INTERNAL_SEQUENZY_SYNC_SECRET") ?? "";
+  const headerSecret = req.headers.get("x-icb-sequenzy-sync") ?? "";
   if (!internal || headerSecret !== internal) {
     return jsonResponse({ error: "Unauthorized" }, 401);
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-  const loopsKey = Deno.env.get("LOOPS_API_KEY");
-  if (!loopsKey) {
-    console.error("sync-to-loops: LOOPS_API_KEY is not set");
+  const sequenzyKey = Deno.env.get("SEQUENZY_API_KEY");
+  if (!sequenzyKey) {
+    console.error("sync-to-sequenzy: SEQUENZY_API_KEY is not set");
     return jsonResponse({ error: "Server misconfiguration" }, 500);
   }
 
-  let body: { user_id?: string; event_name?: string };
+  let body: { user_id?: string; event_name?: string; source?: string };
   try {
     body = await req.json();
   } catch {
@@ -119,6 +115,10 @@ Deno.serve(async (req: Request) => {
   ) {
     return jsonResponse({ error: "Invalid event_name" }, 400);
   }
+  const source =
+    typeof body.source === "string" && body.source.trim() !== ""
+      ? body.source.trim().toLowerCase()
+      : "live";
 
   const admin = createClient(supabaseUrl, serviceKey, {
     auth: { autoRefreshToken: false, persistSession: false },
@@ -143,11 +143,9 @@ Deno.serve(async (req: Request) => {
 
   const now = new Date();
 
-  if (eventName === "session_started") {
-    const lastSess = parseIso(row.loops_last_session_event_at);
-    if (lastSess != null && utcCalendarDay(lastSess) === utcCalendarDay(now)) {
-      return jsonResponse({ success: true, skipped: "session_throttled" });
-    }
+  // signed_up should be emitted once per user; retries/backfills must be idempotent.
+  if (eventName === "signed_up" && row.sequenzy_last_synced_at != null) {
+    return jsonResponse({ success: true, skipped: "signed_up_already_sent" });
   }
 
   let email = row.email?.trim() || null;
@@ -161,7 +159,7 @@ Deno.serve(async (req: Request) => {
     email = userData.user.email;
   }
 
-  const prevPhase = row.loops_phase ?? "onboarding";
+  const prevPhase = row.sequenzy_phase ?? "onboarding";
   const ratings = row.ratings_count ?? 0;
 
   const nextPhase = computeNextPhase(row, now);
@@ -179,15 +177,15 @@ Deno.serve(async (req: Request) => {
   const lastActiveAt = now.toISOString();
 
   const patch: Record<string, unknown> = {
-    loops_phase: nextPhase,
-    loops_last_synced_at: now.toISOString(),
+    sequenzy_phase: nextPhase,
+    sequenzy_last_synced_at: now.toISOString(),
     activated_at: activatedAt,
     profile_building_entered_at: profileBuildingEnteredAt,
     last_active_at: lastActiveAt,
   };
 
   if (eventName === "session_started") {
-    patch.loops_last_session_event_at = now.toISOString();
+    patch.sequenzy_last_session_event_at = now.toISOString();
   }
 
   const { error: upErr } = await admin
@@ -200,39 +198,39 @@ Deno.serve(async (req: Request) => {
     return jsonResponse({ error: "Failed to persist lifecycle state" }, 500);
   }
 
-  const loopsPayload: Record<string, unknown> = {
+  const sequenzyPayload: Record<string, unknown> = {
     email,
-    userId,
-    eventName,
-    createContact: true,
-    eventProperties: {
-      event_name: eventName,
+    event: eventName,
+    properties: {
       ratings_count: ratings,
+      source,
     },
-    ratings_count: ratings,
-    user_phase: nextPhase,
-    has_gear: row.has_gear,
-    has_station_photo: row.has_station_photo,
-    has_bio: row.has_bio,
-    has_avatar: row.has_avatar,
-    last_active_at: lastActiveAt,
-    activated_at: activatedAt,
+    customAttributes: {
+      userId,
+      user_phase: nextPhase,
+      has_gear: row.has_gear,
+      has_station_photo: row.has_station_photo,
+      has_bio: row.has_bio,
+      has_avatar: row.has_avatar,
+      lastActiveAt,
+      activatedAt: activatedAt ?? null,
+    },
   };
 
-  const loopsRes = await fetch(LOOPS_URL, {
+  const sequenzyRes = await fetch(SEQUENZY_URL, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${loopsKey}`,
+      Authorization: `Bearer ${sequenzyKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(loopsPayload),
+    body: JSON.stringify(sequenzyPayload),
   });
 
-  if (!loopsRes.ok) {
-    const t = await loopsRes.text();
-    console.error("Loops API error", loopsRes.status, t);
+  if (!sequenzyRes.ok) {
+    const t = await sequenzyRes.text();
+    console.error("Sequenzy API error", sequenzyRes.status, t);
     return jsonResponse(
-      { error: "Loops request failed", detail: t.slice(0, 500) },
+      { error: "Sequenzy request failed", detail: t.slice(0, 500) },
       502
     );
   }
@@ -241,27 +239,27 @@ Deno.serve(async (req: Request) => {
   if (ratings === 3 && row.activated_at == null) {
     const activationPayload: Record<string, unknown> = {
       email,
-      userId,
-      eventName: "user_activated",
-      createContact: true,
-      eventProperties: {
-        event_name: "user_activated",
+      event: "user_activated",
+      properties: {
         ratings_count: ratings,
+        source,
       },
-      ratings_count: ratings,
-      user_phase: nextPhase,
-      has_gear: row.has_gear,
-      has_station_photo: row.has_station_photo,
-      has_bio: row.has_bio,
-      has_avatar: row.has_avatar,
-      last_active_at: lastActiveAt,
-      activated_at: activatedAt,
+      customAttributes: {
+        userId,
+        user_phase: nextPhase,
+        has_gear: row.has_gear,
+        has_station_photo: row.has_station_photo,
+        has_bio: row.has_bio,
+        has_avatar: row.has_avatar,
+        lastActiveAt,
+        activatedAt: activatedAt ?? null,
+      },
     };
 
-    const activationRes = await fetch(LOOPS_URL, {
+    const activationRes = await fetch(SEQUENZY_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${loopsKey}`,
+        Authorization: `Bearer ${sequenzyKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(activationPayload),
@@ -270,13 +268,13 @@ Deno.serve(async (req: Request) => {
     if (!activationRes.ok) {
       const t = await activationRes.text();
       console.error(
-        "Loops API error (user_activated)",
+        "Sequenzy API error (user_activated)",
         activationRes.status,
         t
       );
       return jsonResponse(
         {
-          error: "Loops user_activated request failed",
+          error: "Sequenzy user_activated request failed",
           detail: t.slice(0, 500),
         },
         502
@@ -291,7 +289,7 @@ function corsHeaders(): Record<string, string> {
   return {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers":
-      "authorization, x-client-info, apikey, content-type, x-icb-loops-sync",
+      "authorization, x-client-info, apikey, content-type, x-icb-sequenzy-sync",
   };
 }
 
