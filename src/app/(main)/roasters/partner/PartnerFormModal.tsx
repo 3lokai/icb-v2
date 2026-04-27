@@ -81,7 +81,7 @@ export default function PartnerFormModal({
               aria-hidden="true"
               autoComplete="off"
               className="pointer-events-none absolute opacity-0"
-              name="website"
+              name="icb_partner_hp"
               style={{ position: "absolute", left: "-9999px" }}
               tabIndex={-1}
               type="text"

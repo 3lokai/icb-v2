@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CoffeeDirectory } from "@/components/coffees/CoffeeDirectory";
-import { DiscoveryPillGrid } from "@/components/discovery/DiscoveryPillGrid";
+import { DiscoveryAccordionGrid } from "@/components/discovery/DiscoveryAccordionGrid";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { fetchCoffeeFilterMeta } from "@/lib/data/fetch-coffee-filter-meta";
 import { fetchCoffees } from "@/lib/data/fetch-coffees";
@@ -255,7 +255,7 @@ async function CoffeesPageContent({
             contained={false}
             className="border-b border-border/40 pb-12"
           >
-            <DiscoveryPillGrid />
+            <DiscoveryAccordionGrid />
           </Section>
 
           {/* Main Directory Display */}

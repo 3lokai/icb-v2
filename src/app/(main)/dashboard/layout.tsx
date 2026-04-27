@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LoopsSessionTracker } from "@/components/loops/LoopsSessionTracker";
 import { PageShell } from "@/components/primitives/page-shell";
 import { DashboardLayoutContent } from "@/components/dashboard/DashboardLayoutContent";
 
@@ -13,6 +14,7 @@ export default function DashboardLayout({
 }) {
   return (
     <PageShell>
+      <LoopsSessionTracker />
       <DashboardLayoutContent>{children}</DashboardLayoutContent>
     </PageShell>
   );

@@ -11,6 +11,9 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { brewMethodPages } from "@/lib/discovery/landing-pages/brew-method-pages";
+import { discoveryPagePath } from "@/lib/discovery/landing-pages/paths";
+import { brewSlugToLabel } from "@/lib/discovery/brew-method-labels";
 import { cn } from "@/lib/utils";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
@@ -19,6 +22,11 @@ export type DiscoveryPillRow = {
   title: string;
   pills: Array<{ label: string; href: string }>;
 };
+
+const brewMethodPills = brewMethodPages.map((page) => ({
+  label: brewSlugToLabel(page.slug),
+  href: discoveryPagePath(page.slug),
+}));
 
 /** Shared rows: roast / method / process / budget — links to /coffees/[slug] */
 export const DISCOVERY_PILL_ROWS: DiscoveryPillRow[] = [
@@ -34,13 +42,7 @@ export const DISCOVERY_PILL_ROWS: DiscoveryPillRow[] = [
   },
   {
     title: "Brew method",
-    pills: [
-      { label: "AeroPress", href: "/coffees/aeropress" },
-      { label: "V60", href: "/coffees/v60" },
-      { label: "Chemex", href: "/coffees/chemex" },
-      { label: "Kalita", href: "/coffees/kalita" },
-      { label: "French Press", href: "/coffees/french-press" },
-    ],
+    pills: brewMethodPills,
   },
   {
     title: "Process",

@@ -156,7 +156,8 @@ const partnerInquirySchema = z.object({
   termsAccepted: z.boolean().refine((val) => val === true, {
     message: "You must accept the Terms of Service",
   }),
-  website: z.string().optional(), // Honeypot field
+  /** Honeypot; must stay in sync with hidden field name in PartnerFormModal */
+  partnerHp: z.string().optional(),
 });
 
 type SubmissionData = {
@@ -451,11 +452,11 @@ function processPartnerInquiry(
     interestedIn: formData.get("interestedIn") as string,
     message: formData.get("message") as string,
     termsAccepted: formData.get("termsAccepted") === "true",
-    website: formData.get("website") as string, // Honeypot field
+    partnerHp: formData.get("icb_partner_hp") as string,
   };
 
   // Check honeypot - if filled, it's a bot
-  if (rawData.website) {
+  if (rawData.partnerHp) {
     // Silently reject - don't let bots know they were caught
     return {
       success: true,
@@ -563,10 +564,24 @@ export async function submitForm(
       .single();
 
     if (error) {
-      console.error("Form submission error:", error);
+      console.error("Form submission DB error:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+      const isDev = process.env.NODE_ENV === "development";
+      const devDetail = isDev
+        ? ` ${error.code ? `[${error.code}] ` : ""}${error.message}${error.details ? ` — ${error.details}` : ""}`
+        : "";
       return {
         success: false,
-        error: "Failed to submit form. Please try again later.",
+        error:
+          error.code === "23514"
+            ? isDev
+              ? `Database rejected this row (check constraint). Apply Supabase migration add_partner_inquiry_form_type if missing.${devDetail}`
+              : "We could not save your request. Please try again later or email contact@indiancoffeebeans.com."
+            : `Failed to submit form. Please try again later.${devDetail}`,
       };
     }
 
