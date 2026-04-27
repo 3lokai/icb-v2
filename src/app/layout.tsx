@@ -14,6 +14,7 @@ import StructuredData from "@/components/seo/StructuredData";
 import { Toaster } from "@/components/ui/sonner";
 import { organizationSchema, websiteSchema } from "@/lib/seo/schema";
 import { SearchProvider } from "@/providers/SearchProvider";
+import { ChunkErrorHandler } from "@/components/common/ChunkErrorHandler";
 
 // Lazy load SearchCommand to reduce initial bundle size
 // Only loads when search modal is opened (cmdk is ~50-100KB)
@@ -190,6 +191,7 @@ export default async function RootLayout({
             <AuthProvider>
               <SearchProvider>
                 <ModalProvider>
+                  <ChunkErrorHandler />
                   {children}
                   <GoogleAnalytics />
                   <Toaster />
