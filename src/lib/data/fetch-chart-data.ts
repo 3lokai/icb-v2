@@ -23,6 +23,12 @@ export async function fetchChartData(
   if (dataKey === "top_roasters") selectFields = "roaster_name";
   if (dataKey === "top_regions") selectFields = "canon_region_names";
   if (dataKey === "top_flavors") selectFields = "canon_flavor_descriptors";
+  if (dataKey === "arabica_top_flavor_notes")
+    selectFields = "canon_flavor_descriptors, bean_species";
+  if (dataKey === "robusta_top_flavor_notes")
+    selectFields = "canon_flavor_descriptors, bean_species";
+  if (dataKey === "robusta_process_distribution")
+    selectFields = "process, bean_species";
   if (dataKey === "estate_roaster_count")
     selectFields = "canon_estate_names, roaster_name";
   if (dataKey === "estate_region_distribution")
@@ -38,6 +44,17 @@ export async function fetchChartData(
   if (region) {
     // canon_region_names is an array of strings, so we use contains
     query = query.contains("canon_region_slugs", [region]);
+  }
+
+  // Species-filtered charts — filter at DB level
+  if (dataKey === "arabica_top_flavor_notes") {
+    query = query.eq("bean_species", "arabica");
+  }
+  if (
+    dataKey === "robusta_top_flavor_notes" ||
+    dataKey === "robusta_process_distribution"
+  ) {
+    query = query.eq("bean_species", "robusta");
   }
 
   if (dataKey === "price_distribution_250g") {
@@ -102,6 +119,18 @@ export async function fetchChartData(
 
     case "price_distribution_250g":
       return aggregatePriceDistribution(coffees);
+
+    case "arabica_top_flavor_notes":
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+
+    case "robusta_top_flavor_notes":
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+
+    case "robusta_process_distribution":
+      return aggregateSimpleDistribution(coffees, "process").map((item) => ({
+        ...item,
+        label: formatEnumLabel(item.label),
+      }));
 
     default:
       return [];
