@@ -31,22 +31,20 @@ export const AnimatedThemeToggler = ({
     }
 
     const newTheme = isDark ? "light" : "dark";
-    const startViewTransition = (
-      document as Document & {
-        startViewTransition?: (callback: () => void) => {
-          ready: Promise<void>;
-        };
-      }
-    ).startViewTransition;
+    const doc = document as Document & {
+      startViewTransition?: (callback: () => void) => {
+        ready: Promise<void>;
+      };
+    };
 
-    if (!startViewTransition) {
+    if (!doc.startViewTransition) {
       flushSync(() => {
         setTheme(newTheme);
       });
       return;
     }
 
-    await startViewTransition(() => {
+    await doc.startViewTransition(() => {
       flushSync(() => {
         setTheme(newTheme);
       });

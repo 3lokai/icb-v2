@@ -9,6 +9,15 @@ import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
+import { Article } from "@/types/blog-types";
+import { PostCard } from "@/components/blog/PostCard";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 type EducationColor = "primary" | "accent";
 
@@ -68,7 +77,11 @@ const itemVariants = {
   },
 };
 
-export default function EducationSection() {
+export default function EducationSection({
+  articles = [],
+}: {
+  articles?: Article[];
+}) {
   return (
     <Section id="learn" spacing="loose">
       <div className="relative mx-auto max-w-6xl w-full">
@@ -212,54 +225,82 @@ export default function EducationSection() {
               </Stack>
             </div>
 
-            {/* Right Column: Image with floating card (hidden on mobile) */}
-            <div className="relative order-2 hidden lg:block">
+            {/* Right Column: Dynamic Articles Carousel */}
+            <div className="relative order-2">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="relative mx-auto aspect-square max-w-[480px]"
+                className="relative mx-auto w-full max-w-[540px]"
               >
-                {/* Main Image */}
-                <div className="relative h-full w-full overflow-hidden rounded-2xl shadow-2xl">
-                  <Image
-                    alt="Open coffee education journal on wooden café table"
-                    className="h-full w-full object-cover"
-                    height={480}
-                    priority
-                    src="/images/home/open-book-cafe.avif"
-                    width={480}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                </div>
-
-                {/* Floating "Did You Know" Card */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.6 }}
-                  animate={{ y: [0, -8, 0] }}
-                  className="absolute -bottom-6 -left-6 z-20 hidden max-w-xs lg:block"
-                >
-                  <div className="surface-1 p-4 shadow-xl rounded-xl border border-border/50">
-                    <div className="flex items-start gap-3">
-                      <div className="h-8 w-8 flex-center flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 text-accent">
-                        <Icon name="Coffee" size={16} color="accent" />
+                {articles && articles.length > 0 ? (
+                  <div className="group relative">
+                    <Carousel
+                      opts={{
+                        align: "start",
+                        loop: true,
+                      }}
+                      className="w-full"
+                    >
+                      <CarouselContent>
+                        {articles.map((article) => (
+                          <CarouselItem key={article._id}>
+                            <div className="p-1">
+                              <PostCard article={article} />
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <div className="absolute -bottom-12 left-0 right-0 flex justify-center gap-4 opacity-0 transition-opacity group-hover:opacity-100 lg:static lg:mt-6 lg:opacity-100">
+                        <CarouselPrevious className="static translate-y-0" />
+                        <CarouselNext className="static translate-y-0" />
                       </div>
-                      <div>
-                        <p className="mb-1 font-medium text-foreground text-caption">
-                          Did You Know?
-                        </p>
-                        <p className="text-muted-foreground text-overline leading-relaxed">
-                          India&apos;s famed Monsooned Malabar gets its unique
-                          flavour from monsoon winds.
-                        </p>
+                    </Carousel>
+                  </div>
+                ) : (
+                  /* Fallback to static image if no articles are provided */
+                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-2xl">
+                    <Image
+                      alt="Open coffee education journal on wooden café table"
+                      className="h-full w-full object-cover"
+                      height={480}
+                      priority
+                      src="/images/home/open-book-cafe.avif"
+                      width={480}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                  </div>
+                )}
+
+                {/* Floating "Did You Know" Card - only shown with static image or on desktop */}
+                {(!articles || articles.length === 0) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6 }}
+                    animate={{ y: [0, -8, 0] }}
+                    className="absolute -bottom-6 -left-6 z-20 hidden max-w-xs lg:block"
+                  >
+                    <div className="surface-1 p-4 shadow-xl rounded-xl border border-border/50">
+                      <div className="flex items-start gap-3">
+                        <div className="h-8 w-8 flex-center flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 text-accent">
+                          <Icon name="Coffee" size={16} color="accent" />
+                        </div>
+                        <div>
+                          <p className="mb-1 font-medium text-foreground text-caption">
+                            Did You Know?
+                          </p>
+                          <p className="text-muted-foreground text-overline leading-relaxed">
+                            India&apos;s famed Monsooned Malabar gets its unique
+                            flavour from monsoon winds.
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                )}
 
                 {/* Decorative floating elements */}
                 <div className="absolute top-6 right-6 h-16 w-16 animate-pulse rounded-full bg-accent/10 blur-xl" />

@@ -3,6 +3,12 @@ import { Suspense } from "react";
 import HeroSection from "@/components/homepage/hero/HeroSection";
 import NewAdditionsStrip from "@/components/homepage/NewAdditionsStrip";
 import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGridLazy";
+import {
+  ALL_ARTICLES_QUERY,
+  LATEST_ARTICLES_QUERY,
+} from "@/lib/sanity/queries";
+import { client } from "@/lib/sanity/client";
+import { Article } from "@/types/blog-types";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
@@ -168,12 +174,17 @@ export default async function Home({ searchParams }: HomePageProps) {
         ? heroSegmentRaw[0]
         : null;
 
-  const [curators, communityCoffeeReviewCount, recentlyViewedInitial] =
-    await Promise.all([
-      getAllCurators(),
-      fetchCommunityCoffeeReviewCount(),
-      fetchRecentlyViewedCoffees(12),
-    ]);
+  const [
+    curators,
+    communityCoffeeReviewCount,
+    recentlyViewedInitial,
+    latestArticles,
+  ] = await Promise.all([
+    getAllCurators(),
+    fetchCommunityCoffeeReviewCount(),
+    fetchRecentlyViewedCoffees(12),
+    client.fetch<Article[]>(LATEST_ARTICLES_QUERY),
+  ]);
 
   return (
     <div className="surface-0 flex min-h-screen flex-col">
@@ -234,7 +245,7 @@ export default async function Home({ searchParams }: HomePageProps) {
         <UserProfileTeaser />
         <NewArrivalsSection />
         <RoasterInfrastructureSection />
-        <EducationSection />
+        <EducationSection articles={latestArticles} />
         <CuratorSpotlight curator={curators[0] || null} />
         <TestimonialsSection />
         <HomepageFAQ />
