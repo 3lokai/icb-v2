@@ -1,4 +1,4 @@
-import { defineConfig, globalIgnores } from "eslint/config";
+import { defineConfig } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import noDirectTextSizeClasses from "./eslint-rules/no-direct-text-size-classes.js";
@@ -38,23 +38,23 @@ const eslintConfig = defineConfig([
       "custom/no-direct-text-size-classes": "error",
     },
   },
-  // Override default ignores of eslint-config-next
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-    "node_modules/**",
-    "dist/**",
-    "*.config.{js,ts,mjs}",
-    // Ignore shadcn/ui components (they are imports and shouldn't be modified)
-    "**/components/ui/**",
-    // Ignore auto-generated Supabase types
-    "src/types/supabase-types.ts",
-    // Deno Edge Functions (linted by Supabase deploy)
-    "supabase/functions/**",
-  ]),
+  // Global ignores (flat config: explicit ignores object, not globalIgnores helper)
+  {
+    ignores: [
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+      "node_modules/**",
+      "dist/**",
+      "*.config.{js,ts,mjs}",
+      "**/components/ui/**",
+      "src/types/supabase-types.ts",
+      // Deno Edge Functions (linted by Supabase deploy)
+      "supabase/**",
+      "supabase/**/*",
+    ],
+  },
 ]);
 
 export default eslintConfig;

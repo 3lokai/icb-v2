@@ -385,7 +385,8 @@ export const websiteSchema = {
 export function generateCollectionPageSchema(
   name: string,
   description: string,
-  url: string
+  url: string,
+  itemListElement: Array<Record<string, unknown>> = []
 ) {
   return {
     "@context": "https://schema.org",
@@ -397,7 +398,7 @@ export function generateCollectionPageSchema(
       "@type": "ItemList",
       name,
       description,
-      itemListElement: [], // Will be populated dynamically with actual items
+      itemListElement,
     },
     breadcrumb: {
       "@type": "BreadcrumbList",

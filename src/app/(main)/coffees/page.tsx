@@ -5,7 +5,7 @@ import { DiscoveryAccordionGrid } from "@/components/discovery/DiscoveryAccordio
 import { PageHeader } from "@/components/layout/PageHeader";
 import { fetchCoffeeFilterMeta } from "@/lib/data/fetch-coffee-filter-meta";
 import { fetchCoffees } from "@/lib/data/fetch-coffees";
-import type { CoffeeFilters } from "@/types/coffee-types";
+import type { CoffeeFilters, CoffeeSummary } from "@/types/coffee-types";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
 import {
   generateCollectionPageSchema,
@@ -188,6 +188,39 @@ import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 
+function buildCoffeeListItems(
+  coffees: CoffeeSummary[],
+  baseUrl: string
+): Array<Record<string, unknown>> {
+  return coffees
+    .filter((c) => c.slug && c.roaster_slug && c.name)
+    .map((c, i) => {
+      const item: Record<string, unknown> = {
+        "@type": "Product",
+        name: c.name,
+        url: `${baseUrl}/roasters/${c.roaster_slug}/coffees/${c.slug}`,
+      };
+      if (c.image_url) item.image = c.image_url;
+      const price = c.min_price_in_stock ?? c.best_normalized_250g;
+      if (price != null) {
+        item.offers = {
+          "@type": "Offer",
+          price,
+          priceCurrency: "INR",
+          availability: `https://schema.org/${(c.in_stock_count ?? 0) > 0 ? "InStock" : "OutOfStock"}`,
+        };
+      }
+      if (c.rating_avg != null && c.rating_count > 0) {
+        item.aggregateRating = {
+          "@type": "AggregateRating",
+          ratingValue: c.rating_avg,
+          ratingCount: c.rating_count,
+        };
+      }
+      return { "@type": "ListItem", position: i + 1, item };
+    });
+}
+
 async function CoffeesPageContent({
   params,
 }: {
@@ -212,7 +245,6 @@ async function CoffeesPageContent({
     fetchCoffeeFilterMeta(),
   ]);
 
-  const hasFilters = Object.keys(filters).length > 0;
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const currentUrl = new URL(`${baseUrl}/coffees`);
@@ -220,13 +252,13 @@ async function CoffeesPageContent({
     currentUrl.searchParams.set(key, value);
   });
 
-  const collectionSchema = hasFilters
-    ? generateCollectionPageSchema(
-        "Coffee Directory",
-        "Discover specialty coffee beans from Indian roasters",
-        currentUrl.toString()
-      )
-    : null;
+  const coffeeItems = buildCoffeeListItems(initialData.items, baseUrl);
+  const collectionSchema = generateCollectionPageSchema(
+    "Coffee Directory",
+    "Discover specialty coffee beans from Indian roasters",
+    currentUrl.toString(),
+    coffeeItems
+  );
 
   const breadcrumbItems = buildCoffeesPageBreadcrumbs(
     filters,
@@ -237,15 +269,7 @@ async function CoffeesPageContent({
 
   return (
     <>
-      {collectionSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(collectionSchema),
-          }}
-        />
-      )}
-      <StructuredData schema={breadcrumbSchema} />
+      <StructuredData schema={[collectionSchema, breadcrumbSchema]} />
 
       <PageShell maxWidth="7xl">
         <Stack gap="12">

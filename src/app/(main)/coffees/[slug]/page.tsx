@@ -11,6 +11,12 @@ import { fetchCoffeesBySlugOnly } from "@/lib/data/fetch-coffee-by-slug";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { Button } from "@/components/ui/button";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import StructuredData from "@/components/seo/StructuredData";
+import {
+  generateFAQSchema,
+  generateBreadcrumbSchema,
+  breadcrumbUrl,
+} from "@/lib/seo/schema";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -48,7 +54,18 @@ export default async function CoffeesSlugPage({ params }: Props) {
 
   const landing = getLandingPageConfig(slug);
   if (landing) {
-    return <DiscoveryLandingLayout config={landing} />;
+    const faqSchema = generateFAQSchema(landing.faqs);
+    const breadcrumbSchema = generateBreadcrumbSchema([
+      { name: "Home", url: breadcrumbUrl("/") },
+      { name: "Coffees", url: breadcrumbUrl("/coffees") },
+      { name: landing.h1, url: breadcrumbUrl(`/coffees/${landing.slug}`) },
+    ]);
+    return (
+      <>
+        <StructuredData schema={[faqSchema, breadcrumbSchema]} />
+        <DiscoveryLandingLayout config={landing} />
+      </>
+    );
   }
 
   const coffees = await fetchCoffeesBySlugOnly(slug);

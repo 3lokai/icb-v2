@@ -1,4 +1,4 @@
 # Minimal Supabase config for Edge Functions (expand via `supabase init` / dashboard as needed).
 
-[functions.sync-to-loops]
+[functions.sync-to-sequenzy]
 verify_jwt = false

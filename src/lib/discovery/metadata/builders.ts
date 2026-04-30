@@ -1,7 +1,7 @@
 // src/lib/discovery/metadata/builders.ts
 import type { LandingPageConfig } from "../landing-pages";
 
-const META_DESCRIPTION_MAX = 320;
+const META_DESCRIPTION_MAX = 158;
 const ROAST_PROFILE_KEYWORD_CAP = 8;
 
 /** Strip trailing " in India" from discovery h1 while keeping e.g. "… Coffee". */

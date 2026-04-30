@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LoopsSessionTracker } from "@/components/loops/LoopsSessionTracker";
+import { SequenzySessionTracker } from "@/components/sequenzy/SequenzySessionTracker";
 import { PageShell } from "@/components/primitives/page-shell";
 import { DashboardLayoutContent } from "@/components/dashboard/DashboardLayoutContent";
 
@@ -14,7 +14,7 @@ export default function DashboardLayout({
 }) {
   return (
     <PageShell>
-      <LoopsSessionTracker />
+      <SequenzySessionTracker />
       <DashboardLayoutContent>{children}</DashboardLayoutContent>
     </PageShell>
   );
