@@ -11,10 +11,9 @@ export const metadata = generateSEOMetadata({
   description:
     "Explore hand-picked coffee recommendations from trusted cafes, baristas, and the Indian coffee community.",
   keywords: [
-    "curated coffee",
-    "coffee recommendations",
-    "Indian coffee",
-    "barista picks",
+    "curated Indian coffee picks",
+    "best Indian coffee recommendations",
+    "barista coffee picks India",
   ],
   canonical: `${baseUrl}/curations`,
   type: "website",

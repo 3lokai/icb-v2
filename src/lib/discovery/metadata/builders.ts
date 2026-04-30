@@ -79,11 +79,17 @@ export function buildDiscoveryTitle(config: LandingPageConfig): string {
   }
   if (config.type === "process") {
     const processName = labelWithoutIndiaSuffix(config.h1);
-    return `${processName} in India – Discover & Compare | Indian Coffee Beans`;
+    const processTitle = processName.includes("Coffee")
+      ? processName
+      : `${processName} Coffee`;
+    return `${processTitle} in India – Discover & Compare | Indian Coffee Beans`;
   }
   if (config.type === "region") {
     const regionName = labelWithoutIndiaSuffix(config.h1);
-    return `${regionName} in India – Discover & Compare | Indian Coffee Beans`;
+    const regionTitle = regionName.includes("Coffee")
+      ? regionName
+      : `${regionName} Coffee`;
+    return `${regionTitle} in India – Discover & Compare | Indian Coffee Beans`;
   }
   return `${config.h1} | Indian Coffee Beans`;
 }
@@ -92,12 +98,10 @@ export function buildDiscoveryTitle(config: LandingPageConfig): string {
  * Build keyword list by page type (expanded for SEO)
  */
 export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
-  const base = [
-    "Indian coffee",
-    "specialty coffee India",
-    "buy coffee online India",
-    "Indian Coffee Beans",
-  ];
+  const base =
+    config.type === "price_bucket"
+      ? ["Indian coffee", "specialty coffee India", "buy coffee online India"]
+      : ["Indian coffee", "specialty coffee India"];
 
   if (config.type === "brew_method") {
     const methodName = config.h1
@@ -107,11 +111,9 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
     return [
       ...base,
       methodName,
-      `${methodName} coffee`,
-      `${methodName} India`,
-      "brewing methods",
-      "coffee brewing India",
-      "specialty coffee brewing",
+      `best coffee for ${methodName}`,
+      `${methodName} coffee India`,
+      `${methodName} beans India`,
     ];
   }
   if (config.type === "roast_level") {
@@ -165,12 +167,10 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
     return [
       ...base,
       label,
-      `${label} coffee`,
-      "coffee processing",
-      "coffee process India",
+      `${label} coffee India`,
+      "coffee processing India",
       "Indian coffee processing",
-      "coffee fermentation",
-      "specialty coffee process",
+      `${label} process India`,
     ];
   }
   if (config.type === "region") {

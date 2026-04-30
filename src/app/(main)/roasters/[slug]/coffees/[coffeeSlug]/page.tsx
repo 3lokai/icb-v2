@@ -49,9 +49,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ...(coffee.roast_level_raw ? [coffee.roast_level_raw] : []),
     ...(coffee.process_raw ? [coffee.process_raw] : []),
     ...coffee.flavor_notes.map((n) => n.label),
-    "Indian coffee",
-    "specialty coffee",
-    "coffee beans",
   ];
   const productDetails = {
     price: coffee.summary.min_price_in_stock

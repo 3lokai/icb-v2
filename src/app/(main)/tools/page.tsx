@@ -24,13 +24,9 @@ export const metadata = generateMetadata({
   description:
     "Free coffee brewing calculators, expert recipes, and professional tools for specialty coffee enthusiasts. Perfect your brew with precision tools.",
   keywords: [
-    "coffee tools",
-    "brewing calculator",
-    "coffee calculator",
-    "expert coffee recipes",
-    "specialty coffee tools",
-    "coffee brewing guide",
+    "coffee brewing tools India",
     "free coffee tools",
+    "coffee ratio calculator",
   ],
   canonical: "/tools",
   type: "website",

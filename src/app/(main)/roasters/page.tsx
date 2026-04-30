@@ -38,14 +38,14 @@ export async function generateMetadata({
   const { filters, page } = parseRoasterSearchParams(urlSearchParams);
 
   // Build title based on filters
-  let title = "Roaster Directory | Indian Coffee Beans";
+  let title = "Coffee Roasters in India (100+ Listed) | Indian Coffee Beans";
   if (filters.q) {
     title = `${filters.q} - Roaster Search | Indian Coffee Beans`;
   }
 
   // Enhanced description based on active filters
   let description =
-    "Browse our complete directory of specialty coffee roasters from India. Find your perfect roaster with advanced filters.";
+    "Browse 100+ Indian specialty coffee roasters. Filter by city, state, and roast style - compare ratings and find the right roaster for you.";
 
   if (filters.q) {
     description = `Search results for "${filters.q}" - Discover specialty coffee roasters from India.`;
@@ -86,9 +86,7 @@ export async function generateMetadata({
     keywords: [
       "Indian coffee roasters",
       "specialty coffee roasters India",
-      "roaster directory",
       "coffee roasters near me",
-      "Indian roasters",
     ],
     alternates: {
       canonical: canonicalUrl,

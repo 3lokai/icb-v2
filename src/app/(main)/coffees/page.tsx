@@ -39,7 +39,7 @@ export async function generateMetadata({
   const { filters, page } = parseCoffeeSearchParams(urlSearchParams);
 
   // Build title based on filters
-  let title = "Coffee Directory | Indian Coffee Beans";
+  let title = "Buy Coffee Beans in India (1,400+ SKUs) | Indian Coffee Beans";
   if (filters.q) {
     title = `${filters.q} - Coffee Search | Indian Coffee Beans`;
   } else if (filters.roast_levels && filters.roast_levels.length > 0) {
@@ -48,7 +48,7 @@ export async function generateMetadata({
 
   // Enhanced description based on active filters
   let description =
-    "Browse our complete directory of specialty coffee beans from Indian roasters. Find your perfect coffee with advanced filters.";
+    "Browse 1,400+ Indian coffee SKUs by roast level, process, flavour notes, and price. Community ratings on every coffee.";
 
   if (filters.q) {
     description = `Search results for "${filters.q}" - Discover specialty coffee beans from Indian roasters.`;
@@ -87,12 +87,9 @@ export async function generateMetadata({
     title,
     description,
     keywords: [
-      "Indian coffee",
-      "specialty coffee India",
-      "coffee directory",
-      "coffee beans India",
-      "roast levels",
-      "coffee filters",
+      "buy coffee beans India",
+      "Indian coffee beans online",
+      "specialty coffee beans India",
     ],
     alternates: {
       canonical: canonicalUrl,

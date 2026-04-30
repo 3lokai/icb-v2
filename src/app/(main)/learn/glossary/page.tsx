@@ -10,7 +10,11 @@ export const metadata: Metadata = generateSEOMetadata({
   title: "Coffee Glossary - Indian Specialty Coffee Terms",
   description:
     "Confused by washed vs natural, or Arabica vs Robusta? This glossary helps you decode the coffee lingo — from brew to bean.",
-  keywords: ["coffee glossary", "coffee terms", "specialty coffee", "brewing"],
+  keywords: [
+    "Indian coffee glossary",
+    "coffee terms explained",
+    "specialty coffee vocabulary India",
+  ],
   canonical: `${baseUrl}/learn/glossary`,
 });
 
