@@ -17,7 +17,11 @@ export const metadata: Metadata = generateMetadata({
     "How IndianCoffeeBeans Works | Discovery, Reviews & Rankings Explained",
   description:
     "How IndianCoffeeBeans works — from structured coffee data and reviews to transparent discovery, rankings, and verification. No ads. No commissions.",
-  keywords: ["how it works", "coffee directory", "transparency", "neutrality"],
+  keywords: [
+    "how IndianCoffeeBeans works",
+    "independent coffee directory",
+    "coffee curation India",
+  ],
   canonical: "/how-icb-works",
 });
 

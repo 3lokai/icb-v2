@@ -17,7 +17,11 @@ export const metadata: Metadata = generateMetadata({
   title: "About IndianCoffeeBeans.com - Discover India's Coffee Culture",
   description:
     "Learn about our mission to create the definitive resource for Indian coffee beans and roasters, connecting enthusiasts with India's rich coffee heritage.",
-  keywords: ["indian coffee", "coffee directory", "about", "coffee mission"],
+  keywords: [
+    "IndianCoffeeBeans mission",
+    "indian coffee directory",
+    "specialty coffee India",
+  ],
   image: "/images/placeholder-coffee-beans.jpg",
   canonical: "/about",
   type: "website",

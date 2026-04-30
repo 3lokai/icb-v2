@@ -144,13 +144,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "Rate Indian specialty coffees, track your brews, and build a taste profile. Discover beans from Indian roasters with community reviews and recommendations.",
     keywords: [
-      "indian specialty coffee",
-      "coffee ratings",
-      "coffee reviews",
-      "indian coffee roasters",
-      "coffee beans india",
-      "taste profile",
-      "brew methods",
+      "best coffee beans India",
+      "Indian coffee roasters",
+      "buy coffee online India",
     ],
     image: `${baseUrl}/favicon/android-chrome-512x512.png`,
     type: "website",

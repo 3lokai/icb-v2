@@ -38,7 +38,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "IndianCoffeeBeans.com",
+    default: "Indian Coffee Beans - India's Specialty Coffee Directory",
     template: "%s | Indian Coffee Beans",
   },
   description:
@@ -64,14 +64,7 @@ export const metadata: Metadata = {
       },
     ],
   },
-  keywords: [
-    "indian coffee",
-    "specialty coffee india",
-    "indian roasters",
-    "coffee directory",
-    "filter coffee",
-    "brew guides",
-  ],
+  keywords: ["Indian coffee", "specialty coffee India"],
   openGraph: {
     type: "website",
     locale: "en_IN",

@@ -30,7 +30,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonical = `${baseUrl}/roasters/${slug}`;
 
   // Build title
-  const title = `${roaster.name} | Indian Coffee Beans`;
+  const title = roaster.hq_city
+    ? `${roaster.name} Coffee - Roaster in ${roaster.hq_city} | Indian Coffee Beans`
+    : `${roaster.name} Coffee - Indian Coffee Roaster | Indian Coffee Beans`;
 
   // Build description
   const description =
@@ -48,9 +50,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ...(roaster.hq_city ? [roaster.hq_city] : []),
     ...(roaster.hq_state ? [roaster.hq_state] : []),
     ...(roaster.hq_country ? [roaster.hq_country] : []),
-    "Indian coffee roasters",
-    "specialty coffee roasters",
-    "coffee roasters India",
   ];
 
   // Note: Structured data is rendered via <StructuredData> component in the page

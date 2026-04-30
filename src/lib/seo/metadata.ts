@@ -49,14 +49,7 @@ function buildOGImageUrl(
 
 // Helper: Merge keywords with defaults
 function mergeKeywords(keywords: string[]): string[] {
-  const defaultKeywords = [
-    "coffee",
-    "Indian coffee",
-    "coffee beans",
-    "specialty coffee",
-    "coffee roasters",
-    "coffee directory",
-  ];
+  const defaultKeywords = ["Indian coffee", "specialty coffee India"];
   return [...new Set([...defaultKeywords, ...keywords])];
 }
 
