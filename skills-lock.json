@@ -5,6 +5,12 @@
       "source": "loops-so/skills",
       "sourceType": "github",
       "computedHash": "baa38688c8d2daecea1cf34ffe3c527591983e9de856410792331bc389d50945"
+    },
+    "sequenzy": {
+      "source": "sequenzy/skills",
+      "sourceType": "github",
+      "skillPath": "skills/sequenzy/SKILL.md",
+      "computedHash": "4f14f6b7bf407929ba03752a47a2a1b452a88dc61b2a138decb86890427727a6"
     }
   }
 }

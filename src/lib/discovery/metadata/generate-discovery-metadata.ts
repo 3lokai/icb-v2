@@ -28,5 +28,6 @@ export function generateDiscoveryMetadata(config: LandingPageConfig): Metadata {
     type: "website",
     canonical,
     noIndex: false,
+    image: config.heroBackgroundImage,
   });
 }

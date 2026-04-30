@@ -6,7 +6,12 @@ import { RoastersPageContentSkeleton } from "@/components/roasters/RoastersPageC
 import { fetchRoasterFilterMeta } from "@/lib/data/fetch-roaster-filter-meta";
 import { fetchRoasters } from "@/lib/data/fetch-roasters";
 import { parseRoasterSearchParams } from "@/lib/filters/roaster-url";
-import { generateCollectionPageSchema } from "@/lib/seo/schema";
+import {
+  generateCollectionPageSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/seo/schema";
+import StructuredData from "@/components/seo/StructuredData";
+import type { RoasterFilters, RoasterSummary } from "@/types/roaster-types";
 
 /**
  * Generate metadata for roaster directory page
@@ -117,6 +122,51 @@ export async function generateMetadata({
   };
 }
 
+function buildRoasterListItems(
+  roasters: RoasterSummary[],
+  baseUrl: string
+): Array<Record<string, unknown>> {
+  return roasters.map((r, i) => {
+    const item: Record<string, unknown> = {
+      "@type": "LocalBusiness",
+      name: r.name,
+      url: `${baseUrl}/roasters/${r.slug}`,
+    };
+    if (r.avg_rating != null && (r.total_ratings_count ?? 0) > 0) {
+      item.aggregateRating = {
+        "@type": "AggregateRating",
+        ratingValue: r.avg_rating,
+        ratingCount: r.total_ratings_count,
+      };
+    }
+    return { "@type": "ListItem", position: i + 1, item };
+  });
+}
+
+function buildRoastersPageBreadcrumbs(
+  filters: RoasterFilters,
+  currentUrl: string,
+  baseUrl: string
+): Array<{ name: string; url: string }> {
+  const items: Array<{ name: string; url: string }> = [
+    { name: "Home", url: baseUrl },
+    { name: "Roasters", url: `${baseUrl}/roasters` },
+  ];
+  if (filters.cities?.length) {
+    items.push({ name: "City", url: `${baseUrl}/roasters` });
+    items.push({ name: filters.cities.join(", "), url: currentUrl });
+  } else if (filters.states?.length) {
+    items.push({ name: "State", url: `${baseUrl}/roasters` });
+    items.push({ name: filters.states.join(", "), url: currentUrl });
+  } else if (filters.countries?.length) {
+    items.push({ name: "Country", url: `${baseUrl}/roasters` });
+    items.push({ name: filters.countries.join(", "), url: currentUrl });
+  } else {
+    items[items.length - 1]!.url = currentUrl;
+  }
+  return items;
+}
+
 async function RoastersPageContent({
   params,
 }: {
@@ -141,7 +191,6 @@ async function RoastersPageContent({
     fetchRoasterFilterMeta(),
   ]);
 
-  const hasFilters = Object.keys(filters).length > 0;
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const currentUrl = new URL(`${baseUrl}/roasters`);
@@ -149,24 +198,24 @@ async function RoastersPageContent({
     currentUrl.searchParams.set(key, value);
   });
 
-  const collectionSchema = hasFilters
-    ? generateCollectionPageSchema(
-        "Roaster Directory",
-        "Discover specialty coffee roasters from India",
-        currentUrl.toString()
-      )
-    : null;
+  const roasterItems = buildRoasterListItems(initialData.items, baseUrl);
+  const collectionSchema = generateCollectionPageSchema(
+    "Roaster Directory",
+    "Discover specialty coffee roasters from India",
+    currentUrl.toString(),
+    roasterItems
+  );
+
+  const breadcrumbItems = buildRoastersPageBreadcrumbs(
+    filters,
+    currentUrl.toString(),
+    baseUrl
+  );
+  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
 
   return (
     <>
-      {collectionSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(collectionSchema),
-          }}
-        />
-      )}
+      <StructuredData schema={[collectionSchema, breadcrumbSchema]} />
       <RoasterDirectory
         filterMeta={filterMeta}
         initialData={initialData}

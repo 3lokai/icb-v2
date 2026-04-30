@@ -1,0 +1,30 @@
+[
+  {
+    "subject": "How was your last cup of coffee, {{FIRST_NAME}}?",
+    "html": "<h1>The first sip is just the beginning</h1><p>Hi {{FIRST_NAME}},</p><p>We noticed you joined Indian Coffee Beans recently, but have not rated a coffee yet. Whether it was a bright fruity pour-over or a bold South Indian Filter coffee, your feedback helps others discover their next favorite bag.</p><p>You do not need a long review. A quick rating is enough to build your profile and help the community.</p><p><a href=\"https://indiancoffeebeans.com\">Find and Rate Your Coffee</a></p><p>Happy brewing,<br>The Indian Coffee Beans Team</p>",
+    "delay": {
+      "hours": 2
+    }
+  },
+  {
+    "subject": "How’s the coffee tasting, {{FIRST_NAME}}?",
+    "html": "<h1>Your coffee journey is just getting started</h1><p>Hi {{FIRST_NAME}},</p><p>It has been a couple of days since you joined Indian Coffee Beans. Rating just a few coffees helps you remember what you loved and what you did not.</p><p>Rate 3 coffees to start seeing your taste profile emerge. It takes seconds.</p><p><a href=\"https://indiancoffeebeans.com\">Rate Your First Coffee</a></p><p>Happy brewing,<br>The Indian Coffee Beans Team</p>",
+    "delay": {
+      "hours": 46
+    }
+  },
+  {
+    "subject": "Only 3 ratings away from your coffee profile, {{FIRST_NAME}}!",
+    "html": "<h1>How's the coffee tasting, {{FIRST_NAME}}?</h1><p>It has been a few days since you joined, and we would love to see what you have been brewing.</p><p>Once you rate your first 3 coffees, your profile starts to come alive and your preferences become clearer.</p><p><a href=\"https://indiancoffeebeans.com\">Rate Your First Coffee</a></p><p>See you at the brew bar,<br>The Indian Coffee Beans Team</p>",
+    "delay": {
+      "days": 3
+    }
+  },
+  {
+    "subject": "Still thinking about that last cup?",
+    "html": "<h1>Keep track of every sip</h1><p>Hi {{FIRST_NAME}},</p><p>It has been a week since you joined Indian Coffee Beans. If you have been busy, this is a gentle reminder to log your recent brews.</p><p>Rating helps you build a personal record and helps others discover great Indian roasters.</p><p><a href=\"https://indiancoffeebeans.com\">Rate Your First Coffee</a></p><p>See you over at the directory,<br>The Indian Coffee Beans Team</p>",
+    "delay": {
+      "days": 2
+    }
+  }
+]

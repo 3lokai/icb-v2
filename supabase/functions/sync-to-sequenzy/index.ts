@@ -25,6 +25,7 @@ const ALLOWED_EVENTS = new Set([
   "station_photo_added",
   "profile_updated",
   "session_started",
+  "user_activated",
 ]);
 
 function parseIso(s: string | null | undefined): Date | null {
@@ -207,6 +208,7 @@ Deno.serve(async (req: Request) => {
     },
     customAttributes: {
       userId,
+      ratings_count: ratings,
       user_phase: nextPhase,
       has_gear: row.has_gear,
       has_station_photo: row.has_station_photo,
@@ -235,8 +237,13 @@ Deno.serve(async (req: Request) => {
     );
   }
 
-  // First time hitting exactly 3 coffee ratings (activated_at was unset)
-  if (ratings === 3 && row.activated_at == null) {
+  // First time hitting exactly 3 coffee ratings (activated_at was unset).
+  // Skip this side-effect when user_activated is the incoming event itself (backfill/direct call).
+  if (
+    eventName !== "user_activated" &&
+    ratings === 3 &&
+    row.activated_at == null
+  ) {
     const activationPayload: Record<string, unknown> = {
       email,
       event: "user_activated",
@@ -246,6 +253,7 @@ Deno.serve(async (req: Request) => {
       },
       customAttributes: {
         userId,
+        ratings_count: ratings,
         user_phase: nextPhase,
         has_gear: row.has_gear,
         has_station_photo: row.has_station_photo,

@@ -46,3 +46,7 @@ google-service-account-key.json
 *.tsbuildinfo
 next-env.d.ts
 .env.local
+
+#skills
+/.agents
+/.claude
