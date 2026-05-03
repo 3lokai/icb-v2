@@ -11,9 +11,50 @@ interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"butt
   duration?: number;
 }
 
+type DocumentWithVt = Document & {
+  startViewTransition?: (callback: () => void) => {
+    ready: Promise<void>;
+    finished?: Promise<void>;
+  };
+};
+
+function runCircleReveal(
+  anchor: DOMRectReadOnly | undefined,
+  durationMs: number
+): void {
+  if (!anchor) {
+    return;
+  }
+  const { top, left, width, height } = anchor;
+  const x = left + width / 2;
+  const y = top + height / 2;
+  const maxRadius = Math.hypot(
+    Math.max(left, window.innerWidth - left),
+    Math.max(top, window.innerHeight - top)
+  );
+  try {
+    document.documentElement.animate(
+      {
+        clipPath: [
+          `circle(0px at ${x}px ${y}px)`,
+          `circle(${maxRadius}px at ${x}px ${y}px)`,
+        ],
+      },
+      {
+        duration: durationMs,
+        easing: "ease-in-out",
+        pseudoElement: "::view-transition-new(root)",
+      }
+    );
+  } catch {
+    /* View Transition pseudo-elements are not reliably animatable in all engines */
+  }
+}
+
 export const AnimatedThemeToggler = ({
   className,
   duration = 400,
+  onClick,
   ...props
 }: AnimatedThemeTogglerProps) => {
   const { setTheme, resolvedTheme } = useTheme();
@@ -25,65 +66,65 @@ export const AnimatedThemeToggler = ({
     setMounted(true);
   }, []);
 
-  const toggleTheme = useCallback(async () => {
-    if (!buttonRef.current) {
-      return;
-    }
+  const toggleTheme = useCallback(() => {
+    const anchor = buttonRef.current?.getBoundingClientRect();
 
-    const newTheme = isDark ? "light" : "dark";
-    const startViewTransition = (
-      document as Document & {
-        startViewTransition?: (callback: () => void) => {
-          ready: Promise<void>;
-        };
-      }
-    ).startViewTransition;
+    const current = resolvedTheme ?? "light";
+    const newTheme = current === "dark" ? "light" : "dark";
 
-    if (!startViewTransition) {
+    const applyTheme = (): void => {
       flushSync(() => {
         setTheme(newTheme);
       });
+    };
+
+    const doc = document as DocumentWithVt;
+
+    if (!doc.startViewTransition) {
+      applyTheme();
       return;
     }
 
-    await startViewTransition(() => {
-      flushSync(() => {
-        setTheme(newTheme);
-      });
-    }).ready;
+    try {
+      const transition = doc.startViewTransition(applyTheme);
 
-    const { top, left, width, height } =
-      buttonRef.current.getBoundingClientRect();
-    const x = left + width / 2;
-    const y = top + height / 2;
-    const maxRadius = Math.hypot(
-      Math.max(left, window.innerWidth - left),
-      Math.max(top, window.innerHeight - top)
-    );
+      transition.ready
+        .then(() => {
+          runCircleReveal(anchor, duration);
+        })
+        .catch(() => {
+          /*
+           * Transition may reject (overlap, aborted callback). Theme was still
+           * applied synchronously inside startViewTransition’s callback when it ran.
+           */
+        });
 
-    document.documentElement.animate(
-      {
-        clipPath: [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${maxRadius}px at ${x}px ${y}px)`,
-        ],
-      },
-      {
-        duration,
-        easing: "ease-in-out",
-        pseudoElement: "::view-transition-new(root)",
+      transition.finished?.catch(() => {});
+    } catch {
+      applyTheme();
+    }
+  }, [resolvedTheme, setTheme, duration]);
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>): void => {
+      onClick?.(e);
+      if (e.defaultPrevented) {
+        return;
       }
-    );
-  }, [isDark, setTheme, duration]);
+      toggleTheme();
+    },
+    [onClick, toggleTheme]
+  );
 
   if (!mounted) {
     return (
       <button
-        className={cn(className)}
-        ref={buttonRef}
+        type="button"
         {...props}
-        aria-label="Toggle theme"
+        aria-label={props["aria-label"] ?? "Toggle theme"}
+        className={cn(className)}
         disabled
+        ref={buttonRef}
       >
         <Icon className="opacity-0" name="Moon" size={20} />
         <span className="sr-only">Toggle theme</span>
@@ -93,10 +134,11 @@ export const AnimatedThemeToggler = ({
 
   return (
     <button
-      className={cn(className)}
-      onClick={toggleTheme}
-      ref={buttonRef}
+      type="button"
       {...props}
+      className={cn(className)}
+      onClick={handleClick}
+      ref={buttonRef}
     >
       {isDark ? <Icon name="Sun" size={20} /> : <Icon name="Moon" size={20} />}
       <span className="sr-only">Toggle theme</span>

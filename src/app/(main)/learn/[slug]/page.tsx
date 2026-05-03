@@ -17,6 +17,7 @@ import {
 import { urlFor } from "@/lib/sanity/image";
 import { extractStepsFromBody } from "@/lib/sanity/portable-text-utils";
 import ArticleContent from "@/components/blog/ArticleContent";
+import { LearnArticleTracker } from "@/components/blog/LearnArticleTracker";
 import StructuredData from "@/components/seo/StructuredData";
 import {
   Accordion,
@@ -156,6 +157,11 @@ export default async function ArticlePage({ params }: Props) {
   return (
     <div className="pb-24">
       <StructuredData schema={schemas} />
+      <LearnArticleTracker
+        slug={article.slug}
+        title={article.title}
+        category_slug={article.category?.slug}
+      />
       <ArticleHeader article={article} />
 
       <div className="mt-12 md:mt-20">

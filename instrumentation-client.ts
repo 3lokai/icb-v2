@@ -7,6 +7,8 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   defaults: "2026-01-30",
   // Enables capturing unhandled exceptions via Error Tracking
   capture_exceptions: true,
+  // Scroll depth in Web Analytics: keep scroll context on (see disable_scroll_properties in posthog-js)
+  disable_scroll_properties: false,
   // Turn on debug in development mode
   debug: process.env.NODE_ENV === "development",
   // Avoid lazy-loading the session recorder in dev (often fails under Turbopack / ad blockers → "could not load recorder")

@@ -18,7 +18,7 @@ Single reference for how PostHog is wired in IndianCoffeeBeans (Next.js App Rout
 | **Server events** | [`src/lib/posthog-server.ts`](../src/lib/posthog-server.ts) — `getPostHogClient()` (`posthog-node`); **no** `env` unless you add it. |
 | **Proxy** | [`next.config.ts`](../next.config.ts) — `/ingest` → `eu.i.posthog.com` (bypass ad blockers). |
 | **Identity** | [`src/components/providers/auth-provider.tsx`](../src/components/providers/auth-provider.tsx) — `posthog.identify(user.id, { email })` when `user` is set; `posthog.reset()` after successful `signOut()`. |
-| **Custom event names** | **17** distinct names (see [Event catalog](#event-catalog)). |
+| **Custom event names** | **18** distinct names (see [Event catalog](#event-catalog)). |
 
 ---
 
@@ -40,14 +40,14 @@ Single reference for how PostHog is wired in IndianCoffeeBeans (Next.js App Rout
 
 | Layer | File | Purpose |
 |-------|------|---------|
-| **Initialization** | [`instrumentation-client.ts`](../instrumentation-client.ts) | `posthog.init`: `api_host` `https://b.indiancoffeebeans.com`, `ui_host` `https://eu.posthog.com`, `defaults: "2026-01-30"`, `capture_exceptions: true`, `debug` in development, `disable_session_recording` in development. |
+| **Initialization** | [`instrumentation-client.ts`](../instrumentation-client.ts) | `posthog.init`: `api_host` `https://b.indiancoffeebeans.com`, `ui_host` `https://eu.posthog.com`, `defaults: "2026-01-30"`, `capture_exceptions: true`, `disable_scroll_properties: false` (scroll context for Web Analytics scroll depth / `$pageleave`), `debug` in development, `disable_session_recording` in development. |
 | **Client helper** | [`src/lib/posthog.ts`](../src/lib/posthog.ts) | `capture()` → `posthog.capture` with `{ env: NODE_ENV, ...props }`; re-exports `posthog` for `identify`. |
 | **Server client** | [`src/lib/posthog-server.ts`](../src/lib/posthog-server.ts) | Singleton: `flushAt: 1`, `flushInterval: 0`; `shutdownPostHog()` for graceful shutdown (currently unused). |
 | **Rewrites** | [`next.config.ts`](../next.config.ts) | `/ingest/static/:path*` → `eu-assets.i.posthog.com`; `/ingest/:path*` → `eu.i.posthog.com`; `skipTrailingSlashRedirect: true`. |
 | **Auth shell** | [`src/components/providers/auth-provider.tsx`](../src/components/providers/auth-provider.tsx) | Session `identify`, sign-out `reset` (see [Identity](#identity)). |
 | **Root layout** | [`src/app/layout.tsx`](../src/app/layout.tsx) | Wraps the app with `AuthProvider` so identity applies to OAuth return and email sessions. |
 
-**Not automatically tracked here:** PostHog product features beyond init (e.g. session replay is disabled in development via config). Standard PostHog autocapture may still apply per project settings; this doc lists **explicit** `capture` / `getPostHogClient().capture` calls only.
+**Not automatically tracked here:** PostHog product features beyond init (e.g. session replay is disabled in development via config). Standard PostHog autocapture may still apply per project settings; this doc lists **explicit** `capture` / `getPostHogClient().capture` calls only. **Scroll depth** (Web Analytics) uses the SDK scroll manager when `disable_scroll_properties` is not `true` — we set `disable_scroll_properties: false` explicitly so scroll metrics attach to `$pageleave` (requires `capture_pageleave` to run; default with `defaults: "2026-01-30"` aligns with automatic pageviews).
 
 ---
 
@@ -101,6 +101,7 @@ All **client** events go through `capture()` unless noted. **Server** events use
 | `rating_page_viewed` | Client | [`CoffeeDetailPage.tsx`](../src/components/coffees/CoffeeDetailPage.tsx) | Same mount effect as `coffee_page_viewed` | `entity_type: "coffee"`, `entity_id`, `coffee_slug` |
 | `rating_page_viewed` | Client | [`src/components/roasters/RoasterDetailPage.tsx`](../src/components/roasters/RoasterDetailPage.tsx) | On roaster profile load (`useEffect` on `roaster.id`) | `entity_type: "roaster"`, `entity_id`, `roaster_slug` |
 | `hero_cta_clicked` | Client | [`src/components/homepage/hero/HeroCTAs.tsx`](../src/components/homepage/hero/HeroCTAs.tsx) | User clicks a hero CTA (labels vary by segment) | `cta_label` (human-readable string), `hero_segment` (e.g. `discovery`, `returning_browser`, `rating_progress`, `anon_conversion`, `authenticated_profile`) |
+| `learn_article_viewed` | Client | [`src/components/blog/LearnArticleTracker.tsx`](../src/components/blog/LearnArticleTracker.tsx) | Once per stable article `slug` on `/learn/{slug}` (`useEffect` keyed on `slug`) | `slug`, `title`, `category_slug` (nullable) |
 
 ### Onboarding
 
@@ -148,6 +149,7 @@ All **client** events go through `capture()` unless noted. **Server** events use
 | [`src/components/onboarding/onboarding-wizard.tsx`](../src/components/onboarding/onboarding-wizard.tsx) | `onboarding_completed` |
 | [`src/app/(main)/(public)/contact/ContactForms.tsx`](../src/app/(main)/(public)/contact/ContactForms.tsx) | `contact_form_submitted` |
 | [`src/app/(main)/roasters/partner/PartnerPageClient.tsx`](../src/app/(main)/roasters/partner/PartnerPageClient.tsx) | `partner_*` |
+| [`src/components/blog/LearnArticleTracker.tsx`](../src/components/blog/LearnArticleTracker.tsx) | `learn_article_viewed` (mounted from [`learn/[slug]/page.tsx`](../src/app/(main)/learn/[slug]/page.tsx)) |
 
 ---
 

@@ -122,6 +122,13 @@ export const ALL_ARTICLES_QUERY = `
   }
 `;
 
+export const LATEST_ARTICLES_QUERY = `
+  *[_type == "article" && defined(slug.current)]
+  | order(date desc) [0...5] {
+    ${ARTICLE_PROJECTION}
+  }
+`;
+
 export const ARTICLE_BY_SLUG_QUERY = `
   *[_type == "article" && slug.current == $slug][0] {
     ${ARTICLE_PROJECTION}
