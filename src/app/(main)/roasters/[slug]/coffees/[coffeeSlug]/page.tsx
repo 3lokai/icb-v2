@@ -13,6 +13,8 @@ import { generateSchemaOrg, generateBreadcrumbSchema } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeDetailPage } from "@/components/coffees/CoffeeDetailPage";
 import { coffeeImagePresets } from "@/lib/imagekit";
+import { capitalizeFirstLetter } from "@/lib/utils";
+import type { CoffeeDetail } from "@/types/coffee-types";
 
 type Props = {
   params: Promise<{ slug: string; coffeeSlug: string }>;
@@ -20,6 +22,23 @@ type Props = {
 
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
+
+function coffeeOriginLabel(
+  coffee: Pick<CoffeeDetail, "estates" | "regions">
+): string | null {
+  const estateName = coffee.estates?.[0]?.name;
+  const firstRegion = coffee.regions[0];
+  return (
+    estateName ||
+    firstRegion?.display_name ||
+    (firstRegion &&
+      [firstRegion.country, firstRegion.state, firstRegion.subregion]
+        .filter(Boolean)
+        .join(", ")) ||
+    firstRegion?.subregion ||
+    null
+  );
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug: roasterSlug, coffeeSlug } = await params;
@@ -32,31 +51,53 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const stats = await fetchReviewStats("coffee", coffee.id);
+  const reviewCount = stats?.review_count ?? 0;
+  const roasterName = coffee.roaster.name;
+
+  const processStr = (coffee.process_raw || coffee.process || "").trim();
+  const processPart = processStr ? capitalizeFirstLetter(processStr) : "";
+  const roastStr = (coffee.roast_level_raw || coffee.roast_level || "").trim();
+  const roastPart = roastStr ? capitalizeFirstLetter(roastStr) : "";
+
+  const titleBase = `${coffee.name} by ${roasterName}`;
+  const title =
+    reviewCount >= 5
+      ? `${titleBase} — Reviews & Tasting Notes`
+      : processPart && roastPart
+        ? `${titleBase} — ${processPart}, ${roastPart} | Indian Coffee Beans`
+        : processPart || roastPart
+          ? `${titleBase} — ${processPart || roastPart} | Indian Coffee Beans`
+          : `${titleBase} | Indian Coffee Beans`;
+
+  const originLabel = coffeeOriginLabel(coffee);
+  const attrParts = [processPart, originLabel, roastPart].filter(Boolean);
+  const attrLine = attrParts.join(" · ");
+
+  const avgRating = stats?.avg_rating ?? null;
+  const ratingBlurb =
+    reviewCount >= 5 && avgRating != null
+      ? `Community-rated ${avgRating.toFixed(1)}/5 from ${reviewCount} reviews. `
+      : "";
+
+  const descriptionFooter =
+    "Read tasting notes and unbiased ratings before you buy. No sponsorships. Just data and community.";
+
+  const description = ratingBlurb
+    ? `${ratingBlurb}${attrLine ? `${attrLine}. ` : ""}${descriptionFooter}`
+    : attrLine
+      ? `${attrLine}. ${descriptionFooter}`
+      : coffee.summary.seo_desc?.trim()
+        ? coffee.summary.seo_desc.trim().length > 160
+          ? `${coffee.summary.seo_desc.trim().slice(0, 157)}…`
+          : coffee.summary.seo_desc.trim()
+        : `Discover ${coffee.name} by ${roasterName}. ${descriptionFooter}`;
+
   const canonical = `${baseUrl}/roasters/${roasterSlug}/coffees/${coffeeSlug}`;
-  const title = coffee.roaster
-    ? `${coffee.name} by ${coffee.roaster.name} | Indian Coffee Beans`
-    : `${coffee.name} | Indian Coffee Beans`;
-  const description =
-    coffee.summary.seo_desc ||
-    `Discover ${coffee.name}${coffee.roaster ? ` by ${coffee.roaster.name}` : ""}. ${coffee.roast_level_raw || coffee.roast_level || ""} roast, ${coffee.process_raw || coffee.process || ""} process. ${
-      coffee.flavor_notes.length > 0
-        ? `Flavor notes: ${coffee.flavor_notes
-            .slice(0, 3)
-            .map((n) => n.label)
-            .join(", ")}.`
-        : ""
-    } Available at Indian Coffee Beans.`;
   const ogImage =
     coffee.images.length > 0 && coffee.images[0].imagekit_url
       ? coffeeImagePresets.coffeeOG(coffee.images[0].imagekit_url)
       : undefined;
-  const keywords: string[] = [
-    coffee.name ?? "",
-    ...(coffee.roaster ? [coffee.roaster.name] : []),
-    ...(coffee.roast_level_raw ? [coffee.roast_level_raw] : []),
-    ...(coffee.process_raw ? [coffee.process_raw] : []),
-    ...coffee.flavor_notes.map((n) => n.label),
-  ];
   const productDetails = {
     price: coffee.summary.min_price_in_stock
       ? `${coffee.summary.min_price_in_stock}`
@@ -68,7 +109,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return generateSEOMetadata({
     title,
     description,
-    keywords,
     image: ogImage,
     type: "product",
     canonical,
