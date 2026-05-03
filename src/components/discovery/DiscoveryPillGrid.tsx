@@ -352,7 +352,7 @@ export function DiscoveryPillGrid({
   showHeading = true,
   overline = "Explore by category",
   title = "Find coffee your way",
-  description = "Jump to curated lists by roast, brew method, process, budget, or region.",
+  description = "Jump to top-rated coffees based on parameters, or scroll down for detailed filters.",
 }: DiscoveryPillGridProps) {
   return (
     <div className={cn("w-full transition-all duration-500", className)}>

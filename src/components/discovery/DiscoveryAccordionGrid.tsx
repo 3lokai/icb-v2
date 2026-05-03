@@ -211,7 +211,7 @@ export function DiscoveryAccordionGrid({
   showHeading = true,
   overline = "Explore by category",
   title = "Find coffee your way",
-  description = "Jump to curated lists by roast, brew method, process, budget, or region.",
+  description = "Jump to top-rated coffees based on parameters, or scroll down for detailed filters.",
 }: DiscoveryAccordionGridProps) {
   const prefersHover = usePrefersHover();
   const [activeTitle, setActiveTitle] = useState<string | null>(null);
