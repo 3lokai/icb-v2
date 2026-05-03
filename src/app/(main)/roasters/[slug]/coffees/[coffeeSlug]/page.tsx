@@ -1,6 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { fetchCoffeeByRoasterAndSlug } from "@/lib/data/fetch-coffee-by-slug";
+import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
+import { queryKeys } from "@/lib/query-keys";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import { generateSchemaOrg, generateBreadcrumbSchema } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
@@ -77,6 +84,22 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
     notFound();
   }
 
+  const queryClient = new QueryClient();
+  const reviewStaleMs = 30 * 1000;
+
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.reviews.stats("coffee", coffee.id),
+      queryFn: () => fetchReviewStats("coffee", coffee.id),
+      staleTime: reviewStaleMs,
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.reviews.byEntity("coffee", coffee.id),
+      queryFn: () => fetchReviews("coffee", coffee.id, 10),
+      staleTime: reviewStaleMs,
+    }),
+  ]);
+
   const canonical = `${baseUrl}/roasters/${roasterSlug}/coffees/${coffeeSlug}`;
   const description =
     coffee.summary.seo_desc ||
@@ -121,9 +144,11 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
   ]);
 
   return (
-    <>
-      <StructuredData schema={[productSchema, breadcrumbSchema]} />
-      <CoffeeDetailPage coffee={coffee} />
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <>
+        <StructuredData schema={[productSchema, breadcrumbSchema]} />
+        <CoffeeDetailPage coffee={coffee} />
+      </>
+    </HydrationBoundary>
   );
 }
