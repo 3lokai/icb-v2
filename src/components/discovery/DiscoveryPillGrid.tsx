@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { Icon, type IconName } from "@/components/common/Icon";
+import { Skeleton } from "@/components/ui/skeleton";
+
 export type DiscoveryPillRow = {
   title: string;
   pills: Array<{ label: string; href: string }>;
@@ -299,6 +301,46 @@ function DiscoveryPillCategoryCard({
         </motion.div>
       </div>
     </motion.div>
+  );
+}
+
+export function DiscoveryPillGridSkeleton({
+  className,
+  showHeading = true,
+}: {
+  className?: string;
+  showHeading?: boolean;
+}) {
+  return (
+    <div className={cn("w-full", className)}>
+      {showHeading ? (
+        <div className="mb-10">
+          <div className="mb-2 flex items-center gap-3">
+            <Skeleton className="h-px w-6" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+          <Skeleton className="mb-2 h-10 w-80" />
+          <Skeleton className="h-4 w-full max-w-2xl" />
+        </div>
+      ) : null}
+
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="flex h-full">
+            <div className="aspect-[3/4] w-full overflow-hidden rounded-xl border border-border/40 bg-muted/20">
+              <div className="flex h-full flex-col p-4 sm:p-5">
+                <div className="mt-auto flex flex-col">
+                  <Skeleton className="mb-4 h-10 w-10 rounded-xl" />
+                  <Skeleton className="mb-1 h-6 w-20" />
+                  <div className="my-2 h-0.5 w-8 rounded-full bg-border/40" />
+                  <Skeleton className="h-4 w-28" />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 

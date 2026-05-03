@@ -226,6 +226,21 @@
     scroll-behavior: smooth;
   }
 
+  /*
+   * Theme toggle (AnimatedThemeToggler): lets the Web Animations clip-path run the
+   * reveal instead of stacking on the UA cross-fade — see MDN View Transitions examples.
+   */
+  ::view-transition-image-pair(root) {
+    isolation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+    display: block;
+  }
+
   /* Custom Scrollbar Styles */
 
   ::-webkit-scrollbar {

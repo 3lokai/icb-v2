@@ -13,6 +13,9 @@ import {
 } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
 import { CoffeesPageContentSkeleton } from "@/components/coffees/CoffeesPageContentSkeleton";
+import { PageShell } from "@/components/primitives/page-shell";
+import { Section } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
 
 /**
  * Generate metadata for coffee directory page
@@ -180,10 +183,6 @@ function buildCoffeesPageBreadcrumbs(
   }
   return items;
 }
-
-import { PageShell } from "@/components/primitives/page-shell";
-import { Section } from "@/components/primitives/section";
-import { Stack } from "@/components/primitives/stack";
 
 function buildCoffeeListItems(
   coffees: CoffeeSummary[],
