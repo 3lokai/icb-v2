@@ -7,7 +7,10 @@ import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { getAllCommunities } from "@/data/communities";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
-import { generateCollectionPageSchema } from "@/lib/seo/schema";
+import {
+  generateCollectionPageSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
 import { CommunitySubmissionModal } from "@/components/communities/CommunitySubmissionModal";
 
@@ -47,9 +50,14 @@ async function CommunitiesContent() {
     }))
   );
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: baseUrl },
+    { name: "Communities", url: `${baseUrl}/communities` },
+  ]);
+
   return (
     <PageShell maxWidth="7xl">
-      <StructuredData schema={collectionSchema} />
+      <StructuredData schema={[collectionSchema, breadcrumbSchema]} />
 
       <Section spacing="default">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
