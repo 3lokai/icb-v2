@@ -1,6 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { fetchRoasterBySlug } from "@/lib/data/fetch-roaster-by-slug";
+import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
+import { queryKeys } from "@/lib/query-keys";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import { generateSchemaOrg, generateBreadcrumbSchema } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
@@ -25,39 +32,52 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const stats = await fetchReviewStats("roaster", roaster.id);
+
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const canonical = `${baseUrl}/roasters/${slug}`;
 
-  // Build title
-  const title = roaster.hq_city
-    ? `${roaster.name} Coffee - Roaster in ${roaster.hq_city} | Indian Coffee Beans`
-    : `${roaster.name} Coffee - Indian Coffee Roaster | Indian Coffee Beans`;
+  const reviewCount = stats?.review_count ?? 0;
 
-  // Build description
+  const title =
+    reviewCount >= 5
+      ? `${roaster.name} Reviews & Coffees — Rated by ICB Community`
+      : roaster.coffee_count
+        ? `${roaster.name} — ${roaster.coffee_count} Coffees, Reviews & Tasting Notes`
+        : `${roaster.name} Coffee Reviews | Indian Coffee Beans`;
+
+  const avgRating = stats?.avg_rating ?? null;
+
+  const ratingBlurb =
+    reviewCount >= 5 && avgRating != null
+      ? `Community-rated ${avgRating.toFixed(1)}/5 from ${reviewCount} reviews. `
+      : "";
+
+  const locationBlurb = roaster.hq_city
+    ? `Based in ${roaster.hq_city}${roaster.hq_state ? `, ${roaster.hq_state}` : ""}. `
+    : "";
+
+  const coffeeBlurb = roaster.coffee_count
+    ? `Browse ${roaster.coffee_count} ${roaster.coffee_count === 1 ? "coffee" : "coffees"} with tasting notes, processing methods, and unbiased reviews from Indian coffee drinkers. `
+    : "";
+
   const description =
-    roaster.description ||
-    `Discover ${roaster.name}${roaster.hq_city ? ` from ${roaster.hq_city}` : ""}${roaster.hq_state ? `, ${roaster.hq_state}` : ""}. ${roaster.coffee_count ? `${roaster.coffee_count} coffee${roaster.coffee_count > 1 ? "s" : ""} available.` : ""} Browse specialty coffee roasters at Indian Coffee Beans.`;
+    ratingBlurb || coffeeBlurb
+      ? `${ratingBlurb}${locationBlurb}${coffeeBlurb}No sponsorships. Just data and community.`
+      : roaster.description?.slice(0, 160) ||
+        `${locationBlurb}Discover ${roaster.name} on India's neutral specialty coffee directory.`;
 
   // Get logo for OG
   const ogImage = roaster.logo_url
     ? roasterImagePresets.roasterOG(roaster.logo_url)
     : undefined;
 
-  // Build keywords
-  const keywords: string[] = [
-    roaster.name,
-    ...(roaster.hq_city ? [roaster.hq_city] : []),
-    ...(roaster.hq_state ? [roaster.hq_state] : []),
-    ...(roaster.hq_country ? [roaster.hq_country] : []),
-  ];
-
   // Note: Structured data is rendered via <StructuredData> component in the page
   // to avoid duplication and reduce HTML size
   return generateSEOMetadata({
     title,
     description,
-    keywords,
     image: ogImage,
     type: "website",
     canonical,
@@ -74,6 +94,22 @@ export default async function RoasterDetailPageServer({ params }: Props) {
   if (!roaster) {
     notFound();
   }
+
+  const queryClient = new QueryClient();
+  const reviewStaleMs = 30 * 1000;
+
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.reviews.stats("roaster", roaster.id),
+      queryFn: () => fetchReviewStats("roaster", roaster.id),
+      staleTime: reviewStaleMs,
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.reviews.byEntity("roaster", roaster.id),
+      queryFn: () => fetchReviews("roaster", roaster.id, 10),
+      staleTime: reviewStaleMs,
+    }),
+  ]);
 
   // Generate structured data
   const baseUrl =
@@ -119,9 +155,11 @@ export default async function RoasterDetailPageServer({ params }: Props) {
   ]);
 
   return (
-    <>
-      <StructuredData schema={[localBusinessSchema, breadcrumbSchema]} />
-      <RoasterDetailPage roaster={roaster} />
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <>
+        <StructuredData schema={[localBusinessSchema, breadcrumbSchema]} />
+        <RoasterDetailPage roaster={roaster} />
+      </>
+    </HydrationBoundary>
   );
 }

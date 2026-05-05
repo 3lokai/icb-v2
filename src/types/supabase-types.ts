@@ -754,6 +754,60 @@ export type Database = {
           },
         ];
       };
+      communities: {
+        Row: {
+          created_at: string;
+          description: string | null;
+          icon_url: string | null;
+          id: string;
+          invite_url: string;
+          is_active: boolean;
+          language: string;
+          member_count: string | null;
+          moderators: string[] | null;
+          name: string;
+          platform: Database["public"]["Enums"]["community_platform_enum"];
+          slug: string;
+          sort_order: number;
+          tags: string[] | null;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          description?: string | null;
+          icon_url?: string | null;
+          id?: string;
+          invite_url: string;
+          is_active?: boolean;
+          language?: string;
+          member_count?: string | null;
+          moderators?: string[] | null;
+          name: string;
+          platform: Database["public"]["Enums"]["community_platform_enum"];
+          slug: string;
+          sort_order?: number;
+          tags?: string[] | null;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          description?: string | null;
+          icon_url?: string | null;
+          id?: string;
+          invite_url?: string;
+          is_active?: boolean;
+          language?: string;
+          member_count?: string | null;
+          moderators?: string[] | null;
+          name?: string;
+          platform?: Database["public"]["Enums"]["community_platform_enum"];
+          slug?: string;
+          sort_order?: number;
+          tags?: string[] | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       curation_lists: {
         Row: {
           created_at: string;
@@ -2176,13 +2230,13 @@ export type Database = {
           id: string;
           is_public_profile: boolean | null;
           last_active_at: string | null;
-          sequenzy_last_session_event_at: string | null;
-          sequenzy_last_synced_at: string | null;
-          sequenzy_phase: string;
           newsletter_subscribed: boolean | null;
           onboarding_completed: boolean | null;
           preferred_brewing_methods: string[] | null;
           profile_building_entered_at: string | null;
+          sequenzy_last_session_event_at: string | null;
+          sequenzy_last_synced_at: string | null;
+          sequenzy_phase: string;
           show_location: boolean | null;
           state: string | null;
           updated_at: string | null;
@@ -2205,13 +2259,13 @@ export type Database = {
           id: string;
           is_public_profile?: boolean | null;
           last_active_at?: string | null;
-          sequenzy_last_session_event_at?: string | null;
-          sequenzy_last_synced_at?: string | null;
-          sequenzy_phase?: string;
           newsletter_subscribed?: boolean | null;
           onboarding_completed?: boolean | null;
           preferred_brewing_methods?: string[] | null;
           profile_building_entered_at?: string | null;
+          sequenzy_last_session_event_at?: string | null;
+          sequenzy_last_synced_at?: string | null;
+          sequenzy_phase?: string;
           show_location?: boolean | null;
           state?: string | null;
           updated_at?: string | null;
@@ -2234,13 +2288,13 @@ export type Database = {
           id?: string;
           is_public_profile?: boolean | null;
           last_active_at?: string | null;
-          sequenzy_last_session_event_at?: string | null;
-          sequenzy_last_synced_at?: string | null;
-          sequenzy_phase?: string;
           newsletter_subscribed?: boolean | null;
           onboarding_completed?: boolean | null;
           preferred_brewing_methods?: string[] | null;
           profile_building_entered_at?: string | null;
+          sequenzy_last_session_event_at?: string | null;
+          sequenzy_last_synced_at?: string | null;
+          sequenzy_phase?: string;
           show_location?: boolean | null;
           state?: string | null;
           updated_at?: string | null;
@@ -2978,18 +3032,18 @@ export type Database = {
       get_user_lifecycle_state: {
         Args: { p_user_id: string };
         Returns: {
-          activated_at: string | null;
-          email: string | null;
+          activated_at: string;
+          email: string;
           has_avatar: boolean;
           has_bio: boolean;
           has_gear: boolean;
           has_station_photo: boolean;
-          last_active_at: string | null;
-          sequenzy_last_session_event_at: string | null;
-          sequenzy_last_synced_at: string | null;
-          sequenzy_phase: string;
-          profile_building_entered_at: string | null;
+          last_active_at: string;
+          profile_building_entered_at: string;
           ratings_count: number;
+          sequenzy_last_session_event_at: string;
+          sequenzy_last_synced_at: string;
+          sequenzy_phase: string;
           user_id: string;
         }[];
       };
@@ -3033,6 +3087,10 @@ export type Database = {
           entities_recached: number;
           rows_updated: number;
         }[];
+      };
+      notify_sequenzy_sync: {
+        Args: { p_event_name: string; p_source?: string; p_user_id: string };
+        Returns: undefined;
       };
       refresh_coffee_directory_mv: { Args: never; Returns: undefined };
       refresh_user_taste_profile_cache: {
@@ -3274,6 +3332,13 @@ export type Database = {
         | "hidden"
         | "coming_soon"
         | "archived";
+      community_platform_enum:
+        | "whatsapp"
+        | "discord"
+        | "telegram"
+        | "facebook_group"
+        | "reddit"
+        | "other";
       curator_type_enum: "cafe" | "barista" | "community" | "others";
       grind_enum:
         | "whole"
@@ -3499,6 +3564,14 @@ export const Constants = {
         "hidden",
         "coming_soon",
         "archived",
+      ],
+      community_platform_enum: [
+        "whatsapp",
+        "discord",
+        "telegram",
+        "facebook_group",
+        "reddit",
+        "other",
       ],
       curator_type_enum: ["cafe", "barista", "community", "others"],
       grind_enum: [

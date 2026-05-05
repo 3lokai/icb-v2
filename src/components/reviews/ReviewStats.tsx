@@ -23,9 +23,9 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
             Community Feedback
           </span>
         </div>
-        <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+        <h3 className="text-heading text-balance leading-[1.2] tracking-tight">
           Ratings & <span className="text-accent italic">Reviews.</span>
-        </h2>
+        </h3>
       </div>
       {hasStats ? (
         <Cluster gap="4" align="center" className="flex-wrap">

@@ -79,6 +79,7 @@ export function RoasterMap() {
       <MapContainer
         center={[22.5, 82.5]}
         zoom={4.3}
+        zoomSnap={0}
         zoomControl={false}
         scrollWheelZoom={false}
         dragging={false}

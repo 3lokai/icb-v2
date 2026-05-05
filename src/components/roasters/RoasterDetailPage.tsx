@@ -317,6 +317,13 @@ export function RoasterDetailPage({
                       </span>
                     </div>
                   )}
+                  <p className="text-body-muted mt-3 max-w-xl leading-relaxed">
+                    {stats?.review_count &&
+                    stats.review_count >= 5 &&
+                    stats.avg_rating != null
+                      ? `Community-rated ${stats.avg_rating.toFixed(1)}/5 from ${stats.review_count} reviews. ${roaster.coffee_count ?? 0} ${(roaster.coffee_count ?? 0) === 1 ? "coffee" : "coffees"} cataloged with tasting notes and unbiased ratings from Indian coffee drinkers.`
+                      : `${roaster.coffee_count ?? 0} ${(roaster.coffee_count ?? 0) === 1 ? "coffee" : "coffees"} cataloged with tasting notes. Rate ${roaster.name} and help build India's neutral specialty coffee directory.`}
+                  </p>
                 </Stack>
 
                 {/* Rating + Basic Stats */}
@@ -477,10 +484,8 @@ export function RoasterDetailPage({
                     </span>
                   </div>
                   <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                    The{" "}
-                    <span className="text-accent italic">
-                      Roaster&apos;s Story
-                    </span>
+                    About{" "}
+                    <span className="text-accent italic">{roaster.name}</span>
                   </h2>
                   <p className="whitespace-pre-line text-body-large text-muted-foreground/80 leading-relaxed italic">
                     {roaster.description}
@@ -507,7 +512,8 @@ export function RoasterDetailPage({
                     </span>
                   </div>
                   <h2 className="text-title text-balance leading-[1.1] tracking-tight font-serif italic">
-                    Our <span className="text-accent">Selection.</span>
+                    Coffees from{" "}
+                    <span className="text-accent">{roaster.name}</span>
                   </h2>
                 </div>
 
@@ -548,6 +554,12 @@ export function RoasterDetailPage({
             className="scroll-mt-40 py-10 md:py-14 border-t border-border/20"
           >
             <Stack gap="8">
+              <h2 className="text-title text-balance leading-[1.1] tracking-tight font-serif italic">
+                {stats?.review_count
+                  ? `${stats.review_count} ${stats.review_count === 1 ? "Review" : "Reviews"} for `
+                  : "Be the first to review "}
+                <span className="text-accent">{roaster.name}</span>
+              </h2>
               {/* Review Stats */}
               <ReviewStats stats={stats || null} />
 

@@ -42,6 +42,7 @@ const baseNavItems = [
     children: [
       { name: "Coffees", link: "/coffees" },
       { name: "Roasters", link: "/roasters" },
+      { name: "Communities", link: "/communities" },
       {
         name: "Estates",
         link: "/estates",

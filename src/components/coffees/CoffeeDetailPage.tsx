@@ -25,7 +25,7 @@ import {
 } from "@/components/reviews";
 import { useReviews, useReviewStats } from "@/hooks/use-reviews";
 import { useExitIntentRating } from "@/hooks/use-exit-intent-rating";
-import { cn, capitalizeFirstLetter } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { SimilarCoffees } from "./SimilarCoffees";
 import { CoffeeSensoryProfile } from "./CoffeeSensoryProfile";
 import Tag, { TagList } from "@/components/common/Tag";
@@ -268,54 +268,6 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
 
   const trimmedDesc = trimDescription(coffee.description_md);
 
-  const estateName = coffee.estates?.[0]?.name;
-  const firstRegion = coffee.regions[0];
-  const originLine =
-    estateName ||
-    firstRegion?.display_name ||
-    (firstRegion &&
-      [firstRegion.country, firstRegion.state, firstRegion.subregion]
-        .filter(Boolean)
-        .join(", ")) ||
-    firstRegion?.subregion ||
-    null;
-  const originSlug = estateName
-    ? null
-    : firstRegion
-      ? discoverySlugForRegionDisplayOrSubregion(firstRegion)
-      : null;
-
-  const heroMetaParts: React.ReactNode[] = [];
-  if (originLine) {
-    heroMetaParts.push(
-      <DiscoveryInlineLink key="origin" slug={originSlug}>
-        {originLine}
-      </DiscoveryInlineLink>
-    );
-  }
-  if (coffee.process) {
-    heroMetaParts.push(
-      <DiscoveryInlineLink
-        key="process"
-        slug={discoverySlugForProcess(coffee.process)}
-      >
-        {capitalizeFirstLetter(coffee.process_raw || coffee.process || "")}
-      </DiscoveryInlineLink>
-    );
-  }
-  if (coffee.roast_level) {
-    heroMetaParts.push(
-      <DiscoveryInlineLink
-        key="roast"
-        slug={discoverySlugForRoastLevel(coffee.roast_level)}
-      >
-        {capitalizeFirstLetter(
-          coffee.roast_level_raw || coffee.roast_level || ""
-        )}
-      </DiscoveryInlineLink>
-    );
-  }
-
   return (
     <div className={cn("w-full bg-background min-h-screen", className)}>
       {/* ─── Scrollspy Tab Bar ─── */}
@@ -354,14 +306,6 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                       </Link>
                     )}
                   </Cluster>
-                  <div className="text-label uppercase tracking-widest mt-1">
-                    {heroMetaParts.map((node, i) => (
-                      <Fragment key={i}>
-                        {i > 0 ? " · " : null}
-                        {node}
-                      </Fragment>
-                    ))}
-                  </div>
                 </Stack>
 
                 {/* Rating Badge + Price */}
@@ -567,8 +511,10 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                         </span>
                       </div>
                       <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                        About this{" "}
-                        <span className="text-accent italic">coffee</span>
+                        About{" "}
+                        <span className="text-accent italic">
+                          {coffee.name}
+                        </span>
                       </h2>
                       <p className="whitespace-pre-line text-body text-muted-foreground/80 leading-relaxed">
                         {coffee.description_md}
@@ -884,6 +830,12 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
             className="scroll-mt-40 py-10 md:py-14 border-t border-border/20"
           >
             <Stack gap="8">
+              <h2 className="text-title text-balance leading-[1.1] tracking-tight font-serif italic">
+                {stats?.review_count
+                  ? `${stats.review_count} ${stats.review_count === 1 ? "Review" : "Reviews"} for `
+                  : "Be the first to review "}
+                <span className="text-accent">{coffee.name}</span>
+              </h2>
               {/* Review Stats */}
               <ReviewStats stats={stats || null} />
 
