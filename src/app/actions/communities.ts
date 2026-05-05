@@ -42,7 +42,7 @@ export async function submitCommunityAction(formData: FormData) {
 
   const validated = submissionSchema.safeParse(rawData);
   if (!validated.success) {
-    return { error: validated.error.errors[0].message };
+    return { error: validated.error.issues[0]?.message ?? "Invalid input." };
   }
 
   const { name, platform, invite_url, description, tags, moderators } =
@@ -87,6 +87,6 @@ export async function submitCommunityAction(formData: FormData) {
     return { error: "Failed to submit community. Please try again." };
   }
 
-  revalidateTag("communities");
+  revalidateTag("communities", "max");
   return { success: true };
 }
