@@ -24,26 +24,45 @@ import { submitCommunityAction } from "@/app/actions/communities";
 import { toast } from "sonner";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Stack } from "@/components/primitives/stack";
+import type { CommunityPlatform } from "@/types/community-types";
 
 export function CommunitySubmissionModal() {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [platform, setPlatform] = useState<CommunityPlatform | "">("");
+  const [platformError, setPlatformError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!platform) {
+      setPlatformError("Please select a platform.");
+      toast.error("Please select a platform.");
+      return;
+    }
+
     setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const result = await submitCommunityAction(formData);
+    try {
+      const form = e.currentTarget;
+      const formData = new FormData(form);
+      formData.set("platform", platform);
 
-    setLoading(false);
+      const result = await submitCommunityAction(formData);
 
-    if (result.success) {
-      toast.success("Community submitted for review!");
-      setOpen(false);
-    } else {
-      toast.error(result.error || "Failed to submit community.");
+      if (result.success) {
+        toast.success("Community submitted for review!");
+        form.reset();
+        setPlatform("");
+        setPlatformError("");
+        setOpen(false);
+      } else {
+        toast.error(result.error || "Failed to submit community.");
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,7 +103,14 @@ export function CommunitySubmissionModal() {
 
             <div className="space-y-2">
               <Label htmlFor="platform">Platform *</Label>
-              <Select name="platform" required>
+              <Select
+                name="platform"
+                value={platform}
+                onValueChange={(value) => {
+                  setPlatform(value as CommunityPlatform);
+                  if (platformError) setPlatformError("");
+                }}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select platform" />
                 </SelectTrigger>
@@ -97,6 +123,9 @@ export function CommunitySubmissionModal() {
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
+              {platformError ? (
+                <p className="text-body text-destructive">{platformError}</p>
+              ) : null}
             </div>
 
             <div className="space-y-2">

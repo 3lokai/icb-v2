@@ -79,7 +79,11 @@ export async function submitCommunityAction(formData: FormData) {
   });
 
   if (error) {
-    console.error("Error inserting community:", error);
+    console.error("Error inserting community", {
+      code: error.code,
+      message: error.message,
+      timestamp: new Date().toISOString(),
+    });
     return { error: "Failed to submit community. Please try again." };
   }
 
