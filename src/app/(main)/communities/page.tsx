@@ -9,6 +9,7 @@ import { getAllCommunities } from "@/data/communities";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import { generateCollectionPageSchema } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
+import { CommunitySubmissionModal } from "@/components/communities/CommunitySubmissionModal";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -87,18 +88,15 @@ async function CommunitiesContent() {
 
       <Section spacing="default">
         <div className="mx-auto max-w-4xl py-12 md:py-20 text-center border-t border-border/10">
-          <Stack gap="6" className="items-center">
-            <h3 className="text-title">Missing a community?</h3>
-            <p className="text-body text-muted-foreground max-w-md mx-auto">
-              If you run a coffee group or know of an active space that should
-              be listed here, we&apos;d love to add it.
-            </p>
-            <a
-              href="mailto:support@indiancoffeebeans.com?subject=New Community Suggestion"
-              className="text-accent font-medium hover:underline flex items-center gap-2"
-            >
-              Suggest a community
-            </a>
+          <Stack gap="8" className="items-center">
+            <Stack gap="4">
+              <h3 className="text-title">Missing a community?</h3>
+              <p className="text-body text-muted-foreground max-w-md mx-auto">
+                If you run a coffee group or know of an active space that should
+                be listed here, we&apos;d love to add it.
+              </p>
+            </Stack>
+            <CommunitySubmissionModal />
           </Stack>
         </div>
       </Section>

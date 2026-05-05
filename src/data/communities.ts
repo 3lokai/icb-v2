@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createClient } from "@/lib/supabase/server";
+import { createAnonServerClient } from "@/lib/supabase/server";
 import {
   CommunityPlatformSchema,
   type CommunityDTO,
@@ -14,7 +14,7 @@ import { unstable_cache } from "next/cache";
  */
 export const getAllCommunities = unstable_cache(
   async (): Promise<CommunityDTO[]> => {
-    const supabase = await createClient();
+    const supabase = createAnonServerClient();
 
     const { data: communities, error } = await supabase
       .from("communities")

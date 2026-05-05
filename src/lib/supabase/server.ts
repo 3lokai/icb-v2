@@ -37,6 +37,24 @@ export async function createClient() {
 }
 
 /**
+ * Anonymous Supabase client (publishable key only, no cookies).
+ * Use inside `unstable_cache` / static contexts where `cookies()` is disallowed,
+ * only for reads that public RLS already allows without a session.
+ */
+export function createAnonServerClient() {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    }
+  );
+}
+
+/**
  * Create a Supabase client with service role (bypasses RLS)
  * Use this ONLY for server-side queries that need full access
  * Uses the secret (service role) key - bypasses all RLS policies
