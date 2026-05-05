@@ -128,6 +128,7 @@ export function Footer() {
                     {[
                       { href: "/coffees", label: "Coffees" },
                       { href: "/roasters", label: "Roasters" },
+                      { href: "/communities", label: "Communities" },
                     ].map(({ href, label }) => (
                       <li key={label}>
                         <Link

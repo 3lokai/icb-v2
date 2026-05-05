@@ -6,6 +6,7 @@ import {
   trackCoffeeDiscovery,
   trackCuratorEngagement,
   trackRoasterEngagement,
+  trackCommunityEngagement,
 } from "@/lib/analytics/enhanced-tracking";
 
 type TrackingLinkProps = {
@@ -20,6 +21,9 @@ type TrackingLinkProps = {
   coffeeCount?: number | null;
   // Curator tracking props
   curatorId?: string | null;
+  // Community tracking props
+  communityId?: string | null;
+  communityPlatform?: string | null;
 };
 
 export function CoffeeTrackingLink({
@@ -89,5 +93,39 @@ export function CuratorTrackingLink({
     >
       {children}
     </Link>
+  );
+}
+
+export function CommunityTrackingLink({
+  href,
+  ariaLabel,
+  children,
+  communityId,
+  communityPlatform,
+}: Pick<
+  TrackingLinkProps,
+  "href" | "ariaLabel" | "children" | "communityId" | "communityPlatform"
+>) {
+  const handleClick = () => {
+    if (communityId) {
+      trackCommunityEngagement(
+        communityId,
+        "join_click",
+        communityPlatform || "unknown"
+      );
+    }
+  };
+
+  return (
+    <a
+      aria-label={ariaLabel}
+      className="block h-full rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      href={href}
+      onClick={handleClick}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      {children}
+    </a>
   );
 }

@@ -49,7 +49,13 @@ export type EnhancedAnalyticsEvent = {
 
   // Content Context
   content_id?: string;
-  content_type?: "coffee" | "roaster" | "article" | "recipe" | "guide";
+  content_type?:
+    | "coffee"
+    | "roaster"
+    | "article"
+    | "recipe"
+    | "guide"
+    | "community";
   source_page?: string;
   destination?: string;
 
@@ -472,6 +478,27 @@ export function trackCuratorEngagement(
     custom_parameters: {
       engagement_type: engagementType,
       is_curator_engagement: true,
+    },
+  });
+}
+
+/** Community directory → external join link navigation */
+export function trackCommunityEngagement(
+  communityId: string,
+  engagementType: "join_click",
+  platform: string
+): void {
+  markUserEngagement("link_click");
+
+  trackEnhancedEvent({
+    event_name: "community_engagement",
+    event_category: "engagement",
+    content_id: communityId,
+    content_type: "community",
+    custom_parameters: {
+      engagement_type: engagementType,
+      community_platform: platform,
+      is_community_engagement: true,
     },
   });
 }
