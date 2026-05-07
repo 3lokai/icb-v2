@@ -62,8 +62,8 @@ export function generateSchemaOrg({
     brand?: { "@type": string; name: string };
     offers?: {
       "@type": string;
-      price: number | undefined;
-      priceCurrency: string;
+      price?: number;
+      priceCurrency?: string;
       availability: string;
     };
     aggregateRating?: {
@@ -129,11 +129,10 @@ export function generateSchemaOrg({
     if (sku) {
       schema.sku = sku; // <--- ADD sku to schema
     }
-    if (price !== undefined) {
+    if (price !== undefined || availability) {
       schema.offers = {
         "@type": "Offer",
-        price,
-        priceCurrency: currency,
+        ...(price !== undefined ? { price, priceCurrency: currency } : {}),
         availability: `https://schema.org/${availability || "InStock"}`,
       };
     }

@@ -147,53 +147,52 @@ const nextConfig: NextConfig = {
 
     return [];
   },
-  // Optimize webpack to prevent duplicate JS bundles
+  // Webpack config for bundle-analyzer builds (npm run analyze uses --webpack).
+  // The catch-all vendor group has been intentionally removed — it was bundling
+  // every node_module into a single 15 MB shared chunk loaded on every page.
+  // Next.js's default smart splitting handles vendor deduplication correctly:
+  // route-scoped packages stay in their route chunks, and only modules used
+  // across 3+ chunks get promoted to a shared bundle.
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // Optimize client-side bundle splitting
       config.optimization = {
         ...config.optimization,
         splitChunks: {
           chunks: "all",
           cacheGroups: {
-            // Separate React and React-DOM into a shared chunk
+            // React and React-DOM into a stable named chunk (good for long-term caching)
             react: {
               name: "react",
               test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
               priority: 30,
               reuseExistingChunk: true,
             },
-            // Separate Next.js framework code
+            // Next.js framework code
             framework: {
               name: "framework",
               test: /[\\/]node_modules[\\/](next|@next)[\\/]/,
               priority: 25,
               reuseExistingChunk: true,
             },
-            // Separate Radix UI components (many are used together)
+            // Radix UI — used across many routes, worth a shared chunk
             radix: {
               name: "radix-ui",
               test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
               priority: 20,
+              minChunks: 2,
               reuseExistingChunk: true,
             },
-            // Separate TanStack Query
+            // TanStack Query — used across many routes
             tanstack: {
               name: "tanstack",
               test: /[\\/]node_modules[\\/]@tanstack[\\/]/,
               priority: 20,
-              reuseExistingChunk: true,
-            },
-            // Common vendor libraries
-            vendor: {
-              name: "vendor",
-              test: /[\\/]node_modules[\\/]/,
-              priority: 10,
-              reuseExistingChunk: true,
-            },
-            // Default chunk splitting
-            default: {
               minChunks: 2,
+              reuseExistingChunk: true,
+            },
+            // Default: only share a module when it appears in 3+ chunks
+            default: {
+              minChunks: 3,
               priority: 5,
               reuseExistingChunk: true,
             },

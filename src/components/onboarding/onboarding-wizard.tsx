@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, startTransition } from "react";
 import { toast } from "sonner";
-import { Country, State, City } from "country-state-city";
+import { useGeoData } from "@/hooks/use-geo-data";
 import { saveOnboardingData } from "@/app/actions/profile";
 import { capture } from "@/lib/posthog";
 import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
@@ -158,36 +158,8 @@ export function OnboardingWizard({
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  // Initialize country/state codes from initial data
-  const countries = useMemo(() => Country.getAllCountries(), []);
-
-  // Extract values to satisfy React Compiler dependency inference
-  const initialCountry = initialProfile?.country;
-  const initialState = initialProfile?.state;
-
-  const initialCountryCode = useMemo(() => {
-    if (initialCountry) {
-      const country = countries.find((c) => c.name === initialCountry);
-      return country?.isoCode || "IN";
-    }
-    return "IN";
-  }, [initialCountry, countries]);
-
-  const [selectedCountryCode, setSelectedCountryCode] =
-    useState<string>(initialCountryCode);
-
-  const initialStateCode = useMemo(() => {
-    if (initialState && selectedCountryCode) {
-      const states = State.getStatesOfCountry(selectedCountryCode);
-      const state = states.find((s) => s.name === initialState);
-      return state?.isoCode || "";
-    }
-    return "";
-  }, [initialState, selectedCountryCode]);
-
-  const [selectedStateCode, setSelectedStateCode] =
-    useState<string>(initialStateCode);
-
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("IN");
+  const [selectedStateCode, setSelectedStateCode] = useState<string>("");
   const [cityInputValue, setCityInputValue] = useState<string>(
     initialFormData.city || ""
   );
@@ -195,19 +167,27 @@ export function OnboardingWizard({
 
   const progress = (currentStep / TOTAL_STEPS) * 100;
 
-  // Country-State-City data
-  const states = useMemo(
-    () =>
-      selectedCountryCode ? State.getStatesOfCountry(selectedCountryCode) : [],
-    [selectedCountryCode]
+  // Load geo data from server — no client bundle cost
+  const { countries, states, cities } = useGeoData(
+    selectedCountryCode,
+    selectedStateCode
   );
-  const cities = useMemo(
-    () =>
-      selectedCountryCode && selectedStateCode
-        ? City.getCitiesOfState(selectedCountryCode, selectedStateCode)
-        : [],
-    [selectedCountryCode, selectedStateCode]
-  );
+
+  // Resolve initial country/state codes once countries/states have loaded
+  const initialCountry = initialProfile?.country;
+  const initialState = initialProfile?.state;
+
+  useEffect(() => {
+    if (!initialCountry || countries.length === 0) return;
+    const country = countries.find((c) => c.name === initialCountry);
+    if (country) startTransition(() => setSelectedCountryCode(country.isoCode));
+  }, [initialCountry, countries]);
+
+  useEffect(() => {
+    if (!initialState || states.length === 0) return;
+    const state = states.find((s) => s.name === initialState);
+    if (state) startTransition(() => setSelectedStateCode(state.isoCode));
+  }, [initialState, states]);
 
   // Filter cities based on input
   const filteredCities = useMemo(() => {
