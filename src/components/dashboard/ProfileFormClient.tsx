@@ -91,18 +91,21 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
     selectedStateCode
   );
 
-  // Resolve country/state ISO codes once geo data has loaded from the API
+  // Resolve country ISO code once countries are loaded from the API
   useEffect(() => {
     if (!profile?.country || countries.length === 0) return;
     const country = countries.find((c) => c.name === profile.country);
     if (!country) return;
     startTransition(() => setSelectedCountryCode(country.isoCode));
+  }, [profile?.country, countries]);
 
-    if (profile.state && states.length > 0) {
-      const state = states.find((s) => s.name === profile.state);
-      if (state) startTransition(() => setSelectedStateCode(state.isoCode));
-    }
-  }, [profile, countries, states]);
+  // Resolve state ISO code once states are loaded from the API
+  useEffect(() => {
+    if (!profile?.state || states.length === 0) return;
+    const state = states.find((s) => s.name === profile.state);
+    if (!state) return;
+    startTransition(() => setSelectedStateCode(state.isoCode));
+  }, [profile?.state, states]);
 
   const updateFormData = <K extends keyof ProfileUpdateFormData>(
     key: K,
@@ -497,12 +500,8 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
                           false
                         }
                         id={`method-${method}`}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            toggleArrayItem("preferredBrewingMethods", method);
-                          } else {
-                            toggleArrayItem("preferredBrewingMethods", method);
-                          }
+                        onCheckedChange={() => {
+                          toggleArrayItem("preferredBrewingMethods", method);
                         }}
                       />
                       <Label
