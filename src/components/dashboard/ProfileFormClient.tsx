@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, startTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Country, State, City } from "country-state-city";
+import { useGeoData } from "@/hooks/use-geo-data";
 import { useProfile, useUpdateProfile } from "@/hooks/use-profile";
 import { AvatarUpload } from "@/components/ui/avatar-upload";
 import { Button } from "@/components/ui/button";
@@ -82,41 +82,27 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
           undefined,
         preferredBrewingMethods: profile.preferred_brewing_methods || [],
       });
-
-      // Set country/state codes based on profile data
-      if (profile.country) {
-        const country = Country.getAllCountries().find(
-          (c) => c.name === profile.country
-        );
-        if (country) {
-          setSelectedCountryCode(country.isoCode);
-          if (profile.state) {
-            const state = State.getStatesOfCountry(country.isoCode).find(
-              (s) => s.name === profile.state
-            );
-            if (state) {
-              setSelectedStateCode(state.isoCode);
-            }
-          }
-        }
-      }
     }
   }, [profile]);
 
-  // Country-State-City data
-  const countries = useMemo(() => Country.getAllCountries(), []);
-  const states = useMemo(
-    () =>
-      selectedCountryCode ? State.getStatesOfCountry(selectedCountryCode) : [],
-    [selectedCountryCode]
+  // Load geo data from server — no client bundle cost
+  const { countries, states, cities } = useGeoData(
+    selectedCountryCode,
+    selectedStateCode
   );
-  const cities = useMemo(
-    () =>
-      selectedCountryCode && selectedStateCode
-        ? City.getCitiesOfState(selectedCountryCode, selectedStateCode)
-        : [],
-    [selectedCountryCode, selectedStateCode]
-  );
+
+  // Resolve country/state ISO codes once geo data has loaded from the API
+  useEffect(() => {
+    if (!profile?.country || countries.length === 0) return;
+    const country = countries.find((c) => c.name === profile.country);
+    if (!country) return;
+    startTransition(() => setSelectedCountryCode(country.isoCode));
+
+    if (profile.state && states.length > 0) {
+      const state = states.find((s) => s.name === profile.state);
+      if (state) startTransition(() => setSelectedStateCode(state.isoCode));
+    }
+  }, [profile, countries, states]);
 
   const updateFormData = <K extends keyof ProfileUpdateFormData>(
     key: K,
