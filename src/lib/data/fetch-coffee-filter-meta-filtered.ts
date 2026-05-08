@@ -50,6 +50,24 @@ export async function fetchCoffeeFilterMetaWithFilters(
   });
 
   if (error) {
+    if (error.code === "57014") {
+      console.error(
+        "[fetchCoffeeFilterMetaWithFilters] statement timeout — returning empty meta"
+      );
+      return {
+        flavorNotes: [],
+        canonicalFlavors: [],
+        regions: [],
+        estates: [],
+        brewMethods: [],
+        roasters: [],
+        roastLevels: [],
+        processes: [],
+        statuses: [],
+        species: [],
+        totals: { coffees: 0, roasters: 0 },
+      };
+    }
     throw new Error(
       `Failed to fetch filter meta: ${error.message}${error.details ? ` (${error.details})` : ""}${error.hint ? ` - ${error.hint}` : ""}`
     );

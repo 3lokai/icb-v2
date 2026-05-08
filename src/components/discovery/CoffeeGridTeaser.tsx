@@ -5,7 +5,7 @@ import { Icon } from "@/components/common/Icon";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
 import { Button } from "@/components/ui/button";
-import { fetchCoffees } from "@/lib/data/fetch-coffees";
+import { fetchCoffeesCached } from "@/lib/data/fetch-coffees";
 import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
 import type { CoffeeFilters, CoffeeSort } from "@/types/coffee-types";
 
@@ -36,7 +36,7 @@ export async function CoffeeGridTeaser({
   nudge,
 }: CoffeeGridTeaserProps) {
   // Fetch coffees server-side
-  const result = await fetchCoffees(filters, 1, limit, sortOrder);
+  const result = await fetchCoffeesCached(filters, 1, limit, sortOrder);
   const coffees = result.items.slice(0, limit);
 
   // Build "See All" link with filters applied

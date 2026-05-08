@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { unstable_cache } from "next/cache";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import type { CoffeeImage } from "@/types/coffee-component-types";
 import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
@@ -724,3 +725,10 @@ export async function fetchRoastersForRegionSlugs(
 
   return Array.from(byId.values()).sort((a, b) => a.name.localeCompare(b.name));
 }
+
+export const fetchCoffeesCached = unstable_cache(
+  (filters: CoffeeFilters, page: number, limit: number, sort: CoffeeSort) =>
+    fetchCoffees(filters, page, limit, sort),
+  ["coffees-list"],
+  { tags: ["coffees"] }
+);

@@ -1,6 +1,11 @@
 import "server-only";
 
-import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import { unstable_cache } from "next/cache";
+import {
+  createClient,
+  createServiceRoleClient,
+  createAnonServerClient,
+} from "@/lib/supabase/server";
 import {
   fetchCoffeeImages,
   fetchCoffeeListingImagesFromDirectoryMv,
@@ -370,8 +375,8 @@ export async function getCuratorBySlug(
  *
  * @returns Array of CuratorDTO (with empty curations; use getCuratorBySlug for full page)
  */
-export async function getAllCurators(): Promise<CuratorDTO[]> {
-  const supabase = await createClient();
+async function _getAllCuratorsImpl(): Promise<CuratorDTO[]> {
+  const supabase = createAnonServerClient();
 
   const { data: curators, error } = await supabase
     .from("curators")
@@ -437,3 +442,9 @@ export async function getAllCurators(): Promise<CuratorDTO[]> {
     };
   });
 }
+
+export const getAllCurators = unstable_cache(
+  _getAllCuratorsImpl,
+  ["all-curators"],
+  { revalidate: 3600, tags: ["curators"] }
+);
