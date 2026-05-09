@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import {
   BEAN_TYPES,
@@ -20,7 +21,7 @@ import type {
  * Uses service role client to bypass RLS for server-side queries
  * Uses SQL aggregations for efficient counting
  */
-export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
+async function _fetchCoffeeFilterMetaImpl(): Promise<CoffeeFilterMeta> {
   const supabase = await createServiceRoleClient();
 
   // Helper to sort by count DESC, then label ASC
@@ -553,3 +554,9 @@ export async function fetchCoffeeFilterMeta(): Promise<CoffeeFilterMeta> {
     totals: totalsResult,
   };
 }
+
+export const fetchCoffeeFilterMeta = unstable_cache(
+  _fetchCoffeeFilterMetaImpl,
+  ["coffee-filter-meta"],
+  { revalidate: 300, tags: ["coffees", "coffee-filter-meta"] }
+);

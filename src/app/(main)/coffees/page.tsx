@@ -4,7 +4,7 @@ import { CoffeeDirectory } from "@/components/coffees/CoffeeDirectory";
 import { DiscoveryAccordionGrid } from "@/components/discovery/DiscoveryAccordionGrid";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { fetchCoffeeFilterMeta } from "@/lib/data/fetch-coffee-filter-meta";
-import { fetchCoffees } from "@/lib/data/fetch-coffees";
+import { fetchCoffeesCached } from "@/lib/data/fetch-coffees";
 import type { CoffeeFilters, CoffeeSummary } from "@/types/coffee-types";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
 import {
@@ -237,7 +237,7 @@ async function CoffeesPageContent({
     parseCoffeeSearchParams(urlSearchParams);
 
   const [initialData, filterMeta] = await Promise.all([
-    fetchCoffees(filters, page, limit, sort),
+    fetchCoffeesCached(filters, page, limit, sort),
     fetchCoffeeFilterMeta(),
   ]);
 

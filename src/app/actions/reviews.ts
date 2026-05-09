@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { getCurrentUser } from "@/data/auth";
 import { createServiceRoleClient } from "@/lib/supabase/server";
@@ -91,6 +91,7 @@ async function revalidateEntityPaths(
       revalidatePath(`/roasters/${roasterSlug}/coffees/${coffee.slug}`);
     }
     revalidatePath("/coffees");
+    revalidateTag("coffees", "max");
   } else {
     revalidatePath(`/roasters/${entityId}`);
     revalidatePath("/roasters");
