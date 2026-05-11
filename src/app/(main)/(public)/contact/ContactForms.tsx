@@ -7,7 +7,6 @@ import { FormModal } from "@/components/contactus/FormModal";
 import { NewsletterSection } from "@/components/contactus/NewsletterSection";
 import { SectionHeader } from "@/components/contactus/SectionHeader";
 import { SocialMediaSection } from "@/components/contactus/SocialMediaSection";
-import { PageHeader } from "@/components/layout/PageHeader";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -64,7 +63,7 @@ const InteractiveBentoCard = ({
           }}
         />
       </div>
-      <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-primary/40 via-accent/40 to-primary/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-primary/40 via-accent/40 to-primary/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
     </div>
 
     <div className="relative z-10 p-6 md:p-8 flex flex-col h-full">
@@ -207,16 +206,6 @@ export default function ContactForms({
 
   return (
     <div className="pb-20">
-      <PageHeader
-        title={
-          <>
-            Connect With <span className="text-accent italic">Us.</span>
-          </>
-        }
-        overline="Our Community"
-        description="Join the Indian coffee community and help build the definitive resource for local coffee enthusiasts and professionals."
-      />
-
       <div className="container mx-auto px-4 -mt-20 relative z-30">
         <Stack gap="12">
           {/* Coffee Enthusiasts Section */}
@@ -268,7 +257,7 @@ export default function ContactForms({
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-0"
                 >
-                  <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-primary via-accent to-primary/60 opacity-60" />
+                  <div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-primary via-accent to-primary/60 opacity-60" />
                   <div
                     className="absolute inset-0 opacity-[0.03] pointer-events-none"
                     style={{
@@ -288,7 +277,7 @@ export default function ContactForms({
                       sizes="(max-width: 1024px) 100vw, 42vw"
                       src="/images/contact/roaster.avif"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-transparent pointer-events-none lg:bg-gradient-to-l" />
+                    <div className="absolute inset-0 bg-linear-to-r from-background/20 to-transparent pointer-events-none lg:bg-linear-to-l" />
                   </div>
 
                   <div className="lg:col-span-7 p-8 md:p-12">

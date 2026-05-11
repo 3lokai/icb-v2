@@ -1,9 +1,10 @@
 // src/app/(main)/tools/coffee-compass/page.tsx
+import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
-import { generateMetadata } from "@/lib/seo/metadata";
+import { generateMetadata as generateBaseMetadata } from "@/lib/seo/metadata";
 import { Icon } from "@/components/common/Icon";
 import { CoffeeCompassClient } from "@/components/tools/CoffeeCompassClient";
 import {
@@ -11,25 +12,64 @@ import {
   getCoffeesForCompass,
 } from "@/app/actions/forms";
 
-export const metadata = generateMetadata({
-  title: "Coffee Compass — Diagnose Your Brew | IndianCoffeeBeans",
-  description:
-    "Fix your coffee instantly. Pick your tasting symptoms, choose your brewing method, and get precise, method-specific corrections. No AI — pure coffee science.",
-  keywords: [
-    "coffee compass",
-    "coffee troubleshoot",
-    "under-extracted coffee",
-    "over-extracted coffee",
-    "coffee fix sour bitter",
-    "coffee tasting guide",
-    "brew diagnosis",
-    "coffee compass barista hustle",
-    "extraction score",
-    "coffee strength calculator",
-  ],
-  canonical: "/tools/coffee-compass",
-  type: "website",
-});
+type MetadataSearchParams = Promise<
+  Record<string, string | string[] | undefined>
+>;
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: MetadataSearchParams;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const urlSearchParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (!value) continue;
+    if (Array.isArray(value)) {
+      value.forEach((v) => urlSearchParams.append(key, v));
+    } else {
+      urlSearchParams.set(key, value);
+    }
+  }
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
+  const canonicalPath = "/tools/coffee-compass";
+  const canonicalUrl = `${baseUrl}${canonicalPath.startsWith("/") ? "" : "/"}${canonicalPath}`;
+  const queryString = urlSearchParams.toString();
+  const currentUrl = queryString
+    ? `${canonicalUrl}?${queryString}`
+    : canonicalUrl;
+
+  const baseMetadata = generateBaseMetadata({
+    title: "Coffee Compass — Diagnose Your Brew | IndianCoffeeBeans",
+    description:
+      "Fix your coffee instantly. Pick your tasting symptoms, choose your brewing method, and get precise, method-specific corrections. No AI — pure coffee science.",
+    keywords: [
+      "coffee compass",
+      "coffee troubleshoot",
+      "under-extracted coffee",
+      "over-extracted coffee",
+      "coffee fix sour bitter",
+      "coffee tasting guide",
+      "brew diagnosis",
+      "coffee compass barista hustle",
+      "extraction score",
+      "coffee strength calculator",
+    ],
+    canonical: canonicalPath,
+    type: "website",
+  });
+
+  return {
+    ...baseMetadata,
+    alternates: {
+      ...baseMetadata.alternates,
+      canonical: canonicalUrl,
+      languages: { en: currentUrl, "x-default": currentUrl },
+    },
+  };
+}
 
 const compassSchema = {
   "@context": "https://schema.org",

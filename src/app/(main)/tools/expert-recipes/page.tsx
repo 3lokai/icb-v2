@@ -1,6 +1,7 @@
 // src/app/tools/expert-recipes/page.tsx
 
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ExpertRecipesFAQ } from "@/components/faqs/ExpertRecipesFAQs";
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -11,34 +12,71 @@ import { ExpertRecipesClient } from "@/components/tools/RecipeClient";
 import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { generateMetadata } from "@/lib/seo/metadata";
+import { generateMetadata as generateBaseMetadata } from "@/lib/seo/metadata";
 import { generateHowToSchema } from "@/lib/seo/schema";
 import { filterRecipes } from "@/lib/tools/expert-recipes";
 
 const expertRecipeCount = filterRecipes({}).length;
 
+type PageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
 // SEO Metadata
-export const metadata = generateMetadata({
-  title: "Expert Coffee Recipes | Championship Brewing Methods & Techniques",
-  description:
-    "Master championship coffee brewing with recipes from world champions like James Hoffmann, Tetsu Kasuya, and Scott Rao. Step-by-step guides for V60, AeroPress, French Press, and more.",
-  keywords: [
-    "expert coffee recipes",
-    "championship coffee brewing",
-    "james hoffmann coffee recipe",
-    "tetsu kasuya 4:6 method",
-    "scott rao v60",
-    "world barista champion recipes",
-    "competition coffee brewing",
-    "specialty coffee techniques",
-    "pour over recipes",
-    "aeropress recipes",
-    "french press recipes",
-    "brewing championship methods",
-  ],
-  canonical: "/tools/expert-recipes",
-  type: "website",
-});
+export async function generateMetadata({
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const urlSearchParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (!value) continue;
+    if (Array.isArray(value)) {
+      value.forEach((v) => urlSearchParams.append(key, v));
+    } else {
+      urlSearchParams.set(key, value);
+    }
+  }
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
+  const canonicalPath = "/tools/expert-recipes";
+  const canonicalUrl = `${baseUrl}${canonicalPath.startsWith("/") ? "" : "/"}${canonicalPath}`;
+  const queryString = urlSearchParams.toString();
+  const currentUrl = queryString
+    ? `${canonicalUrl}?${queryString}`
+    : canonicalUrl;
+
+  const baseMetadata = generateBaseMetadata({
+    title: "Expert Coffee Recipes | Championship Brewing Methods & Techniques",
+    description:
+      "Master championship coffee brewing with recipes from world champions like James Hoffmann, Tetsu Kasuya, and Scott Rao. Step-by-step guides for V60, AeroPress, French Press, and more.",
+    keywords: [
+      "expert coffee recipes",
+      "championship coffee brewing",
+      "james hoffmann coffee recipe",
+      "tetsu kasuya 4:6 method",
+      "scott rao v60",
+      "world barista champion recipes",
+      "competition coffee brewing",
+      "specialty coffee techniques",
+      "pour over recipes",
+      "aeropress recipes",
+      "french press recipes",
+      "brewing championship methods",
+    ],
+    canonical: canonicalPath,
+    type: "website",
+  });
+
+  return {
+    ...baseMetadata,
+    alternates: {
+      ...baseMetadata.alternates,
+      canonical: canonicalUrl,
+      languages: { en: currentUrl, "x-default": currentUrl },
+    },
+  };
+}
 
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";

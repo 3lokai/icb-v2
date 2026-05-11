@@ -183,8 +183,14 @@ const TestimonialCard = ({
       </div>
 
       {/* Rating metadata for SEO */}
-      <meta content="5" itemProp="ratingValue" />
-      <meta content="5" itemProp="bestRating" />
+      <div
+        itemProp="reviewRating"
+        itemScope
+        itemType="https://schema.org/Rating"
+      >
+        <meta content="5" itemProp="ratingValue" />
+        <meta content="5" itemProp="bestRating" />
+      </div>
     </figure>
   );
 };
@@ -241,8 +247,8 @@ export default function TestimonialsSection() {
           </Marquee>
 
           {/* Gradient fade edges - matching Magic UI style */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-[color-mix(in_oklch,var(--muted)_30%,var(--background))]" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-[color-mix(in_oklch,var(--muted)_30%,var(--background))]" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-linear-to-r from-[color-mix(in_oklch,var(--muted)_30%,var(--background))]" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-linear-to-l from-[color-mix(in_oklch,var(--muted)_30%,var(--background))]" />
         </div>
 
         <div className="mt-8 text-center md:hidden">

@@ -1,7 +1,9 @@
 // src/app/tools/coffee-calculator/page.tsx
 // Enhanced version with improved UX and micro-interactions
 
+import { Suspense } from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { CoffeeCalculatorFAQ } from "@/components/faqs/CoffeeCalculatorFAQs";
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -10,33 +12,70 @@ import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeCalculatorContainer } from "@/components/tools/CoffeeCalculatorContainer";
 import { Button } from "@/components/ui/button";
-import { generateMetadata } from "@/lib/seo/metadata";
+import { generateMetadata as generateBaseMetadata } from "@/lib/seo/metadata";
 import { generateHowToSchema } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
 import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
 
+type PageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
 // SEO Metadata (keeping your existing metadata)
-export const metadata = generateMetadata({
-  title: "Coffee Ratio Calculator | Perfect Brew Calculator with Timer",
-  description:
-    "Master coffee brewing with our interactive ratio calculator. Get precise measurements, step-by-step timer, and expert tips for pour over, French press, espresso, and 11 brewing methods.",
-  keywords: [
-    "coffee ratio calculator",
-    "coffee brewing calculator",
-    "pour over calculator",
-    "coffee water ratio",
-    "brewing timer",
-    "coffee extraction calculator",
-    "French press ratio",
-    "espresso ratio",
-    "Indian filter coffee",
-    "coffee brewing guide",
-    "specialty coffee calculator",
-    "brew strength calculator",
-  ],
-  canonical: "/tools/coffee-calculator",
-  type: "website",
-});
+export async function generateMetadata({
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const urlSearchParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (!value) continue;
+    if (Array.isArray(value)) {
+      value.forEach((v) => urlSearchParams.append(key, v));
+    } else {
+      urlSearchParams.set(key, value);
+    }
+  }
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
+  const canonicalPath = "/tools/coffee-calculator";
+  const canonicalUrl = `${baseUrl}${canonicalPath.startsWith("/") ? "" : "/"}${canonicalPath}`;
+  const queryString = urlSearchParams.toString();
+  const currentUrl = queryString
+    ? `${canonicalUrl}?${queryString}`
+    : canonicalUrl;
+
+  const baseMetadata = generateBaseMetadata({
+    title: "Coffee Ratio Calculator | Perfect Brew Calculator with Timer",
+    description:
+      "Master coffee brewing with our interactive ratio calculator. Get precise measurements, step-by-step timer, and expert tips for pour over, French press, espresso, and 11 brewing methods.",
+    keywords: [
+      "coffee ratio calculator",
+      "coffee brewing calculator",
+      "pour over calculator",
+      "coffee water ratio",
+      "brewing timer",
+      "coffee extraction calculator",
+      "French press ratio",
+      "espresso ratio",
+      "Indian filter coffee",
+      "coffee brewing guide",
+      "specialty coffee calculator",
+      "brew strength calculator",
+    ],
+    canonical: canonicalPath,
+    type: "website",
+  });
+
+  return {
+    ...baseMetadata,
+    alternates: {
+      ...baseMetadata.alternates,
+      canonical: canonicalUrl,
+      languages: { en: currentUrl, "x-default": currentUrl },
+    },
+  };
+}
 
 // Your existing schemas...
 const calculatorHowToSchema = generateHowToSchema({
@@ -172,7 +211,13 @@ export default function CoffeeCalculatorPage() {
               {/* Calculator Container */}
               <div className="pt-2">
                 <Stack gap="8">
-                  <CoffeeCalculatorContainer />
+                  <Suspense
+                    fallback={
+                      <div className="h-96 animate-pulse rounded-xl bg-muted" />
+                    }
+                  >
+                    <CoffeeCalculatorContainer />
+                  </Suspense>
                 </Stack>
               </div>
             </Stack>
