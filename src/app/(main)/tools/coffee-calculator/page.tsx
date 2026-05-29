@@ -1,6 +1,7 @@
 // src/app/tools/coffee-calculator/page.tsx
 // Enhanced version with improved UX and micro-interactions
 
+import { Suspense } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CoffeeCalculatorFAQ } from "@/components/faqs/CoffeeCalculatorFAQs";
@@ -188,10 +189,19 @@ export default function CoffeeCalculatorPage() {
                 </div>
               </div>
 
-              {/* Calculator Container */}
+              {/* Calculator Container — wrapped in Suspense because
+                  CoffeeCalculator uses useSearchParams(); without this boundary
+                  the whole page deopts from static prerender (which strips
+                  PageHeader's h1 from the SSR HTML). */}
               <div className="pt-2">
                 <Stack gap="8">
-                  <CoffeeCalculatorContainer />
+                  <Suspense
+                    fallback={
+                      <div className="h-96 animate-pulse rounded-xl bg-muted" />
+                    }
+                  >
+                    <CoffeeCalculatorContainer />
+                  </Suspense>
                 </Stack>
               </div>
             </Stack>
