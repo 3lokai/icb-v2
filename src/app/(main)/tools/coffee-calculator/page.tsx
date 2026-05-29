@@ -16,33 +16,14 @@ import { generateHowToSchema } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
 import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
 
-type PageProps = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
-// SEO Metadata (keeping your existing metadata)
-export async function generateMetadata({
-  searchParams,
-}: PageProps): Promise<Metadata> {
-  const params = await searchParams;
-  const urlSearchParams = new URLSearchParams();
-  for (const [key, value] of Object.entries(params)) {
-    if (!value) continue;
-    if (Array.isArray(value)) {
-      value.forEach((v) => urlSearchParams.append(key, v));
-    } else {
-      urlSearchParams.set(key, value);
-    }
-  }
-
+// SEO Metadata — static canonical so the route can prerender.
+// Reading searchParams here used to force dynamic rendering, which prevented
+// the prerender and stripped server-rendered headings from the HTML.
+export async function generateMetadata(): Promise<Metadata> {
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const canonicalPath = "/tools/coffee-calculator";
-  const canonicalUrl = `${baseUrl}${canonicalPath.startsWith("/") ? "" : "/"}${canonicalPath}`;
-  const queryString = urlSearchParams.toString();
-  const currentUrl = queryString
-    ? `${canonicalUrl}?${queryString}`
-    : canonicalUrl;
+  const canonicalUrl = `${baseUrl}${canonicalPath}`;
 
   const baseMetadata = generateBaseMetadata({
     title: "Coffee Ratio Calculator with Brew Timer",
@@ -71,7 +52,7 @@ export async function generateMetadata({
     alternates: {
       ...baseMetadata.alternates,
       canonical: canonicalUrl,
-      languages: { en: currentUrl, "x-default": currentUrl },
+      languages: { en: canonicalUrl, "x-default": canonicalUrl },
     },
   };
 }

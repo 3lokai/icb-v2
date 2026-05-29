@@ -12,34 +12,13 @@ import {
   getCoffeesForCompass,
 } from "@/app/actions/forms";
 
-type MetadataSearchParams = Promise<
-  Record<string, string | string[] | undefined>
->;
-
-export async function generateMetadata({
-  searchParams,
-}: {
-  searchParams: MetadataSearchParams;
-}): Promise<Metadata> {
-  const params = await searchParams;
-  const urlSearchParams = new URLSearchParams();
-  for (const [key, value] of Object.entries(params)) {
-    if (!value) continue;
-    if (Array.isArray(value)) {
-      value.forEach((v) => urlSearchParams.append(key, v));
-    } else {
-      urlSearchParams.set(key, value);
-    }
-  }
-
+export async function generateMetadata(): Promise<Metadata> {
+  // Tool is a single canonical page; queries are UI state, not new URLs.
+  // Static canonical lets the route prerender and keeps hreflang consistent.
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const canonicalPath = "/tools/coffee-compass";
-  const canonicalUrl = `${baseUrl}${canonicalPath.startsWith("/") ? "" : "/"}${canonicalPath}`;
-  const queryString = urlSearchParams.toString();
-  const currentUrl = queryString
-    ? `${canonicalUrl}?${queryString}`
-    : canonicalUrl;
+  const canonicalUrl = `${baseUrl}${canonicalPath}`;
 
   const baseMetadata = generateBaseMetadata({
     title: "Coffee Compass — Diagnose Your Brew | IndianCoffeeBeans",
@@ -66,7 +45,7 @@ export async function generateMetadata({
     alternates: {
       ...baseMetadata.alternates,
       canonical: canonicalUrl,
-      languages: { en: currentUrl, "x-default": currentUrl },
+      languages: { en: canonicalUrl, "x-default": canonicalUrl },
     },
   };
 }

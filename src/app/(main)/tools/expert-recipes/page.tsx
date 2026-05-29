@@ -18,33 +18,12 @@ import { filterRecipes } from "@/lib/tools/expert-recipes";
 
 const expertRecipeCount = filterRecipes({}).length;
 
-type PageProps = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
-// SEO Metadata
-export async function generateMetadata({
-  searchParams,
-}: PageProps): Promise<Metadata> {
-  const params = await searchParams;
-  const urlSearchParams = new URLSearchParams();
-  for (const [key, value] of Object.entries(params)) {
-    if (!value) continue;
-    if (Array.isArray(value)) {
-      value.forEach((v) => urlSearchParams.append(key, v));
-    } else {
-      urlSearchParams.set(key, value);
-    }
-  }
-
+// SEO Metadata — static canonical so the route can prerender.
+export async function generateMetadata(): Promise<Metadata> {
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const canonicalPath = "/tools/expert-recipes";
-  const canonicalUrl = `${baseUrl}${canonicalPath.startsWith("/") ? "" : "/"}${canonicalPath}`;
-  const queryString = urlSearchParams.toString();
-  const currentUrl = queryString
-    ? `${canonicalUrl}?${queryString}`
-    : canonicalUrl;
+  const canonicalUrl = `${baseUrl}${canonicalPath}`;
 
   const baseMetadata = generateBaseMetadata({
     title: "Expert Coffee Recipes | Championship Brewing Methods & Techniques",
@@ -73,7 +52,7 @@ export async function generateMetadata({
     alternates: {
       ...baseMetadata.alternates,
       canonical: canonicalUrl,
-      languages: { en: currentUrl, "x-default": currentUrl },
+      languages: { en: canonicalUrl, "x-default": canonicalUrl },
     },
   };
 }
