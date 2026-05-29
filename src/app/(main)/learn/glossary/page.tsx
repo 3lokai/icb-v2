@@ -7,7 +7,7 @@ const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: "Coffee Glossary - Indian Specialty Coffee Terms",
+  title: "Specialty Coffee Glossary",
   description:
     "Confused by washed vs natural, or Arabica vs Robusta? This glossary helps you decode the coffee lingo — from brew to bean.",
   keywords: [

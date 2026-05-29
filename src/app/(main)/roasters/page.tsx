@@ -37,10 +37,10 @@ export async function generateMetadata({
 
   const { filters, page } = parseRoasterSearchParams(urlSearchParams);
 
-  // Build title based on filters
-  let title = "Coffee Roasters in India (100+ Listed) | Indian Coffee Beans";
+  // Build title based on filters — root layout appends "| Indian Coffee Beans"
+  let title = "Coffee Roasters in India (100+ Listed)";
   if (filters.q) {
-    title = `${filters.q} - Roaster Search | Indian Coffee Beans`;
+    title = `${filters.q} – Roaster Search`;
   }
 
   // Enhanced description based on active filters

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PageShell } from "@/components/primitives/page-shell";
 
 export const metadata: Metadata = {
-  title: "API Documentation | Indian Coffee Beans",
+  title: "API Documentation",
   description:
     "Use the Indian Coffee Beans API to access coffee and roaster data. Get an API key and integrate with your app.",
 };

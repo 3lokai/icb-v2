@@ -7,7 +7,7 @@ const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 export const metadata = generateSEOMetadata({
-  title: "Curated Coffee Recommendations | Indian Coffee Beans",
+  title: "Curated Coffee Recommendations",
   description:
     "Explore hand-picked coffee recommendations from trusted cafes, baristas, and the Indian coffee community.",
   keywords: [

@@ -7,7 +7,7 @@ const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 export const metadata = generateSEOMetadata({
-  title: "Profile | Indian Coffee Beans",
+  title: "Profile",
   description: "Your personal coffee record and discovery profile.",
   canonical: `${baseUrl}/profile`,
   noIndex: true,

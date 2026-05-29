@@ -10,6 +10,7 @@ import { Metadata } from "next";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import {
   blogArticleSchema,
+  generateBreadcrumbSchema,
   generateFAQSchema,
   generateHowToSchema,
   generateRecipeSchema,
@@ -94,8 +95,21 @@ export default async function ArticlePage({ params }: Props) {
     dateModified: article.updatedAt || article.updated || article._updatedAt,
   });
 
-  // Build array of schemas: Article + optional FAQ, HowTo, Recipe
-  const schemas: Record<string, unknown>[] = [articleJsonLd];
+  const breadcrumbItems: Array<{ name: string; url: string }> = [
+    { name: "Home", url: baseUrl },
+    { name: "Field Guide", url: `${baseUrl}/learn` },
+  ];
+  if (article.category?.slug && article.category?.name) {
+    breadcrumbItems.push({
+      name: article.category.name,
+      url: `${baseUrl}/learn/category/${article.category.slug}`,
+    });
+  }
+  breadcrumbItems.push({ name: article.title, url: articleUrl });
+  const breadcrumbJsonLd = generateBreadcrumbSchema(breadcrumbItems);
+
+  // Build array of schemas: Article + Breadcrumb + optional FAQ, HowTo, Recipe
+  const schemas: Record<string, unknown>[] = [articleJsonLd, breadcrumbJsonLd];
 
   // FAQ schema when faqItems exist
   if (article.faqItems && article.faqItems.length > 0) {

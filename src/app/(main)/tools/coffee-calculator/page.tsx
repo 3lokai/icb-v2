@@ -1,7 +1,6 @@
 // src/app/tools/coffee-calculator/page.tsx
 // Enhanced version with improved UX and micro-interactions
 
-import { Suspense } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CoffeeCalculatorFAQ } from "@/components/faqs/CoffeeCalculatorFAQs";
@@ -46,7 +45,7 @@ export async function generateMetadata({
     : canonicalUrl;
 
   const baseMetadata = generateBaseMetadata({
-    title: "Coffee Ratio Calculator | Perfect Brew Calculator with Timer",
+    title: "Coffee Ratio Calculator with Brew Timer",
     description:
       "Master coffee brewing with our interactive ratio calculator. Get precise measurements, step-by-step timer, and expert tips for pour over, French press, espresso, and 11 brewing methods.",
     keywords: [
@@ -211,13 +210,7 @@ export default function CoffeeCalculatorPage() {
               {/* Calculator Container */}
               <div className="pt-2">
                 <Stack gap="8">
-                  <Suspense
-                    fallback={
-                      <div className="h-96 animate-pulse rounded-xl bg-muted" />
-                    }
-                  >
-                    <CoffeeCalculatorContainer />
-                  </Suspense>
+                  <CoffeeCalculatorContainer />
                 </Stack>
               </div>
             </Stack>

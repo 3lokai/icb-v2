@@ -60,15 +60,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const roastStr = (coffee.roast_level_raw || coffee.roast_level || "").trim();
   const roastPart = roastStr ? capitalizeFirstLetter(roastStr) : "";
 
+  // Root layout appends "| Indian Coffee Beans" via title template
   const titleBase = `${coffee.name} by ${roasterName}`;
   const title =
     reviewCount >= 5
       ? `${titleBase} — Reviews & Tasting Notes`
       : processPart && roastPart
-        ? `${titleBase} — ${processPart}, ${roastPart} | Indian Coffee Beans`
+        ? `${titleBase} — ${processPart}, ${roastPart}`
         : processPart || roastPart
-          ? `${titleBase} — ${processPart || roastPart} | Indian Coffee Beans`
-          : `${titleBase} | Indian Coffee Beans`;
+          ? `${titleBase} — ${processPart || roastPart}`
+          : titleBase;
 
   const originLabel = coffeeOriginLabel(coffee);
   const attrParts = [processPart, originLabel, roastPart].filter(Boolean);

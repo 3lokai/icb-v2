@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (username === "anon") {
     const anonUrl = `${baseUrl}/profile/anon`;
     return {
-      title: "My Profile | Indian Coffee Beans",
+      title: "My Profile",
       description: "View your anonymous profile, ratings, and recommendations.",
       alternates: {
         canonical: anonUrl,
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!profileData?.profile) {
     const notFoundUrl = `${baseUrl}/profile/${username}`;
     return {
-      title: "Profile Not Found | Indian Coffee Beans",
+      title: "Profile Not Found",
       description: "The requested profile could not be found.",
       alternates: {
         canonical: notFoundUrl,

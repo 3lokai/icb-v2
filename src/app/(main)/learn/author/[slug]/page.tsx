@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 
   if (!author) {
-    return { title: "Author Not Found | Indian Coffee Beans" };
+    return { title: "Author Not Found" };
   }
 
   const baseUrl =
