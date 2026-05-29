@@ -59,39 +59,40 @@ export function buildDiscoveryDescription(config: LandingPageConfig): string {
  * Build SEO title for discovery landing pages
  */
 export function buildDiscoveryTitle(config: LandingPageConfig): string {
+  // Root layout appends "| Indian Coffee Beans" via title template
   if (config.type === "roast_level") {
     const roastName = config.h1.replace(" Coffee in India", "").trim();
-    return `${roastName} Coffee in India – Discover & Compare | Indian Coffee Beans`;
+    return `${roastName} Coffee in India – Discover & Compare`;
   }
   if (config.type === "brew_method") {
     const methodName = config.h1
       .replace("Best Coffees for ", "")
       .replace(" in India", "")
       .trim();
-    return `Best Coffees for ${methodName} in India – Discover & Compare | Indian Coffee Beans`;
+    return `Best Coffees for ${methodName} in India – Discover & Compare`;
   }
   if (config.type === "price_bucket") {
     const priceText = config.h1
       .replace("Best Coffees ", "")
       .replace(" in India", "")
       .trim();
-    return `Best Coffees ${priceText} in India – Discover & Compare | Indian Coffee Beans`;
+    return `Best Coffees ${priceText} in India – Discover & Compare`;
   }
   if (config.type === "process") {
     const processName = labelWithoutIndiaSuffix(config.h1);
     const processTitle = processName.includes("Coffee")
       ? processName
       : `${processName} Coffee`;
-    return `${processTitle} in India – Discover & Compare | Indian Coffee Beans`;
+    return `${processTitle} in India – Discover & Compare`;
   }
   if (config.type === "region") {
     const regionName = labelWithoutIndiaSuffix(config.h1);
     const regionTitle = regionName.includes("Coffee")
       ? regionName
       : `${regionName} Coffee`;
-    return `${regionTitle} in India – Discover & Compare | Indian Coffee Beans`;
+    return `${regionTitle} in India – Discover & Compare`;
   }
-  return `${config.h1} | Indian Coffee Beans`;
+  return config.h1;
 }
 
 /**

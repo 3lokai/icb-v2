@@ -1,9 +1,10 @@
 // src/app/(main)/tools/coffee-compass/page.tsx
+import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
-import { generateMetadata } from "@/lib/seo/metadata";
+import { generateMetadata as generateBaseMetadata } from "@/lib/seo/metadata";
 import { Icon } from "@/components/common/Icon";
 import { CoffeeCompassClient } from "@/components/tools/CoffeeCompassClient";
 import {
@@ -11,25 +12,43 @@ import {
   getCoffeesForCompass,
 } from "@/app/actions/forms";
 
-export const metadata = generateMetadata({
-  title: "Coffee Compass — Diagnose Your Brew | IndianCoffeeBeans",
-  description:
-    "Fix your coffee instantly. Pick your tasting symptoms, choose your brewing method, and get precise, method-specific corrections. No AI — pure coffee science.",
-  keywords: [
-    "coffee compass",
-    "coffee troubleshoot",
-    "under-extracted coffee",
-    "over-extracted coffee",
-    "coffee fix sour bitter",
-    "coffee tasting guide",
-    "brew diagnosis",
-    "coffee compass barista hustle",
-    "extraction score",
-    "coffee strength calculator",
-  ],
-  canonical: "/tools/coffee-compass",
-  type: "website",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  // Tool is a single canonical page; queries are UI state, not new URLs.
+  // Static canonical lets the route prerender and keeps hreflang consistent.
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
+  const canonicalPath = "/tools/coffee-compass";
+  const canonicalUrl = `${baseUrl}${canonicalPath}`;
+
+  const baseMetadata = generateBaseMetadata({
+    title: "Coffee Compass — Diagnose Your Brew | IndianCoffeeBeans",
+    description:
+      "Fix your coffee instantly. Pick your tasting symptoms, choose your brewing method, and get precise, method-specific corrections. No AI — pure coffee science.",
+    keywords: [
+      "coffee compass",
+      "coffee troubleshoot",
+      "under-extracted coffee",
+      "over-extracted coffee",
+      "coffee fix sour bitter",
+      "coffee tasting guide",
+      "brew diagnosis",
+      "coffee compass barista hustle",
+      "extraction score",
+      "coffee strength calculator",
+    ],
+    canonical: canonicalPath,
+    type: "website",
+  });
+
+  return {
+    ...baseMetadata,
+    alternates: {
+      ...baseMetadata.alternates,
+      canonical: canonicalUrl,
+      languages: { en: canonicalUrl, "x-default": canonicalUrl },
+    },
+  };
+}
 
 const compassSchema = {
   "@context": "https://schema.org",

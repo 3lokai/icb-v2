@@ -146,7 +146,7 @@ export async function generateMetadata(): Promise<Metadata> {
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
   return generatePageMetadata({
-    title: "IndianCoffeeBeans (ICB) — Rate Coffee, Build Your Taste Profile",
+    title: "ICB — Rate Indian Specialty Coffee",
     description:
       "Rate Indian specialty coffees, track your brews, and build a taste profile. Discover beans from Indian roasters with community reviews and recommendations.",
     keywords: [

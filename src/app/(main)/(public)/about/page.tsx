@@ -14,7 +14,7 @@ import { generateMetadata } from "@/lib/seo/metadata";
 import { aboutPageSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = generateMetadata({
-  title: "About IndianCoffeeBeans.com - Discover India's Coffee Culture",
+  title: "About IndianCoffeeBeans.com",
   description:
     "Learn about our mission to create the definitive resource for Indian coffee beans and roasters, connecting enthusiasts with India's rich coffee heritage.",
   keywords: [

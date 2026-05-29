@@ -21,6 +21,12 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import {
+  generateBreadcrumbSchema,
+  generateCollectionPageSchema,
+  getSeoBaseUrl,
+} from "@/lib/seo/schema";
+import StructuredData from "@/components/seo/StructuredData";
 import { urlFor } from "@/lib/sanity/image";
 
 type Props = {
@@ -35,9 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!category) return {};
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
-  const defaultCanonical = `${baseUrl}/learn/category/${category.slug}`;
+  const defaultCanonical = `${getSeoBaseUrl()}/learn/category/${category.slug}`;
 
   return generateSEOMetadata({
     title: category.metadata?.metaTitle || category.name,
@@ -88,8 +92,32 @@ export default async function CategoryPage({ params }: Props) {
     ? urlFor(category.cover).width(1200).url()
     : pillarImages[slug] || "/images/hero-learn.avif";
 
+  const baseUrl = getSeoBaseUrl();
+  const categoryUrl = `${baseUrl}/learn/category/${category.slug}`;
+  const categoryDescription =
+    category.description || `Explore detailed intelligence on ${category.name}`;
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: baseUrl },
+    { name: "Field Guide", url: `${baseUrl}/learn` },
+    { name: category.name, url: categoryUrl },
+  ]);
+
+  const collectionPageSchema = generateCollectionPageSchema(
+    category.name,
+    categoryDescription,
+    categoryUrl,
+    articles.slice(0, 20).map((article, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${baseUrl}/learn/${article.slug}`,
+      name: article.title,
+    }))
+  );
+
   return (
     <>
+      <StructuredData schema={[collectionPageSchema, breadcrumbSchema]} />
       <PageHeader
         title={category.name}
         overline="Field Guide Layer"

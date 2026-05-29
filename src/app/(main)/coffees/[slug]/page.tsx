@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return generateDiscoveryMetadata(landing);
   }
   return generateSEOMetadata({
-    title: "Coffee Disambiguation | Indian Coffee Beans",
+    title: "Coffee Disambiguation",
     description:
       "Multiple roasters have a coffee with this name. Choose a roaster to view the coffee.",
     canonical: `${baseUrl}/coffees/${slug}`,

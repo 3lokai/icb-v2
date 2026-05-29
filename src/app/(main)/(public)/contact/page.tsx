@@ -1,12 +1,14 @@
 // src/app/(public)/contact/page.tsx
 
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { submitForm } from "@/app/actions/forms";
 import { subscribeToNewsletter } from "@/app/actions/newsletter";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateMetadata } from "@/lib/seo/metadata";
 import { contactPageSchema } from "@/lib/seo/schema";
 import ContactForms from "./ContactForms";
+import { PageHeader } from "@/components/layout/PageHeader";
 
 // Define metadata for SEO
 export const metadata: Metadata = generateMetadata({
@@ -29,10 +31,21 @@ export default function ContactPage() {
   return (
     <>
       <StructuredData schema={contactPageSchema} />
-      <ContactForms
-        submitForm={submitForm}
-        subscribeToNewsletter={subscribeToNewsletter}
+      <PageHeader
+        title={
+          <>
+            Connect With <span className="text-accent italic">Us.</span>
+          </>
+        }
+        overline="Our Community"
+        description="Join the Indian coffee community and help build the definitive resource for local coffee enthusiasts and professionals."
       />
+      <Suspense fallback={<div className="pb-20" />}>
+        <ContactForms
+          submitForm={submitForm}
+          subscribeToNewsletter={subscribeToNewsletter}
+        />
+      </Suspense>
     </>
   );
 }

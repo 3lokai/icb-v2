@@ -41,12 +41,12 @@ export async function generateMetadata({
 
   const { filters, page } = parseCoffeeSearchParams(urlSearchParams);
 
-  // Build title based on filters
-  let title = "Buy Coffee Beans in India (1,400+ SKUs) | Indian Coffee Beans";
+  // Build title based on filters — root layout appends "| Indian Coffee Beans"
+  let title = "Buy Coffee Beans in India (1,400+ SKUs)";
   if (filters.q) {
-    title = `${filters.q} - Coffee Search | Indian Coffee Beans`;
+    title = `${filters.q} – Coffee Search`;
   } else if (filters.roast_levels && filters.roast_levels.length > 0) {
-    title = `${filters.roast_levels.join(", ")} Roast Coffees | Indian Coffee Beans`;
+    title = `${filters.roast_levels.join(", ")} Roast Coffees in India`;
   }
 
   // Enhanced description based on active filters

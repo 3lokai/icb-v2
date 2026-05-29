@@ -2,7 +2,10 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { fetchRoasterBySlug } from "@/lib/data/fetch-roaster-by-slug";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
-import { generateBreadcrumbSchema } from "@/lib/seo/schema";
+import {
+  generateBreadcrumbSchema,
+  generateCollectionPageSchema,
+} from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
 import { RoasterCoffeesSelectionPage } from "@/components/roasters/RoasterCoffeesSelectionPage";
 
@@ -28,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const canonical = `${baseUrl}/roasters/${slug}/coffees`;
-  const title = `${roaster.name} Coffees | Indian Coffee Beans`;
+  const title = `${roaster.name} Coffees`;
   const description = `Explore the complete specialty coffee collection from ${roaster.name}. Grouped by roast level, from light to dark. Discover your next favorite Indian coffee beans.`;
 
   return generateSEOMetadata({
@@ -58,16 +61,29 @@ export default async function RoasterCoffeesPageServer({ params }: Props) {
     notFound();
   }
 
+  const lineupUrl = `${baseUrl}/roasters/${slug}/coffees`;
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: baseUrl },
     { name: "Roasters", url: `${baseUrl}/roasters` },
     { name: roaster.name, url: `${baseUrl}/roasters/${slug}` },
-    { name: "Coffees", url: `${baseUrl}/roasters/${slug}/coffees` },
+    { name: "Coffees", url: lineupUrl },
   ]);
+
+  const collectionPageSchema = generateCollectionPageSchema(
+    `${roaster.name} Coffees`,
+    `Specialty coffee lineup from ${roaster.name}, grouped by roast level.`,
+    lineupUrl,
+    (roaster.coffees ?? []).slice(0, 20).map((coffee, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${baseUrl}/roasters/${slug}/coffees/${coffee.slug}`,
+      name: coffee.name,
+    }))
+  );
 
   return (
     <>
-      <StructuredData schema={[breadcrumbSchema]} />
+      <StructuredData schema={[collectionPageSchema, breadcrumbSchema]} />
       <RoasterCoffeesSelectionPage roaster={roaster} />
     </>
   );

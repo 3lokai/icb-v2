@@ -2,6 +2,7 @@
 // Enhanced version with improved UX and micro-interactions
 
 import Link from "next/link";
+import type { Metadata } from "next";
 import { CoffeeCalculatorFAQ } from "@/components/faqs/CoffeeCalculatorFAQs";
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -10,33 +11,51 @@ import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeCalculatorContainer } from "@/components/tools/CoffeeCalculatorContainer";
 import { Button } from "@/components/ui/button";
-import { generateMetadata } from "@/lib/seo/metadata";
+import { generateMetadata as generateBaseMetadata } from "@/lib/seo/metadata";
 import { generateHowToSchema } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
 import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
 
-// SEO Metadata (keeping your existing metadata)
-export const metadata = generateMetadata({
-  title: "Coffee Ratio Calculator | Perfect Brew Calculator with Timer",
-  description:
-    "Master coffee brewing with our interactive ratio calculator. Get precise measurements, step-by-step timer, and expert tips for pour over, French press, espresso, and 11 brewing methods.",
-  keywords: [
-    "coffee ratio calculator",
-    "coffee brewing calculator",
-    "pour over calculator",
-    "coffee water ratio",
-    "brewing timer",
-    "coffee extraction calculator",
-    "French press ratio",
-    "espresso ratio",
-    "Indian filter coffee",
-    "coffee brewing guide",
-    "specialty coffee calculator",
-    "brew strength calculator",
-  ],
-  canonical: "/tools/coffee-calculator",
-  type: "website",
-});
+// SEO Metadata — static canonical so the route can prerender.
+// Reading searchParams here used to force dynamic rendering, which prevented
+// the prerender and stripped server-rendered headings from the HTML.
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
+  const canonicalPath = "/tools/coffee-calculator";
+  const canonicalUrl = `${baseUrl}${canonicalPath}`;
+
+  const baseMetadata = generateBaseMetadata({
+    title: "Coffee Ratio Calculator with Brew Timer",
+    description:
+      "Master coffee brewing with our interactive ratio calculator. Get precise measurements, step-by-step timer, and expert tips for pour over, French press, espresso, and 11 brewing methods.",
+    keywords: [
+      "coffee ratio calculator",
+      "coffee brewing calculator",
+      "pour over calculator",
+      "coffee water ratio",
+      "brewing timer",
+      "coffee extraction calculator",
+      "French press ratio",
+      "espresso ratio",
+      "Indian filter coffee",
+      "coffee brewing guide",
+      "specialty coffee calculator",
+      "brew strength calculator",
+    ],
+    canonical: canonicalPath,
+    type: "website",
+  });
+
+  return {
+    ...baseMetadata,
+    alternates: {
+      ...baseMetadata.alternates,
+      canonical: canonicalUrl,
+      languages: { en: canonicalUrl, "x-default": canonicalUrl },
+    },
+  };
+}
 
 // Your existing schemas...
 const calculatorHowToSchema = generateHowToSchema({
