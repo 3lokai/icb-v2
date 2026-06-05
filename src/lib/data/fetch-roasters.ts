@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { unstable_cache } from "next/cache";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import type {
   RoasterFilters,
@@ -274,3 +275,10 @@ export async function fetchRoasters(
     totalPages,
   };
 }
+
+export const fetchRoastersCached = unstable_cache(
+  (filters: RoasterFilters, page: number, limit: number, sort: RoasterSort) =>
+    fetchRoasters(filters, page, limit, sort),
+  ["roasters-list"],
+  { tags: ["roasters"] }
+);

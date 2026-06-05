@@ -9,5 +9,5 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // ISR (revalidate) — use API for fresh content after revalidation
+  useCdn: process.env.NODE_ENV === "production",
 });

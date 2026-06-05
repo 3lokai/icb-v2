@@ -11,6 +11,12 @@
       "sourceType": "github",
       "skillPath": "skills/sequenzy/SKILL.md",
       "computedHash": "4f14f6b7bf407929ba03752a47a2a1b452a88dc61b2a138decb86890427727a6"
+    },
+    "vercel-cli-with-tokens": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/vercel-cli-with-tokens/SKILL.md",
+      "computedHash": "eb16b20dcbe6ce51e0372083d624e0847af1b09487ec99249227d5a8eddebfc0"
     }
   }
 }

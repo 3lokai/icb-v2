@@ -10,7 +10,9 @@ export async function GET(request: Request) {
 
     const roasterListResponse = await fetchRoasters(filters, page, limit, sort);
 
-    return NextResponse.json(roasterListResponse);
+    return NextResponse.json(roasterListResponse, {
+      headers: { "Cache-Control": "s-maxage=60, stale-while-revalidate=300" },
+    });
   } catch (error: any) {
     console.error("Error fetching roasters:", error);
     return NextResponse.json(

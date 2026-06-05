@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { RoasterDirectory } from "@/components/roasters/RoasterDirectory";
 import { RoastersPageContentSkeleton } from "@/components/roasters/RoastersPageContentSkeleton";
 import { fetchRoasterFilterMeta } from "@/lib/data/fetch-roaster-filter-meta";
-import { fetchRoasters } from "@/lib/data/fetch-roasters";
+import { fetchRoastersCached } from "@/lib/data/fetch-roasters";
 import { parseRoasterSearchParams } from "@/lib/filters/roaster-url";
 import {
   generateCollectionPageSchema,
@@ -185,7 +185,7 @@ async function RoastersPageContent({
     parseRoasterSearchParams(urlSearchParams);
 
   const [initialData, filterMeta] = await Promise.all([
-    fetchRoasters(filters, page, limit, sort),
+    fetchRoastersCached(filters, page, limit, sort),
     fetchRoasterFilterMeta(),
   ]);
 
