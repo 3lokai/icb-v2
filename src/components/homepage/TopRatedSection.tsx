@@ -4,6 +4,8 @@ import Link from "next/link";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { Icon } from "@/components/common/Icon";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { Accent } from "@/components/primitives/accent";
+import { Reveal } from "@/components/primitives/reveal";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
@@ -68,18 +70,9 @@ export default function TopRatedSection({
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-start relative z-10">
         <div className="md:col-span-5 lg:col-span-4 md:sticky md:top-32">
           <Stack gap="8">
-            <Stack gap="4">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 bg-accent" />
-                <span className="text-overline text-accent font-semibold tracking-[0.2em]">
-                  PRESTIGE
-                </span>
-              </div>
-              <h2 className="text-title lg:text-display text-balance leading-[1.1] tracking-tight">
-                Top{" "}
-                <span className="text-accent italic font-serif">Rated.</span>
-              </h2>
-            </Stack>
+            <h2 className="text-title lg:text-display text-balance leading-[1.1] tracking-tight">
+              Top <Accent>Rated.</Accent>
+            </h2>
 
             <p className="text-body-large lg:text-subheading text-muted-foreground leading-relaxed">
               The coffees visitors love most right now—ranked by average rating
@@ -123,14 +116,14 @@ export default function TopRatedSection({
         </div>
 
         <div className="md:col-span-7 lg:col-span-8">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+          <Reveal className="grid grid-cols-1 gap-8 sm:grid-cols-2">
             {coffees.map((coffee) => (
               <CoffeeCard
                 coffee={coffee}
                 key={coffee.slug || coffee.coffee_id}
               />
             ))}
-          </div>
+          </Reveal>
         </div>
       </div>
     </Section>

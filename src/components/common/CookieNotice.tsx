@@ -12,6 +12,7 @@ import {
   savePreferences as persistPreferences,
   STORAGE_KEY,
 } from "@/hooks/use-cookie-consent";
+import { PageShell } from "@/components/primitives/page-shell";
 
 export function CookieNotice() {
   const [mounted, setMounted] = useState(false);
@@ -94,7 +95,7 @@ export function CookieNotice() {
     <div
       className={`fixed right-0 bottom-0 left-0 z-9999 border-border/30 border-t bg-card shadow-2xl transition-all duration-500 ${isExiting ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"}`}
     >
-      <div className="container-default px-6 py-6">
+      <PageShell className="px-6 py-6">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="flex items-center gap-2 text-subheading">
             <Icon
@@ -161,14 +162,14 @@ export function CookieNotice() {
             Save Preferences
           </button>
         </div>
-      </div>
+      </PageShell>
     </div>
   ) : (
     <div
       className={`fixed right-0 bottom-0 left-0 z-9999 border-border/20 border-t bg-card shadow-2xl transition-all duration-500 ${isExiting ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"}`}
     >
       <div className="h-1 w-full bg-gradient-to-r from-chart-1 via-chart-3 to-chart-5" />
-      <div className="container-default flex flex-col items-center justify-between gap-4 px-6 py-4 md:flex-row">
+      <PageShell className="flex flex-col items-center justify-between gap-4 px-6 py-4 md:flex-row">
         <div className="flex items-center gap-3">
           <Icon
             className="hidden text-accent md:block"
@@ -203,7 +204,7 @@ export function CookieNotice() {
             Accept All
           </button>
         </div>
-      </div>
+      </PageShell>
     </div>
   );
 

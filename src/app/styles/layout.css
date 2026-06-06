@@ -1,11 +1,12 @@
 @layer components;
 
 /* Layout & Spacing */
-.container-default {
-  @apply w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
-}
+/* NOTE: horizontal page padding is owned solely by the PageShell primitive
+ * (src/components/primitives/page-shell.tsx). The old `.container-default`
+ * duplicate was removed in Sprint 0 — use <PageShell> instead. */
 
-/* Editorial Grid (Spacious) */
+/* Editorial Grid (Spacious) — canonical 3-col card grid token.
+ * Adopt this instead of hand-rolling `grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8`. */
 .grid-cards {
   @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
 }

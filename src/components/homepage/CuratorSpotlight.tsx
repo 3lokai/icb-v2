@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Icon } from "@/components/common/Icon";
+import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
@@ -24,7 +25,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
   return (
     <Section spacing="default" className="py-8 md:py-14 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-        <div className="group relative overflow-hidden rounded-[2.5rem] border border-border/60 bg-card shadow-xl transition-all duration-500 hover:shadow-accent/5">
+        <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card shadow-xl transition-all duration-500 hover:shadow-accent/5">
           <div className="grid grid-cols-1 lg:grid-cols-12">
             {/* Left Column: Editorial Content (approx 70%) */}
             <div className="lg:col-span-8 relative z-10 flex flex-col justify-center p-6 md:p-10 lg:p-12 overflow-hidden">
@@ -55,10 +56,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
                     transition={{ delay: 0.1 }}
                     className="text-title text-balance leading-[1.1] tracking-tight"
                   >
-                    Cultivated{" "}
-                    <span className="text-accent italic font-serif">
-                      Taste.
-                    </span>
+                    Cultivated <Accent>Taste.</Accent>
                   </motion.h2>
 
                   <motion.p

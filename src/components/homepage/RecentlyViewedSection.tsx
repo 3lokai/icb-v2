@@ -3,6 +3,7 @@
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { Icon } from "@/components/common/Icon";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { useRecentlyViewedCoffees } from "@/hooks/use-recently-viewed-coffees";
@@ -98,15 +99,8 @@ export default function RecentlyViewedSection({
         <Stack gap="6">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <div className="mb-2 inline-flex items-center gap-3">
-                <span className="h-px w-8 bg-accent" />
-                <span className="text-overline text-accent font-semibold tracking-[0.2em]">
-                  CONTINUE
-                </span>
-              </div>
               <h2 className="text-title text-balance leading-tight">
-                Recently{" "}
-                <span className="font-serif italic text-accent">viewed.</span>
+                Recently <Accent>viewed.</Accent>
               </h2>
               <p className="mt-2 max-w-xl text-body text-muted-foreground">
                 Pick up where you left off—based on coffees you opened on this

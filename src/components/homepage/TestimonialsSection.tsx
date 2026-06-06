@@ -98,7 +98,7 @@ const SITE_BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 const SITE_NAME = "Indian Coffee Beans";
 
-// Split into two rows
+// Split into two rows for the dual marquee
 const firstRow = REDDIT_TESTIMONIALS.slice(0, 6);
 const secondRow = REDDIT_TESTIMONIALS.slice(6, 12);
 
@@ -197,56 +197,28 @@ const TestimonialCard = ({
 
 export default function TestimonialsSection() {
   return (
-    <Section spacing="default">
+    <Section spacing="default" title="What Coffee" accentWord="Lovers Say.">
       <Stack gap="12">
-        {/* Header */}
-        <div className="mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-            <div className="md:col-span-8">
-              <Stack gap="6">
-                <div className="inline-flex items-center gap-4">
-                  <span className="h-px w-8 md:w-12 bg-accent/60" />
-                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                    Community Voice
-                  </span>
-                </div>
-                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                  What Coffee{" "}
-                  <span className="text-accent italic">Lovers Say.</span>
-                </h2>
-                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                  Join the community of coffee enthusiasts discovering the rich
-                  world of Indian coffee beans through our directory.
-                </p>
-              </Stack>
-            </div>
-            <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
-              <div className="flex md:hidden items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
-                <span className="h-1 w-1 rounded-full bg-accent/40" />
-                Verified Feedback
-                <span className="h-1 w-1 rounded-full bg-accent/40" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <p className="-mt-6 max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+          Join the community of coffee enthusiasts discovering the rich world of
+          Indian coffee beans through our directory.
+        </p>
 
-        {/* Dual Marquee Rows */}
+        {/* Dual marquee rows */}
         <div className="relative flex w-full flex-col items-center justify-center gap-6 overflow-hidden">
-          {/* Row 1: Normal direction */}
           <Marquee className="[--duration:80s]" pauseOnHover>
             {firstRow.map((testimonial) => (
               <TestimonialCard key={testimonial.username} {...testimonial} />
             ))}
           </Marquee>
 
-          {/* Row 2: Reverse direction */}
           <Marquee className="[--duration:80s]" pauseOnHover reverse>
             {secondRow.map((testimonial) => (
               <TestimonialCard key={testimonial.username} {...testimonial} />
             ))}
           </Marquee>
 
-          {/* Gradient fade edges - matching Magic UI style */}
+          {/* Gradient fade edges */}
           <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-linear-to-r from-[color-mix(in_oklch,var(--muted)_30%,var(--background))]" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-linear-to-l from-[color-mix(in_oklch,var(--muted)_30%,var(--background))]" />
         </div>
