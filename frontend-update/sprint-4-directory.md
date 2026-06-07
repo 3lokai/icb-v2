@@ -25,6 +25,9 @@ removed → `<PageShell>`. Heading contract: h2→`.text-title`, h3→`.text-hea
 
 ### 4.4 Coffee `[slug]` disambiguation page
 - It is currently bare. Add related/discovery content using existing grid components.
+- Note: `/coffees/[slug]` is dual-purpose. This task covers only the **disambiguation/redirect**
+  branch. The **programmatic discovery landing pages** (`DiscoveryLandingLayout` + the
+  `components/discovery/*` set) are out of scope here — see [Sprint 5](./sprint-5-discovery.md).
 
 ### 4.5 Preserve
 - Responsive grid logic, skeleton/empty states, CLS reserves, image-color extraction — keep all.

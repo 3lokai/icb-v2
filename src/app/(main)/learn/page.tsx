@@ -14,6 +14,7 @@ import { PostCard } from "@/components/blog/PostCard";
 import { ArticleGrid } from "@/components/blog/ArticleParallaxGrid";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
+import { Accent } from "@/components/primitives/accent";
 
 export const revalidate = 3600;
 
@@ -57,10 +58,7 @@ export default async function LearnPage() {
                   </span>
                 </div>
                 <h2 className="text-title font-semibold tracking-tight text-balance">
-                  From soil to{" "}
-                  <span className="text-accent italic font-serif">
-                    your cup
-                  </span>
+                  From soil to <Accent>your cup</Accent>
                 </h2>
                 <p className="max-w-2xl text-body-large text-muted-foreground">
                   Our Field Guide is structured into five distinct layers of
@@ -76,15 +74,8 @@ export default async function LearnPage() {
             <Section contained={false} spacing="default">
               <Stack gap="12">
                 <div className="flex flex-col gap-4">
-                  <div className="inline-flex items-center gap-4">
-                    <span className="h-px w-8 md:w-12 bg-primary/70" />
-                    <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
-                      Featured
-                    </span>
-                  </div>
                   <h2 className="text-title font-semibold tracking-tight text-balance">
-                    Editor&apos;s{" "}
-                    <span className="text-accent italic font-serif">picks</span>
+                    Editor&apos;s picks
                   </h2>
                 </div>
                 <div className="grid gap-8">
@@ -108,10 +99,7 @@ export default async function LearnPage() {
                     </span>
                   </div>
                   <h2 className="text-title font-semibold tracking-tight text-balance">
-                    Latest{" "}
-                    <span className="text-accent italic font-serif">
-                      insights
-                    </span>
+                    Latest insights
                   </h2>
                   <p className="max-w-2xl text-body-large text-muted-foreground">
                     Our curated selection of stories, guides, and research from
@@ -136,17 +124,8 @@ export default async function LearnPage() {
             >
               <Stack gap="12">
                 <div className="flex flex-col gap-4 text-center">
-                  <div className="inline-flex items-center justify-center gap-4">
-                    <span className="h-px w-8 md:w-12 bg-primary/70" />
-                    <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
-                      Multi-Part Guides
-                    </span>
-                  </div>
                   <h2 className="text-title font-semibold tracking-tight text-balance">
-                    Structured{" "}
-                    <span className="text-accent italic font-serif">
-                      learning
-                    </span>
+                    Structured learning
                   </h2>
                   <p className="mx-auto max-w-2xl text-body-large text-muted-foreground">
                     Follow these curated series to master complex coffee topics

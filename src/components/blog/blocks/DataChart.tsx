@@ -106,12 +106,12 @@ export function DataChart({ value }: DataChartProps) {
     >
       <div className="mb-6 px-2">
         {value.title && (
-          <motion.h3
+          <motion.h2
             variants={itemVariants}
             className="text-title font-bold text-foreground tracking-tight mb-2"
           >
             {value.title}
-          </motion.h3>
+          </motion.h2>
         )}
         {value.description && (
           <motion.p

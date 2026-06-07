@@ -1,6 +1,7 @@
 // src/app/(main)/(public)/how-icb-works/page.tsx
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Prose } from "@/components/primitives/prose";
@@ -16,7 +17,7 @@ export const metadata: Metadata = generateMetadata({
   title:
     "How IndianCoffeeBeans Works | Discovery, Reviews & Rankings Explained",
   description:
-    "How IndianCoffeeBeans works — from structured coffee data and reviews to transparent discovery, rankings, and verification. No ads. No commissions.",
+    "How IndianCoffeeBeans works, from structured coffee data and reviews to transparent discovery, rankings, and verification. No ads. No commissions.",
   keywords: [
     "how IndianCoffeeBeans works",
     "independent coffee directory",
@@ -35,8 +36,7 @@ export default function HowICBWorksPage() {
         overline="Transparency & Neutrality"
         title={
           <>
-            How <span className="text-accent italic">IndianCoffeeBeans</span>{" "}
-            Works
+            How <Accent>IndianCoffeeBeans</Accent> Works
           </>
         }
         description="A clear, factual breakdown of what this platform is, how it operates, and why it remains independent."
@@ -49,9 +49,7 @@ export default function HowICBWorksPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
               <div className="lg:col-span-5">
                 <Stack gap="4">
-                  <h2 className="text-title text-primary italic">
-                    The Essence
-                  </h2>
+                  <h2 className="text-title">The Essence</h2>
                   <div className="h-px w-16 bg-accent/60" />
                   <p className="text-body-large text-muted-foreground">
                     IndianCoffeeBeans.com is a specialized discovery
@@ -95,20 +93,18 @@ export default function HowICBWorksPage() {
                 <span className="text-micro font-bold uppercase tracking-widest text-accent">
                   Discovery
                 </span>
-                <h2 className="text-title text-primary">How Discovery Works</h2>
+                <h2 className="text-title">How Discovery Works</h2>
                 <div className="h-px w-16 bg-accent/60" />
               </Stack>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <Stack gap="4">
-                  <h3 className="text-heading text-primary font-serif italic">
-                    1. Structured Coffee Data
-                  </h3>
+                  <h3 className="text-heading">1. Structured Coffee Data</h3>
                   <p className="text-caption text-muted-foreground leading-relaxed">
                     Each coffee is documented using consistent attributes:
                     Origin, Region, Process, Roast, Profile, and Brew
                     compatibility. This allows for meaningful comparison across
-                    roasters — not just brand pages.{" "}
+                    roasters, not just brand pages.{" "}
                     <Link
                       href="/coffees"
                       className="text-accent hover:underline font-medium"
@@ -118,9 +114,7 @@ export default function HowICBWorksPage() {
                   </p>
                 </Stack>
                 <Stack gap="4">
-                  <h3 className="text-heading text-primary font-serif italic">
-                    2. Ratings & Reviews
-                  </h3>
+                  <h3 className="text-heading">2. Ratings & Reviews</h3>
                   <p className="text-caption text-muted-foreground leading-relaxed">
                     Users rate individual coffees based on taste and results,
                     and roasters based on ordering and consistency. Reviews are
@@ -128,9 +122,7 @@ export default function HowICBWorksPage() {
                   </p>
                 </Stack>
                 <Stack gap="4">
-                  <h3 className="text-heading text-primary font-serif italic">
-                    3. Signal-Based Filters
-                  </h3>
+                  <h3 className="text-heading">3. Signal-Based Filters</h3>
                   <p className="text-caption text-muted-foreground leading-relaxed">
                     Discovery is built around how people actually choose coffee:
                     brew method, flavor, roast, and region. There are no
@@ -145,9 +137,7 @@ export default function HowICBWorksPage() {
           <div className="bg-muted/5 rounded-3xl p-8 md:p-12 border border-border/20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
               <Stack gap="6">
-                <h2 className="text-title text-primary italic">
-                  How Rankings Work
-                </h2>
+                <h2 className="text-title">How Rankings Work</h2>
                 <Prose>
                   <p>
                     There are no paid rankings on IndianCoffeeBeans. Coffee and
@@ -166,9 +156,7 @@ export default function HowICBWorksPage() {
               </Stack>
 
               <Stack gap="6">
-                <h2 className="text-title text-primary italic">
-                  What "Verified" Means
-                </h2>
+                <h2 className="text-title">What "Verified" Means</h2>
                 <Prose>
                   <p>
                     Some roasters choose to become{" "}
@@ -193,9 +181,7 @@ export default function HowICBWorksPage() {
           <Section spacing="default">
             <Stack gap="12" className="items-center text-center">
               <Stack gap="4" className="items-center">
-                <h2 className="text-title text-primary italic">
-                  For Whom is ICB Built?
-                </h2>
+                <h2 className="text-title">For Whom is ICB Built?</h2>
                 <div className="h-px w-24 bg-accent/40" />
               </Stack>
 
@@ -223,9 +209,7 @@ export default function HowICBWorksPage() {
                     key={item.title}
                     className="p-6 rounded-2xl border border-border/20 bg-card/5"
                   >
-                    <h3 className="text-heading text-primary font-serif italic text-body">
-                      {item.title}
-                    </h3>
+                    <h3 className="text-heading">{item.title}</h3>
                     <p className="text-caption text-muted-foreground">
                       {item.desc}
                     </p>
@@ -243,9 +227,7 @@ export default function HowICBWorksPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
               <div className="lg:col-span-5">
                 <Stack gap="4">
-                  <h2 className="text-title text-primary italic">
-                    The Long View
-                  </h2>
+                  <h2 className="text-title">The Long View</h2>
                   <div className="h-px w-16 bg-accent/60" />
                 </Stack>
               </div>
@@ -276,9 +258,7 @@ export default function HowICBWorksPage() {
                 <span className="text-micro font-bold uppercase tracking-[0.2em] text-accent">
                   The Protocol
                 </span>
-                <h2 className="text-display text-primary italic">
-                  Transparency & Trust
-                </h2>
+                <h2 className="text-title">Transparency & Trust</h2>
               </Stack>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full text-left">
@@ -301,9 +281,7 @@ export default function HowICBWorksPage() {
                     key={item.title}
                     className="p-6 rounded-2xl border border-border/20 bg-muted/5 transition-colors hover:bg-muted/10"
                   >
-                    <h3 className="text-heading text-primary font-serif italic text-body-large">
-                      {item.title}
-                    </h3>
+                    <h3 className="text-heading">{item.title}</h3>
                     <p className="text-caption text-muted-foreground">
                       {item.desc}
                     </p>

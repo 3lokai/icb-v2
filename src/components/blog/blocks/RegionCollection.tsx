@@ -51,9 +51,9 @@ export function RegionCollection({ value }: RegionCollectionProps) {
         </div>
       </motion.div>
 
-      <h4 className="font-bold text-title mb-4 text-foreground tracking-tight underline decoration-emerald-500/20 decoration-4 underline-offset-8">
+      <h2 className="font-bold text-title mb-4 text-foreground tracking-tight underline decoration-accent/30 decoration-4 underline-offset-8">
         {title || "Coffee Regions"}
-      </h4>
+      </h2>
 
       <p className="text-body-large text-muted-foreground/90 mb-8 max-w-xl mx-auto italic font-serif leading-relaxed">
         {description ||

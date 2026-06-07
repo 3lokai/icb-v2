@@ -55,6 +55,8 @@ Each sprint is independently shippable. Execute in order — Sprint 0 unlocks th
 | 2 | Marketing / public pages | Low | [sprint-2-marketing-pages.md](./sprint-2-marketing-pages.md) |
 | 3 | Learn hub + article reading | Low | [sprint-3-learn.md](./sprint-3-learn.md) |
 | 4 | Directory pages (coffees / roasters) | Low | [sprint-4-directory.md](./sprint-4-directory.md) |
+| 5 | Discovery landing pages (programmatic `/coffees/[slug]`) | Med | [sprint-5-discovery.md](./sprint-5-discovery.md) |
+| 6 | Cards: prioritize ratings submission | Med | [sprint-6-cards.md](./sprint-6-cards.md) |
 
 ## Preservation guardrails (apply to every sprint)
 

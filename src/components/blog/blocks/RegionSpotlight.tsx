@@ -59,9 +59,9 @@ export function RegionSpotlight({ value }: RegionSpotlightProps) {
         <div className="flex-1 space-y-4">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <h4 className="text-title font-bold text-foreground leading-tight tracking-tight">
+              <h2 className="text-title font-bold text-foreground leading-tight tracking-tight">
                 {name}
-              </h4>
+              </h2>
               <Badge
                 variant="secondary"
                 className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20"

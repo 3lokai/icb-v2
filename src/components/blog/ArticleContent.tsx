@@ -86,7 +86,7 @@ const createComponents = (
       return (
         <h3
           id={id}
-          className="mb-3 mt-8 text-title font-semibold tracking-tight"
+          className="mb-3 mt-8 text-heading font-semibold tracking-tight"
         >
           {children}
         </h3>

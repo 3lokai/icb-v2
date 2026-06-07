@@ -54,9 +54,9 @@ function SpotlightCard({
         <div className="flex-1 space-y-4">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <h4 className="text-title font-bold text-foreground leading-tight tracking-tight">
+              <h2 className="text-title font-bold text-foreground leading-tight tracking-tight">
                 {data.name}
-              </h4>
+              </h2>
               <Badge
                 variant="secondary"
                 className="bg-primary/10 text-primary border-primary/20"
