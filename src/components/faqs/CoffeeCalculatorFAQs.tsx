@@ -1,5 +1,6 @@
 // components/faqs/CoffeeCalculatorFAQ.tsx
 import { FAQSection } from "@/components/common/FAQ";
+import { Accent } from "@/components/primitives/accent";
 
 export const coffeeCalculatorFAQs = [
   {
@@ -39,8 +40,7 @@ export function CoffeeCalculatorFAQ() {
       overline="The Details"
       title={
         <>
-          Frequently Asked{" "}
-          <span className="text-accent italic">Questions.</span>
+          Frequently Asked <Accent>Questions.</Accent>
         </>
       }
     />

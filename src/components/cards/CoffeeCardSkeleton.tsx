@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Stack } from "../primitives/stack";
 
 type CoffeeCardSkeletonProps = {
-  variant?: "hero" | "default" | "compact";
+  variant?: "hero" | "default" | "compact" | "similar";
 };
 
 /**
@@ -48,6 +48,36 @@ export function CoffeeCardSkeleton({
               <Skeleton className="h-5 w-32" />
               <Skeleton className="h-3 w-24" />
             </div>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  // Similar variant skeleton - 3:4 image + content + minimal rating row
+  if (variant === "similar") {
+    return (
+      <Card className="surface-1 rounded-lg overflow-hidden h-full flex flex-col p-0">
+        {/* Image - 3:4 */}
+        <Skeleton className="aspect-[3/4] w-full" />
+
+        {/* Content */}
+        <div className="flex-1 card-padding-compact">
+          <Stack gap="2">
+            {/* Title */}
+            <Skeleton className="h-5 w-4/5" />
+            {/* Roaster */}
+            <Skeleton className="h-4 w-1/2" />
+            {/* Match chips */}
+            <Skeleton className="h-4 w-2/3" />
+          </Stack>
+        </div>
+
+        {/* Minimal rating row reserve */}
+        <div className="mt-auto border-t border-border/40 bg-muted/20">
+          <div className="flex flex-row items-center justify-between card-padding-compact">
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-3 w-24" />
           </div>
         </div>
       </Card>

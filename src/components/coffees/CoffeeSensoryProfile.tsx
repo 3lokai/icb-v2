@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import { Stack } from "@/components/primitives/stack";
 import { SensoryRadarChart } from "./SensoryRadarChart";
@@ -34,7 +35,7 @@ export function CoffeeSensoryProfile({
             </span>
           </div>
           <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-            Flavor <span className="text-accent italic">Profile.</span>
+            Flavor <Accent>Profile.</Accent>
           </h2>
           <p className="text-body text-muted-foreground leading-relaxed max-w-2xl mt-4">
             Our sensory profile maps the defining characteristics of this

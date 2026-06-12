@@ -1,6 +1,7 @@
 // src/components/tools/CoffeeCalculator.tsx
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, startTransition, useState } from "react";
 import { Icon } from "@/components/common/Icon";
@@ -228,10 +229,7 @@ export function CoffeeCalculator({
                     </span>
                   </div>
                   <h3 className="text-heading text-balance leading-[1.1] tracking-tight">
-                    Pro Tips for{" "}
-                    <span className="text-accent italic">
-                      {results.method.name}
-                    </span>
+                    Pro Tips for <Accent>{results.method.name}</Accent>
                   </h3>
                 </Stack>
               </div>

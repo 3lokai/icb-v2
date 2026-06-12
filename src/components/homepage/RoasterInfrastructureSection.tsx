@@ -8,6 +8,7 @@ import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
+import { Marquee } from "@/components/ui/marquee";
 import { Icon } from "@/components/common/Icon";
 import Image from "next/image";
 import { roasterImagePresets } from "@/lib/imagekit";
@@ -32,7 +33,7 @@ function RoasterLogoTile({ roaster }: { roaster: RoasterSummary }) {
   return (
     <div
       className={cn(
-        "group flex aspect-square items-center justify-center rounded-md border border-border/40 p-2 shadow-sm transition-colors hover:border-accent/20",
+        "group flex h-14 w-14 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-sm border border-border/40 p-2 shadow-sm transition-colors hover:border-accent/20",
         logoBgClass
       )}
       title={roaster.name}
@@ -58,21 +59,28 @@ export default function RoasterInfrastructureSection() {
   const roasters = data?.items || [];
   const totalCount = data?.total || 0;
 
-  // Static logo wall — a capped sample; the stat + bottom fade imply the rest
-  const wallRoasters = roasters.slice(0, 24);
+  const wallRoasters = roasters;
 
   return (
     <Section spacing="default" className="overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
         {/* Left Column: Roaster logo wall - order-2 on mobile so copy appears first */}
-        <div className="relative w-full min-w-0 overflow-hidden order-2 md:order-1">
-          <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-5 lg:grid-cols-6">
-            {wallRoasters.map((roaster) => (
-              <RoasterLogoTile key={roaster.id} roaster={roaster} />
-            ))}
-          </div>
-          {/* Bottom fade implies the ~150 roasters beyond this sample */}
-          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent" />
+        <div className="relative h-[280px] sm:h-[360px] md:h-[400px] w-full min-w-0 overflow-hidden order-2 md:order-1">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 bg-gradient-to-t from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent" />
+
+          <Marquee
+            vertical
+            pauseOnHover
+            repeat={2}
+            className="p-0 [--duration:70s] [--gap:0.5rem]"
+          >
+            <div className="grid grid-cols-5 gap-2 justify-items-center">
+              {wallRoasters.map((roaster) => (
+                <RoasterLogoTile key={roaster.id} roaster={roaster} />
+              ))}
+            </div>
+          </Marquee>
         </div>
 
         {/* Right Column: Copy & Stats - order-1 on mobile so copy appears first */}

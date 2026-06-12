@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import type { LandingPageConfig } from "@/lib/discovery/landing-pages";
@@ -38,7 +39,7 @@ function SnapshotHeadingTitle({ children }: { children: React.ReactNode }) {
       return (
         <>
           {parts.before}
-          <span className="text-accent italic">{parts.accent}</span>
+          <Accent>{parts.accent}</Accent>
           {parts.after}
         </>
       );

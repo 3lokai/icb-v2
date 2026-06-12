@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Section } from "@/components/primitives/section";
@@ -63,8 +64,7 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
               </span>
             </div>
             <h2 className="text-title text-balance leading-none">
-              Explore coffee{" "}
-              <span className="text-accent italic">Circles.</span>
+              Explore coffee <Accent>Circles.</Accent>
             </h2>
           </Stack>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import {
   useState,
   useEffect,
@@ -433,9 +434,9 @@ export function QuickRating({
                   ) : (
                     <>
                       How was your{" "}
-                      <span className="text-accent italic">
+                      <Accent>
                         {entityType === "coffee" ? "Brew?" : "Experience?"}
-                      </span>
+                      </Accent>
                     </>
                   )}
                 </h3>

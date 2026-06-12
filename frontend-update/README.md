@@ -36,7 +36,7 @@ code. Discipline becomes *structural*, not a written rule.
 | # | Issue | Evidence |
 |---|-------|----------|
 | 1 | **Eyebrow saturation** | ~115 `uppercase tracking` eyebrows; 14/14 home, 6/6 marketing, 5/5 learn sections |
-| 2 | **Italic-serif accent-word tic** | `<span class="text-accent italic font-serif">Word</span>` on 12+ headings — **replaced** by the locked coffee brush-smear `<Accent>` (`stain-smear.png`), rationed ≤1/page (see Sprint 0) |
+| 2 | **Italic-serif accent-word tic** | `<span class="text-accent italic font-serif">Word</span>` (and the `font-serif`-less `text-accent italic` variant) on 80+ headings — **replaced site-wide** by the locked coffee brush-smear `<Accent>` (`stain-smear.png`); per-section use permitted, one accented phrase per title (see Sprint 0 / §7.A) |
 | 3 | **Layout-family repetition** | "eyebrow + title + desc + grid" on ~9/14 home sections; 3-equal-card grid 7+ times |
 | 4 | **Heading hierarchy bugs** | article `h2`==`h3`; marketing pages mix heading classes for the same level |
 | 5 | **Decorative-tell clutter** | blur washes, dot textures (24px vs 32px), color stripes, glass cards, 2 SVG line motifs |
@@ -48,15 +48,22 @@ code. Discipline becomes *structural*, not a written rule.
 
 Each sprint is independently shippable. Execute in order — Sprint 0 unlocks the rest.
 
-| Sprint | Focus | Risk | File |
-|--------|-------|------|------|
-| 0 | Design-system primitives (the leverage point) | Med | [sprint-0-design-system.md](./sprint-0-design-system.md) |
-| 1 | Homepage recomposition | Med | [sprint-1-homepage.md](./sprint-1-homepage.md) |
-| 2 | Marketing / public pages | Low | [sprint-2-marketing-pages.md](./sprint-2-marketing-pages.md) |
-| 3 | Learn hub + article reading | Low | [sprint-3-learn.md](./sprint-3-learn.md) |
-| 4 | Directory pages (coffees / roasters) | Low | [sprint-4-directory.md](./sprint-4-directory.md) |
-| 5 | Discovery landing pages (programmatic `/coffees/[slug]`) | Med | [sprint-5-discovery.md](./sprint-5-discovery.md) |
-| 6 | Cards: prioritize ratings submission | Med | [sprint-6-cards.md](./sprint-6-cards.md) |
+| Sprint | Focus | Risk | Status | File |
+|--------|-------|------|--------|------|
+| 0 | Design-system primitives (the leverage point) | Med | ✅ Shipped | [sprint-0-design-system.md](./sprint-0-design-system.md) |
+| 1 | Homepage recomposition | Med | ✅ Shipped | [sprint-1-homepage.md](./sprint-1-homepage.md) |
+| 2 | Marketing / public pages | Low | ✅ Shipped | [sprint-2-marketing-pages.md](./sprint-2-marketing-pages.md) |
+| 3 | Learn hub + article reading | Low | ✅ Shipped | [sprint-3-learn.md](./sprint-3-learn.md) |
+| 4 | Directory pages (coffees / roasters) | Low | ⬜ Not started | [sprint-4-directory.md](./sprint-4-directory.md) |
+| 5 | Discovery landing pages (programmatic `/coffees/[slug]`) | Med | ⬜ Not started | [sprint-5-discovery.md](./sprint-5-discovery.md) |
+| 6 | Cards: prioritize ratings submission | Med | ✅ Shipped | [sprint-6-cards.md](./sprint-6-cards.md) |
+| 7 | Out-of-scope backlog (site-wide accent sweep + blog consistency) | Low | 🟡 §7.A/§7.B done · §7.C open | [sprint-7-backlog.md](./sprint-7-backlog.md) |
+
+*Status verified against the codebase on 2026-06-12.* Sprint 7 is a **documented backlog**, not a
+committed plan. §7.A (the site-wide `text-accent italic` accent-tic sweep) is now **done** — every
+exact `<span className="text-accent italic">` across legal pages, faqs, dashboard, profile, reviews,
+tools, coffees, roasters, curations, etc. is converted to the locked `<Accent>` brush-smear. Only
+§7.C (4 orphaned homepage components, now accent-converted but still dead code) remains open.
 
 ## Preservation guardrails (apply to every sprint)
 
@@ -69,7 +76,9 @@ Each sprint is independently shippable. Execute in order — Sprint 0 unlocks th
 
 1. `npm run type-check` clean; `npm run lint` clean (zero-warning policy).
 2. Walked in **both light and dark** mode.
-3. Taste-skill pre-flight: eyebrow count ≤ ceil(sections/3) per page; ≤1 italic-serif accent
-   word per page; **zero em-dashes** in visible copy; one accent / one radius / one theme per page.
+3. Taste-skill pre-flight: eyebrow count ≤ ceil(sections/3) per page; **per-section `<Accent>`
+   permitted** (project override — the locked brush-smear is the brand signature; ration is one
+   accented phrase per title, not ≤1/page); **zero em-dashes** in visible copy; one accent / one
+   radius / one theme per page.
 4. `prefers-reduced-motion` collapses all motion to static.
 5. Responsive collapse verified at `<768px`.

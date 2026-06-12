@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import { createClient } from "@/lib/supabase/client";
 import type { CoffeeDetail, SimilarCoffeeMatch } from "@/types/coffee-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
@@ -19,7 +20,7 @@ type SimilarCoffeeRPCResult = {
  */
 export function useSimilarCoffees(coffee: CoffeeDetail) {
   return useQuery({
-    queryKey: ["similar-coffees", coffee.id],
+    queryKey: queryKeys.coffees.similar(coffee.id),
     queryFn: async (): Promise<SimilarCoffeeMatch[]> => {
       const supabase = createClient();
 

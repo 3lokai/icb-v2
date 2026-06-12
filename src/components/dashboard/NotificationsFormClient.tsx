@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import {
@@ -149,8 +150,7 @@ export function NotificationsFormClient({
                 </span>
               </div>
               <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                Notification{" "}
-                <span className="text-accent italic">Settings.</span>
+                Notification <Accent>Settings.</Accent>
               </h2>
               <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
                 Manage your notification preferences and email frequency.

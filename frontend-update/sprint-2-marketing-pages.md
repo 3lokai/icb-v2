@@ -1,5 +1,8 @@
 # Sprint 2 — Marketing / Public Pages
 
+> **Status: ✅ Shipped** (verified 2026-06-08). `<Accent>` adopted across about / contact /
+> how-icb-works / tools (including the PageHeader hero titles); the tools em-dash (2.5) is gone.
+
 **Goal:** Unify the heading system and decoration across about / contact / how-icb-works / tools
 hubs; cut eyebrow saturation.
 

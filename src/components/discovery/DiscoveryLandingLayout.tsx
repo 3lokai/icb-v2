@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 // src/components/discovery/DiscoveryLandingLayout.tsx
 import type { ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -45,7 +46,7 @@ function renderFaqTitleParts(title: string): ReactNode {
   return (
     <>
       {parts.before}
-      <span className="text-accent italic">{parts.accent}</span>
+      <Accent>{parts.accent}</Accent>
       {parts.after}
     </>
   );

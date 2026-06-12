@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 // app/(public)/privacy/page.tsx
 import type { Metadata } from "next";
 import { Stack } from "@/components/primitives/stack";
@@ -40,7 +41,7 @@ export default function PrivacyPage() {
                 <span className="h-px w-12 bg-accent/60" />
               </div>
               <h1 className="animate-fade-in-scale text-display text-primary text-balance leading-[1.05]">
-                Privacy <span className="text-accent italic">Policy</span>
+                Privacy <Accent>Policy</Accent>
               </h1>
               <p className="mx-auto max-w-3xl text-body-large text-muted-foreground leading-relaxed md:text-heading">
                 How we respect and protect your data while you explore the

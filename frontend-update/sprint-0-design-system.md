@@ -1,5 +1,9 @@
 # Sprint 0 — Design-System Primitives (Reconverge on the Layers)
 
+> **Status: ✅ Shipped** (verified 2026-06-08). All primitives exist
+> (`accent.tsx`, `decor.tsx`, `reveal.tsx`, `section.tsx`, …); `public/images/stain-smear.png`
+> is in place; `<Accent>`/`<Decor>` are consumed site-wide.
+
 **Goal:** The system you need mostly **already exists** — the problem is that section components
 **escape** it. This sprint hardens the primitive layer and makes every section route through it
 again. Fixing the system here means later sprints mostly *delete* code, not add it.

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { uploadAvatar, deleteAvatar } from "@/app/actions/profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useRef, useState } from "react";
 
@@ -120,8 +121,8 @@ export function AvatarUpload({
         onUploadComplete?.(data.avatarUrl);
 
         // Invalidate profile queries
-        queryClient.invalidateQueries({ queryKey: ["profile"] });
-        queryClient.invalidateQueries({ queryKey: ["user"] });
+        queryClient.invalidateQueries({ queryKey: queryKeys.profile.all });
+        queryClient.invalidateQueries({ queryKey: queryKeys.user.all });
       }
     },
     onError: (error: Error) => {
@@ -146,8 +147,8 @@ export function AvatarUpload({
       onDeleteComplete?.();
 
       // Invalidate profile queries
-      queryClient.invalidateQueries({ queryKey: ["profile"] });
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.profile.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.user.all });
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to delete avatar");

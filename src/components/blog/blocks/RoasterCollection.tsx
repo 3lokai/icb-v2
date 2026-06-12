@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import RoasterCard from "@/components/cards/RoasterCard";
@@ -64,7 +65,7 @@ export function RoasterCollection({ value }: RoasterCollectionProps) {
   } = value;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["roaster-collection", value],
+    queryKey: queryKeys.blog.roasterCollection(value),
     queryFn: async () => {
       const params = new URLSearchParams();
       params.set("limit", limit.toString());

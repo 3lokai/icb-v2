@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import { useSimilarCoffees } from "@/hooks/use-similar-coffees";
@@ -26,8 +27,7 @@ export function SimilarCoffees({ coffee }: SimilarCoffeesProps) {
             </span>
           </div>
           <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-2">
-            Explore coffees like{" "}
-            <span className="text-accent italic">this</span>
+            Explore coffees like <Accent>this</Accent>
           </h2>
           <p className="text-caption text-muted-foreground">
             Based on shared attributes, not recommendations
@@ -87,7 +87,7 @@ export function SimilarCoffees({ coffee }: SimilarCoffeesProps) {
           </span>
         </div>
         <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-2">
-          Explore coffees like <span className="text-accent italic">this</span>
+          Explore coffees like <Accent>this</Accent>
         </h2>
         <p className="text-caption text-muted-foreground">
           Based on shared attributes, not recommendations

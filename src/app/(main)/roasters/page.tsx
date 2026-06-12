@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -252,8 +253,7 @@ export default async function RoastersPage({
         }
         title={
           <>
-            India&apos;s <span className="text-accent italic">Passionate</span>{" "}
-            Roasters.
+            India&apos;s <Accent>Passionate</Accent> Roasters.
           </>
         }
       />

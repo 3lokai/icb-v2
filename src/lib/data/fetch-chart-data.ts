@@ -3,6 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 export type ChartDataItem = {
   label: string;
   value: number;
+  // Grouped series — present only for multi-series charts like flavor_by_roast.
+  // For grouped charts `value` carries the combined total (used for sorting).
+  dark?: number;
+  light?: number;
 };
 
 /**
@@ -14,6 +18,35 @@ export async function fetchChartData(
   region?: string
 ): Promise<ChartDataItem[]> {
   const supabase = await createClient();
+
+  // ── Single-origin charts: served by dedicated SQL aggregation RPCs ──
+  // is_single_origin lives on the base coffees table (not the MV), so these are
+  // computed server-side and scoped to status = 'active' (see migration
+  // 20260612173147_single_origin_chart_rpcs.sql).
+  if (dataKey === "single_origin_vs_blend") {
+    const { data, error } = await supabase.rpc("get_single_origin_vs_blend");
+    if (error) {
+      console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
+      throw new Error(`Failed to fetch chart data for ${dataKey}`);
+    }
+    return (data ?? []).map((r: { label: string; value: number }) => ({
+      label: r.label,
+      value: Number(r.value),
+    }));
+  }
+  if (dataKey === "single_origin_by_region") {
+    const { data, error } = await supabase.rpc("get_single_origin_by_region", {
+      p_limit: limit || 10,
+    });
+    if (error) {
+      console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
+      throw new Error(`Failed to fetch chart data for ${dataKey}`);
+    }
+    return (data ?? []).map((r: { label: string; value: number }) => ({
+      label: r.label,
+      value: Number(r.value),
+    }));
+  }
 
   // Optimization: only select columns we need for the specific dataKey
   let selectFields = "coffee_id";
@@ -35,6 +68,8 @@ export async function fetchChartData(
     selectFields = "canon_estate_names, canon_region_names";
   if (dataKey === "brew_method_distribution_light_roast")
     selectFields = "brew_method_canonical_keys, roast_level";
+  if (dataKey === "flavor_by_roast")
+    selectFields = "canon_flavor_descriptors, roast_level";
   if (dataKey === "price_distribution_250g")
     selectFields = "best_normalized_250g, in_stock_count";
   if (dataKey === "roaster_concentration") selectFields = "roaster_name";
@@ -42,8 +77,23 @@ export async function fetchChartData(
   let query = supabase.from("coffee_directory_mv").select(selectFields);
 
   if (region) {
-    // canon_region_names is an array of strings, so we use contains
-    query = query.contains("canon_region_slugs", [region]);
+    // The MV exposes canon region display names (GIN-indexed), not slugs. `region`
+    // may be a single slug or a comma-separated set covering a district and its
+    // sub-regions (e.g. "chikmagalur,baba-budangiri"). Resolve each slug to its canon
+    // display name, then match rows whose canon_region_names intersect the set.
+    const slugs = region
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const { data: canonRegions } = await supabase
+      .from("canon_regions")
+      .select("display_name")
+      .in("slug", slugs);
+    const names = (canonRegions ?? [])
+      .map((r) => r.display_name)
+      .filter((n): n is string => Boolean(n));
+    if (names.length === 0) return [];
+    query = query.overlaps("canon_region_names", names);
   }
 
   // Species-filtered charts — filter at DB level
@@ -131,6 +181,9 @@ export async function fetchChartData(
         ...item,
         label: formatEnumLabel(item.label),
       }));
+
+    case "flavor_by_roast":
+      return aggregateFlavorByRoast(coffees, limit);
 
     default:
       return [];
@@ -321,6 +374,43 @@ function aggregatePriceDistribution(data: any[]): ChartDataItem[] {
   });
 
   return buckets;
+}
+
+/**
+ * Aggregates flavour descriptors split by roast band — dark (medium_dark, dark) vs
+ * light (light, light_medium). Medium roasts are deliberately excluded so the two-way
+ * contrast stays clean (matches the article copy). Returns the top-N descriptors by
+ * combined count, each carrying its dark and light tallies for a grouped bar.
+ */
+function aggregateFlavorByRoast(data: any[], limit?: number): ChartDataItem[] {
+  const DARK = new Set(["dark", "medium_dark"]);
+  const LIGHT = new Set(["light", "light_medium"]);
+  const counts: Record<string, { dark: number; light: number }> = {};
+
+  data.forEach((item) => {
+    const band = DARK.has(item.roast_level)
+      ? "dark"
+      : LIGHT.has(item.roast_level)
+        ? "light"
+        : null;
+    if (!band) return;
+    const arr = item.canon_flavor_descriptors as string[] | null;
+    if (!Array.isArray(arr)) return;
+    arr.forEach((val) => {
+      if (!counts[val]) counts[val] = { dark: 0, light: 0 };
+      counts[val][band] += 1;
+    });
+  });
+
+  return Object.entries(counts)
+    .map(([label, { dark, light }]) => ({
+      label,
+      value: dark + light,
+      dark,
+      light,
+    }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, limit || undefined);
 }
 
 /**

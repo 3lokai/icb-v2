@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
 import { Fragment, useState, useCallback, useEffect, useRef } from "react";
@@ -511,10 +512,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                         </span>
                       </div>
                       <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                        About{" "}
-                        <span className="text-accent italic">
-                          {coffee.name}
-                        </span>
+                        About <Accent>{coffee.name}</Accent>
                       </h2>
                       <p className="whitespace-pre-line text-body text-muted-foreground/80 leading-relaxed">
                         {coffee.description_md}
@@ -756,7 +754,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                       </span>
                     </div>
                     <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-2">
-                      Tasting <span className="text-accent italic">Notes</span>
+                      Tasting <Accent>Notes</Accent>
                     </h2>
                     <p className="text-caption text-muted-foreground">
                       Original tasting notes from {coffee.roaster?.name}
@@ -801,8 +799,7 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
                     </span>
                   </div>
                   <h2 className="text-title text-balance leading-[1.1] tracking-tight mb-4">
-                    Pricing &{" "}
-                    <span className="text-accent italic">Availability</span>
+                    Pricing & <Accent>Availability</Accent>
                   </h2>
                 </div>
 

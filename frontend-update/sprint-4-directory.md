@@ -1,5 +1,8 @@
 # Sprint 4 — Directory Pages (Coffees / Roasters)
 
+> **Status: ⬜ Not started** (verified 2026-06-08). `RoasterCard.tsx` and `FilterSection.tsx` still
+> have no `<Decor>` usage; the coffee `[slug]` disambiguation branch is unchanged.
+
 **Goal:** Lightest-touch polish on the most functional surfaces. They are already strong (good
 skeletons, CLS reserves, responsive 1/2/4 and 1/2/3 grids, opinion-first cards) — don't break them.
 

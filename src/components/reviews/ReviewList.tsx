@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { useState } from "react";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
@@ -50,7 +51,7 @@ export function ReviewList({
             </span>
           </div>
           <h3 className="text-title text-balance leading-[1.1] tracking-tight">
-            What Others Are <span className="text-accent italic">Saying.</span>
+            What Others Are <Accent>Saying.</Accent>
           </h3>
           <p className="text-caption text-muted-foreground mt-2">
             {reviews.length} {reviews.length === 1 ? "review" : "reviews"}

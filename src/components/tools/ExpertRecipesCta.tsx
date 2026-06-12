@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 // src/components/tools/ExpertRecipesCta.tsx
 import Link from "next/link";
 import { Icon } from "@/components/common/Icon";
@@ -56,8 +57,7 @@ export default function ExpertRecipesCta({
 
                   <Stack gap="6">
                     <h2 className="text-display text-balance leading-[1.05] tracking-tight">
-                      Ready to Master Expert{" "}
-                      <span className="text-accent italic">Techniques</span>?
+                      Ready to Master Expert <Accent>Techniques</Accent>?
                     </h2>
                     <p className="max-w-xl text-pretty text-body-large text-muted-foreground leading-relaxed">
                       Combine expert recipes with our precision calculator and

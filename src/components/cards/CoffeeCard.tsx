@@ -16,9 +16,8 @@ import {
 import type { CoffeeSummary } from "@/types/coffee-types";
 import { cn } from "@/lib/utils";
 import { StarRating } from "../common/StarRating";
+import { CardRatingFooter } from "./CardRatingFooter";
 import { Stack } from "../primitives/stack";
-import { useModal } from "@/components/providers/modal-provider";
-import { QuickRating } from "@/components/reviews";
 import { trackCoffeeDiscovery } from "@/lib/analytics/enhanced-tracking";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 
@@ -26,19 +25,10 @@ type CoffeeCardProps = {
   coffee: CoffeeSummary;
   variant?: "hero" | "default" | "compact" | "similar";
   userRating?: number | null;
-  onRateClick?: (coffeeId: string, rating: number) => void;
   matchInfo?: {
     matchType: "flavor" | "style" | "origin" | "fallback";
     chips: string[]; // Max 3 labels to display
   };
-};
-
-type RatingFooterProps = {
-  size?: "sm" | "md" | "lg";
-  coffee: CoffeeSummary;
-  userRating?: number | null;
-  onOpenModal: () => void;
-  onStarClick: (rating: number) => void;
 };
 
 type RoastLevelIndicatorProps = {
@@ -112,103 +102,12 @@ function RoastLevelIndicator({
   );
 }
 
-function RatingFooter({
-  size = "md",
-  coffee,
-  userRating,
-  onOpenModal,
-  onStarClick,
-}: RatingFooterProps) {
-  // Determine if coffee has overall rating (not 0, not null)
-  const hasOverallRating = Boolean(coffee.rating_avg && coffee.rating_avg > 0);
-  // Determine if user has rated (number > 0)
-  const hasUserRating = typeof userRating === "number" && userRating > 0;
-
-  // Rating to display in stars: user rating if exists, otherwise overall rating
-  const starRating = hasUserRating ? userRating : coffee.rating_avg || 0;
-
-  // Determine state and microcopy
-  let microcopy: string;
-  if (hasOverallRating) {
-    // State A: Coffee has overall rating
-    if (hasUserRating) {
-      // A1: User has rated
-      microcopy = `Your rating: ${userRating}`;
-    } else {
-      // A2: User hasn't rated
-      microcopy = "Tried this? Rate it.";
-    }
-  } else {
-    // State B: Coffee has NO overall rating
-    if (hasUserRating) {
-      // B1: User has rated (but no community avg)
-      microcopy = `Your rating: ${userRating}`;
-    } else {
-      // B2: User hasn't rated, no community avg
-      microcopy = "Be the first to rate.";
-    }
-  }
-
-  // Rating display for left zone
-  const ratingDisplay = hasOverallRating ? coffee.rating_avg!.toFixed(1) : "—";
-
-  return (
-    <div
-      onClick={() => onOpenModal()}
-      className={cn(
-        "mt-auto border-t border-border/40 bg-muted/20 cursor-pointer",
-        "transition-transform duration-200 ease-out origin-bottom",
-        "group-hover:scale-[1.02] group-hover:bg-muted/30"
-      )}
-    >
-      <div
-        className={cn(
-          "flex flex-row items-center justify-between",
-          "card-padding-compact"
-        )}
-      >
-        {/* Left: Rating number block */}
-        <div className="flex flex-col">
-          <div className="text-title font-medium">{ratingDisplay}</div>
-          <div className="flex flex-row items-baseline gap-1">
-            <span className="text-label">Rating</span>
-            {hasOverallRating && coffee.rating_count > 0 && (
-              <span className="text-caption">({coffee.rating_count})</span>
-            )}
-          </div>
-        </div>
-
-        {/* Right: Action block */}
-        <div
-          className="flex flex-col items-end gap-1"
-          onClick={(e) => {
-            // Prevent footer click when clicking stars
-            e.stopPropagation();
-          }}
-        >
-          <StarRating
-            rating={starRating}
-            size={size}
-            interactive={true}
-            showEmpty={true}
-            onRate={onStarClick}
-          />
-          <div className="text-caption">{microcopy}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function CoffeeCardComponent({
   coffee,
   variant = "default",
   userRating,
-  onRateClick,
   matchInfo,
 }: CoffeeCardProps) {
-  const { openModal } = useModal();
-
   // Memoize expensive computations
   const imageUrl = useMemo(
     () =>
@@ -254,32 +153,6 @@ function CoffeeCardComponent({
   if (!coffee || !coffee.slug || !coffee.name || !coffee.roaster_slug) {
     return null;
   }
-
-  // Modal handlers
-  const handleOpenRatingModal = (rating?: number) => {
-    if (!coffee.coffee_id) return;
-
-    openModal({
-      type: "custom",
-      component: QuickRating,
-      props: {
-        entityType: "coffee",
-        entityId: coffee.coffee_id,
-        initialRating: rating,
-        onClose: () => {},
-      },
-    });
-  };
-
-  // Star click handler - passes rating to modal
-  const handleStarClick = (rating: number) => {
-    if (onRateClick && coffee.coffee_id) {
-      // Legacy callback support
-      onRateClick(coffee.coffee_id, rating);
-    } else {
-      handleOpenRatingModal(rating);
-    }
-  };
 
   const detailHref = coffeeDetailHref(coffee.roaster_slug, coffee.slug!);
 
@@ -374,12 +247,14 @@ function CoffeeCardComponent({
         </Link>
 
         {/* Bottom rating strip */}
-        <RatingFooter
-          size="lg"
-          coffee={coffee}
+        <CardRatingFooter
+          entityType="coffee"
+          entityId={coffee.coffee_id}
+          entityName={coffee.name}
+          ratingAvg={coffee.rating_avg}
+          ratingCount={coffee.rating_count}
           userRating={userRating}
-          onOpenModal={() => handleOpenRatingModal()}
-          onStarClick={handleStarClick}
+          size="lg"
         />
       </Card>
     );
@@ -446,11 +321,23 @@ function CoffeeCardComponent({
             </Stack>
           </div>
         </Link>
+
+        {/* Minimal interactive rating row — capture without the full number block */}
+        <CardRatingFooter
+          entityType="coffee"
+          entityId={coffee.coffee_id}
+          entityName={coffee.name}
+          ratingAvg={coffee.rating_avg}
+          ratingCount={coffee.rating_count}
+          userRating={userRating}
+          size="sm"
+          variant="minimal"
+        />
       </Card>
     );
   }
 
-  // Compact variant - dense, horizontal row card, no interactive rating
+  // Compact variant - dense, horizontal row card, display-only rating
   if (variant === "compact") {
     return (
       <Card
@@ -482,6 +369,13 @@ function CoffeeCardComponent({
           {/* Content - 1-2 lines total */}
           <div className="flex-1 min-w-0 flex flex-col justify-center transition-opacity duration-200 group-hover:opacity-90">
             <Stack gap="1">
+              {/* Display-only rating (rendered only when a community rating exists) */}
+              <StarRating
+                rating={coffee.rating_avg ?? 0}
+                count={coffee.rating_count}
+                size="sm"
+              />
+
               {/* Coffee name - primary */}
               <h3 className="text-body line-clamp-1">{coffee.name}</h3>
 
@@ -581,12 +475,14 @@ function CoffeeCardComponent({
       </Link>
 
       {/* Opinion-first Footer */}
-      <RatingFooter
-        size="md"
-        coffee={coffee}
+      <CardRatingFooter
+        entityType="coffee"
+        entityId={coffee.coffee_id}
+        entityName={coffee.name}
+        ratingAvg={coffee.rating_avg}
+        ratingCount={coffee.rating_count}
         userRating={userRating}
-        onOpenModal={() => handleOpenRatingModal()}
-        onStarClick={handleStarClick}
+        size="md"
       />
     </Card>
   );
