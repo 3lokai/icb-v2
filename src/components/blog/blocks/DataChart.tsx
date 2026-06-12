@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import {
   BarChart,
   Bar,
@@ -70,7 +71,7 @@ const itemVariants = {
 
 export function DataChart({ value }: DataChartProps) {
   const { data, isLoading, error } = useQuery<ChartDataItem[]>({
-    queryKey: ["chart-data", value.dataKey, value.limit],
+    queryKey: queryKeys.blog.dataChart(value.dataKey, value.limit),
     queryFn: async () => {
       let url = `/api/blog/chart-data?dataKey=${value.dataKey}&limit=${
         value.limit || 10

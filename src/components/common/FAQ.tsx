@@ -9,10 +9,11 @@ import {
 } from "@/components/ui/accordion";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
+import { Decor } from "@/components/primitives/decor";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateFAQSchema } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 type FAQItem = {
@@ -39,9 +40,11 @@ type SimpleFAQProps = {
 
 // Simple FAQ component without section header (for MDX/embeds)
 export function FAQ({ items, className }: SimpleFAQProps) {
+  const reduceMotion = useReducedMotion();
+
   if (!items?.length) {
     return (
-      <div className="my-8 rounded-lg border-2 border-border/40 border-dashed bg-muted/20 p-6 text-center backdrop-blur-sm">
+      <div className="my-8 rounded-lg border-2 border-border/40 border-dashed bg-muted/20 p-6 text-center">
         <p className="text-caption">No FAQ items available</p>
       </div>
     );
@@ -49,13 +52,13 @@ export function FAQ({ items, className }: SimpleFAQProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5 }}
       className={cn("my-8", className)}
     >
-      <Accordion className="w-full backdrop-blur-sm" collapsible type="single">
+      <Accordion className="w-full" collapsible type="single">
         {items.map((item) => {
           const itemId = item.question
             .toLowerCase()
@@ -91,36 +94,42 @@ export function FAQSection({
   const schema = generateFAQSchema(items);
 
   return (
-    <Section spacing="loose" className={className} contained={contained}>
-      {includeStructuredData && <StructuredData schema={schema} />}
-      <div className="mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end border-b border-border/10 pb-8">
-          <div className="md:col-span-8">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                  {overline}
-                </span>
+    <Section
+      spacing="loose"
+      className={cn("relative overflow-hidden", className)}
+      contained={contained}
+    >
+      <Decor wash />
+      <div className="relative z-10">
+        {includeStructuredData && <StructuredData schema={schema} />}
+        <div className="mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end border-b border-border/10 pb-8">
+            <div className="md:col-span-8">
+              <Stack gap="6">
+                <div className="inline-flex items-center gap-4">
+                  <span className="h-px w-8 md:w-12 bg-accent/60" />
+                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                    {overline}
+                  </span>
+                </div>
+                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                  {title}
+                </h2>
+                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                  {description}
+                </p>
+              </Stack>
+            </div>
+            <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
+              <div className="inline-flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
+                <span className="h-px w-8 bg-accent/40" />
+                {badge}
               </div>
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                {title}
-              </h2>
-              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                {description}
-              </p>
-            </Stack>
-          </div>
-          <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
-            <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
-              <span className="h-1 w-1 rounded-full bg-accent/40" />
-              {badge}
-              <span className="h-1 w-1 rounded-full bg-accent/40" />
             </div>
           </div>
         </div>
+        <FAQ className="my-0" items={items} />
       </div>
-      <FAQ className="my-0" items={items} />
     </Section>
   );
 }

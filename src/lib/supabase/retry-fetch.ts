@@ -4,8 +4,10 @@ import "server-only";
  * Transient network errors seen when the dev server / serverless runtime talks
  * to Supabase. undici reuses keep-alive sockets that the remote has already
  * closed, surfacing as ECONNRESET (read) / ECONNABORTED (write) / "fetch failed".
- * These are safe to retry — the request never reached a handler, so a retry is
- * not a duplicate mutation risk for the idempotent reads that dominate here.
+ * A retry is only safe for idempotent methods (GET/HEAD): a connection can drop
+ * *after* the server processed a write, so replaying a POST/PATCH/DELETE/RPC
+ * risks duplicating the mutation. Retries are therefore limited to GET/HEAD
+ * (see `retryFetch` below); all other methods fail fast on the first error.
  */
 const TRANSIENT_PATTERNS = [
   "ECONNRESET",
@@ -51,12 +53,30 @@ function delay(ms: number): Promise<void> {
 }
 
 /**
+ * Resolve the HTTP method for a fetch call, mirroring the platform default of
+ * GET when none is supplied. Handles both `fetch(url, { method })` and
+ * `fetch(new Request(url, { method }))` forms.
+ */
+function resolveMethod(input: RequestInfo | URL, init?: RequestInit): string {
+  if (init?.method) {
+    return init.method.toUpperCase();
+  }
+  if (input instanceof Request) {
+    return input.method.toUpperCase();
+  }
+  return "GET";
+}
+
+/**
  * Drop-in replacement for `fetch` that retries only on transient connection
- * errors with short exponential backoff. HTTP error responses (4xx/5xx) are
- * returned as-is — Supabase surfaces those in its `{ error }` payload and they
- * are not connection failures.
+ * errors with short exponential backoff, and only for idempotent methods
+ * (GET/HEAD) so mutations are never replayed. HTTP error responses (4xx/5xx)
+ * are returned as-is — Supabase surfaces those in its `{ error }` payload and
+ * they are not connection failures.
  */
 export const retryFetch: typeof fetch = async (input, init) => {
+  const method = resolveMethod(input, init);
+  const isIdempotent = method === "GET" || method === "HEAD";
   let lastError: unknown;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
@@ -65,7 +85,11 @@ export const retryFetch: typeof fetch = async (input, init) => {
     } catch (error) {
       lastError = error;
 
-      if (attempt === MAX_ATTEMPTS || !isTransientError(error)) {
+      if (
+        attempt === MAX_ATTEMPTS ||
+        !isIdempotent ||
+        !isTransientError(error)
+      ) {
         throw error;
       }
 

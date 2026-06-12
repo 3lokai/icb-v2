@@ -1,5 +1,6 @@
 // components/faqs/LearnFAQ.tsx
 import { FAQSection } from "@/components/common/FAQ";
+import { Accent } from "@/components/primitives/accent";
 
 const learnFAQs = [
   {
@@ -38,7 +39,7 @@ export function LearnFAQ() {
       overline="Path to Mastery"
       title={
         <>
-          Learning <span className="text-accent italic">Resources.</span>
+          Learning <Accent>Resources.</Accent>
         </>
       }
     />

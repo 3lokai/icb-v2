@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import CoffeeCard from "@/components/cards/CoffeeCard";
@@ -65,7 +66,7 @@ export function CoffeeCollection({ value }: CoffeeCollectionProps) {
   } = value;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["coffee-collection", value],
+    queryKey: queryKeys.blog.coffeeCollection(value),
     queryFn: async () => {
       const params = new URLSearchParams();
       params.set("limit", limit.toString());

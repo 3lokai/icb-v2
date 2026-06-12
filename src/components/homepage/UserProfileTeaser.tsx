@@ -38,7 +38,7 @@ export function UserProfileTeaser() {
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="max-w-md text-pretty text-body-large text-muted-foreground leading-relaxed"
                   >
-                    Your reccomendations, brews, gear, and coffee station —
+                    Your recommendations, brews, gear, and coffee station —
                     built quietly over time, cup by cup.
                   </motion.p>
                 </Stack>

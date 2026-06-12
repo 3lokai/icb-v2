@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -115,7 +116,7 @@ function SpotlightCard({
 
 export function CoffeeSpotlight({ value }: CoffeeSpotlightProps) {
   const { data: coffee, isLoading } = useQuery({
-    queryKey: ["coffee-spotlight", value.coffeeId],
+    queryKey: queryKeys.blog.coffeeSpotlight(value.coffeeId),
     queryFn: async () => {
       if (!value.coffeeId) return null;
       const res = await fetch(`/api/coffees/${value.coffeeId}`);

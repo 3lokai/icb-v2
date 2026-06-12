@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { searchGearCatalog, type GearCatalogItem } from "@/app/actions/gear";
+import { queryKeys } from "@/lib/query-keys";
 
 /**
  * Hook for searching gear catalog
@@ -10,7 +11,7 @@ export function useGearSearch(
   category?: "grinder" | "brewer" | "accessory"
 ) {
   return useQuery<GearCatalogItem[]>({
-    queryKey: ["gear-search", query, category],
+    queryKey: queryKeys.gear.search(query, category),
     queryFn: async () => {
       const result = await searchGearCatalog(query, category);
       if (!result.success) {

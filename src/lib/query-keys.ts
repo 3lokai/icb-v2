@@ -65,6 +65,27 @@ export const queryKeys = {
     ) => ["coffees", "list", { filters, page, limit, sort }] as const,
     filterMeta: (filters: Record<string, any> | undefined) =>
       ["coffees", "filter-meta", filters] as const,
+    similar: (id: string) => ["coffees", "similar", id] as const,
+  },
+
+  // Gear search
+  gear: {
+    search: (query: string, category?: string) =>
+      ["gear", "search", query, category] as const,
+  },
+
+  // Sanity blog interactive blocks (CSR-only data fetches)
+  blog: {
+    roasterCollection: (value: unknown) =>
+      ["blog", "roaster-collection", value] as const,
+    coffeeCollection: (value: unknown) =>
+      ["blog", "coffee-collection", value] as const,
+    roasterSpotlight: (roasterId: string | undefined) =>
+      ["blog", "roaster-spotlight", roasterId] as const,
+    coffeeSpotlight: (coffeeId: string | undefined) =>
+      ["blog", "coffee-spotlight", coffeeId] as const,
+    dataChart: (dataKey: string, limit?: number) =>
+      ["blog", "data-chart", dataKey, limit] as const,
   },
 
   // Roaster-related queries

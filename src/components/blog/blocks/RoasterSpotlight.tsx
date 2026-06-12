@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -95,7 +96,7 @@ function SpotlightCard({
 
 export function RoasterSpotlight({ value }: RoasterSpotlightProps) {
   const { data: roaster, isLoading } = useQuery({
-    queryKey: ["roaster-spotlight", value.roasterId],
+    queryKey: queryKeys.blog.roasterSpotlight(value.roasterId),
     queryFn: async () => {
       if (!value.roasterId) return null;
       const res = await fetch(`/api/roasters/${value.roasterId}`);

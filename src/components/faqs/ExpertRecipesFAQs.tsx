@@ -1,5 +1,6 @@
 // components/faqs/ExpertRecipesFAQ.tsx
 import { FAQSection } from "@/components/common/FAQ";
+import { Accent } from "@/components/primitives/accent";
 
 export const expertRecipesFAQs = [
   {
@@ -40,8 +41,7 @@ export function ExpertRecipesFAQ() {
       overline="The Details"
       title={
         <>
-          Frequently Asked{" "}
-          <span className="text-accent italic">Questions.</span>
+          Frequently Asked <Accent>Questions.</Accent>
         </>
       }
     />
