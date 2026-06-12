@@ -57,6 +57,18 @@ export const DISCOVERY_PILL_ROWS: DiscoveryPillRow[] = [
     ],
   },
   {
+    title: "Bean type",
+    pills: [
+      { label: "Arabica", href: "/coffees/arabica" },
+      { label: "Robusta", href: "/coffees/robusta" },
+      { label: "Single Origin", href: "/coffees/single-origin" },
+      { label: "Blends", href: "/coffees/blends" },
+      { label: "Chicory Mixes", href: "/coffees/chicory-mixes" },
+      { label: "Liberica", href: "/coffees/liberica" },
+      { label: "Excelsa", href: "/coffees/excelsa" },
+    ],
+  },
+  {
     title: "Budget",
     pills: [
       { label: "Under ₹500", href: "/coffees/budget" },
@@ -107,6 +119,13 @@ const CATEGORY_STYLE_MAP: Record<string, CategoryMeta> = {
     accent: "text-green-500/70",
     image: "/images/discovery/process.avif",
     subtext: "Washed, natural, and beyond",
+  },
+  "Bean type": {
+    icon: "CoffeeBean",
+    gradient: "from-rose-500/10 via-transparent to-transparent",
+    accent: "text-rose-500/70",
+    image: "/images/discovery/bean-types.jpg",
+    subtext: "Arabica, robusta, blends",
   },
   Budget: {
     icon: "CurrencyInr",
@@ -324,8 +343,8 @@ export function DiscoveryPillGridSkeleton({
         </div>
       ) : null}
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-        {Array.from({ length: 5 }).map((_, i) => (
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+        {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="flex h-full">
             <div className="aspect-[3/4] w-full overflow-hidden rounded-xl border border-border/40 bg-muted/20">
               <div className="flex h-full flex-col p-4 sm:p-5">
@@ -377,7 +396,7 @@ export function DiscoveryPillGrid({
         </div>
       ) : null}
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
         {DISCOVERY_PILL_ROWS.map((row, index) => {
           const meta = CATEGORY_STYLE_MAP[row.title] ?? {
             icon: "MagnifyingGlass" as IconName,

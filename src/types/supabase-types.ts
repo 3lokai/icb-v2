@@ -2605,6 +2605,7 @@ export type Database = {
           image_url: string | null;
           in_stock_count: number | null;
           is_limited: boolean | null;
+          is_single_origin: boolean | null;
           min_price_in_stock: number | null;
           name: string | null;
           process: Database["public"]["Enums"]["process_enum"] | null;

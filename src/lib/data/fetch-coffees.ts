@@ -254,6 +254,10 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
     filteredQuery = filteredQuery.eq("decaf", true);
   }
 
+  if (filters.single_origin_only === true) {
+    filteredQuery = filteredQuery.eq("is_single_origin", true);
+  }
+
   if (filters.works_with_milk === true) {
     filteredQuery = filteredQuery.eq("works_with_milk", true);
   }

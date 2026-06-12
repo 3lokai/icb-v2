@@ -1,4 +1,5 @@
 // src/lib/discovery/landing-pages/index.ts
+import { beanTypePages } from "./bean-type-pages";
 import { brewMethodPages } from "./brew-method-pages";
 import { priceBucketPages } from "./price-bucket-pages";
 import { processPages } from "./process-pages";
@@ -7,6 +8,7 @@ import { roastLevelPages } from "./roast-level-pages";
 import type { LandingPageConfig } from "./types";
 
 export type {
+  BeanTypeProfileConfig,
   BrewMethodProfileConfig,
   FAQItem,
   LandingPageConfig,
@@ -30,6 +32,7 @@ export const LANDING_PAGES: LandingPageConfig[] = [
   ...priceBucketPages,
   ...processPages,
   ...regionPages,
+  ...beanTypePages,
 ];
 
 const slugs = LANDING_PAGES.map((page) => page.slug);

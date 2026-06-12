@@ -226,6 +226,10 @@ export function parseCoffeeSearchParams(searchParams: URLSearchParams): {
     filters.decaf_only = true;
   }
 
+  if (parseBooleanFlag(searchParams, "singleOrigin")) {
+    filters.single_origin_only = true;
+  }
+
   if (parseBooleanFlag(searchParams, "internationalOnly")) {
     filters.international_only = true;
   }
@@ -368,6 +372,7 @@ export function buildCoffeeQueryString(
   addBooleanFlag(params, "has250gOnly", filters.has_250g_only);
   addBooleanFlag(params, "limitedOnly", filters.limited_only);
   addBooleanFlag(params, "decafOnly", filters.decaf_only);
+  addBooleanFlag(params, "singleOrigin", filters.single_origin_only);
   addBooleanFlag(params, "internationalOnly", filters.international_only);
   addBooleanFlag(params, "hasSensoryOnly", filters.has_sensory_only);
   addBooleanFlag(params, "worksWithMilk", filters.works_with_milk === true);

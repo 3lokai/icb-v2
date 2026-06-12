@@ -48,6 +48,11 @@ const CATEGORY_STYLE_MAP: Record<string, CategoryMeta> = {
     image: "/images/discovery/process.avif",
     subtext: "Washed, natural, and beyond",
   },
+  "Bean type": {
+    icon: "CoffeeBean",
+    image: "/images/discovery/bean-types.jpg",
+    subtext: "Arabica, robusta, blends",
+  },
   Budget: {
     icon: "CurrencyInr",
     image: "/images/discovery/budget.avif",
@@ -298,7 +303,7 @@ export function DiscoveryAccordionGridSkeleton({
 
       <div className="overflow-hidden rounded-xl border border-border/40 shadow-sm">
         <div className="flex flex-col md:h-[440px] md:flex-row">
-          {Array.from({ length: 5 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
               className="relative flex min-h-[110px] flex-1 border-b border-border/30 bg-muted/10 md:border-b-0 md:border-r md:last:border-r-0"
