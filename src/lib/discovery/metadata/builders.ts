@@ -92,6 +92,13 @@ export function buildDiscoveryTitle(config: LandingPageConfig): string {
       : `${regionName} Coffee`;
     return `${regionTitle} in India – Discover & Compare`;
   }
+  if (config.type === "bean_type") {
+    const beanName = labelWithoutIndiaSuffix(config.h1);
+    const beanTitle = beanName.includes("Coffee")
+      ? beanName
+      : `${beanName} Coffee`;
+    return `${beanTitle} in India – Discover & Compare`;
+  }
   return config.h1;
 }
 
@@ -185,6 +192,20 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
       "single origin India",
       "coffee origin India",
     ];
+  }
+  if (config.type === "bean_type") {
+    const beanName = labelWithoutIndiaSuffix(config.h1).replace(
+      /\s*Coffee$/i,
+      ""
+    );
+    return dedupeKeywordsPreserveOrder([
+      ...base,
+      beanName,
+      `${beanName} coffee`,
+      `${beanName} coffee India`,
+      `${beanName} beans India`,
+      "coffee bean types India",
+    ]);
   }
   return base;
 }

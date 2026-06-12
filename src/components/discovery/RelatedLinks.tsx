@@ -86,7 +86,9 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
                         ? "bg-muted-foreground"
                         : page.type === "process"
                           ? "bg-emerald-600/80"
-                          : "bg-sky-600/80"
+                          : page.type === "region"
+                            ? "bg-sky-600/80"
+                            : "bg-amber-600/80"
                 )}
               />
 
