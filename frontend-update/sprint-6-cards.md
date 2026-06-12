@@ -1,8 +1,11 @@
 # Sprint 6 — Cards: prioritize ratings submission
 
-> **Status: ⬜ Not started** (verified 2026-06-08). No `CardRatingFooter.tsx`; `StarRating.tsx` has
-> no `role="radio"`/`radiogroup` or keyboard handling (a11y blocker 6.1 still open); `RoasterCard.tsx`
-> has no rating path.
+> **Status: ✅ Shipped** (2026-06-12). `CardRatingFooter.tsx` extracted and shared by `CoffeeCard`
+> (hero/default) + `RoasterCard`; `StarRating` interactive mode is now a keyboard-operable
+> `radiogroup` (`role="radio"` / `aria-checked`, arrow/Home/End/Enter) — a11y blocker 6.1 closed;
+> `RoasterCard` submits roaster ratings via `QuickRating entityType="roaster"`. `similar` variant got
+> the minimal rating row, `compact` got display-only stars; skeletons reserve the rating zone.
+> type-check + lint clean. Open questions resolved below.
 
 **Goal:** Make **rating submission the primary, consistent, accessible action** across the card layer.
 The opinion-first `CoffeeCard` footer is a genuine strength — this sprint propagates that strength to
@@ -107,11 +110,20 @@ brew-method/milk fields), but the UI only ever exposes the **coffee** path, and 
 - Skeletons reserve the rating zone wherever a footer renders (no CLS).
 - `npm run type-check` + `npm run lint` clean; walked in light + dark; `prefers-reduced-motion` static.
 
-## Open questions for discussion
-- Compact/similar variants: add the minimal interactive rating row (6.3), or keep them display-only and
-  rely on the detail page for submission? (Density vs. capture trade-off.)
-- Roaster rating placement: full footer (parity with CoffeeCard) or a lighter inline stars row, given
-  RoasterCard's logo-led layout?
-- Should the interactive stars submit on click directly (1-tap optimistic) or always open the
-  `QuickRating` modal first? Today it opens the modal pre-filled — keep that, or make a logged-in 1-tap
-  fast path with the modal as the "add detail" follow-up?
+## Open questions — resolved (2026-06-12)
+- **Compact / similar variants:** *split.* `similar` (vertical recommendation card) gets the minimal
+  interactive rating row; `compact` (80px row) stays **display-only** (read-only stars) and relies on
+  the detail page for submission.
+- **Roaster rating placement:** *full footer parity* — `RoasterCard` reuses the shared
+  `CardRatingFooter` (number block + interactive stars + microcopy), wired to `avg_rating` /
+  `total_ratings_count`. Required inverting to `Card > Link + footer` (the card was fully wrapped in an
+  anchor → would have nested `<button>` inside `<a>`) and adding a `className` passthrough to
+  `RoasterTrackingLink`.
+- **Interactive star tap:** *keep modal-always.* Clicking/keying a star opens `QuickRating` pre-filled;
+  no 1-tap optimistic path.
+
+**a11y note:** 6.1's "make the shell a `<button>`" was *not* taken literally — a `<button>` shell with
+interactive stars inside is nested interactive content (invalid ARIA). Instead the **stars are the
+keyboard control** (`radiogroup`) and the footer shell stays a pointer-only `onClick` convenience that
+duplicates it. The acceptance criterion ("Tab to the stars, arrow/Enter to rate") is met with valid
+markup. Also added: `active:scale-95` tactile feedback and `motion-reduce:` gating on the hover-scale.

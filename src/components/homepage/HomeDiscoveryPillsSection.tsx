@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { DiscoveryAccordionGrid } from "@/components/discovery/DiscoveryAccordionGrid";
 import { Section } from "@/components/primitives/section";
 
@@ -17,7 +18,7 @@ export function HomeDiscoveryPillsSection() {
         overline="Find Your Flavor"
         title={
           <>
-            Explore by <span className="text-accent italic">Style.</span>
+            Explore by <Accent>Style.</Accent>
           </>
         }
         description="Fast-track your discovery by jumping directly into curated lists based on roast, brewing preference, or India's diverse growing regions."

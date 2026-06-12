@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Stack } from "@/components/primitives/stack";
@@ -55,9 +56,7 @@ function TierTeaser({ required, label, totalReviews, icon }: TierTeaserProps) {
 
       <div className="flex-1 flex flex-col justify-end gap-3">
         <div className="flex items-center justify-between text-micro">
-          <span className="text-accent italic">
-            Tier {required === 5 ? "2" : "3"}
-          </span>
+          <Accent>Tier {required === 5 ? "2" : "3"}</Accent>
           <span className="text-muted-foreground/50">
             {totalReviews} / {required}
           </span>
@@ -127,13 +126,13 @@ export function ProfileTasteProfile({
                 : tier === 2
                   ? "The Developing "
                   : "The Curated "}
-              <span className="text-accent italic">
+              <Accent>
                 {tier === 1
                   ? "Foundations."
                   : tier === 2
                     ? "Palate."
                     : "Identity."}
-              </span>
+              </Accent>
             </h2>
             {hasEnoughRatings && tier < 3 && (
               <p className="text-caption max-w-xl m-0">

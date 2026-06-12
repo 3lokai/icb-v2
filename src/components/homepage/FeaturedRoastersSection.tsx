@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import RoasterCard from "@/components/cards/RoasterCard";
 import { Icon } from "@/components/common/Icon";
@@ -50,7 +51,7 @@ export default function FeaturedRoastersSection() {
                 </span>
               </div>
               <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                Featured <span className="text-accent italic">Roasters.</span>
+                Featured <Accent>Roasters.</Accent>
               </h2>
               <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
                 Discover India&apos;s finest specialty coffee roasters, each

@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 // app/(public)/terms/page.tsx
 import type { Metadata } from "next";
 import { Stack } from "@/components/primitives/stack";
@@ -74,7 +75,7 @@ export default function TermsPage() {
                 <span className="h-px w-12 bg-accent/60" />
               </div>
               <h1 className="animate-fade-in-scale text-display text-primary text-balance leading-[1.05]">
-                Terms of <span className="text-accent italic">Service</span>
+                Terms of <Accent>Service</Accent>
               </h1>
               <p className="mx-auto max-w-3xl text-body-large text-muted-foreground leading-relaxed md:text-heading">
                 The guidelines and agreements that define how we build and share

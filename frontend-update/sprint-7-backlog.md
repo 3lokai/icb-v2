@@ -1,8 +1,9 @@
 # Sprint 7 — Out-of-Scope Backlog (site-wide sweep + blog consistency)
 
-> **Status: 🟡 In progress** (updated 2026-06-08). Records tells on surfaces **no earlier sprint
-> (0–6) scoped**. §7.B (blog heading consistency) is **done**; `blog/ArticleSidebar.tsx` in §7.C is
-> **deleted**. Remaining: §7.A (site-wide `text-accent italic` sweep) and §7.C's 4 homepage orphans.
+> **Status: 🟡 In progress** (updated 2026-06-12). Records tells on surfaces **no earlier sprint
+> (0–6) scoped**. §7.A (site-wide `text-accent italic` sweep) is **done** and §7.B (blog heading
+> consistency) is **done**; `blog/ArticleSidebar.tsx` in §7.C is **deleted**. Remaining: §7.C's 4
+> homepage orphans (their accent tic is now converted, so deletion is optional cleanup, not a tell fix).
 
 Sprints 0–6 deliberately scoped a fixed set of surfaces (homepage, marketing, learn hub + article,
 directory, discovery, cards). While verifying those, two classes of debt surfaced **outside** that
@@ -11,9 +12,20 @@ unit instead of ad-hoc.
 
 ---
 
-## 7.A Site-wide accent-word tic sweep
+## 7.A Site-wide accent-word tic sweep ✅ DONE (2026-06-12)
 
-**The finding:** the italic-serif accent-word tic the redesign targets is written **two ways** in the
+**Shipped:** every exact `<span className="text-accent italic">…</span>` across the app converted to
+the locked `<Accent>` brush-smear — **73 spans / 48 files** in the final codemod pass (legal pages,
+reviews, profile, dashboard, discovery, coffees, roasters, tools, curations, collections, communities,
+contactus, partner, and the 4 homepage orphans), plus the **8 `faqs/`** headers converted earlier in
+the FAQ pass. Modal emphasis (`QuickRating` / `ReviewCapture` "Brew?/Experience?") included per the
+decision below. **Verified:** `grep '<span className="text-accent italic">' src` → 0 results;
+`npm run type-check` + lint clean. Intentionally left untouched (a *different* pattern, not the
+accent-word tic): whole-heading `font-serif italic text-accent` (`ProfilePage`, `ProfileTasteProfile`,
+`ProfileAtAGlance`), the `text-micro text-accent italic` label, editorial pull-quotes
+(`text-accent-foreground`), and hover-states (`group-hover:text-accent`).
+
+**The finding (historical):** the italic-serif accent-word tic the redesign targets was written **two ways** in the
 codebase, and the sprint greps only ever caught one of them:
 
 - `text-accent italic font-serif` — the form the sprint docs name. Now fully converted on the scoped
@@ -38,12 +50,10 @@ Breakdown by area:
 | `tools/`, `roasters/`, `curations/` | 3 each | |
 | `contactus/`, `communities/`, `collections/` | 1–2 each | |
 
-**Decision needed before starting:**
-- Convert all 84 to the locked `<Accent>` brush-smear, or keep `text-accent italic` as a *lighter*
-  secondary emphasis (the Sprint-5 plan already proposes exactly this split — `<Accent>` ≤1/page on
-  heroes, plain inline accent elsewhere). If the latter, this is a **normalize-don't-convert** pass.
-- Sequence: `discovery/` overlaps Sprint 5 (do it there), then highest-traffic
-  (coffee/roaster detail, tools, faqs), then dashboard/profile/legal last.
+**Decision taken (2026-06-12):** convert **all** to the locked `<Accent>` brush-smear, modal emphasis
+included. The "normalize-don't-convert" alternative was declined — `<Accent>` is now the single
+title-emphasis device site-wide. Note: the `discovery/` accent work this section flagged as
+overlapping Sprint 5 was completed here, so Sprint 5's 5.4 no longer needs to cover it.
 
 ---
 
@@ -86,9 +96,10 @@ beats converting.
   placeholder share block (all §7.B items #2/#3/#6, now moot).
 
 **⬜ Still recommended (homepage orphans, surfaced verifying Sprint 1's accent budget):** these four
-`homepage/*` components have zero importers yet carry the `text-accent italic` tic (and, in one case,
-a marquee). They inflate the §7.A homepage count until traced. Confirm against git history before
-deleting in case any are intentionally parked:
+`homepage/*` components have zero importers. Their `text-accent italic` tic was converted to `<Accent>`
+in the 7.A pass (so they're no longer a tell), but they remain **dead code** (and one carries a
+marquee), so deletion is still the right call. Confirm against git history before deleting in case any
+are intentionally parked:
 
 | Orphaned component | Carries |
 |--------------------|---------|
@@ -107,8 +118,7 @@ last stray homepage marquee.
 
 ## Suggested framing
 
-**7.B is done** and `blog/ArticleSidebar.tsx` (7.C) is deleted. What remains:
-- **7.A** — the site-wide `text-accent italic` sweep (82 instances / 56 files): one ruling on
-  convert-vs-normalize, then apply. Do `discovery/` accent work inside Sprint 5; run the rest as one
-  pass.
-- **7.C** — the 4 orphaned `homepage/*` components: a quick deletion after a `git log` sanity check.
+**7.A and 7.B are done**, and `blog/ArticleSidebar.tsx` (7.C) is deleted. What remains:
+- **7.C** — the 4 orphaned `homepage/*` components. Their accent tic was converted in the 7.A pass, so
+  they no longer inflate any count, but they're still dead code (zero importers, one with a marquee) and
+  worth deleting after a `git log` sanity check.

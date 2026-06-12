@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { Icon } from "@/components/common/Icon";
 import { Cluster } from "@/components/primitives/cluster";
 import type { EntityReviewStats } from "@/types/review-types";
@@ -24,7 +25,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
           </span>
         </div>
         <h3 className="text-heading text-balance leading-[1.2] tracking-tight">
-          Ratings & <span className="text-accent italic">Reviews.</span>
+          Ratings & <Accent>Reviews.</Accent>
         </h3>
       </div>
       {hasStats ? (

@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 // src/components/home/NewsletterSection.tsx
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -100,8 +101,7 @@ export default function NewsletterSection() {
                     className="text-title text-balance"
                     id="newsletter-heading"
                   >
-                    The Weekly{" "}
-                    <span className="text-accent italic">Grind.</span>
+                    The Weekly <Accent>Grind.</Accent>
                   </h2>
                 </div>
 

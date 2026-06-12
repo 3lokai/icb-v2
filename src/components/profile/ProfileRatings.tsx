@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
@@ -43,7 +44,7 @@ export function ProfileRatings({
           </div>
           <Stack gap="1">
             <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-              Recent <span className="text-accent italic">Ratings.</span>
+              Recent <Accent>Ratings.</Accent>
             </h2>
             <p className="text-caption">
               {isAnonymous

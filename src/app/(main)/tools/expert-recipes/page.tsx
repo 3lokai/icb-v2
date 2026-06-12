@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 // src/app/tools/expert-recipes/page.tsx
 
 import Link from "next/link";
@@ -178,8 +179,7 @@ export default function ExpertRecipesPage() {
                         </span>
                       </div>
                       <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                        Browse championship{" "}
-                        <span className="text-accent italic">recipes.</span>
+                        Browse championship <Accent>recipes.</Accent>
                       </h2>
                       <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                         {expertRecipeCount} curated brew guides from world-class
@@ -230,8 +230,7 @@ export default function ExpertRecipesPage() {
                     </span>
                   </div>
                   <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                    Featured{" "}
-                    <span className="text-accent italic">coffee experts.</span>
+                    Featured <Accent>coffee experts.</Accent>
                   </h2>
                   <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                     Learn from world champions, industry leaders, and coffee
@@ -337,8 +336,7 @@ export default function ExpertRecipesPage() {
                     </span>
                   </div>
                   <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                    Recipe{" "}
-                    <span className="text-accent italic">categories.</span>
+                    Recipe <Accent>categories.</Accent>
                   </h2>
                   <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                     Organized by difficulty and intended use so you can match a

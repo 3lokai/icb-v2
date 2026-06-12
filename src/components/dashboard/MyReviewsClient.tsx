@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { useState } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
@@ -66,7 +67,7 @@ export function MyReviewsClient({ initialReviews }: MyReviewsClientProps) {
                 </span>
               </div>
               <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                My <span className="text-accent italic">Reviews.</span>
+                My <Accent>Reviews.</Accent>
               </h2>
               <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
                 View and manage all the reviews you've shared with the
@@ -89,7 +90,7 @@ export function MyReviewsClient({ initialReviews }: MyReviewsClientProps) {
                 </span>
               </div>
               <h3 className="text-subheading text-balance leading-[1.1] tracking-tight">
-                Coffee <span className="text-accent italic">Reviews.</span>
+                Coffee <Accent>Reviews.</Accent>
               </h3>
               <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
                 {coffeeReviews.length === 0
@@ -137,7 +138,7 @@ export function MyReviewsClient({ initialReviews }: MyReviewsClientProps) {
                 </span>
               </div>
               <h3 className="text-subheading text-balance leading-[1.1] tracking-tight">
-                Roaster <span className="text-accent italic">Reviews.</span>
+                Roaster <Accent>Reviews.</Accent>
               </h3>
               <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
                 {roasterReviews.length === 0

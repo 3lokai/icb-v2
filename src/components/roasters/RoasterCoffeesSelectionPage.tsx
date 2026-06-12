@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -162,8 +163,7 @@ export function RoasterCoffeesSelectionPage({
                 </p>
               </div>
               <h1 className="text-display font-serif leading-[1.1] tracking-tight">
-                {roaster.name}&apos;s{" "}
-                <span className="text-accent italic">Selection.</span>
+                {roaster.name}&apos;s <Accent>Selection.</Accent>
               </h1>
             </Stack>
 
@@ -222,10 +222,7 @@ export function RoasterCoffeesSelectionPage({
                         </p>
                       </div>
                       <h2 className="text-title font-serif leading-tight">
-                        <span className="text-accent italic">
-                          {group.label}
-                        </span>{" "}
-                        Roasts.
+                        <Accent>{group.label}</Accent> Roasts.
                       </h2>
                     </div>
                     <p className="text-body text-muted-foreground max-w-xl">
@@ -277,7 +274,7 @@ export function RoasterCoffeesSelectionPage({
               <span className="h-px w-6 bg-accent/60" />
             </div>
             <h3 className="text-display font-serif leading-tight">
-              Explore the <span className="text-accent italic">Directory.</span>
+              Explore the <Accent>Directory.</Accent>
             </h3>
           </div>
 

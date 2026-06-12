@@ -1,6 +1,7 @@
 // Enhanced MethodGuide.tsx with Clean Magazine Style
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -195,7 +196,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
                   </span>
                 </div>
                 <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                  Popular <span className="text-accent italic">Methods.</span>
+                  Popular <Accent>Methods.</Accent>
                 </h2>
               </Stack>
             </div>
@@ -226,8 +227,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
                   </span>
                 </div>
                 <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                  Espresso &{" "}
-                  <span className="text-accent italic">Pressure.</span>
+                  Espresso & <Accent>Pressure.</Accent>
                 </h2>
               </Stack>
             </div>
@@ -258,8 +258,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
                   </span>
                 </div>
                 <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                  Specialty &{" "}
-                  <span className="text-accent italic">Traditional.</span>
+                  Specialty & <Accent>Traditional.</Accent>
                 </h2>
               </Stack>
             </div>
@@ -291,7 +290,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
                     </span>
                   </div>
                   <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                    Other <span className="text-accent italic">Methods.</span>
+                    Other <Accent>Methods.</Accent>
                   </h2>
                 </Stack>
               </div>

@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import { Section } from "@/components/primitives/section";
 import {
@@ -58,7 +59,7 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
             </span>
           </div>
           <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-            Explore <span className="text-accent italic">More.</span>
+            Explore <Accent>More.</Accent>
           </h2>
           <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
             Discover other ways to find your perfect coffee.

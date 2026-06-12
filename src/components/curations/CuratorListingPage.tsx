@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
 import { PageShell } from "@/components/primitives/page-shell";
@@ -100,8 +101,7 @@ export function CuratorListingPage({ curators }: CuratorListingPageProps) {
                 </span>
               </div>
               <h2 className="text-title text-balance leading-none">
-                Discover your next{" "}
-                <span className="text-accent italic">Favorite.</span>
+                Discover your next <Accent>Favorite.</Accent>
               </h2>
             </Stack>
           </div>
@@ -195,9 +195,7 @@ export function CuratorListingPage({ curators }: CuratorListingPageProps) {
 
                     <Stack gap="6">
                       <h2 className="text-display text-balance leading-tight">
-                        Want to share your{" "}
-                        <span className="text-accent italic">Favorite</span>{" "}
-                        coffees?
+                        Want to share your <Accent>Favorite</Accent> coffees?
                       </h2>
                       <div className="space-y-4">
                         <p className="max-w-xl text-pretty text-body-large text-muted-foreground leading-relaxed">

@@ -1,9 +1,11 @@
 # Sprint 5 — Discovery Landing Pages (programmatic `/coffees/[slug]`)
 
-> **Status: ⬜ Not started** (verified 2026-06-08). 10 `src/components/discovery/*` components still
-> carry inline `blur-2xl`/`blur-3xl` washes (BrewParamsStrip, RegionSnapshot, RoastProfileTabbed,
-> UtilityCard, PriceBucketProfileSection, RoastScale, ProcessExplainer, ProcessProfileSection,
-> BrewMethodProfileSection, RegionDetailSection); no `<Decor>` re-convergence yet.
+> **Status: ⬜ Not started** (verified 2026-06-08; accent task updated 2026-06-12). 10
+> `src/components/discovery/*` components still carry inline `blur-2xl`/`blur-3xl` washes
+> (BrewParamsStrip, RegionSnapshot, RoastProfileTabbed, UtilityCard, PriceBucketProfileSection,
+> RoastScale, ProcessExplainer, ProcessProfileSection, BrewMethodProfileSection, RegionDetailSection);
+> no `<Decor>` re-convergence yet. **5.4 (accent-word tic) is already done** via the 7.A site-wide
+> sweep — see that task below; everything else here remains open.
 
 **Goal:** Bring the programmatic SEO landing pages onto the Sprint 0 primitives. These pages
 (`brew-method`, `roast-level`, `process`, `price-bucket`, `region`) render through
@@ -67,10 +69,17 @@ BrewMethodProfileSection → PriceBucketProfileSection → RegionDetailSection.
   shared layout + `Section` rhythm, or flatten to stacked Sections. Either way remove the blur washes
   and the per-tab bespoke eyebrow placement.
 
-### 5.4 Accent-word tic
-- Fix once in `DiscoverySectionIntro` (the shared source of the `<span class="text-accent italic">`
-  pattern): keep the inline emphasis as a normal accent, and let pages opt into the locked `<Accent>`
-  brush-smear ≤1/page (likely the hero/PageHeader only).
+### 5.4 Accent-word tic ✅ DONE (2026-06-12, via 7.A)
+- The site-wide 7.A sweep **converted** the discovery `<span className="text-accent italic">` spans to
+  the locked `<Accent>` brush-smear — including the shared `DiscoverySectionIntro` (so the fix landed
+  once, as intended), plus `DiscoveryLandingLayout`, `RegionSnapshot`, `RelatedLinks`.
+- This **overrode** 5.4's original "normalize, keep light inline accent, reserve `<Accent>` for the
+  hero" plan: the project decision (2026-06-12) was *convert all*, so `<Accent>` is the single emphasis
+  device here too.
+- **Flag for when the rest of this sprint runs:** `DiscoverySectionIntro` drives ~15 titled sections,
+  so a discovery landing page can now render many `<Accent>` smears. The project override permits
+  per-section-title accents, but verify the per-page density reads OK in light + dark — ration back in
+  `DiscoverySectionIntro` if it feels heavy.
 
 ### 5.5 Motion alignment
 - Bring DiscoveryAccordionGrid, DiscoveryPillGrid, RoastScale to the same motion level as their static
@@ -98,7 +107,9 @@ BrewMethodProfileSection → PriceBucketProfileSection → RegionDetailSection.
 ## Acceptance criteria
 - Zero inline `blur-2xl`/`blur-3xl` circles in `src/components/discovery/`; decoration via `<Decor>` only.
 - All profile subsections render through `Section` + `DiscoverySectionIntro`; no bare inline `h3` headers.
-- Eyebrow count ≤ ceil(sections/3) per rendered landing page; ≤1 italic-serif accent word per page.
+- Eyebrow count ≤ ceil(sections/3) per rendered landing page. Accent: per-section `<Accent>` is
+  permitted (project override), at most one accented phrase per title — verify per-page smear density
+  reads OK rather than enforcing ≤1/page.
 - One accent / one radius / one theme per page; no per-type color stripes or amber context boxes.
 - `prefers-reduced-motion` collapses all discovery motion to static.
 - No regression to `generateStaticParams`, structured data, or the PageHeader hero. Walked in light + dark.

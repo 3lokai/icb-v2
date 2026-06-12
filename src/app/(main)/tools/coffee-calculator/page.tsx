@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 // src/app/tools/coffee-calculator/page.tsx
 // Enhanced version with improved UX and micro-interactions
 
@@ -156,8 +157,7 @@ export default function CoffeeCalculatorPage() {
                         </span>
                       </div>
                       <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                        Perfect proportions{" "}
-                        <span className="text-accent italic">every time.</span>
+                        Perfect proportions <Accent>every time.</Accent>
                       </h2>
                       <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                         Precision coffee brewing calculator for {11} brewing
@@ -219,8 +219,7 @@ export default function CoffeeCalculatorPage() {
                     </span>
                   </div>
                   <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                    Why use our{" "}
-                    <span className="text-accent italic">calculator?</span>
+                    Why use our <Accent>calculator?</Accent>
                   </h2>
                   <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                     Take the guesswork out of coffee brewing with precise
@@ -304,8 +303,7 @@ export default function CoffeeCalculatorPage() {
                     </span>
                   </div>
                   <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                    Compatible with all{" "}
-                    <span className="text-accent italic">brewing gear.</span>
+                    Compatible with all <Accent>brewing gear.</Accent>
                   </h2>
                   <p className="max-w-2xl text-pretty text-body-muted leading-relaxed">
                     From traditional South Indian filter coffee to modern

@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { Icon } from "@/components/common/Icon";
 import { useMemo, useState, memo } from "react";
 import { CoffeeDirectoryFAQ } from "@/components/faqs/CoffeeDirectoryFAQs";
@@ -102,8 +103,7 @@ function CoffeeDirectoryComponent({
           </div>
 
           <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-            Explore the full{" "}
-            <span className="text-accent italic">Coffee Catalogue</span>
+            Explore the full <Accent>Coffee Catalogue</Accent>
           </h2>
 
           <p className="max-w-md text-pretty text-body-large text-muted-foreground leading-relaxed">

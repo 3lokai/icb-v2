@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
 import { useState, useRef } from "react";
 import { useDropzone } from "react-dropzone";
@@ -165,7 +166,7 @@ export function ProfileGearStation({
           </div>
           <Cluster align="center" className="justify-between">
             <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-              Gear & <span className="text-accent italic">Station.</span>
+              Gear & <Accent>Station.</Accent>
             </h2>
             {!isAnonymous && (
               <ShareSection section="gear-station" username={username} />

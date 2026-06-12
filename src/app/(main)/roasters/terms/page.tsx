@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 // app/roasters/terms/page.tsx
 import type { Metadata } from "next";
 import { Stack } from "@/components/primitives/stack";
@@ -58,8 +59,7 @@ export default function RoastersTermsPage() {
                 <span className="h-px w-12 bg-accent/60" />
               </div>
               <h1 className="animate-fade-in-scale text-display text-primary text-balance leading-[1.05]">
-                Roaster Partnership{" "}
-                <span className="text-accent italic">Agreement</span>
+                Roaster Partnership <Accent>Agreement</Accent>
               </h1>
               <p className="mx-auto max-w-3xl text-body-large text-muted-foreground leading-relaxed md:text-heading">
                 The terms and conditions that govern our partnership with coffee
