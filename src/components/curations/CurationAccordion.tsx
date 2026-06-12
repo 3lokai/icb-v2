@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/common/Icon";
@@ -39,7 +40,7 @@ export function CurationAccordion({
             </div>
             <h2 className="text-title text-balance leading-[1.1] tracking-tight">
               {curation.title}
-              <span className="text-accent italic">.</span>
+              <Accent>.</Accent>
             </h2>
           </Stack>
           <p className="text-body text-muted-foreground max-w-2xl font-serif italic border-l-2 border-accent/20 pl-4">
@@ -62,7 +63,7 @@ export function CurationAccordion({
           </span>
         </div>
         <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-          Coffee <span className="text-accent italic">selections.</span>
+          Coffee <Accent>selections.</Accent>
         </h2>
       </Stack>
 

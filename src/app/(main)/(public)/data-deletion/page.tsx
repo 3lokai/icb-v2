@@ -1,4 +1,5 @@
 "use client";
+import { Accent } from "@/components/primitives/accent";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -49,7 +50,7 @@ Thank you,
               <span className="h-px w-12 bg-accent/60" />
             </div>
             <h1 className="animate-fade-in-scale text-display text-primary text-balance leading-none">
-              Data <span className="text-accent italic">Deletion.</span>
+              Data <Accent>Deletion.</Accent>
             </h1>
             <div className="text-caption font-bold uppercase tracking-widest text-muted-foreground/60 italic">
               Last Updated: June 6, 2025

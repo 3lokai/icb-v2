@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +18,7 @@ function TitleHeading({ children }: { children: React.ReactNode }) {
       return (
         <h2 className="text-title text-balance leading-[1.1] tracking-tight">
           {parts.before}
-          <span className="text-accent italic">{parts.accent}</span>
+          <Accent>{parts.accent}</Accent>
           {parts.after}
         </h2>
       );

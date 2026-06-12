@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/primitives/section";
@@ -559,8 +560,7 @@ const FinalCTA = ({
               </div>
             </div>
             <h2 className="text-display md:text-[5rem] text-balance leading-[0.95] tracking-tight">
-              Ready to Get{" "}
-              <span className="text-accent italic">Discovered?</span>
+              Ready to Get <Accent>Discovered?</Accent>
             </h2>
             <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
               Join 60+ roasters already listed on IndianCoffeeBeans. Build
@@ -665,9 +665,9 @@ export default function PartnerPageClient({
       <PageHeader
         title={
           <>
-            Be <span className="text-accent italic">Discovered.</span>
+            Be <Accent>Discovered.</Accent>
             <br />
-            On a <span className="text-accent italic">Neutral </span>Ground.
+            On a <Accent>Neutral </Accent>Ground.
           </>
         }
         overline="FOUNDING ROASTERS"
@@ -717,10 +717,7 @@ export default function PartnerPageClient({
                       </span>
                     </div>
                     <h2 className="text-title md:text-display text-balance leading-[1] tracking-tight">
-                      Why Partner With{" "}
-                      <span className="text-accent italic">
-                        IndianCoffeeBeans?
-                      </span>
+                      Why Partner With <Accent>IndianCoffeeBeans?</Accent>
                     </h2>
                     <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
                       A neutral discovery layer for Indian specialty coffee —
@@ -760,8 +757,7 @@ export default function PartnerPageClient({
                       </span>
                     </div>
                     <h2 className="text-title md:text-display text-balance leading-[1] tracking-tight">
-                      Get Listed in{" "}
-                      <span className="text-accent italic">3 Steps.</span>
+                      Get Listed in <Accent>3 Steps.</Accent>
                     </h2>
                     <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
                       From submission to going live, we keep onboarding simple
@@ -797,8 +793,7 @@ export default function PartnerPageClient({
                         </span>
                       </div>
                       <h2 className="text-title md:text-display text-balance leading-[1] tracking-tight">
-                        Choose Your{" "}
-                        <span className="text-accent italic">Plan.</span>
+                        Choose Your <Accent>Plan.</Accent>
                       </h2>
                       <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
                         Start free or upgrade to unlock powerful features and
@@ -840,8 +835,7 @@ export default function PartnerPageClient({
                       </span>
                     </div>
                     <h2 className="text-title md:text-display text-balance leading-[1] tracking-tight">
-                      What&apos;s{" "}
-                      <span className="text-accent italic">Included?</span>
+                      What&apos;s <Accent>Included?</Accent>
                     </h2>
                     <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
                       Everything you need to present your roastery clearly and

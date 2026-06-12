@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Icon, IconName } from "@/components/common/Icon";
 import { NewsletterForm } from "@/components/common/NewsletterForm";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Accent } from "@/components/primitives/accent";
 import { Cluster } from "@/components/primitives/cluster";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -40,8 +41,7 @@ export default function AboutPage() {
         overline="The Mission"
         title={
           <>
-            About <span className="text-accent italic">IndianCoffeeBeans</span>
-            .com
+            About <Accent>IndianCoffeeBeans</Accent>.com
           </>
         }
       />
@@ -55,9 +55,7 @@ export default function AboutPage() {
               <div className="md:col-span-12 lg:col-span-7">
                 <Stack gap="8">
                   <Stack gap="4">
-                    <h2 className="text-title text-primary italic">
-                      The Platform
-                    </h2>
+                    <h2 className="text-title">The Platform</h2>
                     <div className="h-px w-16 bg-accent/60" />
                   </Stack>
 
@@ -81,8 +79,7 @@ export default function AboutPage() {
                       <p className="font-serif text-body-large text-accent-foreground leading-relaxed">
                         Our platform focuses on what matters: transparent
                         information about beans, processing methods, flavor
-                        profiles, and brewing recommendations — all in one
-                        place.{" "}
+                        profiles, and brewing recommendations, all in one place.{" "}
                         <Link
                           href="/how-icb-works"
                           className="text-accent hover:underline font-medium"
@@ -118,15 +115,14 @@ export default function AboutPage() {
                 <span className="text-micro font-bold uppercase tracking-widest text-accent">
                   Our Core Mission
                 </span>
-                <h2 className="text-title text-primary text-balance">
-                  Honesty. Discovery.{" "}
-                  <span className="italic text-accent">Community.</span>
+                <h2 className="text-title text-balance">
+                  Honesty. Discovery. <Accent>Community.</Accent>
                 </h2>
                 <div className="h-px w-24 bg-accent/40" />
               </Stack>
 
               <p className="mx-auto max-w-3xl text-body-large text-muted-foreground">
-                We&apos;re building a home for Indian coffee lovers — where
+                We&apos;re building a home for Indian coffee lovers, where
                 discovery is easy, information is honest, and every sip feels
                 intentional.
               </p>
@@ -136,19 +132,19 @@ export default function AboutPage() {
                   {
                     title: "Fair Discovery",
                     description:
-                      "Highlight every quality Indian roaster — not just the loudest or most followed. Great coffee shouldn't hide behind algorithms.",
+                      "Highlight every quality Indian roaster, not just the loudest or most followed. Great coffee shouldn't hide behind algorithms.",
                     icon: "MagnifyingGlass",
                   },
                   {
                     title: "Smarter Choices",
                     description:
-                      "Explore beans by what really matters — flavor, process, roast, brew style — and feel confident in every bag you buy.",
+                      "Explore beans by what really matters: flavor, process, roast, brew style, and feel confident in every bag you buy.",
                     icon: "SlidersHorizontal",
                   },
                   {
                     title: "Powered by Community",
                     description:
-                      "Real reviews, shared brews, and lived experiences — because coffee should be shaped by people, not promotions.",
+                      "Real reviews, shared brews, and lived experiences, because coffee should be shaped by people, not promotions.",
                     icon: "UsersThree",
                   },
                 ].map((item) => (
@@ -161,9 +157,7 @@ export default function AboutPage() {
                         <Icon name={item.icon as IconName} size={32} />
                       </div>
                       <Stack gap="3">
-                        <h3 className="text-heading text-primary font-serif italic">
-                          {item.title}
-                        </h3>
+                        <h3 className="text-heading">{item.title}</h3>
                         <p className="text-caption leading-relaxed text-muted-foreground">
                           {item.description}
                         </p>
@@ -199,9 +193,7 @@ export default function AboutPage() {
               <div className="order-1 space-y-8 lg:order-2">
                 <Stack gap="6">
                   <Stack gap="4">
-                    <h2 className="text-title text-primary italic">
-                      The Indian Landscape
-                    </h2>
+                    <h2 className="text-title">The Indian Landscape</h2>
                     <div className="h-px w-16 bg-accent/60" />
                   </Stack>
 
@@ -277,9 +269,7 @@ export default function AboutPage() {
           <Section spacing="default">
             <Stack gap="12">
               <Stack gap="4">
-                <h2 className="text-title text-primary italic">
-                  For Our Users
-                </h2>
+                <h2 className="text-title">For Our Users</h2>
                 <div className="h-px w-16 bg-accent/60" />
               </Stack>
 
@@ -323,7 +313,7 @@ export default function AboutPage() {
                         />
                       </div>
                       <Stack gap="2" className="flex-1">
-                        <h3 className="text-heading text-primary transition-colors duration-200 group-hover:text-accent font-serif italic">
+                        <h3 className="text-heading transition-colors duration-200 group-hover:text-accent">
                           {user.title}
                         </h3>
                         <p className="text-caption leading-relaxed text-muted-foreground">
@@ -352,7 +342,7 @@ export default function AboutPage() {
           <Section spacing="default">
             <Stack gap="12">
               <Stack gap="4">
-                <h2 className="text-title text-primary italic">About Me</h2>
+                <h2 className="text-title">About Me</h2>
                 <div className="h-px w-16 bg-accent/60" />
               </Stack>
 
@@ -371,9 +361,7 @@ export default function AboutPage() {
                     </div>
 
                     <div className="rounded-2xl border border-border/30 bg-muted/5 p-8">
-                      <h3 className="mb-6 text-heading text-primary font-serif italic">
-                        Quick Facts
-                      </h3>
+                      <h3 className="mb-6 text-heading">Quick Facts</h3>
                       <Stack gap="4">
                         {[
                           {
@@ -411,7 +399,7 @@ export default function AboutPage() {
                     </p>
                     <p>
                       It all began with the comfort of South Indian filter
-                      coffee — those childhood mornings waking up to its
+                      coffee; those childhood mornings waking up to its
                       distinctive aroma remain some of my fondest memories.
                       Years later in 2012, I spent 6-7 months in Italy, where I
                       fell under the spell of their espresso culture.
@@ -419,7 +407,7 @@ export default function AboutPage() {
                     <p>
                       But it wasn&apos;t until after the pandemic that my casual
                       interest evolved into something deeper. Like many coffee
-                      journeys, mine started humbly — with instant coffee — and
+                      journeys, mine started humbly, with instant coffee, and
                       gradually expanded to a full brewing station and a growing
                       collection of beans.
                     </p>
@@ -460,8 +448,8 @@ export default function AboutPage() {
                   <span className="text-micro font-bold uppercase tracking-[0.3em] text-accent">
                     The Future
                   </span>
-                  <h2 className="text-title text-primary text-balance md:text-display">
-                    Join Our <span className="italic">Community.</span>
+                  <h2 className="text-title text-balance md:text-display">
+                    Join Our <Accent>Community.</Accent>
                   </h2>
                   <div className="h-px w-24 bg-accent/40" />
                 </Stack>
@@ -510,9 +498,7 @@ export default function AboutPage() {
                 <div className="w-full max-w-2xl mx-auto pt-12 border-t border-border/30 mt-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center text-left">
                     <Stack gap="4">
-                      <h3 className="text-heading text-primary font-serif italic">
-                        Stay in the loop
-                      </h3>
+                      <h3 className="text-heading">Stay in the loop</h3>
                       <p className="text-caption text-muted-foreground leading-relaxed">
                         Get updates on new coffees, roasters, and brewing
                         guides. No spam, just pure caffeine.
@@ -525,8 +511,8 @@ export default function AboutPage() {
                 </div>
 
                 <p className="text-micro font-bold uppercase tracking-[0.2em] text-muted-foreground/60 italic">
-                  Together, we&apos;re building something special — one bean at
-                  a time.
+                  Together, we&apos;re building something special, one bean at a
+                  time.
                 </p>
               </Stack>
             </div>

@@ -16,7 +16,7 @@ export function SeriesCard({ series }: { series: Series }) {
       </div>
 
       <div>
-        <h3 className="mb-2 text-title font-semibold group-hover:text-primary transition-colors">
+        <h3 className="mb-2 text-heading font-semibold group-hover:text-primary transition-colors">
           {name}
         </h3>
         <p className="line-clamp-2 text-body text-muted-foreground">

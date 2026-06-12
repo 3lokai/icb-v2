@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Icon } from "@/components/common/Icon";
 import { ToolSuggestionTrigger } from "@/components/tools/ToolSuggestionModal";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Accent } from "@/components/primitives/accent";
+import { Decor } from "@/components/primitives/decor";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
@@ -59,7 +61,7 @@ const toolsListSchema = {
       name: "Coffee Compass",
       url: "https://www.indiancoffeebeans.com/tools/coffee-compass",
       description:
-        "Deterministic brew diagnosis tool — pick symptoms, get precise corrective actions",
+        "Deterministic brew diagnosis tool: pick symptoms, get precise corrective actions",
     },
   ],
 };
@@ -73,8 +75,6 @@ const featuredTools = [
       "Master your brewing technique with step-by-step precision calculations. Get precise ratio calculations for multiple brewing methods, interactive timer, and save custom recipes.",
     href: "/tools/coffee-calculator",
     cta: "Try Calculator",
-    color: "text-primary",
-    bgColor: "bg-primary/10",
   },
   {
     icon: "Trophy",
@@ -83,18 +83,14 @@ const featuredTools = [
       "Curated recipes from championship baristas and coffee innovators. Explore 9+ professional recipes with step-by-step guides, difficulty ratings, and method variations.",
     href: "/tools/expert-recipes",
     cta: "Browse Recipes",
-    color: "text-accent",
-    bgColor: "bg-accent/10",
   },
   {
     icon: "Compass",
     title: "Coffee Compass",
     description:
-      "Diagnose your brew instantly. Pick symptoms you taste — sour, bitter, watery — and get precise, method-specific fixes. No AI — pure coffee physics.",
+      "Diagnose your brew instantly. Pick the symptoms you taste, like sour, bitter, or watery, and get precise, method-specific fixes. No AI, just coffee physics.",
     href: "/tools/coffee-compass",
     cta: "Diagnose Brew",
-    color: "text-chart-2",
-    bgColor: "bg-chart-2/10",
   },
 ];
 
@@ -166,41 +162,18 @@ export default function ToolsPage() {
 
       <Stack gap="12">
         {/* Featured Tools Grid */}
-        <Section spacing="default">
+        <Section
+          spacing="default"
+          eyebrow="Free Forever"
+          title="Start Here with"
+          accentWord="Essential Tools"
+        >
           <Stack gap="12">
-            <div className="mx-auto max-w-6xl w-full">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-                <div className="md:col-span-8">
-                  <Stack gap="6">
-                    <div className="inline-flex items-center gap-4">
-                      <span className="h-px w-8 md:w-12 bg-accent/60" />
-                      <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                        Essential Tools
-                      </span>
-                    </div>
-                    <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                      Start Here with{" "}
-                      <span className="text-accent italic">
-                        Essential Tools
-                      </span>
-                    </h2>
-                    <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
-                      Start here with our most popular tools for perfecting your
-                      brew.
-                    </p>
-                  </Stack>
-                </div>
-                <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
-                  <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
-                    <span className="h-1 w-1 rounded-full bg-accent/40" />
-                    Free Forever
-                    <span className="h-1 w-1 rounded-full bg-accent/40" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
+              Our most popular tools for perfecting your brew.
+            </p>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid-cards">
               {featuredTools.map((tool) => (
                 <Card
                   key={tool.title}
@@ -208,17 +181,9 @@ export default function ToolsPage() {
                 >
                   <CardHeader>
                     <div className="mb-4 flex items-center justify-center">
-                      <div
-                        className={cn(
-                          "inline-flex h-14 w-14 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110",
-                          tool.bgColor
-                        )}
-                      >
+                      <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110">
                         <Icon
-                          className={cn(
-                            "h-7 w-7 transition-transform duration-300 group-hover:scale-110",
-                            tool.color
-                          )}
+                          className="h-7 w-7 transition-transform duration-300 group-hover:scale-110"
                           name={tool.icon as any}
                         />
                       </div>
@@ -251,37 +216,12 @@ export default function ToolsPage() {
         </Section>
 
         {/* Coming Soon Tools Section */}
-        <Section spacing="default">
+        <Section spacing="default" title="More Tools" accentWord="Brewing...">
           <Stack gap="12">
-            <div className="mx-auto max-w-6xl w-full">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-                <div className="md:col-span-8">
-                  <Stack gap="6">
-                    <div className="inline-flex items-center gap-4">
-                      <span className="h-px w-8 md:w-12 bg-accent/60" />
-                      <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                        Coming Soon
-                      </span>
-                    </div>
-                    <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                      More Tools{" "}
-                      <span className="text-accent italic">Brewing...</span>
-                    </h2>
-                    <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
-                      Exciting new tools are on the way to help you explore and
-                      perfect your coffee journey.
-                    </p>
-                  </Stack>
-                </div>
-                <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
-                  <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
-                    <span className="h-1 w-1 rounded-full bg-accent/40" />
-                    In Development
-                    <span className="h-1 w-1 rounded-full bg-accent/40" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
+              Exciting new tools are on the way to help you explore and perfect
+              your coffee journey.
+            </p>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {comingSoonTools.map((tool) => (
@@ -331,38 +271,13 @@ export default function ToolsPage() {
         </Section>
 
         {/* Why Our Tools Section */}
-        <Section spacing="default">
+        <Section spacing="default" title="Why Our" accentWord="Tools?">
           <Stack gap="12">
-            <div className="mx-auto max-w-6xl w-full">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-                <div className="md:col-span-8">
-                  <Stack gap="6">
-                    <div className="inline-flex items-center gap-4">
-                      <span className="h-px w-8 md:w-12 bg-accent/60" />
-                      <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                        Why Choose Us
-                      </span>
-                    </div>
-                    <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                      Why Our <span className="text-accent italic">Tools?</span>
-                    </h2>
-                    <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
-                      Built with passion, designed for precision, and free
-                      forever.
-                    </p>
-                  </Stack>
-                </div>
-                <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
-                  <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
-                    <span className="h-1 w-1 rounded-full bg-accent/40" />
-                    Always Free
-                    <span className="h-1 w-1 rounded-full bg-accent/40" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
+              Built with passion, designed for precision, and free forever.
+            </p>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="grid-cards">
               {valueProps.map((prop) => (
                 <Card
                   key={prop.title}
@@ -370,14 +285,14 @@ export default function ToolsPage() {
                 >
                   <CardHeader>
                     <div className="mb-4 flex items-center justify-center">
-                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-all duration-300 group-hover:scale-110">
+                      <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110">
                         <Icon
-                          className="h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110"
+                          className="h-7 w-7 transition-transform duration-300 group-hover:scale-110"
                           name={prop.icon as any}
                         />
                       </div>
                     </div>
-                    <CardTitle className="text-heading font-serif transition-colors group-hover:text-accent">
+                    <CardTitle className="text-center text-heading transition-colors group-hover:text-accent">
                       {prop.title}
                     </CardTitle>
                   </CardHeader>
@@ -395,31 +310,8 @@ export default function ToolsPage() {
         {/* CTA Section */}
         <Section spacing="default">
           <div className="mx-auto max-w-6xl">
-            <div className="group relative overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-sm transition-shadow duration-500 hover:shadow-md">
-              {/* Subtle "magazine" accent: stripe + paper texture */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0"
-              >
-                {/* Accent stripe - responsive width */}
-                <div className="absolute left-0 top-0 h-full w-1.5 md:w-2 bg-gradient-to-b from-primary via-accent to-primary/60 opacity-60" />
-
-                {/* Very subtle dot texture - refined pattern */}
-                <div className="absolute inset-0 opacity-[0.2]">
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      backgroundImage:
-                        "radial-gradient(circle at 2px 2px, rgba(0,0,0,0.05) 1px, transparent 0)",
-                      backgroundSize: "32px 32px",
-                    }}
-                  />
-                </div>
-
-                {/* Soft decorative wash - improved positioning */}
-                <div className="absolute -top-32 -right-32 h-64 w-64 rounded-full bg-accent/5 blur-[80px]" />
-                <div className="absolute -bottom-32 -left-32 h-64 w-64 rounded-full bg-primary/5 blur-[80px]" />
-              </div>
+            <div className="group relative overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-shadow duration-500 hover:shadow-md">
+              <Decor stripe texture="dots" wash />
 
               <div className="relative p-6 sm:p-10 md:p-14 lg:p-16">
                 <div className="grid items-center gap-10 md:gap-16 md:grid-cols-12">
@@ -434,12 +326,8 @@ export default function ToolsPage() {
                       </div>
 
                       <Stack gap="6">
-                        <h2 className="text-display text-balance leading-[1.05] tracking-tight">
-                          Ready to Level Up Your{" "}
-                          <span className="text-accent italic">
-                            Coffee Game
-                          </span>
-                          ?
+                        <h2 className="text-title text-balance leading-[1.05] tracking-tight md:text-display">
+                          Ready to Level Up Your <Accent>Coffee Game</Accent>?
                         </h2>
                         <p className="max-w-xl text-pretty text-body-large text-muted-foreground leading-relaxed">
                           Start with our most popular tool - the Perfect Brew

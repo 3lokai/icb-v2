@@ -23,8 +23,7 @@ export async function GET() {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        // Future: add cache headers
-        // "Cache-Control": "s-maxage=300, stale-while-revalidate=600",
+        "Cache-Control": "s-maxage=300, stale-while-revalidate=3600",
       },
     });
   } catch (error) {

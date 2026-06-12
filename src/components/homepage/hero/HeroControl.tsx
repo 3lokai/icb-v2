@@ -21,8 +21,9 @@ export function HeroControl({ totals, hero }: HeroControlProps) {
     <section className="relative flex min-h-[90dvh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-4 md:px-6 lg:px-8">
       <HeroVideoBackground />
 
-      <div className="absolute inset-0 z-0 bg-gradient-to-l from-black/80 via-black/40 to-black/60" />
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_20%_50%,rgba(0,0,0,0.3)_0%,transparent_70%)]" />
+      {/* Lighter overall scrim; a targeted radial protects headline contrast on the left */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-l from-black/65 via-black/20 to-black/35" />
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_20%_50%,rgba(0,0,0,0.45)_0%,transparent_60%)]" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-2 lg:gap-x-6 lg:gap-y-0 xl:gap-x-8">

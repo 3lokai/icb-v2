@@ -29,7 +29,9 @@ export async function GET(request: Request) {
       });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: { "Cache-Control": "s-maxage=60, stale-while-revalidate=300" },
+    });
   } catch (error) {
     console.error("[API /coffees] Error:", error);
 

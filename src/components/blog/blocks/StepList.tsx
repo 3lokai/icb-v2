@@ -66,9 +66,9 @@ export function StepList({ value }: StepListProps) {
           <div className="pt-1 flex-1">
             <div className="mb-3 flex flex-wrap items-center gap-3">
               {step.title && (
-                <h4 className="text-heading font-bold text-foreground tracking-tight">
+                <h3 className="text-heading font-bold text-foreground tracking-tight">
                   {step.title}
-                </h4>
+                </h3>
               )}
               {step.icon && (
                 <Icon

@@ -9,6 +9,7 @@ import { Stack } from "../primitives/stack";
 import { roasterImagePresets } from "@/lib/imagekit";
 import { RoasterTrackingLink } from "../common/TrackingLink";
 import { Icon } from "../common/Icon";
+import { CardRatingFooter } from "./CardRatingFooter";
 import { useImageColor } from "@/hooks/useImageColor";
 
 type RoasterCardProps = {
@@ -172,22 +173,23 @@ export default function RoasterCard({
     );
   }
 
-  // Default variant - directory tile with footer
+  // Default variant - directory tile with rating footer
   return (
-    <RoasterTrackingLink
-      ariaLabel={ariaLabel}
-      coffeeCount={coffeeCount || null}
-      href={`/roasters/${roaster.slug}`}
-      roasterOnlyId={roaster.id || null}
+    <Card
+      className={cn(
+        "group relative overflow-hidden",
+        "surface-1 rounded-lg card-hover",
+        "h-full flex flex-col p-0"
+      )}
+      itemScope
+      itemType="https://schema.org/Organization"
     >
-      <Card
-        className={cn(
-          "group relative overflow-hidden cursor-pointer",
-          "surface-1 rounded-lg card-hover",
-          "h-full flex flex-col p-0"
-        )}
-        itemScope
-        itemType="https://schema.org/Organization"
+      <RoasterTrackingLink
+        ariaLabel={ariaLabel}
+        className="flex-1 flex flex-col cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+        coffeeCount={coffeeCount || null}
+        href={`/roasters/${roaster.slug}`}
+        roasterOnlyId={roaster.id || null}
       >
         {/* Logo Container - Dynamic gradient based on logo color */}
         <div
@@ -266,12 +268,22 @@ export default function RoasterCard({
             </div>
           </Stack>
         </div>
+      </RoasterTrackingLink>
 
-        <meta
-          content={`https://www.indiancoffeebeans.com/roasters/${roaster.slug}`}
-          itemProp="url"
-        />
-      </Card>
-    </RoasterTrackingLink>
+      {/* Opinion-first rating footer — roaster ratings (QuickRating entityType="roaster") */}
+      <CardRatingFooter
+        entityType="roaster"
+        entityId={roaster.id}
+        entityName={roaster.name}
+        ratingAvg={roaster.avg_rating}
+        ratingCount={roaster.total_ratings_count}
+        size="md"
+      />
+
+      <meta
+        content={`https://www.indiancoffeebeans.com/roasters/${roaster.slug}`}
+        itemProp="url"
+      />
+    </Card>
   );
 }

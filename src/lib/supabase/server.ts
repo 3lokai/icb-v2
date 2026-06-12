@@ -3,6 +3,7 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import { retryFetch } from "@/lib/supabase/retry-fetch";
 
 /**
  * Create a Supabase client with user session (respects RLS)
@@ -16,6 +17,7 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
+      global: { fetch: retryFetch },
       cookies: {
         getAll() {
           return cookieStore.getAll();
@@ -46,6 +48,7 @@ export function createAnonServerClient() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
+      global: { fetch: retryFetch },
       auth: {
         autoRefreshToken: false,
         persistSession: false,
@@ -77,6 +80,7 @@ export async function createServiceRoleClient() {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       serviceRoleKey,
       {
+        global: { fetch: retryFetch },
         auth: {
           autoRefreshToken: false,
           persistSession: false,

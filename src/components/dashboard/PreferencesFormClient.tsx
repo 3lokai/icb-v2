@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import {
@@ -163,7 +164,7 @@ export function PreferencesFormClient({
                 </span>
               </div>
               <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                Coffee <span className="text-accent italic">Preferences.</span>
+                Coffee <Accent>Preferences.</Accent>
               </h2>
               <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
                 Customize your coffee preferences to discover beans that match

@@ -27,9 +27,9 @@ export function SeriesNavigation({ value }: SeriesNavigationProps) {
             <div className="flex size-10 items-center justify-center rounded-xl bg-accent text-white shadow-lg group-hover:rotate-12 transition-transform duration-500">
               <Icon name="ListBullets" size={24} />
             </div>
-            <h4 className="text-title font-bold text-foreground">
+            <h2 className="text-title font-bold text-foreground">
               Series: {value.title || "Continue Learning"}
-            </h4>
+            </h2>
           </div>
           <p className="text-body-large text-muted-foreground/90 leading-relaxed font-serif italic">
             Part of our curated deep-dive series. Explore more articles in this

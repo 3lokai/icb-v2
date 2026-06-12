@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -154,8 +155,7 @@ export default function CommunitiesPage() {
         overline="COMMUNITY DIRECTORY"
         title={
           <>
-            Where India&apos;s coffee people{" "}
-            <span className="text-accent italic">gather.</span>
+            Where India&apos;s coffee people <Accent>gather.</Accent>
           </>
         }
         description="Connect with enthusiasts, professionals, and home brewers in dedicated WhatsApp, Discord, and social communities across India."

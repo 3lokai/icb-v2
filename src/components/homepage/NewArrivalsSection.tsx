@@ -5,13 +5,15 @@ import Link from "next/link";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { Icon } from "@/components/common/Icon";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { Accent } from "@/components/primitives/accent";
+import { Decor } from "@/components/primitives/decor";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { useNewArrivalCoffees } from "@/hooks/useHomePageQueries";
 
 export default function NewArrivalsSection() {
-  const { data, isLoading } = useNewArrivalCoffees(6);
+  const { data, isLoading } = useNewArrivalCoffees(5);
   const coffees = data?.items || [];
 
   if (isLoading) {
@@ -43,48 +45,34 @@ export default function NewArrivalsSection() {
       spacing="default"
       className="relative overflow-hidden group/arrivals"
     >
-      {/* Subtle organic background shape */}
-      <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+      <Decor wash />
 
       <div className="relative z-10">
-        <div className="text-left mb-16">
+        <div className="text-left mb-12">
           <Stack gap="4" className="items-start">
-            <div className="inline-flex items-center gap-4">
-              <span className="h-px w-8 bg-accent/40" />
-              <span className="text-overline text-muted-foreground tracking-[0.2em]">
-                JUST LANDED
-              </span>
-              <span className="h-px w-8 bg-accent/40" />
-            </div>
             <h2 className="text-title lg:text-display text-balance leading-[1.1] tracking-tight">
-              New{" "}
-              <span className="text-accent italic font-serif">Arrivals.</span>
+              New <Accent>Arrivals.</Accent>
             </h2>
-            <p className="max-w-xl text-body text-muted-foreground leading-relaxed mt-4">
+            <p className="max-w-xl text-body text-muted-foreground leading-relaxed">
               The latest additions to our roster of exceptional Indian coffee
               beans, featuring freshly roasted delights from across the country.
             </p>
           </Stack>
         </div>
 
-        {/* Card Container - Horizontal Scroll on Mobile, Grid on Desktop */}
-        <div className="relative">
-          {/* Subtle "Shelf" background strip for desktop depth */}
-          <div className="absolute top-1/2 left-0 right-0 h-[70%] bg-muted/10 -translate-y-1/2 rounded-[2.5rem] -z-10 hidden md:block" />
-
-          <div className="flex overflow-x-auto pb-8 md:pb-0 scrollbar-hide md:grid md:grid-cols-4 gap-6 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory">
-            {coffees.map((coffee) => (
-              <div
-                key={coffee.slug || coffee.coffee_id}
-                className="min-w-[280px] sm:min-w-[320px] md:min-w-0 snap-center transition-transform duration-300 hover:scale-[1.02] md:hover:scale-100"
-              >
-                <CoffeeCard coffee={coffee} />
-              </div>
-            ))}
-          </div>
+        {/* Horizontal shelf: equal cards, scroll-snap — a distinct rhythm from the static grids */}
+        <div className="flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 -mx-4 pb-4 scrollbar-hide md:px-0 md:mx-0">
+          {coffees.map((coffee) => (
+            <div
+              key={coffee.slug || coffee.coffee_id}
+              className="w-[280px] shrink-0 snap-start sm:w-[300px]"
+            >
+              <CoffeeCard coffee={coffee} />
+            </div>
+          ))}
         </div>
 
-        <div className="mt-16 text-center">
+        <div className="mt-12 text-center">
           <Link href="/coffees">
             <Button
               variant="ghost"

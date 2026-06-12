@@ -1,12 +1,17 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Accent } from "./accent";
 import { PageShell } from "./page-shell";
 
 type SectionProps = {
   children: React.ReactNode;
   eyebrow?: string;
   title?: string;
+  /** Word(s) within/after the title to emphasise with the coffee-smear <Accent>. Ration ≤1 per page. */
+  accentWord?: string;
+  /** Header alignment. */
+  align?: "left" | "center";
   spacing?: "tight" | "default" | "loose";
   contained?: boolean; // Whether to wrap in PageShell
   className?: string;
@@ -30,6 +35,8 @@ export function Section({
   children,
   eyebrow,
   title,
+  accentWord,
+  align = "left",
   spacing = "default",
   contained = true,
   className,
@@ -48,9 +55,23 @@ export function Section({
   const content = (
     <>
       {(eyebrow || title) && (
-        <div className="mb-12">
-          {eyebrow && <p className="text-label mb-3">{eyebrow}</p>}
-          {title && <h2 className="text-title">{title}</h2>}
+        <div className={cn("mb-12", align === "center" && "text-center")}>
+          {eyebrow && (
+            <p className="text-overline mb-3 font-semibold uppercase tracking-[0.18em] text-accent">
+              {eyebrow}
+            </p>
+          )}
+          {title && (
+            <h2 className="text-title">
+              {title}
+              {accentWord && (
+                <>
+                  {" "}
+                  <Accent>{accentWord}</Accent>
+                </>
+              )}
+            </h2>
+          )}
         </div>
       )}
       {children}

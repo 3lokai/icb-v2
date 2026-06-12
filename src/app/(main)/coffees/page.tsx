@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CoffeeDirectory } from "@/components/coffees/CoffeeDirectory";
@@ -321,8 +322,7 @@ export default async function CoffeesPage({
         }
         title={
           <>
-            Explore India&apos;s{" "}
-            <span className="text-accent italic">Exceptional</span> Beans.
+            Explore India&apos;s <Accent>Exceptional</Accent> Beans.
           </>
         }
       />

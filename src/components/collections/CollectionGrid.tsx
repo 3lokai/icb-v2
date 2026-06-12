@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import { CollectionCard } from "@/components/cards/CollectionCard";
 import type {
@@ -95,8 +96,7 @@ export function CollectionGrid({
 
               {/* Title */}
               <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                {title}{" "}
-                <span className="text-accent italic">{titleAccent}</span>
+                {title} <Accent>{titleAccent}</Accent>
               </h2>
 
               {/* Description */}

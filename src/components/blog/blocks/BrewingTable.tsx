@@ -26,9 +26,9 @@ export function BrewingTable({ value }: BrewingTableProps) {
     >
       {value.title && (
         <div className="border-b bg-muted/20 px-6 py-4">
-          <h4 className="text-title font-bold text-foreground tracking-tight">
+          <h2 className="text-title font-bold text-foreground tracking-tight">
             {value.title}
-          </h4>
+          </h2>
         </div>
       )}
       <div className="overflow-x-auto">

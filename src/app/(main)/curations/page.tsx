@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 import { getAllCurators } from "@/data/curations";
 import { CuratorListingPage } from "@/components/curations/CuratorListingPage";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -29,7 +30,7 @@ export default async function CurationsHubPage() {
         title={
           <>
             Curations by cafés, baristas, and{" "}
-            <span className="text-accent italic">serious coffee people.</span>
+            <Accent>serious coffee people.</Accent>
           </>
         }
         description="Independent coffee recommendations from people who brew, taste, and care deeply about Indian specialty coffee."

@@ -1,5 +1,6 @@
 // components/faqs/HomePageFAQ.tsx
 import { FAQSection } from "@/components/common/FAQ";
+import { Accent } from "@/components/primitives/accent";
 
 const homepageFAQs = [
   {
@@ -43,8 +44,7 @@ export function HomepageFAQ() {
       overline="The Details"
       title={
         <>
-          Frequently Asked{" "}
-          <span className="text-accent italic">Questions.</span>
+          Frequently Asked <Accent>Questions.</Accent>
         </>
       }
     />

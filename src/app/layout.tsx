@@ -24,15 +24,15 @@ const fraunces = Fraunces({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-display",
-  display: "optional",
-  preload: false, // Keep serif display font off critical preload path
+  display: "swap",
+  preload: true, // Keep serif display font off critical preload path
 });
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"], // Kept 500 as font-medium is used 208+ times
   variable: "--font-sans",
-  display: "optional", // Use optional to prevent FOIT and improve FCP
+  display: "swap", // Use optional to prevent FOIT and improve FCP
   preload: true, // Preload critical font
 });
 

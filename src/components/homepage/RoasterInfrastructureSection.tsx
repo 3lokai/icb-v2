@@ -1,85 +1,93 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { useRoasterDirectory } from "@/hooks/useHomePageQueries";
+import { useImageColor } from "@/hooks/useImageColor";
+import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
+import { Marquee } from "@/components/ui/marquee";
 import { Icon } from "@/components/common/Icon";
 import Image from "next/image";
 import { roasterImagePresets } from "@/lib/imagekit";
+import { cn } from "@/lib/utils";
+import type { RoasterSummary } from "@/types/roaster-types";
+
+function RoasterLogoTile({ roaster }: { roaster: RoasterSummary }) {
+  const logoUrl = useMemo(
+    () =>
+      roaster.slug
+        ? roasterImagePresets.roasterLogo(`roasters/${roaster.slug}-logo`)
+        : null,
+    [roaster.slug]
+  );
+  // isDark = logo is light/white → needs a darker plate, and vice versa
+  const { isDark } = useImageColor(logoUrl);
+
+  const logoBgClass = isDark
+    ? "bg-[radial-gradient(circle_at_center,oklch(0.24_0.014_59.46)_0%,oklch(0.195_0.01_59.58)_100%)] dark:bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)]"
+    : "bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)] dark:bg-[radial-gradient(circle_at_center,oklch(0.965_0.015_79.92)_0%,oklch(0.982_0.009_79.92)_100%)]";
+
+  return (
+    <div
+      className={cn(
+        "group flex h-14 w-14 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-sm border border-border/40 p-2 shadow-sm transition-colors hover:border-accent/20",
+        logoBgClass
+      )}
+      title={roaster.name}
+    >
+      <div className="relative h-full w-full">
+        {logoUrl && (
+          <Image
+            alt={roaster.name}
+            className="object-contain"
+            fill
+            sizes="64px"
+            src={logoUrl}
+            unoptimized
+          />
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function RoasterInfrastructureSection() {
   const { data } = useRoasterDirectory(100);
   const roasters = data?.items || [];
   const totalCount = data?.total || 0;
 
-  // Duplicate list for seamless marquee
-  const displayRoasters = [...roasters, ...roasters];
+  const wallRoasters = roasters;
 
   return (
     <Section spacing="default" className="overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-        {/* Left Column: Dense List (Visual) - order-2 on mobile so copy appears first */}
-        <div className="relative h-[320px] sm:h-[400px] md:h-[500px] w-full min-w-0 overflow-hidden order-2 md:order-1">
-          {/* Gradient Overlays: match main page background (bg-muted/30 on surface-0) */}
-          <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent z-10 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent z-10 pointer-events-none" />
+        {/* Left Column: Roaster logo wall - order-2 on mobile so copy appears first */}
+        <div className="relative h-[280px] sm:h-[360px] md:h-[400px] w-full min-w-0 overflow-hidden order-2 md:order-1">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 bg-gradient-to-t from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent" />
 
-          {/* Marquee Content */}
-          <div
-            className="absolute inset-x-0 top-0 min-w-0 animate-marquee-vertical hover:[animation-play-state:paused]"
-            style={{ "--duration": "60s" } as React.CSSProperties}
+          <Marquee
+            vertical
+            pauseOnHover
+            repeat={2}
+            className="p-0 [--duration:70s] [--gap:0.5rem]"
           >
-            <div className="grid grid-cols-2 p-6 gap-4 min-w-0">
-              {displayRoasters.map((roaster, i) => (
-                <div
-                  key={`${roaster.id}-${i}`}
-                  className="flex flex-col gap-3 p-4 rounded-lg bg-surface-1/50 border border-border/40 hover:bg-surface-1 hover:border-accent/20 transition-all group select-none shadow-sm"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="relative w-10 h-10 shrink-0 overflow-hidden rounded bg-white p-1 border border-border/20">
-                      <Image
-                        alt={roaster.name}
-                        className="object-contain"
-                        fill
-                        sizes="40px"
-                        src={roasterImagePresets.roasterLogo(
-                          `roasters/${roaster.slug}-logo`
-                        )}
-                        unoptimized
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-label font-medium text-foreground truncate">
-                        {roaster.name}
-                      </div>
-                      <div className="text-micro text-muted-foreground truncate">
-                        {[roaster.hq_city, roaster.hq_state]
-                          .filter(Boolean)
-                          .join(", ")}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="grid grid-cols-5 gap-2 justify-items-center">
+              {wallRoasters.map((roaster) => (
+                <RoasterLogoTile key={roaster.id} roaster={roaster} />
               ))}
             </div>
-          </div>
+          </Marquee>
         </div>
 
         {/* Right Column: Copy & Stats - order-1 on mobile so copy appears first */}
         <div className="flex flex-col justify-center items-start text-left order-1 md:order-2">
           <Stack gap="6">
-            <div className="inline-flex items-center gap-4">
-              <span className="h-px w-8 md:w-12 bg-accent/60" />
-              <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                The Infrastructure
-              </span>
-            </div>
-
             <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-              India&apos;s Coffee
-              <span className="text-accent italic"> Ecosystem.</span>
+              India&apos;s Coffee <Accent>Ecosystem.</Accent>
             </h2>
 
             <div className="py-4 flex items-baseline gap-3">
@@ -123,20 +131,6 @@ export default function RoasterInfrastructureSection() {
           </Stack>
         </div>
       </div>
-
-      <style jsx global>{`
-        @keyframes marquee-vertical {
-          from {
-            transform: translateY(0);
-          }
-          to {
-            transform: translateY(-50%);
-          }
-        }
-        .animate-marquee-vertical {
-          animation: marquee-vertical var(--duration) linear infinite;
-        }
-      `}</style>
     </Section>
   );
 }

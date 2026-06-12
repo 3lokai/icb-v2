@@ -9,6 +9,7 @@ import { generateMetadata } from "@/lib/seo/metadata";
 import { contactPageSchema } from "@/lib/seo/schema";
 import ContactForms from "./ContactForms";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Accent } from "@/components/primitives/accent";
 
 // Define metadata for SEO
 export const metadata: Metadata = generateMetadata({
@@ -34,7 +35,7 @@ export default function ContactPage() {
       <PageHeader
         title={
           <>
-            Connect With <span className="text-accent italic">Us.</span>
+            Connect With <Accent>Us.</Accent>
           </>
         }
         overline="Our Community"

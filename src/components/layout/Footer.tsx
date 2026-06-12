@@ -7,36 +7,19 @@ import { Logo } from "@/components/layout/logo";
 import { CookieSettingsButton } from "../common/CookieSettings";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
+import { PageShell } from "@/components/primitives/page-shell";
+import { Decor } from "@/components/primitives/decor";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative border-t border-border bg-card">
+    <footer className="relative overflow-hidden border-t border-border bg-card">
       {/* Magazine aesthetic background elements */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        {/* Refined dot texture */}
-        <div className="absolute inset-0 opacity-[0.15]">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 2px 2px, rgba(0,0,0,0.05) 1px, transparent 0)",
-              backgroundSize: "32px 32px",
-            }}
-          />
-        </div>
-
-        {/* Decorative blurry washes */}
-        <div className="absolute -top-32 -right-32 h-64 w-64 rounded-full bg-accent/5 blur-[80px]" />
-        <div className="absolute -bottom-32 -left-32 h-64 w-64 rounded-full bg-primary/5 blur-[80px]" />
-      </div>
+      <Decor texture="dots" wash />
 
       <div className="relative py-12 md:py-16">
-        <div className="container-default">
+        <PageShell>
           <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
             {/* Column 1: Brand - Spans 3 on md */}
             <div className="md:col-span-3">
@@ -307,7 +290,7 @@ export function Footer() {
               </div>
             </div>
           </div>
-        </div>
+        </PageShell>
       </div>
     </footer>
   );

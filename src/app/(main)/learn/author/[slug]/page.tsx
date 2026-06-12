@@ -68,8 +68,6 @@ export default async function AuthorPage({ params }: Props) {
     authorId: author._id,
   });
 
-  const authorSlug = author.slug ?? author._id ?? slug;
-
   return (
     <>
       <PageHeader
@@ -174,7 +172,7 @@ export default async function AuthorPage({ params }: Props) {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-20 text-center">
-                <h3 className="text-title mb-2">No articles yet</h3>
+                <h3 className="text-heading mb-2">No articles yet</h3>
                 <p className="text-muted-foreground">
                   This author hasn&apos;t published anything yet. Check back
                   soon!

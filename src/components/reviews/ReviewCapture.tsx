@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import {
   useState,
   useEffect,
@@ -375,7 +376,7 @@ export function ReviewCapture({
                     </span>
                   </div>
                   <h3 className="text-title text-balance leading-tight">
-                    Your <span className="text-accent italic">Review.</span>
+                    Your <Accent>Review.</Accent>
                   </h3>
                   {userReview.recommend !== null && (
                     <p className="text-body text-muted-foreground">
@@ -695,13 +696,11 @@ export function ReviewCapture({
               <h3 className="text-title text-balance leading-tight">
                 {entityType === "coffee" ? (
                   <>
-                    How was your{" "}
-                    <span className="text-accent italic">Brew?</span>
+                    How was your <Accent>Brew?</Accent>
                   </>
                 ) : (
                   <>
-                    How was your{" "}
-                    <span className="text-accent italic">Experience?</span>
+                    How was your <Accent>Experience?</Accent>
                   </>
                 )}
               </h3>

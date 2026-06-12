@@ -26,12 +26,105 @@
     animation-play-state: paused;
   }
 
+  /* Reduced-motion: stop all marquees so content sits static and readable */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee,
+    .animate-marquee-vertical,
+    .animate-marquee-single {
+      animation: none;
+    }
+  }
+
   /* Animation delay utilities (used by animate-fade-in-scale, animate-float) */
   .delay-200 {
     animation-delay: 200ms;
   }
   .delay-300 {
     animation-delay: 300ms;
+  }
+
+  /* ============================================================
+     ACCENT — coffee brush-smear emphasis (the <Accent> primitive)
+     A real brush stroke used as an alpha mask, recoloured to the
+     accent token, sitting low as an underline over the lower glyphs.
+     Tunables: --ints (opacity), --cov (height). Ration ≤1 per page.
+     ============================================================ */
+  .accent-smear {
+    position: relative;
+    font-style: italic;
+    white-space: nowrap;
+    padding: 0 0.08em;
+    isolation: isolate;
+  }
+  .accent-smear::after {
+    content: "";
+    position: absolute;
+    left: -0.12em;
+    right: -0.12em;
+    bottom: 0.02em;
+    height: var(--cov, 0.6em);
+    z-index: -1;
+    background: var(--accent);
+    -webkit-mask: url("/images/stain-smear.png") center / 100% 100% no-repeat;
+    mask: url("/images/stain-smear.png") center / 100% 100% no-repeat;
+    opacity: var(--ints, 0.6);
+    pointer-events: none;
+  }
+  .dark .accent-smear::after {
+    opacity: var(--ints, 0.5);
+  }
+
+  /* ============================================================
+     DECOR — texture / wash / stripe (the <Decor> primitive)
+     One implementation each. Sections pass props, never hand-roll.
+     ============================================================ */
+  .decor-stripe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0.375rem;
+    background: linear-gradient(
+      to bottom,
+      var(--primary),
+      var(--accent),
+      color-mix(in oklch, var(--primary), transparent 40%)
+    );
+    opacity: 0.6;
+  }
+  @media (min-width: 768px) {
+    .decor-stripe {
+      width: 0.5rem;
+    }
+  }
+  .decor-dots {
+    position: absolute;
+    inset: 0;
+    opacity: 0.18;
+    background-image: radial-gradient(
+      color-mix(in oklch, var(--foreground), transparent 70%) 1px,
+      transparent 1px
+    );
+    background-size: 22px 22px;
+  }
+  .decor-wash {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+  }
+  .decor-wash-a {
+    width: 16rem;
+    height: 16rem;
+    right: -8rem;
+    top: -8rem;
+    background: color-mix(in oklch, var(--accent), transparent 80%);
+  }
+  .decor-wash-b {
+    width: 16rem;
+    height: 16rem;
+    left: -8rem;
+    bottom: -8rem;
+    background: color-mix(in oklch, var(--primary), transparent 82%);
   }
 }
 

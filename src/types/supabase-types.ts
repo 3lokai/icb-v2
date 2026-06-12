@@ -2968,6 +2968,14 @@ export type Database = {
         Returns: Json;
       };
       get_epic_c_parameters: { Args: { p_coffee_id: string }; Returns: Json };
+      get_single_origin_by_region: {
+        Args: { p_limit?: number };
+        Returns: { label: string; value: number }[];
+      };
+      get_single_origin_vs_blend: {
+        Args: never;
+        Returns: { label: string; value: number }[];
+      };
       get_or_create_estate: {
         Args: {
           p_altitude_max_m?: number;

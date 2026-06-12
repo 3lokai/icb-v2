@@ -25,7 +25,9 @@ export async function GET(request: Request) {
       });
     }
 
-    return NextResponse.json(meta);
+    return NextResponse.json(meta, {
+      headers: { "Cache-Control": "s-maxage=120, stale-while-revalidate=300" },
+    });
   } catch (error) {
     console.error("[API /roasters/filter-meta] Error:", error);
 

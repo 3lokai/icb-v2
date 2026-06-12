@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { Stack } from "@/components/primitives/stack";
 import { Icon } from "@/components/common/Icon";
 import { Curator } from "./types";
@@ -23,7 +24,7 @@ export function CurationStory({ curator }: CurationStoryProps) {
               </span>
             </div>
             <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-              Beyond the <span className="text-accent italic">bean.</span>
+              Beyond the <Accent>bean.</Accent>
             </h2>
           </Stack>
 

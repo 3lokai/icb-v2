@@ -1,6 +1,7 @@
 // src/components/contactus/NewsletterSection.tsx
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "../ui/button";
@@ -40,8 +41,7 @@ export function NewsletterSection({
               </div>
 
               <h3 className="text-title text-balance leading-[1.1] tracking-tight">
-                Join Our Global{" "}
-                <span className="text-accent italic">Coffee Community.</span>
+                Join Our Global <Accent>Coffee Community.</Accent>
               </h3>
 
               <p className="max-w-xl text-pretty text-body-large text-muted-foreground leading-relaxed">

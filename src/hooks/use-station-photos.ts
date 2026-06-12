@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import { toast } from "sonner";
 import { uploadStationPhoto, deleteStationPhoto } from "@/app/actions/profile";
 import type {
@@ -72,8 +73,8 @@ export function useStationPhotos(currentPhotos: StationPhoto[] = []) {
         toast.success("Photo uploaded successfully!");
 
         // Invalidate profile queries to refetch
-        queryClient.invalidateQueries({ queryKey: ["profile"] });
-        queryClient.invalidateQueries({ queryKey: ["user"] });
+        queryClient.invalidateQueries({ queryKey: queryKeys.profile.all });
+        queryClient.invalidateQueries({ queryKey: queryKeys.user.all });
       }
     },
     onError: (error: Error) => {
@@ -107,8 +108,8 @@ export function useStationPhotos(currentPhotos: StationPhoto[] = []) {
       });
 
       // Invalidate profile queries to refetch
-      queryClient.invalidateQueries({ queryKey: ["profile"] });
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.profile.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.user.all });
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to delete photo");

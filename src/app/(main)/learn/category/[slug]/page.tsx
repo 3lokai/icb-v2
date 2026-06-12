@@ -162,7 +162,7 @@ export default async function CategoryPage({ params }: Props) {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-20 text-center">
-                <h3 className="text-title mb-2">No articles yet</h3>
+                <h3 className="text-heading mb-2">No articles yet</h3>
                 <p className="text-muted-foreground">
                   We haven't published anything in this category yet. Check back
                   soon!

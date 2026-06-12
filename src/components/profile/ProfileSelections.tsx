@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -90,7 +91,7 @@ export function ProfileSelections({
           <Stack gap="1">
             <Cluster align="center" className="justify-between">
               <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                My <span className="text-accent italic">Selections.</span>
+                My <Accent>Selections.</Accent>
               </h2>
               {!isAnonymous && (
                 <ShareSection section="selections" username={username} />

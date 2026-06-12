@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Accent } from "@/components/primitives/accent";
+import { Decor } from "@/components/primitives/decor";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { FormModal } from "@/components/contactus/FormModal";
@@ -52,19 +54,7 @@ const InteractiveBentoCard = ({
     )}
     onClick={onClick}
   >
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, currentColor 0.5px, transparent 0)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-      </div>
-      <div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-primary/40 via-accent/40 to-primary/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-    </div>
+    <Decor texture="dots" stripe />
 
     <div className="relative z-10 p-6 md:p-8 flex flex-col h-full">
       <div className="flex transform-gpu flex-col gap-4 transition-all duration-500 group-hover:-translate-y-2 grow">
@@ -253,20 +243,7 @@ export default function ContactForms({
               />
 
               <div className="group relative overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-shadow duration-500 hover:shadow-md">
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0"
-                >
-                  <div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-primary via-accent to-primary/60 opacity-60" />
-                  <div
-                    className="absolute inset-0 opacity-[0.03] pointer-events-none"
-                    style={{
-                      backgroundImage:
-                        "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
-                      backgroundSize: "32px 32px",
-                    }}
-                  />
-                </div>
+                <Decor stripe texture="dots" />
 
                 <div className="relative grid grid-cols-1 lg:grid-cols-12 items-stretch">
                   <div className="lg:col-span-5 relative min-h-[300px] lg:min-h-0">
@@ -284,8 +261,7 @@ export default function ContactForms({
                     <Stack gap="8">
                       <Stack gap="4">
                         <h3 className="text-heading text-balance">
-                          Claim Your{" "}
-                          <span className="text-accent italic">Legacy.</span>
+                          Claim Your <Accent>Legacy.</Accent>
                         </h3>
                         <p className="text-body text-muted-foreground leading-relaxed">
                           Already listed in our directory? Claim your roastery

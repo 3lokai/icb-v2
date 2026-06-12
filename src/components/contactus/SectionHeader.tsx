@@ -1,3 +1,4 @@
+import { Accent } from "@/components/primitives/accent";
 // src/components/contactus/SectionHeader.tsx
 import { Stack } from "../primitives/stack";
 import { cn } from "@/lib/utils";
@@ -44,7 +45,7 @@ export function SectionHeader({
             word === "Legacy." ||
             word === "Ecosystem" ||
             (i === arr.length - 1 && !word.endsWith(".")) ? (
-              <span className="text-accent italic">{word}</span>
+              <Accent>{word}</Accent>
             ) : (
               word
             )}

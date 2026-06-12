@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -54,9 +55,9 @@ function SpotlightCard({
         <div className="flex-1 space-y-4">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <h4 className="text-title font-bold text-foreground leading-tight tracking-tight">
+              <h2 className="text-title font-bold text-foreground leading-tight tracking-tight">
                 {data.name}
-              </h4>
+              </h2>
               <Badge
                 variant="secondary"
                 className="bg-primary/10 text-primary border-primary/20"
@@ -115,7 +116,7 @@ function SpotlightCard({
 
 export function CoffeeSpotlight({ value }: CoffeeSpotlightProps) {
   const { data: coffee, isLoading } = useQuery({
-    queryKey: ["coffee-spotlight", value.coffeeId],
+    queryKey: queryKeys.blog.coffeeSpotlight(value.coffeeId),
     queryFn: async () => {
       if (!value.coffeeId) return null;
       const res = await fetch(`/api/coffees/${value.coffeeId}`);

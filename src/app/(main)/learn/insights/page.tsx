@@ -1,7 +1,9 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Stack } from "@/components/primitives/stack";
+import { Accent } from "@/components/primitives/accent";
+import StructuredData from "@/components/seo/StructuredData";
 import {
   ProcessBreakdownChart,
   StateConcentrationChart,
@@ -10,27 +12,104 @@ import {
   VarietyDistributionChart,
   RoasterCityChart,
 } from "@/components/insights/InsightsCharts";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import { createAnonServerClient } from "@/lib/supabase/server";
 
-export const metadata: Metadata = {
-  title:
-    "Indian Specialty Coffee Insights — by the Numbers | IndianCoffeeBeans",
+const baseUrl =
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
+
+export const metadata: Metadata = generateSEOMetadata({
+  title: "Indian Specialty Coffee — by the Numbers | IndianCoffeeBeans",
   description:
     "Live data from 85+ active roasters and 1,100+ specialty SKUs indexed on IndianCoffeeBeans.com. Process breakdowns, origin regions, pricing benchmarks, variety distribution, and roaster geography. Updated monthly.",
-};
+  keywords: [
+    "Indian specialty coffee data",
+    "coffee market India",
+    "specialty coffee statistics",
+    "Indian coffee regions",
+    "coffee processing methods India",
+  ],
+  canonical: "/learn/insights",
+  image: `${baseUrl}/og/insights.png`,
+  type: "website",
+});
 
-const LAST_UPDATED = "May 2025";
+async function getLastUpdated(): Promise<{
+  display: string;
+  iso: string;
+}> {
+  const supabase = createAnonServerClient();
+  const { data } = await supabase
+    .from("coffees")
+    .select("updated_at")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .single();
 
-export default function InsightsPage() {
+  if (data?.updated_at) {
+    return {
+      display: new Date(data.updated_at).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+      iso: data.updated_at,
+    };
+  }
+
+  return {
+    display: "May 2026",
+    iso: "2026-05-01",
+  };
+}
+
+function buildInsightsDatasetSchema(dateModified: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: "Indian Specialty Coffee Market Data",
+    description:
+      "Processing methods, origin regions, pricing benchmarks, variety distribution, and roaster geography for 1,100+ specialty SKUs from 85+ active Indian roasters.",
+    url: `${baseUrl}/learn/insights`,
+    creator: {
+      "@type": "Organization",
+      name: "IndianCoffeeBeans.com",
+      url: baseUrl,
+    },
+    datePublished: "2024-01-01",
+    dateModified,
+    keywords: [
+      "Indian specialty coffee",
+      "coffee processing",
+      "origin regions",
+      "coffee pricing India",
+      "specialty roasters India",
+    ],
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    isAccessibleForFree: true,
+    spatialCoverage: "India",
+    variableMeasured: [
+      "processing method",
+      "origin region",
+      "price",
+      "variety",
+      "roaster geography",
+    ],
+  };
+}
+
+export default async function InsightsPage() {
+  const { display: lastUpdated, iso: lastUpdatedIso } = await getLastUpdated();
+
   return (
     <>
+      <StructuredData schema={buildInsightsDatasetSchema(lastUpdatedIso)} />
       <PageHeader
         title={
           <>
-            The State of Indian Specialty Coffee
+            The State of Indian Specialty Coffee,
             <br />
-            <span className="text-accent italic font-serif">
-              by the Numbers
-            </span>
+            <Accent>by the Numbers</Accent>
           </>
         }
         overline="Market Insights"
@@ -50,9 +129,7 @@ export default function InsightsPage() {
             </div>
             <p className="text-caption">
               Last updated:{" "}
-              <span className="font-medium text-foreground">
-                {LAST_UPDATED}
-              </span>
+              <span className="font-medium text-foreground">{lastUpdated}</span>
             </p>
           </div>
 
@@ -169,7 +246,7 @@ export default function InsightsPage() {
                   </FootnoteLine>
                   <FootnoteLine>
                     Last updated:{" "}
-                    <strong className="text-foreground">{LAST_UPDATED}</strong>
+                    <strong className="text-foreground">{lastUpdated}</strong>
                   </FootnoteLine>
                 </ul>
               </div>

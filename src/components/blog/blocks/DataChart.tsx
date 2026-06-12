@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import {
   BarChart,
   Bar,
@@ -11,6 +12,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { motion } from "motion/react";
@@ -37,14 +39,17 @@ const COLORS = [
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
+    const grouped = payload.length > 1;
     return (
       <div className="rounded-xl border border-border/50 bg-card/90 p-3 shadow-xl backdrop-blur-md">
         <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground mb-1">
           {payload[0].payload.label}
         </p>
-        <p className="text-heading font-black text-primary">
-          {payload[0].value}
-        </p>
+        {payload.map((p: any, i: number) => (
+          <p key={i} className="text-heading font-black text-primary">
+            {grouped ? `${p.name}: ${p.value}` : p.value}
+          </p>
+        ))}
       </div>
     );
   }
@@ -70,7 +75,7 @@ const itemVariants = {
 
 export function DataChart({ value }: DataChartProps) {
   const { data, isLoading, error } = useQuery<ChartDataItem[]>({
-    queryKey: ["chart-data", value.dataKey, value.limit],
+    queryKey: queryKeys.blog.dataChart(value.dataKey, value.limit),
     queryFn: async () => {
       let url = `/api/blog/chart-data?dataKey=${value.dataKey}&limit=${
         value.limit || 10
@@ -96,6 +101,12 @@ export function DataChart({ value }: DataChartProps) {
 
   if (error || !data || data.length === 0) return null;
 
+  // Grouped (multi-series) charts — e.g. flavor_by_roast dark-vs-light — carry per-band
+  // tallies instead of a single `value`. Detect them to switch the bar renderer.
+  const isGrouped = data.some(
+    (d) => d.dark !== undefined || d.light !== undefined
+  );
+
   return (
     <motion.div
       variants={containerVariants}
@@ -106,12 +117,12 @@ export function DataChart({ value }: DataChartProps) {
     >
       <div className="mb-6 px-2">
         {value.title && (
-          <motion.h3
+          <motion.h2
             variants={itemVariants}
             className="text-title font-bold text-foreground tracking-tight mb-2"
           >
             {value.title}
-          </motion.h3>
+          </motion.h2>
         )}
         {value.description && (
           <motion.p
@@ -157,21 +168,51 @@ export function DataChart({ value }: DataChartProps) {
                 cursor={{ fill: "var(--muted)", radius: 8 }}
                 content={<CustomTooltip />}
               />
-              <Bar
-                dataKey="value"
-                fill="var(--chart-1)"
-                radius={[0, 8, 8, 0]}
-                barSize={32}
-                animationDuration={1500}
-                animationEasing="ease-out"
-              >
-                {data.map((_, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Bar>
+              {isGrouped ? (
+                [
+                  <Legend
+                    key="legend"
+                    iconType="circle"
+                    wrapperStyle={{ fontSize: 12, fontWeight: 600 }}
+                  />,
+                  <Bar
+                    key="dark"
+                    dataKey="dark"
+                    name="Dark roast"
+                    fill="var(--chart-1)"
+                    radius={[0, 6, 6, 0]}
+                    barSize={14}
+                    animationDuration={1500}
+                    animationEasing="ease-out"
+                  />,
+                  <Bar
+                    key="light"
+                    dataKey="light"
+                    name="Light roast"
+                    fill="var(--chart-3)"
+                    radius={[0, 6, 6, 0]}
+                    barSize={14}
+                    animationDuration={1500}
+                    animationEasing="ease-out"
+                  />,
+                ]
+              ) : (
+                <Bar
+                  dataKey="value"
+                  fill="var(--chart-1)"
+                  radius={[0, 8, 8, 0]}
+                  barSize={32}
+                  animationDuration={1500}
+                  animationEasing="ease-out"
+                >
+                  {data.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Bar>
+              )}
             </BarChart>
           ) : (
             <PieChart>
@@ -207,16 +248,31 @@ export function DataChart({ value }: DataChartProps) {
         <h4>Data points for {value.title || value.dataKey}</h4>
         <table>
           <thead>
-            <tr>
-              <th>Feature</th>
-              <th>Count</th>
-            </tr>
+            {isGrouped ? (
+              <tr>
+                <th>Feature</th>
+                <th>Dark roast</th>
+                <th>Light roast</th>
+              </tr>
+            ) : (
+              <tr>
+                <th>Feature</th>
+                <th>Count</th>
+              </tr>
+            )}
           </thead>
           <tbody>
             {data.map((item, i) => (
               <tr key={i}>
                 <td>{item.label}</td>
-                <td>{item.value}</td>
+                {isGrouped ? (
+                  <>
+                    <td>{item.dark ?? 0}</td>
+                    <td>{item.light ?? 0}</td>
+                  </>
+                ) : (
+                  <td>{item.value}</td>
+                )}
               </tr>
             ))}
           </tbody>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -212,7 +213,7 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
                 </span>
               </div>
               <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                Privacy & <span className="text-accent italic">Data.</span>
+                Privacy & <Accent>Data.</Accent>
               </h2>
               <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
                 Manage your privacy settings and account data with full control

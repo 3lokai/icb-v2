@@ -56,9 +56,9 @@ export function FAQBlock({ value, articleFaqs = [] }: FAQBlockProps) {
       className="not-prose my-8"
     >
       {value.title && (
-        <h4 className="mb-10 text-title font-bold tracking-tight text-foreground underline decoration-accent/30 decoration-4 underline-offset-8">
+        <h2 className="mb-10 text-title font-bold tracking-tight text-foreground underline decoration-accent/30 decoration-4 underline-offset-8">
           {value.title}
-        </h4>
+        </h2>
       )}
       <Accordion
         type="single"

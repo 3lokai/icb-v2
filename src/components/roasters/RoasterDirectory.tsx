@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { Icon } from "@/components/common/Icon";
 import { useMemo, useState } from "react";
 import { RoasterDirectoryFAQ } from "@/components/faqs/RoasterDirectoryFAQs";
@@ -87,8 +88,7 @@ export function RoasterDirectory({
           </div>
 
           <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-            Explore India&apos;s{" "}
-            <span className="text-accent italic">Roaster Network</span>
+            Explore India&apos;s <Accent>Roaster Network</Accent>
           </h2>
 
           <p className="max-w-md text-pretty text-body-large text-muted-foreground leading-relaxed">

@@ -1,5 +1,6 @@
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useCallback, useEffect, useRef, useMemo } from "react";
@@ -484,8 +485,7 @@ export function RoasterDetailPage({
                     </span>
                   </div>
                   <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                    About{" "}
-                    <span className="text-accent italic">{roaster.name}</span>
+                    About <Accent>{roaster.name}</Accent>
                   </h2>
                   <p className="whitespace-pre-line text-body-large text-muted-foreground/80 leading-relaxed italic">
                     {roaster.description}

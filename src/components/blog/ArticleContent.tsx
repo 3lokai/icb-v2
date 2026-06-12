@@ -61,11 +61,20 @@ const createComponents = (
     dataChart: DataChart,
   },
   block: {
-    h1: ({ children }) => (
-      <h1 className="mb-6 mt-12 text-hero font-bold tracking-tight">
-        {children}
-      </h1>
-    ),
+    // Body content starts at h2 — the single page <h1> is the article title in
+    // ArticleHeader. A body "h1" style block degrades to <h2> (kept visually
+    // largest) so the document outline never has two h1s. No published/draft
+    // article currently uses h1 in the body (verified 2026-06-08).
+    h1: ({ children, value }) => {
+      const raw = value?.children as Array<{ text?: string }> | undefined;
+      const title = raw?.map((c) => c?.text ?? "").join("") ?? "";
+      const id = title ? slugifyHeading(title) : undefined;
+      return (
+        <h2 id={id} className="mb-6 mt-12 text-hero font-bold tracking-tight">
+          {children}
+        </h2>
+      );
+    },
     h2: ({ children, value }) => {
       const raw = value?.children as Array<{ text?: string }> | undefined;
       const title = raw?.map((c) => c?.text ?? "").join("") ?? "";
@@ -86,7 +95,7 @@ const createComponents = (
       return (
         <h3
           id={id}
-          className="mb-3 mt-8 text-title font-semibold tracking-tight"
+          className="mb-3 mt-8 text-heading font-semibold tracking-tight"
         >
           {children}
         </h3>

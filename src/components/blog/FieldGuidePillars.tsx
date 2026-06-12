@@ -124,9 +124,9 @@ function PillarCard({
               </div>
 
               <div className="min-w-0">
-                <h3 className="text-body sm:text-subheading font-semibold mb-1 text-accent line-clamp-2">
+                <p className="text-body sm:text-subheading font-semibold mb-1 text-accent line-clamp-2">
                   {category.name}
-                </h3>
+                </p>
                 <p className="text-caption sm:text-body-small text-muted-foreground leading-relaxed line-clamp-4 sm:line-clamp-none">
                   {category.description || "Explore this knowledge layer."}
                 </p>

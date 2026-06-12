@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import CoffeeCard from "@/components/cards/CoffeeCard";
@@ -65,7 +66,7 @@ export function CoffeeCollection({ value }: CoffeeCollectionProps) {
   } = value;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["coffee-collection", value],
+    queryKey: queryKeys.blog.coffeeCollection(value),
     queryFn: async () => {
       const params = new URLSearchParams();
       params.set("limit", limit.toString());
@@ -107,9 +108,9 @@ export function CoffeeCollection({ value }: CoffeeCollectionProps) {
       {(title || description) && (
         <div className="mb-12 text-center space-y-3">
           {title && (
-            <h4 className="text-title font-bold text-foreground tracking-tight underline decoration-primary/20 decoration-4 underline-offset-8">
+            <h2 className="text-title font-bold text-foreground tracking-tight underline decoration-accent/30 decoration-4 underline-offset-8">
               {title}
-            </h4>
+            </h2>
           )}
           {description && (
             <p className="mx-auto max-w-2xl text-body-large text-muted-foreground/80 italic font-serif">

@@ -1,6 +1,7 @@
 // src/components/home/FeaturesBentoGrid.tsx
 "use client";
 
+import { Accent } from "@/components/primitives/accent";
 import { useEffect, useState } from "react";
 import { Icon, IconName } from "@/components/common/Icon";
 import { Section } from "@/components/primitives/section";
@@ -332,8 +333,7 @@ export default function FeaturesBentoGrid() {
                   </span>
                 </div>
                 <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                  Discover. Brew.{" "}
-                  <span className="text-accent italic">Perfect.</span>
+                  Discover. Brew. <Accent>Perfect.</Accent>
                 </h2>
                 <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
                   From precision brewing tools to community-verified data,

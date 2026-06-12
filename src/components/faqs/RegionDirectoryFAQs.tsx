@@ -1,5 +1,6 @@
 // components/faqs/RegionDirectoryFAQ.tsx
 import { FAQSection } from "@/components/common/FAQ";
+import { Accent } from "@/components/primitives/accent";
 
 const regionDirectoryFAQs = [
   {
@@ -38,7 +39,7 @@ export function RegionDirectoryFAQ() {
       overline="Regional Terroir"
       title={
         <>
-          Geography & <span className="text-accent italic">Flavor.</span>
+          Geography & <Accent>Flavor.</Accent>
         </>
       }
     />
