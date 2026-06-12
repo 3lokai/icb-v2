@@ -48,15 +48,20 @@ code. Discipline becomes *structural*, not a written rule.
 
 Each sprint is independently shippable. Execute in order — Sprint 0 unlocks the rest.
 
-| Sprint | Focus | Risk | File |
-|--------|-------|------|------|
-| 0 | Design-system primitives (the leverage point) | Med | [sprint-0-design-system.md](./sprint-0-design-system.md) |
-| 1 | Homepage recomposition | Med | [sprint-1-homepage.md](./sprint-1-homepage.md) |
-| 2 | Marketing / public pages | Low | [sprint-2-marketing-pages.md](./sprint-2-marketing-pages.md) |
-| 3 | Learn hub + article reading | Low | [sprint-3-learn.md](./sprint-3-learn.md) |
-| 4 | Directory pages (coffees / roasters) | Low | [sprint-4-directory.md](./sprint-4-directory.md) |
-| 5 | Discovery landing pages (programmatic `/coffees/[slug]`) | Med | [sprint-5-discovery.md](./sprint-5-discovery.md) |
-| 6 | Cards: prioritize ratings submission | Med | [sprint-6-cards.md](./sprint-6-cards.md) |
+| Sprint | Focus | Risk | Status | File |
+|--------|-------|------|--------|------|
+| 0 | Design-system primitives (the leverage point) | Med | ✅ Shipped | [sprint-0-design-system.md](./sprint-0-design-system.md) |
+| 1 | Homepage recomposition | Med | ✅ Shipped | [sprint-1-homepage.md](./sprint-1-homepage.md) |
+| 2 | Marketing / public pages | Low | ✅ Shipped | [sprint-2-marketing-pages.md](./sprint-2-marketing-pages.md) |
+| 3 | Learn hub + article reading | Low | ✅ Shipped | [sprint-3-learn.md](./sprint-3-learn.md) |
+| 4 | Directory pages (coffees / roasters) | Low | ⬜ Not started | [sprint-4-directory.md](./sprint-4-directory.md) |
+| 5 | Discovery landing pages (programmatic `/coffees/[slug]`) | Med | ⬜ Not started | [sprint-5-discovery.md](./sprint-5-discovery.md) |
+| 6 | Cards: prioritize ratings submission | Med | ⬜ Not started | [sprint-6-cards.md](./sprint-6-cards.md) |
+| 7 | Out-of-scope backlog (site-wide accent sweep + blog consistency) | Low | 🟡 §7.B done · §7.A/7.C open | [sprint-7-backlog.md](./sprint-7-backlog.md) |
+
+*Status verified against the codebase on 2026-06-08.* Sprint 7 is a **documented backlog**, not a
+committed plan — it records tells on surfaces (legal pages, faqs, dashboard, profile, reviews, and the
+`text-accent italic` accent-tic variant) that Sprints 0–6 never scoped.
 
 ## Preservation guardrails (apply to every sprint)
 

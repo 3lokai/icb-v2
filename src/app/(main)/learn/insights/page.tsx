@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Stack } from "@/components/primitives/stack";
+import { Accent } from "@/components/primitives/accent";
 import StructuredData from "@/components/seo/StructuredData";
 import {
   ProcessBreakdownChart,
@@ -106,11 +107,9 @@ export default async function InsightsPage() {
       <PageHeader
         title={
           <>
-            The State of Indian Specialty Coffee —
+            The State of Indian Specialty Coffee,
             <br />
-            <span className="text-accent italic font-serif">
-              by the Numbers
-            </span>
+            <Accent>by the Numbers</Accent>
           </>
         }
         overline="Market Insights"

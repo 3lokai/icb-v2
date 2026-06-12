@@ -94,7 +94,7 @@ export default async function SeriesPage({ params }: Props) {
 
         {articles.length === 0 && (
           <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-20 text-center">
-            <h3 className="text-title mb-2">Series coming soon</h3>
+            <h3 className="text-heading mb-2">Series coming soon</h3>
             <p className="text-muted-foreground">
               The first part of this series will be published shortly!
             </p>

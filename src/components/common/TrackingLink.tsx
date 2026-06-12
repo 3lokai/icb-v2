@@ -13,6 +13,7 @@ type TrackingLinkProps = {
   href: string;
   ariaLabel: string;
   children: React.ReactNode;
+  className?: string;
   // Coffee tracking props
   coffeeId?: string | null;
   roasterId?: string | null;
@@ -53,6 +54,7 @@ export function RoasterTrackingLink({
   href,
   ariaLabel,
   children,
+  className,
   roasterOnlyId,
   coffeeCount,
 }: TrackingLinkProps) {
@@ -66,7 +68,12 @@ export function RoasterTrackingLink({
   };
 
   return (
-    <Link aria-label={ariaLabel} href={href} onClick={handleClick}>
+    <Link
+      aria-label={ariaLabel}
+      className={className}
+      href={href}
+      onClick={handleClick}
+    >
       {children}
     </Link>
   );

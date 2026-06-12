@@ -1,5 +1,10 @@
 # Sprint 5 — Discovery Landing Pages (programmatic `/coffees/[slug]`)
 
+> **Status: ⬜ Not started** (verified 2026-06-08). 10 `src/components/discovery/*` components still
+> carry inline `blur-2xl`/`blur-3xl` washes (BrewParamsStrip, RegionSnapshot, RoastProfileTabbed,
+> UtilityCard, PriceBucketProfileSection, RoastScale, ProcessExplainer, ProcessProfileSection,
+> BrewMethodProfileSection, RegionDetailSection); no `<Decor>` re-convergence yet.
+
 **Goal:** Bring the programmatic SEO landing pages onto the Sprint 0 primitives. These pages
 (`brew-method`, `roast-level`, `process`, `price-bucket`, `region`) render through
 `DiscoveryLandingLayout` and ~22 `src/components/discovery/*` components — none touched by Sprint 4,

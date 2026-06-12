@@ -1,5 +1,21 @@
 # Sprint 1 — Homepage Recomposition
 
+> **Status: ✅ Shipped** (verified 2026-06-08; accent straggler fixed). Rendered sections consume
+> `<Accent>`; `RoasterInfrastructureSection` marquee removed (now static); `<Decor>` adopted.
+> - **Resolved 2026-06-08:** `HomeCollectionGrid.tsx` + `HomeCollectionGridStatic.tsx` (rendered at
+>   `page.tsx:243` via `HomeCollectionGridLazy`) converted from the legacy `text-accent italic` span to
+>   `<Accent>`. Every accent word on the rendered homepage is now the primitive. (`HomepageFAQ` at
+>   `page.tsx:251` still carries the tic, but it's a shared `faqs/` component — tracked under
+>   [Sprint 7](./sprint-7-backlog.md) §7.A, not a homepage task.)
+> - **Testimonials marquee — intentional keep (decision 2026-06-08):** the static grid/carousel called
+>   for in 1.2b was built and reverted; the dual `<Marquee>` in `TestimonialsSection.tsx:207–219`
+>   stays by product preference. Criterion 1.2b for Testimonials is **waived**, not outstanding.
+>
+> **Verification note — 4 orphaned components:** `homepage/{NewsletterSection,
+> HomeDiscoveryPillsSection, FeaturesBentoGrid, FeaturedRoastersSection}.tsx` carry the tic **and
+> a marquee** (FeaturesBentoGrid), but have **zero importers** — dead code, not rendered, so out of
+> scope for Sprint 1's budgets. Flag for deletion (see [Sprint 7](./sprint-7-backlog.md) §7.C).
+
 **Goal:** Highest-visibility surface. Preserve all 14 sections' content/data; vary their *form* so
 the page reads as art-directed, not templated.
 
@@ -90,8 +106,9 @@ Other facts from Sprint 0:
 - Hero passes viewport/legibility pre-flight in both themes.
 
 ## Resolved decisions (locked 2026-06-06)
-- **Marquees:** keep `NewAdditionsStrip` only; Testimonials → static grid/carousel, RoasterInfra →
-  static stat list.
+- **Marquees:** keep `NewAdditionsStrip` only; ~~Testimonials → static grid/carousel~~ **(reverted
+  2026-06-08 — static version built then rejected; Testimonials keeps its dual marquee by product
+  preference)**, RoasterInfra → static stat list.
 - **Editorial row:** `NewArrivals` (featured-arrival + 3-4 smaller; keeps 3-5 items visible).
 - **Accent:** per-section-title accent is the ICB brand signature — convert all to `<Accent>`, do
   NOT delete to a single one. Skill updated with the documented project override.

@@ -1,5 +1,9 @@
 # Sprint 6 — Cards: prioritize ratings submission
 
+> **Status: ⬜ Not started** (verified 2026-06-08). No `CardRatingFooter.tsx`; `StarRating.tsx` has
+> no `role="radio"`/`radiogroup` or keyboard handling (a11y blocker 6.1 still open); `RoasterCard.tsx`
+> has no rating path.
+
 **Goal:** Make **rating submission the primary, consistent, accessible action** across the card layer.
 The opinion-first `CoffeeCard` footer is a genuine strength — this sprint propagates that strength to
 the variants and card types that currently drop it, and fixes the one thing that undercuts it

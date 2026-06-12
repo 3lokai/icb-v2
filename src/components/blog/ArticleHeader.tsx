@@ -66,7 +66,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
             {/* Title & Description */}
             <Stack gap="4">
-              <h1 className="text-display text-white text-balance leading-[1.1] tracking-tight md:text-display lg:text-hero">
+              <h1 className="text-display text-white text-balance leading-[1.1] tracking-tight lg:text-hero">
                 {title}
               </h1>
               {(description || excerpt) && (

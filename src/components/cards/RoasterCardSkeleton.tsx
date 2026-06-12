@@ -15,12 +15,28 @@ export function RoasterCardSkeleton() {
       </div>
 
       {/* Content - card-padding + title + metadata */}
-      <div className="relative card-padding">
+      <div className="flex-1 card-padding">
         <Stack gap="2">
           <Skeleton className="h-6 w-4/5" />
           <Skeleton className="h-4 w-1/2" />
           <Skeleton className="h-4 w-1/3" />
         </Stack>
+      </div>
+
+      {/* Rating zone skeleton - matches CardRatingFooter (no CLS) */}
+      <div className="mt-auto border-t border-border/40 bg-muted/20">
+        <div className="flex flex-row items-center justify-between card-padding-compact">
+          {/* Left: Rating number block */}
+          <div className="flex flex-col gap-1">
+            <Skeleton className="h-8 w-12" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+          {/* Right: Action block */}
+          <div className="flex flex-col items-end gap-1">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-3 w-24" />
+          </div>
+        </div>
       </div>
     </Card>
   );

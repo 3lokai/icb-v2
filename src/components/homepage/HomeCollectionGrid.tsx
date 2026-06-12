@@ -20,6 +20,7 @@ import {
 } from "@/lib/collections/coffee-collections";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
+import { Accent } from "@/components/primitives/accent";
 import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import {
@@ -109,8 +110,7 @@ export function HomeCollectionGrid({
               </div>
 
               <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                {title}{" "}
-                <span className="text-accent italic">{titleAccent}</span>
+                {title} <Accent>{titleAccent}</Accent>
               </h2>
 
               <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">

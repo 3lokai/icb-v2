@@ -119,9 +119,9 @@ export function TableOfContents({ body, toc }: TableOfContentsProps) {
   return (
     <nav className="hidden lg:block w-full z-10" aria-label="Table of contents">
       <Stack gap="6">
-        <h4 className="text-overline text-muted-foreground tracking-[0.15em]">
+        <h2 className="text-overline text-muted-foreground tracking-[0.15em]">
           Table of Contents
-        </h4>
+        </h2>
         <ul className="space-y-4">
           {headings.map((heading) => (
             <li
@@ -134,10 +134,12 @@ export function TableOfContents({ body, toc }: TableOfContentsProps) {
               <a
                 href={`#${heading.id}`}
                 className={cn(
-                  "text-caption block transition-colors hover:text-primary rounded-r-md py-1 pr-2",
+                  "text-caption block transition-colors hover:text-primary rounded-r-md py-1 pr-2 border-l-2 pl-3 -ml-[2px]",
                   activeId === heading.id
-                    ? "text-primary font-bold border-l-2 border-primary pl-3 -ml-[2px] bg-primary/5"
-                    : "text-muted-foreground border-l-2 border-transparent pl-3 -ml-[2px]"
+                    ? "text-primary font-bold border-primary bg-primary/5"
+                    : heading.level === 2
+                      ? "text-foreground/75 font-medium border-transparent"
+                      : "text-muted-foreground border-transparent"
                 )}
                 onClick={(e) => {
                   e.preventDefault();

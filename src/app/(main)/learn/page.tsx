@@ -37,7 +37,7 @@ export default async function LearnPage() {
         title={
           <>
             The Indian Coffee <br />
-            <span className="text-accent italic font-serif">Field Guide</span>
+            <Accent>Field Guide</Accent>
           </>
         }
         overline="Knowledge Base"
@@ -75,7 +75,7 @@ export default async function LearnPage() {
               <Stack gap="12">
                 <div className="flex flex-col gap-4">
                   <h2 className="text-title font-semibold tracking-tight text-balance">
-                    Editor&apos;s picks
+                    Editor's <Accent>Picks</Accent>
                   </h2>
                 </div>
                 <div className="grid gap-8">
@@ -99,7 +99,7 @@ export default async function LearnPage() {
                     </span>
                   </div>
                   <h2 className="text-title font-semibold tracking-tight text-balance">
-                    Latest insights
+                    Latest <Accent>Insights</Accent>
                   </h2>
                   <p className="max-w-2xl text-body-large text-muted-foreground">
                     Our curated selection of stories, guides, and research from

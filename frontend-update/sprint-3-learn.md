@@ -1,5 +1,14 @@
 # Sprint 3 — Learn Hub + Article Reading
 
+> **Status: ✅ Shipped** (verified 2026-06-08). `ArticleContent.tsx` h2→`.text-title` /
+> h3→`.text-heading` is done (3.1); the learn hub uses `<Accent>` (3.2); the `/learn` hero title
+> "Field Guide" was converted from the legacy `text-accent italic font-serif` span to `<Accent>`
+> (`learn/page.tsx:40`, fixed 2026-06-08).
+> **Note (out of scope):** `learn/insights/page.tsx:111` still has a legacy accent-word span — it was
+> never in this sprint's file list. The `blog/blocks/*` italic-serif paragraphs are intentional
+> editorial byline/description styling (muted body text, not the `text-accent` heading tic) and are
+> on-contract — no fix needed.
+
 **Goal:** Fix reading-typography hierarchy and eyebrow saturation; preserve the premium pillar
 flip and card hover language.
 
