@@ -10,6 +10,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
+    "prebuild": "node scripts/copy-lottie-wasm.mjs",
+    "postinstall": "node scripts/copy-lottie-wasm.mjs",
     "start": "next start",
     "analyze": "cross-env ANALYZE=true next build --webpack",
     "type-check": "tsc --noEmit",

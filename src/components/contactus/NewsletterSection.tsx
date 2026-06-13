@@ -5,6 +5,7 @@ import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "../ui/button";
+import { Decor } from "../primitives/decor";
 import { Stack } from "../primitives/stack";
 
 type NewsletterSectionProps = {
@@ -24,10 +25,8 @@ export function NewsletterSection({
 }: NewsletterSectionProps) {
   return (
     <div className="group relative overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-sm transition-shadow duration-500 hover:shadow-md">
-      {/* Magazine accent: stripe */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute left-0 top-0 h-full w-1.5 md:w-2 bg-gradient-to-b from-primary via-accent to-primary/60 opacity-60" />
-      </div>
+      {/* Magazine accent: top rule */}
+      <Decor stripe />
 
       <div className="relative grid grid-cols-1 lg:grid-cols-12">
         <div className="lg:col-span-12 xl:col-span-7 p-8 md:p-12 xl:p-16">

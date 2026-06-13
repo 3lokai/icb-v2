@@ -118,6 +118,7 @@ export function BrewMethodProfileSection({
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Brew profile"
         title="How this *brewer* behaves"
@@ -133,14 +134,13 @@ export function BrewMethodProfileSection({
       <div className="mx-auto max-w-6xl w-full space-y-12 px-4 md:px-0">
         {/* 1. Brewer characteristics - stays as a 2x2 grid card */}
         <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-10 shadow-xl shadow-primary/5">
-          <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-primary/10 blur-3xl" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-48 -translate-x-1/3 translate-y-1/3 rounded-full bg-accent/10 blur-3xl" />
           <div className="relative grid gap-8 md:grid-cols-5 items-center">
             <div className="md:col-span-2 relative aspect-[4/3] md:aspect-square rounded-2xl overflow-hidden shadow-sm border border-border/10">
               <Image
                 src={`/images/discovery/brew-methods/${brewMethodImageBase(slug)}-mechanism.avif`}
                 alt="Brewer Mechanism"
                 fill
+                sizes="(max-width: 768px) 100vw, 40vw"
                 className="object-cover"
               />
             </div>
@@ -170,13 +170,13 @@ export function BrewMethodProfileSection({
         </div>
 
         {/* 2. Indian context - Promoted hero block */}
-        <div className="relative overflow-hidden rounded-[2rem] border border-amber-500/20 bg-amber-500/5 shadow-sm grid md:grid-cols-5">
-          <div className="absolute top-0 right-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-accent/5 shadow-sm grid md:grid-cols-5">
           <div className="order-1 md:order-2 md:col-span-2 relative aspect-video md:aspect-auto h-full min-h-0">
             <Image
               src={`/images/discovery/brew-methods/${brewMethodImageBase(slug)}-context.avif`}
               alt="Indian Specialty Context"
               fill
+              sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover"
             />
           </div>
@@ -186,8 +186,8 @@ export function BrewMethodProfileSection({
               className="relative z-10 w-full text-center md:text-left"
             >
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <Icon name="MapPin" className="h-5 w-5 text-amber-600/70" />
-                <p className="text-overline text-amber-700/80 dark:text-amber-500/80 tracking-[0.15em] uppercase">
+                <Icon name="MapPin" className="h-5 w-5 text-accent/70" />
+                <p className="text-overline text-accent tracking-[0.15em] uppercase">
                   Indian Specialty Context
                 </p>
               </div>

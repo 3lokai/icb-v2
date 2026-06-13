@@ -10,7 +10,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { Accent } from "@/components/primitives/accent";
 import { Cluster } from "@/components/primitives/cluster";
+import { Stack } from "@/components/primitives/stack";
 import { Icon, type IconName } from "@/components/common/Icon";
 import {
   DISCOVERY_PILL_ROWS,
@@ -23,6 +25,8 @@ type DiscoveryAccordionGridProps = {
   showHeading?: boolean;
   overline?: string;
   title?: ReactNode;
+  /** Word(s) within a string `title` to underline with the coffee-smear <Accent>. */
+  accentWord?: string;
   description?: string;
 };
 
@@ -47,6 +51,11 @@ const CATEGORY_STYLE_MAP: Record<string, CategoryMeta> = {
     icon: "Plant",
     image: "/images/discovery/process.avif",
     subtext: "Washed, natural, and beyond",
+  },
+  "Bean type": {
+    icon: "CoffeeBean",
+    image: "/images/discovery/bean-types.jpg",
+    subtext: "Arabica, robusta, blends",
   },
   Budget: {
     icon: "CurrencyInr",
@@ -210,32 +219,50 @@ export function DiscoveryAccordionGrid({
   className,
   showHeading = true,
   overline = "Explore by category",
-  title = "Find coffee your way",
+  title = "Or find coffee your way",
+  accentWord = "your way",
   description = "Jump to top-rated coffees based on parameters, or scroll down for detailed filters.",
 }: DiscoveryAccordionGridProps) {
+  // Smear the accent word within a string title; non-string titles render verbatim.
+  const accentIndex =
+    typeof title === "string" && accentWord
+      ? title.lastIndexOf(accentWord)
+      : -1;
+  const renderedTitle =
+    typeof title === "string" && accentWord && accentIndex >= 0 ? (
+      <>
+        {title.slice(0, accentIndex)}
+        <Accent>{accentWord}</Accent>
+        {title.slice(accentIndex + accentWord.length)}
+      </>
+    ) : (
+      title
+    );
   const prefersHover = usePrefersHover();
   const [activeTitle, setActiveTitle] = useState<string | null>(null);
 
   return (
     <div className={cn("w-full transition-all duration-500", className)}>
       {showHeading ? (
-        <div className="mb-10">
-          {overline ? (
-            <div className="mb-2 flex items-center gap-3">
-              <span className="h-px w-6 bg-accent/60" />
-              <p className="text-overline text-muted-foreground tracking-[0.15em]">
-                {overline}
+        <div className="mb-12">
+          <Stack gap="6">
+            {overline ? (
+              <div className="inline-flex items-center gap-4">
+                <span className="h-px w-8 md:w-12 bg-accent/60" />
+                <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                  {overline}
+                </span>
+              </div>
+            ) : null}
+            <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+              {renderedTitle}
+            </h2>
+            {description ? (
+              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                {description}
               </p>
-            </div>
-          ) : null}
-          <h2 className="text-title font-serif leading-tight tracking-tight">
-            {title}
-          </h2>
-          {description ? (
-            <p className="mt-2 max-w-2xl text-body text-muted-foreground">
-              {description}
-            </p>
-          ) : null}
+            ) : null}
+          </Stack>
         </div>
       ) : null}
 
@@ -286,19 +313,21 @@ export function DiscoveryAccordionGridSkeleton({
   return (
     <div className={cn("w-full", className)}>
       {showHeading ? (
-        <div className="mb-10">
-          <div className="mb-2 flex items-center gap-3">
-            <Skeleton className="h-px w-6" />
-            <Skeleton className="h-4 w-32" />
-          </div>
-          <Skeleton className="mb-2 h-10 w-64" />
-          <Skeleton className="h-4 w-full max-w-2xl" />
+        <div className="mb-12">
+          <Stack gap="6">
+            <div className="inline-flex items-center gap-4">
+              <Skeleton className="h-px w-8 md:w-12" />
+              <Skeleton className="h-4 w-32" />
+            </div>
+            <Skeleton className="h-10 w-64" />
+            <Skeleton className="h-4 w-full max-w-2xl" />
+          </Stack>
         </div>
       ) : null}
 
       <div className="overflow-hidden rounded-xl border border-border/40 shadow-sm">
         <div className="flex flex-col md:h-[440px] md:flex-row">
-          {Array.from({ length: 5 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
               className="relative flex min-h-[110px] flex-1 border-b border-border/30 bg-muted/10 md:border-b-0 md:border-r md:last:border-r-0"

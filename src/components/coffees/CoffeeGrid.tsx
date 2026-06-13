@@ -3,11 +3,16 @@
 import { useMemo, memo } from "react";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { CoffeeCardSkeleton } from "@/components/cards/CoffeeCardSkeleton";
+import { Button } from "@/components/ui/button";
 import type { CoffeeSummary } from "@/types/coffee-types";
 
 interface CoffeeGridProps {
   items: CoffeeSummary[];
   isLoading?: boolean;
+  /** When true, an empty result is from active filters — offer a way back. */
+  hasActiveFilters?: boolean;
+  /** Clears all filters (wired to the directory's resetFilters). */
+  onClearFilters?: () => void;
 }
 
 const SKELETON_COUNT = 8;
@@ -18,7 +23,12 @@ const SKELETON_COUNT = 8;
  * Optimized with memoization to reduce re-renders
  * Shows skeleton grid when loading with no items to prevent CLS
  */
-function CoffeeGridComponent({ items, isLoading }: CoffeeGridProps) {
+function CoffeeGridComponent({
+  items,
+  isLoading,
+  hasActiveFilters,
+  onClearFilters,
+}: CoffeeGridProps) {
   // Memoize the grid items to prevent unnecessary re-renders
   const gridItems = useMemo(() => {
     if (isLoading && items.length === 0) {
@@ -29,8 +39,22 @@ function CoffeeGridComponent({ items, isLoading }: CoffeeGridProps) {
 
     if (items.length === 0 && !isLoading) {
       return (
-        <div className="py-12 text-center col-span-full">
-          <p className="text-muted-foreground">No coffees found.</p>
+        <div className="col-span-full py-16 text-center">
+          <p className="text-body text-muted-foreground">
+            {hasActiveFilters
+              ? "No coffees match these filters."
+              : "No coffees found."}
+          </p>
+          {hasActiveFilters && onClearFilters && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-4"
+              onClick={onClearFilters}
+            >
+              Clear all filters
+            </Button>
+          )}
         </div>
       );
     }
@@ -41,7 +65,7 @@ function CoffeeGridComponent({ items, isLoading }: CoffeeGridProps) {
         key={coffee.coffee_id || coffee.slug || `coffee-${index}`}
       />
     ));
-  }, [items, isLoading]);
+  }, [items, isLoading, hasActiveFilters, onClearFilters]);
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">

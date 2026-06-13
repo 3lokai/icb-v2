@@ -25,12 +25,12 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
   return (
     <Section spacing="default" className="py-8 md:py-14 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-        <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card shadow-xl transition-all duration-500 hover:shadow-accent/5">
+        <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card transition-all duration-500 hover:border-border hover:shadow-lg">
           <div className="grid grid-cols-1 lg:grid-cols-12">
             {/* Left Column: Editorial Content (approx 70%) */}
             <div className="lg:col-span-8 relative z-10 flex flex-col justify-center p-6 md:p-10 lg:p-12 overflow-hidden">
-              {/* Decorative Brand Stripe - matching homepage CtaSection */}
-              <div className="absolute left-0 top-0 h-full w-1.5 md:w-2 bg-gradient-to-b from-primary via-accent to-primary/60 opacity-60" />
+              {/* Decorative Brand top rule - matching homepage CtaSection */}
+              <div className="absolute left-0 right-0 top-0 h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60" />
 
               {/* Background Noise Texture */}
               <div className="bg-noise absolute inset-0 opacity-[0.035] pointer-events-none" />

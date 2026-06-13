@@ -114,10 +114,11 @@ const TestimonialCard = ({
   return (
     <figure
       className={cn(
-        "relative h-full w-80 cursor-pointer overflow-hidden rounded-xl border p-6",
-        // Glassmorphism treatment matching your existing style
-        "border-border/30 bg-card/40 shadow-lg backdrop-blur-sm",
-        "group transition-all duration-300 hover:bg-card/60 hover:shadow-xl"
+        "relative h-full w-80 cursor-pointer overflow-hidden rounded-xl p-6",
+        // Solid lifted-paper card (surface-2) — a tonal step above the warm band,
+        // flat at rest, shadow only on hover. No glass.
+        "surface-2",
+        "group transition-all duration-300 hover:border-border hover:shadow-md"
       )}
       itemScope
       itemType="https://schema.org/Review"
@@ -197,7 +198,12 @@ const TestimonialCard = ({
 
 export default function TestimonialsSection() {
   return (
-    <Section spacing="default" title="What Coffee" accentWord="Lovers Say.">
+    <Section
+      spacing="default"
+      ground="warm"
+      title="What Coffee"
+      accentWord="Lovers Say."
+    >
       <Stack gap="12">
         <p className="-mt-6 max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
           Join the community of coffee enthusiasts discovering the rich world of

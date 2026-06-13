@@ -86,7 +86,12 @@ export default function EducationSection({
 }) {
   return (
     <MotionConfig reducedMotion="user">
-      <Section id="learn" spacing="loose">
+      <Section
+        id="learn"
+        spacing="loose"
+        ground="warm"
+        decor={{ texture: "grain-coarse" }}
+      >
         <div className="relative mx-auto max-w-6xl w-full">
           {/* Background decoration — single static wash (was two infinite-loop blurs) */}
           <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
@@ -231,7 +236,7 @@ export default function EducationSection({
                     </div>
                   ) : (
                     /* Fallback to static image if no articles are provided */
-                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-2xl">
+                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-md">
                       <Image
                         alt="Open coffee education journal on wooden café table"
                         className="h-full w-full object-cover"
@@ -254,7 +259,7 @@ export default function EducationSection({
                       animate={{ y: [0, -8, 0] }}
                       className="absolute -bottom-6 -left-6 z-20 hidden max-w-xs lg:block"
                     >
-                      <div className="surface-1 p-4 shadow-xl rounded-xl border border-border/50">
+                      <div className="surface-1 p-4 shadow-lg rounded-xl border border-border/50">
                         <div className="flex items-start gap-3">
                           <div className="h-8 w-8 flex-center flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 text-accent">
                             <Icon name="Coffee" size={16} color="accent" />

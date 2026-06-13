@@ -101,6 +101,7 @@ export function DiscoveryRecipeSection({
   return (
     <Section spacing="tight" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Expert Techniques"
         title="Brew like a *pro*"

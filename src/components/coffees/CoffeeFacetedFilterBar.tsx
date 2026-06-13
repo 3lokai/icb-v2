@@ -330,7 +330,7 @@ export function CoffeeFacetedFilterBar({
           <div className="flex shrink-0 items-center gap-2">
             <label
               htmlFor="sort-select"
-              className="shrink-0 font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+              className="shrink-0 font-bold uppercase tracking-widest text-muted-foreground text-micro"
             >
               Sort:
             </label>
@@ -362,7 +362,7 @@ export function CoffeeFacetedFilterBar({
         <div className="hidden grid-cols-1 gap-4 md:grid md:grid-cols-3">
           <div className="space-y-2">
             <label
-              className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+              className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
               htmlFor="roast-level-select"
             >
               Roast Level
@@ -386,7 +386,7 @@ export function CoffeeFacetedFilterBar({
           </div>
           <div className="space-y-2">
             <label
-              className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+              className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
               htmlFor="brew-method-select"
             >
               Brew Method
@@ -407,7 +407,7 @@ export function CoffeeFacetedFilterBar({
           </div>
           <div className="space-y-2">
             <label
-              className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+              className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
               htmlFor="species-select"
             >
               Species
@@ -451,7 +451,7 @@ export function CoffeeFacetedFilterBar({
             <CollapsibleContent>
               <div className="mt-4 space-y-6 rounded-lg border border-border/40 bg-muted/20 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/40 pb-2">
-                  <span className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+                  <span className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
                     Advanced filters
                   </span>
                   <Button
@@ -467,7 +467,7 @@ export function CoffeeFacetedFilterBar({
                 {/* Price Range */}
                 <Stack gap="3">
                   <label
-                    className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+                    className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
                     htmlFor="priceRange"
                   >
                     Price Range (₹)
@@ -510,7 +510,7 @@ export function CoffeeFacetedFilterBar({
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {filterMeta.roasters.length > 0 && (
                     <Stack gap="2">
-                      <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+                      <label className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
                         Roasters
                       </label>
                       <MultiSelect
@@ -542,7 +542,7 @@ export function CoffeeFacetedFilterBar({
                   )}
                   {regionOptions.length > 0 && (
                     <Stack gap="2">
-                      <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+                      <label className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
                         Regions
                       </label>
                       <MultiSelect
@@ -571,7 +571,7 @@ export function CoffeeFacetedFilterBar({
                   )}
                   {estateOptions.length > 0 && (
                     <Stack gap="2">
-                      <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+                      <label className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
                         Estates
                       </label>
                       <MultiSelect
@@ -603,7 +603,7 @@ export function CoffeeFacetedFilterBar({
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {flavorOptions.length > 0 && (
                     <Stack gap="2">
-                      <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+                      <label className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
                         Flavor Profiles
                       </label>
                       <MultiSelect
@@ -623,7 +623,7 @@ export function CoffeeFacetedFilterBar({
                   )}
                   {processOptions.length > 0 && (
                     <Stack gap="2">
-                      <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+                      <label className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
                         Processing
                       </label>
                       <MultiSelect
@@ -644,7 +644,7 @@ export function CoffeeFacetedFilterBar({
                     </Stack>
                   )}
                   <Stack gap="2">
-                    <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+                    <label className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
                       Status
                     </label>
                     <Stack gap="1" className="pr-2">
@@ -667,7 +667,7 @@ export function CoffeeFacetedFilterBar({
                             />
                             <span className="text-caption font-medium">
                               {status.label}{" "}
-                              <span className="text-muted-foreground/50">
+                              <span className="text-muted-foreground">
                                 ({status.count})
                               </span>
                             </span>
@@ -679,7 +679,7 @@ export function CoffeeFacetedFilterBar({
 
                 {/* Boolean toggles */}
                 <Stack gap="3">
-                  <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+                  <label className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
                     Options
                   </label>
                   <div className="flex flex-wrap items-center gap-6">
@@ -758,7 +758,7 @@ export function CoffeeFacetedFilterBar({
         {/* Active filters badges */}
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center gap-3 border-y border-border/40 py-3">
-            <span className="shrink-0 font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+            <span className="shrink-0 font-bold uppercase tracking-widest text-muted-foreground text-micro">
               Applied:
             </span>
             <Cluster gap="2">

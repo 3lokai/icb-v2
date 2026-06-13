@@ -33,6 +33,7 @@ export async function RoastersSourcing({
   return (
     <Section spacing="tight" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-6"
         overline="Roasters"
         title={`Sourcing from *${regionLabel}*`}

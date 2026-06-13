@@ -231,21 +231,6 @@ export default function HowItWorksSection() {
             </div>
           </Stack>
         </div>
-
-        <style jsx global>{`
-          .shadow-glow {
-            box-shadow: 0 0 20px -5px var(--accent);
-          }
-          .dashed {
-            background-image: linear-gradient(
-              to bottom,
-              var(--border) 50%,
-              transparent 50%
-            );
-            background-size: 1px 8px;
-            background-repeat: repeat-y;
-          }
-        `}</style>
       </Section>
     </MotionConfig>
   );

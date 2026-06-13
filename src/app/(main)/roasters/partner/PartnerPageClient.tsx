@@ -16,12 +16,14 @@ import { toast } from "sonner";
 import { PartnerFAQs } from "@/components/faqs/PartnerFAQs";
 import PartnerFormModal from "./PartnerFormModal";
 import Link from "next/link";
+import type { PublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 
 type PartnerPageClientProps = {
   submitForm: (
     formType: string,
     formData: FormData
   ) => Promise<{ success: boolean; error?: string; id?: string }>;
+  totals: PublicDirectoryTotals;
 };
 
 // InteractiveBentoCard component (reused from ContactForms pattern)
@@ -61,7 +63,7 @@ const InteractiveBentoCard = ({
           }}
         />
       </div>
-      <div className="absolute left-0 top-0 h-full w-1 bg-accent/40 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="absolute left-0 right-0 top-0 h-1 bg-accent/40 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <div className="absolute right-0 top-0 h-12 w-12 bg-accent/5 blur-2xl opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
     </div>
 
@@ -100,10 +102,18 @@ const InteractiveBentoCard = ({
 );
 
 // StatsBar Component - Refactored to a compact, editorial ribbon
-const StatsBar = () => {
+const StatsBar = ({ totals }: { totals: PublicDirectoryTotals }) => {
   const stats = [
-    { number: "60+", label: "Roasters Listed", urgent: false },
-    { number: "2,000+", label: "Coffees Cataloged", urgent: false },
+    {
+      number: `${totals.roasters.toLocaleString()}+`,
+      label: "Roasters Listed",
+      urgent: false,
+    },
+    {
+      number: `${totals.coffees.toLocaleString()}+`,
+      label: "Coffees Cataloged",
+      urgent: false,
+    },
     { number: "10", label: "Founding Spots Left", urgent: true },
     { number: "0%", label: "Commission", urgent: false },
   ];
@@ -527,9 +537,13 @@ const FeaturesGrid = () => {
 // FinalCTA Component
 const FinalCTA = ({
   onCtaClick,
+  totals,
 }: {
   onCtaClick: (tier: "free" | "verified") => void;
+  totals: PublicDirectoryTotals;
 }) => {
+  const roasterCountLabel = `${totals.roasters.toLocaleString()}+`;
+
   return (
     <div className="group relative overflow-hidden rounded-[2.5rem] border border-border/40 bg-card/60 shadow-2xl transition-all duration-700">
       {/* Editorial Accents */}
@@ -537,7 +551,7 @@ const FinalCTA = ({
       <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-primary/[0.03] blur-[120px]" />
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute left-0 top-0 h-full w-1.5 bg-accent/40" />
+        <div className="absolute left-0 right-0 top-0 h-1.5 bg-accent/40" />
         <div
           className="absolute inset-0 opacity-[0.02] pointer-events-none"
           style={{
@@ -563,9 +577,9 @@ const FinalCTA = ({
               Ready to Get <Accent>Discovered?</Accent>
             </h2>
             <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed">
-              Join 60+ roasters already listed on IndianCoffeeBeans. Build
-              long-term discovery for your coffees — without ads, commissions,
-              or rankings.
+              Join {roasterCountLabel} roasters already listed on
+              IndianCoffeeBeans. Build long-term discovery for your coffees —
+              without ads, commissions, or rankings.
             </p>
           </Stack>
 
@@ -612,6 +626,7 @@ const FinalCTA = ({
 
 export default function PartnerPageClient({
   submitForm,
+  totals,
 }: PartnerPageClientProps) {
   const [activeForm, setActiveForm] = useState<
     "free" | "verified" | "premium" | null
@@ -701,7 +716,7 @@ export default function PartnerPageClient({
         <Stack gap="4">
           {/* Stats Bar */}
           <Section spacing="tight">
-            <StatsBar />
+            <StatsBar totals={totals} />
           </Section>
 
           {/* Benefits Section */}
@@ -864,6 +879,7 @@ export default function PartnerPageClient({
           {/* Final CTA */}
           <Section spacing="loose">
             <FinalCTA
+              totals={totals}
               onCtaClick={(tier) => {
                 setActiveForm(tier);
               }}

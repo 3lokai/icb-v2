@@ -2,6 +2,7 @@ import { Accent } from "@/components/primitives/accent";
 // src/components/tools/ExpertRecipesCta.tsx
 import Link from "next/link";
 import { Icon } from "@/components/common/Icon";
+import { Decor } from "@/components/primitives/decor";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
@@ -18,30 +19,8 @@ export default function ExpertRecipesCta({
     <Section contained={sectionContained} spacing="default">
       <div className="mx-auto max-w-6xl">
         <div className="group relative overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-sm transition-shadow duration-500 hover:shadow-md">
-          {/* Subtle “magazine” accent: stripe + paper texture */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0"
-          >
-            {/* Accent stripe - responsive width */}
-            <div className="absolute left-0 top-0 h-full w-1.5 md:w-2 bg-gradient-to-b from-primary via-accent to-primary/60 opacity-60" />
-
-            {/* Very subtle dot texture - refined pattern */}
-            <div className="absolute inset-0 opacity-[0.2]">
-              <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage:
-                    "radial-gradient(circle at 2px 2px, rgba(0,0,0,0.05) 1px, transparent 0)",
-                  backgroundSize: "32px 32px",
-                }}
-              />
-            </div>
-
-            {/* Soft decorative wash - improved positioning */}
-            <div className="absolute -top-32 -right-32 h-64 w-64 rounded-full bg-accent/5 blur-[80px]" />
-            <div className="absolute -bottom-32 -left-32 h-64 w-64 rounded-full bg-primary/5 blur-[80px]" />
-          </div>
+          {/* Subtle "magazine" accent: top rule + paper texture + wash */}
+          <Decor stripe texture="dots" wash />
 
           <div className="relative p-6 sm:p-10 md:p-14 lg:p-16">
             <div className="grid items-center gap-10 md:gap-16 md:grid-cols-12">

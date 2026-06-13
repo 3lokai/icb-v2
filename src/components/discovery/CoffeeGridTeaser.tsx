@@ -60,6 +60,7 @@ export async function CoffeeGridTeaser({
   return (
     <Section spacing="default" contained={false}>
       <DiscoverySectionIntro
+        divider
         className="mb-12"
         overline={overline}
         title={title}

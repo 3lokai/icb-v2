@@ -3,6 +3,7 @@ import { validateApiKey } from "@/lib/api/validate-api-key";
 import { fetchCoffeeFilterMetaWithFilters } from "@/lib/data/fetch-coffee-filter-meta-filtered";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
 import { createApiRouteClient } from "@/lib/supabase/api-route";
+import { safeErrorMessage } from "@/lib/api/error-response";
 
 /**
  * GET /api/v1/coffees/filter-meta
@@ -21,9 +22,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("[API v1 /coffees/filter-meta] Unhandled error:", error);
     return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : "Internal server error",
-      },
+      { error: safeErrorMessage(error, "Internal server error") },
       { status: 500 }
     );
   }

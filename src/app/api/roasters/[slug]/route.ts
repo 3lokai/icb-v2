@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { fetchRoasterBySlug } from "@/lib/data/fetch-roaster-by-slug";
+import { safeErrorMessage } from "@/lib/api/error-response";
 
 /**
  * GET /api/roasters/[slug]
@@ -39,10 +40,7 @@ export async function GET(
     console.error("[API /roasters/[slug]] Error:", error);
 
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to fetch roaster",
-      },
+      { error: safeErrorMessage(error, "Failed to fetch roaster") },
       { status: 500 }
     );
   }

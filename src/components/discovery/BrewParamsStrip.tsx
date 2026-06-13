@@ -52,6 +52,7 @@ export function BrewParamsStrip({
   return (
     <Section spacing="tight" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-6"
         overline="Dial-in"
         title="Starting *parameters*"
@@ -66,10 +67,6 @@ export function BrewParamsStrip({
       />
       <div className="mx-auto max-w-6xl w-full px-4 md:px-0">
         <div className="surface-1 relative overflow-hidden rounded-2xl card-padding card-hover">
-          {/* Decorative background blurs */}
-          <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
-          <div className="absolute bottom-0 left-0 h-24 w-24 rounded-full bg-accent/5 blur-2xl" />
-
           <div className="relative z-10 grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-8">
             {cells.map((cell) => (
               <div

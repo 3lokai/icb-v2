@@ -31,6 +31,7 @@ export function PriceBucketProfileSection({
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Price Category Profile"
         title="What to expect at this *price point*"
@@ -47,9 +48,6 @@ export function PriceBucketProfileSection({
       <div className="mx-auto max-w-6xl w-full space-y-12 px-4 md:px-0">
         {/* 1. What You Get */}
         <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-10 shadow-xl shadow-primary/5">
-          <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-primary/10 blur-3xl" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-48 -translate-x-1/3 translate-y-1/3 rounded-full bg-accent/10 blur-3xl" />
-
           <Stack gap="6" className="relative z-10">
             <div className="flex items-center gap-2">
               <Icon

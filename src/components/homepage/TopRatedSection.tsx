@@ -14,8 +14,9 @@ import { formatCommunityCoffeeReviewLabel } from "@/lib/utils/community-review-l
 
 const COFFEES_RATING_SORT_HREF = "/coffees?sort=rating_desc";
 
+// Warm-paper band (surface-1) in the homepage's alternating ground rhythm.
 const sectionSurfaceClassName =
-  "bg-muted/30 relative overflow-hidden border-y border-border/40";
+  "bg-card relative overflow-hidden border-y border-border/60";
 
 type TopRatedSectionProps = {
   /** Metric B: rows in `latest_reviews_per_identity` for `entity_type = coffee`. */
@@ -50,7 +51,7 @@ export default function TopRatedSection({
         className={sectionSurfaceClassName}
       >
         <div className="relative z-10 py-8 text-center">
-          <h2 className="mb-4 text-heading text-primary">Top Rated</h2>
+          <h2 className="mb-4 text-title">Top Rated</h2>
           <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-accent" />
           <p className="text-body text-muted-foreground">
             Top-rated coffees will appear here as the community adds ratings.
@@ -70,7 +71,7 @@ export default function TopRatedSection({
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-start relative z-10">
         <div className="md:col-span-5 lg:col-span-4 md:sticky md:top-32">
           <Stack gap="8">
-            <h2 className="text-title lg:text-display text-balance leading-[1.1] tracking-tight">
+            <h2 className="text-title text-balance leading-[1.1] tracking-tight">
               Top <Accent>Rated.</Accent>
             </h2>
 

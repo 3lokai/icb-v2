@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Redis } from "@upstash/redis";
+import { safeErrorMessage } from "@/lib/api/error-response";
 
 /**
  * POST /api/cron/upstash-keepalive
@@ -35,10 +36,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[cron/upstash-keepalive] Error:", error);
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Upstash keepalive failed",
-      },
+      { error: safeErrorMessage(error, "Upstash keepalive failed") },
       { status: 500 }
     );
   }

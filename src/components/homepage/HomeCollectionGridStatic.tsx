@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { CollectionCard } from "@/components/cards/CollectionCard";
 import type { CoffeeCollection } from "@/lib/collections/coffee-collections";
 import {
@@ -11,12 +10,8 @@ import {
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Accent } from "@/components/primitives/accent";
-import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
-import {
-  type HomeCollectionGridProps,
-  filterOptions,
-} from "./homeCollectionGridShared";
+import { type HomeCollectionGridProps } from "./homeCollectionGridShared";
 
 // Same layout as HomeCollectionGrid but no Motion — used as placeholder until in view.
 export function HomeCollectionGridStatic({
@@ -106,43 +101,6 @@ export function HomeCollectionGridStatic({
               ))}
             </div>
           ))}
-        </div>
-      </div>
-
-      <div className="mt-0 pt-4 border-t border-border/40">
-        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
-          <div className="flex-none">
-            <span className="text-caption font-medium text-muted-foreground uppercase tracking-widest">
-              Prefer to search directly?
-            </span>
-          </div>
-
-          <div className="flex-1 flex gap-3 overflow-x-auto pb-2 md:pb-0 scrollbar-none snap-x snap-mandatory mask-linear-fade">
-            {filterOptions.map((option) => (
-              <Link
-                key={option.label}
-                href={option.href}
-                className="group relative flex-none snap-center"
-              >
-                <div
-                  className={cn(
-                    "flex items-center gap-3 px-4 py-2.5 rounded-full transition-all duration-300",
-                    "bg-muted/30 hover:bg-muted/80 border border-transparent hover:border-border/40",
-                    "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  <Icon
-                    name={option.icon}
-                    size={16}
-                    className="opacity-70 group-hover:opacity-100 transition-opacity"
-                  />
-                  <span className="text-caption font-medium whitespace-nowrap">
-                    {option.label.replace("By ", "")}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
         </div>
       </div>
     </Section>

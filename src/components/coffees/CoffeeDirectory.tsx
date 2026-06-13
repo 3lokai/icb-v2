@@ -37,7 +37,7 @@ function CoffeeDirectoryComponent({
   initialData,
   filterMeta,
 }: CoffeeDirectoryProps) {
-  const { filters, page, sort, limit } = useCoffeeFilters();
+  const { filters, page, sort, limit, resetFilters } = useCoffeeFilters();
 
   // Mobile drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -68,7 +68,7 @@ function CoffeeDirectoryComponent({
   }, [filters]);
 
   // Fetch data using TanStack Query
-  const { data, isFetching, isError } = useCoffees(
+  const { data, isFetching, isError, refetch } = useCoffees(
     { filters, page, limit, sort },
     { initialData }
   );
@@ -79,39 +79,26 @@ function CoffeeDirectoryComponent({
   // Render minimal UI (Phase 1)
   if (isError) {
     return (
-      <div className="container mx-auto p-4">
-        <div className="py-12 text-center">
-          <h2 className="mb-4 text-title">Error loading coffees</h2>
-          <p className="text-muted-foreground">
-            Please try refreshing the page.
-          </p>
-        </div>
+      <div className="w-full py-16 text-center">
+        <h2 className="mb-3 text-title">Couldn&apos;t load coffees</h2>
+        <p className="mx-auto mb-6 max-w-md text-body text-muted-foreground">
+          Something went wrong fetching the directory. Check your connection and
+          try again.
+        </p>
+        <Button variant="outline" onClick={() => refetch()}>
+          <Icon name="ArrowClockwise" className="mr-2" size={16} />
+          Try again
+        </Button>
       </div>
     );
   }
 
   return (
     <div className="w-full">
-      {/* Section Header */}
-      <div className="mb-0">
-        <Stack gap="6">
-          <div className="inline-flex items-center gap-4">
-            <span className="h-px w-8 md:w-12 bg-accent/60" />
-            <span className="text-overline text-muted-foreground tracking-[0.15em]">
-              The Directory
-            </span>
-          </div>
-
-          <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-            Explore the full <Accent>Coffee Catalogue</Accent>
-          </h2>
-
-          <p className="max-w-md text-pretty text-body-large text-muted-foreground leading-relaxed">
-            Filter by roast level, brew method, processing, or flavour to narrow
-            things down — or simply browse and compare at your own pace.
-          </p>
-        </Stack>
-      </div>
+      {/* Section heading — single anchor above the filter bar (hero carries the intro) */}
+      <h2 className="mb-8 text-title text-balance leading-[1.1] tracking-tight">
+        Explore the full <Accent>Coffee Catalogue</Accent>
+      </h2>
 
       {/* Mobile Filter Toggle Button */}
       <div className="mb-4 md:hidden">
@@ -155,7 +142,12 @@ function CoffeeDirectoryComponent({
       {/* Main Content - no sidebar, full width grid (skeletons shown by CoffeeGrid when loading) */}
       <div className="mt-8">
         <Stack gap="8">
-          <CoffeeGrid isLoading={isFetching} items={items} />
+          <CoffeeGrid
+            isLoading={isFetching}
+            items={items}
+            hasActiveFilters={activeFilterCount > 0}
+            onClearFilters={resetFilters}
+          />
 
           {/* Pagination */}
           {data && data.totalPages > 1 && (

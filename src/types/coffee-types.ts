@@ -112,6 +112,7 @@ export type CoffeeFilters = {
   bean_species?: SpeciesEnum[];
 
   // Boolean flags
+  single_origin_only?: boolean;
   decaf_only?: boolean;
   international_only?: boolean;
   limited_only?: boolean;

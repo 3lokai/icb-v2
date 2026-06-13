@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { fetchCoffees } from "@/lib/data/fetch-coffees";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
+import { safeErrorMessage } from "@/lib/api/error-response";
 
 /**
  * GET /api/coffees
@@ -36,10 +37,7 @@ export async function GET(request: Request) {
     console.error("[API /coffees] Error:", error);
 
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to fetch coffees",
-      },
+      { error: safeErrorMessage(error, "Failed to fetch coffees") },
       { status: 500 }
     );
   }

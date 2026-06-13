@@ -13,10 +13,25 @@ import {
   RoasterCityChart,
 } from "@/components/insights/InsightsCharts";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import {
+  fetchPublicDirectoryTotals,
+  type PublicDirectoryTotals,
+} from "@/lib/data/fetch-public-directory-totals";
 import { createAnonServerClient } from "@/lib/supabase/server";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
+
+const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+
+async function getDirectoryTotals(): Promise<PublicDirectoryTotals> {
+  try {
+    return await fetchPublicDirectoryTotals();
+  } catch (e) {
+    console.error("[InsightsPage] fetchPublicDirectoryTotals", e);
+    return TOTALS_FALLBACK;
+  }
+}
 
 export const metadata: Metadata = generateSEOMetadata({
   title: "Indian Specialty Coffee — by the Numbers | IndianCoffeeBeans",
@@ -63,13 +78,18 @@ async function getLastUpdated(): Promise<{
   };
 }
 
-function buildInsightsDatasetSchema(dateModified: string) {
+function buildInsightsDatasetSchema(
+  dateModified: string,
+  totals: PublicDirectoryTotals
+) {
+  const roasterCountLabel = `${totals.roasters.toLocaleString()}+`;
+  const coffeeCountLabel = `${totals.coffees.toLocaleString()}+`;
+
   return {
     "@context": "https://schema.org",
     "@type": "Dataset",
     name: "Indian Specialty Coffee Market Data",
-    description:
-      "Processing methods, origin regions, pricing benchmarks, variety distribution, and roaster geography for 1,100+ specialty SKUs from 85+ active Indian roasters.",
+    description: `Processing methods, origin regions, pricing benchmarks, variety distribution, and roaster geography for ${coffeeCountLabel} specialty SKUs from ${roasterCountLabel} active Indian roasters.`,
     url: `${baseUrl}/learn/insights`,
     creator: {
       "@type": "Organization",
@@ -99,11 +119,17 @@ function buildInsightsDatasetSchema(dateModified: string) {
 }
 
 export default async function InsightsPage() {
-  const { display: lastUpdated, iso: lastUpdatedIso } = await getLastUpdated();
+  const [{ display: lastUpdated, iso: lastUpdatedIso }, totals] =
+    await Promise.all([getLastUpdated(), getDirectoryTotals()]);
+
+  const roasterCountLabel = `${totals.roasters.toLocaleString()}+`;
+  const coffeeCountLabel = totals.coffees.toLocaleString();
 
   return (
     <>
-      <StructuredData schema={buildInsightsDatasetSchema(lastUpdatedIso)} />
+      <StructuredData
+        schema={buildInsightsDatasetSchema(lastUpdatedIso, totals)}
+      />
       <PageHeader
         title={
           <>
@@ -113,7 +139,7 @@ export default async function InsightsPage() {
           </>
         }
         overline="Market Insights"
-        description="Live data from 85+ active roasters and 1,100+ specialty SKUs indexed on IndianCoffeeBeans.com. Updated monthly."
+        description={`Live data from ${roasterCountLabel} active roasters and ${coffeeCountLabel} specialty SKUs indexed on IndianCoffeeBeans.com. Updated monthly.`}
         backgroundImage="/images/hero-learn.avif"
       />
 
@@ -122,8 +148,8 @@ export default async function InsightsPage() {
           {/* Metadata strip */}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 py-4">
             <div className="flex flex-wrap gap-6">
-              <Stat label="Active Roasters" value="85+" />
-              <Stat label="Specialty SKUs" value="1,108" />
+              <Stat label="Active Roasters" value={roasterCountLabel} />
+              <Stat label="Specialty SKUs" value={coffeeCountLabel} />
               <Stat label="States Covered" value="8" />
               <Stat label="Origin Regions" value="60+" />
             </div>
@@ -225,10 +251,12 @@ export default async function InsightsPage() {
                   <FootnoteLine>
                     Total catalog:{" "}
                     <strong className="text-foreground">
-                      1,108 active SKUs
+                      {coffeeCountLabel} active SKUs
                     </strong>{" "}
                     from{" "}
-                    <strong className="text-foreground">85+ roasters</strong>
+                    <strong className="text-foreground">
+                      {roasterCountLabel} roasters
+                    </strong>
                   </FootnoteLine>
                   <FootnoteLine>
                     Region-tagged coffees:{" "}

@@ -57,10 +57,10 @@ const BentoCard = ({
           />
         </div>
 
-        {/* Accent stripe on large cards */}
+        {/* Accent top rule on large cards */}
         {className.includes("lg:col-span-2") ||
         className.includes("lg:col-span-3") ? (
-          <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-primary/40 via-accent/40 to-primary/20 opacity-40 transition-opacity group-hover:opacity-80" />
+          <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-primary/40 via-accent/40 to-primary/20 opacity-40 transition-opacity group-hover:opacity-80" />
         ) : null}
       </div>
 

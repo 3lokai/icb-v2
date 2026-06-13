@@ -327,7 +327,7 @@ export function CoffeeFilterContent({
       {/* Search */}
       <Stack gap="3">
         <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+          className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
           htmlFor="search"
         >
           Filter by Name
@@ -349,7 +349,7 @@ export function CoffeeFilterContent({
       {brewOptions.length > 0 && (
         <Stack gap="3">
           <label
-            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
             htmlFor="brew_method_ids"
           >
             Brew Methods
@@ -374,7 +374,7 @@ export function CoffeeFilterContent({
       {roasterOptions.length > 0 && (
         <Stack gap="3">
           <label
-            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
             htmlFor="roaster_slugs"
           >
             Roasters
@@ -406,7 +406,7 @@ export function CoffeeFilterContent({
       {roastOptions.length > 0 && (
         <Stack gap="3">
           <label
-            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
             htmlFor="roast_levels"
           >
             Roast Level
@@ -432,7 +432,7 @@ export function CoffeeFilterContent({
       {speciesOptions.length > 0 && (
         <Stack gap="3">
           <label
-            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
             htmlFor="bean_species"
           >
             Species
@@ -457,7 +457,7 @@ export function CoffeeFilterContent({
       {/* Price Range */}
       <Stack gap="3">
         <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+          className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
           htmlFor="priceRange"
         >
           Price Range (₹)
@@ -505,7 +505,7 @@ export function CoffeeFilterContent({
       {flavorOptions.length > 0 && (
         <Stack gap="3">
           <label
-            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
             htmlFor="canon_flavor_slugs"
           >
             Flavor Profiles
@@ -530,7 +530,7 @@ export function CoffeeFilterContent({
       {regionOptions.length > 0 && (
         <Stack gap="3">
           <label
-            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
             htmlFor="region_slugs"
           >
             Regions
@@ -562,7 +562,7 @@ export function CoffeeFilterContent({
       {estateOptions.length > 0 && (
         <Stack gap="3">
           <label
-            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
             htmlFor="estate_keys"
           >
             Estates
@@ -594,7 +594,7 @@ export function CoffeeFilterContent({
       {processOptions.length > 0 && (
         <Stack gap="3">
           <label
-            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
             htmlFor="processes"
           >
             Processing Method
@@ -620,7 +620,7 @@ export function CoffeeFilterContent({
       {statusOptions.length > 0 && (
         <Stack gap="3">
           <label
-            className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+            className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
             htmlFor="status"
           >
             Status
@@ -646,7 +646,7 @@ export function CoffeeFilterContent({
 
       {/* Boolean Filters */}
       <Stack gap="4">
-        <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+        <label className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
           Options
         </label>
         <Stack gap="3">

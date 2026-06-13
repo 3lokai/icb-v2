@@ -6,7 +6,8 @@ export type LandingPageType =
   | "roast_level"
   | "price_bucket"
   | "process"
-  | "region";
+  | "region"
+  | "bean_type";
 
 export type UtilityCardType = "brew_guide" | "calculator" | "tips";
 
@@ -149,6 +150,35 @@ export type RegionProfileConfig = {
   icbDataNote: string;
 };
 
+/** Bean type / species landing pages — see `bean-type-pages.ts` */
+export type BeanTypeCharacteristic = {
+  label: string;
+  value: string;
+};
+
+export type BeanTypeProfileConfig = {
+  /** Quick-reference stat cards (e.g. Caffeine, Body, Acidity, Best for) */
+  characteristics: BeanTypeCharacteristic[];
+  /** What this bean type tastes like */
+  flavourProfile: {
+    typical: string[];
+    indianContext: string;
+  };
+  /** Where this bean type fits in Indian coffee */
+  indiaContext: string;
+  /** Brew guidance specific to this bean type */
+  brewGuidance: {
+    recommended: string[];
+    notes: string;
+  };
+  /** Cross-links to other bean type pages */
+  comparison: {
+    relatedSlugs: string[];
+    note: string;
+  };
+  icbDataNote: string;
+};
+
 export type LandingPageConfig = {
   slug: string;
   type: LandingPageType;
@@ -203,6 +233,8 @@ export type LandingPageConfig = {
   priceBucketProfile?: PriceBucketProfileConfig;
   /** Region pages: deep profile */
   regionProfile?: RegionProfileConfig;
+  /** Bean type pages: deep profile (characteristics, flavour, context, brew) */
+  beanTypeProfile?: BeanTypeProfileConfig;
 };
 
 /** Roast level data files — `roastProfile` is always present */

@@ -2,6 +2,7 @@
 
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { useEffect } from "react";
+import "@/lib/lottie"; // side effect: point dotLottie at the self-hosted WASM
 import CoffeeFact from "@/components/common/CoffeeFact";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/primitives/stack";

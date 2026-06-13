@@ -22,6 +22,7 @@ export function RegionOverviewSection({
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Region profile"
         title="Explore the *Terroir*"

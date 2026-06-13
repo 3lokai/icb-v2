@@ -23,6 +23,7 @@ import { ProcessProfileSection } from "./ProcessProfileSection";
 import { PriceBucketProfileSection } from "./PriceBucketProfileSection";
 import { RegionOverviewSection } from "./RegionOverviewSection";
 import { RegionDetailSection } from "./RegionDetailSection";
+import { BeanTypeProfileSection } from "./BeanTypeProfileSection";
 import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import {
   discoveryPagePath,
@@ -72,6 +73,12 @@ function getDiscoveryPageLabel(config: LandingPageConfig): string {
   if (config.type === "process" || config.type === "region") {
     return config.h1.replace(" Coffee in India", "").trim();
   }
+  if (config.type === "bean_type") {
+    return config.h1
+      .replace(" Coffee in India", "")
+      .replace(" in India", "")
+      .trim();
+  }
   return config.h1;
 }
 
@@ -91,7 +98,9 @@ export function DiscoveryLandingLayout({
           ? "Price Range"
           : config.type === "process"
             ? "Process"
-            : "Region";
+            : config.type === "region"
+              ? "Region"
+              : "Bean Type";
   const pageLabel = getDiscoveryPageLabel(config);
   const canonical = `${BASE_URL}${discoveryPagePath(config.slug)}`;
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -126,7 +135,9 @@ export function DiscoveryLandingLayout({
           ? "Price Range"
           : config.type === "process"
             ? "Processing Method"
-            : "Origin Region";
+            : config.type === "region"
+              ? "Origin Region"
+              : "Bean Type";
 
   // Create right side badge content if heroBadge is provided
   const rightSideContent = config.heroBadge ? (
@@ -219,6 +230,13 @@ export function DiscoveryLandingLayout({
               regionSnapshot={config.regionSnapshot}
             />
           )}
+
+        {config.type === "bean_type" && config.beanTypeProfile && (
+          <BeanTypeProfileSection
+            profile={config.beanTypeProfile}
+            slug={config.slug}
+          />
+        )}
 
         {/* 2. Coffee Grid Teaser */}
         <CoffeeGridTeaser

@@ -104,6 +104,7 @@ export default async function RootLayout({
   return (
     <html
       className={`${fraunces.variable} ${dmSans.variable}`}
+      data-scroll-behavior="smooth"
       lang="en"
       suppressHydrationWarning
     >

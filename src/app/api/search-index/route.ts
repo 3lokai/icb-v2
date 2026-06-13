@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { buildSearchIndex } from "@/lib/search/build-search-index";
+import { safeErrorMessage } from "@/lib/api/error-response";
 
 export async function GET() {
   try {
@@ -28,8 +29,9 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Failed to build search index:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to build search index";
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return NextResponse.json(
+      { error: safeErrorMessage(error, "Failed to build search index") },
+      { status: 500 }
+    );
   }
 }

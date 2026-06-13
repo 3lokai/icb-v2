@@ -66,8 +66,9 @@ export default function RoasterInfrastructureSection() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
         {/* Left Column: Roaster logo wall - order-2 on mobile so copy appears first */}
         <div className="relative h-[280px] sm:h-[360px] md:h-[400px] w-full min-w-0 overflow-hidden order-2 md:order-1">
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 bg-gradient-to-t from-[color-mix(in_oklch,var(--muted)_30%,var(--background))] to-transparent" />
+          {/* Fades match the cream page ground so logos dissolve into the background */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-background to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 bg-gradient-to-t from-background to-transparent" />
 
           <Marquee
             vertical
