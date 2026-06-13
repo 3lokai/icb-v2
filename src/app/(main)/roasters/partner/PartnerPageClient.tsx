@@ -61,7 +61,7 @@ const InteractiveBentoCard = ({
           }}
         />
       </div>
-      <div className="absolute left-0 top-0 h-full w-1 bg-accent/40 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="absolute left-0 right-0 top-0 h-1 bg-accent/40 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <div className="absolute right-0 top-0 h-12 w-12 bg-accent/5 blur-2xl opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
     </div>
 
@@ -537,7 +537,7 @@ const FinalCTA = ({
       <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-primary/[0.03] blur-[120px]" />
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute left-0 top-0 h-full w-1.5 bg-accent/40" />
+        <div className="absolute left-0 right-0 top-0 h-1.5 bg-accent/40" />
         <div
           className="absolute inset-0 opacity-[0.02] pointer-events-none"
           style={{

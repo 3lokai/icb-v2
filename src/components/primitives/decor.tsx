@@ -5,7 +5,7 @@ type DecorProps = {
   texture?: "dots";
   /** Soft blurred colour washes in opposite corners. */
   wash?: boolean;
-  /** Vertical accent stripe on the left edge. */
+  /** Magazine accent: a full-width gradient rule along the top edge. */
   stripe?: boolean;
   className?: string;
 };
@@ -17,6 +17,9 @@ type DecorProps = {
  * sections. Renders an absolutely-positioned, aria-hidden layer inside a
  * `relative overflow-hidden` parent. Each decoration has exactly ONE
  * implementation (see effects.css).
+ *
+ * `stripe` is the "magazine accent" — a full-width gradient rule on the TOP
+ * edge (reworked from a left side-stripe, which is a banned anti-pattern).
  *
  * NOTE: deliberately NOT named `Surface` — `.surface-0/1/2` in components.css
  * already owns the semantic depth system.

@@ -3,28 +3,12 @@
 
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Link from "next/link";
-import { useEffect, startTransition, useState } from "react";
+import "@/lib/lottie"; // side effect: point dotLottie at the self-hosted WASM
 import CoffeeFact from "@/components/common/CoffeeFact";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/primitives/stack";
 
 export default function NotFound() {
-  const [isClient, setIsClient] = useState(false);
-
-  // Avoid hydration issues
-  useEffect(() => {
-    startTransition(() => {
-      setIsClient(true);
-    });
-  }, []);
-
-  // Return an empty div during SSR to avoid hydration mismatch
-  if (!isClient) {
-    return (
-      <div className="flex min-h-[70vh] flex-col items-center justify-center bg-background p-6" />
-    );
-  }
-
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center bg-background p-6">
       <div className="mx-auto max-w-2xl text-center">

@@ -74,10 +74,10 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
             className="group block h-full"
           >
             <Card className="h-full hover-lift transition-all duration-300 border-border/50 bg-card/40 hover:bg-card/60 overflow-hidden relative">
-              {/* Magazine accent stripe */}
+              {/* Magazine accent: top rule (category-coded) */}
               <div
                 className={cn(
-                  "absolute left-0 top-0 h-full w-1 opacity-40 transition-opacity group-hover:opacity-100",
+                  "absolute left-0 right-0 top-0 h-1 opacity-40 transition-opacity group-hover:opacity-100",
                   page.type === "brew_method"
                     ? "bg-accent"
                     : page.type === "roast_level"

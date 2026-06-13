@@ -161,8 +161,8 @@ export function CuratorListingPage({ curators }: CuratorListingPageProps) {
               aria-hidden="true"
               className="pointer-events-none absolute inset-0"
             >
-              {/* Brand Stripe */}
-              <div className="absolute left-0 top-0 h-full w-1.5 md:w-2 bg-gradient-to-b from-primary via-accent to-primary/60 opacity-60" />
+              {/* Brand top rule */}
+              <div className="absolute left-0 right-0 top-0 h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60" />
 
               {/* Subtle Dot Matrix */}
               <div className="absolute inset-0 opacity-[0.2]">

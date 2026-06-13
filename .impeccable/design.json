@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-13T00:00:00Z",
+  "title": "Design System: Indian Coffee Beans (ICB)",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Roasted Bean",
+        "canonical": "oklch(0.52 0.120 60.55)",
+        "tonalRamp": [
+          "oklch(0.20 0.05 60.55)",
+          "oklch(0.30 0.08 60.55)",
+          "oklch(0.40 0.10 60.55)",
+          "oklch(0.52 0.120 60.55)",
+          "oklch(0.62 0.11 60.55)",
+          "oklch(0.74 0.08 60.55)",
+          "oklch(0.86 0.05 60.55)",
+          "oklch(0.95 0.02 60.55)"
+        ]
+      },
+      "accent": {
+        "role": "tertiary",
+        "displayName": "Terracotta",
+        "canonical": "oklch(0.722 0.139 40.48)",
+        "tonalRamp": [
+          "oklch(0.25 0.06 40.48)",
+          "oklch(0.36 0.09 40.48)",
+          "oklch(0.47 0.12 40.48)",
+          "oklch(0.58 0.135 40.48)",
+          "oklch(0.722 0.139 40.48)",
+          "oklch(0.82 0.10 40.48)",
+          "oklch(0.90 0.06 40.48)",
+          "oklch(0.96 0.025 40.48)"
+        ]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Pale Wheat",
+        "canonical": "oklch(0.901 0.05 84.54)",
+        "tonalRamp": [
+          "oklch(0.30 0.03 84.54)",
+          "oklch(0.42 0.04 84.54)",
+          "oklch(0.54 0.05 84.54)",
+          "oklch(0.66 0.05 84.54)",
+          "oklch(0.78 0.05 84.54)",
+          "oklch(0.901 0.05 84.54)",
+          "oklch(0.95 0.03 84.54)",
+          "oklch(0.98 0.015 84.54)"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Cream Paper",
+        "canonical": "oklch(0.982 0.009 79.92)",
+        "tonalRamp": [
+          "oklch(0.20 0.01 59.58)",
+          "oklch(0.30 0.012 70.00)",
+          "oklch(0.45 0.012 75.00)",
+          "oklch(0.60 0.011 78.00)",
+          "oklch(0.75 0.010 79.00)",
+          "oklch(0.88 0.010 79.50)",
+          "oklch(0.95 0.010 79.80)",
+          "oklch(0.982 0.009 79.92)"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Espresso Ink",
+        "canonical": "oklch(0.222 0.03 54.20)",
+        "tonalRamp": [
+          "oklch(0.18 0.03 54.20)",
+          "oklch(0.222 0.03 54.20)",
+          "oklch(0.32 0.03 60.00)",
+          "oklch(0.42 0.03 70.00)",
+          "oklch(0.48 0.04 80.00)",
+          "oklch(0.62 0.03 80.00)",
+          "oklch(0.78 0.02 80.00)",
+          "oklch(0.90 0.015 80.00)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display / Hero", "purpose": "Fraunces 400, page heroes and headers. Authority via size + serif, never bold." },
+      "title": { "displayName": "Title (h2)", "purpose": "Fraunces 500, section headers." },
+      "heading": { "displayName": "Heading (h3)", "purpose": "Fraunces 500, card/subsection headers; one step below Title." },
+      "body": { "displayName": "Body", "purpose": "DM Sans 400, reading text, measure 65-75ch." },
+      "label": { "displayName": "Label", "purpose": "DM Sans 500 capitalized, metadata/tags; sparing, not all-caps eyebrows." }
+    },
+    "shadows": [
+      { "name": "shadow-sm", "value": "0 1px 3px 0 color-mix(in oklch, var(--shadow-color), transparent 92%)", "purpose": "Subtle resting lift on a few key surfaces. Coffee-tinted." },
+      { "name": "shadow-md", "value": "0 4px 6px -1px color-mix(in oklch, var(--shadow-color), transparent 90%)", "purpose": "Hover lift." },
+      { "name": "shadow-lg", "value": "0 10px 15px -3px color-mix(in oklch, var(--shadow-color), transparent 90%)", "purpose": "Elevation / raised surfaces." },
+      { "name": "shadow-2xl", "value": "0 25px 50px -12px color-mix(in oklch, var(--shadow-color), transparent 80%)", "purpose": "Modals, toasts, popovers (surface-2)." },
+      { "name": "shadow-focus-visible", "value": "0 0 0 3px color-mix(in oklch, var(--shadow-color-dark), transparent 60%)", "purpose": "Focus ring — warm tinted glow, not a hard outline." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The canonical Reveal scroll-in curve (opacity + 24px rise, 0.6s, fires once)." },
+      { "name": "ease-out-standard", "value": "ease-out", "purpose": "Default state transitions; exponential ease-out, no bounce." },
+      { "name": "duration-fast", "value": "200ms", "purpose": "Buttons, hovers, accordions." },
+      { "name": "duration-image-zoom", "value": "700ms", "purpose": "Subtle .image-hover-zoom scale-105." },
+      { "name": "duration-card", "value": "500ms", "purpose": "Card border-tone hover shift." },
+      { "name": "reduced-motion", "value": "@media (prefers-reduced-motion: reduce)", "purpose": "Collapses all motion to static; film grain drops opacity, marquees stop, Reveal renders without entrance." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1400px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The confident default action — roasted-bean fill, cream text.",
+      "html": "<button class=\"ds-btn-primary\">Explore coffees</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 8px 16px; background: var(--primary); color: var(--primary-foreground); border: none; border-radius: 8px; font: 500 0.875rem/1 \"DM Sans\", system-ui, sans-serif; cursor: pointer; transition: background 0.2s ease, box-shadow 0.2s ease; } .ds-btn-primary:hover { background: color-mix(in oklch, var(--primary), transparent 10%); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring), transparent 50%); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Bordered cream button that fills with accent on hover.",
+      "html": "<button class=\"ds-btn-outline\">View roasters</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 8px 16px; background: var(--background); color: var(--foreground); border: 1px solid var(--border); border-radius: 8px; font: 500 0.875rem/1 \"DM Sans\", system-ui, sans-serif; cursor: pointer; transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; } .ds-btn-outline:hover { background: var(--accent); color: var(--accent-foreground); border-color: var(--accent); } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring), transparent 50%); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Warm-paper surface (surface-1). Flat at rest, border tone shifts on hover — no resting shadow.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Ratnagiri Estate</h3><p class=\"ds-card-body\">Washed Arabica from the BabaBudangiri hills — notes of stone fruit, cocoa, and a long caramel finish.</p></div>",
+      "css": ".ds-card { display: flex; flex-direction: column; gap: 8px; padding: 24px; background: var(--card); color: var(--card-foreground); border: 1px solid color-mix(in oklch, var(--border), transparent 40%); border-radius: 14px; transition: border-color 0.5s ease; } .ds-card:hover { border-color: var(--border); } .ds-card-title { margin: 0; font: 500 1.25rem/1.3 \"Fraunces\", Georgia, serif; letter-spacing: -0.01em; } .ds-card-body { margin: 0; font: 400 1rem/1.625 \"DM Sans\", system-ui, sans-serif; color: var(--muted-foreground); }"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Hairline-stroke field on cream; calm warm focus glow, not a hard browser outline.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Search coffees, roasters, origins\" />",
+      "css": ".ds-input { width: 280px; padding: 8px 12px; background: var(--background); color: var(--foreground); border: 1px solid var(--input); border-radius: 8px; font: 400 0.875rem/1.5 \"DM Sans\", system-ui, sans-serif; transition: border-color 0.2s ease, box-shadow 0.2s ease; } .ds-input::placeholder { color: var(--muted-foreground); } .ds-input:focus-visible { outline: none; border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring), transparent 50%); }"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Quiet pale-wheat pill for metadata and tags.",
+      "html": "<span class=\"ds-badge\">Single Origin</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; padding: 2px 10px; background: var(--muted); color: var(--foreground); border-radius: 9999px; font: 500 0.75rem/1.2 \"DM Sans\", system-ui, sans-serif; }"
+    },
+    {
+      "name": "Accent Brush-Smear",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The locked brand signature: a coffee brush-smear underlining one phrase per page. Real brush stroke as an alpha mask recolored to the accent token.",
+      "html": "<h2 class=\"ds-accent-heading\">India's <span class=\"ds-accent\">specialty coffee</span>, mapped.</h2>",
+      "css": ".ds-accent-heading { font: 500 1.875rem/1.15 \"Fraunces\", Georgia, serif; letter-spacing: -0.02em; color: var(--foreground); margin: 0; } .ds-accent { position: relative; font-style: italic; white-space: nowrap; padding: 0 0.08em; isolation: isolate; } .ds-accent::after { content: \"\"; position: absolute; left: -0.12em; right: -0.12em; bottom: 0.02em; height: 0.6em; z-index: -1; background: var(--accent); -webkit-mask: url(\"/images/stain-smear.png\") center / 100% 100% no-repeat; mask: url(\"/images/stain-smear.png\") center / 100% 100% no-repeat; opacity: 0.6; pointer-events: none; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Coffee Field Guide",
+    "overview": "ICB looks and reads like a printed specialist's field guide to Indian specialty coffee: warm paper under the words, expert annotations in the margins, knowledge made beautiful and browsable. The ground is cream, the ink is dark roasted-bean brown, and the one moment of color is a terracotta brush-smear that underlines a single phrase per spread. Fraunces carries every heading; DM Sans does the calm reading work. Depth comes from tonal paper layers, not glass or drop shadows. The personality is refined, confident, and editorial, with a tactile, warm hand. It serves the newcomer and the enthusiast in the same surface, and treats discovery and education as co-equal. It rejects generic SaaS marketing, the hipster coffee cliché, the cold marketplace feel, and corporate sterility.",
+    "keyCharacteristics": [
+      "Cream paper ground, roasted-bean ink, a single terracotta accent.",
+      "Fraunces serif headings + DM Sans body — contrast pairing, never two similar sans.",
+      "Depth via tonal surfaces (surface-0/1/2), not blur or heavy shadow.",
+      "One signature: the <Accent> coffee brush-smear, rationed to one phrase per page.",
+      "Coffee-tinted shadows, fine film-grain texture, full light/dark parity.",
+      "Editorial rhythm enforced structurally through layout primitives, not by reflex."
+    ],
+    "rules": [
+      { "name": "The One Smear Rule", "body": "Terracotta is the only accent and it appears on roughly one phrase per page — through the <Accent> brush-smear or a glossary underline. Its rarity is the point.", "section": "colors" },
+      { "name": "The Ink-Never-Black Rule", "body": "Text is roasted-brown ink (foreground), never #000. The warmth of the paper system breaks the moment a pure-black glyph lands on it.", "section": "colors" },
+      { "name": "The Hero-Is-Not-Bold Rule", "body": "The largest type on the page is Fraunces at weight 400. Size and the serif carry the authority; bold display weight reads as shouting and is forbidden on heroes.", "section": "typography" },
+      { "name": "The h2 != h3 Rule", "body": ".text-title and .text-heading must never style the same heading level. The visible step between them is the document's spine.", "section": "typography" },
+      { "name": "The Flat-Paper Rule", "body": "Cards are flat at rest, separated by tonal surface steps and a hairline border. Shadow appears only on hover/elevation; reach for surface-1 first.", "section": "elevation" },
+      { "name": "The Warm-Shadow Rule", "body": "Shadows are coffee-tinted via color-mix toward accent/foreground. A neutral-gray shadow on this cream system is prohibited.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep cream paper as the ground, roasted-bean ink as the text, and terracotta as the only accent.",
+      "Do route every section header, padding, and decoration through the layout primitives (Section, PageShell, Stack, Cluster, Rule, Prose, Decor).",
+      "Do convey depth with tonal surface steps (surface-0/1/2) and hairline borders; let coffee-tinted shadows appear only on hover/elevation.",
+      "Do use Fraunces at weight 400 for heroes — size and serif carry authority, not bold weight.",
+      "Do hold the visible step between .text-title (h2) and .text-heading (h3); never skip heading levels.",
+      "Do keep body text at AA contrast on both cream and card, in light and dark, including placeholders.",
+      "Do give every animation a prefers-reduced-motion fallback.",
+      "Do ration the <Accent> brush-smear to one phrase per page; keep it in family with .glossary-term."
+    ],
+    "donts": [
+      "Don't ship generic SaaS/startup marketing patterns: no hero-metric template, no repeated identical icon-heading-text card grids, no eyebrow above every section, no gradient accents.",
+      "Don't drift toward the hipster/third-wave coffee cliché: no kraft-paper, chalkboard, or faux-rustic stamp aesthetic, and no gatekeeping tone.",
+      "Don't make it feel like a cold marketplace/Amazon: no dense, price-first product grids without an editorial point of view.",
+      "Don't go corporate/sterile: no flat gray, soulless enterprise UI — warmth is non-negotiable.",
+      "Don't put a resting drop shadow on a card; reach for surface-1 and a border first.",
+      "Don't use a neutral-gray shadow — shadows are coffee-tinted toward accent/foreground.",
+      "Don't use pure black for text or #fff outside the on-media scrim variants.",
+      "Don't introduce a second accent color, a second radius scale, or a second emphasis language. One accent, one radius, one theme per page.",
+      "Don't use a colored left/right border >1px as a card/list/callout/alert accent. Magazine accents live on the top edge (<Decor stripe>), never the side.",
+      "Don't use wide-tracked all-caps eyebrows as section scaffolding; labels are capitalized print-UI caps, used sparingly.",
+      "Don't nest cards. Ever."
+    ]
+  }
+}

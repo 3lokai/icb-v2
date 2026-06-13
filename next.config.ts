@@ -136,16 +136,41 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
+    // Self-hosted dotLottie WASM runtime and the .lottie animation files are
+    // content-stable and versioned with the deploy — cache them aggressively so
+    // loading animations paint instantly after the first visit.
+    const immutableAssets = [
+      {
+        source: "/dotlottie-player.wasm",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/animations/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+
     if (process.env.VERCEL_ENV !== "production") {
       return [
         {
           source: "/:path*",
           headers: [{ key: "X-Robots-Tag", value: "noindex" }],
         },
+        ...immutableAssets,
       ];
     }
 
-    return [];
+    return immutableAssets;
   },
   // Webpack config for bundle-analyzer builds (npm run analyze uses --webpack).
   // The catch-all vendor group has been intentionally removed — it was bundling
