@@ -124,7 +124,7 @@ const CATEGORY_STYLE_MAP: Record<string, CategoryMeta> = {
     icon: "CoffeeBean",
     gradient: "from-rose-500/10 via-transparent to-transparent",
     accent: "text-rose-500/70",
-    image: "/images/discovery/bean-types.jpg",
+    image: "/images/discovery/bean-types.avif",
     subtext: "Arabica, robusta, blends",
   },
   Budget: {

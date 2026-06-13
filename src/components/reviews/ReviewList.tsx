@@ -123,7 +123,7 @@ function ReviewItem({ review }: { review: ReviewWithProfile }) {
                   className={cn(
                     "transition-colors",
                     i < review.rating!
-                      ? "text-amber-500 fill-amber-500"
+                      ? "text-rating fill-rating"
                       : "text-muted-foreground/30"
                   )}
                 />

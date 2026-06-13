@@ -5,7 +5,6 @@ import { Accent } from "@/components/primitives/accent";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, startTransition, useState } from "react";
 import { Icon } from "@/components/common/Icon";
-import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 // Import calculation logic

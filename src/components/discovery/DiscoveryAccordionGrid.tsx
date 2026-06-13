@@ -54,7 +54,7 @@ const CATEGORY_STYLE_MAP: Record<string, CategoryMeta> = {
   },
   "Bean type": {
     icon: "CoffeeBean",
-    image: "/images/discovery/bean-types.jpg",
+    image: "/images/discovery/bean-types.avif",
     subtext: "Arabica, robusta, blends",
   },
   Budget: {

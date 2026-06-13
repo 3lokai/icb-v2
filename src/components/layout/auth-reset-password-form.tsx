@@ -3,7 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { CircleNotch } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
+import { Accent } from "@/components/primitives/accent";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +14,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/layout/password-input";
 import { auth } from "@/lib/supabase/auth-helpers";
 import { createClient } from "@/lib/supabase/client";
 
@@ -152,12 +154,14 @@ export function AuthResetPasswordForm({
       <div className={cn(className)}>
         <Stack gap="6">
           <FieldGroup>
-            <div className="flex flex-col items-center gap-2 text-center">
-              <h1 className="text-title font-serif tracking-tight">
-                Verifying reset link
-              </h1>
-              <p className="text-muted-foreground text-caption text-balance">
-                Please wait while we verify your password reset link...
+            <div className="flex flex-col items-center gap-3 text-center">
+              <CircleNotch
+                aria-hidden
+                className="size-6 animate-spin text-primary"
+              />
+              <h1 className="text-title text-balance">Verifying reset link</h1>
+              <p className="text-caption text-balance">
+                Please wait while we verify your password reset link…
               </p>
             </div>
           </FieldGroup>
@@ -172,16 +176,19 @@ export function AuthResetPasswordForm({
         <Stack gap="6">
           <FieldGroup>
             <div className="flex flex-col items-center gap-2 text-center">
-              <h1 className="text-title font-serif tracking-tight">
+              <h1 className="text-title text-balance">
                 Invalid or expired link
               </h1>
-              <p className="text-muted-foreground text-caption text-balance">
+              <p className="text-caption text-balance">
                 This password reset link is invalid or has expired. Please
                 request a new one.
               </p>
             </div>
 
-            <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption">
+            <div
+              className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption"
+              role="alert"
+            >
               Password reset links expire after a certain time for security
               reasons. Please request a new password reset link.
             </div>
@@ -217,14 +224,20 @@ export function AuthResetPasswordForm({
       <Stack gap="6">
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
-            <h1 className="text-title font-bold">Create new password</h1>
-            <p className="text-muted-foreground text-caption text-balance">
-              Enter your new password below
+            <h1 className="text-title text-balance">
+              Create a new <Accent>password</Accent>
+            </h1>
+            <p className="text-caption text-balance">
+              Enter your new password below.
             </p>
           </div>
 
           {error && (
-            <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption">
+            <div
+              aria-live="polite"
+              className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption"
+              role="alert"
+            >
               {error}
             </div>
           )}
@@ -232,9 +245,8 @@ export function AuthResetPasswordForm({
           <Stack gap="4">
             <Field>
               <FieldLabel htmlFor="password">New Password</FieldLabel>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 value={password}
                 onChange={handlePasswordChange}
                 required
@@ -248,9 +260,8 @@ export function AuthResetPasswordForm({
               <FieldLabel htmlFor="confirm-password">
                 Confirm New Password
               </FieldLabel>
-              <Input
+              <PasswordInput
                 id="confirmPassword"
-                type="password"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
                 required
@@ -261,7 +272,12 @@ export function AuthResetPasswordForm({
             </Field>
 
             <Field>
-              <Button type="submit" disabled={isLoading} className="w-full">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                aria-busy={isLoading}
+                className="w-full"
+              >
                 {isLoading ? "Resetting password..." : "Reset password"}
               </Button>
             </Field>

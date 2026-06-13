@@ -80,11 +80,7 @@ export function useStationPhotos(currentPhotos: StationPhoto[] = []) {
     onError: (error: Error) => {
       toast.error(error.message || "Failed to upload photo");
       // Remove from uploading set
-      setUploadingFiles((prev) => {
-        const next = new Set(prev);
-        // Remove all uploading files on error
-        return new Set();
-      });
+      setUploadingFiles(() => new Set());
       // Remove optimistic photos
       setOptimisticPhotos(new Map());
     },
@@ -145,7 +141,6 @@ export function useStationPhotos(currentPhotos: StationPhoto[] = []) {
 
     // Create temporary ID for tracking
     const tempId = `temp-${Date.now()}-${Math.random()}`;
-    const fileName = file.name;
 
     // Add to uploading set
     setUploadingFiles((prev) => new Set(prev).add(tempId));
@@ -177,7 +172,7 @@ export function useStationPhotos(currentPhotos: StationPhoto[] = []) {
 
       // Clean up object URL after successful upload
       URL.revokeObjectURL(optimisticPhoto.image_url);
-    } catch (error) {
+    } catch {
       // Error handling is done in mutation onError
       // Clean up object URL on error
       URL.revokeObjectURL(optimisticPhoto.image_url);
@@ -207,7 +202,7 @@ export function useStationPhotos(currentPhotos: StationPhoto[] = []) {
 
     try {
       await deleteMutation.mutateAsync({ photoId });
-    } catch (error) {
+    } catch {
       // Error handling is done in mutation onError
       // The optimistic update will be reverted
     } finally {

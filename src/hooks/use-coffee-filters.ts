@@ -8,8 +8,6 @@ import {
 } from "@/lib/filters/coffee-url";
 import type { CoffeeFilters, CoffeeSort } from "@/types/coffee-types";
 
-const DEFAULT_PAGE = 1;
-
 /**
  * Hook to read and update coffee filters from URL
  * URL is the single source of truth

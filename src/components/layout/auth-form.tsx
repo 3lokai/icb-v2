@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { capture, posthog } from "@/lib/posthog";
+import { Accent } from "@/components/primitives/accent";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +16,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/layout/password-input";
 import { useAuth } from "@/components/providers/auth-provider";
 import { sendWelcomeEmailAction } from "@/app/actions/welcome-email";
 import { syncUserToConvertKit } from "@/app/actions/newsletter";
@@ -206,23 +208,39 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
       <Stack gap="6">
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
-            <h1 className="text-title font-serif tracking-tight">
-              {isSignUpMode ? "Create an account" : "Welcome back"}
+            <h1 className="text-title text-balance">
+              {isSignUpMode ? (
+                <>
+                  Create your <Accent>account</Accent>
+                </>
+              ) : (
+                <>
+                  Welcome <Accent>back</Accent>
+                </>
+              )}
             </h1>
-            <p className="text-muted-foreground text-caption text-balance">
+            <p className="text-caption text-balance">
               {isSignUpMode
-                ? "Enter your details below to create your account"
-                : "Sign in to continue"}
+                ? "Save the coffees you love, follow roasters, and build your taste."
+                : "Pick up where you left your coffee journey."}
             </p>
           </div>
 
           {error && errorType === "generic" && (
-            <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption">
+            <div
+              aria-live="polite"
+              className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption"
+              role="alert"
+            >
               {error}
             </div>
           )}
           {error && errorType === "already-registered" && (
-            <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption">
+            <div
+              aria-live="polite"
+              className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption"
+              role="alert"
+            >
               {error}{" "}
               <Link
                 href={buildAuthUrl("sign-in")}
@@ -314,9 +332,8 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
                   </Link>
                 )}
               </div>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 value={formData.password}
                 onChange={handleInputChange}
                 required
@@ -327,7 +344,12 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
             </Field>
 
             <Field>
-              <Button type="submit" disabled={isLoading} className="w-full">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                aria-busy={isLoading}
+                className="w-full"
+              >
                 {isLoading
                   ? isSignUpMode
                     ? "Creating account..."

@@ -1,6 +1,5 @@
 "use client";
 
-import { Accent } from "@/components/primitives/accent";
 import { Icon } from "@/components/common/Icon";
 import { Cluster } from "@/components/primitives/cluster";
 import type { EntityReviewStats } from "@/types/review-types";
@@ -25,7 +24,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
           </span>
         </div>
         <h3 className="text-heading text-balance leading-[1.2] tracking-tight">
-          Ratings & <Accent>Reviews.</Accent>
+          Ratings & Reviews.
         </h3>
       </div>
       {hasStats ? (
@@ -37,7 +36,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
                 <Icon
                   name="Star"
                   size={22}
-                  className="text-amber-500 fill-amber-500 drop-shadow-sm"
+                  className="text-rating fill-rating drop-shadow-sm"
                 />
                 <span className="text-heading font-bold text-foreground">
                   {avg_rating.toFixed(1)}

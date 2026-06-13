@@ -31,7 +31,7 @@ export function arcPath(
 }
 
 /** Midpoint angle of a segment in SVG space */
-export function midAngle(center: number, span: number) {
+export function midAngle(center: number, _span: number) {
   return center;
 }
 

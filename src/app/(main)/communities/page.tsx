@@ -71,7 +71,7 @@ async function CommunitiesContent() {
                 </span>
               </div>
               <h2 className="text-display leading-tight">
-                Brewing in <span className="italic">Good Company.</span>
+                Brewing in <Accent>Good Company</Accent>.
               </h2>
               <div className="h-0.5 w-10 bg-border/40" />
             </Stack>
