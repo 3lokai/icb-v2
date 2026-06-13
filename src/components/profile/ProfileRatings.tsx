@@ -33,25 +33,19 @@ export function ProfileRatings({
   isAnonymous = false,
 }: ProfileRatingsProps) {
   return (
-    <Stack gap="8" className="pt-0 md:pt-2">
+    <Stack gap="8">
       <Cluster align="center">
-        <Stack gap="6">
-          <div className="inline-flex items-center gap-4">
-            <span className="h-px w-8 md:w-12 bg-accent/60" />
-            <span className="text-overline text-muted-foreground tracking-[0.15em]">
-              RATINGS
-            </span>
-          </div>
-          <Stack gap="1">
-            <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-              Recent <Accent>Ratings.</Accent>
-            </h2>
-            <p className="text-caption">
-              {isAnonymous
-                ? "Your local coffee record. Sign up to save it permanently."
-                : "My chronological coffee record."}
-            </p>
-          </Stack>
+        <Stack gap="2">
+          <h2 className="text-title text-balance leading-[1.1] italic m-0">
+            Recent <Accent>Ratings.</Accent>
+          </h2>
+          <p className="text-caption text-muted-foreground">
+            {isAnonymous
+              ? "Your local coffee record. Sign up to save it permanently."
+              : isOwner
+                ? "My chronological coffee record."
+                : "Their chronological coffee record."}
+          </p>
         </Stack>
         {isOwner && (
           <Button asChild size="sm" className="rounded-full shadow-md ml-auto">
@@ -64,11 +58,11 @@ export function ProfileRatings({
       </Cluster>
 
       {ratings.length === 0 ? (
-        <Card className="py-20 border border-dashed border-border/60 rounded-3xl flex flex-col items-center justify-center text-center py-20 gap-0">
+        <Card className="bg-background py-20 border border-dashed border-border/60 rounded-3xl flex flex-col items-center justify-center text-center gap-0">
           <Icon
             name="Coffee"
             size={32}
-            className="text-muted-foreground/30 mb-4"
+            className="text-muted-foreground mb-4"
           />
           <p className="text-body-muted italic">
             “No ratings yet. Start rating coffees to build your profile.”
@@ -102,12 +96,12 @@ export function ProfileRatings({
                   </Cluster>
 
                   {rating.comment && (
-                    <p className="text-caption line-clamp-2 italic text-muted-foreground/80 leading-snug">
+                    <p className="text-caption line-clamp-2 italic text-muted-foreground leading-snug">
                       &quot;{rating.comment}&quot;
                     </p>
                   )}
 
-                  <p className="text-micro text-muted-foreground/60">
+                  <p className="text-micro text-muted-foreground">
                     {rating.date}
                   </p>
                 </Stack>
@@ -117,7 +111,7 @@ export function ProfileRatings({
             return (
               <Card
                 key={rating.id}
-                className="border-border/40 hover:border-accent/40 hover:bg-muted/5 transition-all group rounded-2xl"
+                className="bg-background border-border/40 hover:border-accent/40 transition-all group rounded-2xl"
               >
                 {rating.roasterSlug && rating.coffeeSlug ? (
                   <Link

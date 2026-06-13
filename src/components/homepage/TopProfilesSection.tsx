@@ -34,7 +34,8 @@ function ProfileCta() {
         <Icon
           name="ArrowRight"
           size={16}
-          className="transition-transform group-hover/cta:translate-x-1"
+          aria-hidden
+          className="pointer-events-none transition-transform group-hover/cta:translate-x-1"
         />
       </Link>
     </Button>

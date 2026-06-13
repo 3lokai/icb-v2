@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
+import { PageShell } from "@/components/primitives/page-shell";
+import { Decor } from "@/components/primitives/decor";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ProfileHeader } from "./ProfileHeader";
 import { ProfileRatings } from "./ProfileRatings";
 import { ProfileTasteProfile } from "./ProfileTasteProfile";
@@ -22,6 +25,46 @@ type ProfilePageProps = {
   isOwner: boolean;
   isAnonymous?: boolean;
 };
+
+/* ─── Full-bleed band (homepage / RoasterDetailPage alternating grounds) ─── */
+
+function Band({
+  id,
+  ground = "cream",
+  texture,
+  maxWidth = "6xl",
+  className,
+  children,
+  ...rest
+}: {
+  id?: string;
+  ground?: "cream" | "warm";
+  texture?: "grain" | "grain-coarse";
+  maxWidth?: "5xl" | "6xl" | "7xl";
+  className?: string;
+  children: React.ReactNode;
+} & React.HTMLAttributes<HTMLElement>) {
+  const warm = ground === "warm";
+  return (
+    <section
+      id={id}
+      {...rest}
+      className={cn(
+        // Full-bleed: break out of any max-width parent so the tonal band reaches
+        // the viewport edges like the homepage bands. <main> has overflow-x-clip,
+        // so the 100vw breakout never adds a horizontal scrollbar.
+        "relative left-1/2 w-screen -translate-x-1/2 scroll-mt-40 py-12 md:py-16 lg:py-20",
+        warm && "overflow-hidden bg-card border-y border-border/60",
+        className
+      )}
+    >
+      {warm && texture && <Decor texture={texture} />}
+      <div className="relative">
+        <PageShell maxWidth={maxWidth}>{children}</PageShell>
+      </div>
+    </section>
+  );
+}
 
 export function ProfilePage({
   profileData,
@@ -161,132 +204,119 @@ export function ProfilePage({
 
   return (
     <div className="min-h-screen bg-background">
-      <Section spacing="default" className="pt-24" contained={false}>
-        <Stack gap="8">
-          <div className="px-4 md:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_minmax(260px,320px)] lg:grid-cols-[1fr_minmax(280px,340px)] gap-8 lg:gap-12 items-start">
-              <ProfileHeader
-                name={profile.full_name}
-                avatarUrl={profile.avatar_url || undefined}
-                city={profile.city || undefined}
-                state={profile.state || undefined}
-                country={profile.country || undefined}
-                bio={profile.bio || undefined}
-                isOwner={isOwner}
-                isAnonymous={isAnonymous}
-                coffeePreferences={coffee_preferences}
-              />
-              <ProfileAtAGlance
-                totalReviews={taste_profile.total_reviews}
-                avgRating={taste_profile.avg_rating}
-                distinctRoasterCount={taste_profile.distinct_roaster_count}
-                selectionsCount={formattedSelections.length}
-                tier={tier}
-                persona={persona}
-                isOwner={isOwner}
-                isAnonymous={isAnonymous}
-                className="md:sticky md:top-28"
-              />
-            </div>
+      {/* ── Header (cream ground, full directory width) ── */}
+      <Section spacing="default" className="pt-24 pb-2" contained={false}>
+        <PageShell>
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_minmax(260px,320px)] lg:grid-cols-[1fr_minmax(280px,340px)] gap-8 lg:gap-12 items-start">
+            <ProfileHeader
+              name={profile.full_name}
+              avatarUrl={profile.avatar_url || undefined}
+              city={profile.city || undefined}
+              state={profile.state || undefined}
+              country={profile.country || undefined}
+              bio={profile.bio || undefined}
+              isOwner={isOwner}
+              isAnonymous={isAnonymous}
+              coffeePreferences={coffee_preferences}
+            />
+            <ProfileAtAGlance
+              totalReviews={taste_profile.total_reviews}
+              avgRating={taste_profile.avg_rating}
+              distinctRoasterCount={taste_profile.distinct_roaster_count}
+              selectionsCount={formattedSelections.length}
+              isOwner={isOwner}
+              isAnonymous={isAnonymous}
+              className="md:sticky md:top-28"
+            />
           </div>
-
-          <ProfileScrollspyTabBar activeId={activeSection} />
-
-          <div className="px-4 md:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-            <Stack gap="16" className="md:gap-20">
-              <section
-                id="insights"
-                className="scroll-mt-40"
-                aria-label="Taste insights"
-              >
-                <ProfileTasteProfile
-                  profile={enrichedTasteProfile}
-                  isOwner={isOwner}
-                  isAnonymous={isAnonymous}
-                  showStatBar={!hasEnoughRatings}
-                  selectionsCount={formattedSelections.length}
-                />
-              </section>
-
-              <section
-                id="selections"
-                className="scroll-mt-40"
-                aria-label="Selections"
-              >
-                <ProfileSelections
-                  selections={formattedSelections}
-                  username={profile.username}
-                  revalidateProfilePath={profileRevalidatePath}
-                  isOwner={isOwner}
-                  isAnonymous={isAnonymous}
-                />
-              </section>
-
-              <section
-                id="ratings"
-                className="scroll-mt-40"
-                aria-label="Ratings"
-              >
-                <ProfileRatings
-                  ratings={formattedRatings}
-                  isOwner={isOwner}
-                  isAnonymous={isAnonymous}
-                />
-              </section>
-
-              <section
-                id="gear-station"
-                className="scroll-mt-40"
-                aria-label="Gear and station"
-              >
-                <ProfileGearStation
-                  gear={gear}
-                  photos={station_photos}
-                  username={profile.username}
-                  isOwner={isOwner}
-                  isAnonymous={isAnonymous}
-                />
-              </section>
-
-              {isAnonymous && (
-                <div className="border-t border-border/20 pt-16 pb-8 bg-muted/10 -mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8 rounded-[2rem] md:rounded-[3rem]">
-                  <Stack gap="8" className="text-center items-center">
-                    <Stack gap="2">
-                      <h2 className="text-heading font-serif italic text-accent m-0">
-                        Ready to make it official?
-                      </h2>
-                      <p className="text-body-large text-muted-foreground max-w-lg m-0">
-                        Join other coffee lovers tracking their journey. Your
-                        anonymous ratings will be automatically ported to your
-                        new account.
-                      </p>
-                    </Stack>
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <Link href="/login">
-                        <Button
-                          size="lg"
-                          className="rounded-full px-8 shadow-xl hover-lift"
-                        >
-                          Create Your Profile
-                        </Button>
-                      </Link>
-                      <Link href="/coffees">
-                        <Button
-                          variant="outline"
-                          size="lg"
-                          className="rounded-full px-8 hover-lift"
-                        >
-                          Explore More Coffees
-                        </Button>
-                      </Link>
-                    </div>
-                  </Stack>
-                </div>
-              )}
-            </Stack>
-          </div>
-        </Stack>
+        </PageShell>
       </Section>
+
+      <ProfileScrollspyTabBar activeId={activeSection} />
+
+      {/* ── Insights (warm band + grain) ── */}
+      <Band
+        id="insights"
+        ground="warm"
+        texture="grain"
+        aria-label="Taste insights"
+      >
+        <ProfileTasteProfile
+          profile={enrichedTasteProfile}
+          isOwner={isOwner}
+          isAnonymous={isAnonymous}
+          showStatBar={!hasEnoughRatings}
+          selectionsCount={formattedSelections.length}
+        />
+      </Band>
+
+      {/* ── Selections (cream band) ── */}
+      <Band id="selections" aria-label="Selections">
+        <ProfileSelections
+          selections={formattedSelections}
+          username={profile.username}
+          revalidateProfilePath={profileRevalidatePath}
+          isOwner={isOwner}
+          isAnonymous={isAnonymous}
+        />
+      </Band>
+
+      {/* ── Ratings (warm band + coarse grain) ── */}
+      <Band
+        id="ratings"
+        ground="warm"
+        texture="grain-coarse"
+        aria-label="Ratings"
+      >
+        <ProfileRatings
+          ratings={formattedRatings}
+          isOwner={isOwner}
+          isAnonymous={isAnonymous}
+        />
+      </Band>
+
+      {/* ── Gear & Station (cream band) ── */}
+      <Band id="gear-station" aria-label="Gear and station">
+        <ProfileGearStation
+          gear={gear}
+          photos={station_photos}
+          username={profile.username}
+          isOwner={isOwner}
+          isAnonymous={isAnonymous}
+        />
+      </Band>
+
+      {isAnonymous && (
+        <Band ground="warm" texture="grain" maxWidth="5xl">
+          <Stack gap="8" className="text-center items-center">
+            <Stack gap="2" className="items-center">
+              <h2 className="text-title font-serif italic text-accent m-0">
+                Ready to make it official?
+              </h2>
+              <p className="text-body-large text-muted-foreground max-w-lg m-0">
+                Join other coffee lovers tracking their journey. Your anonymous
+                ratings will be automatically ported to your new account.
+              </p>
+            </Stack>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/login">
+                <Button size="lg" className="rounded-full px-8 hover-lift">
+                  Create Your Profile
+                </Button>
+              </Link>
+              <Link href="/coffees">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full px-8 hover-lift"
+                >
+                  Explore More Coffees
+                </Button>
+              </Link>
+            </div>
+          </Stack>
+        </Band>
+      )}
     </div>
   );
 }

@@ -83,11 +83,12 @@ function TopProfileCardComponent({
                   {initials}
                 </AvatarFallback>
               </Avatar>
-              {/* Coffee badge echoing the brand mark */}
-              <div className="absolute -bottom-0.5 -right-0.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-card bg-accent">
+              {/* Coffee badge echoing the brand mark — decorative; let clicks pass to the card link */}
+              <div className="pointer-events-none absolute -bottom-0.5 -right-0.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-card bg-accent">
                 <Icon
                   name="Coffee"
                   size={11}
+                  aria-hidden
                   className="text-accent-foreground"
                 />
               </div>

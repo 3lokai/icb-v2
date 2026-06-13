@@ -212,17 +212,16 @@ export function CookieNotice() {
     return null;
   }
 
-  // Create a simple container div appended directly to documentElement (html)
-  // This bypasses body's transform: translateZ(0) which creates a containing block
+  // Portal to body so fixed positioning works and PostHog autocapture stays in the
+  // normal element tree (portals on documentElement walk up to Document and crash).
   const containerId = "cookie-notice-root";
   let container = document.getElementById(containerId);
 
   if (!container) {
     container = document.createElement("div");
     container.id = containerId;
-    // Simple container with no positioning or transforms
-    // The content itself handles all positioning with position: fixed
-    document.documentElement.appendChild(container);
+    container.className = "ph-no-capture";
+    document.body.appendChild(container);
   }
 
   return createPortal(content, container);
