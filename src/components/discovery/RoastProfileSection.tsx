@@ -16,6 +16,7 @@ export function RoastProfileSection({
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Roast profile"
         title="What this roast *means*"

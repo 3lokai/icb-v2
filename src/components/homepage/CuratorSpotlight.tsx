@@ -25,7 +25,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
   return (
     <Section spacing="default" className="py-8 md:py-14 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-        <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card shadow-xl transition-all duration-500 hover:shadow-accent/5">
+        <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card transition-all duration-500 hover:border-border hover:shadow-lg">
           <div className="grid grid-cols-1 lg:grid-cols-12">
             {/* Left Column: Editorial Content (approx 70%) */}
             <div className="lg:col-span-8 relative z-10 flex flex-col justify-center p-6 md:p-10 lg:p-12 overflow-hidden">

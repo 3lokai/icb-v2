@@ -17,6 +17,7 @@ export function ValueTips({ tips, className }: ValueTipsProps) {
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Shopping smart"
         title="What to look for at this *price*"

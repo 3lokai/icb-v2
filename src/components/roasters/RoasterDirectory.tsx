@@ -16,8 +16,7 @@ import type {
   RoasterSort,
 } from "@/types/roaster-types";
 import { MobileFilterDrawer } from "./MobileFilterDrawer";
-import { RoasterFilterBar } from "./RoasterFilterBar";
-import { RoasterFilterSidebar } from "./RoasterFilterSidebar";
+import { RoasterFacetedFilterBar } from "./RoasterFacetedFilterBar";
 import { RoasterGrid } from "./RoasterGrid";
 import { RoasterPagination } from "./RoasterPagination";
 
@@ -37,7 +36,7 @@ export function RoasterDirectory({
   initialData,
   filterMeta,
 }: RoasterDirectoryProps) {
-  const { filters, page, sort, limit } = useRoasterFilters();
+  const { filters, page, sort, limit, resetFilters } = useRoasterFilters();
 
   // Mobile drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -54,21 +53,23 @@ export function RoasterDirectory({
   }, [filters]);
 
   // Fetch data using TanStack Query
-  const { data, isFetching, isError } = useRoasters(
+  const { data, isFetching, isError, refetch } = useRoasters(
     { filters, page, limit, sort },
     { initialData }
   );
 
-  // Render minimal UI (Phase 1)
   if (isError) {
     return (
-      <div className="container mx-auto p-4">
-        <div className="py-12 text-center">
-          <h2 className="mb-4 text-title">Error loading roasters</h2>
-          <p className="text-muted-foreground">
-            Please try refreshing the page.
-          </p>
-        </div>
+      <div className="w-full py-16 text-center">
+        <h2 className="mb-3 text-title">Couldn&apos;t load roasters</h2>
+        <p className="mx-auto mb-6 max-w-md text-body text-muted-foreground">
+          Something went wrong fetching the directory. Check your connection and
+          try again.
+        </p>
+        <Button variant="outline" onClick={() => refetch()}>
+          <Icon name="ArrowClockwise" className="mr-2" size={16} />
+          Try again
+        </Button>
       </div>
     );
   }
@@ -76,39 +77,11 @@ export function RoasterDirectory({
   const items = data?.items || [];
 
   return (
-    <div className="container mx-auto p-4 pt-16 md:pt-24">
-      {/* Section Header */}
-      <div className="mb-12">
-        <Stack gap="6">
-          <div className="inline-flex items-center gap-4">
-            <span className="h-px w-8 md:w-12 bg-accent/60" />
-            <span className="text-overline text-muted-foreground tracking-[0.15em]">
-              The Directory
-            </span>
-          </div>
-
-          <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-            Explore India&apos;s <Accent>Roaster Network</Accent>
-          </h2>
-
-          <p className="max-w-md text-pretty text-body-large text-muted-foreground leading-relaxed">
-            Discover specialty coffee roasters from across the country. Filter
-            by location, search by name, or browse to find your next favorite
-            roaster.
-          </p>
-        </Stack>
-      </div>
-
-      {/* Results Count - always reserve space to prevent CLS when data loads */}
-      <div className="mb-6 min-h-[1.5rem] flex items-center justify-center text-center">
-        {data ? (
-          <p className="text-muted-foreground text-caption italic">
-            Showing {items.length} of {data.total} roasters
-          </p>
-        ) : (
-          <p className="text-muted-foreground text-caption italic">Loading…</p>
-        )}
-      </div>
+    <div className="w-full">
+      {/* Section heading — single anchor above the directory (hero carries the intro) */}
+      <h2 className="mb-8 text-title text-balance leading-[1.1] tracking-tight">
+        Explore India&apos;s <Accent>Roaster Network</Accent>
+      </h2>
 
       {/* Mobile Filter Toggle Button */}
       <div className="mb-4 md:hidden">
@@ -128,32 +101,42 @@ export function RoasterDirectory({
         </Button>
       </div>
 
-      {/* Filter Bar */}
-      <RoasterFilterBar />
+      {/* Top-aligned faceted filter bar (desktop) */}
+      <RoasterFacetedFilterBar filterMeta={filterMeta} />
 
-      {/* Mobile Filter Drawer */}
+      {/* Results Count - always reserve space to prevent CLS when data loads */}
+      <div className="mt-6 min-h-[1.5rem] flex items-center justify-center text-center">
+        {data ? (
+          <p className="text-muted-foreground text-caption italic">
+            Showing {items.length} of {data.total} roasters
+          </p>
+        ) : (
+          <p className="text-muted-foreground text-caption italic">Loading…</p>
+        )}
+      </div>
+
+      {/* Mobile Filter Drawer (full filter UI on small screens) */}
       <MobileFilterDrawer
         filterMeta={filterMeta}
         onOpenChange={setIsDrawerOpen}
         open={isDrawerOpen}
       />
 
-      {/* Main Content Area */}
-      <div className="flex flex-col gap-12 md:flex-row md:gap-16">
-        {/* Filter Sidebar */}
-        <RoasterFilterSidebar filterMeta={filterMeta} />
+      {/* Roaster Grid — full width (skeletons shown by RoasterGrid when loading) */}
+      <div className="mt-8">
+        <Stack gap="8">
+          <RoasterGrid
+            isLoading={isFetching}
+            items={items}
+            hasActiveFilters={activeFilterCount > 0}
+            onClearFilters={resetFilters}
+          />
 
-        {/* Roaster Grid (skeletons shown by RoasterGrid when loading) */}
-        <div className="flex-1">
-          <Stack gap="8">
-            <RoasterGrid isLoading={isFetching} items={items} />
-
-            {/* Pagination */}
-            {data && data.totalPages > 1 && (
-              <RoasterPagination totalPages={data.totalPages} />
-            )}
-          </Stack>
-        </div>
+          {/* Pagination */}
+          {data && data.totalPages > 1 && (
+            <RoasterPagination totalPages={data.totalPages} />
+          )}
+        </Stack>
       </div>
 
       {/* FAQ Section */}

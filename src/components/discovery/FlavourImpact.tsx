@@ -54,6 +54,7 @@ export function FlavourImpact({ processSlug, className }: FlavourImpactProps) {
   return (
     <Section spacing="tight" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-6"
         overline="In the cup"
         title="Typical *flavours*"

@@ -2,6 +2,7 @@
 
 import RoasterCard from "@/components/cards/RoasterCard";
 import { RoasterCardSkeleton } from "@/components/cards/RoasterCardSkeleton";
+import { Button } from "@/components/ui/button";
 import type { RoasterSummary } from "@/types/roaster-types";
 
 const SKELETON_COUNT = 6;
@@ -9,6 +10,10 @@ const SKELETON_COUNT = 6;
 type RoasterGridProps = {
   items: RoasterSummary[];
   isLoading?: boolean;
+  /** When true, an empty result is from active filters — offer a way back. */
+  hasActiveFilters?: boolean;
+  /** Clears all filters (wired to the directory's resetFilters). */
+  onClearFilters?: () => void;
 };
 
 /**
@@ -16,7 +21,12 @@ type RoasterGridProps = {
  * Renders a grid of roaster cards.
  * Shows skeleton grid when loading with no items to prevent CLS.
  */
-export function RoasterGrid({ items, isLoading }: RoasterGridProps) {
+export function RoasterGrid({
+  items,
+  isLoading,
+  hasActiveFilters,
+  onClearFilters,
+}: RoasterGridProps) {
   if (isLoading && items.length === 0) {
     return (
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -29,8 +39,22 @@ export function RoasterGrid({ items, isLoading }: RoasterGridProps) {
 
   if (items.length === 0 && !isLoading) {
     return (
-      <div className="py-12 text-center">
-        <p className="text-muted-foreground">No roasters found.</p>
+      <div className="py-16 text-center">
+        <p className="text-body text-muted-foreground">
+          {hasActiveFilters
+            ? "No roasters match these filters."
+            : "No roasters found."}
+        </p>
+        {hasActiveFilters && onClearFilters && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-4"
+            onClick={onClearFilters}
+          >
+            Clear all filters
+          </Button>
+        )}
       </div>
     );
   }

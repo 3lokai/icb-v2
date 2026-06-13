@@ -1,8 +1,14 @@
 import { cn } from "@/lib/utils";
 
 type DecorProps = {
-  /** Dot-grid paper texture (one size, one opacity — no drift). */
-  texture?: "dots";
+  /**
+   * Paper texture layer:
+   * - `dots`: a fine dot grid.
+   * - `grain` / `grain-coarse`: the brand's native film grain (cf. `.bg-noise`),
+   *   scoped to the band. The two grains differ in scale so adjacent textured
+   *   sections don't read identically.
+   */
+  texture?: "dots" | "grain" | "grain-coarse";
   /** Soft blurred colour washes in opposite corners. */
   wash?: boolean;
   /** Magazine accent: a full-width gradient rule along the top edge. */
@@ -38,6 +44,10 @@ export function Decor({ texture, wash, stripe, className }: DecorProps) {
     >
       {stripe && <div className="decor-stripe" />}
       {texture === "dots" && <div className="decor-dots" />}
+      {texture === "grain" && <div className="decor-grain" />}
+      {texture === "grain-coarse" && (
+        <div className="decor-grain decor-grain-coarse" />
+      )}
       {wash && (
         <>
           <div className="decor-wash decor-wash-a" />

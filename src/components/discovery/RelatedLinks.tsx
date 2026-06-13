@@ -9,7 +9,6 @@ import {
 import { Stack } from "../primitives/stack";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/common/Icon";
-import { cn } from "@/lib/utils";
 
 type RelatedLinksProps = {
   relatedSlugs: string[];
@@ -74,23 +73,8 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
             className="group block h-full"
           >
             <Card className="h-full hover-lift transition-all duration-300 border-border/50 bg-card/40 hover:bg-card/60 overflow-hidden relative">
-              {/* Magazine accent: top rule (category-coded) */}
-              <div
-                className={cn(
-                  "absolute left-0 right-0 top-0 h-1 opacity-40 transition-opacity group-hover:opacity-100",
-                  page.type === "brew_method"
-                    ? "bg-accent"
-                    : page.type === "roast_level"
-                      ? "bg-primary"
-                      : page.type === "price_bucket"
-                        ? "bg-muted-foreground"
-                        : page.type === "process"
-                          ? "bg-emerald-600/80"
-                          : page.type === "region"
-                            ? "bg-sky-600/80"
-                            : "bg-amber-600/80"
-                )}
-              />
+              {/* Magazine accent: single-accent top rule (category is signalled by the label below) */}
+              <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-40 transition-opacity group-hover:opacity-100" />
 
               <CardContent className="p-6 h-full">
                 <Stack gap="6" className="h-full flex-col">

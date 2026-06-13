@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Stack } from "@/components/primitives/stack";
-import { Cluster } from "@/components/primitives/cluster";
 import { useRoasterFilters } from "@/hooks/use-roaster-filters";
 import { useRoasterFilterMeta } from "@/hooks/use-roaster-filter-meta";
 import type { RoasterFilterMeta } from "@/types/roaster-types";
@@ -144,7 +143,7 @@ export function RoasterFilterContent({
     return (
       <Stack gap="3">
         <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+          className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
           htmlFor={filterKey}
         >
           {title}
@@ -170,7 +169,7 @@ export function RoasterFilterContent({
               <span className="text-caption font-medium transition-colors">
                 {item.label}{" "}
                 <span
-                  className={`text-muted-foreground/50 font-normal ${
+                  className={`text-muted-foreground font-normal ${
                     isMetaLoading ? "opacity-50" : ""
                   }`}
                 >
@@ -206,7 +205,7 @@ export function RoasterFilterContent({
       {/* Search */}
       <Stack gap="3">
         <label
-          className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro"
+          className="font-bold uppercase tracking-widest text-muted-foreground text-micro"
           htmlFor="search"
         >
           Filter by Name
@@ -246,7 +245,7 @@ export function RoasterFilterContent({
 
       {/* Boolean Filters */}
       <Stack gap="4">
-        <label className="font-bold uppercase tracking-widest text-muted-foreground/60 text-micro">
+        <label className="font-bold uppercase tracking-widest text-muted-foreground text-micro">
           Options
         </label>
         <Stack gap="3">

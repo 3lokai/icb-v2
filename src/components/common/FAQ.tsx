@@ -8,8 +8,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Section } from "@/components/primitives/section";
-import { Stack } from "@/components/primitives/stack";
-import { Decor } from "@/components/primitives/decor";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateFAQSchema } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
@@ -94,40 +92,37 @@ export function FAQSection({
   const schema = generateFAQSchema(items);
 
   return (
-    <Section
-      spacing="loose"
-      className={cn("relative overflow-hidden", className)}
-      contained={contained}
-    >
-      <Decor wash />
-      <div className="relative z-10">
-        {includeStructuredData && <StructuredData schema={schema} />}
-        <div className="mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end border-b border-border/10 pb-8">
-            <div className="md:col-span-8">
-              <Stack gap="6">
-                <div className="inline-flex items-center gap-4">
-                  <span className="h-px w-8 md:w-12 bg-accent/60" />
-                  <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                    {overline}
-                  </span>
-                </div>
-                <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                  {title}
-                </h2>
-                <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                  {description}
-                </p>
-              </Stack>
-            </div>
-            <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
-              <div className="inline-flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
-                <span className="h-px w-8 bg-accent/40" />
-                {badge}
-              </div>
+    <Section spacing="loose" className={className} contained={contained}>
+      {includeStructuredData && <StructuredData schema={schema} />}
+
+      {/* Editorial header — kicker, Fraunces title, lead, anchored by a hairline rule */}
+      <div className="mx-auto max-w-5xl">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 border-b border-border/40 pb-7 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-8">
+            <div className="flex flex-col gap-5">
+              <span className="inline-flex items-center gap-3 text-overline font-medium tracking-[0.18em] text-muted-foreground">
+                <span aria-hidden="true" className="h-px w-7 bg-accent" />
+                {overline}
+              </span>
+              <h2 className="text-title text-balance leading-[1.08] tracking-tight">
+                {title}
+              </h2>
+              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+                {description}
+              </p>
             </div>
           </div>
+          <div className="md:col-span-4 flex justify-start md:justify-end md:pb-1">
+            <span className="inline-flex items-center gap-3 text-micro font-medium uppercase tracking-widest text-muted-foreground/70">
+              <span aria-hidden="true" className="h-px w-6 bg-accent/50" />
+              {badge}
+            </span>
+          </div>
         </div>
+      </div>
+
+      {/* Answers sit on a clean paper panel — depth via surface, not blur */}
+      <div className="mx-auto mt-8 max-w-5xl surface-1 rounded-2xl px-5 md:px-8">
         <FAQ className="my-0" items={items} />
       </div>
     </Section>

@@ -43,7 +43,7 @@ export default function NewArrivalsSection() {
   return (
     <Section
       spacing="default"
-      className="relative overflow-hidden group/arrivals"
+      className="relative overflow-hidden group/arrivals bg-card border-y border-border/60"
     >
       <Decor wash />
 

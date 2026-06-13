@@ -101,6 +101,7 @@ export function ProcessExplainer({
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="How it works"
         title="From cherry to *cup*"
@@ -120,9 +121,6 @@ export function ProcessExplainer({
               key={step.title}
               className="surface-1 relative overflow-hidden card-padding card-hover group rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5"
             >
-              {/* Decorative background blurs */}
-              <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-primary/5 blur-2xl transition-all duration-500 group-hover:bg-primary/10" />
-
               <Stack gap="4" className="relative z-10">
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                   <Icon

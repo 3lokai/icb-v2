@@ -129,8 +129,8 @@ const CATEGORY_STYLE_MAP: Record<string, CategoryMeta> = {
   },
   Budget: {
     icon: "CurrencyInr",
-    gradient: "from-amber-500/10 via-transparent to-transparent",
-    accent: "text-amber-500/70",
+    gradient: "from-accent/10 via-transparent to-transparent",
+    accent: "text-accent/70",
     image: "/images/discovery/budget.avif",
     subtext: "Great coffee at every price",
   },

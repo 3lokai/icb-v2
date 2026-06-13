@@ -56,6 +56,7 @@ export function RegionDetailSection({
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Flavour & guidance"
         title="In the *Cup*"
@@ -72,9 +73,6 @@ export function RegionDetailSection({
       <div className="mx-auto max-w-6xl w-full space-y-12 px-4 md:px-0">
         {/* 1. Flavour impact — tags + process variation + roaster context */}
         <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-10 shadow-xl shadow-primary/5">
-          <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-primary/10 blur-3xl" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-48 -translate-x-1/3 translate-y-1/3 rounded-full bg-accent/10 blur-3xl" />
-
           <div className="relative z-10 grid gap-8 md:grid-cols-5 md:items-start">
             {/* Content column */}
             <div className="md:col-span-5 lg:col-span-3">
@@ -117,10 +115,6 @@ export function RegionDetailSection({
 
             {/* Roaster Context */}
             <div className="relative flex h-full w-full flex-col justify-center gap-4 overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 p-6 md:col-span-5 lg:col-span-2">
-              <div
-                aria-hidden
-                className="pointer-events-none absolute top-0 right-0 h-32 w-32 translate-x-1/3 -translate-y-1/3 rounded-full bg-accent/10 blur-3xl"
-              />
               <div className="relative z-10 flex items-center gap-2">
                 <Icon name="Users" className="h-5 w-5 text-accent/70" />
                 <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
@@ -136,7 +130,6 @@ export function RegionDetailSection({
 
         {/* 2. Indian Context — Promoted hero block */}
         <div className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-accent/5 shadow-sm grid md:grid-cols-5">
-          <div className="absolute top-0 right-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-accent/10 blur-3xl" />
           <div className="order-1 md:order-2 md:col-span-2 relative aspect-[4/3] md:aspect-auto h-full min-h-0 bg-muted/20">
             <Image
               src={`/images/discovery/region-${slug}-landscape.png`}
@@ -207,6 +200,19 @@ export function RegionDetailSection({
                 {brewGuidance.notes}
               </p>
             </div>
+          </div>
+
+          <div className="mt-4">
+            <Link
+              href={guideHref}
+              className="group inline-flex items-center gap-2 text-body font-medium text-accent hover:underline"
+            >
+              Read the full guide
+              <Icon
+                name="ArrowRight"
+                className="h-4 w-4 transition-transform group-hover:translate-x-1"
+              />
+            </Link>
           </div>
         </div>
 

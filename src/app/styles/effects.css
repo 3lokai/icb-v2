@@ -106,6 +106,47 @@
     );
     background-size: 22px 22px;
   }
+  /* Film-grain texture — the brand's native paper grain (cf. .bg-noise), scoped
+     to a section band instead of the fixed viewport overlay. `grain` is a fine
+     grain; `grain-coarse` is a larger-scale variation so adjacent textured
+     bands read differently. Theme-aware, reduced-motion friendly. */
+  .decor-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-repeat: repeat;
+    background-size: 150px 150px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+  }
+  .decor-grain-coarse {
+    background-size: 260px 260px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='gc'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.32' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gc)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+  }
+  .dark .decor-grain {
+    mix-blend-mode: soft-light;
+    opacity: 0.08;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .decor-grain {
+      opacity: 0.03;
+    }
+  }
+  /* HowItWorks step affordances (was an inlined <style jsx global>). */
+  .shadow-glow {
+    box-shadow: 0 0 20px -5px var(--accent);
+  }
+  .dashed {
+    background-image: linear-gradient(
+      to bottom,
+      var(--border) 50%,
+      transparent 50%
+    );
+    background-size: 1px 8px;
+    background-repeat: repeat-y;
+  }
   .decor-wash {
     position: absolute;
     border-radius: 50%;

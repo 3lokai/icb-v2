@@ -7,7 +7,7 @@ export default function Loading() {
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-background p-6 z-50">
       <div className="mx-auto text-center">
         <Stack gap="12" className="items-center">
-          <LoadingSpinner size="lg" text="Grinding the details..." />
+          <LoadingSpinner size="xl" text="Grinding the details..." />
 
           <div className="relative w-full overflow-hidden pt-12">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-24 bg-accent/40" />

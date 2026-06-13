@@ -2,10 +2,13 @@ import { Accent } from "@/components/primitives/accent";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CoffeeDirectory } from "@/components/coffees/CoffeeDirectory";
-import { DiscoveryAccordionGrid } from "@/components/discovery/DiscoveryAccordionGrid";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { fetchCoffeeFilterMeta } from "@/lib/data/fetch-coffee-filter-meta";
 import { fetchCoffeesCached } from "@/lib/data/fetch-coffees";
+import {
+  fetchPublicDirectoryTotals,
+  type PublicDirectoryTotals,
+} from "@/lib/data/fetch-public-directory-totals";
 import type { CoffeeFilters, CoffeeSummary } from "@/types/coffee-types";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
 import {
@@ -16,7 +19,17 @@ import StructuredData from "@/components/seo/StructuredData";
 import { CoffeesPageContentSkeleton } from "@/components/coffees/CoffeesPageContentSkeleton";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
-import { Stack } from "@/components/primitives/stack";
+
+const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+
+async function getDirectoryTotals(): Promise<PublicDirectoryTotals> {
+  try {
+    return await fetchPublicDirectoryTotals();
+  } catch (e) {
+    console.error("[CoffeesPage] fetchPublicDirectoryTotals", e);
+    return TOTALS_FALLBACK;
+  }
+}
 
 /**
  * Generate metadata for coffee directory page
@@ -41,9 +54,11 @@ export async function generateMetadata({
   }
 
   const { filters, page } = parseCoffeeSearchParams(urlSearchParams);
+  const totals = await getDirectoryTotals();
+  const coffeeCountLabel = `${totals.coffees.toLocaleString()}+`;
 
   // Build title based on filters — root layout appends "| Indian Coffee Beans"
-  let title = "Buy Coffee Beans in India (1,400+ SKUs)";
+  let title = `Buy Coffee Beans in India (${coffeeCountLabel} SKUs)`;
   if (filters.q) {
     title = `${filters.q} – Coffee Search`;
   } else if (filters.roast_levels && filters.roast_levels.length > 0) {
@@ -51,8 +66,7 @@ export async function generateMetadata({
   }
 
   // Enhanced description based on active filters
-  let description =
-    "Browse 1,400+ Indian coffee SKUs by roast level, process, flavour notes, and price. Community ratings on every coffee.";
+  let description = `Browse ${coffeeCountLabel} Indian coffee SKUs by roast level, process, flavour notes, and price. Community ratings on every coffee.`;
 
   if (filters.q) {
     description = `Search results for "${filters.q}" - Discover specialty coffee beans from Indian roasters.`;
@@ -269,27 +283,15 @@ async function CoffeesPageContent({
       <StructuredData schema={[collectionSchema, breadcrumbSchema]} />
 
       <PageShell maxWidth="7xl">
-        <Stack gap="12">
-          {/* Top Discovery Hub - Tight Section */}
-          <Section
-            spacing="tight"
-            contained={false}
-            className="border-b border-border/40 pb-12"
-          >
-            <DiscoveryAccordionGrid />
-          </Section>
-
-          {/* Main Directory Display */}
-          <Section spacing="default" contained={false} className="pt-0">
-            <CoffeeDirectory
-              filterMeta={filterMeta}
-              initialData={initialData}
-              initialFilters={filters}
-              initialPage={page}
-              initialSort={sort}
-            />
-          </Section>
-        </Stack>
+        <Section spacing="default" contained={false}>
+          <CoffeeDirectory
+            filterMeta={filterMeta}
+            initialData={initialData}
+            initialFilters={filters}
+            initialPage={page}
+            initialSort={sort}
+          />
+        </Section>
       </PageShell>
     </>
   );
@@ -305,13 +307,15 @@ export default async function CoffeesPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
+  const totals = await getDirectoryTotals();
+  const coffeeCountLabel = `${totals.coffees.toLocaleString()}+`;
 
   return (
     <>
       <PageHeader
         backgroundImage="/images/hero-bg.avif"
         backgroundImageAlt="Coffee beans background"
-        description="Discover over hundreds of specialty coffee beans from roasters across India. Verified data, verified roasters, verified taste."
+        description={`Discover ${coffeeCountLabel} specialty coffee beans from roasters across India. Verified data, verified roasters, verified taste.`}
         overline="Specialty Coffee Directory"
         rightSideContent={
           <div className="flex items-center gap-3 text-micro text-white/50 uppercase tracking-widest font-medium">

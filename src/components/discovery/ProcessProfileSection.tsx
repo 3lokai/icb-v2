@@ -67,6 +67,7 @@ export function ProcessProfileSection({
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Process profile"
         title="How this *process* works"
@@ -92,7 +93,6 @@ export function ProcessProfileSection({
                 key={step.stage}
                 className="surface-1 relative overflow-hidden card-padding card-hover group rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5"
               >
-                <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-primary/5 blur-2xl transition-all duration-500 group-hover:bg-primary/10" />
                 <Stack gap="4" className="relative z-10">
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                     <Icon
@@ -135,9 +135,6 @@ export function ProcessProfileSection({
 
         {/* 2. Flavour impact — tags + Indian context + comparison */}
         <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-10 shadow-xl shadow-primary/5">
-          <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-primary/10 blur-3xl" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-48 -translate-x-1/3 translate-y-1/3 rounded-full bg-accent/10 blur-3xl" />
-
           <div className="relative z-10 grid gap-8 md:grid-cols-5 md:items-start">
             {/* Image column */}
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
@@ -211,13 +208,13 @@ export function ProcessProfileSection({
         </div>
 
         {/* 3. Indian context — Promoted hero block */}
-        <div className="relative overflow-hidden rounded-[2rem] border border-amber-500/20 bg-amber-500/5 shadow-sm grid md:grid-cols-5">
-          <div className="absolute top-0 right-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-accent/5 shadow-sm grid md:grid-cols-5">
           <div className="order-1 md:order-2 md:col-span-2 relative aspect-video md:aspect-auto h-full min-h-0">
             <Image
               src={`/images/discovery/process-${slug}-context.avif`}
               alt="Indian Specialty Context"
               fill
+              sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover"
             />
           </div>
@@ -227,8 +224,8 @@ export function ProcessProfileSection({
               className="relative z-10 w-full text-center md:text-left"
             >
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <Icon name="MapPin" className="h-5 w-5 text-amber-600/70" />
-                <p className="text-overline text-amber-700/80 dark:text-amber-500/80 tracking-[0.15em] uppercase">
+                <Icon name="MapPin" className="h-5 w-5 text-accent/70" />
+                <p className="text-overline text-accent tracking-[0.15em] uppercase">
                   Indian Specialty Context
                 </p>
               </div>

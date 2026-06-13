@@ -111,15 +111,6 @@ function SnapshotContent({
                 key={c.label}
                 className={cn(cardShell, !embedded && "group")}
               >
-                {!embedded && (
-                  <div
-                    className={cn(
-                      "absolute top-0 right-0 h-16 w-16 rounded-full blur-2xl opacity-10 transition-all duration-500 group-hover:opacity-20",
-                      meta.bg
-                    )}
-                  />
-                )}
-
                 <Stack gap={embedded ? "3" : "4"} className="relative z-10">
                   <div
                     className={cn(
@@ -200,6 +191,7 @@ export function RegionSnapshot({
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Snapshot"
         title={SNAPSHOT_TITLE}

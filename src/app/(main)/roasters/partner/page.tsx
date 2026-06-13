@@ -3,9 +3,15 @@
 import { Metadata } from "next";
 import { submitForm } from "@/app/actions/forms";
 import StructuredData from "@/components/seo/StructuredData";
+import {
+  fetchPublicDirectoryTotals,
+  type PublicDirectoryTotals,
+} from "@/lib/data/fetch-public-directory-totals";
 import { generateMetadata } from "@/lib/seo/metadata";
 import { partnerPageSchema } from "@/lib/seo/schema";
 import PartnerPageClient from "./PartnerPageClient";
+
+const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
 
 // Define metadata for SEO
 export const metadata: Metadata = generateMetadata({
@@ -22,11 +28,18 @@ export const metadata: Metadata = generateMetadata({
 });
 
 // Server component that passes server actions to the client component
-export default function PartnerPage() {
+export default async function PartnerPage() {
+  let totals = TOTALS_FALLBACK;
+  try {
+    totals = await fetchPublicDirectoryTotals();
+  } catch (e) {
+    console.error("[PartnerPage] fetchPublicDirectoryTotals", e);
+  }
+
   return (
     <>
       <StructuredData schema={partnerPageSchema} />
-      <PartnerPageClient submitForm={submitForm} />
+      <PartnerPageClient submitForm={submitForm} totals={totals} />
     </>
   );
 }

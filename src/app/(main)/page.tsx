@@ -3,10 +3,8 @@ import { Suspense } from "react";
 import HeroSection from "@/components/homepage/hero/HeroSection";
 import NewAdditionsStrip from "@/components/homepage/NewAdditionsStrip";
 import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGridLazy";
-import {
-  ALL_ARTICLES_QUERY,
-  LATEST_ARTICLES_QUERY,
-} from "@/lib/sanity/queries";
+import { Section } from "@/components/primitives/section";
+import { LATEST_ARTICLES_QUERY } from "@/lib/sanity/queries";
 import { client } from "@/lib/sanity/client";
 import { Article } from "@/types/blog-types";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
@@ -14,20 +12,9 @@ import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 import { getAllCurators } from "@/data/curations";
 import { fetchCommunityCoffeeReviewCount } from "@/lib/data/fetch-community-coffee-review-count";
-import { fetchRecentlyViewedCoffees } from "@/lib/data/fetch-recently-viewed-coffees";
+import { fetchTopCoffeeReviewers } from "@/lib/data/fetch-top-coffee-reviewers";
 
 // Dynamic imports for below-the-fold components to reduce initial bundle size
-const NewArrivalsSection = dynamic(
-  () => import("@/components/homepage/NewArrivalsSection"),
-  {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
-  }
-);
-
 const RoasterInfrastructureSection = dynamic(
   () => import("@/components/homepage/RoasterInfrastructureSection"),
   {
@@ -105,11 +92,8 @@ const HowItWorksSection = dynamic(
   }
 );
 
-const UserProfileTeaser = dynamic(
-  () =>
-    import("@/components/homepage/UserProfileTeaser").then((mod) => ({
-      default: mod.UserProfileTeaser,
-    })),
+const TopProfilesSection = dynamic(
+  () => import("@/components/homepage/TopProfilesSection"),
   {
     loading: () => (
       <div className="flex min-h-[400px] items-center justify-center">
@@ -130,11 +114,14 @@ const TopRatedSection = dynamic(
   }
 );
 
-const RecentlyViewedSection = dynamic(
-  () => import("@/components/homepage/RecentlyViewedSection"),
+const DiscoveryAccordionGrid = dynamic(
+  () =>
+    import("@/components/discovery/DiscoveryAccordionGrid").then((mod) => ({
+      default: mod.DiscoveryAccordionGrid,
+    })),
   {
     loading: () => (
-      <div className="flex min-h-[120px] items-center justify-center border-y border-border/40 bg-background">
+      <div className="flex min-h-[400px] items-center justify-center">
         <LoadingSpinner size="md" />
       </div>
     ),
@@ -174,21 +161,17 @@ export default async function Home({ searchParams }: HomePageProps) {
         ? heroSegmentRaw[0]
         : null;
 
-  const [
-    curators,
-    communityCoffeeReviewCount,
-    recentlyViewedInitial,
-    latestArticles,
-  ] = await Promise.all([
-    getAllCurators(),
-    fetchCommunityCoffeeReviewCount(),
-    fetchRecentlyViewedCoffees(12),
-    client.fetch<Article[]>(LATEST_ARTICLES_QUERY),
-  ]);
+  const [curators, communityCoffeeReviewCount, latestArticles, topProfiles] =
+    await Promise.all([
+      getAllCurators(),
+      fetchCommunityCoffeeReviewCount(),
+      client.fetch<Article[]>(LATEST_ARTICLES_QUERY),
+      fetchTopCoffeeReviewers(6),
+    ]);
 
   return (
     <div className="surface-0 flex min-h-screen flex-col">
-      <main className="flex-1 bg-muted/30">
+      <main className="flex-1 bg-background">
         <div className="relative">
           {/* Wrap HeroSection in Suspense for streaming SSR - allows h1 to render earlier */}
           <Suspense
@@ -234,16 +217,15 @@ export default async function Home({ searchParams }: HomePageProps) {
             </div>
           </div>
         </div>
-        {recentlyViewedInitial.length > 0 ? (
-          <RecentlyViewedSection initialCoffees={recentlyViewedInitial} />
-        ) : null}
         <TopRatedSection
           communityCoffeeReviewCount={communityCoffeeReviewCount}
         />
         <HomeCollectionGridLazy tier="core" />
+        <Section spacing="default" ground="warm" decor={{ texture: "grain" }}>
+          <DiscoveryAccordionGrid description="Jump straight to top-rated coffees by roast, brew method, process, origin, and more." />
+        </Section>
         <HowItWorksSection />
-        <UserProfileTeaser />
-        <NewArrivalsSection />
+        <TopProfilesSection profiles={topProfiles} />
         <RoasterInfrastructureSection />
         <EducationSection articles={latestArticles} />
         <CuratorSpotlight curator={curators[0] || null} />

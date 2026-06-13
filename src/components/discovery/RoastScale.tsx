@@ -35,6 +35,7 @@ export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
   return (
     <Section spacing="tight" contained={false} className={cn(className)}>
       <DiscoverySectionIntro
+        divider
         className="mb-8"
         overline="Roast range"
         title="Where you are on the *scale*"
@@ -54,11 +55,6 @@ export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
             "transition-colors duration-500 hover:border-border"
           )}
         >
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute left-0 top-0 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
-            <div className="absolute bottom-0 right-0 h-24 w-24 rounded-full bg-accent/5 blur-2xl" />
-          </div>
-
           <div className="relative z-10 flex flex-col items-stretch md:flex-row md:items-center md:justify-between md:gap-2">
             {STEPS.map((step, i) => {
               const isActive = step.slug === currentRoastSlug;

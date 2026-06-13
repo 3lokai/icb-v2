@@ -7,7 +7,7 @@ import "@/lib/lottie"; // side effect: point dotLottie at the self-hosted WASM
 import { cn } from "@/lib/utils";
 
 type LoadingSpinnerProps = {
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   text?: string;
   className?: string;
 };
@@ -16,6 +16,8 @@ const sizeClasses = {
   sm: "size-10", // 40px - aligns with Tailwind w-10/h-10
   md: "size-16", // 64px - aligns with Tailwind w-16/h-16 (standard spacing)
   lg: "size-20", // 80px - aligns with Tailwind w-20/h-20
+  // Responsive — scales with the viewport for full-screen loading pages
+  xl: "size-28 sm:size-36 md:size-44", // 112px → 144px → 176px
 };
 
 export const LoadingSpinner = ({

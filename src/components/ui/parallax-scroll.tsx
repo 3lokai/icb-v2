@@ -111,7 +111,7 @@ export function ParallaxScroll<T>(
         ref={scrollTarget === "container" ? gridRef : undefined}
       >
         <div
-          ref={scrollTarget === "viewport" ? inViewRef : gridRef}
+          ref={scrollTarget === "viewport" ? inViewRef : undefined}
           className={cn(
             "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start gap-6",
             scrollTarget === "container" &&

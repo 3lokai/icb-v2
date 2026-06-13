@@ -76,9 +76,6 @@ export function RoastProfileTabbed({
         className
       )}
     >
-      <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-primary/10 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-48 -translate-x-1/3 translate-y-1/3 rounded-full bg-accent/10 blur-3xl" />
-
       <Tabs
         defaultValue="bean"
         className="relative z-10 w-full min-w-0 max-w-full"

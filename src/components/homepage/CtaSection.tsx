@@ -7,14 +7,27 @@ import { Accent } from "@/components/primitives/accent";
 import { Decor } from "@/components/primitives/decor";
 import { Reveal } from "@/components/primitives/reveal";
 import { Button } from "@/components/ui/button";
+import {
+  fetchPublicDirectoryTotals,
+  type PublicDirectoryTotals,
+} from "@/lib/data/fetch-public-directory-totals";
 
-export default function CtaSection() {
+const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+
+export default async function CtaSection() {
+  let totals = TOTALS_FALLBACK;
+  try {
+    totals = await fetchPublicDirectoryTotals();
+  } catch (e) {
+    console.error("[CtaSection] fetchPublicDirectoryTotals", e);
+  }
+
   return (
     <Section spacing="default">
       <Reveal className="mx-auto max-w-6xl">
         <div className="group relative overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-shadow duration-500 hover:shadow-md">
-          {/* Subtle "magazine" accent: stripe + paper texture + wash */}
-          <Decor stripe texture="dots" wash />
+          {/* Subtle "magazine" accent: stripe + film grain + wash */}
+          <Decor stripe texture="grain" wash />
 
           <div className="relative p-6 sm:p-10 md:p-14 lg:p-16">
             <div className="grid items-center gap-10 md:gap-16 md:grid-cols-12">
@@ -29,7 +42,7 @@ export default function CtaSection() {
                   </div>
 
                   <Stack gap="6">
-                    <h2 className="text-display text-balance leading-[1.05] tracking-tight">
+                    <h2 className="text-title text-balance leading-[1.1] tracking-tight">
                       Find Indian specialty coffee <Accent>worth</Accent>{" "}
                       brewing.
                     </h2>
@@ -107,8 +120,8 @@ export default function CtaSection() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="rounded-xl border border-border bg-card p-5 group/stat">
-                        <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5">
-                          60+
+                        <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5 tabular-nums">
+                          {totals.roasters.toLocaleString()}+
                         </div>
                         <div className="mt-1 text-label font-bold text-accent">
                           Roasters
@@ -116,8 +129,8 @@ export default function CtaSection() {
                       </div>
 
                       <div className="rounded-xl border border-border bg-card p-5 group/stat">
-                        <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5">
-                          2,000+
+                        <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5 tabular-nums">
+                          {totals.coffees.toLocaleString()}+
                         </div>
                         <div className="mt-1 text-label font-bold text-accent">
                           Beans

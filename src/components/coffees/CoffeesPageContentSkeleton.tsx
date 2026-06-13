@@ -1,51 +1,23 @@
+import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CoffeeCardSkeleton } from "@/components/cards/CoffeeCardSkeleton";
 
 /**
  * Layout-matched skeleton for the coffees page content.
- * Mirrors CollectionGrid + CoffeeDirectory structure and approximate height.
- * Used as Suspense fallback and route loading UI to prevent CLS.
+ * Mirrors CoffeeDirectory structure (heading, faceted filter bar, results line, grid)
+ * inside PageShell + Section. Used as Suspense fallback and route loading UI to prevent CLS.
  */
 export function CoffeesPageContentSkeleton() {
   return (
-    <>
-      {/* CollectionGrid-shaped placeholder: same Section + grid as real content */}
-      <Section spacing="default">
-        <div className="mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-            <div className="md:col-span-8 space-y-6">
-              <div className="inline-flex items-center gap-4">
-                <Skeleton className="h-px w-8 md:w-12" />
-                <Skeleton className="h-4 w-24" />
-              </div>
-              <Skeleton className="h-10 w-3/4 max-w-md" />
-              <Skeleton className="h-4 w-full max-w-2xl" />
-            </div>
-            <div className="md:col-span-4 flex justify-start md:justify-end pb-2">
-              <Skeleton className="h-10 w-[140px]" />
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <Skeleton
-              key={i}
-              className="aspect-square w-full max-w-[200px] rounded-lg"
-            />
-          ))}
-        </div>
-      </Section>
+    <PageShell maxWidth="7xl">
+      <Section spacing="default" contained={false}>
+        {/* Section heading */}
+        <Skeleton className="mb-8 h-9 w-2/3 max-w-md" />
 
-      {/* CoffeeDirectory-shaped placeholder: container, header, filter bar, results line, grid */}
-      <div className="container mx-auto p-4 pt-16 md:pt-24">
-        <div className="mb-12 space-y-6">
-          <div className="inline-flex items-center gap-4">
-            <Skeleton className="h-px w-8 md:w-12" />
-            <Skeleton className="h-4 w-28" />
-          </div>
-          <Skeleton className="h-10 w-2/3 max-w-md" />
-          <Skeleton className="h-4 max-w-md" />
+        {/* Mobile filter button placeholder */}
+        <div className="mb-4 md:hidden">
+          <Skeleton className="h-10 w-full rounded-md" />
         </div>
 
         {/* Filter bar placeholder - fixed height to avoid shift when real bar hydrates */}
@@ -74,7 +46,7 @@ export function CoffeesPageContentSkeleton() {
             ))}
           </div>
         </div>
-      </div>
-    </>
+      </Section>
+    </PageShell>
   );
 }

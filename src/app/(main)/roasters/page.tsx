@@ -6,13 +6,30 @@ import { RoasterDirectory } from "@/components/roasters/RoasterDirectory";
 import { RoastersPageContentSkeleton } from "@/components/roasters/RoastersPageContentSkeleton";
 import { fetchRoasterFilterMeta } from "@/lib/data/fetch-roaster-filter-meta";
 import { fetchRoastersCached } from "@/lib/data/fetch-roasters";
+import {
+  fetchPublicDirectoryTotals,
+  type PublicDirectoryTotals,
+} from "@/lib/data/fetch-public-directory-totals";
 import { parseRoasterSearchParams } from "@/lib/filters/roaster-url";
 import {
   generateCollectionPageSchema,
   generateBreadcrumbSchema,
 } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
+import { PageShell } from "@/components/primitives/page-shell";
+import { Section } from "@/components/primitives/section";
 import type { RoasterFilters, RoasterSummary } from "@/types/roaster-types";
+
+const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+
+async function getDirectoryTotals(): Promise<PublicDirectoryTotals> {
+  try {
+    return await fetchPublicDirectoryTotals();
+  } catch (e) {
+    console.error("[RoastersPage] fetchPublicDirectoryTotals", e);
+    return TOTALS_FALLBACK;
+  }
+}
 
 /**
  * Generate metadata for roaster directory page
@@ -37,16 +54,17 @@ export async function generateMetadata({
   }
 
   const { filters, page } = parseRoasterSearchParams(urlSearchParams);
+  const totals = await getDirectoryTotals();
+  const roasterCountLabel = `${totals.roasters.toLocaleString()}+`;
 
   // Build title based on filters — root layout appends "| Indian Coffee Beans"
-  let title = "Coffee Roasters in India (100+ Listed)";
+  let title = `Coffee Roasters in India (${roasterCountLabel} Listed)`;
   if (filters.q) {
     title = `${filters.q} – Roaster Search`;
   }
 
   // Enhanced description based on active filters
-  let description =
-    "Browse 100+ Indian specialty coffee roasters. Filter by city, state, and roast style - compare ratings and find the right roaster for you.";
+  let description = `Browse ${roasterCountLabel} Indian specialty coffee roasters. Filter by city, state, and roast style - compare ratings and find the right roaster for you.`;
 
   if (filters.q) {
     description = `Search results for "${filters.q}" - Discover specialty coffee roasters from India.`;
@@ -215,13 +233,17 @@ async function RoastersPageContent({
   return (
     <>
       <StructuredData schema={[collectionSchema, breadcrumbSchema]} />
-      <RoasterDirectory
-        filterMeta={filterMeta}
-        initialData={initialData}
-        initialFilters={filters}
-        initialPage={page}
-        initialSort={sort}
-      />
+      <PageShell maxWidth="7xl">
+        <Section spacing="default" contained={false}>
+          <RoasterDirectory
+            filterMeta={filterMeta}
+            initialData={initialData}
+            initialFilters={filters}
+            initialPage={page}
+            initialSort={sort}
+          />
+        </Section>
+      </PageShell>
     </>
   );
 }

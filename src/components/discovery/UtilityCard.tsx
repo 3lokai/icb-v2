@@ -23,10 +23,6 @@ export function UtilityCard({ config }: UtilityCardProps) {
 
   return (
     <div className="group surface-1 relative overflow-hidden rounded-2xl card-padding card-hover hover-lift transition-all duration-500 shadow-sm border border-border/40">
-      {/* Decorative background blurs */}
-      <div className="absolute top-0 right-0 h-40 w-40 rounded-full bg-primary/5 blur-3xl opacity-60" />
-      <div className="absolute bottom-0 right-1/4 h-32 w-32 rounded-full bg-accent/5 blur-2xl opacity-60" />
-
       <Stack gap="6" className="relative z-10 font-sans">
         <Stack gap="4">
           <div className="flex items-center gap-4">

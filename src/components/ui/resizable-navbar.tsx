@@ -8,7 +8,7 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 
 type NavbarProps = {
@@ -55,11 +55,7 @@ type MobileNavMenuProps = {
 };
 
 export const Navbar = ({ children, className }: NavbarProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
+  const { scrollY } = useScroll();
   const [visible, setVisible] = useState<boolean>(false);
 
   useMotionValueEvent(scrollY, "change", (latest: number) => {
@@ -74,7 +70,6 @@ export const Navbar = ({ children, className }: NavbarProps) => {
     <motion.div
       className={cn("sticky inset-x-0 top-20 z-40 w-full", className)}
       // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
-      ref={ref}
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)

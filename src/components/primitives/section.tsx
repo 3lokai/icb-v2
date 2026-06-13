@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Accent } from "./accent";
+import { Decor } from "./decor";
 import { PageShell } from "./page-shell";
 
 type SectionProps = {
@@ -14,6 +15,20 @@ type SectionProps = {
   align?: "left" | "center";
   spacing?: "tight" | "default" | "loose";
   contained?: boolean; // Whether to wrap in PageShell
+  /**
+   * Section ground. Drives the homepage's alternating band rhythm so a long
+   * scroll reads as a designed magazine spread, not one flat wash.
+   * - `cream` (default): the page ground (surface-0); renders transparent.
+   * - `warm`: a warm-paper band (surface-1) with hairline border-y separators.
+   * Keep adjacent sections on different grounds.
+   */
+  ground?: "cream" | "warm";
+  /** Full-bleed decorative layer painted behind the content (rationed — a few feature grounds only). */
+  decor?: {
+    texture?: "dots" | "grain" | "grain-coarse";
+    wash?: boolean;
+    stripe?: boolean;
+  };
   className?: string;
   id?: string;
 };
@@ -39,6 +54,8 @@ export function Section({
   align = "left",
   spacing = "default",
   contained = true,
+  ground = "cream",
+  decor,
   className,
   id,
 }: SectionProps) {
@@ -47,6 +64,16 @@ export function Section({
     default: "py-10 md:py-14 lg:py-20",
     loose: "py-14 md:py-20 lg:py-28",
   };
+
+  // Warm bands sit a tonal step above the cream page ground (surface-1),
+  // fenced by hairline separators; cream sections stay transparent on it.
+  const groundClasses =
+    ground === "warm" ? "bg-card border-y border-border/60" : undefined;
+
+  const hasDecor = Boolean(
+    decor && (decor.texture || decor.wash || decor.stripe)
+  );
+  const needsLayer = ground === "warm" || hasDecor;
 
   // Check if className explicitly overrides padding (py-0 or similar)
   const hasPaddingOverride =
@@ -79,20 +106,31 @@ export function Section({
   );
 
   const sectionClassName = hasPaddingOverride
-    ? className
-    : cn(spacingClasses[spacing], className);
+    ? cn(groundClasses, needsLayer && "relative overflow-hidden", className)
+    : cn(
+        spacingClasses[spacing],
+        groundClasses,
+        needsLayer && "relative overflow-hidden",
+        className
+      );
 
-  if (contained) {
-    return (
-      <section className={sectionClassName} id={id}>
-        <PageShell>{content}</PageShell>
-      </section>
-    );
-  }
+  const decorLayer = hasDecor ? (
+    <Decor texture={decor?.texture} wash={decor?.wash} stripe={decor?.stripe} />
+  ) : null;
+
+  // When a ground/decor layer is present, lift the content above it (both are
+  // positioned, so later-in-DOM relative content paints over absolute Decor).
+  const body = contained ? <PageShell>{content}</PageShell> : content;
+  const layeredBody = needsLayer ? (
+    <div className="relative">{body}</div>
+  ) : (
+    body
+  );
 
   return (
     <section className={sectionClassName} id={id}>
-      {content}
+      {decorLayer}
+      {layeredBody}
     </section>
   );
 }
