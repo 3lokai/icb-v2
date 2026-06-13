@@ -39,7 +39,7 @@ export function Logo({
               : iconHeight
           }
           priority
-          src="/logo-icon.svg"
+          src="/logo-icon.png"
           width={
             typeof iconWidth === "string"
               ? Number.parseInt(iconWidth, 10)
@@ -52,7 +52,7 @@ export function Logo({
             aria-hidden="true"
             className="animate-pulse opacity-50"
             height={12}
-            src="/logo-icon.svg"
+            src="/logo-icon.png"
             width={12}
           />
         </div>

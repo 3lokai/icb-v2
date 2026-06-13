@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { validateApiKey } from "@/lib/api/validate-api-key";
 import { getUsageForKey } from "@/lib/api/usage";
+import { safeErrorMessage } from "@/lib/api/error-response";
 
 /**
  * GET /api/v1/usage
@@ -17,9 +18,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("[API v1 /usage] Unhandled error:", error);
     return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : "Internal server error",
-      },
+      { error: safeErrorMessage(error, "Internal server error") },
       { status: 500 }
     );
   }

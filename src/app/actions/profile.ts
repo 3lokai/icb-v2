@@ -102,14 +102,9 @@ async function saveUserProfile(
   userId: string,
   profileData: ReturnType<typeof prepareProfileData>
 ) {
-  console.log("🔍 Calling upsert_user_profile RPC with:", {
-    userId,
-    profileData,
-  });
-
   // Use RPC function to safely upsert the profile
   // The RPC returns an array, so we get the first element
-  const { data, error } = await supabase.rpc("upsert_user_profile", {
+  const { error } = await supabase.rpc("upsert_user_profile", {
     p_user_id: userId,
     p_full_name: profileData.full_name,
     p_username: profileData.username ?? null,
@@ -126,9 +121,6 @@ async function saveUserProfile(
     p_is_public_profile: profileData.is_public_profile ?? null,
     p_show_location: profileData.show_location ?? null,
   });
-
-  // RPC returns an array, extract the first result
-  const profile = Array.isArray(data) ? data[0] : data;
 
   if (error) {
     console.error("❌ Profile RPC error:", {
@@ -150,7 +142,6 @@ async function saveUserProfile(
     };
   }
 
-  console.log("✅ Profile saved successfully via RPC:", profile);
   return { success: true };
 }
 
@@ -203,11 +194,6 @@ async function saveCoffeePreferences(
   userId: string,
   coffeePrefs: NonNullable<ReturnType<typeof prepareCoffeePreferences>>
 ) {
-  console.log("🔍 Calling upsert_coffee_preferences RPC with:", {
-    userId,
-    coffeePrefs,
-  });
-
   // Use RPC function to safely upsert coffee preferences
   const { error } = await supabase.rpc("upsert_coffee_preferences", {
     p_user_id: userId,
@@ -236,7 +222,6 @@ async function saveCoffeePreferences(
     };
   }
 
-  console.log("✅ Coffee preferences saved via RPC");
   return { success: true };
 }
 
@@ -273,11 +258,6 @@ async function saveNotificationPreferences(
     ReturnType<typeof prepareNotificationPreferences>
   >
 ) {
-  console.log("🔍 Calling upsert_notification_preferences RPC with:", {
-    userId,
-    notificationPrefs,
-  });
-
   const { error } = await supabase.rpc("upsert_notification_preferences", {
     p_user_id: userId,
     p_new_roasters: notificationPrefs.new_roasters ?? true,
@@ -303,7 +283,6 @@ async function saveNotificationPreferences(
     };
   }
 
-  console.log("✅ Notification preferences saved via RPC");
   return { success: true };
 }
 
@@ -345,8 +324,6 @@ export async function saveOnboardingData(data: OnboardingData): Promise<{
 
     // Save user profile
     const profileData = prepareProfileData(validatedData, true);
-    console.log("Prepared profile data:", profileData);
-    console.log("Current user ID:", currentUser.id);
 
     const profileResult = await saveUserProfile(
       supabase,

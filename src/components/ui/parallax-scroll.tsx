@@ -105,7 +105,7 @@ export function ParallaxScroll<T>(
           scrollTarget === "viewport" &&
             "overflow-visible lg:pb-[200px] lg:-mb-[200px] pt-4",
           scrollTarget === "container" &&
-            "h-[40rem] items-start overflow-y-auto w-full",
+            "relative h-[40rem] items-start overflow-y-auto w-full",
           props.className
         )}
         ref={scrollTarget === "container" ? gridRef : undefined}
@@ -149,7 +149,7 @@ export function ParallaxScroll<T>(
   return (
     <div
       className={cn(
-        "h-[40rem] items-start overflow-y-auto w-full",
+        "relative h-[40rem] items-start overflow-y-auto w-full",
         props.className
       )}
       ref={gridRef}

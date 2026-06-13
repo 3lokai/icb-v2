@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { fetchChartData } from "@/lib/data/fetch-chart-data";
+import { safeErrorMessage } from "@/lib/api/error-response";
 
 /**
  * GET /api/blog/chart-data
@@ -26,10 +27,7 @@ export async function GET(request: Request) {
     console.error("[API /blog/chart-data] Error:", error);
 
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to fetch chart data",
-      },
+      { error: safeErrorMessage(error, "Failed to fetch chart data") },
       { status: 500 }
     );
   }
