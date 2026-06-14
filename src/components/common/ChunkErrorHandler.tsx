@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { capture } from "@/lib/posthog";
 
 const CHUNK_RELOAD_ATTEMPTS_KEY = "chunk_reload_attempts";
 const CHUNK_RELOAD_LAST_ATTEMPT_KEY = "chunk_reload_last_attempt_at";
@@ -50,9 +51,15 @@ function resetChunkReloadState() {
   document.documentElement.removeAttribute("data-chunk-reload-exhausted");
 }
 
-function emitChunkReloadExhausted() {
+function emitChunkReloadExhausted(chunkPath: string) {
   document.documentElement.setAttribute("data-chunk-reload-exhausted", "true");
   window.dispatchEvent(new CustomEvent(CHUNK_RELOAD_EXHAUSTED_EVENT));
+  capture("chunk_load_exhausted", { chunk_path: chunkPath });
+}
+
+function getChunkPath(reason: unknown): string {
+  if (reason instanceof Error) return reason.message;
+  return String(reason ?? "");
 }
 
 export function ChunkErrorHandler() {
@@ -79,11 +86,12 @@ export function ChunkErrorHandler() {
         return;
       }
 
+      const chunkPath = getChunkPath(event.reason);
       const currentNow = Date.now();
       const activeCooldownUntil = readNumber(CHUNK_RELOAD_COOLDOWN_UNTIL_KEY);
 
       if (activeCooldownUntil > currentNow) {
-        emitChunkReloadExhausted();
+        emitChunkReloadExhausted(chunkPath);
         return;
       }
 
@@ -98,6 +106,11 @@ export function ChunkErrorHandler() {
       safeWrite(CHUNK_RELOAD_ATTEMPTS_KEY, String(nextAttempts));
       safeWrite(CHUNK_RELOAD_LAST_ATTEMPT_KEY, String(currentNow));
 
+      capture("chunk_load_error", {
+        chunk_path: chunkPath,
+        attempt: nextAttempts,
+      });
+
       if (nextAttempts <= MAX_RELOAD_ATTEMPTS) {
         window.location.reload();
         return;
@@ -105,7 +118,7 @@ export function ChunkErrorHandler() {
 
       const nextCooldownUntil = currentNow + RETRY_COOLDOWN_MS;
       safeWrite(CHUNK_RELOAD_COOLDOWN_UNTIL_KEY, String(nextCooldownUntil));
-      emitChunkReloadExhausted();
+      emitChunkReloadExhausted(chunkPath);
     };
 
     window.addEventListener("unhandledrejection", handler);

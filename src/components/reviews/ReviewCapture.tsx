@@ -780,7 +780,7 @@ export function ReviewCapture({
                 />
                 {formData.comment && formData.comment.length > 0 && (
                   <p className="text-caption text-muted-foreground text-right">
-                    {formData.comment.length.toLocaleString()}/1,000
+                    {formData.comment.length.toLocaleString("en-IN")}/1,000
                   </p>
                 )}
               </Stack>

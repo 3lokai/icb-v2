@@ -267,7 +267,9 @@ export function Footer() {
           <div className="mt-16 border-t border-border/60 pt-8">
             <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
               <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
-                <span>© {currentYear} Indian Coffee Beans</span>
+                <span suppressHydrationWarning>
+                  © {currentYear} Indian Coffee Beans
+                </span>
                 <span className="h-1 w-1 rounded-full bg-accent/40" />
                 <span>Made in India</span>
               </div>

@@ -167,11 +167,11 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
             </div>
             <p className="text-overline text-white/60">
               <span className="font-semibold text-white/80">
-                {totals.coffees.toLocaleString()}
+                {totals.coffees.toLocaleString("en-IN")}
               </span>{" "}
               coffees across{" "}
               <span className="font-semibold text-white/80">
-                {totals.roasters.toLocaleString()}
+                {totals.roasters.toLocaleString("en-IN")}
               </span>{" "}
               roasters
             </p>

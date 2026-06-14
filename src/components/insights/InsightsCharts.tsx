@@ -127,7 +127,7 @@ function ChartTooltip({
       {payload.map((p, i) => (
         <p key={i} className="text-caption">
           {prefix}
-          {p.value?.toLocaleString()}
+          {p.value?.toLocaleString("en-IN")}
           {suffix}
         </p>
       ))}

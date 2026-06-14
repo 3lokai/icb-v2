@@ -50,7 +50,7 @@ function formatMemberCountForDisplay(raw: string): string {
   );
   const num = Number(numericPart);
   if (!Number.isFinite(num)) return trimmed;
-  return `${num.toLocaleString()}${hasPlus ? "+" : ""}`;
+  return `${num.toLocaleString("en-IN")}${hasPlus ? "+" : ""}`;
 }
 
 function CommunityCardComponent({ community, className }: CommunityCardProps) {

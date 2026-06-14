@@ -15,6 +15,22 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   disable_session_recording: process.env.NODE_ENV === "development",
   // Dead-click analysis can crash on navigations when DOM nodes are already torn down (posthog-js <1.37).
   capture_dead_clicks: process.env.NODE_ENV !== "development",
+  before_send: (event) => {
+    if (event?.event !== "$exception") return event;
+    if (process.env.NODE_ENV !== "production") return null;
+    const host = typeof window !== "undefined" ? window.location.hostname : "";
+    if (host === "localhost" || host === "127.0.0.1") return null;
+    const blob = JSON.stringify(event.properties?.$exception_list ?? "");
+    const NOISE = [
+      "__firefox__",
+      "window.ethereum",
+      "chrome-extension://",
+      "moz-extension://",
+      "ResizeObserver loop completed",
+    ];
+    if (NOISE.some((m) => blob.includes(m))) return null;
+    return event;
+  },
 });
 
 // IMPORTANT: Never combine this approach with other client-side PostHog initialization approaches,
