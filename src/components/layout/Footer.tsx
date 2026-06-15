@@ -104,9 +104,9 @@ export function Footer() {
               {/* Column 2: Discover */}
               <div>
                 <Stack gap="6">
-                  <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
+                  <h3 className="text-overline tracking-[0.15em] text-foreground font-bold">
                     Discover
-                  </h4>
+                  </h3>
                   <ul className="space-y-3">
                     {[
                       { href: "/coffees", label: "Coffees" },
@@ -130,9 +130,9 @@ export function Footer() {
               {/* Column 3: Learn */}
               <div>
                 <Stack gap="6">
-                  <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
+                  <h3 className="text-overline tracking-[0.15em] text-foreground font-bold">
                     Learn
-                  </h4>
+                  </h3>
                   <ul className="space-y-3">
                     {[
                       { href: "/learn", label: "Articles" },
@@ -155,9 +155,9 @@ export function Footer() {
               {/* Column 4: Tools */}
               <div>
                 <Stack gap="6">
-                  <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
+                  <h3 className="text-overline tracking-[0.15em] text-foreground font-bold">
                     Tools
-                  </h4>
+                  </h3>
                   <ul className="space-y-3">
                     {[
                       { href: "/tools", label: "All Tools" },
@@ -185,9 +185,9 @@ export function Footer() {
               {/* Column 5: About ICB */}
               <div>
                 <Stack gap="6">
-                  <h4 className="text-overline tracking-[0.15em] text-foreground font-bold">
+                  <h3 className="text-overline tracking-[0.15em] text-foreground font-bold">
                     About ICB
-                  </h4>
+                  </h3>
                   <ul className="space-y-3">
                     <li>
                       <Link
@@ -239,14 +239,14 @@ export function Footer() {
               <div className="relative overflow-hidden rounded-2xl border border-border bg-background/40 p-6 transition-all hover:bg-background/60 hover:border-border/80">
                 <Stack gap="4">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-overline tracking-[0.15em] text-foreground font-bold flex items-center gap-2">
+                    <h3 className="text-overline tracking-[0.15em] text-foreground font-bold flex items-center gap-2">
                       <Icon
                         className="text-accent"
                         name="EnvelopeSimple"
                         size={16}
                       />
                       Updates
-                    </h4>
+                    </h3>
                   </div>
                   <p className="text-caption text-muted-foreground leading-relaxed">
                     Get the latest updates on Indian specialty coffee, roasters,

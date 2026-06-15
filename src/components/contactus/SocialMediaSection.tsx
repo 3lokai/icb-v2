@@ -57,9 +57,9 @@ export function SocialMediaSection() {
 
                 <Stack gap="2">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-serif italic text-heading text-primary group-hover:text-accent transition-colors">
+                    <h3 className="font-serif italic text-heading text-primary group-hover:text-accent transition-colors">
                       {social.name}
-                    </h4>
+                    </h3>
                     <span className="text-micro font-bold text-muted-foreground/40 uppercase tracking-widest">
                       Visit
                     </span>

@@ -51,9 +51,10 @@ export function HeroVideoBackground() {
   }, [shouldLoadVideo]);
 
   return (
-    <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 z-0" aria-hidden="true">
       {shouldLoadVideo ? (
         <video
+          aria-hidden="true"
           autoPlay
           className="absolute inset-0 h-full w-full object-cover"
           loop

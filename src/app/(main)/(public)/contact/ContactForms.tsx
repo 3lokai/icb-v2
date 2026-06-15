@@ -65,9 +65,9 @@ const InteractiveBentoCard = ({
         </div>
 
         <Stack gap="2">
-          <h4 className="text-heading text-foreground tracking-tight">
+          <h3 className="text-heading text-foreground tracking-tight">
             {title}
-          </h4>
+          </h3>
           <p className="text-pretty text-body-muted leading-relaxed">
             {description}
           </p>
@@ -342,9 +342,9 @@ export default function ContactForms({
                       <Icon name={item.icon as IconName} size={24} />
                     </div>
                     <div>
-                      <h4 className="text-subheading font-medium text-foreground mb-2 group-hover:text-primary transition-colors">
+                      <h3 className="text-subheading font-medium text-foreground mb-2 group-hover:text-primary transition-colors">
                         {item.title}
-                      </h4>
+                      </h3>
                       <p className="text-caption text-muted-foreground leading-relaxed">
                         {item.description}
                       </p>

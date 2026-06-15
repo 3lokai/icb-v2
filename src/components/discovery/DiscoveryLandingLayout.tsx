@@ -34,6 +34,8 @@ import {
   generateCollectionPageSchema,
   generateFAQSchema,
 } from "@/lib/seo/schema";
+import { fetchCoffeesCached } from "@/lib/data/fetch-coffees";
+import type { CoffeeSummary } from "@/types/coffee-types";
 
 type DiscoveryLandingLayoutProps = {
   config: LandingPageConfig;
@@ -82,11 +84,29 @@ function getDiscoveryPageLabel(config: LandingPageConfig): string {
   return config.h1;
 }
 
+function buildDiscoveryCoffeeListItems(
+  coffees: CoffeeSummary[],
+  baseUrl: string
+): Array<Record<string, unknown>> {
+  return coffees
+    .filter((c) => c.slug && c.roaster_slug && c.name)
+    .slice(0, 20)
+    .map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Product",
+        name: c.name,
+        url: `${baseUrl}/roasters/${c.roaster_slug}/coffees/${c.slug}`,
+      },
+    }));
+}
+
 /**
  * DiscoveryLandingLayout - Server component
  * Renders all sections of a discovery landing page in order
  */
-export function DiscoveryLandingLayout({
+export async function DiscoveryLandingLayout({
   config,
 }: DiscoveryLandingLayoutProps) {
   const categoryLabel =
@@ -110,10 +130,22 @@ export function DiscoveryLandingLayout({
     { name: pageLabel, url: canonical },
   ]);
 
+  const coffeeResult = await fetchCoffeesCached(
+    config.filter,
+    1,
+    20,
+    config.sortOrder
+  );
+  const coffeeItems = buildDiscoveryCoffeeListItems(
+    coffeeResult.items,
+    BASE_URL
+  );
+
   const collectionPageSchema = generateCollectionPageSchema(
     config.h1,
     config.intro,
-    canonical
+    canonical,
+    coffeeItems
   );
 
   const faqSchema =

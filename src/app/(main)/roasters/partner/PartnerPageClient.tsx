@@ -77,9 +77,9 @@ const InteractiveBentoCard = ({
         </div>
 
         <Stack gap="3">
-          <h4 className="text-title text-foreground tracking-tight italic">
+          <h3 className="text-title text-foreground tracking-tight italic">
             {title}
-          </h4>
+          </h3>
           <p className="text-pretty text-body-muted leading-relaxed">
             {description}
           </p>
@@ -522,7 +522,7 @@ const FeaturesGrid = () => {
               <Icon name={feature.icon} size={28} />
             </div>
             <div>
-              <h4 className="text-heading italic mb-2">{feature.title}</h4>
+              <h3 className="text-heading italic mb-2">{feature.title}</h3>
               <div className="text-caption text-muted-foreground leading-relaxed">
                 {feature.description}
               </div>

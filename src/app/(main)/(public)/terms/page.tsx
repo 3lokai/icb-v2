@@ -10,9 +10,9 @@ import { generateMetadata } from "@/lib/seo/metadata";
 import { termsPageSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = generateMetadata({
-  title: "Terms of Service - IndianCoffeeBeans.com",
+  title: "Terms of Service",
   description:
-    "Terms and conditions for using IndianCoffeeBeans.com directory and services.",
+    "Terms and conditions for using the Indian Coffee Beans directory — accounts, community ratings, acceptable use, intellectual property, disclaimers, and how we handle disputes.",
   keywords: [
     "terms of service",
     "terms and conditions",

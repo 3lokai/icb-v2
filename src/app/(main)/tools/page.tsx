@@ -18,13 +18,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { generateMetadata } from "@/lib/seo/metadata";
+import { generateCollectionPageSchema, getSeoBaseUrl } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
+
+const TOOLS_DESCRIPTION =
+  "Free coffee brewing calculators, expert recipes, and professional tools for specialty coffee enthusiasts. Perfect your brew with precision tools.";
 
 // SEO Metadata
 export const metadata = generateMetadata({
-  title: "Coffee Tools & Calculators - IndianCoffeeBeans",
-  description:
-    "Free coffee brewing calculators, expert recipes, and professional tools for specialty coffee enthusiasts. Perfect your brew with precision tools.",
+  title: "Coffee Tools & Calculators",
+  description: TOOLS_DESCRIPTION,
   keywords: [
     "coffee brewing tools India",
     "free coffee tools",
@@ -34,37 +37,50 @@ export const metadata = generateMetadata({
   type: "website",
 });
 
-// Structured Data Schema
-const toolsListSchema = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "Coffee Tools Collection",
-  description: "Professional coffee brewing tools and calculators",
-  url: "https://www.indiancoffeebeans.com/tools",
-  numberOfItems: 3,
-  itemListElement: [
-    {
+const baseUrl = getSeoBaseUrl();
+const toolsUrl = `${baseUrl}/tools`;
+
+const toolItems = [
+  {
+    "@type": "ListItem",
+    position: 1,
+    item: {
       "@type": "SoftwareApplication",
       name: "Coffee Ratio Calculator",
-      url: "https://www.indiancoffeebeans.com/tools/coffee-calculator",
+      url: `${baseUrl}/tools/coffee-calculator`,
       description:
         "Interactive coffee brewing calculator with timer and method guides",
     },
-    {
-      "@type": "ItemList",
+  },
+  {
+    "@type": "ListItem",
+    position: 2,
+    item: {
+      "@type": "WebApplication",
       name: "Expert Coffee Recipes",
-      url: "https://www.indiancoffeebeans.com/tools/expert-recipes",
+      url: `${baseUrl}/tools/expert-recipes`,
       description: "Championship coffee brewing recipes from world experts",
     },
-    {
+  },
+  {
+    "@type": "ListItem",
+    position: 3,
+    item: {
       "@type": "WebApplication",
       name: "Coffee Compass",
-      url: "https://www.indiancoffeebeans.com/tools/coffee-compass",
+      url: `${baseUrl}/tools/coffee-compass`,
       description:
         "Deterministic brew diagnosis tool: pick symptoms, get precise corrective actions",
     },
-  ],
-};
+  },
+];
+
+const toolsCollectionSchema = generateCollectionPageSchema(
+  "Coffee Tools & Calculators",
+  TOOLS_DESCRIPTION,
+  toolsUrl,
+  toolItems
+);
 
 // Featured tools data
 const featuredTools = [
@@ -149,7 +165,7 @@ export default function ToolsPage() {
   return (
     <div className="pb-20">
       {/* Structured Data */}
-      <StructuredData schema={toolsListSchema} />
+      <StructuredData schema={toolsCollectionSchema} />
 
       {/* Page Header */}
       <PageHeader

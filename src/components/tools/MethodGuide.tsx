@@ -327,10 +327,10 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               {/* Water Quality */}
               <div className="card-bordered bg-background p-6 rounded-xl border-t-4 border-t-chart-2">
                 <Stack gap="3">
-                  <h4 className="flex items-center gap-2 font-semibold text-primary">
+                  <h3 className="flex items-center gap-2 font-semibold text-primary">
                     <Icon className="h-4 w-4 text-chart-2" name="Drop" />
                     Water Quality Matters
-                  </h4>
+                  </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">
                     Use filtered water with 150-300 TDS for optimal extraction.
                     Water temperature should be 90-96°C. If water tastes good to
@@ -342,10 +342,10 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               {/* Coffee Freshness */}
               <div className="card-bordered bg-background p-6 rounded-xl border-t-4 border-t-primary">
                 <Stack gap="3">
-                  <h4 className="flex items-center gap-2 font-semibold text-primary">
+                  <h3 className="flex items-center gap-2 font-semibold text-primary">
                     <Icon className="h-4 w-4 text-primary" name="Coffee" />
                     Fresh Coffee is Key
-                  </h4>
+                  </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">
                     Use coffee beans roasted 7-30 days ago. Grind just before
                     brewing for best results. Store beans in airtight container
@@ -357,10 +357,10 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               {/* Grind Consistency */}
               <div className="card-bordered bg-background p-6 rounded-xl border-t-4 border-t-accent">
                 <Stack gap="3">
-                  <h4 className="flex items-center gap-2 font-semibold text-primary">
+                  <h3 className="flex items-center gap-2 font-semibold text-primary">
                     <Icon className="h-4 w-4 text-accent" name="Gear" />
                     Consistent Grind Size
-                  </h4>
+                  </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">
                     Invest in a quality burr grinder for consistent particle
                     size. Adjust grind size if brew time is too fast (coarser)
@@ -372,10 +372,10 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               {/* Timing & Ratios */}
               <div className="card-bordered bg-background p-6 rounded-xl border-t-4 border-t-chart-4">
                 <Stack gap="3">
-                  <h4 className="flex items-center gap-2 font-semibold text-primary">
+                  <h3 className="flex items-center gap-2 font-semibold text-primary">
                     <Icon className="h-4 w-4 text-chart-4" name="Timer" />
                     Precise Measurements
-                  </h4>
+                  </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">
                     Use a scale for accuracy. Start with 1:15-1:17 ratios and
                     adjust to taste. Weaker coffee? Increase ratio. Bitter? Try
@@ -389,9 +389,9 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
             <Separator className="bg-border/50" />
 
             <div>
-              <h4 className="mb-6 text-center font-semibold text-primary">
+              <h3 className="mb-6 text-center font-semibold text-primary">
                 Quick Ratio Reference
-              </h4>
+              </h3>
               <div className="grid grid-cols-2 gap-4 text-caption md:grid-cols-4">
                 <div className="card-bordered p-4 text-center rounded-lg bg-background hover:border-primary/50 transition-colors">
                   <div className="mb-1 font-medium">Mild</div>

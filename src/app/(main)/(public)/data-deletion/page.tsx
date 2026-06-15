@@ -68,13 +68,40 @@ Thank you,
             {/* Intro */}
             <Stack gap="6">
               <h2 className="text-title text-primary font-serif italic text-pretty leading-tight">
+                Your right to erasure
+              </h2>
+              <Stack gap="4">
+                <p>
+                  Indian Coffee Beans respects your privacy and your right to
+                  control personal data we hold about you. This page explains
+                  what information we store, how to request deletion, what
+                  happens to your contributions, and how long the process takes.
+                  If you signed up with Facebook Login, email, or another
+                  provider, the same process applies — we verify your identity
+                  before removing account-linked data.
+                </p>
+                <p>
+                  We are committed to complying with applicable data-protection
+                  laws, including India&apos;s Digital Personal Data Protection
+                  Act and, where relevant, GDPR for users in the European
+                  Economic Area. Deletion is permanent: once complete, we cannot
+                  restore your account or recover removed profile information.
+                </p>
+              </Stack>
+            </Stack>
+
+            <Stack gap="6">
+              <h2 className="text-title text-primary font-serif italic text-pretty leading-tight">
                 What Data We Collect
               </h2>
               <Stack gap="4">
                 <p>
                   We only collect basic profile information necessary for
                   account functionality. For Facebook Login Users, this includes
-                  your display name, email, and optional profile picture.
+                  your display name, email, and optional profile picture. We
+                  also store account preferences (brew methods, notification
+                  settings), saved coffees, and any reviews or ratings you
+                  submit while signed in.
                 </p>
                 <div className="p-6 rounded-2xl border border-accent/20 bg-accent/5 italic text-accent font-medium">
                   &quot;We do not access your Facebook posts, friends list, or
@@ -241,9 +268,30 @@ Thank you,
                 Need Assistance?
               </h2>
               <p>
-                If you have any questions about data deletion, please contact
-                our privacy team at:{" "}
-                <span className="text-accent font-medium">{CONTACT_EMAIL}</span>
+                If you have any questions about data deletion, identity
+                verification, or what will happen to your reviews, contact our
+                privacy team at{" "}
+                <a
+                  className="text-accent font-medium underline-offset-4 hover:underline"
+                  href={`mailto:${CONTACT_EMAIL}`}
+                >
+                  {CONTACT_EMAIL}
+                </a>
+                . Include the email address tied to your account so we can match
+                your request quickly. We do not charge a fee for standard
+                deletion requests and will never ask for your password by email.
+              </p>
+              <p>
+                For general privacy practices — how we use cookies, analytics,
+                and third-party sign-in — see our{" "}
+                <a
+                  className="text-accent underline-offset-4 hover:underline"
+                  href="/privacy"
+                >
+                  Privacy Policy
+                </a>
+                . If you only want to stop marketing emails, you can unsubscribe
+                from any newsletter without deleting your full account.
               </p>
             </Stack>
           </Stack>

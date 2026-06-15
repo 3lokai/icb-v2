@@ -10,9 +10,9 @@ import { generateMetadata } from "@/lib/seo/metadata";
 import { privacyPageSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = generateMetadata({
-  title: "Privacy Policy - IndianCoffeeBeans.com",
+  title: "Privacy Policy",
   description:
-    "How IndianCoffeeBeans.com collects, uses, and protects your personal information.",
+    "Read how Indian Coffee Beans collects, uses, stores, and protects your personal information — including account data, ratings, cookies, and your rights to access or delete data.",
   keywords: [
     "privacy policy",
     "data protection",

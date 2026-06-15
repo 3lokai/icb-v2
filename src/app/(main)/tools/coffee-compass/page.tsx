@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const canonicalUrl = `${baseUrl}${canonicalPath}`;
 
   const baseMetadata = generateBaseMetadata({
-    title: "Coffee Compass — Diagnose Your Brew | IndianCoffeeBeans",
+    title: "Coffee Compass — Diagnose Your Brew",
     description:
       "Fix your coffee instantly. Pick your tasting symptoms, choose your brewing method, and get precise, method-specific corrections. No AI — pure coffee science.",
     keywords: [

@@ -8,14 +8,18 @@ import {
   type PublicDirectoryTotals,
 } from "@/lib/data/fetch-public-directory-totals";
 import { generateMetadata } from "@/lib/seo/metadata";
-import { partnerPageSchema } from "@/lib/seo/schema";
+import {
+  generateBreadcrumbSchema,
+  getSeoBaseUrl,
+  partnerPageSchema,
+} from "@/lib/seo/schema";
 import PartnerPageClient from "./PartnerPageClient";
 
 const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
 
 // Define metadata for SEO
 export const metadata: Metadata = generateMetadata({
-  title: "Partner With Us - List Your Roastery | IndianCoffeeBeans",
+  title: "Partner With Us — List Your Roastery",
   description:
     "Join 100+ roasters on India's premier coffee platform. Get discovered by coffee enthusiasts. Founding roaster pricing: ₹2,500/year (limited spots).",
   keywords: [
@@ -38,7 +42,19 @@ export default async function PartnerPage() {
 
   return (
     <>
-      <StructuredData schema={partnerPageSchema} />
+      <StructuredData
+        schema={[
+          partnerPageSchema,
+          generateBreadcrumbSchema([
+            { name: "Home", url: getSeoBaseUrl() },
+            { name: "Roasters", url: `${getSeoBaseUrl()}/roasters` },
+            {
+              name: "Partner With Us",
+              url: `${getSeoBaseUrl()}/roasters/partner`,
+            },
+          ]),
+        ]}
+      />
       <PartnerPageClient submitForm={submitForm} totals={totals} />
     </>
   );

@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ogImageUrl = `${baseUrl}/api/og/profile/${username}/selections`;
 
   return {
-    title: `${displayName} | Indian Coffee Beans`,
+    title: displayName,
     description:
       profile.bio ||
       `View ${displayName}'s coffee profile, ratings, and recommendations.`,
@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       languages: { en: profileUrl, "x-default": profileUrl },
     },
     openGraph: {
-      title: `${displayName} | Indian Coffee Beans`,
+      title: displayName,
       description:
         profile.bio ||
         `View ${displayName}'s coffee profile, ratings, and recommendations.`,
@@ -81,7 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${displayName} | Indian Coffee Beans`,
+      title: displayName,
       description:
         profile.bio ||
         `View ${displayName}'s coffee profile, ratings, and recommendations.`,

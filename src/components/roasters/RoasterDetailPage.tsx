@@ -9,10 +9,9 @@ import { roasterImagePresets } from "@/lib/imagekit";
 import { Icon, type IconName } from "@/components/common/Icon";
 import { useImageColor } from "@/hooks/useImageColor";
 
+import { Band } from "@/components/primitives/band";
 import { Cluster } from "@/components/primitives/cluster";
-import { PageShell } from "@/components/primitives/page-shell";
 import { Stack } from "@/components/primitives/stack";
-import { Decor } from "@/components/primitives/decor";
 import { Prose } from "@/components/primitives/prose";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -124,42 +123,6 @@ function RoasterExitIntentRating({
 
 function hasValues(arr: string[] | null | undefined): arr is string[] {
   return Array.isArray(arr) && arr.length > 0;
-}
-
-/* ─── Full-bleed band (homepage-style alternating grounds) ─── */
-
-function Band({
-  id,
-  ground = "cream",
-  texture,
-  className,
-  children,
-}: {
-  id?: string;
-  ground?: "cream" | "warm";
-  texture?: "grain" | "grain-coarse";
-  className?: string;
-  children: React.ReactNode;
-}) {
-  const warm = ground === "warm";
-  return (
-    <section
-      id={id}
-      className={cn(
-        // Full-bleed: break out of the parent route PageShell (max-w-7xl) so the
-        // tonal band reaches the viewport edges like the homepage bands. <main>
-        // has overflow-x-clip, so the 100vw breakout never adds a scrollbar.
-        "relative left-1/2 w-screen -translate-x-1/2 scroll-mt-40 py-12 md:py-16",
-        warm && "overflow-hidden bg-card border-y border-border/60",
-        className
-      )}
-    >
-      {warm && texture && <Decor texture={texture} />}
-      <div className="relative">
-        <PageShell maxWidth="5xl">{children}</PageShell>
-      </div>
-    </section>
-  );
 }
 
 /* ─── Main Component ─── */

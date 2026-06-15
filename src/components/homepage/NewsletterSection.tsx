@@ -8,6 +8,7 @@ function ComingSoonBadge() {
   return (
     <div className="pointer-events-none absolute -right-6 -top-6 select-none opacity-80 mix-blend-multiply dark:mix-blend-screen md:-right-4 md:-top-4">
       <svg
+        aria-hidden="true"
         viewBox="0 0 140 140"
         className="h-32 w-32 rotate-12 text-muted-foreground duration-500 hover:rotate-45"
         fill="none"

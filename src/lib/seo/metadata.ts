@@ -1,6 +1,49 @@
 // lib/seo/metadata.ts
 import type { Metadata } from "next";
 
+/** Root layout title template suffix (see src/app/layout.tsx) */
+export const TITLE_TEMPLATE_SUFFIX = " | Indian Coffee Beans";
+
+/** Max rendered title length including template suffix */
+export const TITLE_MAX_LENGTH = 60;
+
+/** Meta description length bounds */
+export const META_DESCRIPTION_MIN = 120;
+export const META_DESCRIPTION_MAX = 160;
+
+/**
+ * Clamp a page title so `title + TITLE_TEMPLATE_SUFFIX` stays within TITLE_MAX_LENGTH.
+ * Truncates with ellipsis when needed; preserves suffix budget.
+ */
+export function truncateTitle(
+  title: string,
+  maxTotalLength: number = TITLE_MAX_LENGTH
+): string {
+  const suffixBudget = TITLE_TEMPLATE_SUFFIX.length;
+  const maxPageTitle = maxTotalLength - suffixBudget;
+  if (title.length <= maxPageTitle) return title;
+  if (maxPageTitle <= 1) return title.slice(0, maxTotalLength);
+  return `${title.slice(0, maxPageTitle - 1).trimEnd()}…`;
+}
+
+/**
+ * Clamp meta description to SEO-friendly length (120–160 chars).
+ * Pads short descriptions with fallback; trims long ones with ellipsis.
+ */
+export function clampDescription(
+  description: string,
+  fallback?: string
+): string {
+  let desc = description.trim();
+  if (desc.length < META_DESCRIPTION_MIN && fallback) {
+    desc = `${desc} ${fallback}`.trim();
+  }
+  if (desc.length > META_DESCRIPTION_MAX) {
+    return `${desc.slice(0, META_DESCRIPTION_MAX - 1).trimEnd()}…`;
+  }
+  return desc;
+}
+
 // Define structures for detailed Open Graph types
 type OGProductDetails = {
   price?: string;
@@ -139,6 +182,11 @@ export function generateMetadata({
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
+  const normalizedDescription = clampDescription(
+    description,
+    "Explore India's specialty coffee directory — roasters, beans, and brewing guides."
+  );
+
   // Resolve relative canonical paths to absolute URLs
   // e.g. "/about" → "https://www.indiancoffeebeans.com/about"
   const resolvedCanonical = canonical
@@ -151,7 +199,7 @@ export function generateMetadata({
   const ogImageUrl = buildOGImageUrl(baseUrl, title, image, type);
   const openGraph = buildBaseOpenGraph({
     title,
-    description,
+    description: normalizedDescription,
     ogImageUrl,
     canonical: resolvedCanonical,
     baseUrl,
@@ -165,7 +213,7 @@ export function generateMetadata({
 
   const metadata: Metadata = {
     title,
-    description,
+    description: normalizedDescription,
     keywords: mergedKeywords,
     metadataBase: new URL(baseUrl),
     robots: noIndex
@@ -184,7 +232,7 @@ export function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title,
-      description,
+      description: normalizedDescription,
       images: [ogImageUrl],
     },
   };

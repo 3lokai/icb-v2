@@ -14,8 +14,42 @@ import { ArticleGrid } from "@/components/blog/ArticleParallaxGrid";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
 import { Accent } from "@/components/primitives/accent";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import { generateCollectionPageSchema, getSeoBaseUrl } from "@/lib/seo/schema";
+import StructuredData from "@/components/seo/StructuredData";
 
 export const revalidate = 3600;
+
+const LEARN_DESCRIPTION =
+  "Master the art of Indian specialty coffee. From origin stories to brewing guides, explore our curated field guide — articles, series, and research across five knowledge layers.";
+
+export const metadata = generateSEOMetadata({
+  title: "The Indian Coffee Field Guide",
+  description: LEARN_DESCRIPTION,
+  canonical: "/learn",
+  keywords: [
+    "Indian coffee guide",
+    "specialty coffee India",
+    "coffee brewing guides",
+    "Indian coffee origins",
+  ],
+});
+
+function buildArticleListItems(
+  articles: Article[],
+  baseUrl: string
+): Array<Record<string, unknown>> {
+  return articles.slice(0, 20).map((article, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "Article",
+      name: article.title,
+      url: `${baseUrl}/learn/${article.slug}`,
+      ...(article.excerpt ? { description: article.excerpt } : {}),
+    },
+  }));
+}
 
 export default async function LearnPage() {
   const [articles, _categories, series, pillarCategories] = await Promise.all([
@@ -25,6 +59,16 @@ export default async function LearnPage() {
     client.fetch<Category[]>(PILLAR_CATEGORIES_QUERY),
   ]);
 
+  const baseUrl = getSeoBaseUrl();
+  const learnUrl = `${baseUrl}/learn`;
+  const articleItems = buildArticleListItems(articles, baseUrl);
+  const collectionSchema = generateCollectionPageSchema(
+    "The Indian Coffee Field Guide",
+    LEARN_DESCRIPTION,
+    learnUrl,
+    articleItems
+  );
+
   const featuredArticles = articles.filter((a) => a.featured);
   const regularArticles = articles
     .filter((a) => !a.featured)
@@ -32,6 +76,7 @@ export default async function LearnPage() {
 
   return (
     <>
+      <StructuredData schema={collectionSchema} />
       <PageHeader
         title={
           <>

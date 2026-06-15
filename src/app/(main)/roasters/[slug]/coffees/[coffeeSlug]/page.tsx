@@ -8,7 +8,11 @@ import {
 import { fetchCoffeeByRoasterAndSlug } from "@/lib/data/fetch-coffee-by-slug";
 import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
 import { queryKeys } from "@/lib/query-keys";
-import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import {
+  generateMetadata as generateSEOMetadata,
+  truncateTitle,
+  clampDescription,
+} from "@/lib/seo/metadata";
 import { generateSchemaOrg, generateBreadcrumbSchema } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeDetailPage } from "@/components/coffees/CoffeeDetailPage";
@@ -62,7 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Root layout appends "| Indian Coffee Beans" via title template
   const titleBase = `${coffee.name} by ${roasterName}`;
-  const title =
+  const titleRaw =
     reviewCount >= 5
       ? `${titleBase} — Reviews & Tasting Notes`
       : processPart && roastPart
@@ -70,6 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : processPart || roastPart
           ? `${titleBase} — ${processPart || roastPart}`
           : titleBase;
+  const title = truncateTitle(titleRaw);
 
   const originLabel = coffeeOriginLabel(coffee);
   const attrParts = [processPart, originLabel, roastPart].filter(Boolean);
@@ -84,15 +89,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const descriptionFooter =
     "Read tasting notes and unbiased ratings before you buy. No sponsorships. Just data and community.";
 
-  const description = ratingBlurb
+  const descriptionRaw = ratingBlurb
     ? `${ratingBlurb}${attrLine ? `${attrLine}. ` : ""}${descriptionFooter}`
     : attrLine
       ? `${attrLine}. ${descriptionFooter}`
       : coffee.summary.seo_desc?.trim()
-        ? coffee.summary.seo_desc.trim().length > 160
-          ? `${coffee.summary.seo_desc.trim().slice(0, 157)}…`
-          : coffee.summary.seo_desc.trim()
+        ? coffee.summary.seo_desc.trim()
         : `Discover ${coffee.name} by ${roasterName}. ${descriptionFooter}`;
+  const description = clampDescription(descriptionRaw, descriptionFooter);
 
   const canonical = `${baseUrl}/roasters/${roasterSlug}/coffees/${coffeeSlug}`;
   const ogImage =
