@@ -3,6 +3,7 @@
  * Run: node scripts/tune-hero-avif-size.mjs
  * Discovery JPG heroes → AVIF: node scripts/tune-hero-avif-size.mjs --discovery
  * Curation JPG → AVIF: node scripts/tune-hero-avif-size.mjs --curations
+ * Tool screenshots PNG → AVIF: node scripts/tune-hero-avif-size.mjs --screens
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -12,11 +13,14 @@ const TARGET = 100 * 1024;
 const MAX_OK = 110 * 1024; // allow slight overshoot
 const DISCOVERY = process.argv.includes("--discovery");
 const CURATIONS = process.argv.includes("--curations");
+const SCREENS = process.argv.includes("--screens");
 const IMAGES_DIR = DISCOVERY
   ? path.join(process.cwd(), "public", "images", "discovery")
   : CURATIONS
     ? path.join(process.cwd(), "public", "curations")
-    : path.join(process.cwd(), "public", "images");
+    : SCREENS
+      ? path.join(process.cwd(), "public", "images", "screens")
+      : path.join(process.cwd(), "public", "images");
 
 async function toAvif(input, quality, effort) {
   return input.avif({ quality, effort, chromaSubsampling: "4:2:0" }).toBuffer();
@@ -94,12 +98,18 @@ const files = DISCOVERY
     ? (await fs.readdir(IMAGES_DIR))
         .filter((f) => /\.jpe?g$/i.test(f))
         .sort()
-    : (await fs.readdir(IMAGES_DIR))
-        .filter((f) => f.startsWith("hero-") && f.endsWith(".avif"))
-        .sort();
+    : SCREENS
+      ? (await fs.readdir(IMAGES_DIR))
+          .filter((f) => /\.(png|jpe?g)$/i.test(f))
+          .sort()
+      : (await fs.readdir(IMAGES_DIR))
+          .filter((f) => f.startsWith("hero-") && f.endsWith(".avif"))
+          .sort();
 
 for (const f of files) {
   const outAvif =
-    DISCOVERY || CURATIONS ? f.replace(/\.jpe?g$/i, ".avif") : undefined;
+    DISCOVERY || CURATIONS || SCREENS
+      ? f.replace(/\.(png|jpe?g)$/i, ".avif")
+      : undefined;
   await processFile(f, outAvif);
 }

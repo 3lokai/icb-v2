@@ -100,15 +100,15 @@ export function DrinkSizeInput({
             </Label>
           </fieldset>
 
-          {/* Enhanced unit switcher with surface treatment */}
+          {/* Unit switcher */}
           <div className="surface-1 self-end rounded-lg p-1 sm:self-auto">
             <div className="flex gap-1">
               {Object.keys(VOLUME_UNITS).map((unit) => (
                 <Button
-                  className={`h-7 px-3 text-overline transition-all duration-300 ${
+                  className={`h-7 px-3 text-overline transition-colors duration-200 ${
                     drinkUnit === unit
-                      ? "scale-[1.02] bg-primary text-primary-foreground shadow-sm"
-                      : "hover:scale-[1.02] hover:bg-background/50"
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "hover:bg-background/50"
                   }`}
                   key={unit}
                   onClick={() => handleDrinkUnitChange(unit as VolumeUnit)}
@@ -124,7 +124,7 @@ export function DrinkSizeInput({
 
         <div className="relative mb-2">
           <Input
-            className={`h-12 border pr-16 pl-10 text-center font-medium text-subheading backdrop-blur-sm transition-all duration-300 ${getInputClassName()}`}
+            className={`h-12 border pr-16 pl-10 text-center font-medium text-subheading transition-colors duration-200 ${getInputClassName()}`}
             id="drink-size"
             max="2000"
             min="50"
@@ -147,7 +147,7 @@ export function DrinkSizeInput({
 
         {/* Validation Error Message */}
         {validationError && (
-          <div className="mb-3 flex items-start gap-2 rounded-lg bg-destructive/10 p-2 text-destructive text-caption backdrop-blur-sm">
+          <div className="mb-3 flex items-start gap-2 rounded-lg bg-destructive/10 p-2 text-destructive text-caption">
             <Icon className="mt-0.5 h-4 w-4 flex-shrink-0" name="Warning" />
             <p>{validationError}</p>
           </div>
@@ -162,7 +162,7 @@ export function DrinkSizeInput({
           </p>
         )}
 
-        {/* Enhanced presets with glass cards */}
+        {/* Presets */}
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
           {(() => {
             let presets: Array<{ label: string; value: number }>;
@@ -202,10 +202,10 @@ export function DrinkSizeInput({
 
               return (
                 <Badge
-                  className={`cursor-pointer justify-center border px-3 py-2 text-overline backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] ${
+                  className={`cursor-pointer justify-center border px-3 py-2 text-overline transition-colors duration-200 ${
                     isActive
-                      ? "border-primary/30 bg-primary/10 text-primary shadow-sm"
-                      : "border-border/50 bg-background/30 hover:bg-background/50"
+                      ? "border-primary/30 bg-primary/10 text-primary"
+                      : "border-border/50 bg-background hover:bg-muted/50"
                   }`}
                   key={preset.label}
                   onClick={() => {

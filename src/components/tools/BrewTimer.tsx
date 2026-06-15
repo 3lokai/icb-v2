@@ -1,4 +1,3 @@
-// Enhanced BrewingTimer.tsx with Glassmorphism
 "use client";
 
 import {
@@ -304,38 +303,24 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
 
   if (!results) {
     return (
-      <div
-        className={`surface-1 card-padding relative overflow-hidden rounded-lg ${className}`}
-      >
-        <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
-        <div className="relative z-10">
-          <div className="mb-6 flex items-center gap-2">
-            <Icon className="h-5 w-5 text-primary" name="Timer" />
-            <h3 className="text-subheading">Brewing Timer</h3>
-          </div>
-          <div className="py-8 text-center text-muted-foreground">
-            <Icon className="mx-auto mb-3 h-12 w-12 opacity-50" name="Timer" />
-            <p className="text-caption">
-              Select a brewing method to start timing
-            </p>
-          </div>
+      <div className={`surface-1 card-padding rounded-lg ${className}`}>
+        <div className="mb-6 flex items-center gap-2">
+          <Icon className="h-5 w-5 text-primary" name="Timer" />
+          <h3 className="text-subheading">Brewing Timer</h3>
+        </div>
+        <div className="py-8 text-center text-muted-foreground">
+          <Icon className="mx-auto mb-3 h-12 w-12 opacity-50" name="Timer" />
+          <p className="text-caption">
+            Select a brewing method to start timing
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      className={`surface-1 card-padding relative overflow-hidden rounded-lg ${className}`}
-    >
-      {/* Enhanced decorative elements */}
-      <div className="absolute top-0 right-0 h-24 w-24 animate-float rounded-full bg-primary/10 blur-2xl" />
-      <div className="absolute bottom-0 left-0 h-16 w-16 animate-float rounded-full bg-accent/10 blur-xl delay-700" />
-      {isRunning && (
-        <div className="absolute top-1/2 left-1/2 h-32 w-32 animate-pulse rounded-full bg-chart-2/5 blur-3xl" />
-      )}
-
-      <div className="relative z-10 space-y-6">
+    <div className={`surface-1 card-padding rounded-lg ${className}`}>
+      <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -343,11 +328,11 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
             <h3 className="text-subheading">Brewing Timer</h3>
           </div>
 
-          {/* Notification Controls - Enhanced surface treatment */}
+          {/* Notification Controls */}
           <div className="surface-1 rounded-lg p-1">
             <div className="flex gap-1">
               <Button
-                className={`h-10 w-10 p-0 transition-all duration-300 hover:scale-110 sm:h-8 sm:w-8 ${
+                className={`h-10 w-10 p-0 transition-colors duration-200 sm:h-8 sm:w-8 ${
                   soundEnabled
                     ? "bg-primary/10 text-primary"
                     : "text-muted-foreground hover:bg-background/50"
@@ -365,7 +350,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
 
               {vibrationSupported && (
                 <Button
-                  className={`h-10 w-10 p-0 transition-all duration-300 hover:scale-110 sm:h-8 sm:w-8 ${
+                  className={`h-10 w-10 p-0 transition-colors duration-200 sm:h-8 sm:w-8 ${
                     vibrationEnabled
                       ? "bg-primary/10 text-primary"
                       : "text-muted-foreground hover:bg-background/50"
@@ -381,69 +366,56 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
           </div>
         </div>
 
-        {/* Timer Display - Enhanced surface panel */}
-        <div className="surface-1 relative overflow-hidden rounded-2xl p-6 text-center">
-          <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-chart-2/10 blur-xl" />
-          <div className="relative z-10">
-            <div
-              className={`mb-4 font-bold font-mono text-display transition-all duration-300 ${
-                isRunning ? "scale-110 text-primary" : "text-foreground"
-              }`}
-            >
-              {formatTime(currentTime)}
-            </div>
-            <Progress className="mb-2 h-2 w-full" value={progressPercentage} />
-            <div className="text-muted-foreground text-caption">
-              Total brew time: {formatTime(steps.at(-1)?.time || 0)}
-            </div>
+        {/* Timer Display */}
+        <div className="surface-1 rounded-2xl p-6 text-center">
+          <div
+            className={`mb-4 font-bold font-mono text-display transition-colors duration-300 ${
+              isRunning ? "text-primary" : "text-foreground"
+            }`}
+          >
+            {formatTime(currentTime)}
+          </div>
+          <Progress className="mb-2 h-2 w-full" value={progressPercentage} />
+          <div className="text-muted-foreground text-caption">
+            Total brew time: {formatTime(steps.at(-1)?.time || 0)}
           </div>
         </div>
 
-        {/* Timer Controls - Enhanced glass buttons */}
+        {/* Timer Controls */}
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
           {isRunning ? (
             <Button
-              className="h-12 flex-1 hover-lift group px-6 sm:flex-initial"
+              className="h-12 flex-1 hover-lift px-6 sm:flex-initial"
               onClick={pauseTimer}
               variant="outline"
             >
-              <Icon
-                className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
-                name="Pause"
-              />
+              <Icon className="mr-2 h-4 w-4" name="Pause" />
               {isPaused ? "Resume" : "Pause"}
             </Button>
           ) : (
             <Button
-              className="h-12 flex-1 hover-lift group px-6 sm:flex-initial"
+              className="h-12 flex-1 hover-lift px-6 sm:flex-initial"
               onClick={startTimer}
             >
-              <Icon
-                className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
-                name="Play"
-              />
+              <Icon className="mr-2 h-4 w-4" name="Play" />
               Start Timer
             </Button>
           )}
 
           <Button
-            className="h-12 flex-1 hover-lift group px-6 sm:flex-initial"
+            className="h-12 flex-1 hover-lift px-6 sm:flex-initial"
             onClick={resetTimer}
             variant="outline"
           >
-            <Icon
-              className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
-              name="ArrowCounterClockwise"
-            />
+            <Icon className="mr-2 h-4 w-4" name="ArrowCounterClockwise" />
             Reset
           </Button>
         </div>
 
-        {/* Current Step - Enhanced surface modal for emphasis */}
+        {/* Current Step */}
         {currentStep && (
-          <div className="surface-2 relative overflow-hidden rounded-2xl p-4">
-            <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-accent/20 blur-xl" />
-            <div className="relative z-10">
+          <div className="surface-2 rounded-2xl p-4">
+            <div>
               <div className="mb-3 flex items-center justify-between">
                 <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
                   Step {completedSteps + 1} of {totalSteps}
@@ -461,7 +433,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
           </div>
         )}
 
-        {/* All Steps - Enhanced glass cards */}
+        {/* All Steps */}
         <div className="space-y-4">
           <div>
             <h4 className="mb-2 font-medium text-primary text-caption">
@@ -504,13 +476,12 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
 
               return (
                 <div
-                  className={`surface-1 card-padding card-hover group relative overflow-hidden rounded-lg ${getStepCardClassName()}`}
+                  className={`surface-1 card-padding card-hover group rounded-lg ${getStepCardClassName()}`}
                   key={`step-${step.time}-${step.instruction.slice(0, 10)}-${index}`}
                 >
-                  <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-primary/5 blur-lg" />
-                  <div className="relative z-10 flex items-center gap-3">
+                  <div className="flex items-center gap-3">
                     <div
-                      className={`flex h-8 w-8 items-center justify-center rounded-full font-medium text-overline transition-all duration-300 group-hover:scale-110 ${getStepBadgeClassName()}`}
+                      className={`flex h-8 w-8 items-center justify-center rounded-full font-medium text-overline transition-colors duration-200 ${getStepBadgeClassName()}`}
                     >
                       {step.isCompleted ? (
                         <Icon className="h-3 w-3" name="Check" />

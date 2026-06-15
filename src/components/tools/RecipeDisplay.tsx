@@ -54,35 +54,24 @@ Made with IndianCoffeeBeans.com
 
   if (!results) {
     return (
-      <div
-        className={`surface-1 card-padding relative overflow-hidden rounded-lg ${className}`}
-      >
-        <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
-        <div className="relative z-10">
-          <div className="mb-6 flex items-center gap-2">
-            <Icon className="h-5 w-5 text-primary" name="Coffee" />
-            <h3 className="text-subheading">Your Recipe</h3>
-          </div>
-          <div className="py-8 text-center text-muted-foreground">
-            <Icon className="mx-auto mb-3 h-12 w-12 opacity-50" name="Coffee" />
-            <p className="text-caption">
-              Select brewing method to calculate your perfect recipe
-            </p>
-          </div>
+      <div className={`surface-1 card-padding rounded-lg ${className}`}>
+        <div className="mb-6 flex items-center gap-2">
+          <Icon className="h-5 w-5 text-primary" name="Coffee" />
+          <h3 className="text-subheading">Your Recipe</h3>
+        </div>
+        <div className="py-8 text-center text-muted-foreground">
+          <Icon className="mx-auto mb-3 h-12 w-12 opacity-50" name="Coffee" />
+          <p className="text-caption">
+            Select brewing method to calculate your perfect recipe
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      className={`surface-1 card-padding relative overflow-hidden rounded-lg ${className}`}
-    >
-      {/* Enhanced decorative elements */}
-      <div className="absolute top-0 right-0 h-20 w-20 animate-float rounded-full bg-primary/10 blur-2xl" />
-      <div className="absolute bottom-0 left-0 h-16 w-16 animate-float rounded-full bg-accent/10 blur-xl delay-700" />
-
-      <div className="relative z-10 space-y-4">
+    <div className={`surface-1 card-padding rounded-lg ${className}`}>
+      <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -94,10 +83,10 @@ Made with IndianCoffeeBeans.com
           </Badge>
         </div>
 
-        {/* Main Recipe Amounts - Enhanced glass cards */}
+        {/* Main Recipe Amounts */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="surface-1 card-padding card-hover group text-center rounded-lg">
-            <div className="mb-1 text-title text-primary transition-transform duration-300 group-hover:scale-110">
+          <div className="surface-1 card-padding card-hover text-center rounded-lg">
+            <div className="mb-1 text-title text-primary">
               {Math.round(results.coffeeAmount * 10) / 10}g
             </div>
             <div className="mb-1 text-muted-foreground text-caption">
@@ -108,8 +97,8 @@ Made with IndianCoffeeBeans.com
             </div>
           </div>
 
-          <div className="surface-1 card-padding card-hover group text-center rounded-lg">
-            <div className="mb-1 text-title text-primary transition-transform duration-300 group-hover:scale-110">
+          <div className="surface-1 card-padding card-hover text-center rounded-lg">
+            <div className="mb-1 text-title text-primary">
               {Math.round(results.waterAmount)}ml
             </div>
             <div className="mb-1 text-muted-foreground text-caption">Water</div>
@@ -123,7 +112,7 @@ Made with IndianCoffeeBeans.com
 
         {/* Recipe Details - Enhanced with icons */}
         <div className="space-y-3">
-          <div className="flex items-center justify-between rounded-lg bg-background/30 p-2 backdrop-blur-sm">
+          <div className="flex items-center justify-between rounded-lg bg-background/60 p-2">
             <div className="flex items-center gap-2 text-caption">
               <Icon className="h-4 w-4 text-chart-1" name="Scales" />
               <span className="text-muted-foreground">Ratio</span>
@@ -133,7 +122,7 @@ Made with IndianCoffeeBeans.com
             </span>
           </div>
 
-          <div className="flex items-center justify-between rounded-lg bg-background/30 p-2 backdrop-blur-sm">
+          <div className="flex items-center justify-between rounded-lg bg-background/60 p-2">
             <div className="flex items-center gap-2 text-caption">
               <Icon className="h-4 w-4 text-chart-2" name="Timer" />
               <span className="text-muted-foreground">Time</span>
@@ -143,7 +132,7 @@ Made with IndianCoffeeBeans.com
             </span>
           </div>
 
-          <div className="flex items-center justify-between rounded-lg bg-background/30 p-2 backdrop-blur-sm">
+          <div className="flex items-center justify-between rounded-lg bg-background/60 p-2">
             <div className="flex items-center gap-2 text-caption">
               <Icon className="h-4 w-4 text-chart-3" name="Thermometer" />
               <span className="text-muted-foreground">Temperature</span>
@@ -153,7 +142,7 @@ Made with IndianCoffeeBeans.com
             </span>
           </div>
 
-          <div className="flex items-center justify-between rounded-lg bg-background/30 p-2 backdrop-blur-sm">
+          <div className="flex items-center justify-between rounded-lg bg-background/60 p-2">
             <div className="flex items-center gap-2 text-caption">
               <Icon className="h-4 w-4 text-chart-4" name="Coffee" />
               <span className="text-muted-foreground">Grind</span>
@@ -166,10 +155,9 @@ Made with IndianCoffeeBeans.com
 
         <Separator className="bg-border/50" />
 
-        {/* Method Info - Enhanced surface panel */}
-        <div className="surface-1 relative overflow-hidden rounded-lg p-4">
-          <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-accent/10 blur-lg" />
-          <div className="relative z-10">
+        {/* Method Info */}
+        <div className="surface-1 rounded-lg p-4">
+          <div>
             <div className="mb-2 flex items-center gap-2">
               <Icon className="h-4 w-4 text-accent" name="Palette" />
               <span className="font-medium text-accent text-overline">
@@ -185,10 +173,10 @@ Made with IndianCoffeeBeans.com
           </div>
         </div>
 
-        {/* Action Buttons - Enhanced with glass treatment */}
+        {/* Action Buttons */}
         <div className="flex gap-2">
           <Button
-            className="flex-1 transition-all duration-300 hover:scale-[1.02]"
+            className="flex-1"
             onClick={handleCopyRecipe}
             size="sm"
             variant="outline"
@@ -197,17 +185,11 @@ Made with IndianCoffeeBeans.com
             {copied ? "Copied!" : "Copy"}
           </Button>
 
-          <Button
-            className="bg-background/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:bg-background/80"
-            onClick={() => window.print()}
-            size="sm"
-            variant="outline"
-          >
+          <Button onClick={() => window.print()} size="sm" variant="outline">
             <Icon className="h-4 w-4" name="Printer" />
           </Button>
 
           <Button
-            className="bg-background/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:bg-background/80"
             onClick={() => {
               if (navigator.share) {
                 navigator.share({

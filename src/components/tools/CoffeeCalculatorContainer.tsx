@@ -68,49 +68,33 @@ export function CoffeeCalculatorContainer({
           <Cluster gap="2" className="bg-muted p-1 rounded-xl inline-flex">
             <Button
               className={cn(
-                "rounded-lg px-6 transition-all duration-300",
+                "rounded-lg px-6 transition-colors duration-200",
                 activeTab === "calculator"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-white/50"
+                  ? "bg-background text-primary shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-background/50"
               )}
               onClick={() => setActiveTab("calculator")}
               variant="ghost"
               size="default"
             >
               <Cluster gap="2" align="center">
-                <Icon
-                  className={cn(
-                    "h-4 w-4 transition-transform duration-300",
-                    activeTab === "calculator"
-                      ? "scale-110"
-                      : "group-hover:scale-110"
-                  )}
-                  name="Calculator"
-                />
+                <Icon className="h-4 w-4" name="Calculator" />
                 <span className="font-medium">Calculator</span>
               </Cluster>
             </Button>
             <Button
               className={cn(
-                "rounded-lg px-6 transition-all duration-300",
+                "rounded-lg px-6 transition-colors duration-200",
                 activeTab === "guide"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-white/50"
+                  ? "bg-background text-primary shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-background/50"
               )}
               onClick={() => setActiveTab("guide")}
               variant="ghost"
               size="default"
             >
               <Cluster gap="2" align="center">
-                <Icon
-                  className={cn(
-                    "h-4 w-4 transition-transform duration-300",
-                    activeTab === "guide"
-                      ? "scale-110"
-                      : "group-hover:scale-110"
-                  )}
-                  name="BookOpen"
-                />
+                <Icon className="h-4 w-4" name="BookOpen" />
                 <span className="font-medium">Brewing Guide</span>
               </Cluster>
             </Button>

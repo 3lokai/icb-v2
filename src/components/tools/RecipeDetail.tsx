@@ -97,10 +97,9 @@ From IndianCoffeeBeans.com Expert Recipes
 
   return (
     <div className="space-y-6">
-      {/* Header - Enhanced with surface treatment */}
-      <div className="surface-1 relative overflow-hidden rounded-2xl p-4 md:p-6">
-        <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
-        <div className="relative z-10">
+      {/* Header */}
+      <div className="surface-1 rounded-2xl p-4 md:p-6">
+        <div>
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0 flex-1 space-y-4">
               <div className="inline-flex items-center gap-4">
@@ -126,10 +125,9 @@ From IndianCoffeeBeans.com Expert Recipes
                 ) : null}
               </p>
 
-              {/* Recipe Summary - Enhanced surface treatment */}
-              <div className="surface-1 relative overflow-hidden rounded-lg p-4">
-                <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-accent/10 blur-xl" />
-                <div className="relative z-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+              {/* Recipe Summary */}
+              <div className="surface-1 rounded-lg p-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                   <div className="text-center">
                     <div className="font-bold text-subheading text-primary">
                       {recipe.coffee}g
@@ -181,10 +179,9 @@ From IndianCoffeeBeans.com Expert Recipes
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Main Content */}
         <div className="space-y-6 lg:col-span-2">
-          {/* Story - Surface card treatment */}
-          <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
-            <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-primary/5 blur-2xl" />
-            <div className="relative z-10 space-y-4">
+          {/* Story */}
+          <div className="surface-1 card-padding rounded-lg">
+            <div className="space-y-4">
               <div className="inline-flex items-center gap-4">
                 <span className="h-px w-8 bg-accent/60" />
                 <span className="text-overline tracking-[0.15em] text-muted-foreground">
@@ -201,10 +198,9 @@ From IndianCoffeeBeans.com Expert Recipes
             </div>
           </div>
 
-          {/* Steps - Surface card treatment */}
-          <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
-            <div className="absolute top-0 left-0 h-20 w-20 rounded-full bg-accent/5 blur-2xl" />
-            <div className="relative z-10">
+          {/* Steps */}
+          <div className="surface-1 card-padding rounded-lg">
+            <div>
               <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <Stack className="min-w-0 flex-1" gap="4">
                   <div className="inline-flex items-center gap-4">
@@ -233,12 +229,11 @@ From IndianCoffeeBeans.com Expert Recipes
               <div className="mt-6 space-y-3">
                 {recipe.steps.map((step, index) => (
                   <div
-                    className="surface-1 card-padding card-hover group relative overflow-hidden rounded-lg"
+                    className="surface-1 card-padding card-hover group rounded-lg"
                     key={`step-${step.time}-${index}`}
                   >
-                    <div className="absolute top-0 right-0 h-8 w-8 rounded-full bg-primary/5 blur-lg" />
-                    <div className="relative z-10 flex items-start gap-3">
-                      <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
                         <span className="font-medium text-caption">
                           {index + 1}
                         </span>
@@ -280,10 +275,9 @@ From IndianCoffeeBeans.com Expert Recipes
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Tips - Enhanced surface card */}
-          <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
-            <div className="absolute top-0 right-0 h-16 w-16 rounded-full bg-accent/10 blur-xl" />
-            <div className="relative z-10 space-y-4">
+          {/* Tips */}
+          <div className="surface-1 card-padding rounded-lg">
+            <div className="space-y-4">
               <div className="inline-flex items-center gap-4">
                 <span className="h-px w-8 bg-accent/60" />
                 <span className="text-overline tracking-[0.15em] text-muted-foreground">
@@ -297,10 +291,10 @@ From IndianCoffeeBeans.com Expert Recipes
               <div className="space-y-3">
                 {recipe.tips.map((tip, index) => (
                   <div
-                    className="group flex items-start gap-3 rounded-lg bg-background/30 p-3 backdrop-blur-sm transition-colors hover:bg-background/40"
+                    className="group flex items-start gap-3 rounded-lg bg-background/60 p-3 transition-colors hover:bg-background"
                     key={`tip-${tip.slice(0, 20)}-${index}`}
                   >
-                    <div className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125" />
+                    <div className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-accent" />
                     <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
                       {tip}
                     </p>
@@ -310,10 +304,9 @@ From IndianCoffeeBeans.com Expert Recipes
             </div>
           </div>
 
-          {/* Equipment - Enhanced surface card */}
-          <div className="surface-1 card-padding relative overflow-hidden rounded-lg">
-            <div className="absolute top-0 left-0 h-16 w-16 rounded-full bg-primary/10 blur-xl" />
-            <div className="relative z-10 space-y-4">
+          {/* Equipment */}
+          <div className="surface-1 card-padding rounded-lg">
+            <div className="space-y-4">
               <div className="inline-flex items-center gap-4">
                 <span className="h-px w-8 bg-accent/60" />
                 <span className="text-overline tracking-[0.15em] text-muted-foreground">
@@ -327,7 +320,7 @@ From IndianCoffeeBeans.com Expert Recipes
               <div className="space-y-2">
                 {recipe.equipmentRecommendations.map((equipment, index) => (
                   <div
-                    className="group flex items-center gap-2 rounded-lg bg-background/30 p-3 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:bg-background/40"
+                    className="group flex items-center gap-2 rounded-lg bg-background/60 p-3 transition-colors hover:bg-background"
                     key={`equipment-${equipment.slice(0, 20)}-${index}`}
                   >
                     <Icon
@@ -343,11 +336,9 @@ From IndianCoffeeBeans.com Expert Recipes
             </div>
           </div>
 
-          {/* Actions - Enhanced surface modal for conversion focus */}
-          <div className="surface-2 card-padding relative overflow-hidden rounded-2xl">
-            <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-primary/20 blur-xl" />
-            <div className="absolute bottom-0 left-0 h-8 w-8 rounded-full bg-accent/20 blur-lg" />
-            <div className="relative z-10 space-y-4">
+          {/* Actions */}
+          <div className="surface-2 card-padding rounded-2xl">
+            <div className="space-y-4">
               <div className="inline-flex items-center gap-4">
                 <span className="h-px w-8 bg-accent/60" />
                 <span className="text-overline tracking-[0.15em] text-muted-foreground">
@@ -365,10 +356,7 @@ From IndianCoffeeBeans.com Expert Recipes
                   size="sm"
                   variant="outline"
                 >
-                  <Icon
-                    className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
-                    name="Copy"
-                  />
+                  <Icon className="mr-2 h-4 w-4" name="Copy" />
                   {copied ? "Copied!" : "Copy Recipe"}
                 </Button>
                 {copyError ? (
@@ -393,10 +381,7 @@ From IndianCoffeeBeans.com Expert Recipes
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      <Icon
-                        className="mr-2 h-4 w-4 transition-transform group-hover:scale-110"
-                        name="Play"
-                      />
+                      <Icon className="mr-2 h-4 w-4" name="Play" />
                       Watch Video
                     </a>
                   </Button>

@@ -59,10 +59,10 @@ export function StrengthSelector({
         {strengthOptions.map((option) => (
           <div className="flex-1" key={option.value}>
             <Label
-              className={`group flex h-full cursor-pointer flex-col items-center rounded-lg border-2 p-3 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] ${
+              className={`group flex h-full cursor-pointer flex-col items-center rounded-lg border-2 p-3 transition-colors duration-200 ${
                 value === option.value
-                  ? "scale-[1.02] border-primary/50 bg-primary/10 shadow-sm"
-                  : "border-border/50 bg-background/30 hover:border-border hover:bg-background/50"
+                  ? "border-primary/50 bg-primary/10"
+                  : "border-border/50 bg-background hover:border-border hover:bg-muted/50"
               }
               `}
               htmlFor={option.value}

@@ -47,10 +47,7 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Icon
-              className="h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110"
-              name="Coffee"
-            />
+            <Icon className="h-6 w-6 text-primary" name="Coffee" />
             <h3 className="text-subheading transition-colors group-hover:text-primary">
               {method.name}
             </h3>
@@ -325,10 +322,10 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               {/* Water Quality */}
-              <div className="card-bordered bg-background p-6 rounded-xl border-t-4 border-t-chart-2">
+              <div className="card-bordered bg-background p-6 rounded-xl">
                 <Stack gap="3">
                   <h3 className="flex items-center gap-2 font-semibold text-primary">
-                    <Icon className="h-4 w-4 text-chart-2" name="Drop" />
+                    <Icon className="h-4 w-4 text-accent" name="Drop" />
                     Water Quality Matters
                   </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">
@@ -340,10 +337,10 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               </div>
 
               {/* Coffee Freshness */}
-              <div className="card-bordered bg-background p-6 rounded-xl border-t-4 border-t-primary">
+              <div className="card-bordered bg-background p-6 rounded-xl">
                 <Stack gap="3">
                   <h3 className="flex items-center gap-2 font-semibold text-primary">
-                    <Icon className="h-4 w-4 text-primary" name="Coffee" />
+                    <Icon className="h-4 w-4 text-accent" name="Coffee" />
                     Fresh Coffee is Key
                   </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">
@@ -355,7 +352,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               </div>
 
               {/* Grind Consistency */}
-              <div className="card-bordered bg-background p-6 rounded-xl border-t-4 border-t-accent">
+              <div className="card-bordered bg-background p-6 rounded-xl">
                 <Stack gap="3">
                   <h3 className="flex items-center gap-2 font-semibold text-primary">
                     <Icon className="h-4 w-4 text-accent" name="Gear" />
@@ -370,10 +367,10 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               </div>
 
               {/* Timing & Ratios */}
-              <div className="card-bordered bg-background p-6 rounded-xl border-t-4 border-t-chart-4">
+              <div className="card-bordered bg-background p-6 rounded-xl">
                 <Stack gap="3">
                   <h3 className="flex items-center gap-2 font-semibold text-primary">
-                    <Icon className="h-4 w-4 text-chart-4" name="Timer" />
+                    <Icon className="h-4 w-4 text-accent" name="Timer" />
                     Precise Measurements
                   </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">

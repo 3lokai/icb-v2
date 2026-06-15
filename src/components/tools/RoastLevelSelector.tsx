@@ -64,10 +64,10 @@ export function RoastLevelSelector({
         <DropdownMenuTrigger asChild>
           <Button
             aria-label="Select roast level"
-            className={`h-14 w-full justify-between border backdrop-blur-sm transition-all duration-300 ${
+            className={`h-14 w-full justify-between border transition-colors duration-200 ${
               isCompleted
-                ? "border-primary/30 bg-primary/10 shadow-sm"
-                : "border-border/50 bg-background/50 hover:bg-background/80"
+                ? "border-primary/30 bg-primary/10"
+                : "border-border/50 bg-background hover:bg-muted/50"
             }`}
             id="roast-level"
             variant="outline"
@@ -104,7 +104,7 @@ export function RoastLevelSelector({
         <DropdownMenuContent
           align="start"
           avoidCollisions={true}
-          className="w-[var(--radix-dropdown-menu-trigger-width)] border border-border/50 bg-popover/95 shadow-xl backdrop-blur-md"
+          className="w-[var(--radix-dropdown-menu-trigger-width)] border border-border/60 bg-popover shadow-xl"
           side="bottom"
           sideOffset={4}
         >

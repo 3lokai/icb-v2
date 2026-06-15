@@ -43,10 +43,10 @@ export function MethodSelector({
         <DropdownMenuTrigger asChild>
           <Button
             aria-label="Select brewing method"
-            className={`h-12 w-full justify-between border backdrop-blur-sm transition-all duration-300 ${
+            className={`h-12 w-full justify-between border transition-colors duration-200 ${
               isCompleted
-                ? "border-primary/30 bg-primary/10 shadow-sm"
-                : "border-border/50 bg-background/50 hover:bg-background/80"
+                ? "border-primary/30 bg-primary/10"
+                : "border-border/50 bg-background hover:bg-muted/50"
             }`}
             id="brewing-method"
             variant="outline"
@@ -68,7 +68,7 @@ export function MethodSelector({
         <DropdownMenuContent
           align="start"
           avoidCollisions={true}
-          className="max-h-[60vh] w-[var(--radix-dropdown-menu-trigger-width)] overflow-y-auto border border-border/50 bg-popover/95 shadow-xl backdrop-blur-md [&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2"
+          className="max-h-[60vh] w-[var(--radix-dropdown-menu-trigger-width)] overflow-y-auto border border-border/60 bg-popover shadow-xl [&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2"
           side="bottom"
           sideOffset={4}
         >

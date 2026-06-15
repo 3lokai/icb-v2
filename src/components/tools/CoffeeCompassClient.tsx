@@ -631,8 +631,7 @@ export function CoffeeCompassClient({
                 style={{
                   transform: `rotate(${rotation}deg)`,
                   transformOrigin: `${CX}px ${CY}px`,
-                  transition:
-                    "transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                  transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
               >
                 {/* Compass ring borders */}
