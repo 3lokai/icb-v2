@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { Stack } from "@/components/primitives/stack";
 import { AuthResetPasswordForm } from "@/components/layout/auth-reset-password-form";
-import { Logo } from "@/components/layout/logo";
+import { AuthScreen } from "@/components/layout/auth-screen";
 
 export const metadata: Metadata = {
   title: "Reset Password",
@@ -28,44 +25,15 @@ export const metadata: Metadata = {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col p-6 md:p-10">
-        <Stack gap="8" className="h-full">
-          <div className="flex justify-center md:justify-start">
-            <Link className="flex items-center" href="/">
-              <Logo />
-            </Link>
-          </div>
-          <div className="flex flex-1 items-center justify-center">
-            <div className="w-full max-w-xs">
-              <AuthResetPasswordForm />
-            </div>
-          </div>
-        </Stack>
-      </div>
-      <div className="relative hidden bg-muted lg:block">
-        <Image
-          alt="Reset password screen"
-          className="absolute inset-0 h-full w-full object-cover object-center dark:brightness-[0.4] dark:grayscale"
-          fill
-          priority
-          quality={90}
-          sizes="50vw"
-          src="/images/password-screen.avif"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-        {/* Magazine noise texture */}
-        <div className="absolute inset-0 opacity-[0.2] pointer-events-none mix-blend-overlay">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)",
-              backgroundSize: "32px 32px",
-            }}
-          />
-        </div>
-      </div>
-    </div>
+    <AuthScreen
+      image={{
+        src: "/images/password-screen.avif",
+        alt: "Two hands cradling a duck-egg-blue mug of black coffee over an open book.",
+        label: "A fresh start",
+        caption: "A new password, and you're back to the coffee.",
+      }}
+    >
+      <AuthResetPasswordForm />
+    </AuthScreen>
   );
 }

@@ -483,7 +483,7 @@ export function QuickRating({
                         className={cn(
                           "transition-all duration-200",
                           isFilled
-                            ? "text-amber-500 fill-amber-500 drop-shadow-sm"
+                            ? "text-rating fill-rating drop-shadow-sm"
                             : "text-muted-foreground/30"
                         )}
                       />

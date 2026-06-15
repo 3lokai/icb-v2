@@ -1,9 +1,5 @@
 import type { Database } from "./supabase-types";
-import type {
-  ReviewEntityTypeEnum,
-  ReviewStatusEnum,
-  GrindEnum,
-} from "./db-enums";
+import type { ReviewEntityTypeEnum, GrindEnum } from "./db-enums";
 
 // ============================================================================
 // REVIEW TABLE TYPES

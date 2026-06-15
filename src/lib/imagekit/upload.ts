@@ -39,17 +39,17 @@ export async function uploadToImageKit(
 
   // Convert file to base64
   let base64File: string;
-  let mimeType: string;
+  let _mimeType: string;
   let originalFileName: string;
 
   if (file instanceof File) {
     base64File = await fileToBase64(file);
-    mimeType = file.type;
+    _mimeType = file.type;
     originalFileName = file.name;
   } else {
     // Buffer - assume JPEG if no mime type provided
     base64File = file.toString("base64");
-    mimeType = "image/jpeg";
+    _mimeType = "image/jpeg";
     originalFileName = fileName || "image.jpg";
   }
 
@@ -163,11 +163,9 @@ export async function deleteFromImageKit(fileId: string): Promise<void> {
  */
 export function extractFileIdFromUrl(imageUrl: string): string | null {
   try {
-    const url = new URL(imageUrl);
-    const pathParts = url.pathname.split("/").filter(Boolean);
+    new URL(imageUrl);
     // The file ID is typically the last part of the path (before any query params)
     // Or it might be in the filename
-    const lastPart = pathParts[pathParts.length - 1];
 
     // ImageKit file IDs are typically UUIDs or alphanumeric strings
     // If the last part looks like a file ID (no extension or has extension), use it

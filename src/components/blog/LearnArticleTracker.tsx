@@ -16,7 +16,7 @@ export function LearnArticleTracker({ slug, title, category_slug }: Props) {
       title,
       category_slug: category_slug ?? null,
     });
-  }, [slug]);
+  }, [slug, title, category_slug]);
 
   return null;
 }

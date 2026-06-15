@@ -474,7 +474,7 @@ export function ReviewCapture({
                             className={cn(
                               "transition-colors",
                               i < userReview.rating!
-                                ? "text-amber-500 fill-amber-500"
+                                ? "text-rating fill-rating"
                                 : "text-muted-foreground/20"
                             )}
                           />
@@ -744,7 +744,7 @@ export function ReviewCapture({
                             className={cn(
                               "transition-all duration-200",
                               isFilled
-                                ? "text-amber-500 fill-amber-500 drop-shadow-sm"
+                                ? "text-rating fill-rating drop-shadow-sm"
                                 : "text-muted-foreground/30"
                             )}
                           />
@@ -780,7 +780,7 @@ export function ReviewCapture({
                 />
                 {formData.comment && formData.comment.length > 0 && (
                   <p className="text-caption text-muted-foreground text-right">
-                    {formData.comment.length.toLocaleString()}/1,000
+                    {formData.comment.length.toLocaleString("en-IN")}/1,000
                   </p>
                 )}
               </Stack>

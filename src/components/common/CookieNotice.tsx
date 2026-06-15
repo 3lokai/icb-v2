@@ -93,7 +93,7 @@ export function CookieNotice() {
 
   const content = showManage ? (
     <div
-      className={`fixed right-0 bottom-0 left-0 z-9999 border-border/30 border-t bg-card shadow-2xl transition-all duration-500 ${isExiting ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"}`}
+      className={`ph-no-capture fixed right-0 bottom-0 left-0 z-9999 border-border/30 border-t bg-card shadow-2xl transition-all duration-500 ${isExiting ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"}`}
     >
       <PageShell className="px-6 py-6">
         <div className="mb-4 flex items-center justify-between">
@@ -166,7 +166,7 @@ export function CookieNotice() {
     </div>
   ) : (
     <div
-      className={`fixed right-0 bottom-0 left-0 z-9999 border-border/20 border-t bg-card shadow-2xl transition-all duration-500 ${isExiting ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"}`}
+      className={`ph-no-capture fixed right-0 bottom-0 left-0 z-9999 border-border/20 border-t bg-card shadow-2xl transition-all duration-500 ${isExiting ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"}`}
     >
       <div className="h-1 w-full bg-gradient-to-r from-chart-1 via-chart-3 to-chart-5" />
       <PageShell className="flex flex-col items-center justify-between gap-4 px-6 py-4 md:flex-row">
@@ -212,17 +212,16 @@ export function CookieNotice() {
     return null;
   }
 
-  // Create a simple container div appended directly to documentElement (html)
-  // This bypasses body's transform: translateZ(0) which creates a containing block
+  // Portal to body so fixed positioning works and PostHog autocapture stays in the
+  // normal element tree (portals on documentElement walk up to Document and crash).
   const containerId = "cookie-notice-root";
   let container = document.getElementById(containerId);
 
   if (!container) {
     container = document.createElement("div");
     container.id = containerId;
-    // Simple container with no positioning or transforms
-    // The content itself handles all positioning with position: fixed
-    document.documentElement.appendChild(container);
+    container.className = "ph-no-capture";
+    document.body.appendChild(container);
   }
 
   return createPortal(content, container);

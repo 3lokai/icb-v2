@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Accent } from "@/components/primitives/accent";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import {
@@ -63,15 +64,18 @@ export function AuthForgotPasswordForm({
         <Stack gap="6">
           <FieldGroup>
             <div className="flex flex-col items-center gap-2 text-center">
-              <h1 className="text-title font-serif tracking-tight">
-                Check your email
+              <h1 className="text-title text-balance">
+                Check your <Accent>email</Accent>
               </h1>
-              <p className="text-muted-foreground text-caption text-balance">
+              <p className="text-caption text-balance">
                 We&apos;ve sent a password reset link to {email}
               </p>
             </div>
 
-            <div className="bg-primary/10 text-primary rounded-md border border-primary/20 p-3 text-caption">
+            <div
+              className="bg-primary/10 text-primary rounded-md border border-primary/20 p-3 text-caption"
+              role="status"
+            >
               If an account exists with this email, you&apos;ll receive a
               password reset link shortly. Please check your inbox and follow
               the instructions.
@@ -98,15 +102,21 @@ export function AuthForgotPasswordForm({
       <Stack gap="6">
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
-            <h1 className="text-title font-bold">Reset your password</h1>
-            <p className="text-muted-foreground text-caption text-balance">
+            <h1 className="text-title text-balance">
+              Reset your <Accent>password</Accent>
+            </h1>
+            <p className="text-caption text-balance">
               Enter your email address and we&apos;ll send you a link to reset
-              your password
+              your password.
             </p>
           </div>
 
           {error && (
-            <div className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption">
+            <div
+              aria-live="polite"
+              className="bg-destructive/10 text-destructive rounded-md border border-destructive/20 p-3 text-caption"
+              role="alert"
+            >
               {error}
             </div>
           )}
@@ -128,7 +138,12 @@ export function AuthForgotPasswordForm({
             </Field>
 
             <Field>
-              <Button type="submit" disabled={isLoading} className="w-full">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                aria-busy={isLoading}
+                className="w-full"
+              >
                 {isLoading ? "Sending..." : "Send reset link"}
               </Button>
             </Field>

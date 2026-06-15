@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
+import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -80,55 +81,59 @@ export function ProfileSelections({
 
   return (
     <div>
-      <Stack gap="8" className="pt-0 md:pt-2">
-        <Stack gap="6">
-          <div className="inline-flex items-center gap-4">
-            <span className="h-px w-8 md:w-12 bg-accent/60" />
-            <span className="text-overline text-muted-foreground tracking-[0.15em]">
-              COLLECTION
-            </span>
-          </div>
-          <Stack gap="1">
-            <Cluster align="center" className="justify-between">
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                My <Accent>Selections.</Accent>
-              </h2>
-              {!isAnonymous && (
-                <ShareSection section="selections" username={username} />
-              )}
-            </Cluster>
-            <p className="text-caption text-pretty md:max-w-md">
-              {isAnonymous
-                ? "Your chosen coffees, saved locally on this device. Sign up to share them and access them anywhere."
-                : "A curated collection of my personal favorites. These are the coffees I have rated and chosen to recommend publicly."}
-            </p>
-          </Stack>
+      <Stack gap="8">
+        <Stack gap="2">
+          <Cluster align="center" className="justify-between">
+            <h2 className="text-title text-balance leading-[1.1] italic m-0">
+              My <Accent>Selections.</Accent>
+            </h2>
+            {!isAnonymous && (
+              <ShareSection section="selections" username={username} />
+            )}
+          </Cluster>
+          <p className="text-caption text-muted-foreground text-pretty md:max-w-md">
+            {isAnonymous
+              ? "Your chosen coffees, saved locally on this device. Sign up to share them and access them anywhere."
+              : isOwner
+                ? "A curated collection of my personal favorites — coffees I've rated and chosen to recommend publicly."
+                : "Coffees this member has rated highly and chosen to recommend publicly."}
+          </p>
         </Stack>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {selections.map((selection) => (
-            <ProfileSelectionCard
-              key={selection.id}
-              selection={selection}
-              isOwner={isOwner}
-              onEdit={isOwner ? setEditingSelection : undefined}
-              onRemoveFromRecommendations={
-                isOwner ? setRemovingSelection : undefined
-              }
-            />
-          ))}
+        {selections.length === 0 && !isOwner ? (
+          <div className="border border-dashed border-border/60 rounded-3xl py-16 flex flex-col items-center justify-center text-center gap-3 bg-background/60">
+            <Icon name="Heart" size={28} className="text-muted-foreground" />
+            <p className="text-caption text-muted-foreground italic m-0 max-w-xs">
+              No public selections yet. When this member recommends a coffee,
+              it&apos;ll appear here.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {selections.map((selection) => (
+              <ProfileSelectionCard
+                key={selection.id}
+                selection={selection}
+                isOwner={isOwner}
+                onEdit={isOwner ? setEditingSelection : undefined}
+                onRemoveFromRecommendations={
+                  isOwner ? setRemovingSelection : undefined
+                }
+              />
+            ))}
 
-          {isOwner && (
-            <div className="relative">
-              <AddSelection />
-              {isAnonymous && (
-                <p className="text-micro text-accent/60 mt-2 italic text-center">
-                  Sign up to share selections publicly
-                </p>
-              )}
-            </div>
-          )}
-        </div>
+            {isOwner && (
+              <div className="relative">
+                <AddSelection />
+                {isAnonymous && (
+                  <p className="text-micro text-accent mt-2 italic text-center">
+                    Sign up to share selections publicly
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </Stack>
 
       <Dialog
@@ -161,7 +166,7 @@ export function ProfileSelections({
         >
           <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-destructive/60 via-destructive to-destructive/60 opacity-60 z-10" />
           <DialogHeader className="p-8 pb-6 border-b border-border/10 pt-10">
-            <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60 mb-1 text-left">
+            <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground mb-1 text-left">
               Confirm Action
             </p>
             <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">

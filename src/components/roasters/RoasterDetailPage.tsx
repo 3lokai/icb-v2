@@ -11,8 +11,9 @@ import { useImageColor } from "@/hooks/useImageColor";
 
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
-import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
+import { Decor } from "@/components/primitives/decor";
+import { Prose } from "@/components/primitives/prose";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -121,13 +122,44 @@ function RoasterExitIntentRating({
 
 /* ─── Helpers ─── */
 
-function formatNumber(num: number | null | undefined): string {
-  if (num === null || num === undefined) return "—";
-  return num.toLocaleString("en-IN");
-}
-
 function hasValues(arr: string[] | null | undefined): arr is string[] {
   return Array.isArray(arr) && arr.length > 0;
+}
+
+/* ─── Full-bleed band (homepage-style alternating grounds) ─── */
+
+function Band({
+  id,
+  ground = "cream",
+  texture,
+  className,
+  children,
+}: {
+  id?: string;
+  ground?: "cream" | "warm";
+  texture?: "grain" | "grain-coarse";
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const warm = ground === "warm";
+  return (
+    <section
+      id={id}
+      className={cn(
+        // Full-bleed: break out of the parent route PageShell (max-w-7xl) so the
+        // tonal band reaches the viewport edges like the homepage bands. <main>
+        // has overflow-x-clip, so the 100vw breakout never adds a scrollbar.
+        "relative left-1/2 w-screen -translate-x-1/2 scroll-mt-40 py-12 md:py-16",
+        warm && "overflow-hidden bg-card border-y border-border/60",
+        className
+      )}
+    >
+      {warm && texture && <Decor texture={texture} />}
+      <div className="relative">
+        <PageShell maxWidth="5xl">{children}</PageShell>
+      </div>
+    </section>
+  );
 }
 
 /* ─── Main Component ─── */
@@ -257,371 +289,322 @@ export function RoasterDetailPage({
     <div className={cn("w-full bg-background min-h-screen", className)}>
       <ScrollspyTabBar activeId={activeSection} />
 
-      <PageShell maxWidth="5xl">
-        <div className="flex flex-col pb-12">
-          {/* ═══════════════════════════════════════════
-              SECTION 1: HERO / OVERVIEW
-          ═══════════════════════════════════════════ */}
-          <section id="overview" className="scroll-mt-40 py-10 md:py-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-start">
-              {/* Logo Column */}
-              <div className="w-full max-w-sm mx-auto md:mx-0">
-                <div
-                  className={cn(
-                    "relative aspect-square w-full overflow-hidden rounded-2xl border border-border/60 shadow-sm transition-all duration-300 hover:shadow-md",
-                    logoBgClass
-                  )}
-                >
-                  {roaster.slug ? (
-                    <Image
-                      alt={`${roaster.name} logo`}
-                      className="object-contain p-8 md:p-12"
-                      fill
-                      priority
-                      sizes="(max-width: 768px) 100vw, 400px"
-                      src={roasterImagePresets.roasterLogo(
-                        `roasters/${roaster.slug}-logo`
-                      )}
-                      unoptimized
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-muted-foreground/40">
-                      <Icon name="Storefront" size={84} />
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Info Column */}
-              <Stack gap="6" className="pt-2">
-                <Stack gap="1">
-                  <div className="inline-flex items-center gap-4 mb-2">
-                    <span className="h-px w-8 bg-accent/60" />
-                    <span className="text-overline text-muted-foreground tracking-[0.2em]">
-                      {(roaster.active_coffee_count || 0) > 0
-                        ? `Active with ${roaster.active_coffee_count} coffees`
-                        : "Coffee Roaster"}
-                    </span>
-                  </div>
-                  <h1 className="text-display font-serif italic leading-[1.1] text-balance tracking-tight">
-                    {roaster.name}
-                  </h1>
-                  {location && (
-                    <div className="flex items-center gap-2 text-muted-foreground mt-1">
-                      <Icon
-                        name="MapPin"
-                        size={14}
-                        className="text-accent/60"
-                      />
-                      <span className="text-label uppercase tracking-widest">
-                        {location}
-                      </span>
-                    </div>
-                  )}
-                  <p className="text-body-muted mt-3 max-w-xl leading-relaxed">
-                    {stats?.review_count &&
-                    stats.review_count >= 5 &&
-                    stats.avg_rating != null
-                      ? `Community-rated ${stats.avg_rating.toFixed(1)}/5 from ${stats.review_count} reviews. ${roaster.coffee_count ?? 0} ${(roaster.coffee_count ?? 0) === 1 ? "coffee" : "coffees"} cataloged with tasting notes and unbiased ratings from Indian coffee drinkers.`
-                      : `${roaster.coffee_count ?? 0} ${(roaster.coffee_count ?? 0) === 1 ? "coffee" : "coffees"} cataloged with tasting notes. Rate ${roaster.name} and help build India's neutral specialty coffee directory.`}
-                  </p>
-                </Stack>
-
-                {/* Rating + Basic Stats */}
-                <div className="flex flex-wrap items-center gap-4">
-                  {stats && stats.review_count ? (
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 text-amber-600 rounded-full border border-amber-500/20">
-                      <Icon name="Star" size={16} className="fill-amber-500" />
-                      <span className="text-heading">
-                        {stats.avg_rating?.toFixed(1)}
-                      </span>
-                      <span className="text-caption text-muted-foreground ml-1">
-                        ({stats.review_count})
-                      </span>
-                    </div>
-                  ) : (
-                    <span className="text-body-muted italic text-caption">
-                      Be the first to rate
-                    </span>
-                  )}
-
-                  <div className="px-3 py-1.5 rounded-full border border-border/40 bg-muted/20">
-                    <span className="font-medium text-body">
-                      {formatNumber(roaster.coffee_count)}
-                    </span>
-                    <span className="text-caption text-muted-foreground ml-1.5">
-                      Coffees Cataloged
-                    </span>
-                  </div>
-                </div>
-
-                {(hasValues(roaster.certifications) ||
-                  hasValues(roaster.specialty_focus) ||
-                  hasValues(roaster.sourcing_model)) && (
-                  <div className="surface-1 rounded-xl p-4 border border-border/40">
-                    <Stack gap="3">
-                      <p className="text-overline tracking-[0.15em] text-muted-foreground">
-                        At a glance
-                      </p>
-                      {hasValues(roaster.certifications) && (
-                        <Stack gap="2">
-                          <p className="text-label text-muted-foreground">
-                            Certifications
-                          </p>
-                          <TagList>
-                            {roaster.certifications.map((item) => (
-                              <Tag key={item} variant="outline" size="micro">
-                                {item}
-                              </Tag>
-                            ))}
-                          </TagList>
-                        </Stack>
-                      )}
-                      {hasValues(roaster.specialty_focus) && (
-                        <Stack gap="2">
-                          <p className="text-label text-muted-foreground">
-                            Specialty focus
-                          </p>
-                          <TagList>
-                            {roaster.specialty_focus.map((item) => (
-                              <Tag key={item} variant="outline" size="micro">
-                                {item}
-                              </Tag>
-                            ))}
-                          </TagList>
-                        </Stack>
-                      )}
-                      {hasValues(roaster.sourcing_model) && (
-                        <Stack gap="2">
-                          <p className="text-label text-muted-foreground">
-                            Sourcing model
-                          </p>
-                          <TagList>
-                            {roaster.sourcing_model.map((item) => (
-                              <Tag key={item} variant="outline" size="micro">
-                                {item}
-                              </Tag>
-                            ))}
-                          </TagList>
-                        </Stack>
-                      )}
-                    </Stack>
-                  </div>
-                )}
-
-                {/* CTAs */}
-                <Cluster gap="3" className="pt-2">
-                  <Button
-                    ref={heroRateButtonRef}
-                    size="lg"
-                    className="shadow-xl bg-primary hover:scale-[1.02] transition-transform min-w-[170px]"
-                    onClick={handleScrollToRating}
-                  >
-                    <Icon
-                      name="Star"
-                      size={18}
-                      className="mr-2 fill-amber-300 text-amber-300"
-                    />
-                    Rate Roaster
-                  </Button>
-                  {roaster.website && (
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      asChild
-                      className="text-muted-foreground min-w-[170px]"
-                    >
-                      <a
-                        href={roaster.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => {
-                          trackRoasterClick(roaster.id, "website");
-                          trackRoasterConversion(roaster.id, "website_click");
-                        }}
-                      >
-                        <Icon name="Globe" size={18} className="mr-2" />
-                        Website
-                      </a>
-                    </Button>
-                  )}
-                </Cluster>
-
-                {/* Socials */}
-                {socialLinks.length > 0 && (
-                  <Cluster gap="2" className="pt-2">
-                    {socialLinks.map((link) => (
-                      <a
-                        key={link.url}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2.5 rounded-full hover:bg-accent/10 text-muted-foreground hover:text-accent transition-all border border-border/40 bg-background shadow-sm"
-                        title={link.label}
-                      >
-                        <Icon name={link.icon} size={18} />
-                      </a>
-                    ))}
-                  </Cluster>
-                )}
-              </Stack>
-            </div>
-          </section>
-
-          {/* ═══════════════════════════════════════════
-              SECTION 2: ROASTER STORY
-          ═══════════════════════════════════════════ */}
-          {roaster.description && (
-            <section
-              id="about"
-              className="scroll-mt-40 py-10 md:py-14 border-t border-border/20"
-            >
-              <div className="surface-1 rounded-2xl p-6 md:p-8 border-l-4 border-l-accent/40">
-                <Stack gap="4">
-                  <div className="inline-flex items-center gap-4 mb-1">
-                    <span className="h-px w-8 bg-accent/60" />
-                    <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                      Our Story
-                    </span>
-                  </div>
-                  <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                    About <Accent>{roaster.name}</Accent>
-                  </h2>
-                  <p className="whitespace-pre-line text-body-large text-muted-foreground/80 leading-relaxed italic">
-                    {roaster.description}
-                  </p>
-                </Stack>
-              </div>
-            </section>
-          )}
-
-          {/* ═══════════════════════════════════════════
-              SECTION 3: COFFEES SELECTION
-          ═══════════════════════════════════════════ */}
-          {roaster.coffees && roaster.coffees.length > 0 && (
-            <section
-              id="coffees"
-              className="scroll-mt-40 py-10 md:py-14 border-t border-border/20"
-            >
-              <Stack gap="8">
-                <div>
-                  <div className="inline-flex items-center gap-4 mb-3">
-                    <span className="h-px w-8 bg-accent/60" />
-                    <span className="text-overline text-muted-foreground tracking-[0.2em]">
-                      Curated Selection
-                    </span>
-                  </div>
-                  <h2 className="text-title text-balance leading-[1.1] tracking-tight font-serif italic">
-                    Coffees from{" "}
-                    <span className="text-accent">{roaster.name}</span>
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {roaster.coffees.slice(0, 6).map((coffee) => (
-                    <CoffeeCard key={coffee.coffee_id} coffee={coffee} />
-                  ))}
-                </div>
-
-                {roaster.coffees.length > 6 && (
-                  <div className="flex justify-center pt-4">
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="lg"
-                      className="rounded-full px-8 hover-lift"
-                    >
-                      <Link
-                        href={`/roasters/${roaster.slug}/coffees`}
-                        className="inline-flex items-center gap-2"
-                      >
-                        Explore All Coffees
-                        <Icon name="ArrowRight" size={16} />
-                      </Link>
-                    </Button>
-                  </div>
-                )}
-              </Stack>
-            </section>
-          )}
-
-          {/* ═══════════════════════════════════════════
-              SECTION 4: RATE & REVIEW
-          ═══════════════════════════════════════════ */}
-          <section
-            id="reviews"
-            ref={ratingSectionRef}
-            className="scroll-mt-40 py-10 md:py-14 border-t border-border/20"
-          >
-            <Stack gap="8">
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight font-serif italic">
-                {stats?.review_count
-                  ? `${stats.review_count} ${stats.review_count === 1 ? "Review" : "Reviews"} for `
-                  : "Be the first to review "}
-                <span className="text-accent">{roaster.name}</span>
-              </h2>
-              {/* Review Stats */}
-              <ReviewStats stats={stats || null} />
-
-              {/* Rating form */}
-              <div className="surface-2 rounded-2xl p-8 border border-accent/20">
-                <QuickRating
-                  entityType="roaster"
-                  entityId={roaster.id}
-                  variant="inline"
-                  slug={roaster.slug ?? undefined}
-                  onSavedStateChange={setHasUserRating}
-                />
-                {hasUserRating && (
-                  <ShareRow
-                    entityType="roaster"
-                    name={roaster.name}
-                    slug={roaster.slug ?? ""}
-                  />
-                )}
-              </div>
-
-              {/* Community Reviews */}
-              {reviews && reviews.length > 0 && (
-                <Section contained={false} spacing="tight">
-                  <ReviewList
-                    entityType="roaster"
-                    reviews={reviews.slice(0, 10)}
-                  />
-                </Section>
+      {/* ═══════════════════════════════════════════
+          SECTION 1: HERO / OVERVIEW (cream band)
+      ═══════════════════════════════════════════ */}
+      <Band id="overview" className="py-10 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-start">
+          {/* Logo Column */}
+          <div className="w-full max-w-sm mx-auto md:mx-0">
+            <div
+              className={cn(
+                "relative aspect-square w-full overflow-hidden rounded-xl border border-border/60 shadow-sm transition-all duration-300 hover:shadow-md",
+                logoBgClass
               )}
-            </Stack>
-          </section>
-
-          {/* Claim Your Page CTA */}
-          <div className="text-center py-12 md:py-16 border-t border-border/40">
-            <p className="text-label text-muted-foreground tracking-wide uppercase">
-              Partner with Indian Coffee Beans
-            </p>
-            <p className="mt-4 text-body text-muted-foreground">
-              If you are the owner of{" "}
-              <span className="text-foreground font-medium">
-                {roaster.name}
-              </span>
-              ,{" "}
-              <Link
-                href="/roasters/partner"
-                className="text-accent hover:underline font-medium italic underline-offset-4"
-              >
-                claim your page now
-              </Link>{" "}
-              to get a verified badge and manage your coffees.
-            </p>
+            >
+              {roaster.slug ? (
+                <Image
+                  alt={`${roaster.name} logo`}
+                  className="object-contain p-8 md:p-12"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  src={roasterImagePresets.roasterLogo(
+                    `roasters/${roaster.slug}-logo`
+                  )}
+                  unoptimized
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-muted-foreground/40">
+                  <Icon name="Storefront" size={84} />
+                </div>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Exit Intent Modal */}
-        <RoasterExitIntentRating
-          key={roaster.id}
-          roaster={roaster}
-          reviews={reviews}
-        />
-      </PageShell>
+          {/* Info Column */}
+          <Stack gap="6" className="pt-2">
+            <Stack gap="1">
+              <h1 className="text-display italic leading-[1.1] text-balance">
+                {roaster.name}
+              </h1>
+              {location && (
+                <div className="flex items-center gap-2 text-muted-foreground mt-1">
+                  <Icon name="MapPin" size={14} className="text-accent/60" />
+                  <span className="text-label uppercase tracking-widest">
+                    {location}
+                  </span>
+                </div>
+              )}
+              <p className="text-body-muted mt-3 max-w-xl leading-relaxed">
+                {stats?.review_count &&
+                stats.review_count >= 5 &&
+                stats.avg_rating != null
+                  ? `Community-rated ${stats.avg_rating.toFixed(1)}/5 from ${stats.review_count} reviews. ${roaster.coffee_count ?? 0} ${(roaster.coffee_count ?? 0) === 1 ? "coffee" : "coffees"} cataloged with tasting notes and unbiased ratings from Indian coffee drinkers.`
+                  : `${roaster.coffee_count ?? 0} ${(roaster.coffee_count ?? 0) === 1 ? "coffee" : "coffees"} cataloged with tasting notes. Rate ${roaster.name} and help build India's neutral specialty coffee directory.`}
+              </p>
+            </Stack>
+
+            {/* Rating + Basic Stats */}
+            <div className="flex flex-wrap items-center gap-4">
+              {stats && stats.review_count ? (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border/40 bg-card">
+                  <Icon
+                    name="Star"
+                    size={16}
+                    className="fill-rating text-rating"
+                  />
+                  <span className="text-heading text-foreground">
+                    {stats.avg_rating?.toFixed(1)}
+                  </span>
+                  <span className="text-caption text-muted-foreground ml-1">
+                    ({stats.review_count})
+                  </span>
+                </div>
+              ) : (
+                <span className="text-body-muted italic text-caption">
+                  Be the first to rate
+                </span>
+              )}
+            </div>
+
+            {(hasValues(roaster.certifications) ||
+              hasValues(roaster.specialty_focus) ||
+              hasValues(roaster.sourcing_model)) && (
+              <div className="surface-1 rounded-xl p-4 border border-border/40">
+                <Stack gap="3">
+                  <p className="text-overline tracking-[0.2em] text-muted-foreground">
+                    At a glance
+                  </p>
+                  {hasValues(roaster.certifications) && (
+                    <Stack gap="2">
+                      <p className="text-label text-muted-foreground">
+                        Certifications
+                      </p>
+                      <TagList>
+                        {roaster.certifications.map((item) => (
+                          <Tag key={item} variant="outline" size="micro">
+                            {item}
+                          </Tag>
+                        ))}
+                      </TagList>
+                    </Stack>
+                  )}
+                  {hasValues(roaster.specialty_focus) && (
+                    <Stack gap="2">
+                      <p className="text-label text-muted-foreground">
+                        Specialty focus
+                      </p>
+                      <TagList>
+                        {roaster.specialty_focus.map((item) => (
+                          <Tag key={item} variant="outline" size="micro">
+                            {item}
+                          </Tag>
+                        ))}
+                      </TagList>
+                    </Stack>
+                  )}
+                  {hasValues(roaster.sourcing_model) && (
+                    <Stack gap="2">
+                      <p className="text-label text-muted-foreground">
+                        Sourcing model
+                      </p>
+                      <TagList>
+                        {roaster.sourcing_model.map((item) => (
+                          <Tag key={item} variant="outline" size="micro">
+                            {item}
+                          </Tag>
+                        ))}
+                      </TagList>
+                    </Stack>
+                  )}
+                </Stack>
+              </div>
+            )}
+
+            {/* CTAs */}
+            <Cluster gap="3" className="pt-2">
+              <Button
+                ref={heroRateButtonRef}
+                size="lg"
+                className="bg-primary shadow-sm hover:shadow-md transition-shadow min-w-[170px]"
+                onClick={handleScrollToRating}
+              >
+                <Icon
+                  name="Star"
+                  size={18}
+                  className="mr-2 fill-rating text-rating"
+                />
+                Rate Roaster
+              </Button>
+              {roaster.website && (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  asChild
+                  className="text-muted-foreground min-w-[170px]"
+                >
+                  <a
+                    href={roaster.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      trackRoasterClick(roaster.id, "website");
+                      trackRoasterConversion(roaster.id, "website_click");
+                    }}
+                  >
+                    <Icon name="Globe" size={18} className="mr-2" />
+                    Website
+                  </a>
+                </Button>
+              )}
+            </Cluster>
+
+            {/* Socials */}
+            {socialLinks.length > 0 && (
+              <Cluster gap="2" className="pt-2">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2.5 rounded-full hover:bg-accent/10 text-muted-foreground hover:text-accent transition-all border border-border/40 bg-background shadow-sm"
+                    title={link.label}
+                    aria-label={`${roaster.name} on ${link.label}`}
+                  >
+                    <Icon name={link.icon} size={18} aria-hidden="true" />
+                  </a>
+                ))}
+              </Cluster>
+            )}
+          </Stack>
+        </div>
+      </Band>
+
+      {/* ═══════════════════════════════════════════
+              SECTION 2: ROASTER STORY (warm band)
+          ═══════════════════════════════════════════ */}
+      {roaster.description && (
+        <Band id="about" ground="warm" texture="grain">
+          <Stack gap="4">
+            <h2 className="text-title text-balance leading-[1.1] italic">
+              About <Accent>{roaster.name}</Accent>
+            </h2>
+            <Prose className="text-muted-foreground">
+              <p className="whitespace-pre-line">{roaster.description}</p>
+            </Prose>
+          </Stack>
+        </Band>
+      )}
+
+      {/* ═══════════════════════════════════════════
+              SECTION 3: COFFEES SELECTION (cream band)
+          ═══════════════════════════════════════════ */}
+      {roaster.coffees && roaster.coffees.length > 0 && (
+        <Band id="coffees">
+          <Stack gap="8">
+            <h2 className="text-title text-balance leading-[1.1] italic">
+              Coffees from <Accent>{roaster.name}</Accent>
+            </h2>
+
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {roaster.coffees.slice(0, 6).map((coffee) => (
+                <CoffeeCard key={coffee.coffee_id} coffee={coffee} />
+              ))}
+            </div>
+
+            {roaster.coffees.length > 6 && (
+              <div className="flex justify-center pt-4">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full px-8 hover-lift"
+                >
+                  <Link
+                    href={`/roasters/${roaster.slug}/coffees`}
+                    className="inline-flex items-center gap-2"
+                  >
+                    Explore All Coffees
+                    <Icon name="ArrowRight" size={16} />
+                  </Link>
+                </Button>
+              </div>
+            )}
+          </Stack>
+        </Band>
+      )}
+
+      {/* ═══════════════════════════════════════════
+              SECTION 4: RATE & REVIEW (warm band)
+          ═══════════════════════════════════════════ */}
+      <Band id="reviews" ground="warm" texture="grain-coarse">
+        <div ref={ratingSectionRef} className="scroll-mt-40">
+          <Stack gap="8">
+            <h2 className="text-title text-balance leading-[1.1] italic">
+              {stats?.review_count
+                ? `${stats.review_count} ${stats.review_count === 1 ? "Review" : "Reviews"} for `
+                : "Be the first to review "}
+              <Accent>{roaster.name}</Accent>
+            </h2>
+            {/* Review Stats */}
+            <ReviewStats stats={stats || null} />
+
+            {/* Rating form (interactive input panel — a card is the right affordance) */}
+            <div className="surface-2 rounded-xl p-8 border border-accent/20">
+              <QuickRating
+                entityType="roaster"
+                entityId={roaster.id}
+                variant="inline"
+                slug={roaster.slug ?? undefined}
+                onSavedStateChange={setHasUserRating}
+              />
+              {hasUserRating && (
+                <ShareRow
+                  entityType="roaster"
+                  name={roaster.name}
+                  slug={roaster.slug ?? ""}
+                />
+              )}
+            </div>
+
+            {/* Community Reviews */}
+            {reviews && reviews.length > 0 && (
+              <ReviewList entityType="roaster" reviews={reviews.slice(0, 10)} />
+            )}
+          </Stack>
+        </div>
+      </Band>
+
+      {/* ═══════════════════════════════════════════
+              CLAIM YOUR PAGE CTA (cream band)
+          ═══════════════════════════════════════════ */}
+      <Band>
+        <div className="text-center">
+          <p className="text-label text-muted-foreground tracking-wide uppercase">
+            Partner with Indian Coffee Beans
+          </p>
+          <p className="mt-4 text-body text-muted-foreground">
+            If you are the owner of{" "}
+            <span className="text-foreground font-medium">{roaster.name}</span>,{" "}
+            <Link
+              href="/roasters/partner"
+              className="text-accent hover:underline font-medium italic underline-offset-4"
+            >
+              claim your page now
+            </Link>{" "}
+            to get a verified badge and manage your coffees.
+          </p>
+        </div>
+      </Band>
+
+      {/* Exit Intent Modal */}
+      <RoasterExitIntentRating
+        key={roaster.id}
+        roaster={roaster}
+        reviews={reviews}
+      />
 
       {/* Floating Rate CTA */}
       <FloatingRateCTA

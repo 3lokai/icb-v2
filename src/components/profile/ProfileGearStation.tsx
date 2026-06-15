@@ -61,6 +61,9 @@ export function ProfileGearStation({
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletePhotoId, setDeletePhotoId] = useState<string | null>(null);
+  const [removeGearItem, setRemoveGearItem] = useState<ProfileGear | null>(
+    null
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Use station photos hook
@@ -141,11 +144,10 @@ export function ProfileGearStation({
     setIsSubmitting(false);
   };
 
-  const handleRemoveGear = async (userGearId: string) => {
-    if (!confirm("Are you sure you want to remove this gear item?")) {
-      return;
-    }
-
+  const handleConfirmRemoveGear = async () => {
+    if (!removeGearItem) return;
+    const userGearId = removeGearItem.id;
+    setRemoveGearItem(null);
     const result = await removeGear({ userGearId });
     if (result.success) {
       toast.success("Gear removed");
@@ -156,23 +158,15 @@ export function ProfileGearStation({
 
   return (
     <div>
-      <Stack gap="12" className="pt-0 md:pt-2">
-        <Stack gap="6">
-          <div className="inline-flex items-center gap-4">
-            <span className="h-px w-8 md:w-12 bg-accent/60" />
-            <span className="text-overline text-muted-foreground tracking-[0.15em]">
-              SETUP
-            </span>
-          </div>
-          <Cluster align="center" className="justify-between">
-            <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-              Gear & <Accent>Station.</Accent>
-            </h2>
-            {!isAnonymous && (
-              <ShareSection section="gear-station" username={username} />
-            )}
-          </Cluster>
-        </Stack>
+      <Stack gap="12">
+        <Cluster align="center" className="justify-between">
+          <h2 className="text-title text-balance leading-[1.1] italic m-0">
+            Gear & <Accent>Station.</Accent>
+          </h2>
+          {!isAnonymous && (
+            <ShareSection section="gear-station" username={username} />
+          )}
+        </Cluster>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Gear Section */}
           <Stack gap="8">
@@ -229,7 +223,7 @@ export function ProfileGearStation({
                                   </span>
                                   {isOwner && (
                                     <button
-                                      onClick={() => handleRemoveGear(item.id)}
+                                      onClick={() => setRemoveGearItem(item)}
                                       className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive/80 p-1"
                                       aria-label="Remove gear"
                                     >
@@ -425,7 +419,7 @@ export function ProfileGearStation({
                   {isOwner && canUploadMore && (
                     <button
                       onClick={() => fileInputRef.current?.click()}
-                      className="h-8 w-8 rounded-full border border-dashed border-border/60 flex items-center justify-center hover:bg-muted/20 transition-colors text-muted-foreground/60 hover:text-accent"
+                      className="h-8 w-8 rounded-full border border-dashed border-border/60 flex items-center justify-center hover:bg-muted/40 transition-colors text-muted-foreground hover:text-accent"
                       disabled={isUploading}
                       aria-label="Add photo"
                     >
@@ -486,7 +480,7 @@ export function ProfileGearStation({
                     "transition-colors mb-4",
                     isDragActive
                       ? "text-accent"
-                      : "text-muted-foreground/20 group-hover:text-accent/40"
+                      : "text-muted-foreground/50 group-hover:text-accent"
                   )}
                 />
                 <p className="text-caption italic text-muted-foreground text-center px-4">
@@ -494,26 +488,38 @@ export function ProfileGearStation({
                     ? "Drop photos here"
                     : "Drop photos here or click to upload"}
                 </p>
-                <p className="text-micro text-muted-foreground/60 mt-2 text-center px-4">
+                <p className="text-micro text-muted-foreground mt-2 text-center px-4">
                   Up to 5 photos, 2MB each
                 </p>
               </Card>
             ) : (
-              <Card className="h-[280px] border border-dashed border-border/60 rounded-3xl flex flex-col items-center justify-center bg-muted/5 group py-0 gap-0">
-                <Icon
-                  name="Plus"
-                  size={32}
-                  className="text-muted-foreground/20 group-hover:text-accent/40 transition-colors mb-4"
-                />
-                <p className="text-caption italic text-muted-foreground">
-                  Add photos of your brewing station
-                </p>
-              </Card>
+              <div className="relative h-[280px] w-full flex items-center justify-center">
+                <div className="absolute inset-0 grayscale opacity-40 blur-[2px] transition-all hover:blur-0 hover:opacity-60 duration-700">
+                  <Image
+                    src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop"
+                    alt="Mock Station"
+                    fill
+                    className="object-cover rounded-[2rem]"
+                  />
+                </div>
+                <Stack
+                  gap="2"
+                  className="z-10 bg-background/40 backdrop-blur-md p-8 rounded-3xl border border-white/10 shadow-xl max-w-xs text-center"
+                >
+                  <Icon name="Camera" size={24} className="text-accent" />
+                  <h3 className="text-body font-serif italic">
+                    No station shared yet
+                  </h3>
+                  <p className="text-micro text-muted-foreground">
+                    This member hasn&apos;t added photos of their brewing setup.
+                  </p>
+                </Stack>
+              </div>
             )}
           </Stack>
         </div>
 
-        {/* Delete Confirmation Dialog */}
+        {/* Delete Photo Confirmation Dialog */}
         <AlertDialog
           open={!!deletePhotoId}
           onOpenChange={(open: boolean) => !open && setDeletePhotoId(null)}
@@ -531,6 +537,31 @@ export function ProfileGearStation({
               </AlertDialogCancel>
               <AlertDialogAction onClick={handleDeleteConfirm}>
                 Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* Remove Gear Confirmation Dialog */}
+        <AlertDialog
+          open={!!removeGearItem}
+          onOpenChange={(open: boolean) => !open && setRemoveGearItem(null)}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Remove this gear?</AlertDialogTitle>
+              <AlertDialogDescription>
+                {removeGearItem
+                  ? `"${removeGearItem.brand ? `${removeGearItem.brand} ${removeGearItem.model || removeGearItem.name}` : removeGearItem.name}" will be removed from your setup. You can add it back anytime.`
+                  : null}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setRemoveGearItem(null)}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmRemoveGear}>
+                Remove
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

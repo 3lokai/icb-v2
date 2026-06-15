@@ -17,20 +17,18 @@ type ProfileAtAGlanceProps = {
   avgRating: number | null;
   distinctRoasterCount: number;
   selectionsCount: number;
-  tier: number;
-  persona: string;
   isOwner?: boolean;
   isAnonymous?: boolean;
   className?: string;
 };
 
+// Note: the persona reveal lives only in the Taste Profile hero — surfacing it
+// here too would duplicate the page's biggest moment within one screen.
 export function ProfileAtAGlance({
   totalReviews,
   avgRating,
   distinctRoasterCount,
   selectionsCount,
-  tier,
-  persona,
   isOwner = false,
   isAnonymous = false,
   className,
@@ -39,7 +37,7 @@ export function ProfileAtAGlance({
 
   const glanceStats: ProfileGlanceStat[] = [
     {
-      label: "Library",
+      label: "Coffees Rated",
       value: String(totalReviews),
       icon: "Coffee",
     },
@@ -50,7 +48,7 @@ export function ProfileAtAGlance({
       icon: "Star",
     },
     {
-      label: "Reach",
+      label: "Roasters Tried",
       value: String(distinctRoasterCount),
       icon: "MapPin",
     },
@@ -64,7 +62,7 @@ export function ProfileAtAGlance({
   return (
     <aside
       className={cn(
-        "rounded-3xl border border-border/20 bg-background/60 backdrop-blur-md p-6 shadow-sm",
+        "rounded-3xl border border-border/60 bg-card p-6 shadow-sm",
         className
       )}
     >
@@ -77,7 +75,7 @@ export function ProfileAtAGlance({
             <Icon
               name="LockKey"
               size={14}
-              className="shrink-0 text-muted-foreground/50"
+              className="shrink-0 text-muted-foreground"
               aria-hidden
             />
           )}
@@ -105,10 +103,10 @@ export function ProfileAtAGlance({
               {glanceStats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-2xl border border-border/10 bg-muted/20 px-3 py-3 group/stat transition-colors hover:bg-muted/30"
+                  className="rounded-2xl bg-background px-3 py-3 group/stat transition-colors hover:bg-muted/40"
                 >
-                  <div className="flex items-center gap-1.5 opacity-50 group-hover/stat:opacity-80 transition-opacity mb-1">
-                    <Icon name={stat.icon} size={10} className="text-accent" />
+                  <div className="flex items-center gap-1.5 text-muted-foreground mb-1">
+                    <Icon name={stat.icon} size={12} className="text-accent" />
                     <p className="text-micro uppercase font-medium tracking-wider m-0">
                       {stat.label}
                     </p>
@@ -116,7 +114,7 @@ export function ProfileAtAGlance({
                   <p className="text-heading font-mono tabular-nums text-foreground m-0 leading-none flex items-baseline gap-0.5">
                     {stat.value}
                     {stat.suffix ? (
-                      <span className="text-caption font-mono opacity-60">
+                      <span className="text-caption font-mono text-muted-foreground">
                         {stat.suffix}
                       </span>
                     ) : null}
@@ -124,25 +122,6 @@ export function ProfileAtAGlance({
                 </div>
               ))}
             </div>
-
-            {tier === 3 && (
-              <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4 relative overflow-hidden group/persona">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-accent/10 blur-[40px] rounded-full translate-x-1/2 -translate-y-1/2" />
-                <div className="flex items-center gap-2 mb-2">
-                  <Icon
-                    name="Sparkle"
-                    size={14}
-                    className="text-accent animate-pulse"
-                  />
-                  <span className="text-micro uppercase font-medium tracking-wider text-muted-foreground/60">
-                    PERSONA
-                  </span>
-                </div>
-                <p className="text-title italic text-accent m-0 leading-tight">
-                  {persona}
-                </p>
-              </div>
-            )}
           </Stack>
         )}
       </Stack>

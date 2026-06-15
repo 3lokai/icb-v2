@@ -94,7 +94,7 @@ export function AddSelection() {
           <Icon
             name="PlusCircle"
             size={24}
-            className="text-muted-foreground/40 group-hover:text-accent/60 transition-colors mb-2"
+            className="text-muted-foreground group-hover:text-accent transition-colors mb-2"
           />
           <span className="text-label group-hover:text-foreground transition-colors">
             Add to my selections
@@ -106,7 +106,7 @@ export function AddSelection() {
           className="w-full max-w-[240px] animate-in fade-in zoom-in duration-300"
         >
           <div className="space-y-2">
-            <label className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60">
+            <label className="text-micro font-bold uppercase tracking-widest text-muted-foreground">
               1. Select Roaster
             </label>
             <Popover open={isRoasterOpen} onOpenChange={setIsRoasterOpen}>
@@ -154,7 +154,7 @@ export function AddSelection() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60">
+            <label className="text-micro font-bold uppercase tracking-widest text-muted-foreground">
               2. Select Coffee
             </label>
             <Select

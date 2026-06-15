@@ -494,7 +494,7 @@ export function CoffeeFilterContent({
                 });
               }
             }}
-            label={(value) => `₹${value?.toLocaleString() ?? "0"}`}
+            label={(value) => `₹${value?.toLocaleString("en-IN") ?? "0"}`}
             labelPosition="top"
             className="w-full"
           />

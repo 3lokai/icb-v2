@@ -3,8 +3,23 @@ name: CI
 on:
   push:
     branches: [main, master]
+    paths-ignore:
+      - ".claude/**"
+      - ".agents/**"
+      - ".cursor/**"
+      - ".impeccable/**"
+      - "frontend-update/**"
+      - "ai_docs/**"
+      - "docs/**"
+      - "skills/**"
   pull_request:
     branches: [main, master]
+    paths-ignore:
+      - ".claude/**"
+      - ".agents/**"
+      - ".cursor/**"
+      - ".impeccable/**"
+      - "skills/**"
 
 jobs:
   test:
