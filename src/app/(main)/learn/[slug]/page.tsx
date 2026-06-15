@@ -179,7 +179,7 @@ export default async function ArticlePage({ params }: Props) {
       <ArticleHeader article={article} />
 
       <div className="mt-12 md:mt-20">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[250px_1fr] xl:grid-cols-[250px_750px_1fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[250px_1fr] xl:grid-cols-[250px_1fr_200px]">
           {/* Left: TOC — sticky so it floats with scroll; overflow-visible so sticky works */}
           <aside className="overflow-visible">
             <div className="sticky top-24">
@@ -207,7 +207,7 @@ export default async function ArticlePage({ params }: Props) {
                     <AccordionItem
                       key={i}
                       value={`faq-${i}`}
-                      className="rounded-2xl border bg-card/50 px-6 py-2 transition-all hover:bg-card shadow-sm"
+                      className="rounded-xl border border-border/60 bg-card px-6 py-2 transition-colors hover:border-border"
                     >
                       <AccordionTrigger className="text-left text-body font-bold text-foreground py-4 hover:no-underline">
                         {item.question}
@@ -238,6 +238,17 @@ export default async function ArticlePage({ params }: Props) {
               <DetailedAuthor author={article.authorRef || article.author} />
             </footer>
           </main>
+
+          {/* Right rail: sticky share — fills what was a dead column on wide
+              screens and keeps sharing in reach through a long read. */}
+          <aside className="hidden xl:block">
+            <div className="sticky top-24">
+              <p className="text-overline mb-4 uppercase tracking-[0.15em] text-muted-foreground">
+                Share
+              </p>
+              <ShareArticle title={article.title} url={articleUrl} vertical />
+            </div>
+          </aside>
         </div>
       </div>
     </div>

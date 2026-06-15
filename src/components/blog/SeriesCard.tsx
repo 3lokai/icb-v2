@@ -7,7 +7,7 @@ export function SeriesCard({ series }: { series: Series }) {
   return (
     <Link
       href={`/learn/series/${slug}`}
-      className="group flex flex-col gap-4 rounded-2xl border bg-card p-6 transition-all hover:shadow-md hover:-translate-y-1"
+      className="group flex flex-col gap-4 rounded-xl border border-border/60 bg-card p-6 transition-all hover:border-border hover:shadow-md hover:-translate-y-1"
     >
       <div className="flex items-center justify-between">
         <div className="rounded-full bg-accent/10 px-3 py-1 text-overline text-accent">
@@ -20,7 +20,8 @@ export function SeriesCard({ series }: { series: Series }) {
           {name}
         </h3>
         <p className="line-clamp-2 text-body text-muted-foreground">
-          {description}
+          {description ||
+            "A guided series of field-guide entries on one coffee topic."}
         </p>
       </div>
 

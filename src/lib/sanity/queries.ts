@@ -115,17 +115,110 @@ export const ARTICLE_PROJECTION = `
   _updatedAt
 `;
 
+/**
+ * Card-level projection for LISTING surfaces (/learn, homepage, series, author,
+ * featured). Mirrors ARTICLE_PROJECTION but omits the heavy, detail-only fields
+ * — most importantly `body[]` (full portable text), plus faqItems/toc/steps/
+ * brewing/topics/tags — none of which any card UI reads. Keeps cover, the full
+ * `metadata` block (series-page SEO is built from it) and series refs.
+ * Use ARTICLE_PROJECTION only for the single-article detail query.
+ */
+export const ARTICLE_CARD_PROJECTION = `
+  _id,
+  _type,
+  title,
+  description,
+  "slug": slug.current,
+  date,
+  updatedAt,
+  updated,
+  category->{
+    _id,
+    name,
+    "slug": slug.current,
+    description,
+    kind,
+    color
+  },
+  author{
+    name,
+    bio
+  },
+  authorRef->{
+    _id,
+    name,
+    bio,
+    "slug": slug.current,
+    avatar,
+    supabaseUserId,
+    instagram
+  },
+  featured,
+  draft,
+  difficulty,
+  cover{
+    asset->{
+      _id,
+      url,
+      metadata {
+        lqip,
+        dimensions {
+          width,
+          height
+        }
+      }
+    },
+    hotspot,
+    crop
+  },
+  excerpt,
+  metadata{
+    readingTime,
+    wordCount,
+    metaTitle,
+    metaDescription,
+    keywords,
+    ogImage{
+      asset->{
+        _id,
+        url,
+        metadata {
+          lqip,
+          dimensions { width, height }
+        }
+      },
+      hotspot,
+      crop
+    },
+    canonicalUrl,
+    noIndex
+  },
+  series{
+    name,
+    "slug": slug.current,
+    part
+  },
+  seriesRef->{
+    _id,
+    name,
+    "slug": slug.current,
+    description
+  },
+  _createdAt,
+  _updatedAt
+`;
+
 export const ALL_ARTICLES_QUERY = `
   *[_type == "article" && defined(slug.current)]
   | order(date desc) {
-    ${ARTICLE_PROJECTION}
+    ${ARTICLE_CARD_PROJECTION}
   }
 `;
 
 export const LATEST_ARTICLES_QUERY = `
   *[_type == "article" && defined(slug.current)]
   | order(date desc) [0...5] {
-    ${ARTICLE_PROJECTION}
+    ${ARTICLE_CARD_PROJECTION}
   }
 `;
 
@@ -138,7 +231,7 @@ export const ARTICLE_BY_SLUG_QUERY = `
 export const FEATURED_ARTICLES_QUERY = `
   *[_type == "article" && featured == true]
   | order(date desc) {
-    ${ARTICLE_PROJECTION}
+    ${ARTICLE_CARD_PROJECTION}
   }
 `;
 
@@ -256,7 +349,7 @@ export const ARTICLES_BY_SERIES_QUERY = `
     )
   ]
   | order(series.part asc, date desc) {
-    ${ARTICLE_PROJECTION}
+    ${ARTICLE_CARD_PROJECTION}
   }
 `;
 
@@ -275,7 +368,7 @@ export const AUTHOR_BY_SLUG_OR_ID_QUERY = `
 export const ARTICLES_BY_AUTHOR_QUERY = `
   *[_type == "article" && authorRef._ref == $authorId && defined(slug.current)]
   | order(date desc) {
-    ${ARTICLE_PROJECTION}
+    ${ARTICLE_CARD_PROJECTION}
   }
 `;
 

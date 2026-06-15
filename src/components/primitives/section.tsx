@@ -11,6 +11,13 @@ type SectionProps = {
   title?: string;
   /** Word(s) within/after the title to emphasise with the coffee-smear <Accent>. Ration ≤1 per page. */
   accentWord?: string;
+  /**
+   * Supporting copy rendered under the title, inside the header block. Lets a
+   * section express eyebrow + title + description without hand-rolling the
+   * header (the reason pages used to bypass this primitive). Capped at the
+   * prose measure (max-w-2xl).
+   */
+  description?: React.ReactNode;
   /** Header alignment. */
   align?: "left" | "center";
   spacing?: "tight" | "default" | "loose";
@@ -51,6 +58,7 @@ export function Section({
   eyebrow,
   title,
   accentWord,
+  description,
   align = "left",
   spacing = "default",
   contained = true,
@@ -81,7 +89,7 @@ export function Section({
 
   const content = (
     <>
-      {(eyebrow || title) && (
+      {(eyebrow || title || description) && (
         <div className={cn("mb-12", align === "center" && "text-center")}>
           {eyebrow && (
             <p className="text-overline mb-3 font-semibold uppercase tracking-[0.18em] text-accent">
@@ -89,7 +97,7 @@ export function Section({
             </p>
           )}
           {title && (
-            <h2 className="text-title">
+            <h2 className="text-title text-balance">
               {title}
               {accentWord && (
                 <>
@@ -98,6 +106,16 @@ export function Section({
                 </>
               )}
             </h2>
+          )}
+          {description && (
+            <p
+              className={cn(
+                "text-body-large text-muted-foreground mt-4 max-w-2xl text-pretty",
+                align === "center" && "mx-auto"
+              )}
+            >
+              {description}
+            </p>
           )}
         </div>
       )}

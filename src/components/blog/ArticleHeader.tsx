@@ -25,6 +25,11 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
     difficulty,
   } = article;
   const displayAuthor = authorRef || author;
+  const parsedDate = date ? new Date(date) : null;
+  const publishedDate =
+    parsedDate && !Number.isNaN(parsedDate.getTime())
+      ? format(parsedDate, "MMMM d, yyyy")
+      : null;
   const backgroundImage = cover
     ? urlFor(cover).width(1280).quality(75).auto("format").url()
     : undefined;
@@ -45,8 +50,8 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
             sizes="100vw"
             src={backgroundImage}
           />
-          {/* Enhanced Overlay */}
-          <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
+          {/* Enhanced Overlay — mid-stop strengthened so metadata clears AA. */}
+          <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/65 via-black/55 to-black/85" />
         </div>
       )}
 
@@ -76,10 +81,11 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
               )}
             </Stack>
 
-            {/* Metadata Bottom Row */}
-            <div className="flex flex-wrap items-center justify-start gap-6 pt-4 border-t border-white/10 w-full mt-4">
+            {/* Metadata Bottom Row — 2-col grid on phones (dividers drop out,
+                so a plain wrap would read ragged), flex row from sm up. */}
+            <div className="grid grid-cols-2 gap-x-6 gap-y-5 pt-4 border-t border-white/10 w-full mt-4 sm:flex sm:flex-wrap sm:items-center sm:gap-6">
               {/* Author */}
-              <div className="flex items-center gap-3">
+              <div className="col-span-2 flex items-center gap-3 sm:col-auto">
                 <div className="relative size-10 shrink-0 overflow-hidden rounded-full border border-white/20">
                   {displayAuthor.avatar ? (
                     <Image
@@ -101,31 +107,31 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
                   <div className="text-body font-semibold text-white">
                     {displayAuthor.name}
                   </div>
-                  <div className="text-overline uppercase tracking-[0.15em] text-white/50">
+                  <div className="text-overline uppercase tracking-[0.15em] text-white/75">
                     Author
                   </div>
                 </div>
               </div>
 
-              {/* Divider */}
-              <div className="hidden h-8 w-px bg-white/10 sm:block" />
-
               {/* Date */}
-              <div className="text-left">
-                <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
-                  Published
-                </div>
-                <div className="text-body text-white">
-                  {format(new Date(date), "MMMM d, yyyy")}
-                </div>
-              </div>
+              {publishedDate && (
+                <>
+                  <div className="hidden h-8 w-px bg-white/10 sm:block" />
+                  <div className="text-left">
+                    <div className="text-overline uppercase tracking-[0.15em] text-white/75 mb-0.5">
+                      Published
+                    </div>
+                    <div className="text-body text-white">{publishedDate}</div>
+                  </div>
+                </>
+              )}
 
               {/* Divider */}
               <div className="hidden h-8 w-px bg-white/10 sm:block" />
 
               {/* Reading Time */}
               <div className="text-left">
-                <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
+                <div className="text-overline uppercase tracking-[0.15em] text-white/75 mb-0.5">
                   Reading
                 </div>
                 <div className="text-body text-white">
@@ -140,7 +146,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
                   {brewingMethod && (
                     <div className="text-left">
-                      <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
+                      <div className="text-overline uppercase tracking-[0.15em] text-white/75 mb-0.5">
                         Method
                       </div>
                       <div className="text-body text-white">
@@ -151,7 +157,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
                   {brewTime && (
                     <div className="text-left">
-                      <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
+                      <div className="text-overline uppercase tracking-[0.15em] text-white/75 mb-0.5">
                         Time
                       </div>
                       <div className="text-body text-white">{brewTime}</div>
@@ -160,7 +166,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
                   {difficulty && (
                     <div className="text-left">
-                      <div className="text-overline uppercase tracking-[0.15em] text-white/50 mb-0.5">
+                      <div className="text-overline uppercase tracking-[0.15em] text-white/75 mb-0.5">
                         Difficulty
                       </div>
                       <div className="text-body text-white capitalize">
