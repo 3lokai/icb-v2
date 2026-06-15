@@ -140,6 +140,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ];
 
+  // Discovery landing pages (brew method, roast, price, process, region, bean type)
+  const discoveryRoutes: MetadataRoute.Sitemap = getAllLandingPageSlugs().map(
+    (slug) =>
+      withHreflang({
+        url: `${baseUrl}/coffees/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.75,
+      })
+  );
+
   // Fetch dynamic routes from Supabase
   try {
     // Use service role client if available (bypasses RLS), otherwise use regular client
@@ -264,17 +275,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
       ) ?? [];
 
-    // Discovery landing pages (brew method, roast level, price bucket)
-    const discoverySlugs = getAllLandingPageSlugs();
-    const discoveryRoutes: MetadataRoute.Sitemap = discoverySlugs.map((slug) =>
-      withHreflang({
-        url: `${baseUrl}/coffees/${slug}`,
-        lastModified: new Date(),
-        changeFrequency: "weekly" as const,
-        priority: 0.75,
-      })
-    );
-
     // Learn routes from Sanity (articles, categories, series)
     let learnRoutes: MetadataRoute.Sitemap = [];
     try {
@@ -346,8 +346,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...learnRoutes,
     ];
   } catch (error) {
-    // If database queries fail, fallback to static routes only
+    // If database queries fail, still include discovery landing pages
     console.error("Failed to fetch dynamic sitemap routes:", error);
-    return staticRoutes;
+    return [...staticRoutes, ...discoveryRoutes];
   }
 }
