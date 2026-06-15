@@ -152,12 +152,10 @@ function CommunityCardComponent({ community, className }: CommunityCardProps) {
   );
 
   return isInviteOnRequest ? (
-    <div
-      aria-label={ariaLabel}
-      className="block h-full rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-    >
-      {cardContent}
-    </div>
+    // Non-interactive: no link/keyboard target, so no focus ring. The visible
+    // "Invite on Request" pill conveys state; aria-label would not be announced
+    // on a non-focusable element.
+    <div className="block h-full rounded-lg">{cardContent}</div>
   ) : (
     <CommunityTrackingLink
       ariaLabel={ariaLabel}
