@@ -7,7 +7,6 @@ import {
 } from "@/lib/sanity/queries";
 import { Article, Category, Series } from "@/types/blog-types";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { PageShell } from "@/components/primitives/page-shell";
 import { SeriesCard } from "@/components/blog/SeriesCard";
 import { FieldGuidePillars } from "@/components/blog/FieldGuidePillars";
 import { PostCard } from "@/components/blog/PostCard";
@@ -15,8 +14,42 @@ import { ArticleGrid } from "@/components/blog/ArticleParallaxGrid";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
 import { Accent } from "@/components/primitives/accent";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import { generateCollectionPageSchema, getSeoBaseUrl } from "@/lib/seo/schema";
+import StructuredData from "@/components/seo/StructuredData";
 
 export const revalidate = 3600;
+
+const LEARN_DESCRIPTION =
+  "Master the art of Indian specialty coffee. From origin stories to brewing guides, explore our curated field guide — articles, series, and research across five knowledge layers.";
+
+export const metadata = generateSEOMetadata({
+  title: "The Indian Coffee Field Guide",
+  description: LEARN_DESCRIPTION,
+  canonical: "/learn",
+  keywords: [
+    "Indian coffee guide",
+    "specialty coffee India",
+    "coffee brewing guides",
+    "Indian coffee origins",
+  ],
+});
+
+function buildArticleListItems(
+  articles: Article[],
+  baseUrl: string
+): Array<Record<string, unknown>> {
+  return articles.slice(0, 20).map((article, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "Article",
+      name: article.title,
+      url: `${baseUrl}/learn/${article.slug}`,
+      ...(article.excerpt ? { description: article.excerpt } : {}),
+    },
+  }));
+}
 
 export default async function LearnPage() {
   const [articles, _categories, series, pillarCategories] = await Promise.all([
@@ -26,6 +59,16 @@ export default async function LearnPage() {
     client.fetch<Category[]>(PILLAR_CATEGORIES_QUERY),
   ]);
 
+  const baseUrl = getSeoBaseUrl();
+  const learnUrl = `${baseUrl}/learn`;
+  const articleItems = buildArticleListItems(articles, baseUrl);
+  const collectionSchema = generateCollectionPageSchema(
+    "The Indian Coffee Field Guide",
+    LEARN_DESCRIPTION,
+    learnUrl,
+    articleItems
+  );
+
   const featuredArticles = articles.filter((a) => a.featured);
   const regularArticles = articles
     .filter((a) => !a.featured)
@@ -33,6 +76,7 @@ export default async function LearnPage() {
 
   return (
     <>
+      <StructuredData schema={collectionSchema} />
       <PageHeader
         title={
           <>
@@ -45,103 +89,65 @@ export default async function LearnPage() {
         backgroundImage="/images/hero-learn.avif"
       />
 
-      <PageShell className="py-0">
-        <Stack gap="16">
-          {/* 5 Pillars Section */}
-          <Section contained={false} spacing="default">
-            <Stack gap="12">
-              <div className="flex flex-col gap-4">
-                <div className="inline-flex items-center gap-4">
-                  <span className="h-px w-8 md:w-12 bg-primary/70" />
-                  <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
-                    Knowledge Layers
-                  </span>
-                </div>
-                <h2 className="text-title font-semibold tracking-tight text-balance">
-                  From soil to <Accent>your cup</Accent>
-                </h2>
-                <p className="max-w-2xl text-body-large text-muted-foreground">
-                  Our Field Guide is structured into five distinct layers of
-                  knowledge, moving from the soil to your cup.
-                </p>
-              </div>
-              <FieldGuidePillars categories={pillarCategories} />
-            </Stack>
-          </Section>
+      {/* The Five Layers — the field guide's information architecture. */}
+      <Section
+        contained={false}
+        spacing="default"
+        eyebrow="The Five Layers"
+        title="From soil to"
+        accentWord="your cup"
+        description="Our field guide is structured into five distinct layers of knowledge, moving from the estate where the bean grows to the moment it lands in your cup."
+      >
+        <FieldGuidePillars categories={pillarCategories} />
+      </Section>
 
-          {/* Featured Section */}
+      {/* The Feed — featured leads fold into the same section as the grid,
+          so the page reads as one library, not two competing card walls. */}
+      <Section
+        contained={false}
+        spacing="default"
+        title="Latest from the"
+        accentWord="field guide"
+        description={`Curated stories, guides, and research from across the Indian coffee spectrum — ${articles.length} ${articles.length === 1 ? "entry" : "entries"} and counting.`}
+      >
+        <Stack gap="12">
           {featuredArticles.length > 0 && (
-            <Section contained={false} spacing="default">
-              <Stack gap="12">
-                <div className="flex flex-col gap-4">
-                  <h2 className="text-title font-semibold tracking-tight text-balance">
-                    Editor's <Accent>Picks</Accent>
-                  </h2>
-                </div>
-                <div className="grid gap-8">
-                  {featuredArticles.map((article) => (
-                    <PostCard key={article._id} article={article} featured />
-                  ))}
-                </div>
-              </Stack>
-            </Section>
-          )}
-
-          {/* Field Guide Feed (Parallax Grid) */}
-          <Section contained={false} spacing="default">
-            <Stack gap="12">
-              <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between border-b border-border/50 pb-6">
-                <div className="flex flex-col gap-4">
-                  <div className="inline-flex items-center gap-4">
-                    <span className="h-px w-8 md:w-12 bg-primary/70" />
-                    <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
-                      Field Guide Feed
-                    </span>
-                  </div>
-                  <h2 className="text-title font-semibold tracking-tight text-balance">
-                    Latest <Accent>Insights</Accent>
-                  </h2>
-                  <p className="max-w-2xl text-body-large text-muted-foreground">
-                    Our curated selection of stories, guides, and research from
-                    across the coffee spectrum.
-                  </p>
-                </div>
-                <div className="text-caption font-medium text-muted-foreground bg-muted/50 px-3 py-1 rounded-full self-start md:self-auto">
-                  {articles.length} entries
-                </div>
-              </div>
-
-              <ArticleGrid articles={regularArticles} />
+            <Stack gap="8">
+              {featuredArticles.map((article) => (
+                <PostCard key={article._id} article={article} featured />
+              ))}
             </Stack>
-          </Section>
-
-          {/* Series Section */}
-          {series.length > 0 && (
-            <Section
-              contained={false}
-              spacing="loose"
-              className="bg-muted/20 rounded-3xl px-8 md:px-12 mb-20"
-            >
-              <Stack gap="12">
-                <div className="flex flex-col gap-4 text-center">
-                  <h2 className="text-title font-semibold tracking-tight text-balance">
-                    Structured learning
-                  </h2>
-                  <p className="mx-auto max-w-2xl text-body-large text-muted-foreground">
-                    Follow these curated series to master complex coffee topics
-                    step by step.
-                  </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {series.map((s) => (
-                    <SeriesCard key={s._id} series={s} />
-                  ))}
-                </div>
-              </Stack>
-            </Section>
+          )}
+          {regularArticles.length > 0 && (
+            <ArticleGrid articles={regularArticles} />
+          )}
+          {articles.length === 0 && (
+            <p className="text-body text-muted-foreground">
+              New field notes are being written. Check back soon.
+            </p>
           )}
         </Stack>
-      </PageShell>
+      </Section>
+
+      {/* Series — set apart by a hairline section break and generous space,
+          not a tonal panel (the layout's PageShell would clip a warm band). */}
+      {series.length > 0 && (
+        <Section
+          contained={false}
+          spacing="loose"
+          align="center"
+          title="Structured"
+          accentWord="learning"
+          description="Follow these curated series to master complex coffee topics, one step at a time."
+          className="border-t border-border/60"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {series.map((s) => (
+              <SeriesCard key={s._id} series={s} />
+            ))}
+          </div>
+        </Section>
+      )}
     </>
   );
 }

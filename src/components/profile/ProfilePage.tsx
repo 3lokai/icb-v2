@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { Band } from "@/components/primitives/band";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
 import { PageShell } from "@/components/primitives/page-shell";
-import { Decor } from "@/components/primitives/decor";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { ProfileHeader } from "./ProfileHeader";
 import { ProfileRatings } from "./ProfileRatings";
 import { ProfileTasteProfile } from "./ProfileTasteProfile";
@@ -25,46 +24,6 @@ type ProfilePageProps = {
   isOwner: boolean;
   isAnonymous?: boolean;
 };
-
-/* ─── Full-bleed band (homepage / RoasterDetailPage alternating grounds) ─── */
-
-function Band({
-  id,
-  ground = "cream",
-  texture,
-  maxWidth = "6xl",
-  className,
-  children,
-  ...rest
-}: {
-  id?: string;
-  ground?: "cream" | "warm";
-  texture?: "grain" | "grain-coarse";
-  maxWidth?: "5xl" | "6xl" | "7xl";
-  className?: string;
-  children: React.ReactNode;
-} & React.HTMLAttributes<HTMLElement>) {
-  const warm = ground === "warm";
-  return (
-    <section
-      id={id}
-      {...rest}
-      className={cn(
-        // Full-bleed: break out of any max-width parent so the tonal band reaches
-        // the viewport edges like the homepage bands. <main> has overflow-x-clip,
-        // so the 100vw breakout never adds a horizontal scrollbar.
-        "relative left-1/2 w-screen -translate-x-1/2 scroll-mt-40 py-12 md:py-16 lg:py-20",
-        warm && "overflow-hidden bg-card border-y border-border/60",
-        className
-      )}
-    >
-      {warm && texture && <Decor texture={texture} />}
-      <div className="relative">
-        <PageShell maxWidth={maxWidth}>{children}</PageShell>
-      </div>
-    </section>
-  );
-}
 
 export function ProfilePage({
   profileData,
@@ -239,6 +198,8 @@ export function ProfilePage({
         id="insights"
         ground="warm"
         texture="grain"
+        maxWidth="6xl"
+        className="lg:py-20"
         aria-label="Taste insights"
       >
         <ProfileTasteProfile
@@ -251,7 +212,12 @@ export function ProfilePage({
       </Band>
 
       {/* ── Selections (cream band) ── */}
-      <Band id="selections" aria-label="Selections">
+      <Band
+        id="selections"
+        maxWidth="6xl"
+        className="lg:py-20"
+        aria-label="Selections"
+      >
         <ProfileSelections
           selections={formattedSelections}
           username={profile.username}
@@ -266,6 +232,8 @@ export function ProfilePage({
         id="ratings"
         ground="warm"
         texture="grain-coarse"
+        maxWidth="6xl"
+        className="lg:py-20"
         aria-label="Ratings"
       >
         <ProfileRatings
@@ -276,7 +244,12 @@ export function ProfilePage({
       </Band>
 
       {/* ── Gear & Station (cream band) ── */}
-      <Band id="gear-station" aria-label="Gear and station">
+      <Band
+        id="gear-station"
+        maxWidth="6xl"
+        className="lg:py-20"
+        aria-label="Gear and station"
+      >
         <ProfileGearStation
           gear={gear}
           photos={station_photos}
@@ -287,7 +260,7 @@ export function ProfilePage({
       </Band>
 
       {isAnonymous && (
-        <Band ground="warm" texture="grain" maxWidth="5xl">
+        <Band ground="warm" texture="grain" maxWidth="5xl" className="lg:py-20">
           <Stack gap="8" className="text-center items-center">
             <Stack gap="2" className="items-center">
               <h2 className="text-title font-serif italic text-accent m-0">

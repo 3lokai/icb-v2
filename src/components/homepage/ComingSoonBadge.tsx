@@ -12,6 +12,7 @@ export function ComingSoonBadge() {
       className="pointer-events-none absolute -right-4 -top-4 md:-right-8 md:-top-8 select-none mix-blend-multiply dark:mix-blend-screen z-20"
     >
       <svg
+        aria-hidden="true"
         viewBox="0 0 140 140"
         className="h-28 w-28 md:h-32 md:w-32 text-muted-foreground"
         fill="none"

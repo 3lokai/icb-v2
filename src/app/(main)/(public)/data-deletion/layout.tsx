@@ -1,11 +1,12 @@
 import { Metadata } from "next";
 import { generateMetadata } from "@/lib/seo/metadata";
-import { generateSchemaOrg } from "@/lib/seo/schema";
+import { dataDeletionPageSchema } from "@/lib/seo/schema";
+import StructuredData from "@/components/seo/StructuredData";
 
 export const metadata: Metadata = generateMetadata({
   title: "Data Deletion Instructions",
   description:
-    "How to request deletion of your personal data from IndianCoffeeBeans.com.",
+    "How to request deletion of your personal data from IndianCoffeeBeans.com — what we store, timelines, and contact details.",
   keywords: [
     "data deletion",
     "privacy",
@@ -15,17 +16,6 @@ export const metadata: Metadata = generateMetadata({
   ],
   canonical: "/data-deletion",
   type: "website",
-  other: {
-    "application/ld+json": JSON.stringify(
-      generateSchemaOrg({
-        type: "WebPage",
-        name: "Data Deletion Instructions",
-        description:
-          "How to request deletion of your personal data from IndianCoffeeBeans.com.",
-        url: "https://www.indiancoffeebeans.com/data-deletion",
-      })
-    ),
-  },
 });
 
 export default function DataDeletionLayout({
@@ -33,5 +23,10 @@ export default function DataDeletionLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <StructuredData schema={dataDeletionPageSchema} />
+      {children}
+    </>
+  );
 }

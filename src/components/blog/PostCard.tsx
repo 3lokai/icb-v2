@@ -23,6 +23,11 @@ export function PostCard({ article, featured = false }: PostCardProps) {
     metadata,
   } = article;
   const displayAuthor = authorRef?.name || author.name;
+  const parsedDate = date ? new Date(date) : null;
+  const publishedDate =
+    parsedDate && !Number.isNaN(parsedDate.getTime())
+      ? format(parsedDate, "MMM d, yyyy")
+      : null;
 
   return (
     <Link
@@ -89,8 +94,12 @@ export function PostCard({ article, featured = false }: PostCardProps) {
         </h3>
 
         <div className="mb-3 flex items-center gap-2 text-caption text-foreground/60">
-          <span>{format(new Date(date), "MMM d, yyyy")}</span>
-          <span className="h-1 w-1 rounded-full bg-foreground/30" />
+          {publishedDate && (
+            <>
+              <span>{publishedDate}</span>
+              <span className="h-1 w-1 rounded-full bg-foreground/30" />
+            </>
+          )}
           <span>{metadata?.readingTime || 5} min read</span>
         </div>
 

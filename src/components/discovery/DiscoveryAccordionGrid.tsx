@@ -149,7 +149,7 @@ function DiscoveryAccordionCard({
       >
         <Image
           src={meta.image}
-          alt=""
+          alt={`${row.title} discovery category`}
           fill
           className={cn(
             "object-cover transition-all duration-700",

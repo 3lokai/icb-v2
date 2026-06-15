@@ -1,24 +1,12 @@
 "use client";
 
-import { DM_Sans, Fraunces } from "next/font/google";
 import { useEffect } from "react";
 import posthog from "posthog-js";
 import { ErrorPageContent } from "@/components/common/ErrorPageContent";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-sans",
-  display: "swap",
-});
+const SITE_FONTS_URL =
+  "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@400;500;600;700&display=swap";
 
 export default function GlobalError({
   error,
@@ -33,11 +21,16 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <html
-      className={`${fraunces.variable} ${dmSans.variable}`}
-      lang="en"
-      suppressHydrationWarning
-    >
+    <html className="global-error-shell" lang="en" suppressHydrationWarning>
+      <head>
+        <link href="https://fonts.googleapis.com" rel="preconnect" />
+        <link
+          crossOrigin="anonymous"
+          href="https://fonts.gstatic.com"
+          rel="preconnect"
+        />
+        <link href={SITE_FONTS_URL} rel="stylesheet" />
+      </head>
       <body>
         <ErrorPageContent minHeightClassName="min-h-screen" reset={reset} />
       </body>

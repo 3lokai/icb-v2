@@ -1,6 +1,7 @@
 "use client";
 
 import { PortableText, PortableTextComponents } from "@portabletext/react";
+import { useMemo } from "react";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity/image";
 import { slugifyHeading } from "@/lib/utils";
@@ -31,7 +32,7 @@ const createComponents = (
 ): PortableTextComponents => ({
   types: {
     image: ({ value }) => (
-      <figure className="not-prose my-10 overflow-hidden rounded-2xl border bg-muted/30">
+      <figure className="my-10 overflow-hidden rounded-xl border border-border/60 bg-muted/30">
         <Image
           src={urlFor(value).width(1200).url()}
           alt={value.alt || "Article image"}
@@ -70,7 +71,10 @@ const createComponents = (
       const title = raw?.map((c) => c?.text ?? "").join("") ?? "";
       const id = title ? slugifyHeading(title) : undefined;
       return (
-        <h2 id={id} className="mb-6 mt-12 text-hero font-bold tracking-tight">
+        <h2
+          id={id}
+          className="mb-4 mt-12 text-title font-semibold tracking-tight"
+        >
           {children}
         </h2>
       );
@@ -107,7 +111,7 @@ const createComponents = (
       </p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="my-8 border-l-4 border-accent pl-6 italic text-body-large text-muted-foreground">
+      <blockquote className="my-8 border-l-2 border-accent pl-6 italic text-body-large text-muted-foreground">
         {children}
       </blockquote>
     ),
@@ -136,10 +140,14 @@ export default function ArticleContent({
   body,
   faqItems,
 }: ArticleContentProps) {
-  const components = createComponents(faqItems);
+  const components = useMemo(() => createComponents(faqItems), [faqItems]);
 
+  // No Tailwind Typography plugin is installed, so `prose`/`prose-slate` would
+  // be inert dead classes (and `prose-slate` would inject a cool gray ramp into
+  // the warm-paper system if it ever were). Every block below is styled
+  // explicitly with project tokens instead.
   return (
-    <div className="prose prose-slate max-w-none">
+    <div className="max-w-none text-pretty">
       <PortableText value={body} components={components} />
     </div>
   );

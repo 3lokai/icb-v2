@@ -163,7 +163,7 @@ export function ParallaxScroll<T>(
                 className="h-80 w-full object-cover object-left-top rounded-lg gap-10 !m-0 !p-0"
                 height="400"
                 width="400"
-                alt="thumbnail"
+                alt={`Gallery image ${idx + 1}`}
               />
             </motion.div>
           ))}
@@ -176,7 +176,7 @@ export function ParallaxScroll<T>(
                 className="h-80 w-full object-cover object-left-top rounded-lg gap-10 !m-0 !p-0"
                 height="400"
                 width="400"
-                alt="thumbnail"
+                alt={`Gallery image ${third + idx + 1}`}
               />
             </motion.div>
           ))}
@@ -189,7 +189,7 @@ export function ParallaxScroll<T>(
                 className="h-80 w-full object-cover object-left-top rounded-lg gap-10 !m-0 !p-0"
                 height="400"
                 width="400"
-                alt="thumbnail"
+                alt={`Gallery image ${2 * third + idx + 1}`}
               />
             </motion.div>
           ))}

@@ -204,6 +204,12 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Root layout crash fallback: global-error.tsx cannot use next/font in a client component */
+.global-error-shell {
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
 /* ===== BASE LAYER STYLES ===== */
 @layer base {
   * {

@@ -15,7 +15,7 @@ export function DetailedAuthor({ author }: DetailedAuthorProps) {
   const showViewAllPosts = !!authorHref;
 
   return (
-    <div className="my-16 overflow-hidden rounded-2xl border bg-card p-8 shadow-sm">
+    <div className="my-16 overflow-hidden rounded-xl border border-border/60 bg-card p-8">
       <div className="flex flex-col items-center gap-8 md:flex-row md:items-start md:text-left text-center">
         {/* Large Avatar */}
         <div className="relative size-32 shrink-0 overflow-hidden rounded-full border-4 border-background shadow-md">

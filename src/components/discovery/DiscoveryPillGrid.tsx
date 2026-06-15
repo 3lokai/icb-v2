@@ -251,7 +251,7 @@ function DiscoveryPillCategoryCard({
               <div className="absolute inset-0 overflow-hidden">
                 <Image
                   src={meta.image}
-                  alt=""
+                  alt={`${row.title} discovery category`}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"

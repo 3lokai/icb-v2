@@ -7,12 +7,16 @@ import { Cluster } from "@/components/primitives/cluster";
 import { Button } from "@/components/ui/button";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateMetadata } from "@/lib/seo/metadata";
-import { roastersTermsPageSchema } from "@/lib/seo/schema";
+import {
+  generateBreadcrumbSchema,
+  getSeoBaseUrl,
+  roastersTermsPageSchema,
+} from "@/lib/seo/schema";
 
 export const metadata: Metadata = generateMetadata({
-  title: "Roaster Partnership Agreement - IndianCoffeeBeans.com",
+  title: "Roaster Partnership Agreement",
   description:
-    "Terms and conditions for roaster partnerships and subscription services on IndianCoffeeBeans.com.",
+    "Terms and conditions for roaster partnerships on Indian Coffee Beans — listing tiers, subscription billing, profile ownership, traffic reporting, and how verified roaster profiles work.",
   keywords: [
     "roaster partnership",
     "roaster terms",
@@ -45,7 +49,19 @@ export default function RoastersTermsPage() {
 
   return (
     <>
-      <StructuredData schema={roastersTermsPageSchema} />
+      <StructuredData
+        schema={[
+          roastersTermsPageSchema,
+          generateBreadcrumbSchema([
+            { name: "Home", url: getSeoBaseUrl() },
+            { name: "Roasters", url: `${getSeoBaseUrl()}/roasters` },
+            {
+              name: "Partnership Agreement",
+              url: `${getSeoBaseUrl()}/roasters/terms`,
+            },
+          ]),
+        ]}
+      />
       <Stack gap="16">
         {/* Hero Header */}
         <header className="relative pt-12 text-center text-primary">

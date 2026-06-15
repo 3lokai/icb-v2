@@ -53,6 +53,11 @@ const eslintConfig = defineConfig([
       // Deno Edge Functions (linted by Supabase deploy)
       "supabase/**",
       "supabase/**/*",
+      // Vendored agent-skill tooling (not app source)
+      ".claude/**",
+      ".cursor/**",
+      ".agents/**",
+      ".github/skills/**",
     ],
   },
 ]);

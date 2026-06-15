@@ -116,6 +116,9 @@ async function CommunitiesContent() {
 function CommunitiesSkeleton() {
   return (
     <PageShell maxWidth="7xl">
+      <Section spacing="default">
+        <h2 className="sr-only">Loading communities</h2>
+      </Section>
       {/* Header Skeleton */}
       <div className="py-16 md:py-24 border-b border-border/10">
         <Stack gap="6">
@@ -160,6 +163,28 @@ export default function CommunitiesPage() {
         }
         description="Connect with enthusiasts, professionals, and home brewers in dedicated WhatsApp, Discord, and social communities across India."
       />
+      <Section spacing="default">
+        <div className="mx-auto max-w-3xl space-y-4 text-body text-muted-foreground leading-relaxed">
+          <h2 className="text-heading text-foreground">
+            Find your coffee people
+          </h2>
+          <p>
+            India&apos;s specialty coffee scene spans home brewers, competition
+            baristas, roaster operators, and curious first-timers. This
+            directory lists active communities — WhatsApp groups, Discord
+            servers, forums, and regional circles — where people share brew
+            tips, discuss new releases, and trade honest opinions about Indian
+            beans.
+          </p>
+          <p>
+            Every listing is vetted for activity and a welcoming tone. Whether
+            you brew with a South Indian filter, chase light-roast pour-overs,
+            or run a café, there is likely a group below that matches your pace
+            and interests. Know a community we missed? Use the submission form
+            at the bottom of the page and we will review it for inclusion.
+          </p>
+        </div>
+      </Section>
       <Suspense fallback={<CommunitiesSkeleton />}>
         <CommunitiesContent />
       </Suspense>

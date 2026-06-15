@@ -50,7 +50,7 @@ export function PageHeader({
                 {overline && (
                   <div className="inline-flex items-center gap-4">
                     <span className="h-px w-8 md:w-12 bg-accent/60" />
-                    <span className="text-overline text-white/70 tracking-[0.15em]">
+                    <span className="text-overline text-white/85 tracking-[0.15em]">
                       {overline}
                     </span>
                   </div>

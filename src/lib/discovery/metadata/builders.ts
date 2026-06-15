@@ -1,7 +1,6 @@
 // src/lib/discovery/metadata/builders.ts
 import type { LandingPageConfig } from "../landing-pages";
-
-const META_DESCRIPTION_MAX = 158;
+import { clampDescription } from "@/lib/seo/metadata";
 const ROAST_PROFILE_KEYWORD_CAP = 8;
 
 /** Strip trailing " in India" from discovery h1 while keeping e.g. "… Coffee". */
@@ -49,10 +48,10 @@ export function buildDiscoveryDescription(config: LandingPageConfig): string {
     }
   }
 
-  if (desc.length > META_DESCRIPTION_MAX) {
-    return `${desc.slice(0, META_DESCRIPTION_MAX - 1).trimEnd()}…`;
-  }
-  return desc;
+  return clampDescription(
+    desc,
+    "Browse Indian specialty coffees with community ratings on Indian Coffee Beans."
+  );
 }
 
 /**

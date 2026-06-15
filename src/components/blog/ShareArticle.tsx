@@ -56,18 +56,21 @@ export function ShareArticle({
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            "flex size-10 items-center justify-center rounded-full border border-border bg-card transition-all hover:scale-110 shadow-sm",
+            "flex size-10 items-center justify-center rounded-full border border-border bg-card transition-all hover:scale-110 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             link.color
           )}
           title={`Share on ${link.name}`}
+          aria-label={`Share on ${link.name}`}
         >
           <Icon name={link.icon} size={20} color="muted" />
         </a>
       ))}
       <button
+        type="button"
         onClick={copyToClipboard}
-        className="flex size-10 items-center justify-center rounded-full border border-border bg-card transition-all hover:scale-110 hover:text-primary shadow-sm"
-        title="Copy Link"
+        className="flex size-10 items-center justify-center rounded-full border border-border bg-card transition-all hover:scale-110 hover:text-primary hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        title="Copy link"
+        aria-label="Copy link to this article"
       >
         <Icon name="Link" size={20} color="muted" />
       </button>
