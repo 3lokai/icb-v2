@@ -1,71 +1,148 @@
 "use client";
 
-import { Accent } from "@/components/primitives/accent";
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Input } from "@/components/ui/input";
-import { Icon } from "@/components/common/Icon";
+import { Icon, type IconName } from "@/components/common/Icon";
 import { CommunityCard } from "@/components/cards/CommunityCard";
-import type { CommunityDTO } from "@/types/community-types";
+import { cn } from "@/lib/utils";
+import type { CommunityDTO, CommunityPlatform } from "@/types/community-types";
 
 type CommunityGridProps = {
   communities: CommunityDTO[];
 };
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.06,
-    },
-  },
+const PLATFORM_META: Record<
+  CommunityPlatform,
+  { label: string; icon: IconName }
+> = {
+  whatsapp: { label: "WhatsApp", icon: "WhatsappLogo" },
+  discord: { label: "Discord", icon: "DiscordLogo" },
+  telegram: { label: "Telegram", icon: "TelegramLogo" },
+  facebook_group: { label: "Facebook", icon: "FacebookLogo" },
+  reddit: { label: "Reddit", icon: "RedditLogo" },
+  other: { label: "Other", icon: "UsersThree" },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0.21, 0.47, 0.32, 0.98] as const,
-    },
-  },
-};
+const PLATFORM_ORDER: CommunityPlatform[] = [
+  "whatsapp",
+  "discord",
+  "telegram",
+  "facebook_group",
+  "reddit",
+  "other",
+];
 
 export function CommunityGrid({ communities }: CommunityGridProps) {
+  const reduceMotion = useReducedMotion();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Only offer filter chips for platforms that actually have communities.
+  const availablePlatforms = useMemo(
+    () =>
+      PLATFORM_ORDER.filter((p) => communities.some((c) => c.platform === p)),
+    [communities]
+  );
+
+  const platformParam = searchParams.get("platform");
+  const [activePlatform, setActivePlatform] = useState<
+    CommunityPlatform | "all"
+  >(
+    platformParam &&
+      availablePlatforms.includes(platformParam as CommunityPlatform)
+      ? (platformParam as CommunityPlatform)
+      : "all"
+  );
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredCommunities = useMemo(() => {
-    if (!searchQuery.trim()) return communities;
+  const selectPlatform = (platform: CommunityPlatform | "all") => {
+    setActivePlatform(platform);
+    const params = new URLSearchParams(searchParams.toString());
+    if (platform === "all") {
+      params.delete("platform");
+    } else {
+      params.set("platform", platform);
+    }
+    const query = params.toString();
+    // Shareable filtered views without polluting history or jumping scroll.
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
+  };
 
-    const query = searchQuery.toLowerCase();
-    return communities.filter(
-      (c) =>
-        c.name.toLowerCase().includes(query) ||
-        c.description.toLowerCase().includes(query) ||
-        c.tags.some((t) => t.toLowerCase().includes(query)) ||
-        c.moderators.some((m) => m.toLowerCase().includes(query))
-    );
-  }, [communities, searchQuery]);
+  const filteredCommunities = useMemo(() => {
+    let list = communities;
+
+    if (activePlatform !== "all") {
+      list = list.filter((c) => c.platform === activePlatform);
+    }
+
+    const query = searchQuery.trim().toLowerCase();
+    if (query) {
+      list = list.filter(
+        (c) =>
+          c.name.toLowerCase().includes(query) ||
+          c.description.toLowerCase().includes(query) ||
+          c.tags.some((t) => t.toLowerCase().includes(query)) ||
+          c.moderators.some((m) => m.toLowerCase().includes(query))
+      );
+    }
+
+    return list;
+  }, [communities, activePlatform, searchQuery]);
+
+  const isFiltered = activePlatform !== "all" || searchQuery.trim() !== "";
+
+  const resetFilters = () => {
+    setSearchQuery("");
+    selectPlatform("all");
+  };
+
+  // Reduced-motion: render visible immediately, no stagger or travel.
+  const containerVariants = reduceMotion
+    ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
+      };
+
+  const itemVariants = reduceMotion
+    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
+    : {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.5,
+            ease: [0.21, 0.47, 0.32, 0.98] as const,
+          },
+        },
+      };
 
   return (
     <Section spacing="default">
-      <Stack gap="12">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <Stack gap="3">
-            <div className="inline-flex items-center gap-4">
-              <span className="h-px w-8 md:w-12 bg-accent/60" />
-              <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
-                DIRECTORY
-              </span>
-            </div>
+      <Stack gap="8">
+        {/* Directory header + search */}
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <Stack gap="2">
             <h2 className="text-title text-balance leading-none">
-              Explore coffee <Accent>Circles.</Accent>
+              Explore coffee circles
             </h2>
+            <p className="text-body text-muted-foreground" aria-live="polite">
+              {isFiltered
+                ? `${filteredCommunities.length} of ${communities.length} ${
+                    communities.length === 1 ? "community" : "communities"
+                  }`
+                : `${communities.length} ${
+                    communities.length === 1 ? "community" : "communities"
+                  }`}
+            </p>
           </Stack>
 
           <div className="relative w-full max-w-sm">
@@ -75,26 +152,53 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
               size={18}
             />
             <Input
-              className="pl-10 h-11 bg-muted/30 border-border/40 focus:bg-background transition-colors"
+              className="h-11 border-border/40 bg-muted/30 pl-10 transition-colors focus:bg-background"
               placeholder="Search by name, tags, or mods..."
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search communities"
             />
           </div>
         </div>
+
+        {/* Platform filter chips */}
+        {availablePlatforms.length > 1 && (
+          <div
+            className="flex flex-wrap items-center gap-2"
+            role="group"
+            aria-label="Filter by platform"
+          >
+            <FilterChip
+              active={activePlatform === "all"}
+              onClick={() => selectPlatform("all")}
+            >
+              All
+            </FilterChip>
+            {availablePlatforms.map((platform) => (
+              <FilterChip
+                key={platform}
+                active={activePlatform === platform}
+                onClick={() => selectPlatform(platform)}
+                icon={PLATFORM_META[platform].icon}
+              >
+                {PLATFORM_META[platform].label}
+              </FilterChip>
+            ))}
+          </div>
+        )}
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           <AnimatePresence mode="popLayout">
             {filteredCommunities.length === 0 ? (
               <motion.div
                 key="empty"
-                initial={{ opacity: 0 }}
+                initial={{ opacity: reduceMotion ? 1 : 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="col-span-full py-20 text-center"
@@ -104,13 +208,13 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
                     <Icon name="Ghost" size={32} color="muted" />
                   </div>
                   <p className="text-body-large text-muted-foreground">
-                    No communities found matching &quot;{searchQuery}&quot;
+                    No communities match your search.
                   </p>
                   <button
-                    className="text-accent hover:underline text-label"
-                    onClick={() => setSearchQuery("")}
+                    className="text-label text-accent hover:underline"
+                    onClick={resetFilters}
                   >
-                    Clear search
+                    Clear filters
                   </button>
                 </Stack>
               </motion.div>
@@ -118,11 +222,11 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
               filteredCommunities.map((community) => (
                 <motion.div
                   key={community.id}
-                  layout
+                  layout={!reduceMotion}
                   variants={itemVariants}
                   initial="hidden"
                   animate="visible"
-                  exit={{ opacity: 0, scale: 0.95 }}
+                  exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.95 }}
                 >
                   <CommunityCard community={community} />
                 </motion.div>
@@ -132,5 +236,32 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
         </motion.div>
       </Stack>
     </Section>
+  );
+}
+
+type FilterChipProps = {
+  active: boolean;
+  onClick: () => void;
+  icon?: IconName;
+  children: React.ReactNode;
+};
+
+function FilterChip({ active, onClick, icon, children }: FilterChipProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-label transition-colors",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        active
+          ? "border-primary bg-primary text-primary-foreground"
+          : "border-border/60 bg-transparent text-muted-foreground hover:border-accent hover:text-foreground"
+      )}
+    >
+      {icon && <Icon name={icon} size={15} />}
+      {children}
+    </button>
   );
 }

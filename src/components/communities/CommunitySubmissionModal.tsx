@@ -153,7 +153,7 @@ export function CommunitySubmissionModal() {
               <div className="space-y-2">
                 <Label htmlFor="tags">Tags (Optional)</Label>
                 <Input id="tags" name="tags" placeholder="roasting, espresso" />
-                <p className="text-micro uppercase tracking-widest">
+                <p className="text-micro uppercase tracking-widest text-muted-foreground">
                   Comma separated
                 </p>
               </div>
@@ -164,7 +164,7 @@ export function CommunitySubmissionModal() {
                   name="moderators"
                   placeholder="Names..."
                 />
-                <p className="text-micro uppercase tracking-widest">
+                <p className="text-micro uppercase tracking-widest text-muted-foreground">
                   Comma separated
                 </p>
               </div>
