@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import { getCurrentUser } from "@/data/auth";
 import {
   getMyProfileDTO,
@@ -6,6 +7,12 @@ import {
   getMyReviewStats,
 } from "@/data/user-dto";
 import { DashboardClient } from "@/components/dashboard/DashboardClient";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Your personal coffee dashboard on Indian Coffee Beans.",
+  robots: { index: false, follow: false },
+};
 
 export default async function DashboardPage() {
   const currentUser = await getCurrentUser();

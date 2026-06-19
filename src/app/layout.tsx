@@ -66,6 +66,9 @@ export const metadata: Metadata = {
   },
   keywords: ["Indian coffee", "specialty coffee India"],
   openGraph: {
+    title: "Indian Coffee Beans - India's Specialty Coffee Directory",
+    description:
+      "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
     type: "website",
     locale: "en_IN",
     url: "https://www.indiancoffeebeans.com",
@@ -81,8 +84,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@indcoffeebeans",
-    creator: "@indcoffeebeans",
+    site: "@indiacoffeebean",
+    creator: "@indiacoffeebean",
+    title: "Indian Coffee Beans - India's Specialty Coffee Directory",
+    description:
+      "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
   },
 };
 

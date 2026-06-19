@@ -26,10 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const roaster = await fetchRoasterBySlug(slug);
 
   if (!roaster) {
-    return {
+    return generateSEOMetadata({
       title: "Roaster Not Found",
       description: "The roaster you're looking for doesn't exist.",
-    };
+      noIndex: true,
+    });
   }
 
   const stats = await fetchReviewStats("roaster", roaster.id);

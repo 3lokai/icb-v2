@@ -259,7 +259,8 @@ export const aboutPageSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
   name: "About IndianCoffeeBeans.com",
-  description: "India's first independent directory for specialty coffee.",
+  description:
+    "Learn what IndianCoffeeBeans is, who it's for, and how our independent directory helps you discover Indian specialty coffee — with answers to common questions.",
   url: "https://www.indiancoffeebeans.com/about",
 };
 
@@ -508,6 +509,23 @@ export function generateHowToSchema({
         : undefined,
     })),
   };
+}
+
+/** Convert recipe clock times (e.g. "3:30", "12:00+") to ISO 8601 duration for schema.org */
+export function recipeTimeToIsoDuration(totalTime: string): string | undefined {
+  const clock = totalTime.match(/^(\d+):(\d{2})\+?$/);
+  if (clock) {
+    const minutes = Number(clock[1]);
+    const seconds = Number(clock[2]);
+    return seconds > 0 ? `PT${minutes}M${seconds}S` : `PT${minutes}M`;
+  }
+
+  const hours = totalTime.match(/^(\d+)(?:-\d+)?\s*Hours?$/i);
+  if (hours) {
+    return `PT${hours[1]}H`;
+  }
+
+  return undefined;
 }
 
 export function generateRecipeSchema({

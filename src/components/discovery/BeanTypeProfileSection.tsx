@@ -5,6 +5,12 @@ import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
 import { Badge } from "@/components/ui/badge";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   brewMethodDiscoveryLinkClassName,
   brewSlugToLabel,
 } from "@/lib/discovery/brew-method-labels";
@@ -15,6 +21,8 @@ import {
 } from "@/lib/discovery/landing-pages";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/common/Icon";
+import { BeanTypeComparisonGrid } from "@/components/discovery/BeanTypeComparisonGrid";
+import { BEAN_TYPE_NAV_SLUGS } from "@/lib/discovery/landing-pages/bean-species-visuals";
 
 type BeanTypeProfileSectionProps = {
   profile: BeanTypeProfileConfig;
@@ -32,6 +40,68 @@ function beanTypeSlugToLabel(slug: string): string {
     .trim();
 }
 
+/** Short label for a roast level discovery page. */
+function roastLinkLabel(slug: string): string {
+  const cfg = getLandingPageConfig(slug);
+  if (!cfg) return slug;
+  return cfg.h1
+    .replace(" Roast Coffee in India", "")
+    .replace(" in India", "")
+    .trim();
+}
+
+function RoastPairingLinks({
+  label,
+  slugs,
+  icon,
+}: {
+  label: string;
+  slugs: string[];
+  icon?: Parameters<typeof Icon>[0]["name"];
+}) {
+  const links = slugs
+    .map((s) => {
+      const cfg = getLandingPageConfig(s);
+      if (!cfg || cfg.type !== "roast_level") return null;
+      return { slug: s, text: roastLinkLabel(s) };
+    })
+    .filter((x): x is { slug: string; text: string } => x !== null);
+
+  if (links.length === 0) return null;
+
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+      <div className="flex items-center gap-2 w-36 shrink-0">
+        {icon && (
+          <Icon name={icon} className="h-4 w-4 text-muted-foreground/60" />
+        )}
+        <p className="text-label uppercase">{label}</p>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {links.map(({ slug: s, text }) => (
+          <Link
+            key={s}
+            href={discoveryPagePath(s)}
+            className={cn(
+              brewMethodDiscoveryLinkClassName,
+              "bg-muted/30 hover:bg-transparent border-transparent hover:border-accent/30 shadow-none transition-colors"
+            )}
+          >
+            {text}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function hasValidRoastPairingSlugs(slugs: string[]): boolean {
+  return slugs.some((s) => {
+    const cfg = getLandingPageConfig(s);
+    return cfg?.type === "roast_level";
+  });
+}
+
 export function BeanTypeProfileSection({
   profile,
   slug,
@@ -43,6 +113,9 @@ export function BeanTypeProfileSection({
     indiaContext,
     brewGuidance,
     comparison,
+    varietyHighlights,
+    roastPairing,
+    commonMistakes,
     icbDataNote,
   } = profile;
 
@@ -53,6 +126,11 @@ export function BeanTypeProfileSection({
       return { slug: s, label: beanTypeSlugToLabel(s) };
     })
     .filter((x): x is { slug: string; label: string } => x !== null);
+
+  const showRoastPairing =
+    roastPairing &&
+    (hasValidRoastPairingSlugs(roastPairing.best) ||
+      hasValidRoastPairingSlugs(roastPairing.works));
 
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
@@ -131,7 +209,56 @@ export function BeanTypeProfileSection({
           </div>
         </div>
 
-        {/* 3. Indian context — promoted block */}
+        {/* 2b. Bean type comparison grid — species images + category links */}
+        {BEAN_TYPE_NAV_SLUGS.has(slug) && (
+          <BeanTypeComparisonGrid activeSlug={slug} />
+        )}
+
+        {/* 3. Variety highlights — cards for key varieties */}
+        {varietyHighlights && varietyHighlights.length > 0 && (
+          <div>
+            <div className="flex items-center gap-2 mb-6">
+              <Icon name="Plant" className="h-5 w-5 text-accent/70" />
+              <h3 className="text-heading">Key Varieties</h3>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {varietyHighlights.map((v) => (
+                <div
+                  key={v.name}
+                  className="surface-1 relative overflow-hidden rounded-2xl card-padding group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5"
+                >
+                  <Stack gap="3" className="relative z-10">
+                    <p className="text-body-large font-serif font-medium text-foreground">
+                      {v.name}
+                    </p>
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2">
+                        <Icon
+                          name="Coffee"
+                          className="mt-0.5 h-4 w-4 shrink-0 text-accent/60"
+                        />
+                        <p className="text-caption text-foreground/80 leading-relaxed">
+                          {v.cup}
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Icon
+                          name="MapPin"
+                          className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/60"
+                        />
+                        <p className="text-caption text-muted-foreground leading-relaxed">
+                          {v.cultivation}
+                        </p>
+                      </div>
+                    </div>
+                  </Stack>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 4. Indian context — promoted block */}
         <div className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-accent/5 shadow-sm p-6 py-10 md:px-12 md:py-14">
           <Stack gap="6" className="relative z-10 w-full">
             <div className="flex items-center gap-2">
@@ -146,7 +273,7 @@ export function BeanTypeProfileSection({
           </Stack>
         </div>
 
-        {/* 4. Brew guidance */}
+        {/* 5. Brew guidance */}
         <div className="max-w-5xl mx-auto w-full space-y-6">
           <h3 className="text-heading mb-6 flex items-center gap-2">
             <Icon name="Coffee" className="h-5 w-5 text-accent/70" />
@@ -192,7 +319,80 @@ export function BeanTypeProfileSection({
           </div>
         </div>
 
-        {/* 5. Comparison — links to other bean types */}
+        {/* 6. Roast pairing */}
+        {showRoastPairing && (
+          <>
+            <div className="h-px w-full bg-border/40 max-w-5xl mx-auto my-8" />
+            <div className="max-w-5xl mx-auto w-full space-y-6">
+              <h3 className="text-heading mb-6 flex items-center gap-2">
+                <Icon name="Fire" className="h-5 w-5 text-accent/70" />
+                Roast Pairing
+              </h3>
+              <Stack gap="4">
+                <RoastPairingLinks
+                  icon="Star"
+                  label="Best Match"
+                  slugs={roastPairing!.best}
+                />
+                <RoastPairingLinks
+                  icon="ThumbsUp"
+                  label="Also Works"
+                  slugs={roastPairing!.works}
+                />
+              </Stack>
+
+              {roastPairing!.avoid && (
+                <p className="text-caption border-l-2 border-destructive/30 pl-4 max-w-3xl mt-6">
+                  <span className="font-medium text-foreground">Avoid:</span>{" "}
+                  {roastPairing!.avoid}
+                </p>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* 7. Common mistakes — accordion */}
+        {commonMistakes && commonMistakes.length > 0 && (
+          <>
+            <div className="h-px w-full bg-border/40 max-w-5xl mx-auto my-8" />
+            <div className="max-w-5xl mx-auto w-full space-y-6">
+              <h3 className="text-heading mb-6 flex items-center gap-2">
+                <Icon name="WarningCircle" className="h-5 w-5 text-accent/70" />
+                Common Mistakes
+              </h3>
+              <Accordion type="multiple" className="space-y-3">
+                {commonMistakes.map((item, i) => (
+                  <AccordionItem
+                    key={i}
+                    value={`mistake-${i}`}
+                    className="rounded-xl border border-border/40 bg-card/30 px-5 data-[state=open]:bg-card/60 transition-colors"
+                  >
+                    <AccordionTrigger className="text-body font-medium py-4 [&[data-state=open]>svg]:rotate-180">
+                      <span className="flex items-center gap-2 text-left">
+                        <Icon
+                          name="XCircle"
+                          className="h-4 w-4 shrink-0 text-destructive/60"
+                        />
+                        {item.mistake}
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-4 pl-6 text-caption leading-relaxed text-foreground/80">
+                      <span className="flex items-start gap-2">
+                        <Icon
+                          name="CheckCircle"
+                          className="mt-0.5 h-4 w-4 shrink-0 text-green-600 dark:text-green-400"
+                        />
+                        <span>{item.fix}</span>
+                      </span>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </>
+        )}
+
+        {/* 8. Comparison — links to other bean types */}
         {comparisonLinks.length > 0 && (
           <>
             <div className="h-px w-full bg-border/40 max-w-5xl mx-auto my-8" />
@@ -225,7 +425,7 @@ export function BeanTypeProfileSection({
           </>
         )}
 
-        {/* 6. ICB data note */}
+        {/* 9. ICB data note */}
         <aside className="max-w-5xl mx-auto w-full rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
           <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2">
             On Indian Coffee Beans

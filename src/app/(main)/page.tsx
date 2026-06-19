@@ -4,15 +4,13 @@ import HeroSection from "@/components/homepage/hero/HeroSection";
 import NewAdditionsStrip from "@/components/homepage/NewAdditionsStrip";
 import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGridLazy";
 import { Section } from "@/components/primitives/section";
-import { LATEST_ARTICLES_QUERY } from "@/lib/sanity/queries";
-import { client } from "@/lib/sanity/client";
-import { Article } from "@/types/blog-types";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
-import { getAllCurators } from "@/data/curations";
-import { fetchCommunityCoffeeReviewCount } from "@/lib/data/fetch-community-coffee-review-count";
-import { fetchTopCoffeeReviewers } from "@/lib/data/fetch-top-coffee-reviewers";
+import TopProfilesSectionServer from "@/components/homepage/sections/TopProfilesSectionServer";
+import EducationSectionServer from "@/components/homepage/sections/EducationSectionServer";
+import CuratorSpotlightServer from "@/components/homepage/sections/CuratorSpotlightServer";
+import TopRatedSectionServer from "@/components/homepage/sections/TopRatedSectionServer";
 
 // Dynamic imports for below-the-fold components to reduce initial bundle size
 const RoasterInfrastructureSection = dynamic(
@@ -20,17 +18,6 @@ const RoasterInfrastructureSection = dynamic(
   {
     loading: () => (
       <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
-  }
-);
-
-const EducationSection = dynamic(
-  () => import("@/components/homepage/EducationContent"),
-  {
-    loading: () => (
-      <div className="flex min-h-[300px] items-center justify-center">
         <LoadingSpinner size="md" />
       </div>
     ),
@@ -62,17 +49,6 @@ const HomepageFAQ = dynamic(
   }
 );
 
-const CuratorSpotlight = dynamic(
-  () => import("@/components/homepage/CuratorSpotlight"),
-  {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
-  }
-);
-
 const CtaSection = dynamic(() => import("@/components/homepage/CtaSection"), {
   loading: () => (
     <div className="flex min-h-[200px] items-center justify-center">
@@ -83,28 +59,6 @@ const CtaSection = dynamic(() => import("@/components/homepage/CtaSection"), {
 
 const HowItWorksSection = dynamic(
   () => import("@/components/homepage/HowItWorksSection"),
-  {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
-  }
-);
-
-const TopProfilesSection = dynamic(
-  () => import("@/components/homepage/TopProfilesSection"),
-  {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
-  }
-);
-
-const TopRatedSection = dynamic(
-  () => import("@/components/homepage/TopRatedSection"),
   {
     loading: () => (
       <div className="flex min-h-[400px] items-center justify-center">
@@ -161,14 +115,6 @@ export default async function Home({ searchParams }: HomePageProps) {
         ? heroSegmentRaw[0]
         : null;
 
-  const [curators, communityCoffeeReviewCount, latestArticles, topProfiles] =
-    await Promise.all([
-      getAllCurators(),
-      fetchCommunityCoffeeReviewCount(),
-      client.fetch<Article[]>(LATEST_ARTICLES_QUERY),
-      fetchTopCoffeeReviewers(6),
-    ]);
-
   return (
     <div className="surface-0 flex min-h-screen flex-col">
       <main className="flex-1 bg-background">
@@ -217,18 +163,48 @@ export default async function Home({ searchParams }: HomePageProps) {
             </div>
           </div>
         </div>
-        <TopRatedSection
-          communityCoffeeReviewCount={communityCoffeeReviewCount}
-        />
+        <Suspense
+          fallback={
+            <div className="flex min-h-[400px] items-center justify-center">
+              <LoadingSpinner size="md" />
+            </div>
+          }
+        >
+          <TopRatedSectionServer />
+        </Suspense>
         <HomeCollectionGridLazy tier="core" />
         <Section spacing="default" ground="warm" decor={{ texture: "grain" }}>
           <DiscoveryAccordionGrid description="Jump straight to top-rated coffees by roast, brew method, process, origin, and more." />
         </Section>
         <HowItWorksSection />
-        <TopProfilesSection profiles={topProfiles} />
+        <Suspense
+          fallback={
+            <div className="flex min-h-[400px] items-center justify-center">
+              <LoadingSpinner size="md" />
+            </div>
+          }
+        >
+          <TopProfilesSectionServer />
+        </Suspense>
         <RoasterInfrastructureSection />
-        <EducationSection articles={latestArticles} />
-        <CuratorSpotlight curator={curators[0] || null} />
+        <Suspense
+          fallback={
+            <div className="flex min-h-[300px] items-center justify-center">
+              <LoadingSpinner size="md" />
+            </div>
+          }
+        >
+          <EducationSectionServer />
+        </Suspense>
+        <Suspense
+          fallback={
+            <div className="flex min-h-[400px] items-center justify-center">
+              <LoadingSpinner size="md" />
+            </div>
+          }
+        >
+          <CuratorSpotlightServer />
+        </Suspense>
         <TestimonialsSection />
         <HomepageFAQ />
         <CtaSection />

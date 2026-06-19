@@ -14,7 +14,7 @@ import ExpertRecipesCta from "@/components/tools/ExpertRecipesCta";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { generateMetadata as generateBaseMetadata } from "@/lib/seo/metadata";
-import { generateHowToSchema } from "@/lib/seo/schema";
+import { generateHowToSchema, recipeTimeToIsoDuration } from "@/lib/seo/schema";
 import { filterRecipes, RECIPES_ARRAY } from "@/lib/tools/expert-recipes";
 
 const expertRecipeCount = filterRecipes({}).length;
@@ -129,17 +129,29 @@ const expertRecipesCollectionSchema = {
   numberOfItems: expertRecipeCount,
   // Generated from the recipe data so the schema can never drift from the list
   // the page actually renders (and numberOfItems always matches the entries).
-  itemListElement: RECIPES_ARRAY.map((recipe, index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    item: {
-      "@type": "Recipe",
-      name: recipe.title,
-      author: recipe.expert.name,
-      description: recipe.flavorProfile,
-      image: expertRecipesImage,
-    },
-  })),
+  itemListElement: RECIPES_ARRAY.map((recipe, index) => {
+    const totalTime = recipeTimeToIsoDuration(recipe.totalTime);
+
+    return {
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Recipe",
+        name: recipe.title,
+        author: { "@type": "Person", name: recipe.expert.name },
+        description: recipe.flavorProfile,
+        image: expertRecipesImage,
+        url: `${baseUrl}/tools/expert-recipes#${recipe.slug}`,
+        ...(totalTime && { totalTime }),
+        recipeYield: `${recipe.water} ml`,
+        recipeInstructions: recipe.steps.map((step, stepIndex) => ({
+          "@type": "HowToStep",
+          position: stepIndex + 1,
+          text: step.instruction,
+        })),
+      },
+    };
+  }),
 };
 
 export default function ExpertRecipesPage() {
