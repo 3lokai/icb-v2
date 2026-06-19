@@ -19,6 +19,9 @@ on:
       - ".agents/**"
       - ".cursor/**"
       - ".impeccable/**"
+      - "frontend-update/**"
+      - "ai_docs/**"
+      - "docs/**"
       - "skills/**"
 
 jobs:

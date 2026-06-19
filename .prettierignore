@@ -9,4 +9,9 @@ pnpm-lock.yaml
 coverage
 .vercel
 .turbo
+.claude
+.cursor
+.impeccable
+ai_docs
+docs
 
