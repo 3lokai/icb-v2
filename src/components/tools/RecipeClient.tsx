@@ -6,8 +6,14 @@ import type { BrewingMethodKey } from "@/lib/tools/brewing-guide";
 import {
   type ExpertRecipe,
   filterRecipes,
+  RECIPE_DIFFICULTY_OPTIONS,
+  RECIPE_EXPERT_OPTIONS,
+  RECIPE_METHOD_OPTIONS,
+  RECIPE_USE_OPTIONS,
   type RecipeFilters,
 } from "@/lib/tools/expert-recipes";
+import { Icon } from "@/components/common/Icon";
+import { Badge } from "@/components/ui/badge";
 import { RecipeMainPanel } from "./RecipeMainPanel";
 import { MobileRecipeFilterDrawer } from "./MobileRecipeFilterDrawer";
 import { RecipeFacetedFilterBar } from "./RecipeFacetedFilterBar";
@@ -109,10 +115,9 @@ export function ExpertRecipesClient() {
     const recipesForCounting = filterRecipes(filtersWithoutMethod);
 
     const counts: Record<string, number> = {};
-    const methods = ["v60", "aeropress", "frenchpress", "chemex", "pourover"];
-    methods.forEach((method) => {
-      counts[method] = recipesForCounting.filter(
-        (r) => r.method === method
+    RECIPE_METHOD_OPTIONS.forEach(({ value }) => {
+      counts[value] = recipesForCounting.filter(
+        (r) => r.method === value
       ).length;
     });
     return counts;
@@ -133,10 +138,9 @@ export function ExpertRecipesClient() {
     const recipesForCounting = filterRecipes(filtersWithoutDifficulty);
 
     const counts: Record<string, number> = {};
-    const difficulties = ["Beginner", "Intermediate", "Advanced"];
-    difficulties.forEach((difficulty) => {
-      counts[difficulty] = recipesForCounting.filter(
-        (r) => r.difficulty === difficulty
+    RECIPE_DIFFICULTY_OPTIONS.forEach(({ value }) => {
+      counts[value] = recipesForCounting.filter(
+        (r) => r.difficulty === value
       ).length;
     });
     return counts;
@@ -157,10 +161,9 @@ export function ExpertRecipesClient() {
     const recipesForCounting = filterRecipes(filtersWithoutUse);
 
     const counts: Record<string, number> = {};
-    const uses = ["everyday", "competition", "experiment"];
-    uses.forEach((use) => {
-      counts[use] = recipesForCounting.filter(
-        (r) => r.recommendedUse === use
+    RECIPE_USE_OPTIONS.forEach(({ value }) => {
+      counts[value] = recipesForCounting.filter(
+        (r) => r.recommendedUse === value
       ).length;
     });
     return counts;
@@ -181,17 +184,9 @@ export function ExpertRecipesClient() {
     const recipesForCounting = filterRecipes(filtersWithoutExpert);
 
     const counts: Record<string, number> = {};
-    const experts = [
-      "James Hoffmann",
-      "Tetsu Kasuya",
-      "Scott Rao",
-      "Carolina Ibarra Garay",
-      "George Stanica",
-      "Intelligentsia Coffee",
-    ];
-    experts.forEach((expert) => {
-      counts[expert] = recipesForCounting.filter(
-        (r) => r.expert.name === expert
+    RECIPE_EXPERT_OPTIONS.forEach(({ value }) => {
+      counts[value] = recipesForCounting.filter(
+        (r) => r.expert.name === value
       ).length;
     });
     return counts;
@@ -206,9 +201,33 @@ export function ExpertRecipesClient() {
     setSearchQuery("");
   };
 
+  const activeFilterCount =
+    (selectedMethod ? 1 : 0) +
+    (selectedDifficulty ? 1 : 0) +
+    (selectedUse ? 1 : 0) +
+    (selectedExpert ? 1 : 0);
+
   return (
     <Stack gap="8">
-      {/* Search and Filter Bar */}
+      {/* Mobile Filter Toggle — directory-pattern button → left-sheet drawer */}
+      <div className="md:hidden">
+        <Button
+          aria-label="Open filters"
+          className="w-full justify-start"
+          onClick={() => setIsFiltersDrawerOpen(true)}
+          variant="outline"
+        >
+          <Icon className="mr-2" name="Funnel" size={16} />
+          Filters
+          {activeFilterCount > 0 && (
+            <Badge className="ml-2" variant="secondary">
+              {activeFilterCount}
+            </Badge>
+          )}
+        </Button>
+      </div>
+
+      {/* Search + faceted filter bar (dropdown row is desktop-only) */}
       <RecipeFacetedFilterBar
         recipeCount={filteredRecipes.length}
         totalCount={filterRecipes({}).length} // Total recipes available
@@ -223,19 +242,11 @@ export function ExpertRecipesClient() {
         selectedExpert={selectedExpert}
         onExpertChange={setSelectedExpert}
         onClearAll={clearAllFilters}
+        methodCounts={methodCounts}
+        difficultyCounts={difficultyCounts}
+        useCounts={useCounts}
+        expertCounts={expertCounts}
       />
-
-      {/* Mobile Filter Toggle Button (Optional, but kept for consistency if needed) */}
-      <div className="md:hidden -mt-4">
-        <Button
-          aria-label="Open filter drawer"
-          className="text-muted-foreground hover:text-foreground text-caption h-auto p-0 underline decoration-muted/30 underline-offset-4"
-          onClick={() => setIsFiltersDrawerOpen(true)}
-          variant="ghost"
-        >
-          Detailed Filters
-        </Button>
-      </div>
 
       {/* Main Content - Full Width Grid */}
       <div className="w-full">

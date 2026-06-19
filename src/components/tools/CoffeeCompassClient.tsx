@@ -232,6 +232,28 @@ function bucketLabel(b: string) {
   );
 }
 
+/** Plain-language meaning so a newcomer isn't left guessing what the bucket means. */
+function bucketMeaning(b: string) {
+  return (
+    (
+      {
+        UNDER:
+          "The water pulled too little from the grounds, so it tastes sour or sharp.",
+        OVER: "The water pulled too much from the grounds, so it tastes bitter or harsh.",
+        WEAK: "There isn't enough coffee in the cup, so it tastes thin or watery.",
+        STRONG:
+          "There's too much coffee in the cup, so it tastes heavy or intense.",
+        UNDER_WEAK:
+          "Under-extracted and thin at once — sour and watery in the same cup.",
+        UNDER_STRONG: "Under-extracted but strong — sour and intense together.",
+        OVER_WEAK: "Over-extracted but thin — bitter yet still watery.",
+        OVER_STRONG: "Over-extracted and strong — bitter and heavy together.",
+        BALANCED: "This cup is well dialed in — only small tweaks from here.",
+      } as Record<string, string>
+    )[b] ?? ""
+  );
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 export function CoffeeCompassClient({
   roasters,
@@ -520,6 +542,20 @@ export function CoffeeCompassClient({
             })}
           </div>
 
+          {/* Empty state — tells a first-timer what to do and what they'll get back */}
+          {!result && (
+            <div className="rounded-xl border border-dashed border-border/60 bg-muted/20 px-5 py-6 text-center">
+              <p className="text-label font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">
+                Your fix appears here
+              </p>
+              <p className="text-caption text-muted-foreground leading-relaxed mx-auto max-w-sm">
+                Pick what you taste above — sour, bitter, thin, and the rest.
+                The Compass maps your symptoms to a precise, method-specific
+                correction. No AI, just extraction physics.
+              </p>
+            </div>
+          )}
+
           {/* Result banner */}
           {result && (
             <div className="rounded-xl border border-border/50 bg-card shadow-sm overflow-hidden">
@@ -531,9 +567,11 @@ export function CoffeeCompassClient({
                   <p className="text-body font-bold leading-tight">
                     {bucketLabel(result.bucket)}
                   </p>
-                  <p className="text-caption mt-0.5">
-                    {result.recommendedMoveVector}
-                  </p>
+                  {bucketMeaning(result.bucket) && (
+                    <p className="text-caption text-muted-foreground mt-1 leading-relaxed">
+                      {bucketMeaning(result.bucket)}
+                    </p>
+                  )}
                 </div>
                 <div className="shrink-0 text-right">
                   <p className="text-label">Confidence</p>
@@ -563,7 +601,7 @@ export function CoffeeCompassClient({
               </div>
 
               {result.notes.length > 0 && (
-                <div className="px-5 pb-4 border-t border-border/20 pt-3 space-y-1">
+                <div className="px-5 pb-3 border-t border-border/20 pt-3 space-y-1">
                   {result.notes.map((n, i) => (
                     <p
                       key={i}
@@ -575,6 +613,12 @@ export function CoffeeCompassClient({
                   ))}
                 </div>
               )}
+
+              {/* Reassurance — how to actually use the fix */}
+              <p className="px-5 pb-4 pt-3 border-t border-border/20 text-caption text-muted-foreground leading-relaxed">
+                Start with step 1, then brew and taste again before changing
+                anything else. One adjustment at a time keeps the cause clear.
+              </p>
             </div>
           )}
         </div>
@@ -794,23 +838,27 @@ export function CoffeeCompassClient({
             </svg>
           </div>
 
-          {/* Hints below wheel so they're never hidden behind it */}
+          {/* Hints below wheel so they're never hidden behind it. Kept at full
+              legibility (AA) so the wheel never reads as decorative. */}
           <div
             className={cn(
-              "mt-3 flex flex-col items-center justify-center gap-1 text-caption text-muted-foreground/60 transition-opacity duration-300",
-              wheelFocused || wheelHovered ? "opacity-100" : "opacity-70"
+              "mt-3 flex flex-col items-center justify-center gap-1 text-caption transition-colors duration-300",
+              wheelFocused || wheelHovered
+                ? "text-foreground"
+                : "text-muted-foreground"
             )}
           >
             <p className="hidden lg:flex items-center gap-2">
-              <kbd className="rounded border border-border/40 px-1.5 py-0.5 font-mono text-micro">
+              <span>Spin the wheel —</span>
+              <kbd className="rounded border border-border/60 px-1.5 py-0.5 font-mono text-micro">
                 ←
               </kbd>
-              <kbd className="rounded border border-border/40 px-1.5 py-0.5 font-mono text-micro">
+              <kbd className="rounded border border-border/60 px-1.5 py-0.5 font-mono text-micro">
                 →
               </kbd>
               <span>or scroll to rotate</span>
             </p>
-            <p className="lg:hidden">Tap a segment to diagnose</p>
+            <p className="lg:hidden">Tap a segment on the wheel to diagnose</p>
           </div>
         </div>
       </div>

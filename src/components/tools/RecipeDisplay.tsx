@@ -23,6 +23,7 @@ export function RecipeDisplay({
   strength,
 }: RecipeDisplayProps) {
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState<string | null>(null);
 
   const handleCopyRecipe = async () => {
     if (!results) {
@@ -46,9 +47,14 @@ Made with IndianCoffeeBeans.com
     try {
       await navigator.clipboard.writeText(recipeText);
       setCopied(true);
+      setCopyError(null);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy recipe:", err);
+      setCopied(false);
+      setCopyError(
+        "Couldn't copy to clipboard. Try selecting the text manually."
+      );
     }
   };
 
@@ -176,6 +182,8 @@ Made with IndianCoffeeBeans.com
         {/* Action Buttons */}
         <div className="flex gap-2">
           <Button
+            aria-describedby={copyError ? "recipe-copy-error" : undefined}
+            aria-invalid={copyError ? true : undefined}
             className="flex-1"
             onClick={handleCopyRecipe}
             size="sm"
@@ -192,14 +200,21 @@ Made with IndianCoffeeBeans.com
           <Button
             onClick={() => {
               if (navigator.share) {
-                navigator.share({
-                  title: `${results.method.name} Coffee Recipe`,
-                  text: `Perfect ${results.method.name} recipe: ${formatCoffeeAmount(results.coffeeAmount)} coffee + ${results.waterAmount}ml water`,
-                  url: window.location.href,
-                });
+                // Share can reject when the user dismisses the sheet (AbortError);
+                // swallow that, fall back to copy on a real failure.
+                navigator
+                  .share({
+                    title: `${results.method.name} Coffee Recipe`,
+                    text: `Perfect ${results.method.name} recipe: ${formatCoffeeAmount(results.coffeeAmount)} coffee + ${results.waterAmount}ml water`,
+                    url: window.location.href,
+                  })
+                  .catch((err) => {
+                    if (err?.name !== "AbortError") {
+                      handleCopyRecipe();
+                    }
+                  });
               } else {
                 handleCopyRecipe();
-                // Toast notification handled in handleCopyRecipe
               }
             }}
             size="sm"
@@ -208,6 +223,16 @@ Made with IndianCoffeeBeans.com
             <Icon className="h-4 w-4" name="ShareNetwork" />
           </Button>
         </div>
+
+        {copyError ? (
+          <p
+            className="text-caption text-destructive"
+            id="recipe-copy-error"
+            role="alert"
+          >
+            {copyError}
+          </p>
+        ) : null}
       </div>
     </div>
   );

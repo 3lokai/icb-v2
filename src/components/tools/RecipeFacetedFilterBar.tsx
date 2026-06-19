@@ -13,10 +13,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Stack } from "@/components/primitives/stack";
-import type {
-  DifficultyLevel,
-  RecommendedUse,
+import {
+  type DifficultyLevel,
+  RECIPE_DIFFICULTY_OPTIONS,
+  RECIPE_EXPERT_OPTIONS,
+  RECIPE_METHOD_OPTIONS,
+  RECIPE_USE_OPTIONS,
+  type RecommendedUse,
 } from "@/lib/tools/expert-recipes";
+
+type Counts = Record<string, number>;
 
 type RecipeFacetedFilterBarProps = {
   selectedMethod?: string;
@@ -32,7 +38,16 @@ type RecipeFacetedFilterBarProps = {
   onClearAll: () => void;
   recipeCount: number;
   totalCount: number;
+  methodCounts: Counts;
+  difficultyCounts: Counts;
+  useCounts: Counts;
+  expertCounts: Counts;
 };
+
+/** Label with its live result count, e.g. "AeroPress (3)" — matches the directory bar. */
+function withCount(label: string, count: number | undefined) {
+  return `${label} (${count ?? 0})`;
+}
 
 export function RecipeFacetedFilterBar({
   selectedMethod,
@@ -48,6 +63,10 @@ export function RecipeFacetedFilterBar({
   onClearAll,
   recipeCount,
   totalCount,
+  methodCounts,
+  difficultyCounts,
+  useCounts,
+  expertCounts,
 }: RecipeFacetedFilterBarProps) {
   const activeFiltersCount = useMemo(() => {
     return (
@@ -82,8 +101,8 @@ export function RecipeFacetedFilterBar({
         </p>
       </div>
 
-      {/* Filter Dropdowns Row */}
-      <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-3">
+      {/* Filter Dropdowns Row — desktop only; mobile uses the Filters drawer */}
+      <div className="hidden md:flex md:flex-wrap items-center gap-3">
         {/* Method */}
         <Select
           value={selectedMethod || "all"}
@@ -91,16 +110,16 @@ export function RecipeFacetedFilterBar({
             onMethodChange(val === "all" ? undefined : val)
           }
         >
-          <SelectTrigger className="h-10 w-full md:w-[160px] bg-background">
+          <SelectTrigger className="h-10 w-full md:w-[170px] bg-background">
             <SelectValue placeholder="Method" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Methods</SelectItem>
-            <SelectItem value="v60">V60</SelectItem>
-            <SelectItem value="aeropress">AeroPress</SelectItem>
-            <SelectItem value="frenchpress">French Press</SelectItem>
-            <SelectItem value="chemex">Chemex</SelectItem>
-            <SelectItem value="pourover">Pour Over</SelectItem>
+            {RECIPE_METHOD_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {withCount(o.label, methodCounts[o.value])}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 
@@ -113,14 +132,16 @@ export function RecipeFacetedFilterBar({
             )
           }
         >
-          <SelectTrigger className="h-10 w-full md:w-[150px] bg-background">
+          <SelectTrigger className="h-10 w-full md:w-[160px] bg-background">
             <SelectValue placeholder="Difficulty" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Any Difficulty</SelectItem>
-            <SelectItem value="Beginner">Beginner</SelectItem>
-            <SelectItem value="Intermediate">Intermediate</SelectItem>
-            <SelectItem value="Advanced">Advanced</SelectItem>
+            {RECIPE_DIFFICULTY_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {withCount(o.label, difficultyCounts[o.value])}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 
@@ -131,14 +152,16 @@ export function RecipeFacetedFilterBar({
             onUseChange(val === "all" ? undefined : (val as RecommendedUse))
           }
         >
-          <SelectTrigger className="h-10 w-full md:w-[160px] bg-background">
+          <SelectTrigger className="h-10 w-full md:w-[170px] bg-background">
             <SelectValue placeholder="Recommended Use" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Any Use</SelectItem>
-            <SelectItem value="everyday">Everyday Brew</SelectItem>
-            <SelectItem value="competition">Competition</SelectItem>
-            <SelectItem value="experiment">Experiment</SelectItem>
+            {RECIPE_USE_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {withCount(o.label, useCounts[o.value])}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 
@@ -149,21 +172,16 @@ export function RecipeFacetedFilterBar({
             onExpertChange(val === "all" ? undefined : val)
           }
         >
-          <SelectTrigger className="h-10 w-full md:w-[180px] bg-background">
+          <SelectTrigger className="h-10 w-full md:w-[200px] bg-background">
             <SelectValue placeholder="Expert" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Experts</SelectItem>
-            <SelectItem value="James Hoffmann">James Hoffmann</SelectItem>
-            <SelectItem value="Tetsu Kasuya">Tetsu Kasuya</SelectItem>
-            <SelectItem value="Scott Rao">Scott Rao</SelectItem>
-            <SelectItem value="Carolina Ibarra Garay">
-              Carolina Ibarra Garay
-            </SelectItem>
-            <SelectItem value="George Stanica">George Stanica</SelectItem>
-            <SelectItem value="Intelligentsia Coffee">
-              Intelligentsia Coffee
-            </SelectItem>
+            {RECIPE_EXPERT_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {withCount(o.label, expertCounts[o.value])}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 

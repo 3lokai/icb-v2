@@ -7,7 +7,10 @@ import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import {
   type DifficultyLevel,
-  EXPERTS,
+  RECIPE_DIFFICULTY_OPTIONS,
+  RECIPE_EXPERT_OPTIONS,
+  RECIPE_METHOD_OPTIONS,
+  RECIPE_USE_OPTIONS,
   type RecommendedUse,
 } from "@/lib/tools/expert-recipes";
 
@@ -43,65 +46,20 @@ export function RecipeSidebar({
   useCounts,
   expertCounts,
 }: RecipeSidebarProps) {
-  const methods = [
-    { value: "v60" as const, label: "V60", count: methodCounts.v60 ?? 0 },
-    {
-      value: "aeropress" as const,
-      label: "AeroPress",
-      count: methodCounts.aeropress ?? 0,
-    },
-    {
-      value: "frenchpress" as const,
-      label: "French Press",
-      count: methodCounts.frenchpress ?? 0,
-    },
-    {
-      value: "chemex" as const,
-      label: "Chemex",
-      count: methodCounts.chemex ?? 0,
-    },
-    {
-      value: "pourover" as const,
-      label: "Pour Over",
-      count: methodCounts.pourover ?? 0,
-    },
-  ];
+  const methods = RECIPE_METHOD_OPTIONS.map((o) => ({
+    ...o,
+    count: methodCounts[o.value] ?? 0,
+  }));
 
-  const difficulties = [
-    {
-      value: "Beginner" as const,
-      label: "Beginner",
-      count: difficultyCounts.Beginner ?? 0,
-    },
-    {
-      value: "Intermediate" as const,
-      label: "Intermediate",
-      count: difficultyCounts.Intermediate ?? 0,
-    },
-    {
-      value: "Advanced" as const,
-      label: "Advanced",
-      count: difficultyCounts.Advanced ?? 0,
-    },
-  ];
+  const difficulties = RECIPE_DIFFICULTY_OPTIONS.map((o) => ({
+    ...o,
+    count: difficultyCounts[o.value] ?? 0,
+  }));
 
-  const useCases = [
-    {
-      value: "everyday" as const,
-      label: "Everyday",
-      count: useCounts.everyday ?? 0,
-    },
-    {
-      value: "competition" as const,
-      label: "Competition",
-      count: useCounts.competition ?? 0,
-    },
-    {
-      value: "experiment" as const,
-      label: "Experiment",
-      count: useCounts.experiment ?? 0,
-    },
-  ];
+  const useCases = RECIPE_USE_OPTIONS.map((o) => ({
+    ...o,
+    count: useCounts[o.value] ?? 0,
+  }));
 
   // Check if any filters are active
   const hasActiveFilters =
@@ -203,10 +161,9 @@ export function RecipeSidebar({
           {/* Coffee Expert */}
           {renderFilterSection({
             title: "Coffee Expert",
-            items: EXPERTS.map((expert) => ({
-              value: expert.name,
-              label: expert.name,
-              count: expertCounts[expert.name] ?? 0,
+            items: RECIPE_EXPERT_OPTIONS.map((o) => ({
+              ...o,
+              count: expertCounts[o.value] ?? 0,
             })),
             selected: selectedExpert,
             onSelect: onExpertChange,
