@@ -6,15 +6,38 @@ import { Decor } from "@/components/primitives/decor";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
+import { BREWING_METHODS } from "@/lib/tools/brewing-guide";
+import { RECIPES_ARRAY } from "@/lib/tools/expert-recipes";
+
+// Real, data-derived figures so the toolkit never shows a hollow/stale number.
+const METHOD_COUNT = Object.keys(BREWING_METHODS).length;
+const RECIPE_COUNT = RECIPES_ARRAY.length;
 
 type ExpertRecipesCtaProps = {
   /** Set false when the CTA sits inside a page that already uses `container` / horizontal padding (avoids nested PageShell). */
   sectionContained?: boolean;
+  /** Which tool page this sits on, so the primary CTA points somewhere new rather than at itself. */
+  context?: "calculator" | "recipes";
 };
 
 export default function ExpertRecipesCta({
   sectionContained = true,
+  context = "calculator",
 }: ExpertRecipesCtaProps) {
+  // Primary CTA always points to the *other* tool so the page never links to itself.
+  const primary =
+    context === "calculator"
+      ? {
+          href: "/tools/expert-recipes",
+          label: "Browse Expert Recipes",
+          icon: "Trophy" as const,
+        }
+      : {
+          href: "/tools/coffee-calculator",
+          label: "Try the Calculator",
+          icon: "Calculator" as const,
+        };
+
   return (
     <Section contained={sectionContained} spacing="default">
       <div className="mx-auto max-w-6xl">
@@ -52,9 +75,9 @@ export default function ExpertRecipesCta({
                       variant="default"
                       size="lg"
                     >
-                      <Link href="/tools/coffee-calculator">
-                        <Icon className="mr-2" name="Calculator" size={18} />
-                        Try the Calculator
+                      <Link href={primary.href}>
+                        <Icon className="mr-2" name={primary.icon} size={18} />
+                        {primary.label}
                       </Link>
                     </Button>
 
@@ -66,7 +89,7 @@ export default function ExpertRecipesCta({
                     >
                       <Link href="/coffees">
                         <Icon className="mr-2" name="Coffee" size={18} />
-                        Shop Coffee Beans
+                        Explore Coffees
                       </Link>
                     </Button>
                   </div>
@@ -97,20 +120,20 @@ export default function ExpertRecipesCta({
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="rounded-xl border border-border bg-card p-5 group/stat">
-                        <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5">
-                          5+
+                        <div className="text-title font-bold tracking-tighter tabular-nums transition-transform group-hover/stat:-translate-y-0.5">
+                          {RECIPE_COUNT}
                         </div>
                         <div className="mt-1 text-label font-bold text-accent">
-                          Methods
+                          Expert Recipes
                         </div>
                       </div>
 
                       <div className="rounded-xl border border-border bg-card p-5 group/stat">
-                        <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5">
-                          100%
+                        <div className="text-title font-bold tracking-tighter tabular-nums transition-transform group-hover/stat:-translate-y-0.5">
+                          {METHOD_COUNT}
                         </div>
                         <div className="mt-1 text-label font-bold text-accent">
-                          Control
+                          Brew Methods
                         </div>
                       </div>
                     </div>
@@ -128,17 +151,19 @@ export default function ExpertRecipesCta({
                           </span>
                         </div>
                         <div className="flex flex-wrap gap-x-3 gap-y-1 text-caption font-medium">
-                          {["Ratio Calculator", "Timer", "Pour Over"].map(
-                            (item) => (
-                              <span
-                                key={item}
-                                className="flex items-center gap-1.5"
-                              >
-                                <span className="h-1 w-1 rounded-full bg-border" />
-                                {item}
-                              </span>
-                            )
-                          )}
+                          {[
+                            "Ratio Calculator",
+                            "Brew Timer",
+                            "Method Guides",
+                          ].map((item) => (
+                            <span
+                              key={item}
+                              className="flex items-center gap-1.5"
+                            >
+                              <span className="h-1 w-1 rounded-full bg-border" />
+                              {item}
+                            </span>
+                          ))}
                         </div>
                       </Stack>
                     </div>

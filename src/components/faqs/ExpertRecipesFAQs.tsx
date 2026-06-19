@@ -20,6 +20,11 @@ export const expertRecipesFAQs = [
       "The 4:6 method divides brewing water into phases: first 40% controls sweetness/acidity balance, remaining 60% controls strength. This systematic approach won the 2016 World Brewers Cup Championship.",
   },
   {
+    question: "What is the Tetsu Kasuya 10-pour method?",
+    answer:
+      "Kasuya's newer V60 Neo technique uses 20g coffee and 300g water at 95–96°C with a very coarse grind. Ten pours of 30g each — bloom at 0:00, then every 15 seconds — maximize clarity, sweetness, and aroma in light roasts. Total drawdown is around 3:30.",
+  },
+  {
     question:
       "How do I choose between beginner, intermediate, and advanced recipes?",
     answer:

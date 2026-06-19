@@ -116,31 +116,20 @@ export const AnimatedThemeToggler = ({
     [onClick, toggleTheme]
   );
 
-  if (!mounted) {
-    return (
-      <button
-        type="button"
-        {...props}
-        aria-label={props["aria-label"] ?? "Toggle theme"}
-        className={cn(className)}
-        disabled
-        ref={buttonRef}
-      >
-        <Icon className="opacity-0" name="Moon" size={20} />
-        <span className="sr-only">Toggle theme</span>
-      </button>
-    );
-  }
-
   return (
     <button
       type="button"
       {...props}
+      aria-label={props["aria-label"] ?? "Toggle theme"}
       className={cn(className)}
-      onClick={handleClick}
+      onClick={mounted ? handleClick : undefined}
       ref={buttonRef}
     >
-      {isDark ? <Icon name="Sun" size={20} /> : <Icon name="Moon" size={20} />}
+      {mounted && isDark ? (
+        <Icon name="Sun" size={20} />
+      ) : (
+        <Icon name="Moon" size={20} />
+      )}
       <span className="sr-only">Toggle theme</span>
     </button>
   );

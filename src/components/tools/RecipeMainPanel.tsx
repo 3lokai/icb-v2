@@ -30,9 +30,8 @@ export function RecipeMainPanel({
   return (
     <div className="space-y-6">
       {recipes.length === 0 ? (
-        <div className="surface-1 card-padding relative overflow-hidden rounded-lg py-16 text-center">
-          <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-muted/10 blur-2xl" />
-          <div className="relative z-10">
+        <div className="surface-1 card-padding rounded-lg py-16 text-center">
+          <div>
             <Icon
               className="mx-auto mb-6 h-12 w-12 text-muted-foreground opacity-50"
               name="Coffee"

@@ -1,5 +1,6 @@
 // src/lib/tools/expert-recipes.ts
 
+import { BREWING_METHODS } from "./brewing-guide";
 import type {
   BrewingMethodKey,
   RoastLevel,
@@ -10,6 +11,7 @@ export type ExpertKey =
   | "hoffman-v60"
   | "hoffman-french-press"
   | "tetsu-kasuya-46"
+  | "tetsu-kasuya-10-pour"
   | "scott-rao-v60"
   | "carolina-aeropress"
   | "intelligentsia-pourover"
@@ -361,6 +363,145 @@ export const EXPERT_RECIPES: Record<ExpertKey, ExpertRecipe> = {
       "championship",
       "systematic",
       "competition",
+    ]),
+  },
+
+  "tetsu-kasuya-10-pour": {
+    id: "tetsu-kasuya-10-pour",
+    slug: "tetsu-kasuya-10-pour",
+    title: "Tetsu Kasuya 10-Pour Method",
+    expert: {
+      name: "Tetsu Kasuya",
+      title: "Coffee Professional",
+      achievement: "World Brewers Cup Champion 2016",
+      year: 2016,
+    },
+    method: "v60",
+    difficulty: "Advanced",
+    difficultyIndex: 3,
+
+    coffee: 20,
+    water: 300,
+    ratio: "1:15",
+    grind: "Very coarse (40–45 clicks, Comandante C40)",
+    temperature: "95–96°C",
+    totalTime: "3:30",
+
+    roastRecommendation: ["light"],
+    strengthLevel: "average",
+    flavorProfile: "Clear, sweet, aromatic — optimized for light roasts",
+    flavorNotes: ["clear", "sweet", "aromatic", "light-roast"],
+    recommendedUse: "competition",
+
+    story:
+      "Kasuya's 10-pour method uses very coarse grounds and high water temperature to maximize clarity, sweetness, and aroma in light roast coffees. Ten equal 30g pours keep the bed shallow and drainage steady — designed for the Hario V60 NEO dripper.",
+    keyTechnique:
+      "Ten rapid 30g pours every 15 seconds after bloom — shallow bed, steady drainage, high temperature",
+    tips: [
+      "Use V60 NEO for best flow toward ribs at low water volume",
+      "Keep water temperature high (95–96°C)",
+      "Pour rapidly in 30g pulses every 15 seconds after bloom",
+      "Very coarse grind prevents pooling — water should drain steadily",
+      "Gently swirl the server before serving",
+    ],
+
+    steps: [
+      {
+        time: "0:00",
+        timeSeconds: 0,
+        instruction: "Bloom with 30g. Wait 30s",
+        waterAmount: 30,
+        pourNumber: 1,
+      },
+      {
+        time: "0:30",
+        timeSeconds: 30,
+        instruction: "Pour 30g rapidly. Total: 60g",
+        waterAmount: 30,
+        pourNumber: 2,
+      },
+      {
+        time: "0:45",
+        timeSeconds: 45,
+        instruction: "Pour 30g rapidly. Total: 90g",
+        waterAmount: 30,
+        pourNumber: 3,
+      },
+      {
+        time: "1:00",
+        timeSeconds: 60,
+        instruction: "Pour 30g rapidly. Total: 120g",
+        waterAmount: 30,
+        pourNumber: 4,
+      },
+      {
+        time: "1:15",
+        timeSeconds: 75,
+        instruction: "Pour 30g rapidly. Total: 150g",
+        waterAmount: 30,
+        pourNumber: 5,
+      },
+      {
+        time: "1:30",
+        timeSeconds: 90,
+        instruction: "Pour 30g rapidly. Total: 180g",
+        waterAmount: 30,
+        pourNumber: 6,
+      },
+      {
+        time: "1:45",
+        timeSeconds: 105,
+        instruction: "Pour 30g rapidly. Total: 210g",
+        waterAmount: 30,
+        pourNumber: 7,
+      },
+      {
+        time: "2:00",
+        timeSeconds: 120,
+        instruction:
+          "Pour 30g rapidly. Total: 240g — drainage may start to slow",
+        waterAmount: 30,
+        pourNumber: 8,
+      },
+      {
+        time: "2:15",
+        timeSeconds: 135,
+        instruction: "Pour 30g rapidly. Total: 270g",
+        waterAmount: 30,
+        pourNumber: 9,
+      },
+      {
+        time: "2:30",
+        timeSeconds: 150,
+        instruction: "Pour 30g rapidly. Total: 300g",
+        waterAmount: 30,
+        pourNumber: 10,
+      },
+      {
+        time: "3:30",
+        timeSeconds: 210,
+        instruction: "Brewing complete — remove dripper when fully drained",
+      },
+    ],
+
+    youtubeUrl: "https://www.youtube.com/watch?v=k0nsShguOsU",
+    sourceUrlType: "video",
+    equipmentRecommendations: [
+      "Hario V60 NEO",
+      "Coarse grinder",
+      "Digital scale",
+      "Gooseneck kettle",
+      "Timer",
+    ],
+
+    tags: new Set([
+      "v60",
+      "tetsu-kasuya",
+      "10-pour",
+      "light-roast",
+      "advanced",
+      "competition",
+      "v60-neo",
     ]),
   },
 
@@ -1777,6 +1918,39 @@ export function generateAutoTags(
 // Export individual recipes for direct access
 export const RECIPES_ARRAY = Object.values(EXPERT_RECIPES);
 
+// ─── Filter facet options (single source of truth) ───────────────────────────
+// Derived from the recipe data itself so the desktop bar and the mobile drawer
+// can never drift apart (or miss a method/expert) again. Method labels come from
+// the canonical BREWING_METHODS map; experts are the distinct names actually in
+// the data, so counts and options always agree.
+export type RecipeFacetOption<V extends string = string> = {
+  value: V;
+  label: string;
+};
+
+export const RECIPE_METHOD_OPTIONS: RecipeFacetOption<BrewingMethodKey>[] =
+  Array.from(new Set(RECIPES_ARRAY.map((r) => r.method)))
+    .map((key) => ({ value: key, label: BREWING_METHODS[key]?.name ?? key }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+
+export const RECIPE_DIFFICULTY_OPTIONS: RecipeFacetOption<DifficultyLevel>[] = [
+  { value: "Beginner", label: "Beginner" },
+  { value: "Intermediate", label: "Intermediate" },
+  { value: "Advanced", label: "Advanced" },
+];
+
+export const RECIPE_USE_OPTIONS: RecipeFacetOption<RecommendedUse>[] = [
+  { value: "everyday", label: "Everyday Brew" },
+  { value: "competition", label: "Competition" },
+  { value: "experiment", label: "Experiment" },
+];
+
+export const RECIPE_EXPERT_OPTIONS: RecipeFacetOption[] = Array.from(
+  new Set(RECIPES_ARRAY.map((r) => r.expert.name))
+)
+  .map((name) => ({ value: name, label: name }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+
 // Expert info for display
 export const EXPERTS = [
   {
@@ -1786,8 +1960,8 @@ export const EXPERTS = [
   },
   {
     name: "Tetsu Kasuya",
-    recipes: ["tetsu-kasuya-46"],
-    bio: "World Brewers Cup Champion 2016, creator of the famous 4:6 method",
+    recipes: ["tetsu-kasuya-46", "tetsu-kasuya-10-pour"],
+    bio: "World Brewers Cup Champion 2016, creator of the 4:6 and 10-pour methods",
   },
   {
     name: "Scott Rao",
@@ -1852,6 +2026,7 @@ export const RECIPE_CATEGORIES = {
     "hoffman-v60",
     "scott-rao-v60",
     "tetsu-kasuya-46",
+    "tetsu-kasuya-10-pour",
     "lance-hedrick-v60",
     "hoffman-chemex",
     "intelligentsia-pourover",

@@ -15,9 +15,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { generateMetadata as generateBaseMetadata } from "@/lib/seo/metadata";
 import { generateHowToSchema } from "@/lib/seo/schema";
-import { filterRecipes } from "@/lib/tools/expert-recipes";
+import { filterRecipes, RECIPES_ARRAY } from "@/lib/tools/expert-recipes";
 
 const expertRecipeCount = filterRecipes({}).length;
+const competitionRecipeCount = filterRecipes({
+  recommendedUse: "competition",
+}).length;
+const everydayRecipeCount = filterRecipes({
+  recommendedUse: "everyday",
+}).length;
+const experimentRecipeCount = filterRecipes({
+  recommendedUse: "experiment",
+}).length;
 
 // SEO Metadata — static canonical so the route can prerender.
 export async function generateMetadata(): Promise<Metadata> {
@@ -35,6 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "championship coffee brewing",
       "james hoffmann coffee recipe",
       "tetsu kasuya 4:6 method",
+      "tetsu kasuya 10 pour method",
       "scott rao v60",
       "world barista champion recipes",
       "competition coffee brewing",
@@ -100,7 +110,7 @@ const expertRecipesHowToSchema = generateHowToSchema({
     },
     {
       name: "Master the Technique",
-      text: "Each expert has signature techniques (Hoffmann's stirring, Kasuya's 4:6 method, Rao's agitation). Practice the specific movements.",
+      text: "Each expert has signature techniques (Hoffmann's stirring, Kasuya's 4:6 or 10-pour method, Rao's agitation). Practice the specific movements.",
     },
     {
       name: "Taste and Adjust",
@@ -116,33 +126,20 @@ const expertRecipesCollectionSchema = {
   description:
     "Curated collection of championship coffee brewing recipes from world experts and competition winners",
   url: `${baseUrl}/tools/expert-recipes`,
-  numberOfItems: 8,
-  itemListElement: [
-    {
+  numberOfItems: expertRecipeCount,
+  // Generated from the recipe data so the schema can never drift from the list
+  // the page actually renders (and numberOfItems always matches the entries).
+  itemListElement: RECIPES_ARRAY.map((recipe, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
       "@type": "Recipe",
-      name: "James Hoffmann V60 Technique",
-      author: "James Hoffmann",
-      description:
-        "World Barista Champion 2007 V60 brewing method focusing on clarity and even extraction",
+      name: recipe.title,
+      author: recipe.expert.name,
+      description: recipe.flavorProfile,
       image: expertRecipesImage,
     },
-    {
-      "@type": "Recipe",
-      name: "Tetsu Kasuya 4:6 Method",
-      author: "Tetsu Kasuya",
-      description:
-        "2016 World Brewers Cup Champion systematic brewing method for flavor control",
-      image: expertRecipesImage,
-    },
-    {
-      "@type": "Recipe",
-      name: "Scott Rao V60 Method",
-      author: "Scott Rao",
-      description:
-        "Coffee consultant's uniform extraction technique for consistent results",
-      image: expertRecipesImage,
-    },
-  ],
+  })),
 };
 
 export default function ExpertRecipesPage() {
@@ -252,10 +249,10 @@ export default function ExpertRecipesPage() {
                   {
                     name: "Tetsu Kasuya",
                     title: "World Brewers Cup Champion 2016",
-                    achievement: "Creator of 4:6 Method",
-                    recipes: ["4:6 V60 Method"],
+                    achievement: "Creator of 4:6 & 10-Pour Methods",
+                    recipes: ["4:6 V60 Method", "10-Pour V60 Method"],
                     description:
-                      "Revolutionary systematic brewing method for flavor control",
+                      "Systematic V60 techniques for flavor control and light-roast clarity",
                   },
                   {
                     name: "Scott Rao",
@@ -361,7 +358,7 @@ export default function ExpertRecipesPage() {
                     </p>
                     <div className="pt-2">
                       <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
-                        4 Recipes
+                        {everydayRecipeCount} Recipes
                       </Badge>
                     </div>
                   </Stack>
@@ -383,7 +380,7 @@ export default function ExpertRecipesPage() {
                       </p>
                       <div className="pt-2">
                         <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
-                          3 Recipes
+                          {competitionRecipeCount} Recipes
                         </Badge>
                       </div>
                     </Stack>
@@ -407,7 +404,8 @@ export default function ExpertRecipesPage() {
                       </p>
                       <div className="pt-2">
                         <Badge className="badge border-border/50 bg-background/90 text-foreground text-overline">
-                          1 Recipe
+                          {experimentRecipeCount} Recipe
+                          {experimentRecipeCount === 1 ? "" : "s"}
                         </Badge>
                       </div>
                     </Stack>
@@ -423,7 +421,7 @@ export default function ExpertRecipesPage() {
           </div>
 
           {/* CTA Section */}
-          <ExpertRecipesCta />
+          <ExpertRecipesCta context="recipes" />
         </Stack>
       </div>
     </div>
