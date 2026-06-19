@@ -1,11 +1,13 @@
 // src/app/(main)/(public)/how-icb-works/page.tsx
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Accent } from "@/components/primitives/accent";
-import { Section } from "@/components/primitives/section";
-import { Stack } from "@/components/primitives/stack";
+import { Band } from "@/components/primitives/band";
+import { Decor } from "@/components/primitives/decor";
 import { Prose } from "@/components/primitives/prose";
-import Link from "next/link";
+import { Reveal } from "@/components/primitives/reveal";
+import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateMetadata } from "@/lib/seo/metadata";
 import {
@@ -26,6 +28,64 @@ export const metadata: Metadata = generateMetadata({
   canonical: "/how-icb-works",
 });
 
+const discoverySteps = [
+  {
+    num: "1",
+    title: "Structured Coffee Data",
+    body: (
+      <>
+        Each coffee is documented using consistent attributes: Origin, Region,
+        Process, Roast, Profile, and Brew compatibility. This allows for
+        meaningful comparison across roasters, not just brand pages.{" "}
+        <Link
+          href="/coffees"
+          className="font-medium text-primary hover:underline"
+        >
+          Explore the database.
+        </Link>
+      </>
+    ),
+  },
+  {
+    num: "2",
+    title: "Ratings & Reviews",
+    body: "Users rate individual coffees based on taste and results, and roasters based on ordering and consistency. Reviews are tied to actual coffees, not vague brand hype.",
+  },
+  {
+    num: "3",
+    title: "Signal-Based Filters",
+    body: 'Discovery is built around how people actually choose coffee: brew method, flavor, roast, and region. There are no "featured because paid" shortcuts.',
+  },
+];
+
+const sampleRecord = [
+  ["Origin", "Single Estate"],
+  ["Region", "Chikmagalur"],
+  ["Process", "Washed"],
+  ["Roast", "Medium-Light"],
+  ["Profile", "Citrus · Honey · Florals"],
+  ["Brew", "Pour-over · Aeropress"],
+];
+
+const audiences = [
+  { title: "Home Brewers", desc: "Exploring the vast world of Indian beans." },
+  { title: "Enthusiasts", desc: "Comparing technical specs across roasters." },
+  {
+    title: "Data-Driven Buyers",
+    desc: "Wanting substance over marketing noise.",
+  },
+  {
+    title: "Quality Roasters",
+    desc: "Looking for a neutral place to be represented.",
+  },
+];
+
+const trustPledges = [
+  { title: "No Commissions", desc: "Discovery is the goal, not a sales cut." },
+  { title: "No Sponsored Rankings", desc: "Scores are earned, never bought." },
+  { title: "No Native Ads", desc: "A clean interface focused on the bean." },
+];
+
 export default function HowICBWorksPage() {
   return (
     <>
@@ -42,15 +102,14 @@ export default function HowICBWorksPage() {
         description="A clear, factual breakdown of what this platform is, how it operates, and why it remains independent."
       />
 
-      <div className="container mx-auto px-4 -mt-20 relative z-30 pb-20">
-        <Stack gap="16">
-          {/* Section 1: The Essence */}
-          <div className="bg-background rounded-3xl p-8 md:p-12 border border-border/50 shadow-xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      {/* The Essence — floated card lifting over the hero */}
+      <div className="container relative z-30 mx-auto -mt-20 px-4">
+        <Reveal>
+          <div className="rounded-3xl border border-border/60 bg-background p-8 shadow-xl md:p-12">
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
               <div className="lg:col-span-5">
                 <Stack gap="4">
                   <h2 className="text-title">The Essence</h2>
-                  <div className="h-px w-16 bg-accent/60" />
                   <p className="text-body-large text-muted-foreground">
                     IndianCoffeeBeans.com is a specialized discovery
                     infrastructure for the Indian coffee ecosystem.
@@ -60,7 +119,7 @@ export default function HowICBWorksPage() {
               <div className="lg:col-span-7">
                 <Prose className="max-w-none">
                   <h3>What it is</h3>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                  <ul className="grid grid-cols-1 gap-x-8 md:grid-cols-2">
                     <li>A structured platform to discover, rate, and review</li>
                     <li>A tool to compare across taste, process, and roast</li>
                     <li>A long-term reference layer for coffee culture</li>
@@ -68,15 +127,16 @@ export default function HowICBWorksPage() {
                   </ul>
 
                   <h3>What it is not</h3>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 opacity-80">
+                  <ul className="grid grid-cols-1 gap-x-8 opacity-80 md:grid-cols-2">
                     <li>Not a marketplace or retailer</li>
                     <li>Not an ad platform</li>
-                    <li>Not a "best coffee" curated list</li>
+                    <li>Not a &quot;best coffee&quot; curated list</li>
                     <li>Not influencer-driven or pay-to-rank</li>
                   </ul>
 
-                  <div className="mt-8 rounded-xl border border-accent/20 border-l-4 border-l-accent bg-accent/5 p-6">
-                    <p className="font-serif text-body-large text-accent-foreground leading-relaxed">
+                  <div className="relative mt-8 overflow-hidden rounded-xl border border-accent/30 bg-accent/5 p-6">
+                    <Decor stripe />
+                    <p className="relative font-serif text-body-large leading-relaxed text-accent-foreground">
                       IndianCoffeeBeans does not sell coffee, run ads, or
                       promote brands algorithmically.
                     </p>
@@ -85,223 +145,211 @@ export default function HowICBWorksPage() {
               </div>
             </div>
           </div>
+        </Reveal>
+      </div>
 
-          {/* Section 2: How Discovery Works */}
-          <Section spacing="default">
-            <Stack gap="12">
-              <Stack gap="4">
-                <span className="text-micro font-bold uppercase tracking-widest text-accent">
-                  Discovery
-                </span>
-                <h2 className="text-title">How Discovery Works</h2>
-                <div className="h-px w-16 bg-accent/60" />
-              </Stack>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <Stack gap="4">
-                  <h3 className="text-heading">1. Structured Coffee Data</h3>
-                  <p className="text-caption text-muted-foreground leading-relaxed">
-                    Each coffee is documented using consistent attributes:
-                    Origin, Region, Process, Roast, Profile, and Brew
-                    compatibility. This allows for meaningful comparison across
-                    roasters, not just brand pages.{" "}
-                    <Link
-                      href="/coffees"
-                      className="text-accent hover:underline font-medium"
-                    >
-                      Explore the database.
-                    </Link>
-                  </p>
-                </Stack>
-                <Stack gap="4">
-                  <h3 className="text-heading">2. Ratings & Reviews</h3>
-                  <p className="text-caption text-muted-foreground leading-relaxed">
-                    Users rate individual coffees based on taste and results,
-                    and roasters based on ordering and consistency. Reviews are
-                    tied to actual coffees, not vague brand hype.
-                  </p>
-                </Stack>
-                <Stack gap="4">
-                  <h3 className="text-heading">3. Signal-Based Filters</h3>
-                  <p className="text-caption text-muted-foreground leading-relaxed">
-                    Discovery is built around how people actually choose coffee:
-                    brew method, flavor, roast, and region. There are no
-                    "featured because paid" shortcuts.
-                  </p>
-                </Stack>
-              </div>
-            </Stack>
-          </Section>
-
-          {/* Section 3: Rankings & Neutrality */}
-          <div className="bg-muted/5 rounded-3xl p-8 md:p-12 border border-border/20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-              <Stack gap="6">
-                <h2 className="text-title">How Rankings Work</h2>
-                <Prose>
-                  <p>
-                    There are no paid rankings on IndianCoffeeBeans. Coffee and
-                    roaster visibility is driven entirely by:
-                  </p>
-                  <ul>
-                    <li>Completeness of technical information</li>
-                    <li>Community interaction (ratings, reviews, saves)</li>
-                    <li>User-driven search and filter relevance</li>
-                  </ul>
-                  <p className="text-accent font-medium">
-                    Paid partnerships do not influence ordering, scores, or
-                    recommendations.
-                  </p>
-                </Prose>
-              </Stack>
-
-              <Stack gap="6">
-                <h2 className="text-title">What "Verified" Means</h2>
-                <Prose>
-                  <p>
-                    Some roasters choose to become{" "}
-                    <strong>Verified Partners</strong>. This indicates an active
-                    partnership where they can claim and manage their profile
-                    and support the platform financially.
-                  </p>
-                  <p className="text-muted-foreground italic">
-                    Verification does not mean:
-                  </p>
-                  <ul className="text-caption">
-                    <li>Better rankings or boosted visibility</li>
-                    <li>Preferential treatment in search</li>
-                    <li>Editorial endorsement or quality guarantee</li>
-                  </ul>
-                </Prose>
-              </Stack>
-            </div>
-          </div>
-
-          {/* Section 4: For Whom */}
-          <Section spacing="default">
-            <Stack gap="12" className="items-center text-center">
-              <Stack gap="4" className="items-center">
-                <h2 className="text-title">For Whom is ICB Built?</h2>
-                <div className="h-px w-24 bg-accent/40" />
-              </Stack>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
-                {[
-                  {
-                    title: "Home Brewers",
-                    desc: "Exploring the vast world of Indian beans.",
-                  },
-                  {
-                    title: "Enthusiasts",
-                    desc: "Comparing technical specs across roasters.",
-                  },
-                  {
-                    title: "Data-Driven Buyers",
-                    desc: "Wanting substance over marketing noise.",
-                  },
-                  {
-                    title: "Quality Roasters",
-                    desc: "Looking for a neutral place to be represented.",
-                  },
-                ].map((item) => (
-                  <Stack
-                    gap="2"
-                    key={item.title}
-                    className="p-6 rounded-2xl border border-border/20 bg-card/5"
-                  >
-                    <h3 className="text-heading">{item.title}</h3>
-                    <p className="text-caption text-muted-foreground">
-                      {item.desc}
-                    </p>
-                  </Stack>
-                ))}
-              </div>
-            </Stack>
-          </Section>
-
-          {/* Section 5: The Long View */}
-          <Section
-            spacing="default"
-            className="border-t border-border/50 pt-16"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-              <div className="lg:col-span-5">
-                <Stack gap="4">
-                  <h2 className="text-title">The Long View</h2>
-                  <div className="h-px w-16 bg-accent/60" />
-                </Stack>
-              </div>
-              <div className="lg:col-span-7">
-                <Prose className="max-w-none">
-                  <p className="text-body-large">
-                    Specialty coffee in India has grown faster than the tools to
-                    understand it. ICB exists to reduce noise, improve
-                    discovery, and build a long-term public resource.
-                  </p>
-                  <p>
-                    We are building infrastructure, not a campaign. Over time,
-                    we aim to document every region and estate, and serve as the
-                    definitive reference layer for the Indian coffee landscape.
-                  </p>
-                </Prose>
-              </div>
-            </div>
-          </Section>
-
-          {/* Section 6: Trust as a Feature */}
-          <Section
-            spacing="default"
-            className="border-t border-border/50 pt-16"
-          >
-            <Stack gap="12" className="items-center text-center">
-              <Stack gap="4" className="items-center">
-                <span className="text-micro font-bold uppercase tracking-[0.2em] text-accent">
-                  The Protocol
-                </span>
-                <h2 className="text-title">Transparency & Trust</h2>
-              </Stack>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full text-left">
-                {[
-                  {
-                    title: "No Commissions",
-                    desc: "Discovery is the goal, not a sales cut.",
-                  },
-                  {
-                    title: "No Sponsored Rankings",
-                    desc: "Scores are earned, never bought.",
-                  },
-                  {
-                    title: "No Native Ads",
-                    desc: "A clean interface focused on the bean.",
-                  },
-                ].map((item) => (
-                  <Stack
-                    gap="2"
-                    key={item.title}
-                    className="p-6 rounded-2xl border border-border/20 bg-muted/5 transition-colors hover:bg-muted/10"
-                  >
-                    <h3 className="text-heading">{item.title}</h3>
-                    <p className="text-caption text-muted-foreground">
-                      {item.desc}
-                    </p>
-                  </Stack>
-                ))}
-              </div>
-
-              <p className="text-body-large italic max-w-2xl text-muted-foreground">
-                &quot;Trust is a feature. We don’t optimize it away.&quot;
+      {/* How Discovery Works — cream ground; the spec card carries the surface */}
+      <Band ground="cream" maxWidth="6xl">
+        <Stack gap="8">
+          <Reveal>
+            <Stack gap="3" className="max-w-2xl">
+              <h2 className="text-title">How Discovery Works</h2>
+              <p className="text-body text-muted-foreground">
+                Three layers turn scattered brand pages into something you can
+                actually compare.
               </p>
             </Stack>
-          </Section>
+          </Reveal>
 
-          {/* Final Editorial Note */}
-          <div className="text-center py-12">
-            <p className="text-micro font-bold uppercase tracking-[0.2em] text-muted-foreground italic">
-              Built for the community, powered by data.
-            </p>
+          <div className="grid grid-cols-1 gap-x-10 gap-y-12 md:grid-cols-3">
+            {discoverySteps.map((step, i) => (
+              <Reveal key={step.num} delay={i * 0.06}>
+                <Stack gap="3">
+                  <div className="flex items-baseline gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="text-heading text-primary"
+                    >
+                      {step.num}
+                    </span>
+                    <h3 className="text-heading">{step.title}</h3>
+                  </div>
+                  <p className="text-body leading-relaxed text-muted-foreground">
+                    {step.body}
+                  </p>
+                </Stack>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Proof: the structured record every coffee is held to */}
+          <Reveal>
+            <div className="rounded-2xl border border-border/60 bg-card p-6 md:p-8">
+              <div className="mb-6 flex items-baseline justify-between gap-4">
+                <h3 className="text-heading">Every coffee, the same way</h3>
+                <span className="text-label">Sample record</span>
+              </div>
+              <dl className="grid grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-3">
+                {sampleRecord.map(([field, value]) => (
+                  <div key={field}>
+                    <dt className="text-label mb-1">{field}</dt>
+                    <dd className="text-body text-foreground">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </Reveal>
+        </Stack>
+      </Band>
+
+      {/* How Rankings Work / What Verified Means — warm band, prose only */}
+      <Band ground="warm" texture="grain" maxWidth="6xl">
+        <Reveal>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+            <Stack gap="6">
+              <h2 className="text-title">How Rankings Work</h2>
+              <Prose>
+                <p>
+                  There are no paid rankings on IndianCoffeeBeans. Coffee and
+                  roaster visibility is driven entirely by:
+                </p>
+                <ul>
+                  <li>Completeness of technical information</li>
+                  <li>Community interaction (ratings, reviews, saves)</li>
+                  <li>User-driven search and filter relevance</li>
+                </ul>
+                <p className="font-medium text-foreground">
+                  Paid partnerships do not influence ordering, scores, or
+                  recommendations.
+                </p>
+              </Prose>
+            </Stack>
+
+            <Stack gap="6">
+              <h2 className="text-title">What &quot;Verified&quot; Means</h2>
+              <Prose>
+                <p>
+                  Some roasters choose to become{" "}
+                  <strong>Verified Partners</strong>. This indicates an active
+                  partnership where they can claim and manage their profile and
+                  support the platform financially.
+                </p>
+                <p className="italic text-muted-foreground">
+                  Verification does not mean:
+                </p>
+                <ul>
+                  <li>Better rankings or boosted visibility</li>
+                  <li>Preferential treatment in search</li>
+                  <li>Editorial endorsement or quality guarantee</li>
+                </ul>
+              </Prose>
+            </Stack>
+          </div>
+        </Reveal>
+      </Band>
+
+      {/* For Whom — cream band, surface cards pop */}
+      <Band ground="cream" maxWidth="7xl">
+        <Stack gap="8" className="items-center text-center">
+          <Reveal>
+            <h2 className="text-title">For Whom is ICB Built?</h2>
+          </Reveal>
+
+          <div className="grid w-full grid-cols-1 gap-6 text-left sm:grid-cols-2 lg:grid-cols-4">
+            {audiences.map((item, i) => (
+              <Reveal key={item.title} delay={i * 0.06}>
+                <Stack
+                  gap="2"
+                  className="h-full rounded-2xl border border-border/60 bg-card p-6"
+                >
+                  <h3 className="text-heading">{item.title}</h3>
+                  <p className="text-caption text-muted-foreground">
+                    {item.desc}
+                  </p>
+                </Stack>
+              </Reveal>
+            ))}
           </div>
         </Stack>
+      </Band>
+
+      {/* The Long View — warm band, prose only; carries the developer CTA */}
+      <Band
+        ground="warm"
+        texture="grain-coarse"
+        maxWidth="6xl"
+        className="py-16 md:py-24"
+      >
+        <Reveal>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <h2 className="text-title">The Long View</h2>
+            </div>
+            <div className="lg:col-span-7">
+              <Prose className="max-w-none">
+                <p className="text-body-large">
+                  Specialty coffee in India has grown faster than the tools to
+                  understand it. ICB exists to reduce noise, improve discovery,
+                  and build a long-term public resource.
+                </p>
+                <p>
+                  We are building infrastructure, not a campaign. Over time, we
+                  aim to document every region and estate, and serve as the
+                  definitive reference layer for the Indian coffee landscape.
+                </p>
+                <p>
+                  That data layer is open by design.{" "}
+                  <Link
+                    href="/developers"
+                    className="font-medium text-primary hover:underline"
+                  >
+                    Explore the developer API
+                  </Link>{" "}
+                  to build on the same structured records that power discovery
+                  here.
+                </p>
+              </Prose>
+            </div>
+          </div>
+        </Reveal>
+      </Band>
+
+      {/* Transparency & Trust — cream band, surface cards pop */}
+      <Band ground="cream" maxWidth="6xl">
+        <Stack gap="8" className="items-center text-center">
+          <Reveal>
+            <h2 className="text-title">Transparency &amp; Trust</h2>
+          </Reveal>
+
+          <div className="grid w-full grid-cols-1 gap-6 text-left md:grid-cols-3">
+            {trustPledges.map((item, i) => (
+              <Reveal key={item.title} delay={i * 0.06}>
+                <Stack
+                  gap="2"
+                  className="h-full rounded-2xl border border-border/60 bg-card p-6 transition-colors hover:border-border"
+                >
+                  <h3 className="text-heading">{item.title}</h3>
+                  <p className="text-caption text-muted-foreground">
+                    {item.desc}
+                  </p>
+                </Stack>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal>
+            <p className="max-w-2xl text-body-large italic text-muted-foreground">
+              &quot;Trust is a feature. We don&rsquo;t optimize it away.&quot;
+            </p>
+          </Reveal>
+        </Stack>
+      </Band>
+
+      {/* Closing note */}
+      <div className="container mx-auto px-4 py-12 text-center">
+        <p className="text-label text-muted-foreground">
+          Built for the community, powered by data.
+        </p>
       </div>
     </>
   );
