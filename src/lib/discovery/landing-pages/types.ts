@@ -156,6 +156,17 @@ export type BeanTypeCharacteristic = {
   value: string;
 };
 
+export type BeanTypeVarietyHighlight = {
+  name: string;
+  cup: string;
+  cultivation: string;
+};
+
+export type BeanTypeMistake = {
+  mistake: string;
+  fix: string;
+};
+
 export type BeanTypeProfileConfig = {
   /** Quick-reference stat cards (e.g. Caffeine, Body, Acidity, Best for) */
   characteristics: BeanTypeCharacteristic[];
@@ -176,6 +187,16 @@ export type BeanTypeProfileConfig = {
     relatedSlugs: string[];
     note: string;
   };
+  /** Key varieties for this species — Arabica, Robusta */
+  varietyHighlights?: BeanTypeVarietyHighlight[];
+  /** Which roast levels pair best with this bean type */
+  roastPairing?: {
+    best: string[];
+    works: string[];
+    avoid: string;
+  };
+  /** Common brewing mistakes specific to this bean type */
+  commonMistakes?: BeanTypeMistake[];
   icbDataNote: string;
 };
 
