@@ -4,6 +4,11 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
+        userAgent: "CCBot",
+        allow: ["/", "/api/"],
+        disallow: ["/dashboard/", "/auth/"],
+      },
+      {
         userAgent: "*",
         allow: "/",
         disallow: ["/dashboard/", "/api/", "/auth/"],
