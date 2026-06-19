@@ -201,6 +201,32 @@ export const beanTypePages: LandingPageConfig[] = [
         relatedSlugs: ["arabica", "blends", "chicory-mixes"],
         note: "Robusta brings body and nearly double the caffeine where Arabica brings aromatics and acidity — they're complementary rather than competing. Most Indian blends combine the two: Arabica for aroma and sweetness, Robusta for strength and crema. With chicory added, a Robusta-dominant blend forms the classic South Indian filter coffee base. If you want Robusta's body but more nuance, look for fine or specialty-processed Robusta lots.",
       },
+      varietyHighlights: [
+        {
+          name: "S274 (SLN 274)",
+          cup: "Full-bodied, chocolatey, and low in acidity with thick crema — the benchmark Indian Robusta flavour.",
+          cultivation:
+            "India's most widely planted Robusta selection, developed at the Central Coffee Research Institute. Hardy, high-yielding, and drought-tolerant — the estate workhorse.",
+        },
+        {
+          name: "CxR (Congensis × Robusta)",
+          cup: "Smoother, sweeter, and rounder than standard Robusta, with less harshness — a clear step up in cup quality.",
+          cultivation:
+            "An interspecific hybrid bred at CCRI for finer cup, disease resistance, and vigour. Increasingly chosen by estates targeting fine Robusta.",
+        },
+        {
+          name: "Old Peradeniya",
+          cup: "Bold and heavy with a robust, earthy backbone — a traditional, full-bodied profile.",
+          cultivation:
+            "A heritage Robusta selection (named after Peradeniya, Sri Lanka) still grown on older South Indian estates.",
+        },
+        {
+          name: "Congensis",
+          cup: "Milder and softer than Robusta, with gentler body — usually grown alongside or blended with Robusta rather than on its own.",
+          cultivation:
+            "Coffea congensis, a close Robusta relative and the other parent of CxR. Suited to low, wet, even flood-prone ground.",
+        },
+      ],
       roastPairing: {
         best: ["medium-roast", "medium-dark-roast"],
         works: ["dark-roast"],

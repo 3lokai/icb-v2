@@ -1,12 +1,12 @@
 import { unstable_cache } from "next/cache";
-import { createServiceRoleClient } from "@/lib/supabase/server";
+import { createAnonServerClient } from "@/lib/supabase/server";
 import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
 import type { CoffeeFilterMeta } from "@/types/coffee-types";
 
 export type PublicDirectoryTotals = CoffeeFilterMeta["totals"];
 
 async function fetchPublicDirectoryTotalsImpl(): Promise<PublicDirectoryTotals> {
-  const supabase = await createServiceRoleClient();
+  const supabase = createAnonServerClient();
 
   const [coffeesResult, roastersResult] = await Promise.all([
     supabase

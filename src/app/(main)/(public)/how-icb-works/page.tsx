@@ -1,5 +1,6 @@
 // src/app/(main)/(public)/how-icb-works/page.tsx
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Accent } from "@/components/primitives/accent";
@@ -56,15 +57,6 @@ const discoverySteps = [
     title: "Signal-Based Filters",
     body: 'Discovery is built around how people actually choose coffee: brew method, flavor, roast, and region. There are no "featured because paid" shortcuts.',
   },
-];
-
-const sampleRecord = [
-  ["Origin", "Single Estate"],
-  ["Region", "Chikmagalur"],
-  ["Process", "Washed"],
-  ["Roast", "Medium-Light"],
-  ["Profile", "Citrus · Honey · Florals"],
-  ["Brew", "Pour-over · Aeropress"],
 ];
 
 const audiences = [
@@ -182,22 +174,50 @@ export default function HowICBWorksPage() {
             ))}
           </div>
 
-          {/* Proof: the structured record every coffee is held to */}
+          {/* Proof: a real coffee record, straight from a live product page */}
           <Reveal>
-            <div className="rounded-2xl border border-border/60 bg-card p-6 md:p-8">
-              <div className="mb-6 flex items-baseline justify-between gap-4">
-                <h3 className="text-heading">Every coffee, the same way</h3>
-                <span className="text-label">Sample record</span>
+            <figure className="mx-auto max-w-3xl space-y-4">
+              <figcaption className="flex items-baseline justify-between gap-4">
+                <h3 className="text-heading">
+                  What one coffee record looks like
+                </h3>
+                <span className="text-label">From a live product page</span>
+              </figcaption>
+
+              <div className="overflow-hidden rounded-xl border border-border/60 shadow-sm">
+                <Image
+                  src="/images/screens/production-details.avif"
+                  alt="A coffee's production details on ICB — roast, process, region, species, suggested brew methods, and tags, each as a structured field."
+                  width={884}
+                  height={379}
+                  className="h-auto w-full"
+                  sizes="(min-width: 768px) 48rem, 100vw"
+                />
               </div>
-              <dl className="grid grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-3">
-                {sampleRecord.map(([field, value]) => (
-                  <div key={field}>
-                    <dt className="text-label mb-1">{field}</dt>
-                    <dd className="text-body text-foreground">{value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="overflow-hidden rounded-xl border border-border/60 shadow-sm">
+                  <Image
+                    src="/images/screens/flavor-map.avif"
+                    alt="The flavor profile radar for a coffee, mapping acidity, sweetness, body, bitterness, aftertaste, and clarity."
+                    width={982}
+                    height={573}
+                    className="h-auto w-full"
+                    sizes="(min-width: 768px) 24rem, 100vw"
+                  />
+                </div>
+                <div className="overflow-hidden rounded-xl border border-border/60 shadow-sm">
+                  <Image
+                    src="/images/screens/pricing-details.avif"
+                    alt="Pricing and availability for a coffee — bag size, grind setting for each brew method, current price, and stock status."
+                    width={764}
+                    height={372}
+                    className="h-auto w-full"
+                    sizes="(min-width: 768px) 24rem, 100vw"
+                  />
+                </div>
+              </div>
+            </figure>
           </Reveal>
         </Stack>
       </Band>

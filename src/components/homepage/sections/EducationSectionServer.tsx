@@ -17,6 +17,11 @@ const EducationSection = dynamic(
 
 /** Async server boundary: fetches latest articles from Sanity (the slowest homepage fetch). */
 export default async function EducationSectionServer() {
-  const latestArticles = await client.fetch<Article[]>(LATEST_ARTICLES_QUERY);
+  let latestArticles: Article[] = [];
+  try {
+    latestArticles = await client.fetch<Article[]>(LATEST_ARTICLES_QUERY);
+  } catch (error) {
+    console.error("[EducationSectionServer] LATEST_ARTICLES_QUERY", error);
+  }
   return <EducationSection articles={latestArticles} />;
 }

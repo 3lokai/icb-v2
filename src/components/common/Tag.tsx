@@ -25,13 +25,11 @@ export default function Tag({
         "inline-flex items-center rounded-full transition-colors",
         // Variant styles based on your mockup
         variant === "outline" &&
-          "border border-border/60 bg-background/80 text-foreground shadow-sm backdrop-blur-sm",
+          "border border-border/60 bg-background text-foreground shadow-sm",
         variant === "filled" &&
-          "bg-secondary/90 text-secondary-foreground shadow-sm backdrop-blur-sm",
-        variant === "brown" &&
-          "bg-accent/90 text-accent-foreground shadow-sm backdrop-blur-sm",
-        variant === "muted" &&
-          "bg-muted/80 text-muted-foreground shadow-sm backdrop-blur-sm",
+          "bg-secondary text-secondary-foreground shadow-sm",
+        variant === "brown" && "bg-accent text-accent-foreground shadow-sm",
+        variant === "muted" && "bg-muted text-muted-foreground shadow-sm",
         // Keep size typography after variant color so twMerge preserves text-overline/text-label/text-micro.
         size === "default" && "px-2.5 py-0.5 text-overline",
         size === "small" && "px-2 py-0.5 text-label",

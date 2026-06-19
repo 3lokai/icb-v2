@@ -21,6 +21,8 @@ import {
 } from "@/lib/discovery/landing-pages";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/common/Icon";
+import { BeanTypeComparisonGrid } from "@/components/discovery/BeanTypeComparisonGrid";
+import { BEAN_TYPE_NAV_SLUGS } from "@/lib/discovery/landing-pages/bean-species-visuals";
 
 type BeanTypeProfileSectionProps = {
   profile: BeanTypeProfileConfig;
@@ -206,6 +208,11 @@ export function BeanTypeProfileSection({
             </Stack>
           </div>
         </div>
+
+        {/* 2b. Bean type comparison grid — species images + category links */}
+        {BEAN_TYPE_NAV_SLUGS.has(slug) && (
+          <BeanTypeComparisonGrid activeSlug={slug} />
+        )}
 
         {/* 3. Variety highlights — cards for key varieties */}
         {varietyHighlights && varietyHighlights.length > 0 && (
