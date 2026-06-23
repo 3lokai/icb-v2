@@ -6,17 +6,18 @@ export const priceBucketPages: LandingPageConfig[] = [
     slug: "budget",
     type: "price_bucket",
     h1: "Best Coffees Under ₹500 in India",
+    entityLabel: "Under ₹500",
     displayRange: "Under ₹500",
     ctaLabel: "Browse all coffees under ₹500",
     intro:
-      "Discover excellent Indian specialty coffees under ₹500. Quality coffee doesn't have to break the bank — find great value options that deliver exceptional flavour from India's best roasters.",
+      "Good Indian specialty coffee under ₹500 is more common than the price suggests. This is the value end of the catalogue — single-origin daily drinkers and approachable blends from established roasters, every one community-rated and normalized to 250g so you can compare honestly before you buy.",
     headerNudge:
-      "Great value doesn't mean compromising on quality — these coffees deliver exceptional flavour.",
+      "Under ₹500 buys honest daily-drinker coffee — clean blends and dependable single origins, not leftovers.",
     gridNudge:
       "Look for 250g packs and coffees from well-known Indian origins for the best value.",
     heroBadge: "Best Value",
     utilityNudge:
-      "Proper brewing technique maximizes flavour regardless of price point.",
+      "Dial in your grind and ratio — technique closes most of the gap between a ₹400 bag and a ₹900 one.",
 
     priceBucketProfile: {
       // What this price range actually gets you
@@ -62,11 +63,10 @@ export const priceBucketPages: LandingPageConfig[] = [
       "250g bags often give the best per-cup value when you compare normalized prices.",
       "Use the directory filters to match roast and brew method to your setup — no need to overspend to get a great cup.",
     ],
-    faqOverline: "Budget Coffee Queries",
+    faqOverline: "Under ₹500",
     faqTitle: "Finding *Great Value* Coffee",
-    faqDescription:
-      "Common questions about finding quality specialty coffee on a budget.",
-    faqBadge: "Smart Shopping",
+    faqDescription: "How to find genuinely good coffee without overspending.",
+    faqBadge: "Price guide",
     filter: {
       max_price: 500,
     },
@@ -106,24 +106,31 @@ export const priceBucketPages: LandingPageConfig[] = [
       href: "/tools/coffee-calculator",
       ctaText: "Try Calculator",
     },
-    related: ["light-roast", "medium-roast", "mid-range", "washed"],
+    related: [
+      "light-roast",
+      "medium-roast",
+      "mid-range",
+      "under-1000",
+      "washed",
+    ],
   },
 
   {
     slug: "mid-range",
     type: "price_bucket",
     h1: "Best Coffees Between ₹500–₹1000 in India",
+    entityLabel: "₹500–₹1000",
     displayRange: "₹500–₹1000",
     ctaLabel: "Browse all mid-range coffees",
     intro:
-      "Explore premium Indian specialty coffees in the ₹500–₹1000 range — where processing gets interesting, estate provenance gets specific, and the community ratings get competitive.",
+      "The ₹500–₹1000 range is where Indian specialty coffee gets interesting — processing turns experimental, estate provenance gets specific, and the community ratings turn genuinely competitive. Most of the catalogue's standout single origins live in this band.",
     headerNudge:
-      "Where unique processing methods and exceptional quality meet.",
+      "The range where naturals, honeys, and experimental ferments start showing up in force.",
     gridNudge:
       "These coffees often feature natural, honey, or anaerobic processing for distinctive flavours.",
     heroBadge: "Premium Selection",
     utilityNudge:
-      "Store properly and brew with care to fully appreciate these premium coffees.",
+      "Keep the beans airtight and out of the light, and brew them fresh — provenance this specific earns the care.",
 
     priceBucketProfile: {
       whatYouGet:
@@ -164,11 +171,10 @@ export const priceBucketPages: LandingPageConfig[] = [
       "Limited lots often land in this band — compare tasting notes across roasters before you commit.",
       "Check freshness and brew recipes on the label — premium beans reward careful grinding and water temperature.",
     ],
-    faqOverline: "Premium Coffee Queries",
+    faqOverline: "₹500–₹1000",
     faqTitle: "Exploring *Premium* Coffee",
-    faqDescription:
-      "Common questions about premium specialty coffees and what makes them special.",
-    faqBadge: "Expert Guide",
+    faqDescription: "What the extra spend actually buys you at this tier.",
+    faqBadge: "Price guide",
     filter: {
       min_price: 500,
       max_price: 1000,
@@ -209,6 +215,122 @@ export const priceBucketPages: LandingPageConfig[] = [
       href: "/tools/coffee-calculator",
       ctaText: "Try Calculator",
     },
-    related: ["natural", "honey", "light-roast", "budget"],
+    related: ["natural", "honey", "light-roast", "budget", "under-1000"],
+  },
+
+  {
+    slug: "under-1000",
+    type: "price_bucket",
+    h1: "Best Coffee Under ₹1000 in India",
+    entityLabel: "Under ₹1000",
+    displayRange: "Under ₹1000",
+    seoTitle: "Best Coffee Under ₹1000 in India",
+    metaDescription:
+      "Compare the best Indian specialty coffees under ₹1000, ranked by community ratings. Filter by roast, process, region and brew method — real normalized prices.",
+    ctaLabel: "Browse all coffees under ₹1000",
+    intro:
+      "Find the best coffee under ₹1000 in India — the full spectrum of specialty, from great-value daily drinkers to high-altitude single-estate lots. Every coffee here is community-rated and price-normalized to 250g, so you can compare like for like before you buy.",
+    headerNudge:
+      "₹1000 covers almost the entire Indian specialty range — value blends and experimental microlots both live here.",
+    gridNudge:
+      "Sorted by community rating. Look for clear origin, a recent roast date, and processing notes to spot the standouts.",
+    heroBadge: "Best Rated Under ₹1000",
+    utilityNudge:
+      "Dial in your ratio and grind to get the most from whatever you pick in this range.",
+
+    priceBucketProfile: {
+      whatYouGet:
+        "Under ₹1000 (normalized to 250g) is where almost all of Indian specialty coffee lives. At the lower end you get clean, well-processed daily drinkers — medium roasts from Karnataka estates and approachable single origins. As you move toward ₹1000 you unlock high-altitude single-estate lots, named varieties (SL-795, Chandragiri, Cauvery), and experimental processing (honey, anaerobic natural, extended fermentation). The best-rated coffees in the entire ICB catalogue sit inside this band — which is exactly why 'under ₹1000' is the sweet spot most buyers should start from.",
+      buyingGuide: [
+        {
+          tip: "Decide your sub-tier before you shop under ₹1000",
+          detail:
+            "₹500–₹700 buys reliable, clean single origins and estate blends — your everyday cup. ₹700–₹1000 is where experimental processing and named-varietal microlots appear. Knowing which half you're shopping in keeps expectations (and value judgements) honest.",
+        },
+        {
+          tip: "Prioritise roast date and clear origin",
+          detail:
+            "Freshness beats price at every tier. A ₹450 coffee roasted last week often outdrinks an ₹900 coffee that's two months old. Favour labels that print the roast date plus estate, region, and process — specificity is the strongest quality signal under ₹1000.",
+        },
+        {
+          tip: "Use community ratings to break ties",
+          detail:
+            "This band has the highest rating density in the catalogue, so you rarely have to guess. When two coffees look similar on paper, compare their ICB ratings and tasting notes side by side rather than trusting marketing copy.",
+        },
+      ],
+      whatToExpect: {
+        roastLevels: ["medium-roast", "light-medium-roast", "light-roast"],
+        processes: ["washed", "natural", "honey", "anaerobic"],
+        roastNote:
+          "Medium and light-medium roasts are the backbone of this range — most roasters' everyday offerings. Lighter roasts cluster toward the ₹1000 end, where producers roast to preserve terroir and processing investment.",
+        processNote:
+          "Washed and natural dominate the value tier. Honey and anaerobic lots become common as you approach ₹1000 — these add cost and complexity, and producers price accordingly. The best washed estate lots also live near the top of this band.",
+      },
+      priceNormalizationNote:
+        "All prices are normalized to a 250g equivalent across pack sizes, so a 100g bag at ₹300 and a 500g bag at ₹1,500 both appear as ₹600/250g. 'Under ₹1000' here means the normalized 250g price — the total you pay on the roaster's site depends on the pack size you choose.",
+      icbDataNote:
+        "Most of the ICB catalogue — and the highest concentration of top-rated coffees — falls under ₹1000 normalized. Community rating density is also highest here, giving you the most comparison data before you buy. Naturals and honeys from Chikmagalur and Coorg estates consistently top the ratings in this range.",
+    },
+
+    valueTips: [
+      "Match the sub-tier to the occasion: ₹500–₹700 for daily brewing, ₹700–₹1000 for exploring processing and varieties.",
+      "Sort by rating, then filter by your brew method and roast level to shortlist quickly.",
+      "Check the roast date and buy 250g where you can — it usually gives the best per-cup value in this range.",
+    ],
+    faqOverline: "Best Coffee Under ₹1000",
+    faqTitle: "Choosing Coffee *Under ₹1000*",
+    faqDescription:
+      "Picking well across the full ₹1000 range, from daily drinkers to standout lots.",
+    faqBadge: "Price guide",
+    filter: {
+      max_price: 1000,
+    },
+    sortOrder: "rating_desc",
+    faqs: [
+      {
+        question: "What is the best coffee under ₹1000 in India?",
+        answer:
+          "The best coffee under ₹1000 depends on how you brew, but the highest community-rated lots in this range are typically high-altitude Karnataka arabicas — washed SL-795 and natural or honey-processed lots from Chikmagalur and Coorg estates. Sort this page by rating and filter to your brew method to see the current top picks, all normalized to a 250g price.",
+      },
+      {
+        question: "Is there a big difference between ₹500–₹700 and ₹700–₹1000?",
+        answer:
+          "Yes. ₹500–₹700 gets you clean, well-processed single origins and estate blends — excellent everyday coffee. ₹700–₹1000 is where experimental processing (honey, anaerobic, extended fermentation), named varieties, and limited harvest lots appear. Both are great value; they just serve different goals.",
+      },
+      {
+        question: "What is SL-795 and why does it matter?",
+        answer:
+          "SL-795 is India's most celebrated arabica variety, developed at Scott Laboratories in the 1940s and still widely grown in Karnataka. At high altitude with washed processing it delivers jasmine, stone fruit, and bright acidity that's world-competitive — and many of the best-rated Indian coffees under ₹1000 are SL-795.",
+      },
+      {
+        question: "How should I store coffee to keep it fresh?",
+        answer:
+          "Keep beans in an airtight container away from light, heat, and moisture, and grind just before brewing. Aim to use within 2–3 weeks of the roast date for peak flavour — the lighter, more delicate lots near the ₹1000 end are especially sensitive to staleness.",
+      },
+      {
+        question: "Why does the price differ from the roaster's site?",
+        answer:
+          "ICB normalizes every price to a 250g equivalent for fair comparison across pack sizes. The actual amount you pay on the roaster's site depends on the pack size you choose — a 500g bag costs more in total but often the same or less per 250g.",
+      },
+    ],
+    utilityCard: {
+      type: "calculator",
+      title: "Coffee Calculator",
+      description:
+        "Calculate the perfect coffee-to-water ratio for any coffee in this range.",
+      href: "/tools/coffee-calculator",
+      ctaText: "Try Calculator",
+    },
+    learnLinks: [
+      {
+        label: "Indian coffee varieties: S795, Chandragiri & Catuai",
+        href: "/learn/indian-coffee-varietals-s795-chandragiri-catuai-selection-9",
+      },
+      {
+        label: "Indian coffee regions: how geography shapes flavour",
+        href: "/learn/indian-coffee-regions-geography-shapes-flavor",
+      },
+    ],
+    related: ["budget", "mid-range", "light-roast", "natural"],
   },
 ];

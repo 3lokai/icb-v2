@@ -27,7 +27,7 @@ type RegionDetailSectionProps = {
 function regionSlugToLabel(slug: string): string {
   const page = getLandingPageConfig(slug);
   if (!page) return slug;
-  return page.h1.replace(" Coffee in India", "").replace(" Coffee", "").trim();
+  return page.entityLabel;
 }
 
 export function RegionDetailSection({

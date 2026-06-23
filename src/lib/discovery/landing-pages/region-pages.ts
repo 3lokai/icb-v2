@@ -8,7 +8,8 @@ export const regionPages: LandingPageConfig[] = [
     slug: "chikmagalur",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Chikmagalur Coffee in India",
+    h1: "Best Chikmagalur Coffee in India",
+    entityLabel: "Chikmagalur",
     intro:
       "Discover specialty coffees from Chikmagalur — Karnataka's historic coffee heartland, home to India's oldest arabica plantations, high-altitude estates, and the variety that put Indian coffee on the world map.",
     headerNudge:
@@ -114,7 +115,8 @@ export const regionPages: LandingPageConfig[] = [
     slug: "baba-budangiri",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Baba Budangiri Coffee in India",
+    h1: "Best Baba Budangiri Coffee in India",
+    entityLabel: "Baba Budangiri",
     intro:
       "Discover specialty coffees from Baba Budangiri — the highland range within Chikmagalur district that gave India its coffee origin story, and still produces some of the country's highest-rated lots.",
     headerNudge:
@@ -221,7 +223,8 @@ export const regionPages: LandingPageConfig[] = [
     slug: "coorg",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Coorg Coffee in India",
+    h1: "Best Coorg Coffee in India",
+    entityLabel: "Coorg",
     intro:
       "Browse Indian specialty coffees from Coorg (Kodagu) — lush Western Ghats hills, established estates, and coffees spanning classic washed arabica to modern experimental processing.",
     headerNudge:
@@ -325,7 +328,8 @@ export const regionPages: LandingPageConfig[] = [
     slug: "araku",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Araku Valley Coffee in India",
+    h1: "Best Araku Valley Coffee in India",
+    entityLabel: "Araku Valley",
     intro:
       "Find specialty coffees from Araku Valley — Andhra Pradesh's highland coffee origin in the Eastern Ghats, known for bright, floral lots from tribal and cooperative producers.",
     headerNudge:
@@ -430,7 +434,8 @@ export const regionPages: LandingPageConfig[] = [
     slug: "nilgiris",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Nilgiris Coffee in India",
+    h1: "Best Nilgiris Coffee in India",
+    entityLabel: "Nilgiris",
     intro:
       "Explore coffees from the Nilgiris — Tamil Nadu's Blue Mountain highlands, with cool-climate arabica, established estates, and a distinct terroir that sets it apart from Karnataka origins.",
     headerNudge:
@@ -535,7 +540,8 @@ export const regionPages: LandingPageConfig[] = [
     slug: "shevaroy-hills",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Shevaroy Hills Coffee in India",
+    h1: "Best Shevaroy Hills Coffee in India",
+    entityLabel: "Shevaroy Hills",
     intro:
       "Find specialty coffees from the Shevaroy Hills — Tamil Nadu's largest coffee-growing region, with diverse estates, experimental processing, and a profile distinct from Karnataka's mainstream origins.",
     headerNudge:
@@ -643,7 +649,8 @@ export const regionPages: LandingPageConfig[] = [
     slug: "wayanad",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Wayanad Coffee in India",
+    h1: "Best Wayanad Coffee in India",
+    entityLabel: "Wayanad",
     intro:
       "Discover specialty coffees from Wayanad — Kerala's hilly northern district where spice-country terroir meets a growing specialty coffee presence.",
     headerNudge:
@@ -747,7 +754,8 @@ export const regionPages: LandingPageConfig[] = [
     slug: "koraput",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Koraput Coffee in India",
+    h1: "Best Koraput Coffee in India",
+    entityLabel: "Koraput",
     intro:
       "Discover specialty coffees from Koraput — Odisha's Eastern Ghats highland origin, where tribal smallholder farming and emerging specialty production are creating India's newest coffee story.",
     headerNudge:
@@ -851,7 +859,8 @@ export const regionPages: LandingPageConfig[] = [
     slug: "northeast-india",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Northeast India Coffee",
+    h1: "Best Northeast India Coffee",
+    entityLabel: "Northeast India",
     intro:
       "Browse Indian specialty coffees from the Northeast — distinct hill terroirs from Meghalaya's Garo and Khasi Hills, beyond the traditional Western Ghats coffee belt.",
     headerNudge:

@@ -45,7 +45,7 @@ function brewMethodImageBase(slug: string): string {
 function roastLinkLabel(slug: string): string {
   const page = getLandingPageConfig(slug);
   if (!page) return slug;
-  return page.teaserTitle ?? page.h1;
+  return page.teaserTitle ?? page.entityLabel.replace(/\s*Roast$/, "");
 }
 
 function RoastPairingLinks({

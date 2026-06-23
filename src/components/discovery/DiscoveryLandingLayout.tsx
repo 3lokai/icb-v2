@@ -1,9 +1,18 @@
 import { Accent } from "@/components/primitives/accent";
 // src/components/discovery/DiscoveryLandingLayout.tsx
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
+import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Stack } from "@/components/primitives/stack";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { FAQSection } from "@/components/common/FAQ";
 import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeGridTeaser } from "./CoffeeGridTeaser";
@@ -63,25 +72,7 @@ function getDiscoveryPageLabel(config: LandingPageConfig): string {
   if (config.type === "price_bucket" && config.displayRange) {
     return config.displayRange;
   }
-  if (config.type === "brew_method") {
-    return config.h1
-      .replace("Best Coffees for ", "")
-      .replace(" in India", "")
-      .trim();
-  }
-  if (config.type === "roast_level") {
-    return config.h1.replace(" Coffee in India", "").trim();
-  }
-  if (config.type === "process" || config.type === "region") {
-    return config.h1.replace(" Coffee in India", "").trim();
-  }
-  if (config.type === "bean_type") {
-    return config.h1
-      .replace(" Coffee in India", "")
-      .replace(" in India", "")
-      .trim();
-  }
-  return config.h1;
+  return config.entityLabel;
 }
 
 function buildDiscoveryCoffeeListItems(
@@ -91,15 +82,44 @@ function buildDiscoveryCoffeeListItems(
   return coffees
     .filter((c) => c.slug && c.roaster_slug && c.name)
     .slice(0, 20)
-    .map((c, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      item: {
+    .map((c, i) => {
+      const product: Record<string, unknown> = {
         "@type": "Product",
         name: c.name,
         url: `${baseUrl}/roasters/${c.roaster_slug}/coffees/${c.slug}`,
-      },
-    }));
+      };
+
+      if (c.roaster_name) {
+        product.brand = { "@type": "Brand", name: c.roaster_name };
+      }
+      if (c.image_url) {
+        product.image = c.image_url;
+      }
+      if (typeof c.best_normalized_250g === "number") {
+        product.offers = {
+          "@type": "Offer",
+          price: c.best_normalized_250g,
+          priceCurrency: "INR",
+          availability:
+            (c.in_stock_count ?? 0) > 0
+              ? "https://schema.org/InStock"
+              : "https://schema.org/OutOfStock",
+        };
+      }
+      if (typeof c.rating_avg === "number" && c.rating_count > 0) {
+        product.aggregateRating = {
+          "@type": "AggregateRating",
+          ratingValue: c.rating_avg,
+          reviewCount: c.rating_count,
+        };
+      }
+
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        item: product,
+      };
+    });
 }
 
 /**
@@ -123,12 +143,15 @@ export async function DiscoveryLandingLayout({
               : "Bean Type";
   const pageLabel = getDiscoveryPageLabel(config);
   const canonical = `${BASE_URL}${discoveryPagePath(config.slug)}`;
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: BASE_URL },
-    { name: "Coffees", url: `${BASE_URL}/coffees` },
-    { name: categoryLabel, url: `${BASE_URL}/coffees` },
-    { name: pageLabel, url: canonical },
-  ]);
+  const crumbs = [
+    { name: "Home", url: BASE_URL, href: "/" },
+    { name: "Coffees", url: `${BASE_URL}/coffees`, href: "/coffees" },
+    { name: categoryLabel, url: `${BASE_URL}/coffees`, href: "/coffees" },
+    { name: pageLabel, url: canonical, href: discoveryPagePath(config.slug) },
+  ];
+  const breadcrumbSchema = generateBreadcrumbSchema(
+    crumbs.map(({ name, url }) => ({ name, url }))
+  );
 
   const coffeeResult = await fetchCoffeesCached(
     config.filter,
@@ -200,6 +223,31 @@ export async function DiscoveryLandingLayout({
         backgroundImage={backgroundImage}
         rightSideContent={rightSideContent}
       />
+
+      {/* Breadcrumbs - visual nav mirroring the BreadcrumbList schema */}
+      <div className="mx-auto max-w-6xl w-full px-4 md:px-0 pt-6">
+        <Breadcrumb>
+          <BreadcrumbList>
+            {crumbs.map((crumb, i) => {
+              const isLast = i === crumbs.length - 1;
+              return (
+                <Fragment key={crumb.href}>
+                  <BreadcrumbItem>
+                    {isLast ? (
+                      <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
+                    ) : (
+                      <BreadcrumbLink asChild>
+                        <Link href={crumb.href}>{crumb.name}</Link>
+                      </BreadcrumbLink>
+                    )}
+                  </BreadcrumbItem>
+                  {!isLast && <BreadcrumbSeparator />}
+                </Fragment>
+              );
+            })}
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
 
       {/* Header Nudge - Subtle guidance under header */}
       {config.headerNudge && (
@@ -342,6 +390,27 @@ export async function DiscoveryLandingLayout({
 
         {config.type === "roast_level" && (
           <RoastScale currentRoastSlug={config.slug} />
+        )}
+
+        {/* Related reading - contextual in-body links to /learn articles */}
+        {config.learnLinks && config.learnLinks.length > 0 && (
+          <div className="py-8 md:py-10 px-4 md:px-0 mx-auto max-w-6xl w-full">
+            <p className="text-micro text-muted-foreground/60 uppercase tracking-widest font-medium mb-3">
+              Related reading
+            </p>
+            <ul className="flex flex-col gap-2">
+              {config.learnLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    className="text-body text-accent underline-offset-4 hover:underline"
+                    href={link.href}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
 
         {/* 4. FAQ Section */}

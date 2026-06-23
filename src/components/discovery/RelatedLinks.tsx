@@ -26,7 +26,7 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
       return {
         slug,
         title: config.h1,
-        teaserTitle: config.teaserTitle || config.h1,
+        teaserTitle: config.teaserTitle || config.entityLabel,
         teaserDescription: config.teaserDescription || config.intro,
         type: config.type as LandingPageType,
       };

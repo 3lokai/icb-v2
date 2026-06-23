@@ -6,25 +6,26 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "light-roast",
     type: "roast_level",
-    h1: "Light Roast Coffee in India",
+    h1: "Top Light Roast Coffee in India",
+    entityLabel: "Light Roast",
     intro:
-      "Discover Indian specialty coffees roasted light to highlight origin characteristics, bright acidity, and delicate flavor notes. The least processed roast — and the most expressive of where the coffee came from.",
+      "Light roast is where a coffee tells you most about where it grew. Stopped not long after first crack, it keeps the bright acidity, florals, and delicate origin notes that darker roasting burns away — the least developed roast, and the most expressive of its terroir.",
     headerNudge:
       "Best for those who love bright, tea-like coffees with complex origin notes.",
-    teaserTitle: "Top Rated Light Roasts",
+    teaserTitle: "The *light* end of the spectrum",
     teaserDescription:
       "Bright, acidic, and complex coffees roasted to preserve origin characteristics.",
     gridNudge:
       "Pour-over methods like V60 and AeroPress really make these coffees sing.",
     heroBackgroundImage: "/images/discovery/light-roast-hero.avif",
-    heroBadge: "Curated Selection",
+    heroBadge: "Bright & Expressive",
     utilityNudge:
       "Use higher water temperatures (95-100°C) to fully extract light roast complexity.",
-    faqOverline: "Light Roast Queries",
+    faqOverline: "Light roast",
     faqTitle: "Understanding *Light Roast* Coffee",
     faqDescription:
-      "Common questions about light roast coffees and how to brew them perfectly.",
-    faqBadge: "Knowledge Base",
+      "What light roast tastes like, and how to brew it without sourness.",
+    faqBadge: "Roast level",
 
     roastProfile: {
       // Visual characteristics
@@ -121,25 +122,25 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "light-medium-roast",
     type: "roast_level",
-    h1: "Light-Medium Roast Coffee in India",
+    h1: "Top Light-Medium Roast Coffee in India",
+    entityLabel: "Light-Medium Roast",
     intro:
-      "Explore Indian specialty coffees roasted at light-medium levels — a balance of origin clarity and approachable sweetness. The everyday sweet spot for most pour-over drinkers.",
+      "Light-medium roast splits the difference: enough development for an approachable sweetness, not so much that origin clarity disappears. For most pour-over drinkers it's the everyday sweet spot — bright enough to stay interesting, round enough to stay easy.",
     headerNudge:
       "Great bridge roast if light feels too bright and medium feels too heavy.",
-    teaserTitle: "Top Rated Light-Medium Roasts",
+    teaserTitle: "The everyday *sweet spot*",
     teaserDescription:
       "Balanced cups with both origin character and gentle roast sweetness.",
     gridNudge:
       "Ideal for pour-over and AeroPress when you want clarity with a bit more body.",
     heroBackgroundImage: "/images/discovery/light-medium-roast-hero.avif",
-    heroBadge: "Curated Selection",
+    heroBadge: "Balanced & Sweet",
     utilityNudge:
       "Use standard brew temperatures (92–96°C) and tweak grind for sweetness.",
-    faqOverline: "Light-Medium Roast Queries",
+    faqOverline: "Light-medium roast",
     faqTitle: "Understanding *Light-Medium Roast* Coffee",
-    faqDescription:
-      "Common questions about light-medium roasts and when to choose them.",
-    faqBadge: "Knowledge Base",
+    faqDescription: "When to reach for light-medium, and how it brews.",
+    faqBadge: "Roast level",
 
     roastProfile: {
       visual: {
@@ -234,25 +235,26 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "medium-roast",
     type: "roast_level",
-    h1: "Medium Roast Coffee in India",
+    h1: "Top Medium Roast Coffee in India",
+    entityLabel: "Medium Roast",
     intro:
-      "Explore Indian specialty coffees with balanced medium roasts — the perfect harmony between origin character and roast development. Versatile, approachable, and consistently satisfying across any brew method.",
+      "Medium roast is the great all-rounder. Roast development and origin character meet in the middle — chocolate and caramel sweetness with a little brightness still showing — and it holds up across espresso, pour-over, and French Press alike. The safe first pick that's rarely the wrong one.",
     headerNudge:
       "The most versatile roast — works beautifully with any brewing method.",
-    teaserTitle: "Top Rated Medium Roasts",
+    teaserTitle: "The reliable *all-rounder*",
     teaserDescription:
       "Balanced chocolate, caramel, and mild acidity — the everyday sweet spot for most brew methods.",
     gridNudge:
       "Perfect for beginners and experts alike — forgiving and consistently delicious.",
     heroBackgroundImage: "/images/discovery/medium-roast-hero.avif",
-    heroBadge: "Curated Selection",
+    heroBadge: "Versatile All-Rounder",
     utilityNudge:
       "These coffees shine in espresso, pour-over, and French Press equally well.",
-    faqOverline: "Medium Roast Queries",
+    faqOverline: "Medium roast",
     faqTitle: "Understanding *Medium Roast* Coffee",
     faqDescription:
-      "Common questions about versatile medium roast coffees and their brewing methods.",
-    faqBadge: "Knowledge Base",
+      "Why medium roast suits any brewer, and how to get the most from it.",
+    faqBadge: "Roast level",
 
     roastProfile: {
       visual: {
@@ -352,25 +354,26 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "medium-dark-roast",
     type: "roast_level",
-    h1: "Medium-Dark Roast Coffee in India",
+    h1: "Top Medium-Dark Roast Coffee in India",
+    entityLabel: "Medium-Dark Roast",
     intro:
-      "Find Indian specialty coffees roasted to medium-dark — richer body, deeper sweetness, and bolder flavour while retaining some origin nuance. The roast for espresso lovers who want more than just bitterness.",
+      "Medium-dark roast trades a little origin nuance for richer body and deeper, rounder sweetness. It's the roast for espresso and milk drinks — bold and full without tipping into the smoky bitterness of a true dark roast.",
     headerNudge:
       "A great choice for fuller cups and lower perceived acidity without going fully dark.",
-    teaserTitle: "Top Rated Medium-Dark Roasts",
+    teaserTitle: "Bold without the *char*",
     teaserDescription:
       "Richer, rounder profiles for espresso, French Press, and milk drinks.",
     gridNudge:
       "Great for espresso and French Press when you want boldness without heavy smokiness.",
     heroBackgroundImage: "/images/discovery/medium-dark-roast-hero.avif",
-    heroBadge: "Curated Selection",
+    heroBadge: "Rich & Rounded",
     utilityNudge:
       "Lower temperatures (89–93°C) can help avoid bitterness on finer grinds.",
-    faqOverline: "Medium-Dark Roast Queries",
+    faqOverline: "Medium-dark roast",
     faqTitle: "Understanding *Medium-Dark Roast* Coffee",
     faqDescription:
-      "Common questions about medium-dark profiles and brewing choices.",
-    faqBadge: "Knowledge Base",
+      "What medium-dark brings to espresso and milk, and how to brew it.",
+    faqBadge: "Roast level",
 
     roastProfile: {
       visual: {
@@ -464,25 +467,26 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "dark-roast",
     type: "roast_level",
-    h1: "Dark Roast Coffee in India",
+    h1: "Top Dark Roast Coffee in India",
+    entityLabel: "Dark Roast",
     intro:
-      "Find Indian specialty coffees roasted dark for bold, intense flavour with low acidity and full body. The roast most associated with traditional Indian coffee culture — and now being reimagined by specialty roasters.",
+      "Dark roast is bold, low in acid, and heavy in body — the roast most bound up with traditional Indian coffee culture. Specialty roasters are reimagining it now: still bittersweet and intense, but with the smoke kept in check rather than charred.",
     headerNudge:
       "Bold, full-bodied coffees with rich oils and intense flavors.",
-    teaserTitle: "Top Rated Dark Roasts",
+    teaserTitle: "Deep, dark, and *low-acid*",
     teaserDescription:
       "Low-acid, heavy-bodied cups — from specialty bittersweet to traditional South Indian boldness.",
     gridNudge:
       "French Press and espresso methods really bring out the best in dark roasts.",
     heroBackgroundImage: "/images/discovery/dark-roast-hero.avif",
-    heroBadge: "Curated Selection",
+    heroBadge: "Bold & Low-Acid",
     utilityNudge:
       "Use lower water temperatures (87–90°C) to avoid bitterness and extract smooth flavors.",
-    faqOverline: "Dark Roast Queries",
+    faqOverline: "Dark roast",
     faqTitle: "Understanding *Dark Roast* Coffee",
     faqDescription:
-      "Common questions about bold dark roast coffees and brewing techniques.",
-    faqBadge: "Knowledge Base",
+      "What dark roast tastes like today, and how to brew it smooth.",
+    faqBadge: "Roast level",
 
     roastProfile: {
       visual: {

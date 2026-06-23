@@ -6,13 +6,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     slug: "aeropress",
     type: "brew_method",
     h1: "Best Coffees for AeroPress in India",
+    entityLabel: "AeroPress",
     intro:
-      "Discover Indian specialty coffees that shine in AeroPress brewing. These coffees are selected for their ability to produce clean, concentrated cups with low bitterness.",
+      "The AeroPress is the most forgiving brewer in specialty coffee, and the quickest way to read an Indian roaster's range. Gentle pressure and a short steep pull a clean, concentrated cup with almost none of the bitterness longer methods drag out — flattering everything from a jammy Karnataka natural to a bright washed Chikmagalur lot.",
     headerNudge:
       "Great for clean, bright cups and experimenting with different origins.",
-    teaserTitle: "Top Rated Coffees for AeroPress",
+    teaserTitle: "What to brew on *AeroPress*",
     teaserDescription:
-      "A curated selection of the best coffees optimized for AeroPress brewing.",
+      "Clean, concentrated, forgiving — the lots that reward a quick steep and a slow press.",
     gridNudge:
       "New to AeroPress? Start with medium or light roasts for balanced extraction.",
     heroBackgroundImage: "/images/discovery/aeropress-hero.avif",
@@ -62,11 +63,10 @@ export const brewMethodPages: LandingPageConfig[] = [
       ratio: "1:15",
       brewTime: "2–3 min",
     },
-    faqOverline: "AeroPress Queries",
+    faqOverline: "AeroPress",
     faqTitle: "Brewing with *AeroPress*",
-    faqDescription:
-      "Common questions about getting the most from your AeroPress.",
-    faqBadge: "Pro Tips",
+    faqDescription: "Grind, temperature, and the inverted method, sorted out.",
+    faqBadge: "Brew method",
     filter: {
       brew_method_ids: ["aeropress"],
     },
@@ -108,13 +108,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     slug: "v60",
     type: "brew_method",
     h1: "Best Coffees for V60 in India",
+    entityLabel: "V60",
     intro:
-      "Find Indian specialty coffees perfect for V60 pour-over brewing. These coffees highlight clarity, brightness, and nuanced flavor profiles that V60 excels at extracting.",
+      "No brewer shows you an Indian coffee's terroir as plainly as the V60. The cone and single large hole hand you control over every variable, and a thin paper filter strips away anything between you and the cup — which is why washed Chikmagalur lots and Araku light roasts taste their clearest here.",
     headerNudge:
       "Perfect for highlighting delicate origin flavors and bright acidity.",
-    teaserTitle: "Top Rated Coffees for V60",
+    teaserTitle: "Made for the *V60*",
     teaserDescription:
-      "Explore coffees that excel in pour-over brewing, highlighting clarity and brightness.",
+      "Clarity, brightness, and origin character with nowhere to hide.",
     gridNudge:
       "Light roasts shine here — they reveal complexity that darker roasts can mask.",
     heroBackgroundImage: "/images/discovery/v60-hero.avif",
@@ -165,11 +166,10 @@ export const brewMethodPages: LandingPageConfig[] = [
       ratio: "1:16",
       brewTime: "3–4 min",
     },
-    faqOverline: "V60 Queries",
+    faqOverline: "V60",
     faqTitle: "Brewing with *V60*",
-    faqDescription:
-      "Common questions about mastering the V60 pour-over technique.",
-    faqBadge: "Pro Tips",
+    faqDescription: "Pour technique, grind, and brew time, demystified.",
+    faqBadge: "Brew method",
     filter: {
       brew_method_ids: ["pour_over"],
     },
@@ -211,13 +211,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     slug: "chemex",
     type: "brew_method",
     h1: "Best Coffees for Chemex in India",
+    entityLabel: "Chemex",
     intro:
-      "Discover Indian specialty coffees suited to Chemex brewing — clean cups, silky body, and remarkable clarity from a slower drawdown and thick bonded filter paper.",
+      "The Chemex's thick bonded filter pulls almost everything from the cup but the flavour itself — oils, fines, and murk all stay behind. What's left is an Indian coffee at its cleanest and most tea-like: jasmine, peach, and bright citrus from washed Karnataka light roasts, with none of the weight.",
     headerNudge:
       "Chemex highlights sweetness and clarity — choose coffees with defined origin character.",
-    teaserTitle: "Top Rated Coffees for Chemex",
+    teaserTitle: "Clean enough for *Chemex*",
     teaserDescription:
-      "Pour-over friendly lots that shine with Chemex's classic paper filter profile.",
+      "Sweet, defined lots that earn the thick filter's tea-like clarity.",
     gridNudge:
       "Use a medium-coarse grind and keep a steady spiral pour for even extraction.",
     heroBackgroundImage: "/images/discovery/chemex-hero.avif",
@@ -267,11 +268,10 @@ export const brewMethodPages: LandingPageConfig[] = [
       ratio: "1:16",
       brewTime: "4–5 min",
     },
-    faqOverline: "Chemex Queries",
+    faqOverline: "Chemex",
     faqTitle: "Brewing with *Chemex*",
-    faqDescription:
-      "Tips for getting the most from Chemex with Indian specialty coffees.",
-    faqBadge: "Pro Tips",
+    faqDescription: "Grind, batch size, and why the pour matters more here.",
+    faqBadge: "Brew method",
     filter: {
       brew_method_ids: ["pour_over"],
     },
@@ -307,13 +307,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     slug: "kalita",
     type: "brew_method",
     h1: "Best Coffees for Kalita Wave in India",
+    entityLabel: "Kalita Wave",
     intro:
-      "Find Indian specialty coffees that work beautifully on the Kalita Wave — balanced extraction, forgiving flat bed, and consistent pour-over results every time.",
+      "The Kalita Wave is the pour-over for people who'd rather drink good coffee than fuss over it. Its flat bed and three small holes even out an imperfect pour, so washed Karnataka light-mediums and Indian naturals land balanced and clean cup after cup — V60 quality without V60's demands.",
     headerNudge:
       "Kalita's flat bottom and wave filters encourage even extraction — great for daily pour overs.",
-    teaserTitle: "Top Rated Coffees for Kalita Wave",
+    teaserTitle: "Easy days on the *Kalita*",
     teaserDescription:
-      "Coffees that reward Kalita's steady flow and balanced profile.",
+      "Balanced, dependable lots that suit a steady everyday pour.",
     gridNudge: "Try a medium-fine grind and pulse pours to keep the bed flat.",
     heroBackgroundImage: "/images/discovery/kalita-hero.avif",
     heroBadge: "Pour Over",
@@ -363,11 +364,10 @@ export const brewMethodPages: LandingPageConfig[] = [
       ratio: "1:16",
       brewTime: "3–4 min",
     },
-    faqOverline: "Kalita Queries",
+    faqOverline: "Kalita Wave",
     faqTitle: "Brewing with *Kalita Wave*",
-    faqDescription:
-      "Get consistent cups from your Kalita with these Indian specialty picks.",
-    faqBadge: "Pro Tips",
+    faqDescription: "Filters, pulse pours, and how it differs from the V60.",
+    faqBadge: "Brew method",
     filter: {
       brew_method_ids: ["pour_over"],
     },
@@ -408,13 +408,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     slug: "french-press",
     type: "brew_method",
     h1: "Best Coffees for French Press in India",
+    entityLabel: "French Press",
     intro:
-      "Explore Indian specialty coffees that excel in French Press brewing. These coffees deliver full-bodied, rich cups with deep flavors and natural oils — the closest specialty equivalent to traditional Indian filter coffee.",
+      "The French Press keeps everything paper takes away — the oils, the body, the full weight of the bean. For Indian coffee that's a natural fit: medium-dark Karnataka arabica and robusta blends come through deep, chocolatey, and low in acid, about as close as specialty gets to a traditional South Indian filter cup.",
     headerNudge:
       "Ideal for bold, full-bodied cups that showcase natural coffee oils.",
-    teaserTitle: "Top Rated Coffees for French Press",
+    teaserTitle: "Full-bodied for the *French Press*",
     teaserDescription:
-      "Full-bodied picks that shine through metal mesh — oils, depth, and medium-to-dark Indian profiles.",
+      "Heavy-bodied, oily, low-acid lots built for a long immersion.",
     gridNudge:
       "Medium to dark roasts work best — they develop rich body during the immersion steep.",
     heroBackgroundImage: "/images/discovery/french-press-hero.avif",
@@ -464,11 +465,10 @@ export const brewMethodPages: LandingPageConfig[] = [
       ratio: "1:15",
       brewTime: "4 min steep",
     },
-    faqOverline: "French Press Queries",
+    faqOverline: "French Press",
     faqTitle: "Brewing with *French Press*",
-    faqDescription:
-      "Common questions about getting rich, full-bodied coffee from your French Press.",
-    faqBadge: "Pro Tips",
+    faqDescription: "Grind, steep time, and the filter-coffee connection.",
+    faqBadge: "Brew method",
     filter: {
       brew_method_ids: ["french_press"],
     },
@@ -517,13 +517,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     slug: "espresso",
     type: "brew_method",
     h1: "Best Coffees for Espresso in India",
+    entityLabel: "Espresso",
     intro:
-      "Discover Indian specialty coffees crafted for espresso extraction — rich crema, intense flavour, and the concentrated body that defines the perfect shot. These coffees are selected for their ability to produce balanced, syrupy espresso with distinctly Indian character.",
+      "Espresso asks more of a coffee than any other method, and Indian beans answer well. Medium-dark Chikmagalur and Coorg arabicas pull shots thick with chocolate and caramel; robusta blends add the crema and body that cut through milk. Monsooned Malabar has anchored Italian espresso blends for decades for exactly this reason.",
     headerNudge:
       "Espresso rewards medium to dark roasts with chocolatey, nutty, and caramel profiles.",
-    teaserTitle: "Top Rated Coffees for Espresso",
+    teaserTitle: "Built for the *shot*",
     teaserDescription:
-      "Coffees selected for their espresso performance — crema quality, body, and balance under pressure.",
+      "Crema, body, and balance that hold up under nine bars of pressure.",
     gridNudge:
       "Look for medium-dark roasts from Karnataka estates — they pull rich, balanced shots with natural sweetness.",
     heroBackgroundImage: "/images/discovery/espresso-hero.avif",
@@ -574,11 +575,11 @@ export const brewMethodPages: LandingPageConfig[] = [
       ratio: "1:2",
       brewTime: "25–30 sec",
     },
-    faqOverline: "Espresso Queries",
+    faqOverline: "Espresso",
     faqTitle: "Brewing *Espresso*",
     faqDescription:
-      "Common questions about pulling great espresso with Indian coffees.",
-    faqBadge: "Pro Tips",
+      "Single origins, Monsooned Malabar, and the grinder that matters most.",
+    faqBadge: "Brew method",
     filter: {
       brew_method_ids: ["espresso"],
     },
@@ -620,13 +621,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     slug: "cold-brew",
     type: "brew_method",
     h1: "Best Coffees for Cold Brew in India",
+    entityLabel: "Cold Brew",
     intro:
-      "Find Indian specialty coffees perfect for cold brew — smooth, naturally sweet, and low-acid. These coffees are selected for their ability to produce clean, refreshing cold brew concentrate that shines on its own or with milk.",
+      "Cold brew trades heat for time, and the result is about as smooth and sweet as coffee gets. The chocolate, nut, and spice notes that run through Karnataka arabica translate beautifully over a long cold steep — and Monsooned Malabar turns mellow and lingering in a way no other origin quite manages.",
     headerNudge:
       "Cold brew extracts smoothness and sweetness — choose coffees with chocolate, nut, and caramel notes.",
-    teaserTitle: "Top Rated Coffees for Cold Brew",
+    teaserTitle: "Slow and sweet on *cold brew*",
     teaserDescription:
-      "Coffees selected for their cold brew performance — smoothness, natural sweetness, and low bitterness.",
+      "Smooth, sweet, low-bitterness lots that reward a long cold steep.",
     gridNudge:
       "Medium to dark roasts with chocolatey, nutty profiles make the best cold brew. Avoid very light roasts.",
     heroBackgroundImage: "/images/discovery/cold-brew-hero.avif",
@@ -677,11 +679,10 @@ export const brewMethodPages: LandingPageConfig[] = [
       ratio: "1:6",
       brewTime: "16–24 hrs",
     },
-    faqOverline: "Cold Brew Queries",
+    faqOverline: "Cold Brew",
     faqTitle: "Brewing *Cold Brew*",
-    faqDescription:
-      "Common questions about making smooth, sweet cold brew with Indian coffees.",
-    faqBadge: "Pro Tips",
+    faqDescription: "Steep time, grind, dilution, and how long it keeps.",
+    faqBadge: "Brew method",
     filter: {
       brew_method_ids: ["cold_brew"],
     },
@@ -723,13 +724,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     slug: "moka-pot",
     type: "brew_method",
     h1: "Best Coffees for Moka Pot in India",
+    entityLabel: "Moka Pot",
     intro:
-      "Explore Indian specialty coffees that produce rich, strong, espresso-style coffee on the stovetop Moka Pot. These coffees deliver bold body, intense flavour, and the concentrated character that makes Moka Pot a kitchen staple across India.",
+      "The Moka Pot makes strong, concentrated, espresso-adjacent coffee with nothing but a stovetop — which is why it sits on so many Indian kitchen shelves. Medium-dark Chikmagalur and Coorg roasts come through with chocolate, spice, and roasted nuts; robusta blends add the body that stands up to milk.",
     headerNudge:
       "Moka Pot produces intense, espresso-like coffee — choose medium-dark roasts for the best balance.",
-    teaserTitle: "Top Rated Coffees for Moka Pot",
+    teaserTitle: "Stovetop strength for the *Moka Pot*",
     teaserDescription:
-      "Coffees selected for their Moka Pot performance — bold body, intensity, and clean finish.",
+      "Bold, concentrated lots that hold their nerve under steam pressure.",
     gridNudge:
       "Medium-dark roasts from Karnataka work beautifully — they deliver bold flavour without bitterness.",
     heroBackgroundImage: "/images/discovery/moka-pot-hero.avif",
@@ -780,11 +782,10 @@ export const brewMethodPages: LandingPageConfig[] = [
       ratio: "1:8",
       brewTime: "5–8 min",
     },
-    faqOverline: "Moka Pot Queries",
+    faqOverline: "Moka Pot",
     faqTitle: "Brewing with *Moka Pot*",
-    faqDescription:
-      "Common questions about getting the best coffee from your stovetop Moka Pot.",
-    faqBadge: "Pro Tips",
+    faqDescription: "Heat, grind, and how it compares to espresso and filter.",
+    faqBadge: "Brew method",
     filter: {
       brew_method_ids: ["moka_pot"],
     },
@@ -826,13 +827,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     slug: "filter-coffee",
     type: "brew_method",
     h1: "Best Coffees for South Indian Filter in India",
+    entityLabel: "South Indian Filter",
     intro:
-      "Discover traditional and specialty coffees perfect for the authentic South Indian Filter. Known for its strong decoction, heavy body, and perfect pairing with milk and sugar, this classic method shines with dark roasts and chicory blends.",
+      "The South Indian filter is how coffee has been made in the south for generations: a slow drip through a metal filter into a thick, heavy decoction that meets hot milk and sugar. It runs on dark-roasted robusta and chicory blends — though specialty roasters are now building 100% arabica filter blends that keep the body without the harshness.",
     headerNudge:
       "The quintessential Indian brewing method — rich, intense, and meant to be enjoyed with milk.",
-    teaserTitle: "Top Rated Filter Coffees",
+    teaserTitle: "Decoction-ready *filter* blends",
     teaserDescription:
-      "A curated selection of robusta-arabica blends and traditional dark roasts for authentic filter coffee.",
+      "Robusta-arabica blends and traditional dark roasts for a proper decoction.",
     gridNudge:
       "Look for traditional blends (often with chicory) for that nostalgic café style.",
     heroBackgroundImage: "/images/discovery/filter-coffee-hero.avif",
@@ -883,11 +885,11 @@ export const brewMethodPages: LandingPageConfig[] = [
       ratio: "1:4 (for decoction)",
       brewTime: "15–20 min",
     },
-    faqOverline: "Filter Coffee Queries",
+    faqOverline: "South Indian Filter",
     faqTitle: "Brewing *South Indian Filter*",
     faqDescription:
-      "Common questions to help you master the authentic South Indian filter decoction.",
-    faqBadge: "Pro Tips",
+      "Chicory, grind, drip time, and serving it the traditional way.",
+    faqBadge: "Brew method",
     filter: {
       brew_method_ids: ["south_indian_filter"],
     },

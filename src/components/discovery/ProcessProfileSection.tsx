@@ -29,7 +29,7 @@ const STEP_ICONS: IconName[] = ["Coffee", "Drop", "Package"];
 function processSlugToLabel(slug: string): string {
   const page = getLandingPageConfig(slug);
   if (!page) return slug;
-  return page.h1.replace(" Coffee in India", "").replace(" Process", "").trim();
+  return page.entityLabel.replace(/\s*Process$/, "").trim();
 }
 
 export function ProcessProfileSection({

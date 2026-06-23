@@ -13,7 +13,8 @@ export const beanTypePages: LandingPageConfig[] = [
   {
     slug: "arabica",
     type: "bean_type",
-    h1: "Arabica Coffee in India",
+    h1: "Best Arabica in India",
+    entityLabel: "Arabica",
     intro:
       "Explore Indian Arabica — the species behind almost all of the country's specialty coffee. Grown under shade at 1,000–1,700m across Karnataka, Tamil Nadu, and Andhra Pradesh, Indian Arabica delivers clarity, aromatic complexity, and a chocolate-and-spice sweetness that sets it apart from its African and Central American counterparts.",
     headerNudge:
@@ -155,7 +156,8 @@ export const beanTypePages: LandingPageConfig[] = [
   {
     slug: "robusta",
     type: "bean_type",
-    h1: "Robusta Coffee in India",
+    h1: "Best Robusta in India",
+    entityLabel: "Robusta",
     intro:
       "Discover Indian Robusta — bold, full-bodied, and high in caffeine. India is one of the world's most respected Robusta origins, producing everything from export-grade Kaapi Royale to fine specialty-processed lots that challenge assumptions about what Robusta can be.",
     headerNudge:
@@ -302,7 +304,8 @@ export const beanTypePages: LandingPageConfig[] = [
   {
     slug: "liberica",
     type: "bean_type",
-    h1: "Liberica Coffee in India",
+    h1: "Best Liberica in India",
+    entityLabel: "Liberica",
     intro:
       "Discover Liberica — the rare third coffee species. Large, irregular, almond-shaped beans with a smoky, jackfruit-and-woody character unlike anything Arabica or Robusta produces. Prized in Southeast Asia and genuinely scarce in India.",
     headerNudge:
@@ -411,7 +414,8 @@ export const beanTypePages: LandingPageConfig[] = [
   {
     slug: "excelsa",
     type: "bean_type",
-    h1: "Excelsa Coffee in India",
+    h1: "Best Excelsa in India",
+    entityLabel: "Excelsa",
     intro:
       "Explore Excelsa — a rare, tart-and-fruity member of the Liberica family. Prized for adding a dark, complex, almost wine-like layer to blends, and increasingly interesting to specialty producers in Southeast Asia. Very scarce in India.",
     headerNudge:
@@ -520,7 +524,8 @@ export const beanTypePages: LandingPageConfig[] = [
   {
     slug: "blends",
     type: "bean_type",
-    h1: "Coffee Blends in India",
+    h1: "Best Coffee Blends in India",
+    entityLabel: "Coffee Blends",
     intro:
       "Browse Indian coffee blends — Arabica–Robusta combinations and house blends built for balance, body, and consistency. From espresso blends engineered for crema and milk to the Robusta-forward mixes that define South Indian filter coffee, blends are how most Indians drink coffee.",
     headerNudge:
@@ -648,7 +653,8 @@ export const beanTypePages: LandingPageConfig[] = [
   {
     slug: "chicory-mixes",
     type: "bean_type",
-    h1: "Chicory Coffee Mixes in India",
+    h1: "Best Chicory Coffee Mixes in India",
+    entityLabel: "Chicory Coffee Mixes",
     intro:
       "Explore Indian coffee–chicory blends — the heart of South Indian filter coffee. Roasted chicory root adds body, a gentle bittersweetness, and that distinctive, milk-friendly syrupy character that defines the tradition for millions of coffee drinkers across Tamil Nadu, Karnataka, Andhra Pradesh, and Kerala.",
     headerNudge:
@@ -762,7 +768,8 @@ export const beanTypePages: LandingPageConfig[] = [
   {
     slug: "single-origin",
     type: "bean_type",
-    h1: "Single Origin Coffee in India",
+    h1: "Best Single Origin in India",
+    entityLabel: "Single Origin",
     intro:
       "Discover Indian single-origin coffees — lots traceable to one estate or region, unblended, so the terroir, variety, and processing speak for themselves. This is where Indian specialty coffee shows its character: the difference between Chikmagalur and Araku, washed and natural, SL-795 and Cauvery — all unmasked.",
     headerNudge:
