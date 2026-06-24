@@ -46,6 +46,15 @@ const envSchema = z.object({
   // Roasters channel: roaster submissions, claims, and partner inquiries
   SLACK_WEBHOOK_URL_ROASTERS: z.string().url().optional(),
 
+  // IndexNow (search-engine instant indexing)
+  // The IndexNow key — must match public/<key>.txt filename and contents
+  INDEXNOW_API_KEY: z.string().optional(),
+  // Shared secret protecting the /api/webhooks/indexnow submit endpoint
+  // (called by the Supabase MV-refresh pg_net hook)
+  INDEXNOW_WEBHOOK_SECRET: z.string().optional(),
+  // Secret used to verify Sanity publish webhook signatures
+  SANITY_WEBHOOK_SECRET: z.string().optional(),
+
   // Node environment
   NODE_ENV: z
     .enum(["development", "production", "test"])

@@ -17,7 +17,7 @@ import { Icon, type IconName } from "@/components/common/Icon";
 import {
   DISCOVERY_PILL_ROWS,
   type DiscoveryPillRow,
-} from "@/components/discovery/DiscoveryPillGrid";
+} from "@/lib/discovery/discovery-pill-labels";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type DiscoveryAccordionGridProps = {
