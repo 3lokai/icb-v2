@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { isValidSignature, SIGNATURE_HEADER_NAME } from "@sanity/webhook";
 import { submitToIndexNow } from "@/lib/seo/indexnow";
+import {
+  sanityWebhookPayloadSchema,
+  type SanityWebhookPayload,
+} from "@/lib/validations/sanity-webhook";
 
 /**
  * POST /api/webhooks/sanity
@@ -20,12 +24,6 @@ import { submitToIndexNow } from "@/lib/seo/indexnow";
 function baseUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 }
-
-type SanityWebhookPayload = {
-  _type?: string;
-  // Projected as `slug.current` (string), but tolerate the raw object too.
-  slug?: string | { current?: string } | null;
-};
 
 function slugOf(payload: SanityWebhookPayload): string | null {
   const { slug } = payload;
@@ -66,12 +64,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  let payload: SanityWebhookPayload;
+  let raw: unknown;
   try {
-    payload = JSON.parse(body) as SanityWebhookPayload;
+    raw = JSON.parse(body);
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
+
+  const parsed = sanityWebhookPayloadSchema.safeParse(raw);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+  }
+  const payload = parsed.data;
 
   const path = pathFor(payload);
   if (!path) {

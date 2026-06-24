@@ -75,7 +75,7 @@ export const priceBucketPages: LandingPageConfig[] = [
       {
         question: "Can I find good specialty coffee under ₹500?",
         answer:
-          "Yes — most established Indian roasters have quality lots under ₹500. Focus on medium and light-medium roasts from Karnataka origins like Chikmagalur and Coorg. These are well-represented in this range and consistently rated well by the ICB community.",
+          "Yes — most established Indian roasters have quality lots under ₹500. Medium, medium-dark, and dark roasts from Karnataka origins like Chikmagalur and Coorg are well-represented in this range and consistently rated well by the ICB community.",
       },
       {
         question: "What should I look for in budget specialty coffee?",

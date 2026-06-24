@@ -78,7 +78,12 @@ export const DISCOVERY_PILL_ROWS: DiscoveryPillRow[] = [
   },
   {
     title: "Budget",
-    pills: discoveryPillsFromSlugs(["budget", "mid-range", "under-1000"]),
+    pills: discoveryPillsFromSlugs([
+      "budget",
+      "mid-range",
+      "under-1000",
+      "premium",
+    ]),
   },
   {
     title: "Region",

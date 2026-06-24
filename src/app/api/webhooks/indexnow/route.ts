@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Redis } from "@upstash/redis";
+import { Ratelimit } from "@upstash/ratelimit";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { submitToIndexNow } from "@/lib/seo/indexnow";
 
@@ -20,6 +21,13 @@ import { submitToIndexNow } from "@/lib/seo/indexnow";
 const LAST_RUN_KEY = "indexnow:last_run";
 // Fallback window when no high-water mark exists yet (first run / Redis reset).
 const DEFAULT_LOOKBACK_MS = 24 * 60 * 60 * 1000;
+// Throttle the endpoint (the DB hook + cron need only a handful of calls/min).
+const RATE_LIMIT_PER_MIN = 20;
+
+function clientIp(request: Request): string {
+  const fwd = request.headers.get("x-forwarded-for");
+  return fwd?.split(",")[0]?.trim() || "unknown";
+}
 
 function baseUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -49,10 +57,6 @@ function roasterSlugOf(c: CoffeeRow): string | null {
 }
 
 async function handleSubmit(request: Request) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
   const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
   const redis =
@@ -60,13 +64,43 @@ async function handleSubmit(request: Request) {
       ? new Redis({ url: redisUrl, token: redisToken })
       : null;
 
+  // Throttle before auth so token-guessing is rate-limited too. Best-effort:
+  // a limiter outage must not take the endpoint down.
+  if (redis) {
+    try {
+      const ratelimit = new Ratelimit({
+        redis,
+        limiter: Ratelimit.slidingWindow(RATE_LIMIT_PER_MIN, "1 m"),
+        prefix: "icb-indexnow-rl",
+      });
+      const { success } = await ratelimit.limit(clientIp(request));
+      if (!success) {
+        return NextResponse.json(
+          { error: "Too many requests" },
+          { status: 429 }
+        );
+      }
+    } catch (err) {
+      console.error("[IndexNow] Rate limiter unavailable:", err);
+    }
+  }
+
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const now = new Date();
   let since = new Date(now.getTime() - DEFAULT_LOOKBACK_MS);
+  // Best-effort: optional Redis state must not fail the request.
   if (redis) {
-    const stored = await redis.get<string>(LAST_RUN_KEY);
-    if (stored) {
-      const parsed = new Date(stored);
-      if (!Number.isNaN(parsed.getTime())) since = parsed;
+    try {
+      const stored = await redis.get<string>(LAST_RUN_KEY);
+      if (stored) {
+        const parsed = new Date(stored);
+        if (!Number.isNaN(parsed.getTime())) since = parsed;
+      }
+    } catch (err) {
+      console.error("[IndexNow] Failed to read watermark:", err);
     }
   }
   const sinceIso = since.toISOString();
@@ -115,9 +149,13 @@ async function handleSubmit(request: Request) {
     await submitToIndexNow(urls);
   }
 
-  // Advance the high-water mark only after a successful run.
+  // Advance the high-water mark only after a successful run. Best-effort.
   if (redis) {
-    await redis.set(LAST_RUN_KEY, now.toISOString());
+    try {
+      await redis.set(LAST_RUN_KEY, now.toISOString());
+    } catch (err) {
+      console.error("[IndexNow] Failed to write watermark:", err);
+    }
   }
 
   return NextResponse.json({

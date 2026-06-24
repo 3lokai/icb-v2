@@ -14,6 +14,8 @@
 const INDEXNOW_ENDPOINT = "https://api.indexnow.com/indexnow";
 // IndexNow accepts at most 10,000 URLs per request.
 const MAX_URLS_PER_REQUEST = 10_000;
+// Abort a stalled submission so it can't hang the calling request.
+const REQUEST_TIMEOUT_MS = 10_000;
 
 function getBaseUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -73,6 +75,7 @@ export async function submitToIndexNow(urls: string[]): Promise<void> {
           keyLocation,
           urlList: batch,
         }),
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       });
 
       // 200 OK and 202 Accepted (validation pending) both mean success.
