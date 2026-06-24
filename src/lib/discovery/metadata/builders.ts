@@ -146,6 +146,12 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
         "best coffee under 1000 rupees India",
         "best coffee beans in India",
       ],
+      premium: [
+        "premium coffee India",
+        "best premium coffee India",
+        "luxury coffee India",
+        "coffee over 1000 rupees",
+      ],
     };
     const extras = bucketExtras[config.slug] ?? [
       "specialty coffee price India",
