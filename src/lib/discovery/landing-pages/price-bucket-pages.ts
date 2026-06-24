@@ -43,19 +43,19 @@ export const priceBucketPages: LandingPageConfig[] = [
       ],
       // Which roast levels and processes to expect
       whatToExpect: {
-        roastLevels: ["medium-roast", "light-medium-roast", "dark-roast"],
+        roastLevels: ["medium-roast", "dark-roast", "medium-dark-roast"],
         processes: ["washed", "natural", "honey"],
         roastNote:
-          "Medium and light-medium roasts dominate this price range — most Indian roasters' entry offerings. Dark roasts and filter coffee blends are also well-represented, often from traditional roasters with established supply chains.",
+          "Medium roasts lead this price range, with dark and medium-dark roasts close behind — traditional, comfort-leaning profiles from roasters with established supply chains. Lighter roasts are comparatively rare under ₹500.",
         processNote:
-          "Washed and natural are most common. Honey and anaerobic lots start appearing but are rarer — when you find them under ₹500, they're worth trying.",
+          "Among coffees with a stated process, washed and natural are most common. Honey and anaerobic lots start appearing but are rarer — when you find them under ₹500, they're worth trying.",
       },
       // Normalized price disclosure
       priceNormalizationNote:
         "All prices are normalized to 250g equivalent across all pack sizes. A 100g bag at ₹200 and a 500g bag at ₹1,000 both appear as ₹400/250g. The price you pay on the roaster's site depends on the pack size you choose.",
       // ICB data note
       icbDataNote:
-        "This is the largest price segment in the ICB catalogue — the majority of listed coffees fall under ₹500 normalized. It's also where community rating density is highest, giving you the most comparison data before you buy. Medium roasts from established Karnataka roasters consistently score well in this range.",
+        "Under ₹500 is the value entry point to the catalogue — fewer coffees land here than in the ₹500–₹1000 range, and they're rated less often, so lean on the roast date and clear origin as much as the score. Medium roasts from established Karnataka roasters consistently show up well in this range.",
     },
 
     valueTips: [
@@ -153,17 +153,17 @@ export const priceBucketPages: LandingPageConfig[] = [
         },
       ],
       whatToExpect: {
-        roastLevels: ["light-roast", "light-medium-roast", "medium-roast"],
-        processes: ["natural", "honey", "anaerobic", "washed"],
+        roastLevels: ["medium-roast", "medium-dark-roast", "light-roast"],
+        processes: ["washed", "natural", "anaerobic", "honey"],
         roastNote:
-          "Light and light-medium roasts dominate the top end of this range — roasters producing high-quality lots tend to roast lighter to preserve the processing and terroir investment. Medium roasts are also well-represented.",
+          "Roasts span the whole spectrum here, with medium the most common, followed by medium-dark and light. Roasters producing high-quality lots often roast lighter to preserve the processing and terroir investment.",
         processNote:
-          "Natural, honey, and anaerobic lots are heavily concentrated here — these processes add cost and complexity, and producers price accordingly. You'll also find the best washed estate lots in this range.",
+          "Washed lots lead by count, followed by natural — but this is also where experimental processing concentrates: anaerobic, honey, and double-fermented lots are far more common here than under ₹500. These processes add cost and complexity, and producers price accordingly.",
       },
       priceNormalizationNote:
         "All prices are normalized to 250g equivalent across all pack sizes. A 100g bag at ₹300 and a 500g bag at ₹1,500 both appear as ₹600/250g. The price you pay on the roaster's site depends on which pack size you choose.",
       icbDataNote:
-        "The ₹500–₹1000 range contains the highest concentration of top-rated coffees in the ICB catalogue — community ratings are most competitive here. Natural and honey lots from Chikmagalur and Coorg estates dominate the highest-rated spots. This is where the ICB rating data is most useful — use it before buying.",
+        "The ₹500–₹1000 range is the largest and most-rated segment of the ICB catalogue, and it holds more top-rated coffees than any other price band — community ratings are most competitive here. This is where the ICB rating data is most useful, so use it before buying.",
     },
 
     valueTips: [
@@ -247,7 +247,7 @@ export const priceBucketPages: LandingPageConfig[] = [
 
     priceBucketProfile: {
       whatYouGet:
-        "Under ₹1000 (normalized to 250g) is where almost all of Indian specialty coffee lives. At the lower end you get clean, well-processed daily drinkers — medium roasts from Karnataka estates and approachable single origins. As you move toward ₹1000 you unlock high-altitude single-estate lots, named varieties (SL-795, Chandragiri, Cauvery), and experimental processing (honey, anaerobic natural, extended fermentation). The best-rated coffees in the entire ICB catalogue sit inside this band — which is exactly why 'under ₹1000' is the sweet spot most buyers should start from.",
+        "Under ₹1000 (normalized to 250g) is where the large majority of Indian specialty coffee lives — roughly four in five priced coffees in the catalogue. At the lower end you get clean, well-processed daily drinkers — medium roasts from Karnataka estates and approachable single origins. As you move toward ₹1000 you unlock high-altitude single-estate lots, named varieties (SL-795, Chandragiri, Cauvery), and experimental processing (honey, anaerobic natural, extended fermentation). Most of the catalogue's top-rated coffees sit inside this band — which is exactly why 'under ₹1000' is the sweet spot most buyers should start from.",
       buyingGuide: [
         {
           tip: "Decide your sub-tier before you shop under ₹1000",
@@ -262,21 +262,21 @@ export const priceBucketPages: LandingPageConfig[] = [
         {
           tip: "Use community ratings to break ties",
           detail:
-            "This band has the highest rating density in the catalogue, so you rarely have to guess. When two coffees look similar on paper, compare their ICB ratings and tasting notes side by side rather than trusting marketing copy.",
+            "This band is the most heavily rated part of the catalogue, so you rarely have to guess. When two coffees look similar on paper, compare their ICB ratings and tasting notes side by side rather than trusting marketing copy.",
         },
       ],
       whatToExpect: {
-        roastLevels: ["medium-roast", "light-medium-roast", "light-roast"],
-        processes: ["washed", "natural", "honey", "anaerobic"],
+        roastLevels: ["medium-roast", "medium-dark-roast", "light-roast"],
+        processes: ["washed", "natural", "anaerobic", "honey"],
         roastNote:
-          "Medium and light-medium roasts are the backbone of this range — most roasters' everyday offerings. Lighter roasts cluster toward the ₹1000 end, where producers roast to preserve terroir and processing investment.",
+          "Medium roasts are the backbone of this range, with medium-dark and lighter roasts also well represented. Lighter roasts cluster toward the ₹1000 end, where producers roast to preserve terroir and processing investment.",
         processNote:
-          "Washed and natural dominate the value tier. Honey and anaerobic lots become common as you approach ₹1000 — these add cost and complexity, and producers price accordingly. The best washed estate lots also live near the top of this band.",
+          "Washed lots lead by count, followed by natural. Anaerobic and honey lots become more common as you approach ₹1000 — these add cost and complexity, and producers price accordingly. The best washed estate lots also live near the top of this band.",
       },
       priceNormalizationNote:
         "All prices are normalized to a 250g equivalent across pack sizes, so a 100g bag at ₹300 and a 500g bag at ₹1,500 both appear as ₹600/250g. 'Under ₹1000' here means the normalized 250g price — the total you pay on the roaster's site depends on the pack size you choose.",
       icbDataNote:
-        "Most of the ICB catalogue — and the highest concentration of top-rated coffees — falls under ₹1000 normalized. Community rating density is also highest here, giving you the most comparison data before you buy. Naturals and honeys from Chikmagalur and Coorg estates consistently top the ratings in this range.",
+        "Most of the ICB catalogue — and most of its top-rated coffees — falls under ₹1000 normalized, and this is the most heavily rated price range, giving you the most comparison data before you buy. Use the ratings to shortlist before committing.",
     },
 
     valueTips: [
