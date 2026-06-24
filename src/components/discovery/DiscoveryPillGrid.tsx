@@ -11,83 +11,18 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { brewMethodPages } from "@/lib/discovery/landing-pages/brew-method-pages";
-import { discoveryPagePath } from "@/lib/discovery/landing-pages/paths";
-import { brewSlugToLabel } from "@/lib/discovery/brew-method-labels";
+import {
+  DISCOVERY_PILL_ROWS,
+  type DiscoveryPillRow,
+} from "@/lib/discovery/discovery-pill-labels";
 import { cn } from "@/lib/utils";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { Icon, type IconName } from "@/components/common/Icon";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export type DiscoveryPillRow = {
-  title: string;
-  pills: Array<{ label: string; href: string }>;
-};
-
-const brewMethodPills = brewMethodPages.map((page) => ({
-  label: brewSlugToLabel(page.slug),
-  href: discoveryPagePath(page.slug),
-}));
-
-/** Shared rows: roast / method / process / budget — links to /coffees/[slug] */
-export const DISCOVERY_PILL_ROWS: DiscoveryPillRow[] = [
-  {
-    title: "Roast",
-    pills: [
-      { label: "Light", href: "/coffees/light-roast" },
-      { label: "Light-Medium", href: "/coffees/light-medium-roast" },
-      { label: "Medium", href: "/coffees/medium-roast" },
-      { label: "Medium-Dark", href: "/coffees/medium-dark-roast" },
-      { label: "Dark", href: "/coffees/dark-roast" },
-    ],
-  },
-  {
-    title: "Brew method",
-    pills: brewMethodPills,
-  },
-  {
-    title: "Process",
-    pills: [
-      { label: "Natural", href: "/coffees/natural" },
-      { label: "Washed", href: "/coffees/washed" },
-      { label: "Honey", href: "/coffees/honey" },
-      { label: "Anaerobic", href: "/coffees/anaerobic" },
-      { label: "Monsooned Malabar", href: "/coffees/monsooned-malabar" },
-    ],
-  },
-  {
-    title: "Bean type",
-    pills: [
-      { label: "Arabica", href: "/coffees/arabica" },
-      { label: "Robusta", href: "/coffees/robusta" },
-      { label: "Single Origin", href: "/coffees/single-origin" },
-      { label: "Blends", href: "/coffees/blends" },
-      { label: "Chicory Mixes", href: "/coffees/chicory-mixes" },
-      { label: "Liberica", href: "/coffees/liberica" },
-      { label: "Excelsa", href: "/coffees/excelsa" },
-    ],
-  },
-  {
-    title: "Budget",
-    pills: [
-      { label: "Under ₹500", href: "/coffees/budget" },
-      { label: "₹500–₹1000", href: "/coffees/mid-range" },
-    ],
-  },
-  {
-    title: "Region",
-    pills: [
-      { label: "Chikmagalur", href: "/coffees/chikmagalur" },
-      { label: "Coorg", href: "/coffees/coorg" },
-      { label: "Araku", href: "/coffees/araku" },
-      { label: "Koraput (Odisha)", href: "/coffees/koraput" },
-      { label: "Northeast India", href: "/coffees/northeast-india" },
-      { label: "Nilgiris", href: "/coffees/nilgiris" },
-      { label: "Wayanad", href: "/coffees/wayanad" },
-    ],
-  },
-];
+export type { DiscoveryPillRow } from "@/lib/discovery/discovery-pill-labels";
+export { DISCOVERY_PILL_ROWS } from "@/lib/discovery/discovery-pill-labels";
 
 type CategoryMeta = {
   icon: IconName;
