@@ -3,11 +3,6 @@ import type { LandingPageConfig } from "../landing-pages";
 import { clampDescription } from "@/lib/seo/metadata";
 const ROAST_PROFILE_KEYWORD_CAP = 8;
 
-/** Strip trailing " in India" from discovery h1 while keeping e.g. "… Coffee". */
-function labelWithoutIndiaSuffix(h1: string): string {
-  return h1.replace(/\s+in India\s*$/i, "").trim();
-}
-
 function firstSentence(text: string): string {
   const t = text.trim();
   const m = t.match(/^(.+?[.!?])(\s|$)/);
@@ -26,10 +21,22 @@ function dedupeKeywordsPreserveOrder(keywords: string[]): string[] {
   return out;
 }
 
+/** Append " Coffee" when the entity label does not already include it. */
+function withCoffeeSuffix(label: string): string {
+  return label.includes("Coffee") ? label : `${label} Coffee`;
+}
+
 /**
  * Meta description: intro, plus first sentence of Indian context for roast pages when distinct.
  */
 export function buildDiscoveryDescription(config: LandingPageConfig): string {
+  if (config.metaDescription) {
+    return clampDescription(
+      config.metaDescription,
+      "Browse Indian specialty coffees with community ratings on Indian Coffee Beans."
+    );
+  }
+
   let desc = config.intro.trim();
 
   if (
@@ -59,44 +66,26 @@ export function buildDiscoveryDescription(config: LandingPageConfig): string {
  */
 export function buildDiscoveryTitle(config: LandingPageConfig): string {
   // Root layout appends "| Indian Coffee Beans" via title template
+  if (config.seoTitle) {
+    return config.seoTitle;
+  }
   if (config.type === "roast_level") {
-    const roastName = config.h1.replace(" Coffee in India", "").trim();
-    return `${roastName} Coffee in India – Discover & Compare`;
+    return `${config.entityLabel} Coffee in India – Discover & Compare`;
   }
   if (config.type === "brew_method") {
-    const methodName = config.h1
-      .replace("Best Coffees for ", "")
-      .replace(" in India", "")
-      .trim();
-    return `Best Coffees for ${methodName} in India – Discover & Compare`;
+    return `Best Coffees for ${config.entityLabel} in India – Discover & Compare`;
   }
   if (config.type === "price_bucket") {
-    const priceText = config.h1
-      .replace("Best Coffees ", "")
-      .replace(" in India", "")
-      .trim();
-    return `Best Coffees ${priceText} in India – Discover & Compare`;
+    return `Best Coffees ${config.entityLabel} in India – Discover & Compare`;
   }
   if (config.type === "process") {
-    const processName = labelWithoutIndiaSuffix(config.h1);
-    const processTitle = processName.includes("Coffee")
-      ? processName
-      : `${processName} Coffee`;
-    return `${processTitle} in India – Discover & Compare`;
+    return `${withCoffeeSuffix(config.entityLabel)} in India – Discover & Compare`;
   }
   if (config.type === "region") {
-    const regionName = labelWithoutIndiaSuffix(config.h1);
-    const regionTitle = regionName.includes("Coffee")
-      ? regionName
-      : `${regionName} Coffee`;
-    return `${regionTitle} in India – Discover & Compare`;
+    return `${withCoffeeSuffix(config.entityLabel)} in India – Discover & Compare`;
   }
   if (config.type === "bean_type") {
-    const beanName = labelWithoutIndiaSuffix(config.h1);
-    const beanTitle = beanName.includes("Coffee")
-      ? beanName
-      : `${beanName} Coffee`;
-    return `${beanTitle} in India – Discover & Compare`;
+    return `${withCoffeeSuffix(config.entityLabel)} in India – Discover & Compare`;
   }
   return config.h1;
 }
@@ -111,10 +100,7 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
       : ["Indian coffee", "specialty coffee India"];
 
   if (config.type === "brew_method") {
-    const methodName = config.h1
-      .replace("Best Coffees for ", "")
-      .replace(" in India", "")
-      .trim();
+    const methodName = config.entityLabel;
     return [
       ...base,
       methodName,
@@ -124,7 +110,7 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
     ];
   }
   if (config.type === "roast_level") {
-    const roastName = config.h1.replace(" Coffee in India", "").trim();
+    const roastName = config.entityLabel;
     const core = [
       ...base,
       roastName,
@@ -141,10 +127,7 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
     return dedupeKeywordsPreserveOrder([...core, ...fromProfile]);
   }
   if (config.type === "price_bucket") {
-    const priceText = config.h1
-      .replace("Best Coffees ", "")
-      .replace(" in India", "")
-      .trim();
+    const priceText = config.entityLabel;
     const bucketExtras: Record<string, string[]> = {
       budget: [
         "budget coffee India",
@@ -156,21 +139,38 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
         "premium specialty coffee India",
         "coffee between 500 and 1000 rupees",
       ],
+      // Distinct from "budget" (≤₹500 / affordable) and "mid-range" (₹500–₹1000 / premium)
+      // to avoid cross-page keyword cannibalization between the price buckets.
+      "under-1000": [
+        "best coffee under 1000",
+        "best coffee under 1000 rupees India",
+        "best coffee beans in India",
+      ],
     };
     const extras = bucketExtras[config.slug] ?? [
       "specialty coffee price India",
       "coffee value",
     ];
-    return dedupeKeywordsPreserveOrder([
-      ...base,
-      priceText,
-      `${priceText} coffee`,
-      "coffee price India",
-      ...extras,
-    ]);
+    // Exclude keywords owned by sibling price buckets so the price pages
+    // (budget / mid-range / under-1000) don't cannibalize each other's terms.
+    const siblingExtras = new Set(
+      Object.entries(bucketExtras)
+        .filter(([slug]) => slug !== config.slug)
+        .flatMap(([, kws]) => kws)
+        .map((k) => k.toLowerCase())
+    );
+    return dedupeKeywordsPreserveOrder(
+      [
+        ...base,
+        priceText,
+        `${priceText} coffee`,
+        "coffee price India",
+        ...extras,
+      ].filter((k) => !siblingExtras.has(k.toLowerCase()))
+    );
   }
   if (config.type === "process") {
-    const label = labelWithoutIndiaSuffix(config.h1);
+    const label = config.entityLabel;
     return [
       ...base,
       label,
@@ -181,7 +181,7 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
     ];
   }
   if (config.type === "region") {
-    const regionName = labelWithoutIndiaSuffix(config.h1);
+    const regionName = config.entityLabel;
     return [
       ...base,
       regionName,
@@ -193,10 +193,7 @@ export function buildDiscoveryKeywords(config: LandingPageConfig): string[] {
     ];
   }
   if (config.type === "bean_type") {
-    const beanName = labelWithoutIndiaSuffix(config.h1).replace(
-      /\s*Coffee$/i,
-      ""
-    );
+    const beanName = config.entityLabel;
     return dedupeKeywordsPreserveOrder([
       ...base,
       beanName,

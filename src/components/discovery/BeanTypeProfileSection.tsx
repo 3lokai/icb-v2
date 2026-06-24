@@ -30,24 +30,18 @@ type BeanTypeProfileSectionProps = {
   className?: string;
 };
 
-/** Short label for a bean type page, derived from its h1. */
+/** Short label for a bean type page, derived from its entityLabel. */
 function beanTypeSlugToLabel(slug: string): string {
   const page = getLandingPageConfig(slug);
   if (!page) return slug;
-  return page.h1
-    .replace(" Coffee in India", "")
-    .replace(" in India", "")
-    .trim();
+  return page.entityLabel;
 }
 
 /** Short label for a roast level discovery page. */
 function roastLinkLabel(slug: string): string {
   const cfg = getLandingPageConfig(slug);
   if (!cfg) return slug;
-  return cfg.h1
-    .replace(" Roast Coffee in India", "")
-    .replace(" in India", "")
-    .trim();
+  return cfg.entityLabel.replace(/\s*Roast$/, "");
 }
 
 function RoastPairingLinks({

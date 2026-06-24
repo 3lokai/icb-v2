@@ -6,7 +6,8 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "natural",
     type: "process",
-    h1: "Natural Process Coffee in India",
+    h1: "Best Natural Process in India",
+    entityLabel: "Natural Process",
     intro:
       "Explore Indian specialty coffees processed naturally — dried whole in the cherry for bold fruit, wine-like complexity, and heavy body. The oldest processing method, and still the most expressive.",
     headerNudge:
@@ -117,7 +118,8 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "washed",
     type: "process",
-    h1: "Washed Process Coffee in India",
+    h1: "Best Washed Process in India",
+    entityLabel: "Washed Process",
     intro:
       "Find washed Indian specialty coffees — clean cups, vibrant acidity, and remarkable clarity that lets origin character and varietal shine without interference from fermentation.",
     headerNudge:
@@ -222,7 +224,8 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "honey",
     type: "process",
-    h1: "Honey Process Coffee in India",
+    h1: "Best Honey Process in India",
+    entityLabel: "Honey Process",
     intro:
       "Discover honey and pulped-natural style Indian coffees — sweetness, body, and balance between washed clarity and natural fruit intensity. The most versatile process for everyday drinkers.",
     headerNudge:
@@ -334,7 +337,8 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "anaerobic",
     type: "process",
-    h1: "Anaerobic Process Coffee in India",
+    h1: "Best Anaerobic Process in India",
+    entityLabel: "Anaerobic Process",
     intro:
       "Browse anaerobic and experimental ferment Indian specialty coffees — intense aromatics, complex fruit, and distinctive cup profiles unlike anything traditional processing produces.",
     headerNudge:
@@ -439,7 +443,8 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "monsooned-malabar",
     type: "process",
-    h1: "Monsooned Malabar Coffee in India",
+    h1: "Best Monsooned Malabar in India",
+    entityLabel: "Monsooned Malabar",
     intro:
       "Explore monsooned coffees from India's Malabar coast — low acidity, mellow spice, and a distinctive heritage profile that exists nowhere else in the world of specialty coffee.",
     headerNudge:

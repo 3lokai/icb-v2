@@ -109,7 +109,7 @@ export function PriceBucketProfileSection({
                     href={discoveryPagePath(slug)}
                     className={brewMethodDiscoveryLinkClassName}
                   >
-                    {cfg.h1.replace(" Coffee in India", "").trim()}
+                    {cfg.entityLabel}
                   </Link>
                 );
               })}
@@ -135,7 +135,7 @@ export function PriceBucketProfileSection({
                     href={discoveryPagePath(slug)}
                     className={brewMethodDiscoveryLinkClassName}
                   >
-                    {cfg.h1.replace(" Coffee in India", "").trim()}
+                    {cfg.entityLabel}
                   </Link>
                 );
               })}

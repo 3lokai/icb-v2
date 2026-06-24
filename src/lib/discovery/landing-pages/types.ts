@@ -204,12 +204,21 @@ export type LandingPageConfig = {
   slug: string;
   type: LandingPageType;
   h1: string;
+  /** Clean entity name (e.g. "Arabica", "Light Roast", "Chikmagalur"); drives titles, breadcrumbs, keywords. */
+  entityLabel: string;
   intro: string;
   filter: CoffeeFilters;
   faqs: FAQItem[];
   utilityCard?: UtilityCardConfig;
   related: string[];
   sortOrder: CoffeeSort;
+  /** SEO <title> override (keyword-leading). Bypasses the type-derived title builder.
+   *  The root layout appends " | Indian Coffee Beans", so keep this ≤38 chars to stay under 60. */
+  seoTitle?: string;
+  /** Meta description override (~120–160 chars). Bypasses the intro-derived description. */
+  metaDescription?: string;
+  /** Contextual in-body links to /learn articles (label + href). Rendered as a "Related reading" strip. */
+  learnLinks?: { label: string; href: string }[];
   // Editorial enhancements
   heroBackgroundImage?: string;
   heroBadge?: string;
