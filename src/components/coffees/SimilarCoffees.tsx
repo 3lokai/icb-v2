@@ -151,7 +151,12 @@ export function SimilarCoffees({ coffee }: SimilarCoffeesProps) {
 
       <div className="flex justify-center pt-2">
         <Button variant="outline" asChild>
-          <Link href={buildViewMoreUrl()}>View more similar coffees</Link>
+          {/* rel="nofollow": this links to a filtered /coffees view (noindexed),
+              which would otherwise mint single-incoming-link orphan filter URLs
+              and waste crawl budget on dead-end combinations. */}
+          <Link href={buildViewMoreUrl()} rel="nofollow">
+            View more similar coffees
+          </Link>
         </Button>
       </div>
     </Stack>

@@ -122,7 +122,7 @@ export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
                         >
                           <Image
                             src={`/images/discovery/roasts/${step.slug.replace("-roast", "")}.avif`}
-                            alt=""
+                            alt={`${step.label} roast coffee beans`}
                             aria-hidden
                             width={88}
                             height={88}

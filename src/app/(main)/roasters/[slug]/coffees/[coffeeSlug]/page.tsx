@@ -6,6 +6,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { fetchCoffeeByRoasterAndSlugCached } from "@/lib/data/fetch-coffee-by-slug";
+import { fetchRoasterBySlugCached } from "@/lib/data/fetch-roaster-by-slug";
 import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
 import { queryKeys } from "@/lib/query-keys";
 import {
@@ -135,6 +136,13 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
     notFound();
   }
 
+  // Sibling coffees from the same roaster (SKU↔SKU internal links to flatten
+  // crawl depth). Reuses the cached roaster fetch; excludes the current coffee.
+  const roasterForLineup = await fetchRoasterBySlugCached(roasterSlug);
+  const moreFromRoaster = (roasterForLineup?.coffees ?? [])
+    .filter((c) => c.coffee_id !== coffee.id && c.slug !== coffeeSlug)
+    .slice(0, 4);
+
   const queryClient = new QueryClient();
   const reviewStaleMs = 30 * 1000;
 
@@ -198,7 +206,7 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <>
         <StructuredData schema={[productSchema, breadcrumbSchema]} />
-        <CoffeeDetailPage coffee={coffee} />
+        <CoffeeDetailPage coffee={coffee} moreFromRoaster={moreFromRoaster} />
       </>
     </HydrationBoundary>
   );

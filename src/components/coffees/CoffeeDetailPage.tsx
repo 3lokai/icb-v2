@@ -28,6 +28,8 @@ import { useReviews, useReviewStats } from "@/hooks/use-reviews";
 import { useExitIntentRating } from "@/hooks/use-exit-intent-rating";
 import { cn } from "@/lib/utils";
 import { SimilarCoffees } from "./SimilarCoffees";
+import { MoreFromRoaster } from "./MoreFromRoaster";
+import type { CoffeeSummary } from "@/types/coffee-types";
 import { CoffeeSensoryProfile } from "./CoffeeSensoryProfile";
 import Tag, { TagList } from "@/components/common/Tag";
 import CoffeeImageCarousel from "@/components/layout/carousel-image";
@@ -46,6 +48,8 @@ import {
 
 type CoffeeDetailPageProps = {
   coffee: CoffeeDetail;
+  /** Other coffees from the same roaster (for SKU↔SKU internal links). */
+  moreFromRoaster?: CoffeeSummary[];
   className?: string;
 };
 
@@ -164,7 +168,11 @@ function DiscoveryInlineLink({
 
 /* ─── Main Component ─── */
 
-export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
+export function CoffeeDetailPage({
+  coffee,
+  moreFromRoaster,
+  className,
+}: CoffeeDetailPageProps) {
   const queryClient = useQueryClient();
   const { data: reviews } = useReviews("coffee", coffee.id);
   const { data: stats } = useReviewStats("coffee", coffee.id);
@@ -772,8 +780,17 @@ export function CoffeeDetailPage({ coffee, className }: CoffeeDetailPageProps) {
       </Band>
 
       {/* ═══════════════════════════════════════════
-              SECTION 6: SIMILAR COFFEES (warm band)
+              SECTION 6: MORE FROM ROASTER + SIMILAR COFFEES (warm band)
           ═══════════════════════════════════════════ */}
+      {moreFromRoaster && moreFromRoaster.length > 0 && (
+        <Band ground="warm" texture="grain">
+          <MoreFromRoaster
+            coffees={moreFromRoaster}
+            roasterName={coffee.roaster.name}
+            roasterSlug={coffee.roaster.slug}
+          />
+        </Band>
+      )}
       <Band ground="warm" texture="grain">
         <SimilarCoffees coffee={coffee} />
       </Band>
