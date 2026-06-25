@@ -231,7 +231,7 @@ export async function DiscoveryLandingLayout({
             {crumbs.map((crumb, i) => {
               const isLast = i === crumbs.length - 1;
               return (
-                <Fragment key={crumb.href}>
+                <Fragment key={crumb.name}>
                   <BreadcrumbItem>
                     {isLast ? (
                       <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
