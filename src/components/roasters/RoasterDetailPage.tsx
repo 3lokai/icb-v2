@@ -22,6 +22,7 @@ import {
   ExitIntentRatingModal,
 } from "@/components/reviews";
 import CoffeeCard from "@/components/cards/CoffeeCard";
+import { RoasterCoffeeBreakdown } from "@/components/roasters/RoasterCoffeeBreakdown";
 import { trackRoasterClick } from "@/lib/analytics";
 import {
   trackRoasterConversion,
@@ -470,6 +471,13 @@ export function RoasterDetailPage({
             <h2 className="text-title text-balance leading-[1.1] italic">
               Coffees from <Accent>{roaster.name}</Accent>
             </h2>
+
+            {/* At-a-glance roast/process split across the roaster's full public
+                catalog (server-aggregated, not just the cards shown below). */}
+            <RoasterCoffeeBreakdown
+              roastDistribution={roaster.roast_distribution}
+              processDistribution={roaster.process_distribution}
+            />
 
             {/* Surface up to 12 direct SKU links from this indexed roaster page
                 (data already loads up to 15) so coffee pages stay well-linked

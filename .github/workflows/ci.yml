@@ -14,7 +14,8 @@ on:
       - "frontend-update/**"
       - "ai_docs/**"
       - "docs/**"
-      - "src/emails/**"
+      - "src/emails/**/*.html"
+      - "src/emails/**/*.md"
       - "skills/**"
       - "skills-lock.json"
   pull_request:
@@ -30,7 +31,8 @@ on:
       - "frontend-update/**"
       - "ai_docs/**"
       - "docs/**"
-      - "src/emails/**"
+      - "src/emails/**/*.html"
+      - "src/emails/**/*.md"
       - "skills/**"
       - "skills-lock.json"
 

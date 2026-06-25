@@ -41,7 +41,12 @@ export async function fetchRoasterBySlug(
     p_limit: limit,
   });
 
-  if (error || data == null) {
+  // Throw on RPC failure so transient errors aren't cached as a 24h "not found";
+  // only a genuine miss (null) returns null.
+  if (error) {
+    throw error;
+  }
+  if (data == null) {
     return null;
   }
 

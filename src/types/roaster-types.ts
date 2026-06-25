@@ -51,6 +51,11 @@ export type RoasterDetail = {
   coffee_count?: number;
   active_coffee_count?: number;
   avg_coffee_rating?: number | null;
+
+  // Breakdown of all public coffees by roast level / process (value = enum, count).
+  // Aggregated server-side over the full catalog, not just the embedded coffees[].
+  roast_distribution?: Array<{ value: string; count: number }>;
+  process_distribution?: Array<{ value: string; count: number }>;
 };
 
 // ----------------------------------------------------------------------------
