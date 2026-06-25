@@ -42,6 +42,7 @@ const QUICK_METHODS = [
   "coldbrew",
 ];
 
+/** Interactive grind converter: brew method + grinder selectors, result card, and chart. */
 export function GrindConverterClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -316,6 +317,7 @@ export function GrindConverterClient() {
   );
 }
 
+/** Single label/value pair in the converter result stats row. */
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>

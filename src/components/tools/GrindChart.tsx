@@ -36,10 +36,12 @@ const ROW_GAP = 6;
 const AXIS_GAP = 26;
 const TICK_H = 30;
 
+/** Map a micron value to an SVG x-coordinate on the chart plot area. */
 const x = (micron: number) =>
   PLOT_X0 +
   ((micron - MICRON_AXIS_MIN) / (MICRON_AXIS_MAX - MICRON_AXIS_MIN)) * PLOT_W;
 
+/** Inline-SVG grind chart: category bands, brew-method bars, and grinder ticks. */
 export function GrindChart({ selectedMethodKey, grinder }: GrindChartProps) {
   const rowsTop = ROW_Y0;
   const methodsHeight = BREW_METHODS.length * (ROW_H + ROW_GAP);

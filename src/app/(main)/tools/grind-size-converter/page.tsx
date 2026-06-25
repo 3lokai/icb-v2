@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 
 // Static canonical so the route can prerender (reading searchParams happens in
 // the client island, behind a Suspense boundary).
+/** SEO metadata for the grind size converter tool page. */
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -120,6 +121,7 @@ const STEPS = [
   },
 ];
 
+/** Grind size converter landing page with tool UI, how-it-works, and FAQ. */
 export default function GrindSizeConverterPage() {
   return (
     <div className="pb-20">

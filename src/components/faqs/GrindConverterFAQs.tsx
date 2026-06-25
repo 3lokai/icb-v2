@@ -30,6 +30,7 @@ export const grindConverterFAQs = [
   },
 ];
 
+/** FAQ section for the grind size converter tool. */
 export function GrindConverterFAQ() {
   return (
     <FAQSection

@@ -246,14 +246,17 @@ export const GRINDERS: Grinder[] = [
 
 // ─── Lookups ─────────────────────────────────────────────────────────────────
 
+/** Look up a brew method by its stable key (e.g. `"v60"`, `"espresso"`). */
 export function getBrewMethod(key: string): BrewMethodGrind | undefined {
   return BREW_METHODS.find((m) => m.key === key);
 }
 
+/** Look up a grinder by its stable key (e.g. `"timemore-c2"`). */
 export function getGrinder(key: string): Grinder | undefined {
   return GRINDERS.find((g) => g.key === key);
 }
 
+/** Map a micron value to the fixed grind category band it falls in on the axis. */
 export function categoryForMicron(micron: number): GrindCategoryBand {
   const clamped = Math.min(
     MICRON_AXIS_MAX - 1,
@@ -275,6 +278,7 @@ export function categoryLabelForRange(min: number, max: number): string {
 
 // ─── Conversion (linear interpolation, mirrors the source widget) ────────────
 
+/** Clamp a number to the inclusive range `[lo, hi]`. */
 const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
 

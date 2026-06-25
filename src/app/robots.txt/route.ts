@@ -8,6 +8,7 @@ const APP_URL = (
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com"
 ).replace(/\/$/, "");
 
+/** Build robots.txt with crawl rules and the sitemap URL. */
 function buildRobotsTxt(): string {
   return [
     "User-agent: CCBot",
@@ -29,6 +30,7 @@ function buildRobotsTxt(): string {
   ].join("\n");
 }
 
+/** Serve the static robots.txt response. */
 export function GET() {
   return new NextResponse(buildRobotsTxt(), {
     headers: {
