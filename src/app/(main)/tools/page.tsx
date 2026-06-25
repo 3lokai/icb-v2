@@ -12,7 +12,7 @@ import { generateMetadata } from "@/lib/seo/metadata";
 import { generateCollectionPageSchema, getSeoBaseUrl } from "@/lib/seo/schema";
 
 const TOOLS_DESCRIPTION =
-  "Free brewing tools for specialty coffee: a ratio calculator, competition recipes, and a brew diagnosis compass.";
+  "Free brewing tools for specialty coffee: a ratio calculator, competition recipes, a brew diagnosis compass, and a grind size converter.";
 
 // SEO Metadata
 export const metadata = generateMetadata({
@@ -60,6 +60,17 @@ const toolItems = [
       url: `${baseUrl}/tools/coffee-compass`,
       description:
         "Brew diagnosis tool: pick symptoms, get method-specific fixes",
+    },
+  },
+  {
+    "@type": "ListItem",
+    position: 4,
+    item: {
+      "@type": "WebApplication",
+      name: "Grind Size Converter",
+      url: `${baseUrl}/tools/grind-size-converter`,
+      description:
+        "Grind size chart: convert brew method to a grinder setting in clicks and microns",
     },
   },
 ];
@@ -126,6 +137,22 @@ const tools: Tool[] = [
     ],
     href: "/tools/coffee-compass",
     cta: "Diagnose a brew",
+  },
+  {
+    // TODO: replace with a real screenshot of the grind converter once captured.
+    image: "/images/screens/brew-guide.avif",
+    imageAlt:
+      "The Grind Size Converter, showing brew methods mapped to grinder settings on a micron-scale chart.",
+    name: "Grind Size Converter",
+    blurb:
+      "Pick your brew method and grinder to get the exact clicks or numbers to dial in. A full grind-size chart maps every method on a micron scale.",
+    features: [
+      "Brew method → grinder setting",
+      "Timemore, 1Zpresso, Baratza, Hario",
+      "Micron-scale chart",
+    ],
+    href: "/tools/grind-size-converter",
+    cta: "Convert a grind",
   },
 ];
 
@@ -197,9 +224,8 @@ export default function ToolsPage() {
       {/* On the workbench next — quiet, honest, no ghost cards or dated promises */}
       <Section spacing="tight">
         <p className="max-w-2xl text-pretty text-body leading-relaxed text-muted-foreground">
-          More tools are planned: a grind-size reference, a flavor wheel, and a
-          map of specialty roasters in India. Missing something?{" "}
-          <ToolSuggestionTrigger />
+          More tools are planned: a flavor wheel and a map of specialty roasters
+          in India. Missing something? <ToolSuggestionTrigger />
         </p>
       </Section>
     </div>

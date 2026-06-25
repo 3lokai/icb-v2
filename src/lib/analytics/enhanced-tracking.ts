@@ -590,7 +590,7 @@ export function trackCoffeePurchaseIntent(
 
 // Tools Engagement Events
 export function trackToolsEngagement(
-  toolType: "calculator" | "recipes" | "guides",
+  toolType: "calculator" | "recipes" | "guides" | "grind-converter",
   engagementData: {
     sessionDuration: number;
     interactionCount: number;

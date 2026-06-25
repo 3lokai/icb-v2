@@ -73,6 +73,7 @@ const baseNavItems = [
       { name: "Brew Calculator", link: "/tools/coffee-calculator" },
       { name: "Expert Recipes", link: "/tools/expert-recipes" },
       { name: "Coffee Compass", link: "/tools/coffee-compass" },
+      { name: "Grind Size Converter", link: "/tools/grind-size-converter" },
     ],
   },
 ];
