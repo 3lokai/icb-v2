@@ -1,7 +1,10 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import {
+  createAnonServerClient,
+  createServiceRoleClient,
+} from "@/lib/supabase/server";
 import { fetchAllCoffeeImages } from "./fetch-coffees";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import type {
@@ -348,9 +351,11 @@ async function buildCoffeeDetailFromRow(
 }
 
 async function getSupabase(): Promise<SupabaseClient> {
+  // Fallback uses the cookie-free anon client (not createClient) so this is safe
+  // to run inside `unstable_cache` via fetchCoffeeByRoasterAndSlugCached.
   return process.env.SUPABASE_SECRET_KEY
     ? await createServiceRoleClient()
-    : await createClient();
+    : createAnonServerClient();
 }
 
 /**

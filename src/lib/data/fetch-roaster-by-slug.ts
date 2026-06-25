@@ -1,7 +1,10 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import {
+  createAnonServerClient,
+  createServiceRoleClient,
+} from "@/lib/supabase/server";
 import { fetchCoffeeImages } from "./fetch-coffees";
 import type { RoasterDetail } from "@/types/roaster-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
@@ -23,13 +26,14 @@ export async function fetchRoasterBySlug(
 ): Promise<RoasterDetail | null> {
   const { limit = 15, supabaseClient } = options ?? {};
 
-  // Try to use service role client if available (bypasses RLS for server-side queries)
-  // Fallback to regular client if service role key is not set
+  // Try to use service role client if available (bypasses RLS for server-side queries).
+  // Fallback uses the cookie-free anon client (not createClient) so this is safe to
+  // run inside `unstable_cache` via fetchRoasterBySlugCached.
   const supabase =
     supabaseClient ??
     (process.env.SUPABASE_SECRET_KEY
       ? await createServiceRoleClient()
-      : await createClient());
+      : createAnonServerClient());
 
   // Fetch roaster from roasters table
   const { data: roasterData, error: roasterError } = await supabase
