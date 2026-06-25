@@ -390,28 +390,20 @@ export async function fetchCoffeeByRoasterAndSlug(
 ): Promise<CoffeeDetail | null> {
   const supabase = await getSupabase();
 
-  const { data: roaster, error: roasterError } = await supabase
-    .from("roasters")
-    .select("id")
-    .eq("slug", roasterSlug)
-    .single();
+  // Single round-trip: the get_coffee_detail RPC assembles the entire
+  // CoffeeDetail jsonb server-side, replacing the ~10-12 PostgREST queries
+  // that buildCoffeeDetailFromRow would otherwise fire. See migration
+  // 20260625195049_create_detail_rpcs.sql.
+  const { data, error } = await supabase.rpc("get_coffee_detail", {
+    p_roaster_slug: roasterSlug,
+    p_coffee_slug: coffeeSlug,
+  });
 
-  if (roasterError || !roaster) {
+  if (error || data == null) {
     return null;
   }
 
-  const { data: coffeeData, error: coffeeError } = await supabase
-    .from("coffees")
-    .select("*")
-    .eq("slug", coffeeSlug)
-    .eq("roaster_id", roaster.id)
-    .single();
-
-  if (coffeeError || !coffeeData) {
-    return null;
-  }
-
-  return buildCoffeeDetailFromRow(supabase, coffeeData as CoffeeRow);
+  return data as unknown as CoffeeDetail;
 }
 
 /**

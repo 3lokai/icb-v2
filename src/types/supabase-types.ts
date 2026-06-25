@@ -1307,6 +1307,77 @@ export type Database = {
         };
         Relationships: [];
       };
+      ig_carousel_posts: {
+        Row: {
+          carousel_id: string;
+          instagram_media_id: string;
+          matched_at: string | null;
+          permalink: string | null;
+          posted_at: string | null;
+        };
+        Insert: {
+          carousel_id: string;
+          instagram_media_id: string;
+          matched_at?: string | null;
+          permalink?: string | null;
+          posted_at?: string | null;
+        };
+        Update: {
+          carousel_id?: string;
+          instagram_media_id?: string;
+          matched_at?: string | null;
+          permalink?: string | null;
+          posted_at?: string | null;
+        };
+        Relationships: [];
+      };
+      ig_carousel_snapshots: {
+        Row: {
+          captured_at: string;
+          carousel_id: string;
+          comments: number | null;
+          id: string;
+          impressions: number | null;
+          likes: number | null;
+          reach: number | null;
+          saves: number | null;
+          shares: number | null;
+          window_label: string;
+        };
+        Insert: {
+          captured_at: string;
+          carousel_id: string;
+          comments?: number | null;
+          id?: string;
+          impressions?: number | null;
+          likes?: number | null;
+          reach?: number | null;
+          saves?: number | null;
+          shares?: number | null;
+          window_label: string;
+        };
+        Update: {
+          captured_at?: string;
+          carousel_id?: string;
+          comments?: number | null;
+          id?: string;
+          impressions?: number | null;
+          likes?: number | null;
+          reach?: number | null;
+          saves?: number | null;
+          shares?: number | null;
+          window_label?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "ig_carousel_snapshots_carousel_id_fkey";
+            columns: ["carousel_id"];
+            isOneToOne: false;
+            referencedRelation: "ig_carousel_posts";
+            referencedColumns: ["carousel_id"];
+          },
+        ];
+      };
       llm_cache: {
         Row: {
           created_at: string | null;
@@ -1917,31 +1988,46 @@ export type Database = {
       };
       scrape_runs: {
         Row: {
+          duration_seconds: number | null;
+          exit_code: number | null;
           finished_at: string | null;
           id: string;
+          log_file: string | null;
+          run_key: string | null;
           run_type: Database["public"]["Enums"]["run_type_enum"] | null;
           source_id: string | null;
           started_at: string;
           stats_json: Json;
           status: Database["public"]["Enums"]["run_status_enum"] | null;
+          trigger: string | null;
         };
         Insert: {
+          duration_seconds?: number | null;
+          exit_code?: number | null;
           finished_at?: string | null;
           id?: string;
+          log_file?: string | null;
+          run_key?: string | null;
           run_type?: Database["public"]["Enums"]["run_type_enum"] | null;
           source_id?: string | null;
           started_at?: string;
           stats_json?: Json;
           status?: Database["public"]["Enums"]["run_status_enum"] | null;
+          trigger?: string | null;
         };
         Update: {
+          duration_seconds?: number | null;
+          exit_code?: number | null;
           finished_at?: string | null;
           id?: string;
+          log_file?: string | null;
+          run_key?: string | null;
           run_type?: Database["public"]["Enums"]["run_type_enum"] | null;
           source_id?: string | null;
           started_at?: string;
           stats_json?: Json;
           status?: Database["public"]["Enums"]["run_status_enum"] | null;
+          trigger?: string | null;
         };
         Relationships: [
           {
@@ -2945,6 +3031,10 @@ export type Database = {
         Args: { grind_key: string };
         Returns: string;
       };
+      get_coffee_detail: {
+        Args: { p_coffee_slug: string; p_roaster_slug: string };
+        Returns: Json;
+      };
       get_coffee_filter_meta: {
         Args: {
           p_bean_species?: string[];
@@ -2969,14 +3059,6 @@ export type Database = {
         Returns: Json;
       };
       get_epic_c_parameters: { Args: { p_coffee_id: string }; Returns: Json };
-      get_single_origin_by_region: {
-        Args: { p_limit?: number };
-        Returns: { label: string; value: number }[];
-      };
-      get_single_origin_vs_blend: {
-        Args: never;
-        Returns: { label: string; value: number }[];
-      };
       get_or_create_estate: {
         Args: {
           p_altitude_max_m?: number;
@@ -2998,6 +3080,10 @@ export type Database = {
           date: string;
           price_updates: number;
         }[];
+      };
+      get_roaster_detail: {
+        Args: { p_limit?: number; p_slug: string };
+        Returns: Json;
       };
       get_roaster_member_role: {
         Args: { p_roaster_id: string };
@@ -3038,6 +3124,21 @@ export type Database = {
         };
         Returns: Json;
       };
+      get_single_origin_by_region: {
+        Args: { p_limit?: number };
+        Returns: {
+          label: string;
+          value: number;
+        }[];
+      };
+      get_single_origin_vs_blend: {
+        Args: never;
+        Returns: {
+          label: string;
+          value: number;
+        }[];
+      };
+      get_top_coffee_reviewers: { Args: { p_limit?: number }; Returns: Json };
       get_user_lifecycle_state: {
         Args: { p_user_id: string };
         Returns: {
