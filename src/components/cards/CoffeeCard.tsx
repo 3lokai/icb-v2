@@ -149,6 +149,15 @@ function CoffeeCardComponent({
     [coffee.name, coffee.roaster_name]
   );
 
+  // Descriptive, unique alt text for the product image (SEO + a11y).
+  const imageAlt = useMemo(
+    () =>
+      coffee.roaster_name
+        ? `${coffee.name} by ${coffee.roaster_name}`
+        : coffee.name || "Coffee",
+    [coffee.name, coffee.roaster_name]
+  );
+
   // Early returns (need roaster_slug for nested coffee detail URL)
   if (!coffee || !coffee.slug || !coffee.name || !coffee.roaster_slug) {
     return null;
@@ -186,7 +195,7 @@ function CoffeeCardComponent({
           {/* Hero Image */}
           <div className="relative aspect-[4/3] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
             <Image
-              alt={coffee.name || "Coffee"}
+              alt={imageAlt}
               className="object-contain"
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 420px"
@@ -280,7 +289,7 @@ function CoffeeCardComponent({
           {/* Image - 3:4 aspect ratio */}
           <div className="relative aspect-[3/4] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
             <Image
-              alt={coffee.name || "Coffee"}
+              alt={imageAlt}
               className="object-contain"
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -357,7 +366,7 @@ function CoffeeCardComponent({
           {/* Small image - fixed square */}
           <div className="relative w-16 h-16 shrink-0 overflow-hidden rounded image-hover-zoom self-center transition-opacity duration-200 group-hover:opacity-90">
             <Image
-              alt={coffee.name || "Coffee"}
+              alt={imageAlt}
               className="object-contain"
               fill
               sizes="64px"
@@ -412,7 +421,7 @@ function CoffeeCardComponent({
         {/* Image - 3:2 aspect ratio for tighter magazine tile */}
         <div className="relative aspect-[3/2] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
           <Image
-            alt={coffee.name || "Coffee"}
+            alt={imageAlt}
             className="object-contain"
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"

@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${roaster.name} Coffees`;
   const description = `Explore the complete specialty coffee collection from ${roaster.name}. Grouped by roast level, from light to dark. Discover your next favorite Indian coffee beans.`;
 
-  return generateSEOMetadata({
+  const metadata = generateSEOMetadata({
     title,
     description,
     canonical,
@@ -47,6 +47,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "roast level collection",
     ],
   });
+
+  // This thin grouped-grid lineup page duplicates the parent roaster page and
+  // the indexed coffee SKU pages. noindex it to resolve cannibalization, but
+  // keep `follow` so it still passes link equity to the SKU pages.
+  return {
+    ...metadata,
+    robots: { index: false, follow: true },
+  };
 }
 
 /**

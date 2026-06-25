@@ -8,10 +8,16 @@ on:
       - ".agents/**"
       - ".cursor/**"
       - ".impeccable/**"
+      - ".github/skills/**"
+      - ".kilocode/**"
+      - ".fallow/**"
       - "frontend-update/**"
       - "ai_docs/**"
       - "docs/**"
+      - "src/emails/**/*.html"
+      - "src/emails/**/*.md"
       - "skills/**"
+      - "skills-lock.json"
   pull_request:
     branches: [main, master]
     paths-ignore:
@@ -19,10 +25,16 @@ on:
       - ".agents/**"
       - ".cursor/**"
       - ".impeccable/**"
+      - ".github/skills/**"
+      - ".kilocode/**"
+      - ".fallow/**"
       - "frontend-update/**"
       - "ai_docs/**"
       - "docs/**"
+      - "src/emails/**/*.html"
+      - "src/emails/**/*.md"
       - "skills/**"
+      - "skills-lock.json"
 
 jobs:
   test:

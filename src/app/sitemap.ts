@@ -249,18 +249,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
       ) ?? [];
 
-    // Generate dynamic roaster coffee collection routes
-    const roasterCoffeesRoutes: MetadataRoute.Sitemap =
-      roastersResult.data?.map((roaster) =>
-        withHreflang({
-          url: `${baseUrl}/roasters/${roaster.slug}/coffees`,
-          lastModified: roaster.updated_at
-            ? new Date(roaster.updated_at)
-            : new Date(),
-          changeFrequency: "weekly" as const,
-          priority: 0.7,
-        })
-      ) ?? [];
+    // NOTE: The `/roasters/{slug}/coffees` lineup listing pages are intentionally
+    // omitted from the sitemap — they are noindexed (see that route's metadata)
+    // to resolve cannibalization with the parent roaster page and the indexed
+    // coffee SKU pages. Advertising a noindex URL in the sitemap sends a mixed
+    // signal, so they are excluded here.
 
     // Generate dynamic curation (curator) routes
     const curationRoutes: MetadataRoute.Sitemap =
@@ -340,7 +333,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...staticRoutes,
       ...coffeeRoutes,
       ...roasterRoutes,
-      ...roasterCoffeesRoutes,
       ...curationRoutes,
       ...discoveryRoutes,
       ...learnRoutes,

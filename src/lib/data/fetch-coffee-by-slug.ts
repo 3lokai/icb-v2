@@ -1,5 +1,10 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import {
+  createAnonServerClient,
+  createServiceRoleClient,
+} from "@/lib/supabase/server";
 import { fetchAllCoffeeImages } from "./fetch-coffees";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import type {
@@ -346,9 +351,11 @@ async function buildCoffeeDetailFromRow(
 }
 
 async function getSupabase(): Promise<SupabaseClient> {
+  // Fallback uses the cookie-free anon client (not createClient) so this is safe
+  // to run inside `unstable_cache` via fetchCoffeeByRoasterAndSlugCached.
   return process.env.SUPABASE_SECRET_KEY
     ? await createServiceRoleClient()
-    : await createClient();
+    : createAnonServerClient();
 }
 
 /**
@@ -383,29 +390,44 @@ export async function fetchCoffeeByRoasterAndSlug(
 ): Promise<CoffeeDetail | null> {
   const supabase = await getSupabase();
 
-  const { data: roaster, error: roasterError } = await supabase
-    .from("roasters")
-    .select("id")
-    .eq("slug", roasterSlug)
-    .single();
+  // Single round-trip: the get_coffee_detail RPC assembles the entire
+  // CoffeeDetail jsonb server-side, replacing the ~10-12 PostgREST queries
+  // that buildCoffeeDetailFromRow would otherwise fire. See migration
+  // 20260625195049_create_detail_rpcs.sql.
+  const { data, error } = await supabase.rpc("get_coffee_detail", {
+    p_roaster_slug: roasterSlug,
+    p_coffee_slug: coffeeSlug,
+  });
 
-  if (roasterError || !roaster) {
+  // Throw on RPC failure so transient errors aren't cached as a 24h "not found";
+  // only a genuine miss (null) returns null.
+  if (error) {
+    throw error;
+  }
+  if (data == null) {
     return null;
   }
 
-  const { data: coffeeData, error: coffeeError } = await supabase
-    .from("coffees")
-    .select("*")
-    .eq("slug", coffeeSlug)
-    .eq("roaster_id", roaster.id)
-    .single();
-
-  if (coffeeError || !coffeeData) {
-    return null;
-  }
-
-  return buildCoffeeDetailFromRow(supabase, coffeeData as CoffeeRow);
+  return data as unknown as CoffeeDetail;
 }
+
+/**
+ * Cached variant of {@link fetchCoffeeByRoasterAndSlug} for the coffee detail page.
+ *
+ * Wraps the fetch in `unstable_cache` (24h + "coffees" tag) so repeat visits skip
+ * the ~10 detail queries, and in React `cache()` so `generateMetadata` and the
+ * page component share one fetch per request. The "coffees" tag is invalidated on
+ * review submit (`src/app/actions/reviews.ts`), so content changes refresh it
+ * ahead of the 24h backstop.
+ */
+export const fetchCoffeeByRoasterAndSlugCached = cache(
+  unstable_cache(
+    (roasterSlug: string, coffeeSlug: string) =>
+      fetchCoffeeByRoasterAndSlug(roasterSlug, coffeeSlug),
+    ["coffee-by-roaster-and-slug"],
+    { revalidate: 86400, tags: ["coffees"] }
+  )
+);
 
 /**
  * Fetch all coffees with the given slug (for legacy /coffees/[slug] redirect vs disambiguation).

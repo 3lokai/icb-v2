@@ -5,10 +5,13 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { fetchRoasterBySlug } from "@/lib/data/fetch-roaster-by-slug";
+import { fetchRoasterBySlugCached } from "@/lib/data/fetch-roaster-by-slug";
 import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
 import { queryKeys } from "@/lib/query-keys";
-import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import {
+  generateMetadata as generateSEOMetadata,
+  truncateTitle,
+} from "@/lib/seo/metadata";
 import { generateSchemaOrg, generateBreadcrumbSchema } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
 import { RoasterDetailPage } from "@/components/roasters/RoasterDetailPage";
@@ -23,7 +26,7 @@ type Props = {
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const roaster = await fetchRoasterBySlug(slug);
+  const roaster = await fetchRoasterBySlugCached(slug);
 
   if (!roaster) {
     return generateSEOMetadata({
@@ -41,12 +44,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const reviewCount = stats?.review_count ?? 0;
 
-  const title =
+  // NOTE: the root layout (src/app/layout.tsx) applies the
+  // "%s | Indian Coffee Beans" template, so titles must NOT include the suffix
+  // themselves. All variants run through truncateTitle() to stay within the
+  // 60-char rendered budget (name + suffix).
+  const titleRaw =
     reviewCount >= 5
       ? `${roaster.name} Reviews & Coffees — Rated by ICB Community`
       : roaster.coffee_count
         ? `${roaster.name} — ${roaster.coffee_count} Coffees, Reviews & Tasting Notes`
-        : `${roaster.name} Coffee Reviews | Indian Coffee Beans`;
+        : `${roaster.name} Coffee Reviews`;
+  const title = truncateTitle(titleRaw);
 
   const avgRating = stats?.avg_rating ?? null;
 
@@ -63,11 +71,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Browse ${roaster.coffee_count} ${roaster.coffee_count === 1 ? "coffee" : "coffees"} with tasting notes, processing methods, and unbiased reviews from Indian coffee drinkers. `
     : "";
 
+  // Build a unique, benefit-led description. Prefer rating/coffee/location
+  // signals; fall back to the roaster's own copy; only the truly-empty roaster
+  // reaches the generic line (kept distinct per-roaster via the name).
   const description =
     ratingBlurb || coffeeBlurb
-      ? `${ratingBlurb}${locationBlurb}${coffeeBlurb}No sponsorships. Just data and community.`
-      : roaster.description?.slice(0, 160) ||
-        `${locationBlurb}Discover ${roaster.name} on India's neutral specialty coffee directory.`;
+      ? `${ratingBlurb}${locationBlurb}${coffeeBlurb}No sponsorships — just data and community.`
+      : roaster.description?.trim()
+        ? roaster.description.trim().slice(0, 200)
+        : `${locationBlurb}Discover ${roaster.name} on India's neutral specialty coffee directory — coffees, tasting notes, and unbiased community reviews.`;
 
   // Get logo for OG
   const ogImage = roaster.logo_url
@@ -90,7 +102,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  */
 export default async function RoasterDetailPageServer({ params }: Props) {
   const { slug } = await params;
-  const roaster = await fetchRoasterBySlug(slug);
+  const roaster = await fetchRoasterBySlugCached(slug);
 
   if (!roaster) {
     notFound();

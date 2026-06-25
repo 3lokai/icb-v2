@@ -48,7 +48,7 @@ export function Logo({
         />
         <div className="-top-1 absolute right-0 opacity-0 transition-opacity group-hover:opacity-70">
           <Image
-            alt=""
+            alt="Indian Coffee Beans logo"
             aria-hidden="true"
             className="animate-pulse opacity-50"
             height={12}
