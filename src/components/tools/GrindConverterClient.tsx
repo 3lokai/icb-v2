@@ -4,7 +4,7 @@
 // micron chart. Selections are mirrored to the URL so a setup is shareable.
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
@@ -50,20 +50,50 @@ export function GrindConverterClient() {
   const urlMethod = searchParams.get("method");
   const urlGrinder = searchParams.get("grinder");
 
-  const [methodKey, setMethodKey] = useState<string>(
-    urlMethod && getBrewMethod(urlMethod) ? urlMethod : DEFAULT_METHOD
-  );
-  const [grinderKey, setGrinderKey] = useState<string>(
-    urlGrinder && getGrinder(urlGrinder) ? urlGrinder : DEFAULT_GRINDER
+  const methodKey =
+    urlMethod && getBrewMethod(urlMethod) ? urlMethod : DEFAULT_METHOD;
+  const grinderKey =
+    urlGrinder && getGrinder(urlGrinder) ? urlGrinder : DEFAULT_GRINDER;
+
+  const updateParams = useCallback(
+    (updates: { method?: string; grinder?: string }) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (updates.method !== undefined) {
+        params.set("method", updates.method);
+      }
+      if (updates.grinder !== undefined) {
+        params.set("grinder", updates.grinder);
+      }
+      const next = params.toString();
+      const current = searchParams.toString();
+      if (next !== current) {
+        router.replace(`${pathname}?${next}`, { scroll: false });
+      }
+    },
+    [pathname, router, searchParams]
   );
 
-  // Mirror selections to the URL (shallow replace, no scroll jump).
+  const setMethodKey = useCallback(
+    (key: string) => updateParams({ method: key }),
+    [updateParams]
+  );
+
+  const setGrinderKey = useCallback(
+    (key: string) => updateParams({ grinder: key }),
+    [updateParams]
+  );
+
+  // Seed missing method/grinder into the URL while preserving other params.
   useEffect(() => {
-    const params = new URLSearchParams();
-    params.set("method", methodKey);
-    params.set("grinder", grinderKey);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [methodKey, grinderKey, pathname, router]);
+    const needsMethod = !urlMethod || !getBrewMethod(urlMethod);
+    const needsGrinder = !urlGrinder || !getGrinder(urlGrinder);
+    if (needsMethod || needsGrinder) {
+      updateParams({
+        ...(needsMethod ? { method: DEFAULT_METHOD } : {}),
+        ...(needsGrinder ? { grinder: DEFAULT_GRINDER } : {}),
+      });
+    }
+  }, [urlMethod, urlGrinder, updateParams]);
 
   // Analytics: meaningful-engagement entry/exit.
   useEffect(() => {
@@ -99,7 +129,7 @@ export function GrindConverterClient() {
     if (typeof window === "undefined") {
       return;
     }
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     params.set("method", methodKey);
     params.set("grinder", grinderKey);
     const url = `${window.location.origin}${pathname}?${params.toString()}`;
@@ -174,6 +204,7 @@ export function GrindConverterClient() {
             <button
               key={key}
               type="button"
+              aria-pressed={active}
               onClick={() => setMethodKey(key)}
               className={cn(
                 "rounded-full border px-3.5 py-1.5 text-caption font-medium transition-colors",

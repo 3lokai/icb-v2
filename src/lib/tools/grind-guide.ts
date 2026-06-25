@@ -203,7 +203,7 @@ export const GRINDERS: Grinder[] = [
     settingMin: 1,
     settingMax: 14,
     micronMin: 230,
-    micronMax: 1420,
+    micronMax: 1400,
   },
   {
     key: "baratza-encore",

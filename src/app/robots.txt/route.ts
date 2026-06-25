@@ -4,8 +4,9 @@ export const dynamic = "force-static";
 
 const CONTENT_SIGNAL = "ai-train=yes, search=yes, ai-input=yes";
 
-const APP_URL =
-  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
+const APP_URL = (
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com"
+).replace(/\/$/, "");
 
 function buildRobotsTxt(): string {
   return [

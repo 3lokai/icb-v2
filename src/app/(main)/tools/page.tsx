@@ -12,7 +12,7 @@ import { generateMetadata } from "@/lib/seo/metadata";
 import { generateCollectionPageSchema, getSeoBaseUrl } from "@/lib/seo/schema";
 
 const TOOLS_DESCRIPTION =
-  "Free brewing tools for specialty coffee: a ratio calculator, competition recipes, and a brew diagnosis compass.";
+  "Free brewing tools for specialty coffee: a ratio calculator, competition recipes, a brew diagnosis compass, and a grind size converter.";
 
 // SEO Metadata
 export const metadata = generateMetadata({

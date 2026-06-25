@@ -85,7 +85,7 @@ const grindToolSchema = {
   name: "Coffee Grind Size Converter",
   description:
     "Interactive grind size chart and converter mapping brew methods to grinder settings in microns and clicks.",
-  url: "https://www.indiancoffeebeans.com/tools/grind-size-converter",
+  url: `${process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com"}/tools/grind-size-converter`,
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Web Browser",
   offers: {
@@ -133,7 +133,7 @@ export default function GrindSizeConverterPage() {
         title="Grind Size Converter"
       />
 
-      <div className="container mx-auto px-4 py-12 relative z-30">
+      <div className="py-12 relative z-30">
         <Stack gap="8" className="gap-8 md:gap-12">
           {/* Converter */}
           <div id="converter">
