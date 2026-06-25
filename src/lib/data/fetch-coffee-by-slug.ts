@@ -1,3 +1,5 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { fetchAllCoffeeImages } from "./fetch-coffees";
@@ -406,6 +408,24 @@ export async function fetchCoffeeByRoasterAndSlug(
 
   return buildCoffeeDetailFromRow(supabase, coffeeData as CoffeeRow);
 }
+
+/**
+ * Cached variant of {@link fetchCoffeeByRoasterAndSlug} for the coffee detail page.
+ *
+ * Wraps the fetch in `unstable_cache` (24h + "coffees" tag) so repeat visits skip
+ * the ~10 detail queries, and in React `cache()` so `generateMetadata` and the
+ * page component share one fetch per request. The "coffees" tag is invalidated on
+ * review submit (`src/app/actions/reviews.ts`), so content changes refresh it
+ * ahead of the 24h backstop.
+ */
+export const fetchCoffeeByRoasterAndSlugCached = cache(
+  unstable_cache(
+    (roasterSlug: string, coffeeSlug: string) =>
+      fetchCoffeeByRoasterAndSlug(roasterSlug, coffeeSlug),
+    ["coffee-by-roaster-and-slug"],
+    { revalidate: 86400, tags: ["coffees"] }
+  )
+);
 
 /**
  * Fetch all coffees with the given slug (for legacy /coffees/[slug] redirect vs disambiguation).

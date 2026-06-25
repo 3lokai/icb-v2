@@ -5,7 +5,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { fetchRoasterBySlug } from "@/lib/data/fetch-roaster-by-slug";
+import { fetchRoasterBySlugCached } from "@/lib/data/fetch-roaster-by-slug";
 import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
 import { queryKeys } from "@/lib/query-keys";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
@@ -23,7 +23,7 @@ type Props = {
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const roaster = await fetchRoasterBySlug(slug);
+  const roaster = await fetchRoasterBySlugCached(slug);
 
   if (!roaster) {
     return generateSEOMetadata({
@@ -90,7 +90,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  */
 export default async function RoasterDetailPageServer({ params }: Props) {
   const { slug } = await params;
-  const roaster = await fetchRoasterBySlug(slug);
+  const roaster = await fetchRoasterBySlugCached(slug);
 
   if (!roaster) {
     notFound();

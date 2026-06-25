@@ -5,7 +5,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { fetchCoffeeByRoasterAndSlug } from "@/lib/data/fetch-coffee-by-slug";
+import { fetchCoffeeByRoasterAndSlugCached } from "@/lib/data/fetch-coffee-by-slug";
 import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
 import { queryKeys } from "@/lib/query-keys";
 import {
@@ -46,7 +46,10 @@ function coffeeOriginLabel(
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug: roasterSlug, coffeeSlug } = await params;
-  const coffee = await fetchCoffeeByRoasterAndSlug(roasterSlug, coffeeSlug);
+  const coffee = await fetchCoffeeByRoasterAndSlugCached(
+    roasterSlug,
+    coffeeSlug
+  );
 
   if (!coffee) {
     return {
@@ -123,7 +126,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
   const { slug: roasterSlug, coffeeSlug } = await params;
-  const coffee = await fetchCoffeeByRoasterAndSlug(roasterSlug, coffeeSlug);
+  const coffee = await fetchCoffeeByRoasterAndSlugCached(
+    roasterSlug,
+    coffeeSlug
+  );
 
   if (!coffee) {
     notFound();

@@ -1,3 +1,5 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { fetchCoffeeImages } from "./fetch-coffees";
@@ -198,3 +200,20 @@ export async function fetchRoasterBySlug(
 
   return roasterDetail;
 }
+
+/**
+ * Cached variant of {@link fetchRoasterBySlug} for the roaster detail page.
+ *
+ * Wraps the default-limit fetch in `unstable_cache` (24h + "roasters" tag) so
+ * repeat visits are served from cache instead of hitting Supabase, and in React
+ * `cache()` so `generateMetadata` and the page component share one fetch per
+ * request. API routes and the per-roaster coffee list keep using the raw
+ * `fetchRoasterBySlug` (they pass custom `limit` options).
+ */
+export const fetchRoasterBySlugCached = cache(
+  unstable_cache(
+    (slug: string) => fetchRoasterBySlug(slug),
+    ["roaster-by-slug"],
+    { revalidate: 86400, tags: ["roasters"] }
+  )
+);
