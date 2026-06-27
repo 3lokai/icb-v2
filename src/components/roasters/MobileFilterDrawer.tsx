@@ -27,10 +27,7 @@ export function MobileFilterDrawer({
 }: MobileFilterDrawerProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        className="overflow-y-auto md:hidden"
-        side="left"
-      >
+      <SheetContent className="overflow-y-auto md:hidden" side="left">
         <SheetHeader>
           <SheetTitle>Filters</SheetTitle>
         </SheetHeader>
@@ -41,4 +38,3 @@ export function MobileFilterDrawer({
     </Sheet>
   );
 }
-

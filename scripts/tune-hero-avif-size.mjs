@@ -23,7 +23,13 @@ const IMAGES_DIR = DISCOVERY
     : SCREENS
       ? path.join(process.cwd(), "public", "images", "screens")
       : BEANS
-        ? path.join(process.cwd(), "public", "images", "discovery", "bean-types")
+        ? path.join(
+            process.cwd(),
+            "public",
+            "images",
+            "discovery",
+            "bean-types"
+          )
         : path.join(process.cwd(), "public", "images");
 
 async function toAvif(input, quality, effort) {
@@ -71,7 +77,7 @@ async function processFile(filename, outputFilename) {
       await fs.writeFile(tmp, buf);
       await fs.rename(tmp, outPath);
       console.log(
-        `${filename} → ${outName}: ${(before / 1024).toFixed(1)}KB → ${(size / 1024).toFixed(1)}KB (q=${q}, ${w}×${meta.height})`,
+        `${filename} → ${outName}: ${(before / 1024).toFixed(1)}KB → ${(size / 1024).toFixed(1)}KB (q=${q}, ${w}×${meta.height})`
       );
       return;
     }
@@ -84,13 +90,16 @@ async function processFile(filename, outputFilename) {
 
   // Last resort: write best attempt at smallest width
   const { q, buf, size } = await bestQualityForPipeline(
-    sharp(filePath).resize(640, null, { fit: "inside", withoutEnlargement: true }),
+    sharp(filePath).resize(640, null, {
+      fit: "inside",
+      withoutEnlargement: true,
+    })
   );
   const tmp = `${outPath}.tmp`;
   await fs.writeFile(tmp, buf);
   await fs.rename(tmp, outPath);
   console.log(
-    `${filename} → ${outName}: ${(before / 1024).toFixed(1)}KB → ${(size / 1024).toFixed(1)}KB (q=${q}, forced ≤640px)`,
+    `${filename} → ${outName}: ${(before / 1024).toFixed(1)}KB → ${(size / 1024).toFixed(1)}KB (q=${q}, forced ≤640px)`
   );
 }
 
@@ -99,9 +108,7 @@ const files = DISCOVERY
       .filter((f) => /-hero\.jpe?g$/i.test(f))
       .sort()
   : CURATIONS
-    ? (await fs.readdir(IMAGES_DIR))
-        .filter((f) => /\.jpe?g$/i.test(f))
-        .sort()
+    ? (await fs.readdir(IMAGES_DIR)).filter((f) => /\.jpe?g$/i.test(f)).sort()
     : SCREENS
       ? (await fs.readdir(IMAGES_DIR))
           .filter((f) => /\.(png|jpe?g)$/i.test(f))
@@ -110,9 +117,9 @@ const files = DISCOVERY
         ? (await fs.readdir(IMAGES_DIR))
             .filter((f) => /\.(png|jpe?g|webp)$/i.test(f))
             .sort()
-      : (await fs.readdir(IMAGES_DIR))
-          .filter((f) => f.startsWith("hero-") && f.endsWith(".avif"))
-          .sort();
+        : (await fs.readdir(IMAGES_DIR))
+            .filter((f) => f.startsWith("hero-") && f.endsWith(".avif"))
+            .sort();
 
 for (const f of files) {
   const outAvif =

@@ -26,6 +26,7 @@ Migrate existing subscribers from Supabase to ConvertKit/Kit:
 ### Prerequisites
 
 1. Run the database migration to add `convertkit_subscriber_id` column:
+
    ```bash
    npm run supabase:migration:up
    ```
@@ -69,6 +70,7 @@ npx tsx scripts/migrate-to-convertkit.ts
 ### Output
 
 The script will show:
+
 - Number of newsletter form submissions found
 - Number of subscribed users found
 - Total unique emails to migrate

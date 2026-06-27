@@ -19,6 +19,7 @@ Indian Coffee Beans Directory is a modern web platform that helps coffee enthusi
 ## 🚀 Tech Stack
 
 ### Frontend
+
 - **Next.js 16** - React framework with App Router and Turbopack
 - **React 19** - Latest React features with Server Components
 - **TypeScript** - Strict type safety throughout
@@ -28,18 +29,21 @@ Indian Coffee Beans Directory is a modern web platform that helps coffee enthusi
 - **Fuse.js** - Client-side fuzzy search
 
 ### Backend & Database
+
 - **Supabase** - PostgreSQL database with real-time capabilities
 - **Row Level Security (RLS)** - Database-level security policies
 - **Authentication** - Email/password and OAuth (Google) support
 - **ImageKit** - CDN for optimized image delivery
 
 ### State Management & Data Fetching
+
 - **Zustand** - Lightweight state management for filters and UI state
 - **TanStack Query** - Server state management with caching
 - **React Hook Form** - Form state management
 - **Zod** - Runtime validation and type inference
 
 ### Development Tools
+
 - **ESLint** - Code linting with Next.js and TypeScript rules
 - **Prettier** - Code formatting
 - **Husky** - Git hooks for code quality
@@ -48,6 +52,7 @@ Indian Coffee Beans Directory is a modern web platform that helps coffee enthusi
 ## 🛠️ Getting Started
 
 ### Prerequisites
+
 - **Node.js 20.11.0+** (LTS recommended)
 - npm, yarn, pnpm, or bun
 - Supabase account and project
@@ -56,32 +61,36 @@ Indian Coffee Beans Directory is a modern web platform that helps coffee enthusi
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <your-repo-url>
    cd icb-v2
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.local.example .env.local
    ```
-   
+
    Update `.env.local` with your credentials:
+
    ```env
    # Supabase
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
    SUPABASE_SECRET_KEY=your_supabase_secret_key
-   
+
    # App Configuration
    NEXT_PUBLIC_APP_NAME=Indian Coffee Beans
    NEXT_PUBLIC_APP_URL=https://your-domain.com
-   
+
    # ImageKit (optional)
    NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=your_imagekit_url
    NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
@@ -93,23 +102,26 @@ Indian Coffee Beans Directory is a modern web platform that helps coffee enthusi
    ```
 
 4. **Set up Git hooks**
+
    ```bash
    npm run prepare
    ```
 
 5. **Set up Supabase database**
+
    ```bash
    # Link to your Supabase project
    npx supabase link --project-ref your-project-ref
-   
+
    # Run migrations
    npm run supabase:migration:up
-   
+
    # Generate TypeScript types
    npm run supabase:types
    ```
 
 6. **Start the development server**
+
    ```bash
    npm run dev
    ```
@@ -178,6 +190,7 @@ icb-v2/
 ## 🎨 Key Features
 
 ### Coffee Directory
+
 - Browse hundreds of Indian coffee beans
 - Advanced filtering by:
   - Region (Karnataka, Kerala, Tamil Nadu, etc.)
@@ -190,6 +203,7 @@ icb-v2/
 - Detailed coffee profiles with tasting notes
 
 ### Roaster Directory
+
 - Comprehensive roaster profiles
 - Location and contact information
 - Coffee catalog per roaster
@@ -197,17 +211,20 @@ icb-v2/
 - Social media links
 
 ### Search System
+
 - Unified search across coffees, roasters, and articles
 - Fuzzy matching with Fuse.js
 - Keyboard shortcuts (Cmd+K / Ctrl+K)
 - Instant results with client-side indexing
 
 ### Coffee Tools
+
 - **Brewing Calculator** - Calculate coffee-to-water ratios
 - **Expert Recipes** - Curated brewing recipes
 - Support for multiple brewing methods
 
 ### User Features
+
 - Authentication (Email/Password, Google OAuth)
 - User profiles with preferences
 - Coffee journey tracking
@@ -215,6 +232,7 @@ icb-v2/
 - Dashboard for managing preferences
 
 ### Educational Content
+
 - Coffee glossary
 - Regional information
 - Processing method guides
@@ -267,6 +285,7 @@ The project supports multiple authentication methods:
 - **Role-based access** - Admin, Operator, User, Viewer, Contributor, Roaster
 
 Protected routes are handled via Next.js middleware. User profiles include:
+
 - Coffee preferences
 - Notification settings
 - Privacy controls
@@ -311,6 +330,7 @@ The search system uses Fuse.js for client-side fuzzy search:
 ### Environment Variables for Production
 
 Ensure all required environment variables are set:
+
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `SUPABASE_SECRET_KEY` (server-side only)
@@ -320,6 +340,7 @@ Ensure all required environment variables are set:
 ## 🧪 Development Guidelines
 
 ### Code Quality Standards
+
 - **TypeScript Strict Mode** - All code must be type-safe
 - **Server Components First** - Prefer server components over client
 - **Accessibility** - WCAG compliant components
@@ -327,12 +348,14 @@ Ensure all required environment variables are set:
 - **Loading States** - Proper loading UI for async operations
 
 ### Component Patterns
+
 - Use Zustand for complex state, `useState` for simple state
 - Prefer TanStack Query for data fetching
 - Use server actions for mutations
 - Follow existing patterns in `src/components/`
 
 ### Database Patterns
+
 - Use `useSupabaseQuery` hook for data fetching
 - Zod schemas for validation
 - TanStack Query for caching

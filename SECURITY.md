@@ -16,6 +16,7 @@ If you discover a security vulnerability, please report it to us privately:
 2. **GitHub Security Advisories**: Use the "Report a vulnerability" button on the repository's Security tab
 
 Please include the following information:
+
 - Description of the vulnerability
 - Steps to reproduce
 - Potential impact
@@ -24,23 +25,27 @@ Please include the following information:
 ## Security Best Practices
 
 ### Environment Variables
+
 - Never commit `.env.local` or any file containing secrets
 - Use strong, unique values for all environment variables
 - Rotate secrets regularly
 - Use different secrets for different environments
 
 ### Supabase Security
+
 - Enable Row Level Security (RLS) on all tables
 - Use service role keys only on the server-side
 - Regularly review and audit database permissions
 - Enable MFA for Supabase dashboard access
 
 ### Dependencies
+
 - Keep all dependencies up to date
 - Use `npm audit` to check for vulnerabilities
 - Consider using tools like Renovate or Dependabot for automated updates
 
 ### Deployment
+
 - Use HTTPS in production
 - Set secure headers (HSTS, CSP, etc.)
 - Regularly update your deployment platform

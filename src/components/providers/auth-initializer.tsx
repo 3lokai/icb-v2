@@ -5,10 +5,10 @@ import { useAuthStore } from "@/store/zustand/auth-store";
 
 /**
  * AuthInitializer - Initializes the Zustand auth store
- * 
+ *
  * This component should be placed in the root layout to initialize
  * auth state on app load. It replaces the need for AuthProvider.
- * 
+ *
  * Usage:
  * ```tsx
  * <QueryProvider>
@@ -27,4 +27,3 @@ export function AuthInitializer({ children }: { children: React.ReactNode }) {
 
   return <>{children}</>;
 }
-

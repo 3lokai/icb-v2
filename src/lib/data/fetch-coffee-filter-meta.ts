@@ -558,5 +558,5 @@ async function _fetchCoffeeFilterMetaImpl(): Promise<CoffeeFilterMeta> {
 export const fetchCoffeeFilterMeta = unstable_cache(
   _fetchCoffeeFilterMetaImpl,
   ["coffee-filter-meta"],
-  { revalidate: 300, tags: ["coffees", "coffee-filter-meta"] }
+  { revalidate: 86400, tags: ["coffees", "coffee-filter-meta"] }
 );

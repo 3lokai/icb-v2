@@ -38,4 +38,3 @@ export function useUserProfile() {
     retry: false,
   });
 }
-

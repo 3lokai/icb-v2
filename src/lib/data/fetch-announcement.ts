@@ -41,4 +41,3 @@ export async function fetchActiveAnnouncement(): Promise<Announcement | null> {
 
   return data;
 }
-
