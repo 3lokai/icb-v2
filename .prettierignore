@@ -9,9 +9,22 @@ pnpm-lock.yaml
 coverage
 .vercel
 .turbo
+
+# Agent tooling and internal docs (not app source)
 .claude
 .cursor
 .impeccable
+.agents
+.github/skills
+.kilocode
+.fallow
 ai_docs
 docs
+skills
+CLAUDE.md
 
+# Generated / temp / email templates
+lighthouse-report.json
+supabase/.temp
+src/emails
+public/ai-profile.html

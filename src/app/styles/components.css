@@ -69,7 +69,10 @@
  * accent-coloured emphasis — keep them reading as one system, not two. */
 .glossary-term {
   @apply cursor-help underline decoration-dotted decoration-accent/60 underline-offset-2 text-accent-foreground font-medium;
-  transition: background-color 0.2s ease, text-decoration-color 0.2s ease, border-radius 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    text-decoration-color 0.2s ease,
+    border-radius 0.2s ease;
 }
 
 .glossary-term:hover {

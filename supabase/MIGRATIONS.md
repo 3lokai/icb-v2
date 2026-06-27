@@ -11,6 +11,7 @@ npm run supabase:migration:new <migration_name>
 ```
 
 Example:
+
 ```bash
 npm run supabase:migration:new add_user_preferences
 ```
@@ -86,6 +87,7 @@ CREATE POLICY "Users can update own preferences"
 ### 3. Test Locally (Optional)
 
 If you have a local Supabase instance:
+
 ```bash
 supabase start
 supabase migration up
@@ -162,13 +164,14 @@ CREATE POLICY "policy_name"
 Create indexes for frequently queried columns:
 
 ```sql
-CREATE INDEX IF NOT EXISTS idx_table_column 
+CREATE INDEX IF NOT EXISTS idx_table_column
 ON public.table_name(column_name);
 ```
 
 ### 7. Use Descriptive Names
 
 Migration file names should be descriptive:
+
 - ✅ `20251209135434_add_user_preferences.sql`
 - ❌ `20251209135434_migration.sql`
 
@@ -192,7 +195,7 @@ ALTER TABLE public.example_table ENABLE ROW LEVEL SECURITY;
 
 ```sql
 CREATE OR REPLACE VIEW public.example_view AS
-SELECT 
+SELECT
   t.id,
   t.name,
   u.email
@@ -208,13 +211,13 @@ RETURNS TABLE (
   id UUID,
   name TEXT,
   email TEXT
-) 
+)
 LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
 BEGIN
   RETURN QUERY
-  SELECT 
+  SELECT
     t.id,
     t.name,
     u.email
@@ -242,7 +245,7 @@ ALTER COLUMN existing_column TYPE TEXT;
 ### Creating Indexes
 
 ```sql
-CREATE INDEX IF NOT EXISTS idx_example_user_id 
+CREATE INDEX IF NOT EXISTS idx_example_user_id
 ON public.example_table(user_id);
 ```
 
@@ -266,6 +269,7 @@ npm run supabase:types
 ### Migration Already Applied
 
 If a migration shows as already applied but you need to modify it:
+
 1. Create a new migration with the fix
 2. Or rollback and recreate (be careful with production data)
 
@@ -280,4 +284,3 @@ If a migration shows as already applied but you need to modify it:
 - [Supabase Migrations Docs](https://supabase.com/docs/guides/cli/local-development#database-migrations)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 - [Supabase RLS Guide](https://supabase.com/docs/guides/auth/row-level-security)
-

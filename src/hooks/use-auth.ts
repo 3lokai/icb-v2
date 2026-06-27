@@ -1,10 +1,10 @@
 /**
  * Compatibility hook for useAuth - wraps Zustand store
- * 
+ *
  * This maintains the same API as the old Context-based useAuth,
  * making migration seamless. All components can continue using
  * `useAuth()` without changes.
- * 
+ *
  * @deprecated Consider using useAuthStore directly for better performance
  */
 import { useAuthStore } from "@/store/zustand/auth-store";
@@ -28,4 +28,3 @@ export function useAuth() {
     refreshUser,
   };
 }
-

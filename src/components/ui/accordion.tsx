@@ -41,7 +41,12 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        <Icon className="pointer-events-none shrink-0 translate-y-0.5 transition-transform duration-200" color="muted" name="CaretDown" size={16} />
+        <Icon
+          className="pointer-events-none shrink-0 translate-y-0.5 transition-transform duration-200"
+          color="muted"
+          name="CaretDown"
+          size={16}
+        />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );

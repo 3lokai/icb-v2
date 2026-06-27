@@ -15,10 +15,12 @@ The Data Access Layer provides:
 ## Files
 
 ### `auth.ts`
+
 - `getCurrentUser()` - Get current authenticated user (cached per request)
 - `isAuthenticated()` - Check if user is authenticated
 
 ### `user-dto.ts`
+
 - `getProfileDTO(userId)` - Get public profile with access control
 - `getMyProfileDTO()` - Get current user's full profile (private fields)
 - `profileExists(userId)` - Check if profile exists
@@ -26,6 +28,7 @@ The Data Access Layer provides:
 - `PrivateProfileDTO` - Type for private profile data (owner only)
 
 ### `user-roles.ts`
+
 - `getUserRoles()` - Get all roles for current user
 - `hasRole(role)` - Check if user has specific role
 - `hasAnyRole(roles)` - Check if user has any of the roles
@@ -43,11 +46,11 @@ import { redirect } from 'next/navigation';
 
 export default async function ProtectedPage() {
   const user = await getCurrentUser();
-  
+
   if (!user) {
     redirect('/auth');
   }
-  
+
   return <div>Hello, {user.email}!</div>;
 }
 ```
@@ -59,18 +62,18 @@ import { getProfileDTO } from '@/data';
 import { notFound } from 'next/navigation';
 import ProfileClient from './profile-client';
 
-export default async function ProfilePage({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
+export default async function ProfilePage({
+  params
+}: {
+  params: Promise<{ id: string }>
 }) {
   const { id } = await params;
   const profile = await getProfileDTO(id);
-  
+
   if (!profile) {
     notFound();
   }
-  
+
   // Safe to pass to Client Component - only public fields
   return <ProfileClient profile={profile} />;
 }
@@ -84,11 +87,11 @@ import { redirect } from 'next/navigation';
 
 export default async function DashboardPage() {
   const profile = await getMyProfileDTO();
-  
+
   if (!profile) {
     redirect('/onboarding');
   }
-  
+
   return <div>Welcome, {profile.full_name}!</div>;
 }
 ```
@@ -96,31 +99,28 @@ export default async function DashboardPage() {
 ### Server Action - Check Permissions
 
 ```typescript
-'use server';
+"use server";
 
-import { isAdmin } from '@/data';
-import { createClient } from '@/lib/supabase/server';
+import { isAdmin } from "@/data";
+import { createClient } from "@/lib/supabase/server";
 
 export async function deletePost(postId: string) {
   // Always validate input
-  if (typeof postId !== 'string') {
-    throw new Error('Invalid post ID');
+  if (typeof postId !== "string") {
+    throw new Error("Invalid post ID");
   }
-  
+
   // Check permissions
   if (!(await isAdmin())) {
-    throw new Error('Unauthorized');
+    throw new Error("Unauthorized");
   }
-  
+
   // Perform action
   const supabase = await createClient();
-  const { error } = await supabase
-    .from('posts')
-    .delete()
-    .eq('id', postId);
-  
+  const { error } = await supabase.from("posts").delete().eq("id", postId);
+
   if (error) {
-    throw new Error('Failed to delete post');
+    throw new Error("Failed to delete post");
   }
 }
 ```
@@ -146,4 +146,3 @@ export async function deletePost(postId: string) {
 - [Next.js Data Fetching](https://nextjs.org/docs/app/building-your-application/data-fetching)
 - [Supabase Server-Side Auth](https://supabase.com/docs/guides/auth/server-side/nextjs)
 - [React Server Components Security](https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns#security)
-

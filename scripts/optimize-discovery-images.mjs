@@ -17,7 +17,9 @@ const argv = process.argv.slice(2);
 let roots;
 let explicitFiles = null;
 if (argv[0] === "--files") {
-  explicitFiles = argv.slice(1).map((p) => join(imagesRoot, p.replace(/\\/g, "/")));
+  explicitFiles = argv
+    .slice(1)
+    .map((p) => join(imagesRoot, p.replace(/\\/g, "/")));
 } else if (argv.length > 0) {
   roots = argv.map((name) => join(imagesRoot, name));
 } else {
@@ -90,7 +92,9 @@ for (const inputPath of sources) {
     });
   }
 
-  await pipeline.avif({ quality: AVIF_QUALITY, effort: AVIF_EFFORT }).toFile(outputPath);
+  await pipeline
+    .avif({ quality: AVIF_QUALITY, effort: AVIF_EFFORT })
+    .toFile(outputPath);
 
   const inBytes = inStat.size;
   const outBytes = (await stat(outputPath)).size;

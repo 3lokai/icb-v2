@@ -8,7 +8,7 @@ const eslintConfig = defineConfig([
   ...nextTs,
   {
     plugins: {
-      "custom": {
+      custom: {
         rules: {
           "no-direct-text-size-classes": noDirectTextSizeClasses,
         },
@@ -66,4 +66,3 @@ const eslintConfig = defineConfig([
 ]);
 
 export default eslintConfig;
-

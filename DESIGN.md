@@ -122,6 +122,7 @@ snob" tone); the cold marketplace/Amazon feel (dense price-first product grids w
 view); and corporate/sterile enterprise UI (flat gray, soulless, warmth-free).
 
 **Key Characteristics:**
+
 - Cream paper ground, roasted-bean ink, a single terracotta accent.
 - Fraunces serif headings + DM Sans body — contrast pairing, never two similar sans.
 - Depth via tonal surfaces (`surface-0/1/2`), not blur or heavy shadow.
@@ -136,6 +137,7 @@ accent used sparingly. All tokens are authored in OKLCH (the project's canonical
 are contrast-tuned for WCAG AA in both themes.
 
 ### Primary
+
 - **Roasted Bean** (`oklch(0.52 0.120 60.55)`): The core coffee brown. Primary buttons, active
   states, links, and the brand's structural voice. Darkened from its original lightness specifically
   to clear AA contrast against its cream foreground. Its calmer, lower-chroma sibling
@@ -143,15 +145,18 @@ are contrast-tuned for WCAG AA in both themes.
   not a louder competitor.
 
 ### Secondary
+
 - **Pale Wheat** (`oklch(0.901 0.05 84.54)`): Doubles as `secondary` and `muted`. Quiet fills,
   secondary buttons, badge backgrounds, and resting chips. Never carries body text on its own.
 
 ### Tertiary
+
 - **Terracotta** (`oklch(0.722 0.139 40.48)`, accent): The single warm spark. Reserved for the
   `<Accent>` brush-smear, the glossary-term underline, hover affordances, and scrollbar-hover. This
   is the rarest color on the page and that rarity is the point.
 
 ### Neutral
+
 - **Cream Paper** (`oklch(0.982 0.009 79.92)`, background): The body ground. The whole system sits
   on this warm near-white. (Dark: `oklch(0.195 0.01 59.58)`, a deep warm brown-black.)
 - **Warm Paper** (`oklch(0.965 0.015 79.92)`, card): Slightly darker and warmer than the ground for
@@ -166,6 +171,7 @@ are contrast-tuned for WCAG AA in both themes.
 - **Alert Red** (`oklch(0.653 0.177 28.10)`, destructive): Errors and destructive actions only.
 
 ### Named Rules
+
 **The One Smear Rule.** Terracotta is the only accent and it appears on roughly one phrase per page —
 through the `<Accent>` brush-smear or a glossary underline. If a second thing on the screen is
 fighting for the accent, one of them is wrong.
@@ -184,9 +190,10 @@ Serif display + sans body, never two similar families. (Note: the taste reflex f
 banned default serif; we keep it deliberately as the established brand face — this is preserve mode.)
 
 ### Hierarchy
+
 - **Display / Hero** (Fraunces, 400, `clamp(2.25rem → 3.75rem)`, line-height 1.1, tracking -0.02em):
   Page heroes and top-level page headers (`.text-hero`, `.text-display`). Quiet authority — editorial
-  size at *normal* weight, not bold.
+  size at _normal_ weight, not bold.
 - **Title** (Fraunces, 500, `1.5rem → 1.875rem`, tracking -0.02em): Section headers, h2
   (`.text-title`).
 - **Heading** (Fraunces, 500, `1.125rem → 1.25rem`): Card headers and subsections, h3
@@ -201,6 +208,7 @@ banned default serif; we keep it deliberately as the established brand face — 
   section.
 
 ### Named Rules
+
 **The Hero-Is-Not-Bold Rule.** The largest type on the page is Fraunces at weight 400. Size and the
 serif carry the authority; bold display weight reads as shouting and is forbidden on heroes.
 
@@ -217,14 +225,17 @@ but its job is **response to state** (hover lift, focus, the elevated toast/moda
 decoration on every card.
 
 ### Shadow Vocabulary
+
 Shadows are tinted by `color-mix` toward the accent/foreground so they read as warm coffee shadow,
 never neutral gray. Use the lightest step that reads.
+
 - **`--shadow-sm`** (`0 1px 3px` tinted, ~8% alpha): subtle resting lift on a few key surfaces.
 - **`--shadow-md` / `--shadow-lg`** (`0 4px 6px` / `0 10px 15px` tinted, ~10%): hover and elevation.
 - **`--shadow-xl` / `--shadow-2xl`** (tinted, deeper): modals, toasts, popovers (`surface-2`).
 - **`--shadow-focus-visible`** (`0 0 0 3px` of darker tint): the focus ring treatment.
 
 ### Named Rules
+
 **The Flat-Paper Rule.** Cards are flat at rest, separated by tonal surface steps and a hairline
 border. A resting drop shadow on a card is a regression toward app-chrome — reach for `surface-1`
 first, and let shadow appear only on hover/elevation.
@@ -237,7 +248,8 @@ neutral-gray shadow on this cream system looks like 2014 and is prohibited.
 **The primitive layer.** Layout and rhythm are owned by a set of Layer-2 primitives; sections compose
 them rather than inlining spacing or headers. This is the structural discipline that keeps the AI
 tells out:
-- **`PageShell`** — the *only* horizontal padding scale (`px-4 md:px-6 lg:px-8`), max-width `7xl` by
+
+- **`PageShell`** — the _only_ horizontal padding scale (`px-4 md:px-6 lg:px-8`), max-width `7xl` by
   default. One per page. Never hand-roll a container.
 - **`Section`** — vertical rhythm + optional header (`eyebrow` / `title` / `accentWord` / `align`).
   Spacing scale: `tight` (`py-6/10/14`), `default` (`py-10/14/20`), `loose` (`py-14/20/28`).
@@ -255,6 +267,7 @@ lg:grid-cols-3 gap-8`); adopt it instead of re-typing a three-column grid. Image
 `.image-hover-zoom` (a subtle `scale-105` over 700ms ease-out), never a harder zoom.
 
 ### Buttons
+
 - **Shape:** Gently curved (`rounded-md`, 8px). Default height 36px (`h-9`), padding `8px 16px`.
 - **Primary:** Roasted-bean fill (`bg-primary`) with cream text (`primary-foreground`); hover dims to
   `primary/90`. The confident default.
@@ -266,6 +279,7 @@ lg:grid-cols-3 gap-8`); adopt it instead of re-typing a three-column grid. Image
   buttons over hero imagery and video — a scrim, not a blur.
 
 ### Chips / Badges
+
 - **Style:** Fully rounded (`rounded-full`), `bg-muted` pale-wheat fill, `foreground` text, `0.75rem`
   medium (`.badge`). Quiet by default.
 - **Outline variant:** `.badge-outline` — transparent with a single `accent` border, for emphasis
@@ -274,6 +288,7 @@ lg:grid-cols-3 gap-8`); adopt it instead of re-typing a three-column grid. Image
   lean on `accent` rather than a new color.
 
 ### Cards / Containers
+
 - **Corner Style:** `rounded-xl` (14px) for cards; `rounded-lg` (10px) for `.card-base`.
 - **Background:** `bg-card` (warm paper, `surface-1`).
 - **Shadow Strategy:** Flat at rest (see Elevation). `.card-hover` shifts the border tone on hover
@@ -287,14 +302,17 @@ lg:grid-cols-3 gap-8`); adopt it instead of re-typing a three-column grid. Image
 - **Nesting:** Nested cards are forbidden. Use `surface` steps for inner depth.
 
 ### Region / Origin Cards
+
 - **Style:** `.region-card` — a portrait image tile (`aspect-[5/6]`, `rounded-sm`, hairline border)
-  with a *softened* top gradient overlay (`.region-overlay`, `from-black/60`, deliberately "less
+  with a _softened_ top gradient overlay (`.region-overlay`, `from-black/60`, deliberately "less
   Netflix poster") and white text bottom-left (`.region-content`). Used for origin/region landing
   entry points.
 
 ### Decoration — the `<Decor>` primitive (`texture` / `wash` / `stripe`)
+
 The single owner of decorative texture, consolidating what used to be inlined across ~12 files. One
 implementation each, passed as a prop — sections never hand-roll these:
+
 - **`dots`** (`.decor-dots`): a 22px radial dot grid at 0.18 opacity (the settled size; kills the old
   24px-vs-32px drift).
 - **`wash`** (`.decor-wash`): a single soft blurred bloom (`blur(80px)`) in accent or primary at
@@ -305,6 +323,7 @@ implementation each, passed as a prop — sections never hand-roll these:
   implementation; per-card category-coded variants (e.g. RelatedLinks) follow the same top placement.
 
 ### Inputs / Fields
+
 - **Style:** `bg-background` with a `border` / `input` hairline stroke, `rounded-md` (8px),
   `8px 12px` padding.
 - **Focus:** 3px tinted ring (the `--shadow-focus-visible` treatment) — a calm warm glow, not a hard
@@ -313,22 +332,25 @@ implementation each, passed as a prop — sections never hand-roll these:
   opacity with no pointer events.
 
 ### Navigation
+
 - **Style:** DM Sans, `foreground` ink on cream; active uses `primary`, hover uses an `accent` wash.
   Resizable navbar primitive; sidebar uses its own neutral `sidebar-*` token family. Mobile collapses
   to a sheet. Focus states are always keyboard-visible.
 
 ### Signature Component — `<Accent>` (the coffee brush-smear)
+
 The brand's one decorative signature. A real brush stroke (`/images/stain-smear.png`) used as a CSS
 `mask-image` over `background: var(--accent)`, so it recolors per theme and stretches edge-to-edge to
 fit any 1–3 word phrase. It sits low, underlining the bottom ~third of the glyphs. **LOCKED defaults:**
 `--ints: 0.6` (opacity), `--cov: 0.6em` (height); dark mode drops opacity to `0.5`. Rationed to one
-accented phrase per page (project override of the usual ≤1 eyebrow budget — the smear *is* the brand
+accented phrase per page (project override of the usual ≤1 eyebrow budget — the smear _is_ the brand
 signature). It reads as one family with the `.glossary-term` dotted-accent underline; do not introduce
 a third emphasis language.
 
 ## 6. Do's and Don'ts
 
 ### Do:
+
 - **Do** keep cream paper as the ground, roasted-bean ink as the text, and terracotta as the only
   accent (`oklch(0.722 0.139 40.48)`).
 - **Do** route every section header, padding, and decoration through the layout primitives (`Section`,
@@ -347,9 +369,10 @@ a third emphasis language.
   `.glossary-term`.
 
 ### Don't:
+
 - **Don't** ship generic SaaS/startup marketing patterns: no hero-metric template (big number + label
-  + gradient), no endlessly repeated identical icon-heading-text card grids, no eyebrow above every
-  section, no gradient accents.
+  - gradient), no endlessly repeated identical icon-heading-text card grids, no eyebrow above every
+    section, no gradient accents.
 - **Don't** drift toward the hipster/third-wave coffee cliché: no kraft-paper, chalkboard, or faux-
   rustic stamp aesthetic, and no gatekeeping "coffee snob" tone.
 - **Don't** make it feel like a cold marketplace/Amazon: no dense, price-first product grids without an
