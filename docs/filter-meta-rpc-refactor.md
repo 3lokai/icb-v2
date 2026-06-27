@@ -53,7 +53,7 @@ import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
 export const fetchCoffeeFilterMeta = unstable_cache(
   () => fetchCoffeeFilterMetaWithFilters({ status: PUBLIC_COFFEE_STATUSES }),
   ["coffee-filter-meta"],
-  { revalidate: 300, tags: ["coffees", "coffee-filter-meta"] }
+  { revalidate: 86400, tags: ["coffees", "coffee-filter-meta"] }
 );
 ```
 
