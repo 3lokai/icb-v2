@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
  * Range: 0-255. Higher = stricter (only very white logos trigger dark bg).
  * Tweak this value to tune sensitivity.
  */
-const LUMINANCE_THRESHOLD = 180;
+const LUMINANCE_THRESHOLD = 150;
 
 type ColorResult = {
   isDark: boolean;
