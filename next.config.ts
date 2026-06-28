@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "3mb",
     },
+    // Rewrite barrel imports to deep imports for these (Next doesn't optimize
+    // them by default). Note: this does NOT help Icon.tsx — that uses an explicit
+    // registry because its access was dynamic and untouchable by this option.
+    optimizePackageImports: ["@phosphor-icons/react", "motion"],
   } as NextConfig["experimental"],
   // Target modern browsers - avoid unnecessary transpilation
   // Modern browsers support ES2020+ features natively

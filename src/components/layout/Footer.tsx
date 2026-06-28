@@ -1,7 +1,7 @@
 // components/layout/Footer.tsx - Updated
 
 import Link from "next/link";
-import { Icon } from "@/components/common/Icon";
+import { Icon, type IconName } from "@/components/common/Icon";
 import { NewsletterForm } from "@/components/common/NewsletterForm";
 import { Logo } from "@/components/layout/logo";
 import { CookieSettingsButton } from "../common/CookieSettings";
@@ -91,7 +91,7 @@ export function Footer() {
                         rel={isMailto ? undefined : "noopener noreferrer"}
                         target={isMailto ? undefined : "_blank"}
                       >
-                        <Icon name={social.icon as any} size={20} />
+                        <Icon name={social.icon as IconName} size={20} />
                       </a>
                     );
                   })}
