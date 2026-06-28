@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Stack } from "@/components/primitives/stack";
-import { Icon } from "@/components/common/Icon";
+import { Icon, type IconName } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { AvatarUpload } from "@/components/ui/avatar-upload";
 import { Cluster } from "../primitives/cluster";
@@ -322,7 +322,7 @@ function PreferencesStrip({ preferences }: { preferences: CoffeePreferences }) {
   const regionLabels = regions?.map((v) => formatPreferenceValue(v)) || [];
 
   // Build preference groups
-  const groups: { icon: string; label: string; items: string[] }[] = [];
+  const groups: { icon: IconName; label: string; items: string[] }[] = [];
 
   if (roastLabels.length > 0) {
     groups.push({
@@ -370,7 +370,7 @@ function PreferencesStrip({ preferences }: { preferences: CoffeePreferences }) {
         {groups.map((group) => (
           <div key={group.label} className="flex flex-col gap-1.5">
             <div className="flex items-center gap-1.5 text-muted-foreground">
-              <Icon name={group.icon as any} size={10} />
+              <Icon name={group.icon} size={10} />
               <span className="text-overline text-micro tracking-widest">
                 {group.label}
               </span>

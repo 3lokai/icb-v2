@@ -215,7 +215,7 @@ export function RoasterCoffeesSelectionPage({
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-accent/10 text-accent">
-                          <Icon name={group.icon as any} size={20} />
+                          <Icon name={group.icon as IconName} size={20} />
                         </div>
                         <p className="text-overline text-muted-foreground tracking-[0.15em]">
                           {group.coffees.length} Available

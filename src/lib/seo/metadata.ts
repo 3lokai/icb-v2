@@ -91,9 +91,9 @@ function buildOGImageUrl(
 }
 
 // Helper: Merge keywords with defaults
-function mergeKeywords(keywords: string[]): string[] {
+function mergeKeywords(keywords: string[] | null | undefined): string[] {
   const defaultKeywords = ["Indian coffee", "specialty coffee India"];
-  return [...new Set([...defaultKeywords, ...keywords])];
+  return [...new Set([...defaultKeywords, ...(keywords ?? [])])];
 }
 
 // Helper: Build base OpenGraph object
