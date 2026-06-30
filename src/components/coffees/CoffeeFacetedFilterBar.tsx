@@ -65,6 +65,14 @@ export function CoffeeFacetedFilterBar({
   const isUserTypingRef = useRef(false);
   const prevQRef = useRef<string | undefined>(filters.q);
 
+  // Always fire the debounced commit through the latest updateFilters, which
+  // closes over the current URL params — so a pending write merges onto the
+  // current filter state instead of a stale snapshot (e.g. after Reset).
+  const updateFiltersRef = useRef(updateFilters);
+  useEffect(() => {
+    updateFiltersRef.current = updateFilters;
+  });
+
   useEffect(() => {
     if (prevQRef.current !== filters.q && !isUserTypingRef.current) {
       prevQRef.current = filters.q;
@@ -86,10 +94,10 @@ export function CoffeeFacetedFilterBar({
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
       debounceTimerRef.current = setTimeout(() => {
         isUserTypingRef.current = false;
-        updateFilters({ q: value.trim() || undefined });
+        updateFiltersRef.current({ q: value.trim() || undefined });
       }, 300);
     },
-    [updateFilters]
+    []
   );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

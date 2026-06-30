@@ -32,6 +32,14 @@ export function RoasterFilterContent({
   const isUserTypingRef = useRef(false);
   const prevQRef = useRef<string | undefined>(filters.q);
 
+  // Always fire the debounced commit through the latest updateFilters, which
+  // closes over the current URL params — so a pending write merges onto the
+  // current filter state instead of a stale snapshot (e.g. after Reset).
+  const updateFiltersRef = useRef(updateFilters);
+  useEffect(() => {
+    updateFiltersRef.current = updateFilters;
+  });
+
   // Sync qDraft when filters.q changes externally
   useEffect(() => {
     if (prevQRef.current !== filters.q && !isUserTypingRef.current) {
@@ -42,6 +50,16 @@ export function RoasterFilterContent({
     }
   }, [filters.q]);
 
+  // Clear any pending debounce on unmount so it can't fire after the sidebar closes.
+  useEffect(
+    () => () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    },
+    []
+  );
+
   // Debounced commit of the search term to the URL. The server runs the actual
   // full-text search (roasters.search_vector) via fetchRoasters.
   const debouncedCommitQ = useMemo(
@@ -51,10 +69,10 @@ export function RoasterFilterContent({
       }
       debounceTimerRef.current = setTimeout(() => {
         isUserTypingRef.current = false;
-        updateFilters({ q: value.trim() || undefined });
+        updateFiltersRef.current({ q: value.trim() || undefined });
       }, 300);
     },
-    [updateFilters]
+    []
   );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

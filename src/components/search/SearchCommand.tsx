@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/command";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SearchResultRow } from "@/components/search/SearchResultRow";
+import { SEARCH_MIN_CHARS } from "@/hooks/use-search-directory";
 import { useSearchContext } from "@/providers/SearchProvider";
 import type { SearchableItem } from "@/types/search";
 
@@ -68,6 +69,8 @@ export function SearchCommand() {
 
   const hasResults = coffeeResults.length > 0 || roasterResults.length > 0;
   const showReadyState = !error && isReady;
+  // Only "eligible" once the query meets the min length that actually triggers a fetch.
+  const eligible = query.trim().length >= SEARCH_MIN_CHARS;
 
   return (
     <CommandDialog
@@ -114,13 +117,13 @@ export function SearchCommand() {
           </div>
         )}
 
-        {showReadyState && !hasResults && query && !isLoading && (
+        {showReadyState && !hasResults && eligible && !isLoading && (
           <CommandEmpty className="py-12 text-body-muted">
-            No results found for &quot;{query}&quot;
+            No results found for &quot;{query.trim()}&quot;
           </CommandEmpty>
         )}
 
-        {showReadyState && !query && (
+        {showReadyState && !eligible && (
           <CommandEmpty className="py-12 text-body-muted">
             Start typing to search for coffees and roasters...
           </CommandEmpty>

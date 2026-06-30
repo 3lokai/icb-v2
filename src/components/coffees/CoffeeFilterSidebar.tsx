@@ -51,6 +51,14 @@ export function CoffeeFilterContent({
   const isUserTypingRef = useRef(false);
   const prevQRef = useRef<string | undefined>(filters.q);
 
+  // Always fire the debounced commit through the latest updateFilters, which
+  // closes over the current URL params — so a pending write merges onto the
+  // current filter state instead of a stale snapshot (e.g. after Reset).
+  const updateFiltersRef = useRef(updateFilters);
+  useEffect(() => {
+    updateFiltersRef.current = updateFilters;
+  });
+
   // Sync qDraft when filters.q changes externally (e.g., from URL or other components)
   // Only sync when user is not actively typing to avoid conflicts
   // Using startTransition to mark as non-urgent update to avoid cascading renders
@@ -82,10 +90,10 @@ export function CoffeeFilterContent({
 
       debounceTimerRef.current = setTimeout(() => {
         isUserTypingRef.current = false;
-        updateFilters({ q: value.trim() || undefined });
+        updateFiltersRef.current({ q: value.trim() || undefined });
       }, 300);
     },
-    [updateFilters]
+    []
   );
 
   // Handle search input change
