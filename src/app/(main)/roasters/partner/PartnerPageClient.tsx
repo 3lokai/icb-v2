@@ -105,12 +105,12 @@ const InteractiveBentoCard = ({
 const StatsBar = ({ totals }: { totals: PublicDirectoryTotals }) => {
   const stats = [
     {
-      number: `${totals.roasters.toLocaleString()}+`,
+      number: `${totals.roasters.toLocaleString("en-IN")}+`,
       label: "Roasters Listed",
       urgent: false,
     },
     {
-      number: `${totals.coffees.toLocaleString()}+`,
+      number: `${totals.coffees.toLocaleString("en-IN")}+`,
       label: "Coffees Cataloged",
       urgent: false,
     },
@@ -542,7 +542,7 @@ const FinalCTA = ({
   onCtaClick: (tier: "free" | "verified") => void;
   totals: PublicDirectoryTotals;
 }) => {
-  const roasterCountLabel = `${totals.roasters.toLocaleString()}+`;
+  const roasterCountLabel = `${totals.roasters.toLocaleString("en-IN")}+`;
 
   return (
     <div className="group relative overflow-hidden rounded-[2.5rem] border border-border/40 bg-card/60 shadow-2xl transition-all duration-700">

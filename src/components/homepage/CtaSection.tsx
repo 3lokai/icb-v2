@@ -121,7 +121,7 @@ export default async function CtaSection() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="rounded-xl border border-border bg-card p-5 group/stat">
                         <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5 tabular-nums">
-                          {totals.roasters.toLocaleString()}+
+                          {totals.roasters.toLocaleString("en-IN")}+
                         </div>
                         <div className="mt-1 text-label font-bold text-accent">
                           Roasters
@@ -130,7 +130,7 @@ export default async function CtaSection() {
 
                       <div className="rounded-xl border border-border bg-card p-5 group/stat">
                         <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5 tabular-nums">
-                          {totals.coffees.toLocaleString()}+
+                          {totals.coffees.toLocaleString("en-IN")}+
                         </div>
                         <div className="mt-1 text-label font-bold text-accent">
                           Beans

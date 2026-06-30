@@ -7,38 +7,39 @@ function utcCalendarDay(d: Date): string {
 }
 
 /**
- * Server-only: invokes sync-to-sequenzy Edge Function (Sequenzy API key stays server-side).
- * Pass SEQUENZY_INTERNAL_SYNC_SECRET (same value as Edge INTERNAL_SEQUENZY_SYNC_SECRET and Vault sequenzy_internal_sync_secret).
+ * Server-only: invokes the sync-to-lifecycle Edge Function (Notifuse API key
+ * stays server-side). Pass INTERNAL_LIFECYCLE_SYNC_SECRET (same value as Edge
+ * INTERNAL_LIFECYCLE_SYNC_SECRET and Vault lifecycle_internal_sync_secret).
  */
 export async function trackLifecycleEvent(
   userId: string,
   eventName: string,
   source: "live" | "backfill" | "trigger" = "live"
 ): Promise<void> {
-  const secret = process.env.SEQUENZY_INTERNAL_SYNC_SECRET;
+  const secret = process.env.INTERNAL_LIFECYCLE_SYNC_SECRET;
   if (!secret) {
     if (process.env.NODE_ENV === "development") {
       console.warn(
-        "[sequenzy] SEQUENZY_INTERNAL_SYNC_SECRET not set; skipping",
+        "[lifecycle] INTERNAL_LIFECYCLE_SYNC_SECRET not set; skipping",
         eventName
       );
     } else {
       console.error(
-        "[sequenzy] SEQUENZY_INTERNAL_SYNC_SECRET is not configured; cannot emit event",
-        { eventName, envVar: "SEQUENZY_INTERNAL_SYNC_SECRET" }
+        "[lifecycle] INTERNAL_LIFECYCLE_SYNC_SECRET is not configured; cannot emit event",
+        { eventName, envVar: "INTERNAL_LIFECYCLE_SYNC_SECRET" }
       );
     }
     return;
   }
 
   const supabase = await createServiceRoleClient();
-  const { error } = await supabase.functions.invoke("sync-to-sequenzy", {
+  const { error } = await supabase.functions.invoke("sync-to-lifecycle", {
     body: { user_id: userId, event_name: eventName, source },
-    headers: { "x-icb-sequenzy-sync": secret },
+    headers: { "x-icb-lifecycle-sync": secret },
   });
 
   if (error) {
-    console.error("[sequenzy] trackLifecycleEvent", eventName, error);
+    console.error("[lifecycle] trackLifecycleEvent", eventName, error);
   }
 }
 
@@ -54,15 +55,15 @@ export async function trackSessionStartedIfNeeded(
 
   const { data: updated, error } = await supabase
     .from("user_profiles")
-    .update({ sequenzy_last_session_event_at: now.toISOString() })
+    .update({ lifecycle_last_session_event_at: now.toISOString() })
     .eq("id", userId)
     .or(
-      `sequenzy_last_session_event_at.is.null,sequenzy_last_session_event_at.lt.${todayStart}`
+      `lifecycle_last_session_event_at.is.null,lifecycle_last_session_event_at.lt.${todayStart}`
     )
     .select("id");
 
   if (error) {
-    console.error("[sequenzy] trackSessionStartedIfNeeded update", error);
+    console.error("[lifecycle] trackSessionStartedIfNeeded update", error);
     return;
   }
 

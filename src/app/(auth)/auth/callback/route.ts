@@ -5,7 +5,7 @@ import { sendSlackNotification } from "@/lib/notifications/slack";
 import { sendWelcomeEmail } from "@/lib/emails/resend";
 import { subscribeToConvertKit } from "@/lib/convertkit/client";
 import { getPostHogClient } from "@/lib/posthog-server";
-import { trackLifecycleEvent } from "@/lib/sequenzy";
+import { trackLifecycleEvent } from "@/lib/lifecycle";
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);

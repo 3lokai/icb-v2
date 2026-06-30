@@ -27,6 +27,13 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
       "chrome-extension://",
       "moz-extension://",
       "ResizeObserver loop completed",
+      // Transient user-side network + benign browser-policy errors (not bugs).
+      // Deliberately NOT filtering "Script error." — cross-origin-masked, can hide real bugs.
+      "Load failed",
+      "Failed to fetch",
+      "NetworkError",
+      "Connection closed",
+      "play method is not allowed",
     ];
     if (NOISE.some((m) => blob.includes(m))) return null;
     return event;

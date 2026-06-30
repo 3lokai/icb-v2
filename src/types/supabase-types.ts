@@ -2333,7 +2333,6 @@ export type Database = {
       };
       user_profiles: {
         Row: {
-          activated_at: string | null;
           avatar_url: string | null;
           bio: string | null;
           city: string | null;
@@ -2348,21 +2347,16 @@ export type Database = {
           gender: string | null;
           id: string;
           is_public_profile: boolean | null;
-          last_active_at: string | null;
+          lifecycle_last_session_event_at: string | null;
           newsletter_subscribed: boolean | null;
           onboarding_completed: boolean | null;
           preferred_brewing_methods: string[] | null;
-          profile_building_entered_at: string | null;
-          sequenzy_last_session_event_at: string | null;
-          sequenzy_last_synced_at: string | null;
-          sequenzy_phase: string;
           show_location: boolean | null;
           state: string | null;
           updated_at: string | null;
           username: string | null;
         };
         Insert: {
-          activated_at?: string | null;
           avatar_url?: string | null;
           bio?: string | null;
           city?: string | null;
@@ -2377,21 +2371,16 @@ export type Database = {
           gender?: string | null;
           id: string;
           is_public_profile?: boolean | null;
-          last_active_at?: string | null;
+          lifecycle_last_session_event_at?: string | null;
           newsletter_subscribed?: boolean | null;
           onboarding_completed?: boolean | null;
           preferred_brewing_methods?: string[] | null;
-          profile_building_entered_at?: string | null;
-          sequenzy_last_session_event_at?: string | null;
-          sequenzy_last_synced_at?: string | null;
-          sequenzy_phase?: string;
           show_location?: boolean | null;
           state?: string | null;
           updated_at?: string | null;
           username?: string | null;
         };
         Update: {
-          activated_at?: string | null;
           avatar_url?: string | null;
           bio?: string | null;
           city?: string | null;
@@ -2406,14 +2395,10 @@ export type Database = {
           gender?: string | null;
           id?: string;
           is_public_profile?: boolean | null;
-          last_active_at?: string | null;
+          lifecycle_last_session_event_at?: string | null;
           newsletter_subscribed?: boolean | null;
           onboarding_completed?: boolean | null;
           preferred_brewing_methods?: string[] | null;
-          profile_building_entered_at?: string | null;
-          sequenzy_last_session_event_at?: string | null;
-          sequenzy_last_synced_at?: string | null;
-          sequenzy_phase?: string;
           show_location?: boolean | null;
           state?: string | null;
           updated_at?: string | null;
@@ -3177,18 +3162,13 @@ export type Database = {
       get_user_lifecycle_state: {
         Args: { p_user_id: string };
         Returns: {
-          activated_at: string;
           email: string;
+          full_name: string;
           has_avatar: boolean;
           has_bio: boolean;
           has_gear: boolean;
           has_station_photo: boolean;
-          last_active_at: string;
-          profile_building_entered_at: string;
           ratings_count: number;
-          sequenzy_last_session_event_at: string;
-          sequenzy_last_synced_at: string;
-          sequenzy_phase: string;
           user_id: string;
         }[];
       };
@@ -3233,7 +3213,7 @@ export type Database = {
           rows_updated: number;
         }[];
       };
-      notify_sequenzy_sync: {
+      notify_lifecycle_sync: {
         Args: { p_event_name: string; p_source?: string; p_user_id: string };
         Returns: undefined;
       };

@@ -82,8 +82,8 @@ function buildInsightsDatasetSchema(
   dateModified: string,
   totals: PublicDirectoryTotals
 ) {
-  const roasterCountLabel = `${totals.roasters.toLocaleString()}+`;
-  const coffeeCountLabel = `${totals.coffees.toLocaleString()}+`;
+  const roasterCountLabel = `${totals.roasters.toLocaleString("en-IN")}+`;
+  const coffeeCountLabel = `${totals.coffees.toLocaleString("en-IN")}+`;
 
   return {
     "@context": "https://schema.org",
@@ -122,8 +122,8 @@ export default async function InsightsPage() {
   const [{ display: lastUpdated, iso: lastUpdatedIso }, totals] =
     await Promise.all([getLastUpdated(), getDirectoryTotals()]);
 
-  const roasterCountLabel = `${totals.roasters.toLocaleString()}+`;
-  const coffeeCountLabel = totals.coffees.toLocaleString();
+  const roasterCountLabel = `${totals.roasters.toLocaleString("en-IN")}+`;
+  const coffeeCountLabel = totals.coffees.toLocaleString("en-IN");
 
   return (
     <>
