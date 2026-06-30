@@ -165,11 +165,17 @@ export function Header() {
         <div className="relative z-20 ml-auto flex shrink-0 items-center gap-2">
           <button
             aria-label="Search"
-            className={cn(buttonVariants({ size: "icon", variant: "ghost" }))}
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              "h-9 gap-2 px-2.5 text-muted-foreground"
+            )}
             onClick={() => openSearch()}
             type="button"
           >
             <Icon color="muted" name="MagnifyingGlass" size={20} />
+            <kbd className="hidden items-center gap-0.5 rounded border border-border/70 bg-muted/60 px-1.5 py-0.5 font-medium text-overline text-muted-foreground lg:inline-flex">
+              ⌘K
+            </kbd>
           </button>
           {(() => {
             if (authLoading || profileLoading) {

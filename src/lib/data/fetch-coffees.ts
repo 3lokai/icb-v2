@@ -202,14 +202,10 @@ async function resolveCanonFlavorSlugsToIds(
 export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
   let filteredQuery = query;
 
-  // Text search (only if not filtering by specific IDs from Fuse)
-  if (filters.q?.trim() && !filters.coffee_ids?.length) {
+  // "Filter by Name" — substring match on name (matches the label and restores
+  // partial matching). The global Cmd+K search uses the richer search_directory RPC.
+  if (filters.q?.trim()) {
     filteredQuery = filteredQuery.ilike("name", `%${filters.q.trim()}%`);
-  }
-
-  // ID Filter (from Fuse)
-  if (filters.coffee_ids?.length) {
-    filteredQuery = filteredQuery.in("coffee_id", filters.coffee_ids);
   }
 
   // Array filters

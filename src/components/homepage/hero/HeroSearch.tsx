@@ -11,10 +11,9 @@ import {
 } from "react";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SearchResultRow } from "@/components/search/SearchResultRow";
 import { useSearchContext } from "@/providers/SearchProvider";
 import type { SearchableItem } from "@/types/search";
 import { cn } from "@/lib/utils";
@@ -24,7 +23,7 @@ const MAX_RESULTS = 5;
 export function HeroSearch() {
   const router = useRouter();
   const searchContext = useSearchContext();
-  const { openSearch, results, isReady, setQuery } = searchContext;
+  const { openSearch, results, isReady, isLoading, setQuery } = searchContext;
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
@@ -68,7 +67,10 @@ export function HeroSearch() {
 
   // Filter and limit results — align dropdown with debounced minimum-length query
   const displayedResults = results.slice(0, MAX_RESULTS);
-  const hasResults = displayedResults.length > 0 && debouncedQuery.length >= 2;
+  const queryActive = debouncedQuery.length >= 2;
+  const hasResults = displayedResults.length > 0 && queryActive;
+  const showNoResults = queryActive && !isLoading && results.length === 0;
+  const showPanel = showResults && (hasResults || showNoResults);
 
   const handleSearch = useCallback(() => {
     if (searchQuery.trim()) {
@@ -106,9 +108,13 @@ export function HeroSearch() {
       e.preventDefault();
       setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1));
     } else if (e.key === "Escape") {
-      setShowResults(false);
-      setSearchQuery("");
-      inputRef.current?.blur();
+      // First Escape dismisses the dropdown but keeps the query; a second clears it.
+      if (showResults) {
+        setShowResults(false);
+      } else {
+        setSearchQuery("");
+        inputRef.current?.blur();
+      }
     }
   };
 
@@ -159,7 +165,7 @@ export function HeroSearch() {
             aria-controls={listboxId}
             aria-expanded={listExpanded}
             aria-haspopup="listbox"
-            className="h-12 w-full rounded-xl bg-white/5 border-white/10 py-3 pr-32 pl-12 text-white transition-all duration-300 placeholder:text-white/40 focus:border-white/30 focus:bg-white/10 focus:outline-none focus:ring-0"
+            className="h-12 w-full rounded-xl bg-white/5 border-white/10 py-3 pr-32 pl-12 text-white transition-all duration-300 placeholder:text-white/70 focus:border-white/30 focus:bg-white/10 focus:outline-none focus:ring-0"
             id={inputId}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -196,7 +202,7 @@ export function HeroSearch() {
             <Button
               aria-label={hasQuery ? "Search directory" : "Open full search"}
               className={cn(
-                "rounded-lg h-9 bg-accent/90 hover:bg-accent text-white border-0",
+                "rounded-lg h-9 bg-accent hover:bg-accent/90 text-accent-foreground border-0",
                 !hasQuery && "min-w-9 px-2"
               )}
               onClick={handleSearch}
@@ -211,99 +217,62 @@ export function HeroSearch() {
             </Button>
           </div>
 
-          {showResults && hasResults && (
+          {showPanel && (
             <div
-              className="absolute top-full z-50 mt-2 max-h-[420px] w-full overflow-y-auto rounded-2xl border border-white/10 bg-black/45 p-2 shadow-2xl backdrop-blur-md"
+              className="absolute top-full z-50 mt-2 w-full overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg"
               ref={resultsRef}
             >
-              <div
-                aria-label="Search results"
-                className="max-h-[320px] overflow-y-auto p-2"
-                id={listboxId}
-                role="listbox"
-              >
-                {displayedResults.map((item, index) => (
-                  <button
-                    aria-selected={index === selectedIndex}
-                    className={cn(
-                      "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-all border",
-                      index === selectedIndex
-                        ? "bg-white/10 text-white border-white/20"
-                        : "border-transparent text-white/90 hover:border-white/10 hover:bg-white/5"
-                    )}
-                    id={`${baseId}-option-${index}`}
-                    key={`${item.type}-${item.id}`}
-                    onClick={() => handleResultClick(item)}
-                    role="option"
-                    type="button"
+              {hasResults ? (
+                <>
+                  <div
+                    aria-label="Search results"
+                    className="max-h-[min(60vh,360px)] overflow-y-auto p-2"
+                    id={listboxId}
+                    role="listbox"
                   >
-                    <Avatar className="size-10 shrink-0">
-                      {item.imageUrl ? (
-                        <AvatarImage alt={item.title} src={item.imageUrl} />
-                      ) : null}
-                      <AvatarFallback className="bg-muted text-popover-foreground">
-                        {item.type === "coffee" ? (
-                          <Icon className="size-5" name="Coffee" />
-                        ) : (
-                          <Icon className="size-5" name="Storefront" />
+                    {displayedResults.map((item, index) => (
+                      <button
+                        aria-selected={index === selectedIndex}
+                        className={cn(
+                          "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors",
+                          index === selectedIndex
+                            ? "bg-accent/10"
+                            : "hover:bg-muted/60"
                         )}
-                      </AvatarFallback>
-                    </Avatar>
-
-                    <div className="flex min-w-0 flex-1 flex-col gap-1">
-                      <div className="font-medium text-white text-caption">
-                        {item.title}
-                      </div>
-                      <div className="line-clamp-1 text-muted-foreground text-overline">
-                        {item.description}
-                      </div>
-                      {(item.tags.length > 0 || item.flavorNotes) && (
-                        <div className="flex flex-wrap gap-1">
-                          {item.flavorNotes?.slice(0, 2).map((note) => (
-                            <Badge
-                              className="text-overline"
-                              key={note}
-                              variant="secondary"
-                            >
-                              {note}
-                            </Badge>
-                          ))}
-                          {item.tags.slice(0, 2).map((tag) => (
-                            <Badge
-                              className="text-overline"
-                              key={tag}
-                              variant="outline"
-                            >
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
+                        id={`${baseId}-option-${index}`}
+                        key={`${item.type}-${item.id}`}
+                        onClick={() => handleResultClick(item)}
+                        role="option"
+                        type="button"
+                      >
+                        <SearchResultRow compact item={item} />
+                      </button>
+                    ))}
+                  </div>
+                  {results.length > MAX_RESULTS && (
+                    <div className="border-border/60 border-t p-2">
+                      <button
+                        aria-label={`View all ${results.length} search results`}
+                        className="w-full rounded-lg bg-muted/60 px-3 py-2 text-center font-medium text-caption text-foreground transition-colors hover:bg-muted"
+                        onClick={handleSearch}
+                        type="button"
+                      >
+                        View all {results.length} results →
+                      </button>
                     </div>
-
-                    {item.metadata.coffee?.rating && (
-                      <div className="shrink-0 text-muted-foreground text-overline">
-                        ⭐ {item.metadata.coffee.rating.toFixed(1)}
-                      </div>
-                    )}
-
-                    {item.metadata.roaster?.coffeeCount && (
-                      <div className="shrink-0 text-muted-foreground text-overline">
-                        {item.metadata.roaster.coffeeCount} coffees
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-              {results.length > MAX_RESULTS && (
-                <div className="border-white/10 border-t p-2 pt-2">
+                  )}
+                </>
+              ) : (
+                <div className="px-4 py-6 text-center">
+                  <p className="text-caption text-muted-foreground">
+                    No matches for &ldquo;{debouncedQuery}&rdquo;
+                  </p>
                   <button
-                    aria-label={`View all ${results.length} search results`}
-                    className="w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-center text-white text-caption transition-colors hover:bg-white/15"
+                    className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-muted/60 px-3 py-2 font-medium text-caption text-foreground transition-colors hover:bg-muted"
                     onClick={handleSearch}
                     type="button"
                   >
-                    View all {results.length} results →
+                    Search everything →
                   </button>
                 </div>
               )}

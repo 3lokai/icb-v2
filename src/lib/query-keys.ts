@@ -74,6 +74,11 @@ export const queryKeys = {
       ["gear", "search", query, category] as const,
   },
 
+  // Global directory search (coffees + roasters, server-side via search_directory RPC)
+  search: {
+    directory: (query: string) => ["search", "directory", query] as const,
+  },
+
   // Sanity blog interactive blocks (CSR-only data fetches)
   blog: {
     roasterCollection: (value: unknown) =>

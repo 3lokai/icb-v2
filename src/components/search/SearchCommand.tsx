@@ -1,10 +1,7 @@
 "use client";
 
-import { Icon } from "@/components/common/Icon";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   CommandDialog,
@@ -15,6 +12,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SearchResultRow } from "@/components/search/SearchResultRow";
 import { useSearchContext } from "@/providers/SearchProvider";
 import type { SearchableItem } from "@/types/search";
 
@@ -69,7 +67,6 @@ export function SearchCommand() {
     .slice(0, MAX_ROASTER_RESULTS);
 
   const hasResults = coffeeResults.length > 0 || roasterResults.length > 0;
-  const showLoadingState = !(error || isLoading || isReady);
   const showReadyState = !error && isReady;
 
   return (
@@ -97,7 +94,7 @@ export function SearchCommand() {
         value={query}
       />
 
-      <CommandList>
+      <CommandList className="min-h-[340px]">
         {isLoading && (
           <div className="flex flex-col gap-3 p-6">
             <Skeleton className="h-16 w-full rounded-lg" />
@@ -117,13 +114,7 @@ export function SearchCommand() {
           </div>
         )}
 
-        {showLoadingState && (
-          <CommandEmpty className="py-12 text-body-muted">
-            Loading search index...
-          </CommandEmpty>
-        )}
-
-        {showReadyState && !hasResults && query && (
+        {showReadyState && !hasResults && query && !isLoading && (
           <CommandEmpty className="py-12 text-body-muted">
             No results found for &quot;{query}&quot;
           </CommandEmpty>
@@ -173,77 +164,13 @@ type SearchResultItemProps = {
 };
 
 function SearchResultItem({ item, onSelect }: SearchResultItemProps) {
-  const displayTags = item.tags.slice(0, 3); // Show max 3 tags
-  const hasMoreTags = item.tags.length > 3;
-
   return (
     <CommandItem
       className="flex items-center gap-4 px-4 py-3 transition-colors"
       onSelect={() => onSelect(item)}
       value={`${item.type}-${item.id}`}
     >
-      <Avatar className="size-12 shrink-0 border border-border/50">
-        {item.imageUrl ? (
-          <AvatarImage alt={item.title} src={item.imageUrl} />
-        ) : null}
-        <AvatarFallback className="bg-muted/80 text-popover-foreground">
-          {item.type === "coffee" ? (
-            <Icon className="size-6" name="Coffee" size={24} />
-          ) : (
-            <Icon className="size-6" name="Storefront" size={24} />
-          )}
-        </AvatarFallback>
-      </Avatar>
-
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <div className="font-medium text-body text-popover-foreground leading-snug">
-          {item.title}
-        </div>
-        {item.description && (
-          <div className="line-clamp-1 text-caption text-muted-foreground">
-            {item.description}
-          </div>
-        )}
-        {(displayTags.length > 0 || item.flavorNotes) && (
-          <div className="flex flex-wrap gap-1.5">
-            {item.flavorNotes?.slice(0, 2).map((note) => (
-              <Badge
-                className="font-medium text-overline"
-                key={note}
-                variant="secondary"
-              >
-                {note}
-              </Badge>
-            ))}
-            {displayTags.map((tag) => (
-              <Badge
-                className="font-medium text-overline"
-                key={tag}
-                variant="outline"
-              >
-                {tag}
-              </Badge>
-            ))}
-            {hasMoreTags && (
-              <Badge className="font-medium text-overline" variant="outline">
-                +{item.tags.length - 3}
-              </Badge>
-            )}
-          </div>
-        )}
-      </div>
-
-      {item.metadata.coffee?.rating && (
-        <div className="shrink-0 font-medium text-caption text-muted-foreground">
-          ⭐ {item.metadata.coffee.rating.toFixed(1)}
-        </div>
-      )}
-
-      {item.metadata.roaster?.coffeeCount && (
-        <div className="shrink-0 font-medium text-caption text-muted-foreground">
-          {item.metadata.roaster.coffeeCount} coffees
-        </div>
-      )}
+      <SearchResultRow item={item} />
     </CommandItem>
   );
 }

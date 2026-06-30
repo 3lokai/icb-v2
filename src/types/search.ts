@@ -11,7 +11,6 @@ export type SearchableItem = {
   description: string;
   url: string;
   imageUrl?: string;
-  searchableText: string; // big flattened string
   flavorNotes?: string[];
   tags: string[];
   metadata: {

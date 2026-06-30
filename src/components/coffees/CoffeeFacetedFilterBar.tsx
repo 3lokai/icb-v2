@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef, startTransition } from "react";
-import { useSearch } from "@/hooks/use-search";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,9 +65,6 @@ export function CoffeeFacetedFilterBar({
   const isUserTypingRef = useRef(false);
   const prevQRef = useRef<string | undefined>(filters.q);
 
-  const localSearch = useSearch({ enableShortcut: false });
-  const ensureSearchReady = () => localSearch.ensureIndexLoaded();
-
   useEffect(() => {
     if (prevQRef.current !== filters.q && !isUserTypingRef.current) {
       prevQRef.current = filters.q;
@@ -83,50 +79,23 @@ export function CoffeeFacetedFilterBar({
     []
   );
 
+  // Debounced commit of the search term to the URL. The server runs the actual
+  // full-text search (coffee_directory_mv.search_vector) via fetchCoffees.
   const debouncedCommitQ = useMemo(
     () => (value: string) => {
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
       debounceTimerRef.current = setTimeout(() => {
-        if (!value.trim()) {
-          isUserTypingRef.current = false;
-          updateFilters({ q: undefined, coffee_ids: undefined });
-          localSearch.setQuery("");
-          return;
-        }
-        localSearch.setQuery(value.trim());
+        isUserTypingRef.current = false;
+        updateFilters({ q: value.trim() || undefined });
       }, 300);
     },
-    [updateFilters, localSearch]
+    [updateFilters]
   );
-
-  useEffect(() => {
-    if (
-      localSearch.query &&
-      localSearch.isReady &&
-      !localSearch.isLoading &&
-      qDraft.trim() === localSearch.query
-    ) {
-      const coffeeResults = localSearch.results.filter(
-        (r) => r.type === "coffee"
-      );
-      const ids = coffeeResults.map((r) => r.id);
-      isUserTypingRef.current = false;
-      updateFilters({ q: localSearch.query, coffee_ids: ids });
-    }
-  }, [
-    localSearch.results,
-    localSearch.isReady,
-    localSearch.isLoading,
-    localSearch.query,
-    qDraft,
-    updateFilters,
-  ]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     isUserTypingRef.current = true;
     setQDraft(value);
-    ensureSearchReady();
     debouncedCommitQ(value);
   };
 
@@ -319,7 +288,6 @@ export function CoffeeFacetedFilterBar({
               onChange={handleSearchChange}
               onBlur={handleSearchBlur}
               onKeyDown={handleSearchKeyDown}
-              onFocus={ensureSearchReady}
               placeholder="Search coffees..."
               type="text"
               value={qDraft}
