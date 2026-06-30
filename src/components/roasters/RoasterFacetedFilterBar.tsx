@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef, startTransition } from "react";
-import { useSearch } from "@/hooks/use-search";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,14 +39,11 @@ export function RoasterFacetedFilterBar({
   const { filters, updateFilters, resetFilters, sort, setSort } =
     useRoasterFilters();
 
-  // Search state (Fuse → roaster_ids, mirrors RoasterFilterContent)
+  // Search state — commits `q`; the server runs the actual FTS via fetchRoasters.
   const [qDraft, setQDraft] = useState(filters.q || "");
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const isUserTypingRef = useRef(false);
   const prevQRef = useRef<string | undefined>(filters.q);
-
-  const localSearch = useSearch({ enableShortcut: false });
-  const ensureSearchReady = () => localSearch.ensureIndexLoaded();
 
   useEffect(() => {
     if (prevQRef.current !== filters.q && !isUserTypingRef.current) {
@@ -67,46 +63,17 @@ export function RoasterFacetedFilterBar({
     () => (value: string) => {
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
       debounceTimerRef.current = setTimeout(() => {
-        if (!value.trim()) {
-          isUserTypingRef.current = false;
-          updateFilters({ q: undefined, roaster_ids: undefined });
-          localSearch.setQuery("");
-          return;
-        }
-        localSearch.setQuery(value.trim());
+        isUserTypingRef.current = false;
+        updateFilters({ q: value.trim() || undefined });
       }, 300);
     },
-    [updateFilters, localSearch]
+    [updateFilters]
   );
-
-  useEffect(() => {
-    if (
-      localSearch.query &&
-      localSearch.isReady &&
-      !localSearch.isLoading &&
-      qDraft.trim() === localSearch.query
-    ) {
-      const roasterResults = localSearch.results.filter(
-        (r) => r.type === "roaster"
-      );
-      const ids = roasterResults.map((r) => r.id);
-      isUserTypingRef.current = false;
-      updateFilters({ q: localSearch.query, roaster_ids: ids });
-    }
-  }, [
-    localSearch.results,
-    localSearch.isReady,
-    localSearch.isLoading,
-    localSearch.query,
-    qDraft,
-    updateFilters,
-  ]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     isUserTypingRef.current = true;
     setQDraft(value);
-    ensureSearchReady();
     debouncedCommitQ(value);
   };
 
@@ -166,7 +133,6 @@ export function RoasterFacetedFilterBar({
               id="roaster-search"
               className="h-10 w-full border-border/60 focus:border-accent/40"
               onChange={handleSearchChange}
-              onFocus={ensureSearchReady}
               placeholder="Search roasters..."
               type="text"
               value={qDraft}

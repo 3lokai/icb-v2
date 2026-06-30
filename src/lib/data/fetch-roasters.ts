@@ -31,11 +31,9 @@ function applyFilters(query: any, filters: RoasterFilters) {
   // This is REQUIRED to match the RLS policy "Public can view active roasters"
   filteredQuery = filteredQuery.eq("is_active", true);
 
-  if (
-    filters.q &&
-    filters.q.trim().length > 0 &&
-    !filters.roaster_ids?.length
-  ) {
+  // "Filter by Name" — substring match on name (matches the label and restores
+  // partial matching). The global Cmd+K search uses the richer search_directory RPC.
+  if (filters.q && filters.q.trim().length > 0) {
     filteredQuery = filteredQuery.ilike("name", `%${filters.q.trim()}%`);
   }
 
