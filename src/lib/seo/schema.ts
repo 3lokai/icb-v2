@@ -1,5 +1,60 @@
 // lib/seo/schema.ts
 
+import type { CoffeeSummary } from "@/types/coffee-types";
+
+/**
+ * ItemList entry for a coffee in a directory/discovery/curation ItemList.
+ *
+ * Emits an `@type: Product` only when it can be valid for Google — i.e. it has a
+ * priced `offers` and/or an `aggregateRating`. Google requires one of
+ * offers/review/aggregateRating on a Product, and a price-less Offer is itself
+ * invalid, so coffees with neither a price nor reviews (e.g. delisted / never
+ * priced / permanently out of stock) are emitted as a plain ListItem (name + url)
+ * which carries no Product validation obligation.
+ */
+export function coffeeProductListItem(
+  c: CoffeeSummary,
+  baseUrl: string,
+  position: number
+): Record<string, unknown> {
+  const url = `${baseUrl}/roasters/${c.roaster_slug}/coffees/${c.slug}`;
+  const price = c.min_price_in_stock ?? c.best_normalized_250g;
+  const hasRating = c.rating_avg != null && c.rating_count > 0;
+
+  // No price and no rating → no valid Product possible; emit a plain ListItem.
+  if (price == null && !hasRating) {
+    return { "@type": "ListItem", position, name: c.name, url };
+  }
+
+  const product: Record<string, unknown> = {
+    "@type": "Product",
+    name: c.name,
+    url,
+  };
+  if (c.roaster_name)
+    product.brand = { "@type": "Brand", name: c.roaster_name };
+  if (c.image_url) product.image = c.image_url;
+  if (price != null) {
+    product.offers = {
+      "@type": "Offer",
+      price,
+      priceCurrency: "INR",
+      availability:
+        (c.in_stock_count ?? 0) > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+    };
+  }
+  if (hasRating) {
+    product.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: c.rating_avg,
+      ratingCount: c.rating_count,
+    };
+  }
+  return { "@type": "ListItem", position, item: product };
+}
+
 /** Base URL for the site; use for absolute breadcrumb and schema URLs */
 export function getSeoBaseUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -129,10 +184,13 @@ export function generateSchemaOrg({
     if (sku) {
       schema.sku = sku; // <--- ADD sku to schema
     }
-    if (price !== undefined || availability) {
+    // Only emit offers when a price is known. A price-less Offer is invalid to
+    // Google ("Either 'price' or 'priceSpecification' should be specified").
+    if (price !== undefined) {
       schema.offers = {
         "@type": "Offer",
-        ...(price !== undefined ? { price, priceCurrency: currency } : {}),
+        price,
+        priceCurrency: currency,
         availability: `https://schema.org/${availability || "InStock"}`,
       };
     }

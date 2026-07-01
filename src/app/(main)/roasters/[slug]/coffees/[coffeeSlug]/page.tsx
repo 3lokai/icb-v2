@@ -202,10 +202,18 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
     { name: coffee.name ?? "Coffee", url: canonical },
   ]);
 
+  // Only emit Product JSON-LD when it can be valid for Google — i.e. it has a
+  // priced offer or an aggregateRating. Without either, the Product is invalid
+  // and ineligible for rich results, so we omit it (keeping breadcrumbs).
+  const schemas =
+    productSchema.offers || productSchema.aggregateRating
+      ? [productSchema, breadcrumbSchema]
+      : [breadcrumbSchema];
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <>
-        <StructuredData schema={[productSchema, breadcrumbSchema]} />
+        <StructuredData schema={schemas} />
         <CoffeeDetailPage coffee={coffee} moreFromRoaster={moreFromRoaster} />
       </>
     </HydrationBoundary>

@@ -13,6 +13,7 @@ import {
 import type { CoffeeFilters, CoffeeSummary } from "@/types/coffee-types";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
 import {
+  coffeeProductListItem,
   generateCollectionPageSchema,
   generateBreadcrumbSchema,
 } from "@/lib/seo/schema";
@@ -206,31 +207,7 @@ function buildCoffeeListItems(
 ): Array<Record<string, unknown>> {
   return coffees
     .filter((c) => c.slug && c.roaster_slug && c.name)
-    .map((c, i) => {
-      const item: Record<string, unknown> = {
-        "@type": "Product",
-        name: c.name,
-        url: `${baseUrl}/roasters/${c.roaster_slug}/coffees/${c.slug}`,
-      };
-      if (c.image_url) item.image = c.image_url;
-      const price = c.min_price_in_stock ?? c.best_normalized_250g;
-      if (price != null) {
-        item.offers = {
-          "@type": "Offer",
-          price,
-          priceCurrency: "INR",
-          availability: `https://schema.org/${(c.in_stock_count ?? 0) > 0 ? "InStock" : "OutOfStock"}`,
-        };
-      }
-      if (c.rating_avg != null && c.rating_count > 0) {
-        item.aggregateRating = {
-          "@type": "AggregateRating",
-          ratingValue: c.rating_avg,
-          ratingCount: c.rating_count,
-        };
-      }
-      return { "@type": "ListItem", position: i + 1, item };
-    });
+    .map((c, i) => coffeeProductListItem(c, baseUrl, i + 1));
 }
 
 async function CoffeesPageContent({
