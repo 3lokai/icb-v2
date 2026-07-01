@@ -39,6 +39,7 @@ import {
   type LandingPageConfig,
 } from "@/lib/discovery/landing-pages";
 import {
+  coffeeProductListItem,
   generateBreadcrumbSchema,
   generateCollectionPageSchema,
   generateFAQSchema,
@@ -82,44 +83,7 @@ function buildDiscoveryCoffeeListItems(
   return coffees
     .filter((c) => c.slug && c.roaster_slug && c.name)
     .slice(0, 20)
-    .map((c, i) => {
-      const product: Record<string, unknown> = {
-        "@type": "Product",
-        name: c.name,
-        url: `${baseUrl}/roasters/${c.roaster_slug}/coffees/${c.slug}`,
-      };
-
-      if (c.roaster_name) {
-        product.brand = { "@type": "Brand", name: c.roaster_name };
-      }
-      if (c.image_url) {
-        product.image = c.image_url;
-      }
-      if (typeof c.best_normalized_250g === "number") {
-        product.offers = {
-          "@type": "Offer",
-          price: c.best_normalized_250g,
-          priceCurrency: "INR",
-          availability:
-            (c.in_stock_count ?? 0) > 0
-              ? "https://schema.org/InStock"
-              : "https://schema.org/OutOfStock",
-        };
-      }
-      if (typeof c.rating_avg === "number" && c.rating_count > 0) {
-        product.aggregateRating = {
-          "@type": "AggregateRating",
-          ratingValue: c.rating_avg,
-          reviewCount: c.rating_count,
-        };
-      }
-
-      return {
-        "@type": "ListItem",
-        position: i + 1,
-        item: product,
-      };
-    });
+    .map((c, i) => coffeeProductListItem(c, baseUrl, i + 1));
 }
 
 /**
@@ -153,8 +117,13 @@ export async function DiscoveryLandingLayout({
     crumbs.map(({ name, url }) => ({ name, url }))
   );
 
+  // Discovery pages only surface buyable coffees — an out-of-stock coffee has
+  // no price to show and can't form valid Product schema. Applied to both the
+  // visible grid and the JSON-LD via the shared filter below.
+  const discoveryFilter = { ...config.filter, in_stock_only: true };
+
   const coffeeResult = await fetchCoffeesCached(
-    config.filter,
+    discoveryFilter,
     1,
     20,
     config.sortOrder
@@ -320,7 +289,7 @@ export async function DiscoveryLandingLayout({
 
         {/* 2. Coffee Grid Teaser */}
         <CoffeeGridTeaser
-          filters={config.filter}
+          filters={discoveryFilter}
           sortOrder={config.sortOrder}
           limit={12}
           overline={

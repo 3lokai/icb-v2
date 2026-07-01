@@ -55,7 +55,7 @@ export async function generateMetadata({
 
   const { filters, page } = parseRoasterSearchParams(urlSearchParams);
   const totals = await getDirectoryTotals();
-  const roasterCountLabel = `${totals.roasters.toLocaleString()}+`;
+  const roasterCountLabel = `${totals.roasters.toLocaleString("en-IN")}+`;
 
   // Build title based on filters — root layout appends "| Indian Coffee Beans"
   let title = `Coffee Roasters in India (${roasterCountLabel} Listed)`;

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import { Icon } from "@/components/common/Icon";
 import { Logo } from "@/components/layout/logo";
@@ -81,6 +81,15 @@ const baseNavItems = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isNavbarCompact, setIsNavbarCompact] = useState(false);
+  // Shortcut hint matches the handler (Meta+K on Mac, Ctrl+K elsewhere).
+  // Default to the non-Mac label so SSR/first client render agree; correct after mount.
+  const [isMac, setIsMac] = useState(false);
+  useEffect(() => {
+    const mac = /mac|iphone|ipad|ipod/i.test(
+      navigator.platform || navigator.userAgent
+    );
+    startTransition(() => setIsMac(mac));
+  }, []);
   const { scrollY } = useScroll();
   const { user, signOut, isLoading: authLoading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useUserProfile();
@@ -174,7 +183,7 @@ export function Header() {
           >
             <Icon color="muted" name="MagnifyingGlass" size={20} />
             <kbd className="hidden items-center gap-0.5 rounded border border-border/70 bg-muted/60 px-1.5 py-0.5 font-medium text-overline text-muted-foreground lg:inline-flex">
-              ⌘K
+              {isMac ? "⌘K" : "Ctrl K"}
             </kbd>
           </button>
           {(() => {

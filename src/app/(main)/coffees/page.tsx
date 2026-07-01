@@ -1,5 +1,6 @@
 import { Accent } from "@/components/primitives/accent";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { CoffeeDirectory } from "@/components/coffees/CoffeeDirectory";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -12,6 +13,7 @@ import {
 import type { CoffeeFilters, CoffeeSummary } from "@/types/coffee-types";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
 import {
+  coffeeProductListItem,
   generateCollectionPageSchema,
   generateBreadcrumbSchema,
 } from "@/lib/seo/schema";
@@ -55,7 +57,7 @@ export async function generateMetadata({
 
   const { filters, page } = parseCoffeeSearchParams(urlSearchParams);
   const totals = await getDirectoryTotals();
-  const coffeeCountLabel = `${totals.coffees.toLocaleString()}+`;
+  const coffeeCountLabel = `${totals.coffees.toLocaleString("en-IN")}+`;
 
   // Build title based on filters — root layout appends "| Indian Coffee Beans"
   let title = `Buy Coffee Beans in India (${coffeeCountLabel} SKUs)`;
@@ -205,31 +207,7 @@ function buildCoffeeListItems(
 ): Array<Record<string, unknown>> {
   return coffees
     .filter((c) => c.slug && c.roaster_slug && c.name)
-    .map((c, i) => {
-      const item: Record<string, unknown> = {
-        "@type": "Product",
-        name: c.name,
-        url: `${baseUrl}/roasters/${c.roaster_slug}/coffees/${c.slug}`,
-      };
-      if (c.image_url) item.image = c.image_url;
-      const price = c.min_price_in_stock ?? c.best_normalized_250g;
-      if (price != null) {
-        item.offers = {
-          "@type": "Offer",
-          price,
-          priceCurrency: "INR",
-          availability: `https://schema.org/${(c.in_stock_count ?? 0) > 0 ? "InStock" : "OutOfStock"}`,
-        };
-      }
-      if (c.rating_avg != null && c.rating_count > 0) {
-        item.aggregateRating = {
-          "@type": "AggregateRating",
-          ratingValue: c.rating_avg,
-          ratingCount: c.rating_count,
-        };
-      }
-      return { "@type": "ListItem", position: i + 1, item };
-    });
+    .map((c, i) => coffeeProductListItem(c, baseUrl, i + 1));
 }
 
 async function CoffeesPageContent({
@@ -251,10 +229,38 @@ async function CoffeesPageContent({
   const { filters, page, limit, sort } =
     parseCoffeeSearchParams(urlSearchParams);
 
-  const [initialData, filterMeta] = await Promise.all([
-    fetchCoffeesCached(filters, page, limit, sort),
-    fetchCoffeeFilterMeta(),
-  ]);
+  let initialData: Awaited<ReturnType<typeof fetchCoffeesCached>>;
+  let filterMeta: Awaited<ReturnType<typeof fetchCoffeeFilterMeta>>;
+  try {
+    [initialData, filterMeta] = await Promise.all([
+      fetchCoffeesCached(filters, page, limit, sort),
+      fetchCoffeeFilterMeta(),
+    ]);
+  } catch (e) {
+    // ponytail: one guard at the call site covers both fetches; degrade to a
+    // retry state instead of crashing the Server Components render.
+    console.error("[CoffeesPage] directory fetch", e);
+    return (
+      <PageShell maxWidth="7xl">
+        <Section spacing="default">
+          <div className="flex flex-col items-center gap-4 py-24 text-center">
+            <p className="text-body-large font-medium">
+              We couldn&apos;t load the coffee directory right now.
+            </p>
+            <p className="text-muted-foreground">
+              Please refresh the page or try again in a moment.
+            </p>
+            <Link
+              className="text-accent underline underline-offset-4"
+              href="/coffees"
+            >
+              Reload directory
+            </Link>
+          </div>
+        </Section>
+      </PageShell>
+    );
+  }
 
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -308,7 +314,7 @@ export default async function CoffeesPage({
 }) {
   const params = await searchParams;
   const totals = await getDirectoryTotals();
-  const coffeeCountLabel = `${totals.coffees.toLocaleString()}+`;
+  const coffeeCountLabel = `${totals.coffees.toLocaleString("en-IN")}+`;
 
   return (
     <>

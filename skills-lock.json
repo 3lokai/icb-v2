@@ -36,12 +36,6 @@
       "skillPath": "skills/redesign-skill/SKILL.md",
       "computedHash": "47eced3e960a2c961d3cbee11fa1216264f589344b586a5cbd03967cd6b9c54b"
     },
-    "sequenzy": {
-      "source": "sequenzy/skills",
-      "sourceType": "github",
-      "skillPath": "skills/sequenzy/SKILL.md",
-      "computedHash": "4f14f6b7bf407929ba03752a47a2a1b452a88dc61b2a138decb86890427727a6"
-    },
     "vercel-cli-with-tokens": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",

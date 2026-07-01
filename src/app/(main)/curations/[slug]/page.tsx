@@ -45,18 +45,17 @@ export default async function Page({ params }: Props) {
   const curationUrl = `${baseUrl}/curations/${slug}`;
   const description = (data.curator.story ?? "").slice(0, 160);
 
+  // Curation selections carry no price/rating/slug data, so a Product can never
+  // be valid for Google (needs one of offers/review/aggregateRating). Emit plain
+  // ListItems (name only) instead — no Product validation obligation.
+  // ponytail: name-only ListItem; add url if selection slugs are ever exposed.
   const coffeeItems = data.curations
     .flatMap((list) => list.selections)
     .slice(0, 20)
     .map((selection, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      item: {
-        "@type": "Product",
-        name: selection.name,
-        brand: { "@type": "Brand", name: selection.roaster },
-        ...(selection.note ? { description: selection.note } : {}),
-      },
+      name: selection.name,
     }));
 
   const breadcrumbSchema = generateBreadcrumbSchema([

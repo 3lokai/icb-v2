@@ -147,7 +147,9 @@ export function HeroSearch() {
     }
   }, [showResults]);
 
-  const listExpanded = showResults && hasResults;
+  // Single source of truth for the popup's open state (matches the rendered panel,
+  // including the "No matches" state) so aria-expanded stays accurate.
+  const listExpanded = showPanel;
   const activeOptionId =
     selectedIndex >= 0 ? `${baseId}-option-${selectedIndex}` : undefined;
   const hasQuery = Boolean(searchQuery.trim());
@@ -263,7 +265,7 @@ export function HeroSearch() {
                   )}
                 </>
               ) : (
-                <div className="px-4 py-6 text-center">
+                <div className="px-4 py-6 text-center" id={listboxId}>
                   <p className="text-caption text-muted-foreground">
                     No matches for &ldquo;{debouncedQuery}&rdquo;
                   </p>
