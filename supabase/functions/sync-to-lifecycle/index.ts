@@ -61,6 +61,9 @@ Deno.serve(async (req: Request) => {
   } catch {
     return jsonResponse({ error: "Invalid JSON" }, 400);
   }
+  if (!body || typeof body !== "object") {
+    return jsonResponse({ error: "Invalid JSON" }, 400);
+  }
 
   const userId = body.user_id;
   const eventName = body.event_name;
@@ -120,23 +123,30 @@ Deno.serve(async (req: Request) => {
   };
 
   // 1) Upsert contact attributes (what Notifuse segments/automations filter on).
-  const upsertRes = await fetch(`${notifuseUrl}/api/contacts.upsert`, {
-    method: "POST",
-    headers: authHeaders,
-    body: JSON.stringify({
-      workspace_id: workspaceId,
-      contact: {
-        email,
-        external_id: userId,
-        full_name: row.full_name ?? null,
-        custom_number_1: ratings,
-        custom_number_2: bit(row.has_gear),
-        custom_number_3: bit(row.has_station_photo),
-        custom_number_4: bit(row.has_bio),
-        custom_number_5: bit(row.has_avatar),
-      },
-    }),
-  });
+  let upsertRes: Response;
+  try {
+    upsertRes = await fetch(`${notifuseUrl}/api/contacts.upsert`, {
+      method: "POST",
+      headers: authHeaders,
+      signal: AbortSignal.timeout(8000),
+      body: JSON.stringify({
+        workspace_id: workspaceId,
+        contact: {
+          email,
+          external_id: userId,
+          full_name: row.full_name ?? null,
+          custom_number_1: ratings,
+          custom_number_2: bit(row.has_gear),
+          custom_number_3: bit(row.has_station_photo),
+          custom_number_4: bit(row.has_bio),
+          custom_number_5: bit(row.has_avatar),
+        },
+      }),
+    });
+  } catch (err) {
+    console.error("Notifuse contacts.upsert unreachable", err);
+    return jsonResponse({ error: "Notifuse unreachable" }, 502);
+  }
   if (!upsertRes.ok) {
     const t = await upsertRes.text();
     console.error("Notifuse contacts.upsert error", upsertRes.status, t);
@@ -153,30 +163,37 @@ Deno.serve(async (req: Request) => {
       ? `${userId}:signed_up`
       : `${userId}:${eventName}:${now.getTime()}`;
 
-  const eventRes = await fetch(`${notifuseUrl}/api/customEvents.import`, {
-    method: "POST",
-    headers: authHeaders,
-    body: JSON.stringify({
-      workspace_id: workspaceId,
-      events: [
-        {
-          event_name: eventName,
-          external_id: externalId,
-          email,
-          occurred_at: now.toISOString(),
-          source: "api",
-          properties: {
-            ratings_count: ratings,
-            has_gear: row.has_gear,
-            has_station_photo: row.has_station_photo,
-            has_bio: row.has_bio,
-            has_avatar: row.has_avatar,
-            source,
+  let eventRes: Response;
+  try {
+    eventRes = await fetch(`${notifuseUrl}/api/customEvents.import`, {
+      method: "POST",
+      headers: authHeaders,
+      signal: AbortSignal.timeout(8000),
+      body: JSON.stringify({
+        workspace_id: workspaceId,
+        events: [
+          {
+            event_name: eventName,
+            external_id: externalId,
+            email,
+            occurred_at: now.toISOString(),
+            source: "api",
+            properties: {
+              ratings_count: ratings,
+              has_gear: row.has_gear,
+              has_station_photo: row.has_station_photo,
+              has_bio: row.has_bio,
+              has_avatar: row.has_avatar,
+              source,
+            },
           },
-        },
-      ],
-    }),
-  });
+        ],
+      }),
+    });
+  } catch (err) {
+    console.error("Notifuse customEvents.import unreachable", err);
+    return jsonResponse({ error: "Notifuse unreachable" }, 502);
+  }
   if (!eventRes.ok) {
     const t = await eventRes.text();
     console.error("Notifuse customEvents.import error", eventRes.status, t);

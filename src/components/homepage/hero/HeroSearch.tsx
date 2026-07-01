@@ -265,7 +265,7 @@ export function HeroSearch() {
                   )}
                 </>
               ) : (
-                <div className="px-4 py-6 text-center">
+                <div className="px-4 py-6 text-center" id={listboxId}>
                   <p className="text-caption text-muted-foreground">
                     No matches for &ldquo;{debouncedQuery}&rdquo;
                   </p>

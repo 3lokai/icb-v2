@@ -123,7 +123,7 @@ export default async function InsightsPage() {
     await Promise.all([getLastUpdated(), getDirectoryTotals()]);
 
   const roasterCountLabel = `${totals.roasters.toLocaleString("en-IN")}+`;
-  const coffeeCountLabel = totals.coffees.toLocaleString("en-IN");
+  const coffeeCountLabel = `${totals.coffees.toLocaleString("en-IN")}+`;
 
   return (
     <>

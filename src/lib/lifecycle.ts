@@ -32,14 +32,19 @@ export async function trackLifecycleEvent(
     return;
   }
 
-  const supabase = await createServiceRoleClient();
-  const { error } = await supabase.functions.invoke("sync-to-lifecycle", {
-    body: { user_id: userId, event_name: eventName, source },
-    headers: { "x-icb-lifecycle-sync": secret },
-  });
-
-  if (error) {
-    console.error("[lifecycle] trackLifecycleEvent", eventName, error);
+  // Fire-and-forget (callers use `void`): swallow transport/setup throws too,
+  // not just the invoke `error`, so a Notifuse hiccup never rejects unhandled.
+  try {
+    const supabase = await createServiceRoleClient();
+    const { error } = await supabase.functions.invoke("sync-to-lifecycle", {
+      body: { user_id: userId, event_name: eventName, source },
+      headers: { "x-icb-lifecycle-sync": secret },
+    });
+    if (error) {
+      console.error("[lifecycle] trackLifecycleEvent", eventName, error);
+    }
+  } catch (err) {
+    console.error("[lifecycle] trackLifecycleEvent", eventName, err);
   }
 }
 

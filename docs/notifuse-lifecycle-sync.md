@@ -13,7 +13,7 @@ consumer.
 
 ## Data flow
 
-```
+```text
 User action (signup / rating / gear / station photo / profile edit)
   └─> Postgres AFTER trigger (lifecycle_sync_*)
         └─> notify_lifecycle_sync(user_id, event_name)   [SECURITY DEFINER]
@@ -26,7 +26,7 @@ User action (signup / rating / gear / station photo / profile edit)
 
 Plus one client-driven path:
 
-```
+```text
 Authenticated /dashboard load
   └─> <LifecycleSessionTracker> (server component)
         └─> trackSessionStartedIfNeeded()  [throttle: max 1/UTC-day]
@@ -135,16 +135,85 @@ all bodies include `workspace_id`.
 
 To seed existing users as contacts **without** firing events (so nobody re-enters
 welcome automations), use bulk `contacts.import` driven by `get_user_lifecycle_state`.
-A reusable script lives in the session scratchpad (`backfill-notifuse.mjs`); it must
-run from the repo root so it can resolve `@supabase/supabase-js`:
+`contacts.import` upserts, so it is idempotent — safe to re-run.
+
+Save the snippet below as `backfill-notifuse.mjs` in the repo root (so it resolves
+`@supabase/supabase-js`) and run it. It reads `NEXT_PUBLIC_SUPABASE_URL`,
+`SUPABASE_SECRET_KEY`, `NOTIFUSE_API_KEY`, `NOTIFUSE_WORKSPACE_ID` from `.env.local`:
 
 ```bash
-NOTIFUSE_WORKSPACE_ID=indiancoffeebeans node --env-file=.env.local ./backfill-notifuse.mjs --dry-run
-NOTIFUSE_WORKSPACE_ID=indiancoffeebeans node --env-file=.env.local ./backfill-notifuse.mjs
+node --env-file=.env.local ./backfill-notifuse.mjs --dry-run   # preview only
+node --env-file=.env.local ./backfill-notifuse.mjs             # actually import
 ```
 
-It reads `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `NOTIFUSE_API_KEY` from
-`.env.local`; `contacts.import` upserts, so it is idempotent.
+```js
+// backfill-notifuse.mjs — one-time seed of existing users into Notifuse as
+// contacts (no events fired). Idempotent (contacts.import upserts).
+import { createClient } from "@supabase/supabase-js";
+
+const dryRun = process.argv.includes("--dry-run");
+const NOTIFUSE_URL = "https://notifuse.indiancoffeebeans.com";
+const workspaceId = process.env.NOTIFUSE_WORKSPACE_ID ?? "indiancoffeebeans";
+const notifuseKey = process.env.NOTIFUSE_API_KEY;
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SECRET_KEY,
+  { auth: { autoRefreshToken: false, persistSession: false } }
+);
+
+const bit = (b) => (b ? 1 : 0);
+const BATCH = 50; // customEvents.import caps at 50/req; keep contacts.import in step
+
+const { data: users, error } = await supabase
+  .from("user_profiles")
+  .select("id");
+if (error) throw error;
+
+let done = 0;
+for (let i = 0; i < users.length; i += BATCH) {
+  const slice = users.slice(i, i + BATCH);
+
+  const contacts = [];
+  for (const { id } of slice) {
+    const { data: rows, error: rpcErr } = await supabase.rpc(
+      "get_user_lifecycle_state",
+      { p_user_id: id }
+    );
+    if (rpcErr) throw rpcErr;
+    const row = Array.isArray(rows) ? rows[0] : rows;
+    if (!row?.email) continue; // skip users with no resolvable email
+    contacts.push({
+      email: row.email.trim(),
+      external_id: id,
+      full_name: row.full_name ?? null,
+      custom_number_1: row.ratings_count ?? 0,
+      custom_number_2: bit(row.has_gear),
+      custom_number_3: bit(row.has_station_photo),
+      custom_number_4: bit(row.has_bio),
+      custom_number_5: bit(row.has_avatar),
+    });
+  }
+
+  if (contacts.length === 0) continue;
+  if (dryRun) {
+    console.log(`[dry-run] would import ${contacts.length} contacts`);
+  } else {
+    const res = await fetch(`${NOTIFUSE_URL}/api/contacts.import`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${notifuseKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ workspace_id: workspaceId, contacts }),
+    });
+    if (!res.ok) throw new Error(`contacts.import ${res.status}: ${await res.text()}`);
+  }
+  done += contacts.length;
+  console.log(`processed ${done}/${users.length}`);
+}
+console.log(dryRun ? "dry-run complete" : "backfill complete");
+```
 
 ## Verifying end-to-end
 
