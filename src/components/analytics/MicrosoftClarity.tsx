@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import Clarity from "@microsoft/clarity";
 import { getStoredPreferences } from "@/hooks/use-cookie-consent";
-import { env } from "../../../env";
 
 // Referrer hostname / utm_source values that identify traffic arriving via a
 // gen-AI assistant citing the site, so sessions can be filtered in Clarity.
@@ -37,11 +36,11 @@ function detectAiReferrer(): string | undefined {
 
 export function MicrosoftClarity() {
   useEffect(() => {
-    const projectId = env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+    const projectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
     if (!projectId) return;
 
     const isProd = process.env.NODE_ENV === "production";
-    const enableAnalytics = env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true";
+    const enableAnalytics = process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true";
     const hostname = window.location.hostname;
     const isLocalhost =
       hostname === "localhost" ||
