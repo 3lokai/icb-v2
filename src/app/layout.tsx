@@ -5,6 +5,7 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAnalytics as NextGoogleAnalytics } from "@next/third-parties/google";
 import { Analytics as GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
 import { env } from "../../env";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
@@ -181,6 +182,7 @@ export default async function RootLayout({
         {env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <NextGoogleAnalytics gaId={env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
+        {env.NEXT_PUBLIC_CLARITY_PROJECT_ID && <MicrosoftClarity />}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

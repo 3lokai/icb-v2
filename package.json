@@ -35,6 +35,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@lottiefiles/dotlottie-react": "^0.17.10",
+    "@microsoft/clarity": "^1.0.2",
     "@next/third-parties": "^16.0.8",
     "@phosphor-icons/react": "^2.1.10",
     "@portabletext/react": "^6.0.2",

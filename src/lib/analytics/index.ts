@@ -39,6 +39,12 @@ export const updateAnalyticsConsent = (granted: boolean) => {
     // Note: Removed 'icb-consent-updated' event dispatch since we're not manually tracking pageviews
     // Next.js GoogleAnalytics component handles pageview tracking automatically
   }
+  // window.clarity only exists once MicrosoftClarity has called Clarity.init;
+  // optional-chain rather than the Clarity.consent() helper, which throws if
+  // called before that (e.g. consent rejected before Clarity ever loaded).
+  if (typeof window !== "undefined") {
+    window.clarity?.("consent", granted);
+  }
 };
 
 export const trackEvent = (
@@ -464,5 +470,8 @@ declare global {
       actionOrTarget: any,
       params?: Record<string, any>
     ) => void;
+    // Microsoft Clarity queue function, defined once @microsoft/clarity's
+    // Clarity.init() injects the tag script
+    clarity?: (...args: unknown[]) => void;
   }
 }
