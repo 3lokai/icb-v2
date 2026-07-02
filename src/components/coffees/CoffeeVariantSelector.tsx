@@ -20,18 +20,24 @@ type CoffeeVariantSelectorProps = {
 const grindIconMap: Record<string, IconName> = {
   whole: "CoffeeBean",
   filter: "DotsNine",
+  drip: "Dot",
   espresso: "Square",
   channi: "DotsNine",
   french_press: "CirclesFour",
   pour_over: "DotsNine",
   cold_brew: "CirclesFour",
   moka_pot: "Square",
+  aeropress: "Flask",
+  coffee_filter: "Funnel",
+  south_indian_filter: "DotsNine",
+  syphon: "Flask",
+  turkish: "Circle",
 };
 
 const getGrindInfo = (grindValue: GrindEnum | null) => {
   const lookupValue = grindValue || "whole";
   const option = GRIND_TYPES.find((t) => t.value === lookupValue);
-  const icon: IconName = grindIconMap[lookupValue.toLowerCase()] || "Dot";
+  const icon: IconName = grindIconMap[lookupValue.toLowerCase()] || "Circle";
 
   return {
     label: option?.label || lookupValue,
