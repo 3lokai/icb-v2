@@ -1,15 +1,11 @@
 import dynamic from "next/dynamic";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { CuratorSpotlightSkeleton } from "@/components/homepage/CuratorSpotlightSkeleton";
 import { getAllCurators } from "@/data/curations";
 
 const CuratorSpotlight = dynamic(
   () => import("@/components/homepage/CuratorSpotlight"),
   {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
+    loading: () => <CuratorSpotlightSkeleton />,
   }
 );
 

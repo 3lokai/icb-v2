@@ -1,15 +1,11 @@
 import dynamic from "next/dynamic";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { TopRatedSectionSkeleton } from "@/components/homepage/TopRatedSectionSkeleton";
 import { fetchCommunityCoffeeReviewCount } from "@/lib/data/fetch-community-coffee-review-count";
 
 const TopRatedSection = dynamic(
   () => import("@/components/homepage/TopRatedSection"),
   {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
+    loading: () => <TopRatedSectionSkeleton />,
   }
 );
 
