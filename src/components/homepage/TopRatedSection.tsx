@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import CoffeeCard from "@/components/cards/CoffeeCard";
+import { CoffeeCardSkeleton } from "@/components/cards/CoffeeCardSkeleton";
 import { Icon } from "@/components/common/Icon";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { Accent } from "@/components/primitives/accent";
 import { Reveal } from "@/components/primitives/reveal";
 import { Section } from "@/components/primitives/section";
@@ -29,21 +29,7 @@ export default function TopRatedSection({
   const { data, isLoading } = useTopRatedCoffees(6);
   const coffees = data?.items || [];
 
-  if (isLoading) {
-    return (
-      <Section
-        id="top-rated"
-        spacing="loose"
-        className={sectionSurfaceClassName}
-      >
-        <div className="relative z-10 flex min-h-[280px] items-center justify-center py-8">
-          <LoadingSpinner size="lg" />
-        </div>
-      </Section>
-    );
-  }
-
-  if (coffees.length === 0) {
+  if (!isLoading && coffees.length === 0) {
     return (
       <Section
         id="top-rated"
@@ -117,14 +103,22 @@ export default function TopRatedSection({
         </div>
 
         <div className="md:col-span-7 lg:col-span-8">
-          <Reveal className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-            {coffees.map((coffee) => (
-              <CoffeeCard
-                coffee={coffee}
-                key={coffee.slug || coffee.coffee_id}
-              />
-            ))}
-          </Reveal>
+          {isLoading ? (
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <CoffeeCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : (
+            <Reveal className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+              {coffees.map((coffee) => (
+                <CoffeeCard
+                  coffee={coffee}
+                  key={coffee.slug || coffee.coffee_id}
+                />
+              ))}
+            </Reveal>
+          )}
         </div>
       </div>
     </Section>

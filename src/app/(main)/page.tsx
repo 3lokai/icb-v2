@@ -4,34 +4,35 @@ import HeroSection from "@/components/homepage/hero/HeroSection";
 import NewAdditionsStrip from "@/components/homepage/NewAdditionsStrip";
 import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGridLazy";
 import { Section } from "@/components/primitives/section";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { FAQSectionSkeleton } from "@/components/common/FAQSectionSkeleton";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 import TopProfilesSectionServer from "@/components/homepage/sections/TopProfilesSectionServer";
 import EducationSectionServer from "@/components/homepage/sections/EducationSectionServer";
 import CuratorSpotlightServer from "@/components/homepage/sections/CuratorSpotlightServer";
 import TopRatedSectionServer from "@/components/homepage/sections/TopRatedSectionServer";
+import { TopRatedSectionSkeleton } from "@/components/homepage/TopRatedSectionSkeleton";
+import { TopProfilesSectionSkeleton } from "@/components/homepage/TopProfilesSectionSkeleton";
+import { EducationSectionSkeleton } from "@/components/homepage/EducationSectionSkeleton";
+import { CuratorSpotlightSkeleton } from "@/components/homepage/CuratorSpotlightSkeleton";
+import { RoasterInfrastructureSectionSkeleton } from "@/components/homepage/RoasterInfrastructureSectionSkeleton";
+import { TestimonialsSectionSkeleton } from "@/components/homepage/TestimonialsSectionSkeleton";
+import { CtaSectionSkeleton } from "@/components/homepage/CtaSectionSkeleton";
+import { HowItWorksSectionSkeleton } from "@/components/homepage/HowItWorksSectionSkeleton";
+import { DiscoveryAccordionGridSkeleton } from "@/components/discovery/DiscoveryAccordionGridSkeleton";
 
 // Dynamic imports for below-the-fold components to reduce initial bundle size
 const RoasterInfrastructureSection = dynamic(
   () => import("@/components/homepage/RoasterInfrastructureSection"),
   {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
+    loading: () => <RoasterInfrastructureSectionSkeleton />,
   }
 );
 
 const TestimonialsSection = dynamic(
   () => import("@/components/homepage/TestimonialsSection"),
   {
-    loading: () => (
-      <div className="flex min-h-[300px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
+    loading: () => <TestimonialsSectionSkeleton />,
   }
 );
 
@@ -41,30 +42,18 @@ const HomepageFAQ = dynamic(
       default: mod.HomepageFAQ,
     })),
   {
-    loading: () => (
-      <div className="flex min-h-[300px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
+    loading: () => <FAQSectionSkeleton />,
   }
 );
 
 const CtaSection = dynamic(() => import("@/components/homepage/CtaSection"), {
-  loading: () => (
-    <div className="flex min-h-[200px] items-center justify-center">
-      <LoadingSpinner size="sm" />
-    </div>
-  ),
+  loading: () => <CtaSectionSkeleton />,
 });
 
 const HowItWorksSection = dynamic(
   () => import("@/components/homepage/HowItWorksSection"),
   {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
+    loading: () => <HowItWorksSectionSkeleton />,
   }
 );
 
@@ -74,11 +63,7 @@ const DiscoveryAccordionGrid = dynamic(
       default: mod.DiscoveryAccordionGrid,
     })),
   {
-    loading: () => (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <LoadingSpinner size="md" />
-      </div>
-    ),
+    loading: () => <DiscoveryAccordionGridSkeleton />,
   }
 );
 
@@ -163,13 +148,7 @@ export default async function Home({ searchParams }: HomePageProps) {
             </div>
           </div>
         </div>
-        <Suspense
-          fallback={
-            <div className="flex min-h-[400px] items-center justify-center">
-              <LoadingSpinner size="md" />
-            </div>
-          }
-        >
+        <Suspense fallback={<TopRatedSectionSkeleton />}>
           <TopRatedSectionServer />
         </Suspense>
         <HomeCollectionGridLazy tier="core" />
@@ -177,32 +156,14 @@ export default async function Home({ searchParams }: HomePageProps) {
           <DiscoveryAccordionGrid description="Jump straight to top-rated coffees by roast, brew method, process, origin, and more." />
         </Section>
         <HowItWorksSection />
-        <Suspense
-          fallback={
-            <div className="flex min-h-[400px] items-center justify-center">
-              <LoadingSpinner size="md" />
-            </div>
-          }
-        >
+        <Suspense fallback={<TopProfilesSectionSkeleton />}>
           <TopProfilesSectionServer />
         </Suspense>
         <RoasterInfrastructureSection />
-        <Suspense
-          fallback={
-            <div className="flex min-h-[300px] items-center justify-center">
-              <LoadingSpinner size="md" />
-            </div>
-          }
-        >
+        <Suspense fallback={<EducationSectionSkeleton />}>
           <EducationSectionServer />
         </Suspense>
-        <Suspense
-          fallback={
-            <div className="flex min-h-[400px] items-center justify-center">
-              <LoadingSpinner size="md" />
-            </div>
-          }
-        >
+        <Suspense fallback={<CuratorSpotlightSkeleton />}>
           <CuratorSpotlightServer />
         </Suspense>
         <TestimonialsSection />

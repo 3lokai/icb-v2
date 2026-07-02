@@ -11,9 +11,11 @@ type LottiePlayerProps = {
   onReady?: () => void;
 };
 
-// lottie-web's SVG-only "light" build (~45KB gzipped) instead of the dotLottie
-// WASM runtime (~600KB) — the animations here are plain shape layers, so the
-// WASM renderer bought nothing but bytes.
+// lottie-web's canvas "light" build instead of the dotLottie WASM runtime
+// (~600KB). Canvas renderer, not SVG: the homepage can mount a dozen of these
+// concurrently as Suspense fallbacks, and SVG's per-frame DOM churn across
+// that many instances blew up main-thread time; canvas draws are cheap even
+// with many instances animating at once.
 export function LottiePlayer({
   src,
   loop = true,
@@ -27,12 +29,12 @@ export function LottiePlayer({
     let anim: import("lottie-web").AnimationItem | null = null;
     let cancelled = false;
 
-    import("lottie-web/build/player/lottie_light").then(
+    import("lottie-web/build/player/lottie_light_canvas").then(
       ({ default: lottie }) => {
         if (cancelled || !containerRef.current) return;
         anim = lottie.loadAnimation({
           container: containerRef.current,
-          renderer: "svg",
+          renderer: "canvas",
           loop,
           autoplay: true,
           path: src,
