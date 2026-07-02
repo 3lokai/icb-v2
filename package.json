@@ -10,8 +10,6 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "prebuild": "node scripts/copy-lottie-wasm.mjs",
-    "postinstall": "node scripts/copy-lottie-wasm.mjs",
     "start": "next start",
     "analyze": "cross-env ANALYZE=true next build --webpack",
     "type-check": "tsc --noEmit",
@@ -34,7 +32,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@lottiefiles/dotlottie-react": "^0.17.10",
     "@microsoft/clarity": "^1.0.2",
     "@next/third-parties": "^16.0.8",
     "@phosphor-icons/react": "^2.1.10",
@@ -77,6 +74,7 @@
     "embla-carousel-react": "^8.6.0",
     "html-to-image": "^1.11.13",
     "leaflet": "^1.9.4",
+    "lottie-web": "^5.13.0",
     "motion": "^12.23.25",
     "next": "^16.0.8",
     "next-sanity": "^12.1.0",

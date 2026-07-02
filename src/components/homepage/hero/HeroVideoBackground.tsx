@@ -10,8 +10,10 @@ export function HeroVideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
-  // Lazy load video after FCP using intersection observer
+  // Lazy load video after FCP, skip entirely for reduced-motion users
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     // Load video after a short delay to allow FCP to complete
     const timer = setTimeout(() => {
       setShouldLoadVideo(true);
@@ -62,9 +64,11 @@ export function HeroVideoBackground() {
           playsInline
           preload="metadata"
           ref={videoRef}
-          src="/videos/hero-video.mp4"
           poster={POSTER_SVG}
-        />
+        >
+          <source src="/videos/hero-video.webm" type="video/webm" />
+          <source src="/videos/hero-video-sm.mp4" type="video/mp4" />
+        </video>
       ) : (
         <div className="absolute inset-0 h-full w-full bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
       )}

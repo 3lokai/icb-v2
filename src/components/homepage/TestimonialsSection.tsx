@@ -164,7 +164,7 @@ const TestimonialCard = ({
         itemScope
         itemType="https://schema.org/Person"
       >
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/20 font-medium text-accent text-overline ring-2 ring-border transition-colors duration-200 group-hover:ring-accent">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent font-medium text-accent-foreground text-overline ring-2 ring-border transition-colors duration-200 group-hover:ring-accent">
           {name
             .split(" ")
             .map((n) => n[0])

@@ -1,10 +1,9 @@
 // app/not-found.tsx
 "use client";
 
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Link from "next/link";
-import "@/lib/lottie"; // side effect: point dotLottie at the self-hosted WASM
 import CoffeeFact from "@/components/common/CoffeeFact";
+import { LottiePlayer } from "@/components/common/LottiePlayer";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/primitives/stack";
 
@@ -17,13 +16,7 @@ export default function NotFound() {
             <h1 className="flex items-center justify-center font-bold text-hero text-accent">
               4
               <div className="inline-block size-20">
-                <DotLottieReact
-                  autoplay
-                  loop
-                  speed={1}
-                  src="/animations/finding-bean.lottie"
-                  useFrameInterpolation={true}
-                />
+                <LottiePlayer src="/animations/finding-bean.json" />
               </div>
               4
             </h1>

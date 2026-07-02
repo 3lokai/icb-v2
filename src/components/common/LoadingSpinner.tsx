@@ -1,9 +1,8 @@
 // components/common/LoadingSpinner.tsx
 "use client";
 
-import { DotLottieReact, type DotLottie } from "@lottiefiles/dotlottie-react";
 import { useState } from "react";
-import "@/lib/lottie"; // side effect: point dotLottie at the self-hosted WASM
+import { LottiePlayer } from "@/components/common/LottiePlayer";
 import { cn } from "@/lib/utils";
 
 type LoadingSpinnerProps = {
@@ -31,11 +30,6 @@ export const LoadingSpinner = ({
   // screens that may unmount before the Lottie finishes loading.
   const [lottieReady, setLottieReady] = useState(false);
 
-  const handleRef = (dotLottie: DotLottie | null) => {
-    if (!dotLottie) return;
-    dotLottie.addEventListener("load", () => setLottieReady(true));
-  };
-
   return (
     <div
       className={cn(
@@ -55,13 +49,10 @@ export const LoadingSpinner = ({
           <div className="size-2/3 animate-spin rounded-full border-2 border-accent/25 border-t-accent" />
         </div>
 
-        <DotLottieReact
-          autoplay
-          loop
-          speed={1.2}
-          src="/animations/loading-coffee.lottie" // Slightly faster for a more engaging loading experience
-          useFrameInterpolation={true} // Smoother animation
-          dotLottieRefCallback={handleRef}
+        <LottiePlayer
+          speed={1.2} // Slightly faster for a more engaging loading experience
+          src="/animations/loading-coffee.json"
+          onReady={() => setLottieReady(true)}
           className={cn(
             "transition-opacity duration-300",
             lottieReady ? "opacity-100" : "opacity-0"
