@@ -1,8 +1,7 @@
 "use client";
 
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import "@/lib/lottie";
 import CoffeeFact from "@/components/common/CoffeeFact";
+import { LottiePlayer } from "@/components/common/LottiePlayer";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/primitives/stack";
 
@@ -22,13 +21,7 @@ export function ErrorPageContent({
       <div className="mx-auto max-w-2xl text-center">
         <Stack gap="8" className="items-center">
           <div className="inline-block size-20">
-            <DotLottieReact
-              autoplay
-              loop
-              speed={1}
-              src="/animations/spilled-coffee.lottie"
-              useFrameInterpolation={true}
-            />
+            <LottiePlayer src="/animations/spilled-coffee.json" />
           </div>
 
           <Stack gap="4" className="items-center">

@@ -140,12 +140,12 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
-    // Self-hosted dotLottie WASM runtime and the .lottie animation files are
-    // content-stable and versioned with the deploy — cache them aggressively so
-    // loading animations paint instantly after the first visit.
+    // Lottie animation JSON and hero video files are content-stable and
+    // versioned with the deploy — cache them aggressively so they paint
+    // instantly after the first visit.
     const immutableAssets = [
       {
-        source: "/dotlottie-player.wasm",
+        source: "/animations/:path*",
         headers: [
           {
             key: "Cache-Control",
@@ -154,7 +154,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/animations/:path*",
+        source: "/videos/:path*",
         headers: [
           {
             key: "Cache-Control",

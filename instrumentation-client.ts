@@ -13,8 +13,10 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   debug: process.env.NODE_ENV === "development",
   // Avoid lazy-loading the session recorder in dev (often fails under Turbopack / ad blockers → "could not load recorder")
   disable_session_recording: process.env.NODE_ENV === "development",
-  // Dead-click analysis can crash on navigations when DOM nodes are already torn down (posthog-js <1.37).
-  capture_dead_clicks: process.env.NODE_ENV !== "development",
+  // Surveys and dead-click tracking are unused (Clarity covers dead clicks) — skip
+  // their bundles entirely rather than paying the fetch on every page load.
+  disable_surveys: true,
+  capture_dead_clicks: false,
   before_send: (event) => {
     if (event?.event !== "$exception") return event;
     if (process.env.NODE_ENV !== "production") return null;
