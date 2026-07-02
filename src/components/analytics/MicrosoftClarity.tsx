@@ -51,9 +51,8 @@ export function MicrosoftClarity() {
     const shouldInit = enableAnalytics || (isProd && !isLocalhost);
     if (!shouldInit) return;
 
-    if (!getStoredPreferences().analytics) return;
-
     Clarity.init(projectId);
+    Clarity.consent(getStoredPreferences().analytics);
 
     const aiSource = detectAiReferrer();
     if (aiSource) {

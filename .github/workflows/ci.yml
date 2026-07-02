@@ -60,6 +60,7 @@ jobs:
         run: npm run check
 
       - name: Build
+        if: github.event_name != 'pull_request'
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1
