@@ -32,6 +32,9 @@ const envSchema = z.object({
   // Legacy: kept for backward compatibility, maps to GA_MEASUREMENT_ID
   NEXT_PUBLIC_GA_ID: z.string().optional(),
 
+  // Microsoft Clarity project ID (from clarity.microsoft.com setup snippet)
+  NEXT_PUBLIC_CLARITY_PROJECT_ID: z.string().optional(),
+
   // Resend email service
   RESEND_API_KEY: z.string().optional(),
 
