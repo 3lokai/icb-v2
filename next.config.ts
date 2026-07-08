@@ -12,6 +12,10 @@ if (process.env.ANALYZE === "true") {
 }
 
 const nextConfig: NextConfig = {
+  // ponytail: temporary — de-minify React #418 hydration errors in PostHog; remove
+  // once the offending component is identified (ships readable source publicly).
+  productionBrowserSourceMaps: true,
+
   // Server Actions configuration
   // Allow 3MB body size to support 2MB image uploads (base64 encoding adds ~33% overhead)
   experimental: {

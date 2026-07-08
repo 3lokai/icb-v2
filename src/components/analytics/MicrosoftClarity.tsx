@@ -50,13 +50,19 @@ export function MicrosoftClarity() {
     const shouldInit = enableAnalytics || (isProd && !isLocalhost);
     if (!shouldInit) return;
 
-    Clarity.init(projectId);
-    Clarity.consent(getStoredPreferences().analytics);
+    // ponytail: Clarity is best-effort — ad-block scriptlets neuter window.clarity;
+    // a throw here must not surface (consent/setTag call window.clarity bare).
+    try {
+      Clarity.init(projectId);
+      Clarity.consent(getStoredPreferences().analytics);
 
-    const aiSource = detectAiReferrer();
-    if (aiSource) {
-      Clarity.setTag("ai_referrer", aiSource);
-      Clarity.setTag("traffic_type", "ai");
+      const aiSource = detectAiReferrer();
+      if (aiSource) {
+        Clarity.setTag("ai_referrer", aiSource);
+        Clarity.setTag("traffic_type", "ai");
+      }
+    } catch {
+      // Clarity unavailable (blocked or neutered) — nothing to do.
     }
   }, []);
 
