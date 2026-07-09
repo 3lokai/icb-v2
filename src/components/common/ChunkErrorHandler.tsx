@@ -82,7 +82,15 @@ export function ChunkErrorHandler() {
     }, SUCCESS_RESET_MS);
 
     const handler = (event: PromiseRejectionEvent) => {
-      if (event.reason?.name !== "ChunkLoadError") {
+      const isChunkError = event.reason?.name === "ChunkLoadError";
+      // Post-deploy staleness also surfaces as a failed RSC payload fetch;
+      // route it through the same bounded reload/cooldown machinery.
+      const isStaleRscError =
+        event.reason instanceof Error &&
+        event.reason.message.includes(
+          "An unexpected response was received from the server"
+        );
+      if (!isChunkError && !isStaleRscError) {
         return;
       }
 
