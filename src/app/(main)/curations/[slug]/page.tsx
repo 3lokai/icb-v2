@@ -8,7 +8,6 @@ import {
   getSeoBaseUrl,
 } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
-import { Section } from "@/components/primitives/section";
 import type { Metadata } from "next";
 
 type Props = {
@@ -74,24 +73,6 @@ export default async function Page({ params }: Props) {
   return (
     <>
       <StructuredData schema={[collectionSchema, breadcrumbSchema]} />
-      <Section spacing="default" contained={false}>
-        <div className="mx-auto max-w-3xl space-y-4 text-body text-muted-foreground leading-relaxed px-4 md:px-0">
-          <p>
-            Curated selections are personal shortlists from people who taste
-            coffee for a living — café owners, baristas, and community voices
-            who know what is worth brewing right now. Each list explains why a
-            coffee made the cut: flavour profile, brew method, and the context
-            behind the pick.
-          </p>
-          <p>
-            ICB does not sell these coffees and does not charge curators for
-            placement. Selections link to our roaster and SKU pages where you
-            can compare prices, read community ratings, and decide before you
-            buy. Explore the lists below, then dive into individual coffees for
-            full tasting notes and availability.
-          </p>
-        </div>
-      </Section>
       <CurationPage data={data} />
     </>
   );
