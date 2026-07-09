@@ -51,8 +51,7 @@ async function buildCoffeeDetailFromRow(
     brewMethodsResult,
     regionsResult,
     estatesResult,
-    summaryResult,
-    canonFlavorIdsResult,
+    mvResult,
   ] = await Promise.all([
     supabase
       .from("roasters")
@@ -101,14 +100,10 @@ async function buildCoffeeDetailFromRow(
       .eq("coffee_id", coffeeId),
 
     supabase
-      .from("coffee_summary")
-      .select("*")
-      .eq("coffee_id", coffeeId)
-      .single(),
-
-    supabase
       .from("coffee_directory_mv")
-      .select("canon_flavor_node_ids, canon_flavor_slugs")
+      .select(
+        "coffee_id, status, process, process_raw, roast_level, roast_level_raw, roast_style_raw, direct_buy_url, has_250g_bool, has_sensory, in_stock_count, min_price_in_stock, best_variant_id, best_normalized_250g, weights_available, sensory_public, sensory_updated_at, canon_flavor_node_ids, canon_flavor_slugs"
+      )
       .eq("coffee_id", coffeeId)
       .single(),
   ]);
@@ -261,13 +256,12 @@ async function buildCoffeeDetailFromRow(
       .filter((e): e is CoffeeEstate => e !== null) || [];
 
   const canonFlavorIds: string[] =
-    (canonFlavorIdsResult.data?.canon_flavor_node_ids as string[]) || [];
+    (mvResult.data?.canon_flavor_node_ids as string[]) || [];
   const canonFlavorSlugs: string[] =
-    (canonFlavorIdsResult.data?.canon_flavor_slugs as string[] | null)?.filter(
-      Boolean
-    ) ?? [];
+    (mvResult.data?.canon_flavor_slugs as string[] | null)?.filter(Boolean) ??
+    [];
 
-  const summaryData = summaryResult.data;
+  const summaryData = mvResult.data;
   const summary: CoffeeSummaryData = summaryData
     ? {
         coffee_id: summaryData.coffee_id,
@@ -287,17 +281,17 @@ async function buildCoffeeDetailFromRow(
         weights_available: summaryData.weights_available,
         sensory_public: summaryData.sensory_public,
         sensory_updated_at: summaryData.sensory_updated_at,
-        seo_desc: summaryData.seo_desc ?? null,
+        seo_desc: (coffeeData.seo_desc as string | null) ?? null,
       }
     : {
         coffee_id: coffeeId,
-        status: coffeeData.status,
-        process: coffeeData.process,
-        process_raw: coffeeData.process_raw,
-        roast_level: coffeeData.roast_level,
-        roast_level_raw: coffeeData.roast_level_raw,
-        roast_style_raw: coffeeData.roast_style_raw,
-        direct_buy_url: coffeeData.direct_buy_url,
+        status: coffeeData.status as CoffeeSummaryData["status"],
+        process: coffeeData.process as CoffeeSummaryData["process"],
+        process_raw: coffeeData.process_raw as string | null,
+        roast_level: coffeeData.roast_level as CoffeeSummaryData["roast_level"],
+        roast_level_raw: coffeeData.roast_level_raw as string | null,
+        roast_style_raw: coffeeData.roast_style_raw as string | null,
+        direct_buy_url: coffeeData.direct_buy_url as string | null,
         has_250g_bool: null,
         has_sensory: sensory !== null,
         in_stock_count: null,
@@ -307,7 +301,7 @@ async function buildCoffeeDetailFromRow(
         weights_available: null,
         sensory_public: null,
         sensory_updated_at: null,
-        seo_desc: coffeeData.seo_desc ?? null,
+        seo_desc: (coffeeData.seo_desc as string | null) ?? null,
       };
 
   return {
