@@ -10,7 +10,7 @@ async function fetchPublicDirectoryTotalsImpl(): Promise<PublicDirectoryTotals> 
 
   const [coffeesResult, roastersResult] = await Promise.all([
     supabase
-      .from("coffee_summary")
+      .from("coffee_directory_mv")
       .select("coffee_id", { count: "exact", head: true })
       .in("status", PUBLIC_COFFEE_STATUSES),
     supabase
