@@ -28,3 +28,6 @@ lighthouse-report.json
 supabase/.temp
 src/emails
 public/ai-profile.html
+
+# Lottie animation exports (minified JSON — Prettier expands them massively)
+public/animations/**/*.json
