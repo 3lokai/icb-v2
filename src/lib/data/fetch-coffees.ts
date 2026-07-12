@@ -730,5 +730,7 @@ export const fetchCoffeesCached = unstable_cache(
   (filters: CoffeeFilters, page: number, limit: number, sort: CoffeeSort) =>
     fetchCoffees(filters, page, limit, sort),
   ["coffees-list"],
-  { tags: ["coffees"] }
+  // 24h TTL fallback; primary invalidation is revalidateTag("coffees") fired from
+  // /api/webhooks/indexnow on every MV refresh (mirrors fetchRoastersCached).
+  { revalidate: 86400, tags: ["coffees"] }
 );
