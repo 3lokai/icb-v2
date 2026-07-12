@@ -278,5 +278,8 @@ export const fetchRoastersCached = unstable_cache(
   (filters: RoasterFilters, page: number, limit: number, sort: RoasterSort) =>
     fetchRoasters(filters, page, limit, sort),
   ["roasters-list"],
-  { tags: ["roasters"] }
+  // 24h TTL is a fallback: the primary invalidation is revalidateTag("roasters")
+  // fired from /api/webhooks/indexnow on every MV refresh. Without the TTL a
+  // webhook outage would leave this cache stuck forever.
+  { revalidate: 86400, tags: ["roasters"] }
 );

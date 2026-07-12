@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { Redis } from "@upstash/redis";
 import { Ratelimit } from "@upstash/ratelimit";
 import { createServiceRoleClient } from "@/lib/supabase/server";
@@ -148,6 +149,14 @@ async function handleSubmit(request: Request) {
   if (urls.length > 0) {
     await submitToIndexNow(urls);
   }
+
+  // The MV refresh that triggers this webhook is also the moment directory data
+  // changed, so purge the tag-based caches (roaster/coffee listings + details).
+  // Without this the no-TTL listing caches stay stuck indefinitely — a new coffee
+  // never appears and roaster cards keep a stale count. See fetch-roasters.ts /
+  // fetch-coffees.ts (both tagged, and now revalidate: 86400 as a fallback).
+  revalidateTag("coffees", "max");
+  revalidateTag("roasters", "max");
 
   // Advance the high-water mark only after a successful run. Best-effort.
   if (redis) {
