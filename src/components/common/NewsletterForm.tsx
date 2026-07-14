@@ -63,7 +63,7 @@ export function NewsletterForm({
       />
       <input
         autoComplete="email"
-        className="w-full rounded-md border border-border bg-muted p-2 text-foreground font-sans"
+        className="w-full rounded-md border border-border bg-muted p-2 text-foreground font-sans transition-shadow focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
         name="email"
         placeholder={placeholderText}
         required
