@@ -66,16 +66,26 @@ export function WishlistButton({
           aria-pressed={saved}
           className={cn(
             "inline-flex items-center justify-center rounded-full p-1.5",
-            "bg-background/70 backdrop-blur-sm shadow-sm",
-            "transition-colors hover:bg-background focus-visible:outline-none",
+            "transition-transform hover:scale-110 focus-visible:outline-none",
             "focus-visible:ring-2 focus-visible:ring-ring",
+            "motion-reduce:transition-none motion-reduce:hover:scale-100",
             className
           )}
         >
           <Icon
             name="Heart"
-            size={18}
-            color={saved ? "destructive" : "muted"}
+            size={20}
+            color={saved ? "destructive" : "primary"}
+            className="inline-block drop-shadow-[0_1px_2px_rgb(0_0_0/0.45)]"
+            // Sits over photos: keep the unsaved heart white in both themes.
+            {...(saved
+              ? {}
+              : {
+                  style: {
+                    "--ph-primary": "#fff",
+                    "--ph-secondary": "rgb(255 255 255 / 0.5)",
+                  } as React.CSSProperties,
+                })}
           />
         </button>
       </TooltipTrigger>

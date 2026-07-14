@@ -23,6 +23,12 @@ import { trackCoffeeDiscovery } from "@/lib/analytics/enhanced-tracking";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { WishlistButton } from "@/components/coffees/WishlistButton";
 
+// Title-scrim gradient. Uses the palette's darkest color (the dark-theme
+// --background warm coffee-black) as a fixed literal, not var(--background),
+// which flips to near-white in light mode — the scrim must stay dark in both.
+const TITLE_SCRIM =
+  "linear-gradient(to top, oklch(0.195 0.01 59.58), oklch(0.195 0.01 59.58 / 0.7) 40%, oklch(0.195 0.01 59.58 / 0.2) 70%, transparent)";
+
 type CoffeeCardProps = {
   coffee: CoffeeSummary;
   variant?: "hero" | "default" | "compact" | "similar";
@@ -210,8 +216,8 @@ function CoffeeCardComponent({
           onClick={handleTrackClick}
           className="flex-1 flex flex-col"
         >
-          {/* Hero Image */}
-          <div className="relative aspect-[4/3] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
+          {/* Hero Image with title scrim */}
+          <div className="relative aspect-square w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
             <Image
               alt={imageAlt}
               className="object-cover"
@@ -220,26 +226,28 @@ function CoffeeCardComponent({
               src={imageUrl}
               unoptimized
             />
+            {/* Title scrim */}
+            <div
+              className="absolute inset-x-0 bottom-0 z-10 p-4 pt-20"
+              style={{ background: TITLE_SCRIM }}
+            >
+              <h3 className="text-title text-white text-balance line-clamp-2 drop-shadow-md">
+                {coffee.name}
+              </h3>
+              {coffee.roaster_name && (
+                <p className="text-body font-medium text-white/85 line-clamp-1 drop-shadow">
+                  {coffee.roaster_name}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Content */}
           <div className="flex-1 card-padding transition-opacity duration-200 group-hover:opacity-90">
             <Stack gap="2" className="h-full">
-              {/* Coffee name - hero size */}
-              <h3 className="text-title text-balance line-clamp-2">
-                {coffee.name}
-              </h3>
-
-              {/* Roaster - quiet context */}
-              {coffee.roaster_name && (
-                <p className="text-body-muted font-medium">
-                  {coffee.roaster_name}
-                </p>
-              )}
-
               {/* Metadata - roast indicator, process and flavor notes */}
               {(roastLevel || processLabel || flavorLabels.length > 0) && (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
                   {(roastLevel || processLabel) && (
                     <div className="flex items-start justify-between gap-2">
                       {roastLevel && (
@@ -461,8 +469,8 @@ function CoffeeCardComponent({
         onClick={handleTrackClick}
         className="flex-1 flex flex-col"
       >
-        {/* Image - 3:2 aspect ratio for tighter magazine tile */}
-        <div className="relative aspect-[3/2] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
+        {/* Image with title scrim */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
           <Image
             alt={imageAlt}
             className="object-cover"
@@ -471,26 +479,28 @@ function CoffeeCardComponent({
             src={imageUrl}
             unoptimized
           />
+          {/* Title scrim */}
+          <div
+            className="absolute inset-x-0 bottom-0 z-10 p-4 pt-20"
+            style={{ background: TITLE_SCRIM }}
+          >
+            <h3 className="text-heading text-white text-balance line-clamp-2 drop-shadow-md">
+              {coffee.name}
+            </h3>
+            {coffee.roaster_name && (
+              <p className="text-body font-medium text-white/85 line-clamp-1 drop-shadow">
+                {coffee.roaster_name}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Content - strict hierarchy */}
         <div className="flex-1 card-padding-compact transition-opacity duration-200 group-hover:opacity-90">
           <Stack gap="1" className="h-full">
-            {/* 1. Coffee name - 2 lines max */}
-            <h3 className="text-heading text-balance line-clamp-2">
-              {coffee.name}
-            </h3>
-
-            {/* 2. Roaster (muted) */}
-            {coffee.roaster_name && (
-              <p className="text-body-muted font-medium">
-                {coffee.roaster_name}
-              </p>
-            )}
-
-            {/* 3. Metadata - roast indicator, process and flavor notes */}
+            {/* Metadata - roast indicator, process and flavor notes */}
             {(roastLevel || processLabel || flavorLabels.length > 0) && (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 {(roastLevel || processLabel) && (
                   <div className="flex items-start justify-between gap-2">
                     {roastLevel && (
