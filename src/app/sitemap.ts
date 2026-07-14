@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { getAllLandingPageSlugs } from "@/lib/discovery/landing-pages";
 import { client } from "@/lib/sanity/client";
+import { fetchBroadcasts } from "@/lib/data/fetch-broadcasts";
 import {
   SITEMAP_ARTICLES_QUERY,
   SITEMAP_CATEGORIES_QUERY,
@@ -138,7 +139,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly",
       priority: 0.3,
     }),
+    withHreflang({
+      url: `${baseUrl}/newsletter`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.6,
+    }),
   ];
+
+  // Newsletter issues from Kit (empty when KIT_API_KEY is not configured)
+  let newsletterRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const broadcasts = await fetchBroadcasts();
+    newsletterRoutes = broadcasts.map((broadcast) =>
+      withHreflang({
+        url: `${baseUrl}/newsletter/${broadcast.id}`,
+        lastModified: broadcast.send_at
+          ? new Date(broadcast.send_at)
+          : new Date(),
+        changeFrequency: "yearly" as const,
+        priority: 0.5,
+      })
+    );
+  } catch (kitError) {
+    console.error("Failed to fetch newsletter routes for sitemap:", kitError);
+  }
 
   // Discovery landing pages (brew method, roast, price, process, region, bean type)
   const discoveryRoutes: MetadataRoute.Sitemap = getAllLandingPageSlugs().map(
@@ -336,10 +361,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...curationRoutes,
       ...discoveryRoutes,
       ...learnRoutes,
+      ...newsletterRoutes,
     ];
   } catch (error) {
     // If database queries fail, still include discovery landing pages
     console.error("Failed to fetch dynamic sitemap routes:", error);
-    return [...staticRoutes, ...discoveryRoutes];
+    return [...staticRoutes, ...discoveryRoutes, ...newsletterRoutes];
   }
 }

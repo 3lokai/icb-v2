@@ -160,12 +160,15 @@ export function Footer() {
                   </h3>
                   <ul className="space-y-3">
                     {[
-                      { href: "/tools", label: "All Tools" },
                       { href: "/tools/coffee-calculator", label: "Calculator" },
                       { href: "/tools/expert-recipes", label: "Recipes" },
                       {
                         href: "/tools/coffee-compass",
                         label: "Coffee Compass",
+                      },
+                      {
+                        href: "/tools/grind-size-converter",
+                        label: "Grind Size Converter",
                       },
                     ].map(({ href, label }) => (
                       <li key={label}>
@@ -216,6 +219,15 @@ export function Footer() {
                         How ICB Works
                       </Link>
                     </li>
+                    <li>
+                      <Link
+                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
+                        href="/newsletter"
+                      >
+                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                        Newsletter Archive
+                      </Link>
+                    </li>
                     {/* Separator */}
                     <li className="pt-2">
                       <div className="h-px w-full bg-border/60" />
@@ -257,7 +269,13 @@ export function Footer() {
                     placeholderText="Your email"
                   />
                   <p className="text-micro text-muted-foreground/60 italic text-center">
-                    No spam. Just coffee talk.
+                    No spam. Just coffee talk.{" "}
+                    <Link
+                      className="not-italic underline-offset-2 transition-colors hover:text-accent hover:underline"
+                      href="/newsletter"
+                    >
+                      Browse past issues
+                    </Link>
                   </p>
                 </Stack>
               </div>
