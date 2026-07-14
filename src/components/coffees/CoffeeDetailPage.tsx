@@ -36,6 +36,7 @@ import CoffeeImageCarousel from "@/components/layout/carousel-image";
 import { CoffeeVariantSelector } from "./CoffeeVariantSelector";
 import { FloatingRateCTA } from "@/components/common/FloatingRateCTA";
 import { ShareRow } from "@/components/common/ShareRow";
+import { WishlistButton } from "@/components/coffees/WishlistButton";
 import { discoveryPagePath } from "@/lib/discovery/landing-pages";
 import {
   discoverySlugForBrewMethodKey,
@@ -350,6 +351,9 @@ export function CoffeeDetailPage({
                 </div>
               )}
             </div>
+
+            {/* Save to wishlist */}
+            <WishlistButton variant="button" coffeeId={coffee.id} />
 
             {/* Trimmed Description */}
             {trimmedDesc && (

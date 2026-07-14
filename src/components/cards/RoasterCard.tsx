@@ -241,8 +241,8 @@ export default function RoasterCard({
         </div>
 
         {/* Content */}
-        <div className="relative card-padding">
-          <Stack gap="2">
+        <div className="relative card-padding-compact">
+          <Stack gap="1">
             {/* Roaster name */}
             <CardTitle
               className="text-heading text-balance line-clamp-2 leading-tight"

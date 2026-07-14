@@ -541,6 +541,41 @@ function _emptyResult(page: number, limit: number): CoffeeListResponse {
  * Both SSR page and API route call this function.
  * Handles slug-to-ID resolution for regions, estates, and roasters.
  */
+/**
+ * Fetch coffee summaries for a specific set of coffee IDs (e.g. a wishlist),
+ * preserving the given ID order. Returns [] for an empty input.
+ */
+export async function fetchCoffeesByIds(
+  coffeeIds: string[]
+): Promise<CoffeeSummary[]> {
+  if (coffeeIds.length === 0) return [];
+
+  const supabase = process.env.SUPABASE_SECRET_KEY
+    ? await createServiceRoleClient()
+    : await createClient();
+
+  const { data, error } = await supabase
+    .from("coffee_directory_mv")
+    .select("*")
+    .in("coffee_id", coffeeIds);
+
+  if (error) {
+    throw new Error(`Failed to fetch coffees by ids: ${error.message}`);
+  }
+
+  const byId = new Map<string, CoffeeSummary>(
+    (data || []).map((row: any) => [
+      row.coffee_id as string,
+      transformToCoffeeSummary(row),
+    ])
+  );
+
+  // Preserve caller's order; drop ids not in the directory (unpublished/removed).
+  return coffeeIds
+    .map((id) => byId.get(id))
+    .filter((c): c is CoffeeSummary => c !== undefined);
+}
+
 export async function fetchCoffees(
   filters: CoffeeFilters,
   page: number,

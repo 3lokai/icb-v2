@@ -92,20 +92,19 @@ export function formatRoastLevel(
 }
 
 /**
- * Format process for display
+ * Format the canonical process enum for display
+ * E.g., "washed" => "Washed", "pulped_natural" => "Pulped Natural"
  */
 export function formatProcess(
-  process: string | null | undefined,
-  processRaw: string | null | undefined
+  process: string | null | undefined
 ): string | null {
-  // Prefer raw values for more specific display
-  if (processRaw) {
-    return capitalizeFirstLetter(processRaw);
+  if (!process) {
+    return null;
   }
-  if (process) {
-    return capitalizeFirstLetter(process);
-  }
-  return null;
+  return process
+    .split(/[-_]/)
+    .map((word) => capitalizeFirstLetter(word))
+    .join(" ");
 }
 
 /**

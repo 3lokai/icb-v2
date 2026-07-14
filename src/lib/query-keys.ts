@@ -106,6 +106,11 @@ export const queryKeys = {
       ["roasters", "filter-meta", filters] as const,
   },
 
+  // Wishlist (current user's set of coffee ids)
+  wishlist: {
+    mine: ["wishlist", "mine"] as const,
+  },
+
   // Review-related queries
   reviews: {
     all: ["reviews"] as const,

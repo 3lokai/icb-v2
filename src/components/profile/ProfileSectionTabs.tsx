@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 export const PROFILE_SCROLL_SECTIONS: { id: string; label: string }[] = [
   { id: "insights", label: "Insights" },
   { id: "selections", label: "Selections" },
+  { id: "wishlist", label: "Wishlist" },
   { id: "ratings", label: "Ratings" },
   { id: "gear-station", label: "Gear" },
 ];
