@@ -57,6 +57,8 @@ export function useWishlist() {
         });
         return;
       }
+      // Ignore rapid re-clicks — prevents a remove racing into a re-insert.
+      if (mutation.isPending) return;
       mutation.mutate(coffeeId);
     },
     [user, mutation]

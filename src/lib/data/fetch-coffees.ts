@@ -24,6 +24,16 @@ const LANDING_REGION_SLUG_TO_CANON: Record<string, string> = {
 };
 
 /**
+ * Server-side read client: service-role (bypasses RLS) when the secret key is
+ * set, else the regular cookie-based client.
+ */
+async function getReadClient(): Promise<SupabaseClient> {
+  return process.env.SUPABASE_SECRET_KEY
+    ? createServiceRoleClient()
+    : createClient();
+}
+
+/**
  * Helper to get coffee IDs from junction table filters
  * Exported for use in filter meta calculations
  */
@@ -550,9 +560,7 @@ export async function fetchCoffeesByIds(
 ): Promise<CoffeeSummary[]> {
   if (coffeeIds.length === 0) return [];
 
-  const supabase = process.env.SUPABASE_SECRET_KEY
-    ? await createServiceRoleClient()
-    : await createClient();
+  const supabase = await getReadClient();
 
   const { data, error } = await supabase
     .from("coffee_directory_mv")
@@ -586,11 +594,7 @@ export async function fetchCoffees(
   // Try to use service role client if available (bypasses RLS for server-side queries)
   // Fallback to regular client if service role key is not set.
   // Route handlers may pass supabaseClient from createApiRouteClient().
-  const supabase =
-    supabaseClient ??
-    (process.env.SUPABASE_SECRET_KEY
-      ? await createServiceRoleClient()
-      : await createClient());
+  const supabase = supabaseClient ?? (await getReadClient());
 
   // Resolve slugs to IDs for filtering (if slugs are provided)
   const resolvedFilters: CoffeeFilters = { ...filters };
@@ -719,9 +723,7 @@ export async function fetchRoastersForRegionSlugs(
     return [];
   }
 
-  const supabase = process.env.SUPABASE_SECRET_KEY
-    ? await createServiceRoleClient()
-    : await createClient();
+  const supabase = await getReadClient();
 
   const regionIds = await resolveRegionSlugsToIds(supabase, regionSlugs);
   if (regionIds.length === 0) {

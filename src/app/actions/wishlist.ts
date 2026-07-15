@@ -1,8 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/data/auth";
 import { createClient } from "@/lib/supabase/server";
+import { fetchWishlistCoffeeIds } from "@/lib/data/fetch-wishlist";
 import { getPostHogClient } from "@/lib/posthog-server";
 import {
   toggleWishlistSchema,
@@ -22,18 +22,7 @@ type ActionResult<T = void> = {
 export async function getMyWishlistCoffeeIds(): Promise<string[]> {
   const currentUser = await getCurrentUser();
   if (!currentUser) return [];
-
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("wishlists")
-    .select("coffee_id")
-    .eq("user_id", currentUser.id);
-
-  if (error) {
-    console.error("getMyWishlistCoffeeIds error:", error);
-    return [];
-  }
-  return (data ?? []).map((row) => row.coffee_id);
+  return fetchWishlistCoffeeIds(currentUser.id);
 }
 
 /**
@@ -87,7 +76,6 @@ export async function toggleWishlist(
         event: "wishlist_removed",
         properties: { coffee_id: coffeeId },
       });
-      revalidatePath("/", "layout");
       return { success: true, data: { inWishlist: false } };
     }
 
@@ -113,7 +101,6 @@ export async function toggleWishlist(
       properties: { coffee_id: coffeeId },
     });
 
-    revalidatePath("/", "layout");
     return { success: true, data: { inWishlist: true } };
   } catch (e) {
     console.error("toggleWishlist:", e);
