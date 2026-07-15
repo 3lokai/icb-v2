@@ -63,7 +63,6 @@ export function CardRatingFooter({
     microcopy = "Be the first to rate.";
   }
 
-  const ratingDisplay = hasOverallRating ? ratingAvg!.toFixed(1) : "—";
   const rateLabel = `Rate ${entityName}`;
 
   const openRatingModal = (rating?: number) => {
@@ -86,7 +85,7 @@ export function CardRatingFooter({
       <div
         className={cn(
           "mt-auto flex items-center justify-between gap-2 border-t border-border/40 bg-muted/20",
-          "card-padding-compact",
+          "px-3 py-2 md:px-4 md:py-2.5",
           "transition-colors duration-200 group-hover:bg-muted/30"
         )}
         onClick={(e) => {
@@ -125,23 +124,27 @@ export function CardRatingFooter({
       <div
         className={cn(
           "flex flex-row items-center justify-between",
-          "card-padding-compact"
+          "px-3 py-2 md:px-4 md:py-2.5"
         )}
       >
-        {/* Left: Rating number block */}
-        <div className="flex flex-col">
-          <div className="text-title font-medium">{ratingDisplay}</div>
-          <div className="flex flex-row items-baseline gap-1">
+        {/* Left: Rating number block (empty until the entity has a rating) */}
+        {hasOverallRating ? (
+          <div className="flex flex-row items-baseline gap-1.5">
+            <span className="text-heading font-medium">
+              {ratingAvg!.toFixed(1)}
+            </span>
             <span className="text-label">Rating</span>
-            {hasOverallRating && safeCount > 0 && (
+            {safeCount > 0 && (
               <span className="text-caption">({safeCount})</span>
             )}
           </div>
-        </div>
+        ) : (
+          <div aria-hidden />
+        )}
 
         {/* Right: Action block — stars are the real (keyboard) control */}
         <div
-          className="flex flex-col items-end gap-1"
+          className="flex flex-col items-end gap-0.5"
           onClick={(e) => {
             // Prevent shell click when activating stars (pointer).
             e.stopPropagation();

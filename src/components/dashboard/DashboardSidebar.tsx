@@ -28,6 +28,11 @@ const menuItems = [
     icon: "Star",
   },
   {
+    title: "Wishlist",
+    url: "/dashboard/wishlist",
+    icon: "Heart",
+  },
+  {
     title: "Notifications",
     url: "/dashboard/notifications",
     icon: "Bell",

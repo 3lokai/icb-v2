@@ -4,6 +4,8 @@ import {
   fetchUserProfileByUsername,
   fetchAnonProfile,
 } from "@/lib/data/fetch-user-profile";
+import { fetchWishlistCoffeeIds } from "@/lib/data/fetch-wishlist";
+import { fetchCoffeesByIds } from "@/lib/data/fetch-coffees";
 import { serverAuth } from "@/lib/supabase/auth-helpers-server";
 import { ProfilePage } from "@/components/profile/ProfilePage";
 import { EnsureAnonIdAndRefresh } from "@/components/profile/EnsureAnonIdAndRefresh";
@@ -158,5 +160,18 @@ export default async function UserProfilePage({ params }: Props) {
 
   const isOwner = viewerId === profileData.profile?.id;
 
-  return <ProfilePage profileData={profileData} isOwner={isOwner} />;
+  // Wishlist (RLS returns it only for public profiles or the owner).
+  const profileUserId = profileData.profile?.id;
+  const wishlistCoffeeIds = profileUserId
+    ? await fetchWishlistCoffeeIds(profileUserId)
+    : [];
+  const wishlistCoffees = await fetchCoffeesByIds(wishlistCoffeeIds);
+
+  return (
+    <ProfilePage
+      profileData={profileData}
+      isOwner={isOwner}
+      wishlistCoffees={wishlistCoffees}
+    />
+  );
 }

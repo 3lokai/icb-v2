@@ -10,7 +10,8 @@ import { Icon } from "@/components/common/Icon";
 import { coffeeImagePresets } from "@/lib/imagekit";
 import { formatPrice } from "@/lib/utils/coffee-utils";
 import {
-  formatBrewMethodLabels,
+  formatFlavorLabels,
+  formatProcess,
   formatRoastLevel,
 } from "@/lib/utils/coffee-card-utils";
 import type { CoffeeSummary } from "@/types/coffee-types";
@@ -20,6 +21,13 @@ import { CardRatingFooter } from "./CardRatingFooter";
 import { Stack } from "../primitives/stack";
 import { trackCoffeeDiscovery } from "@/lib/analytics/enhanced-tracking";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
+import { WishlistButton } from "@/components/coffees/WishlistButton";
+
+// Title-scrim gradient. Uses the palette's darkest color (the dark-theme
+// --background warm coffee-black) as a fixed literal, not var(--background),
+// which flips to near-white in light mode — the scrim must stay dark in both.
+const TITLE_SCRIM =
+  "linear-gradient(to top, oklch(0.195 0.01 59.58), oklch(0.195 0.01 59.58 / 0.7) 40%, oklch(0.195 0.01 59.58 / 0.2) 70%, transparent)";
 
 type CoffeeCardProps = {
   coffee: CoffeeSummary;
@@ -77,8 +85,13 @@ function RoastLevelIndicator({
   const beans = Array.from({ length: 5 }, (_, i) => i < beanCount);
 
   return (
-    <div className={cn("flex items-center gap-1.5", className)}>
-      <div className="flex items-center gap-0.5">
+    <div className={cn("flex flex-col gap-1", className)}>
+      <span className="text-label">Roast</span>
+      <div
+        className="flex items-center gap-0.5"
+        aria-label={`Roast level: ${displayText}`}
+        title={displayText}
+      >
         {beans.map((filled, idx) => (
           <Icon
             key={idx}
@@ -97,7 +110,6 @@ function RoastLevelIndicator({
           />
         ))}
       </div>
-      <span className="text-label">{displayText}</span>
     </div>
   );
 }
@@ -128,10 +140,17 @@ function CoffeeCardComponent({
     [coffee.roast_level, coffee.roast_level_raw, coffee.roast_style_raw]
   );
 
-  const brewMethodLabels = useMemo(
-    () => formatBrewMethodLabels(coffee.brew_method_canonical_keys),
-    [coffee.brew_method_canonical_keys]
+  const processLabel = useMemo(
+    () => formatProcess(coffee.process),
+    [coffee.process]
   );
+
+  const flavorLabels = useMemo(
+    () => formatFlavorLabels(coffee.flavor_keys, 3),
+    [coffee.flavor_keys]
+  );
+  const extraFlavorCount =
+    (coffee.flavor_keys?.length ?? 0) - flavorLabels.length;
 
   const formattedPrice = useMemo(
     () =>
@@ -180,66 +199,88 @@ function CoffeeCardComponent({
       <Card
         className={cn(
           "group relative overflow-hidden cursor-pointer",
-          "surface-1 rounded-lg card-hover",
+          "surface-1 rounded-lg card-hover border-0 ring-1 ring-border/60 hover:ring-border",
           "h-full flex flex-col",
           "max-w-[420px] w-full mx-auto",
-          "p-0"
+          "gap-0 p-0"
         )}
         aria-label={ariaLabel}
       >
+        <WishlistButton
+          variant="icon"
+          coffeeId={coffee.coffee_id}
+          className="absolute top-2 right-2 z-10"
+        />
         <Link
           href={detailHref}
           onClick={handleTrackClick}
           className="flex-1 flex flex-col"
         >
-          {/* Hero Image */}
-          <div className="relative aspect-[4/3] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
+          {/* Hero Image with title scrim */}
+          <div className="relative aspect-square w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
             <Image
               alt={imageAlt}
-              className="object-contain"
+              className="object-cover"
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 420px"
               src={imageUrl}
               unoptimized
             />
+            {/* Title scrim */}
+            <div
+              className="absolute inset-x-0 bottom-0 z-10 p-4 pt-20"
+              style={{ background: TITLE_SCRIM }}
+            >
+              <h3 className="text-title text-white text-balance line-clamp-2 drop-shadow-md">
+                {coffee.name}
+              </h3>
+              {coffee.roaster_name && (
+                <p className="text-body font-medium text-white/85 line-clamp-1 drop-shadow">
+                  {coffee.roaster_name}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Content */}
           <div className="flex-1 card-padding transition-opacity duration-200 group-hover:opacity-90">
-            <Stack gap="3">
-              {/* Coffee name - hero size */}
-              <h3 className="text-title text-balance line-clamp-2">
-                {coffee.name}
-              </h3>
-
-              {/* Roaster - quiet context */}
-              {coffee.roaster_name && (
-                <p className="text-body-muted font-medium">
-                  {coffee.roaster_name}
-                </p>
-              )}
-
-              {/* Metadata - roast indicator and brew badges */}
-              {(roastLevel || brewMethodLabels.length > 0) && (
-                <div className="flex flex-col gap-2">
-                  {roastLevel && (
-                    <RoastLevelIndicator
-                      roastLevel={coffee.roast_level}
-                      roastLevelRaw={coffee.roast_level_raw}
-                      roastStyleRaw={coffee.roast_style_raw}
-                    />
+            <Stack gap="2" className="h-full">
+              {/* Metadata - roast indicator, process and flavor notes */}
+              {(roastLevel || processLabel || flavorLabels.length > 0) && (
+                <div className="flex flex-col gap-3">
+                  {(roastLevel || processLabel) && (
+                    <div className="flex items-start justify-between gap-2">
+                      {roastLevel && (
+                        <RoastLevelIndicator
+                          roastLevel={coffee.roast_level}
+                          roastLevelRaw={coffee.roast_level_raw}
+                          roastStyleRaw={coffee.roast_style_raw}
+                        />
+                      )}
+                      {processLabel && (
+                        <div className="ml-auto flex flex-col items-end gap-1 text-right">
+                          <span className="text-label">Processing</span>
+                          <span className="text-overline">{processLabel}</span>
+                        </div>
+                      )}
+                    </div>
                   )}
-                  {brewMethodLabels.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {brewMethodLabels.map((method, idx) => (
+                  {flavorLabels.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {flavorLabels.map((flavor, idx) => (
                         <Badge
                           key={idx}
                           variant="outline"
                           className="text-overline"
                         >
-                          {method}
+                          {flavor}
                         </Badge>
                       ))}
+                      {extraFlavorCount > 0 && (
+                        <span className="text-overline text-muted-foreground">
+                          +{extraFlavorCount}
+                        </span>
+                      )}
                     </div>
                   )}
                 </div>
@@ -247,7 +288,7 @@ function CoffeeCardComponent({
 
               {/* Price - small, muted, secondary, at bottom before rating zone */}
               {formattedPrice && (
-                <p className="text-caption mt-auto pt-2 text-right">
+                <p className="text-caption mt-auto pt-1 text-right">
                   From ₹{formattedPrice} / 250g
                 </p>
               )}
@@ -275,12 +316,17 @@ function CoffeeCardComponent({
       <Card
         className={cn(
           "group relative overflow-hidden cursor-pointer",
-          "surface-1 rounded-lg card-hover",
+          "surface-1 rounded-lg card-hover border-0 ring-1 ring-border/60 hover:ring-border",
           "h-full flex flex-col",
-          "p-0"
+          "gap-0 p-0"
         )}
         aria-label={ariaLabel}
       >
+        <WishlistButton
+          variant="icon"
+          coffeeId={coffee.coffee_id}
+          className="absolute top-2 right-2 z-10"
+        />
         <Link
           href={detailHref}
           onClick={handleTrackClick}
@@ -290,7 +336,7 @@ function CoffeeCardComponent({
           <div className="relative aspect-[3/4] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
             <Image
               alt={imageAlt}
-              className="object-contain"
+              className="object-cover"
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               src={imageUrl}
@@ -300,7 +346,7 @@ function CoffeeCardComponent({
 
           {/* Content */}
           <div className="flex-1 card-padding-compact transition-opacity duration-200 group-hover:opacity-90">
-            <Stack gap="2">
+            <Stack gap="1">
               {/* Coffee name */}
               <h3 className="text-heading text-balance line-clamp-2">
                 {coffee.name}
@@ -352,9 +398,9 @@ function CoffeeCardComponent({
       <Card
         className={cn(
           "group relative overflow-hidden cursor-pointer",
-          "surface-1 rounded-lg card-hover",
+          "surface-1 rounded-lg card-hover border-0 ring-1 ring-border/60 hover:ring-border",
           "h-[80px]",
-          "p-0"
+          "gap-0 p-0"
         )}
         aria-label={ariaLabel}
       >
@@ -367,7 +413,7 @@ function CoffeeCardComponent({
           <div className="relative w-16 h-16 shrink-0 overflow-hidden rounded image-hover-zoom self-center transition-opacity duration-200 group-hover:opacity-90">
             <Image
               alt={imageAlt}
-              className="object-contain"
+              className="object-cover"
               fill
               sizes="64px"
               src={imageUrl}
@@ -406,68 +452,88 @@ function CoffeeCardComponent({
     <Card
       className={cn(
         "group relative overflow-hidden cursor-pointer",
-        "surface-1 rounded-lg card-hover",
+        "surface-1 rounded-lg card-hover border-0 ring-1 ring-border/60 hover:ring-border",
         "h-full flex flex-col",
         "max-w-[300px] w-full",
-        "p-0"
+        "gap-0 p-0"
       )}
       aria-label={ariaLabel}
     >
+      <WishlistButton
+        variant="icon"
+        coffeeId={coffee.coffee_id}
+        className="absolute top-2 right-2 z-10"
+      />
       <Link
         href={detailHref}
         onClick={handleTrackClick}
         className="flex-1 flex flex-col"
       >
-        {/* Image - 3:2 aspect ratio for tighter magazine tile */}
-        <div className="relative aspect-[3/2] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
+        {/* Image with title scrim */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
           <Image
             alt={imageAlt}
-            className="object-contain"
+            className="object-cover"
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
             src={imageUrl}
             unoptimized
           />
+          {/* Title scrim */}
+          <div
+            className="absolute inset-x-0 bottom-0 z-10 p-4 pt-20"
+            style={{ background: TITLE_SCRIM }}
+          >
+            <h3 className="text-heading text-white text-balance line-clamp-2 drop-shadow-md">
+              {coffee.name}
+            </h3>
+            {coffee.roaster_name && (
+              <p className="text-body font-medium text-white/85 line-clamp-1 drop-shadow">
+                {coffee.roaster_name}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Content - strict hierarchy */}
         <div className="flex-1 card-padding-compact transition-opacity duration-200 group-hover:opacity-90">
-          <Stack gap="2">
-            {/* 1. Coffee name - 2 lines max */}
-            <h3 className="text-heading text-balance line-clamp-2">
-              {coffee.name}
-            </h3>
-
-            {/* 2. Roaster (muted) */}
-            {coffee.roaster_name && (
-              <p className="text-body-muted font-medium">
-                {coffee.roaster_name}
-              </p>
-            )}
-
-            {/* 3. Metadata - roast indicator and brew badges, limit to 2 items: roast + brew */}
-            {(roastLevel || brewMethodLabels.length > 0) && (
-              <div className="flex flex-col gap-2">
-                {roastLevel && (
-                  <RoastLevelIndicator
-                    roastLevel={coffee.roast_level}
-                    roastLevelRaw={coffee.roast_level_raw}
-                    roastStyleRaw={coffee.roast_style_raw}
-                  />
+          <Stack gap="1" className="h-full">
+            {/* Metadata - roast indicator, process and flavor notes */}
+            {(roastLevel || processLabel || flavorLabels.length > 0) && (
+              <div className="flex flex-col gap-3">
+                {(roastLevel || processLabel) && (
+                  <div className="flex items-start justify-between gap-2">
+                    {roastLevel && (
+                      <RoastLevelIndicator
+                        roastLevel={coffee.roast_level}
+                        roastLevelRaw={coffee.roast_level_raw}
+                        roastStyleRaw={coffee.roast_style_raw}
+                      />
+                    )}
+                    {processLabel && (
+                      <div className="ml-auto flex flex-col items-end gap-1 text-right">
+                        <span className="text-label">Processing</span>
+                        <span className="text-overline">{processLabel}</span>
+                      </div>
+                    )}
+                  </div>
                 )}
-                {brewMethodLabels.slice(0, roastLevel ? 1 : 2).length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {brewMethodLabels
-                      .slice(0, roastLevel ? 1 : 2)
-                      .map((method, idx) => (
-                        <Badge
-                          key={idx}
-                          variant="outline"
-                          className="text-overline"
-                        >
-                          {method}
-                        </Badge>
-                      ))}
+                {flavorLabels.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {flavorLabels.map((flavor, idx) => (
+                      <Badge
+                        key={idx}
+                        variant="outline"
+                        className="text-overline"
+                      >
+                        {flavor}
+                      </Badge>
+                    ))}
+                    {extraFlavorCount > 0 && (
+                      <span className="text-overline text-muted-foreground">
+                        +{extraFlavorCount}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
@@ -475,7 +541,7 @@ function CoffeeCardComponent({
 
             {/* 4. Price (small, muted, secondary) */}
             {formattedPrice && (
-              <p className="text-caption mt-auto pt-2 text-right">
+              <p className="text-caption mt-auto pt-1 text-right">
                 From ₹{formattedPrice} / 250g
               </p>
             )}

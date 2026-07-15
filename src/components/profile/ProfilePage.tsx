@@ -17,18 +17,22 @@ import {
   useProfileSectionScrollspy,
 } from "./ProfileSectionTabs";
 import type { UserProfileFull } from "@/types/profile-types";
+import type { CoffeeSummary } from "@/types/coffee-types";
+import { CoffeeGrid } from "@/components/coffees/CoffeeGrid";
 import { formatDistanceToNow } from "date-fns";
 
 type ProfilePageProps = {
   profileData: UserProfileFull;
   isOwner: boolean;
   isAnonymous?: boolean;
+  wishlistCoffees?: CoffeeSummary[];
 };
 
 export function ProfilePage({
   profileData,
   isOwner,
   isAnonymous = false,
+  wishlistCoffees = [],
 }: ProfilePageProps) {
   const activeSection = useProfileSectionScrollspy();
 
@@ -225,6 +229,31 @@ export function ProfilePage({
           isOwner={isOwner}
           isAnonymous={isAnonymous}
         />
+      </Band>
+
+      {/* ── Wishlist (warm band + grain) ── */}
+      <Band
+        id="wishlist"
+        ground="warm"
+        texture="grain"
+        maxWidth="6xl"
+        className="lg:py-20"
+        aria-label="Wishlist"
+      >
+        <Stack gap="8">
+          <h2 className="text-title font-serif italic text-accent m-0">
+            {isOwner ? "Your wishlist" : "Wishlist"}
+          </h2>
+          {wishlistCoffees.length > 0 ? (
+            <CoffeeGrid items={wishlistCoffees} />
+          ) : (
+            <p className="text-body-muted italic m-0">
+              {isOwner
+                ? "Tap the heart on any coffee to save it here."
+                : "No coffees saved yet."}
+            </p>
+          )}
+        </Stack>
       </Band>
 
       {/* ── Ratings (warm band + coarse grain) ── */}

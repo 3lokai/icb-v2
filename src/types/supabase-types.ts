@@ -2678,6 +2678,56 @@ export type Database = {
           },
         ];
       };
+      wishlists: {
+        Row: {
+          added_at: string;
+          coffee_id: string;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          added_at?: string;
+          coffee_id: string;
+          id?: string;
+          user_id: string;
+        };
+        Update: {
+          added_at?: string;
+          coffee_id?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "wishlists_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffee_directory_mv";
+            referencedColumns: ["coffee_id"];
+          },
+          {
+            foreignKeyName: "wishlists_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffee_summary";
+            referencedColumns: ["coffee_id"];
+          },
+          {
+            foreignKeyName: "wishlists_coffee_id_fkey";
+            columns: ["coffee_id"];
+            isOneToOne: false;
+            referencedRelation: "coffees";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "wishlists_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "user_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       coffee_directory_mv: {
