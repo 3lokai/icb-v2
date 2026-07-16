@@ -50,7 +50,12 @@ export function WishlistButton({
         aria-pressed={saved}
         className={cn("gap-2", className)}
       >
-        <Icon name="Heart" size={18} color={saved ? "destructive" : "muted"} />
+        <Icon
+          name="Heart"
+          size={18}
+          color={saved ? "destructive" : "muted"}
+          weight="fill"
+        />
         {saved ? "In your wishlist" : "Add to wishlist"}
       </Button>
     );
@@ -75,17 +80,10 @@ export function WishlistButton({
           <Icon
             name="Heart"
             size={20}
-            color={saved ? "destructive" : "primary"}
+            weight="fill"
+            color={saved ? "destructive" : "white"}
+            // Dark-bg silhouette so the heart stays readable over any photo.
             className="inline-block drop-shadow-[0_1px_2px_rgb(0_0_0/0.45)]"
-            // Sits over photos: keep the unsaved heart white in both themes.
-            {...(saved
-              ? {}
-              : {
-                  style: {
-                    "--ph-primary": "#fff",
-                    "--ph-secondary": "rgb(255 255 255 / 0.5)",
-                  } as React.CSSProperties,
-                })}
           />
         </button>
       </TooltipTrigger>

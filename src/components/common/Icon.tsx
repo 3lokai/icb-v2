@@ -320,20 +320,33 @@ const ICONS = {
 
 export type IconName = keyof typeof ICONS;
 
-type IconColor = "primary" | "muted" | "accent" | "destructive" | "glass";
+type IconColor =
+  | "primary"
+  | "muted"
+  | "accent"
+  | "destructive"
+  | "glass"
+  | "white";
 
 type CustomIconProps = {
   name: IconName;
   size?: IconProps["size"];
   className?: string;
   color?: IconColor;
-} & Omit<ComponentPropsWithoutRef<"svg">, "className" | "size">;
+  /** Phosphor weight. Defaults to `duotone`. Use `fill` for solid icons (e.g. wishlist). */
+  weight?: IconProps["weight"];
+} & Omit<
+  ComponentPropsWithoutRef<"svg">,
+  "className" | "size" | "color" | "weight"
+>;
 
 export const Icon = ({
   name,
   size = 20,
   className = "inline-block",
   color = "primary",
+  weight = "duotone",
+  style,
   ...props
 }: CustomIconProps) => {
   const IconComponent = ICONS[name];
@@ -345,44 +358,32 @@ export const Icon = ({
     return <span>❌</span>; // Fallback
   }
 
-  // Map color prop to your design token variables for duotone icons
-  const colorMap: Record<IconColor, { primary: string; secondary: string }> = {
-    primary: {
-      primary: "var(--primary)",
-      secondary: "var(--primary-foreground)",
-    },
-    muted: {
-      primary: "var(--muted-foreground)",
-      secondary: "var(--muted)",
-    },
-    accent: {
-      primary: "var(--accent)",
-      secondary: "var(--accent-foreground)",
-    },
-    destructive: {
-      primary: "var(--destructive)",
-      secondary: "var(--destructive-foreground, var(--primary-foreground))",
-    },
-    glass: {
-      primary: "var(--foreground)",
-      secondary: "var(--foreground)/60",
-    },
+  // Map color prop → Phosphor `color` (sets SVG `fill`). Phosphor does not read
+  // --ph-* vars; duotone secondary is the same fill at 0.2 opacity.
+  const colorMap: Record<IconColor, string> = {
+    primary: "var(--primary)",
+    muted: "var(--muted-foreground)",
+    accent: "var(--accent)",
+    destructive: "var(--destructive)",
+    glass: "var(--foreground)",
+    white: "#fff",
   };
 
-  const selectedColor = color ?? "primary";
-
-  // Always use duotone weight with CSS variables for duotone colors
-  const style = {
-    "--ph-primary": colorMap[selectedColor].primary,
-    "--ph-secondary": colorMap[selectedColor].secondary,
-  } as CSSProperties;
+  const fill = colorMap[color ?? "primary"];
 
   return (
     <IconComponent
       className={className}
       size={size}
-      style={style}
-      weight="duotone"
+      color={fill}
+      weight={weight}
+      style={
+        {
+          "--ph-primary": fill,
+          "--ph-secondary": fill,
+          ...style,
+        } as CSSProperties
+      }
       {...props}
     />
   );
