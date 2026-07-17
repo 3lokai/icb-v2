@@ -30,7 +30,7 @@ type CoffeeRow = {
 /**
  * Build full CoffeeDetail from a coffees table row.
  * Fetches all related data (roaster, variants, images, etc.) and assembles CoffeeDetail.
- * Used by fetchCoffeeBySlug, fetchCoffeeByRoasterAndSlug, and fetchCoffeesBySlugOnly.
+ * Used by fetchCoffeeBySlug and fetchCoffeeByRoasterAndSlug.
  */
 async function buildCoffeeDetailFromRow(
   supabase: SupabaseClient,
@@ -422,26 +422,3 @@ export const fetchCoffeeByRoasterAndSlugCached = cache(
     { revalidate: 86400, tags: ["coffees"] }
   )
 );
-
-/**
- * Fetch all coffees with the given slug (for legacy /coffees/[slug] redirect vs disambiguation).
- * Returns array of CoffeeDetail; may be 0, 1, or many.
- */
-export async function fetchCoffeesBySlugOnly(
-  slug: string
-): Promise<CoffeeDetail[]> {
-  const supabase = await getSupabase();
-  const { data: rows, error } = await supabase
-    .from("coffees")
-    .select("*")
-    .eq("slug", slug);
-
-  if (error || !rows || rows.length === 0) {
-    return [];
-  }
-
-  const results = await Promise.all(
-    rows.map((row) => buildCoffeeDetailFromRow(supabase, row as CoffeeRow))
-  );
-  return results.filter((c): c is CoffeeDetail => c !== null);
-}
