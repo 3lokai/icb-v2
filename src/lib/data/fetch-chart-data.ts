@@ -68,6 +68,13 @@ export async function fetchChartData(
     selectFields = "canon_estate_names, canon_region_names";
   if (dataKey === "brew_method_distribution_light_roast")
     selectFields = "brew_method_canonical_keys, roast_level";
+  if (dataKey === "brew_method_distribution")
+    selectFields = "brew_method_canonical_keys";
+  if (dataKey === "espresso_process_distribution")
+    selectFields = "process, brew_method_canonical_keys, in_stock_count";
+  if (dataKey === "top_flavors_washed_espresso")
+    selectFields =
+      "canon_flavor_descriptors, process, brew_method_canonical_keys, in_stock_count";
   if (dataKey === "flavor_by_roast")
     selectFields = "canon_flavor_descriptors, roast_level";
   if (dataKey === "price_distribution_250g")
@@ -112,6 +119,20 @@ export async function fetchChartData(
       .gt("best_normalized_250g", 0)
       .gt("in_stock_count", 0)
       .lt("best_normalized_250g", 5000);
+  }
+
+  // Espresso-tagged charts — array containment on brew method keys, scoped to
+  // in-stock (matches the espresso guide's "in-stock espresso-tagged" framing).
+  if (
+    dataKey === "espresso_process_distribution" ||
+    dataKey === "top_flavors_washed_espresso"
+  ) {
+    query = query
+      .contains("brew_method_canonical_keys", ["espresso"])
+      .gt("in_stock_count", 0);
+  }
+  if (dataKey === "top_flavors_washed_espresso") {
+    query = query.eq("process", "washed");
   }
 
   const { data: coffees, error } = await query;
@@ -163,6 +184,21 @@ export async function fetchChartData(
 
     case "brew_method_distribution_light_roast":
       return aggregateLightRoastBrewMethods(coffees, limit);
+
+    case "brew_method_distribution":
+      return aggregateArrayField(
+        coffees,
+        "brew_method_canonical_keys",
+        limit
+      ).map((item) => ({ ...item, label: formatEnumLabel(item.label) }));
+
+    case "espresso_process_distribution":
+      return aggregateSimpleDistribution(coffees, "process", limit).map(
+        (item) => ({ ...item, label: formatEnumLabel(item.label) })
+      );
+
+    case "top_flavors_washed_espresso":
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
 
     case "roaster_concentration":
       return aggregateSimpleDistribution(coffees, "roaster_name", limit || 10);
