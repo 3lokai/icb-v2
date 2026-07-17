@@ -3101,6 +3101,7 @@ export type Database = {
         Args: { grind_key: string };
         Returns: string;
       };
+      generate_username: { Args: { p_name: string }; Returns: string };
       get_coffee_detail: {
         Args: { p_coffee_slug: string; p_roaster_slug: string };
         Returns: Json;
