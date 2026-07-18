@@ -26,26 +26,9 @@ function getImageKitEndpoint(): string {
 }
 
 /**
- * Build ImageKit URL with transformations
+ * Build the ImageKit path-style transform segment (e.g. `tr:w-800,q-75/`).
  */
-export function getImageKitUrl(
-  imagePath: string,
-  transforms: ImageKitTransform = {}
-): string {
-  const endpoint = getImageKitEndpoint();
-  if (!(endpoint && imagePath)) {
-    return imagePath || "";
-  }
-
-  // If imagePath is already a full URL, return as-is
-  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-    return imagePath;
-  }
-
-  // Remove leading slash if present
-  const cleanPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
-
-  // Build transformation query string
+function buildTransformString(transforms: ImageKitTransform): string {
   const params: string[] = [];
 
   if (transforms.width) {
@@ -70,9 +53,45 @@ export function getImageKitUrl(
     params.push(`fo-${transforms.focus}`);
   }
 
-  const transformString = params.length > 0 ? `tr:${params.join(",")}/` : "";
+  return params.length > 0 ? `tr:${params.join(",")}/` : "";
+}
 
-  return `${endpoint}/${transformString}${cleanPath}`;
+/**
+ * Build ImageKit URL with transformations.
+ * Accepts relative paths or absolute URLs under the configured endpoint.
+ */
+export function getImageKitUrl(
+  imagePath: string,
+  transforms: ImageKitTransform = {}
+): string {
+  const endpoint = getImageKitEndpoint();
+  if (!(endpoint && imagePath)) {
+    return imagePath || "";
+  }
+
+  const transformString = buildTransformString(transforms);
+  const normalizedEndpoint = endpoint.replace(/\/$/, "");
+
+  // Absolute URL under our ImageKit endpoint — inject transforms after endpoint
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    if (!transformString) {
+      return imagePath;
+    }
+    if (imagePath.startsWith(`${normalizedEndpoint}/`)) {
+      const pathAfterEndpoint = imagePath.slice(normalizedEndpoint.length + 1);
+      // Avoid double-applying transforms if already present
+      if (pathAfterEndpoint.startsWith("tr:")) {
+        return imagePath;
+      }
+      return `${normalizedEndpoint}/${transformString}${pathAfterEndpoint}`;
+    }
+    // Non-ImageKit absolute URLs stay unchanged
+    return imagePath;
+  }
+
+  // Relative path
+  const cleanPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
+  return `${normalizedEndpoint}/${transformString}${cleanPath}`;
 }
 
 /**

@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { getMyWishlistCoffeeIds, toggleWishlist } from "@/app/actions/wishlist";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/components/providers/auth-provider";
 import { queryKeys } from "@/lib/query-keys";
 
 /**

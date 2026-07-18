@@ -352,9 +352,6 @@ export function CoffeeDetailPage({
               )}
             </div>
 
-            {/* Save to wishlist */}
-            <WishlistButton variant="button" coffeeId={coffee.id} />
-
             {/* Trimmed Description */}
             {trimmedDesc && (
               <p className="text-body text-muted-foreground leading-relaxed">
@@ -387,6 +384,12 @@ export function CoffeeDetailPage({
                 />
                 Rate this coffee
               </Button>
+              <WishlistButton
+                variant="button"
+                size="lg"
+                coffeeId={coffee.id}
+                className="min-w-[160px]"
+              />
               {coffee.status === "discontinued" ? (
                 <Button
                   variant="outline"
