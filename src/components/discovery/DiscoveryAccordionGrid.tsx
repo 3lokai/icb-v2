@@ -165,8 +165,13 @@ function DiscoveryAccordionCard({
             ease: [0.25, 0.46, 0.45, 0.94],
           }}
         >
-          <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-white shadow-lg shadow-accent/20 ring-1 ring-white/20">
-            <Icon className="h-4 w-4" name={meta.icon} size={16} />
+          <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-accent shadow-lg shadow-accent/20 ring-1 ring-white/20">
+            <Icon
+              className="h-4 w-4"
+              name={meta.icon}
+              size={16}
+              color="white"
+            />
           </div>
 
           <h3 className="text-subheading font-semibold leading-tight text-white sm:text-heading">

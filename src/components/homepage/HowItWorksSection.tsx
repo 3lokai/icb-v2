@@ -1,4 +1,3 @@
-// src/components/homepage/HowItWorksSection.tsx
 "use client";
 
 import { Icon, IconName } from "@/components/common/Icon";
@@ -17,23 +16,24 @@ const steps: {
   color: StepColor;
 }[] = [
   {
-    icon: "Coffee",
-    title: "Brew",
+    icon: "MagnifyingGlass",
+    title: "Discover",
     description:
-      "Make coffee your way — at home, at work, with the gear you own.",
+      "Browse 1000+ coffees. Filter by roast, flavour, how you brew, or budget.",
     color: "primary",
   },
   {
     icon: "Star",
     title: "Rate",
-    description: "Rate how it tasted. Quick ratings, no long reviews required.",
+    description:
+      "Say how it tasted. A quick rating is enough. No essay needed.",
     color: "accent",
   },
   {
-    icon: "Brain",
-    title: "Build Your Coffee Profile",
+    icon: "ShareNetwork",
+    title: "Share",
     description:
-      "Your coffees, brews, and setup in one place — a personal record of how you drink coffee.",
+      "Those ratings become a page you can send someone: what you like, who you buy from, what you brew with.",
     color: "primary",
   },
 ];
@@ -92,7 +92,7 @@ export default function HowItWorksSection() {
                   >
                     <span className="h-px w-8 md:w-12 bg-primary/70" />
                     <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
-                      How ICB Works
+                      How ICB works
                     </span>
                   </motion.div>
                   <motion.h2
@@ -102,7 +102,7 @@ export default function HowItWorksSection() {
                     transition={{ delay: 0.1 }}
                     className="text-title text-balance leading-[1.1] tracking-tight"
                   >
-                    Brew. Rate. Build Your <Accent>Coffee Profile.</Accent>
+                    Discover. Rate. <Accent>Share.</Accent>
                   </motion.h2>
                   <motion.p
                     initial={{ y: 20, opacity: 0 }}
@@ -111,8 +111,9 @@ export default function HowItWorksSection() {
                     transition={{ delay: 0.2 }}
                     className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed font-light"
                   >
-                    Track what you brew, rate how it tastes, and build a coffee
-                    profile that grows with every cup.
+                    1000+ coffees across 90+ roasters. Find one you like, rate
+                    it, and slowly build a profile that actually reflects how
+                    you drink coffee.
                   </motion.p>
                 </Stack>
               </div>
@@ -125,8 +126,8 @@ export default function HowItWorksSection() {
                   transition={{ delay: 0.4 }}
                   className="max-w-xs text-pretty text-body text-muted-foreground leading-relaxed italic border-l-2 border-primary/30 pl-4"
                 >
-                  Your profile grows as you rate coffees and add context — a
-                  personal record, not a leaderboard.
+                  Just a record of what you&apos;ve actually rated, not a
+                  scoreboard.
                 </motion.p>
               </div>
             </div>
