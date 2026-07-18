@@ -79,7 +79,7 @@ export default function CoffeeImageCarousel({
     return (
       <div
         className={cn(
-          "relative aspect-[4/3] overflow-hidden rounded-lg",
+          "relative aspect-[5/4] overflow-hidden rounded-lg",
           className
         )}
       >
