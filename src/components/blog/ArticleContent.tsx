@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Callout } from "./blocks/Callout";
 import { ImageGallery } from "./blocks/ImageGallery";
 import { BrewingTable } from "./blocks/BrewingTable";
+import { DataTable } from "./blocks/DataTable";
 import { StepList } from "./blocks/StepList";
 import { CoffeeSpotlight } from "./blocks/CoffeeSpotlight";
 import { RoasterSpotlight } from "./blocks/RoasterSpotlight";
@@ -50,6 +51,7 @@ const createComponents = (
     callout: Callout,
     imageGallery: ImageGallery,
     brewingTable: BrewingTable,
+    dataTable: DataTable,
     stepList: StepList,
     coffeeSpotlight: CoffeeSpotlight,
     roasterSpotlight: RoasterSpotlight,

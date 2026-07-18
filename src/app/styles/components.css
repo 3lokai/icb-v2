@@ -93,3 +93,11 @@
 .toaster [data-sonner-toast] {
   @apply bg-popover text-popover-foreground border border-border shadow-xl rounded-xl;
 }
+
+/* Toast action button (e.g. "Sign in") — match the app's primary button */
+.toaster [data-sonner-toast] [data-button] {
+  @apply bg-primary text-primary-foreground;
+}
+.toaster [data-sonner-toast] [data-button]:hover {
+  @apply bg-primary/90;
+}

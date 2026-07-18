@@ -143,6 +143,9 @@ export function ProfileSelections({
         <DialogContent className="max-w-lg p-0">
           <VisuallyHidden>
             <DialogTitle>Edit rating for {editingSelection?.name}</DialogTitle>
+            <DialogDescription>
+              Update your rating and review for this coffee.
+            </DialogDescription>
           </VisuallyHidden>
           {editingSelection && (
             <QuickRating

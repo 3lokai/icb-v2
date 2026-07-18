@@ -1,6 +1,11 @@
 "use client";
 
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import { QuickRating } from "./QuickRating";
 
@@ -28,12 +33,17 @@ export function ExitIntentRatingModal({
     entityType === "coffee"
       ? `Rate ${coffeeName?.trim() || "this coffee"}`
       : "Leave a rating";
+  const description =
+    entityType === "coffee"
+      ? "Quickly rate this coffee before you leave."
+      : "Quickly leave a rating before you leave.";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg p-0">
         <VisuallyHidden>
           <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </VisuallyHidden>
         <QuickRating
           entityType={entityType}

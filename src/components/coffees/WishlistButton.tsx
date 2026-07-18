@@ -15,6 +15,8 @@ type WishlistButtonProps = {
   /** `icon` — bare heart (positioned by the parent, e.g. over a card image).
    *  `button` — labelled button for the coffee detail page. */
   variant?: "icon" | "button";
+  /** Button-variant size (matches shadcn Button); ignored for `icon`. */
+  size?: React.ComponentProps<typeof Button>["size"];
   className?: string;
 };
 
@@ -25,6 +27,7 @@ type WishlistButtonProps = {
 export function WishlistButton({
   coffeeId,
   variant = "icon",
+  size,
   className,
 }: WishlistButtonProps) {
   const { isWishlisted, toggle } = useWishlist();
@@ -46,6 +49,7 @@ export function WishlistButton({
       <Button
         type="button"
         variant={saved ? "secondary" : "outline"}
+        size={size}
         onClick={handleClick}
         aria-pressed={saved}
         className={cn("gap-2", className)}

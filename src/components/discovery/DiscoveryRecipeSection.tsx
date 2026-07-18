@@ -15,6 +15,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -146,6 +147,9 @@ export function DiscoveryRecipeSection({
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 scrollbar-hide">
           <DialogHeader className="sr-only">
             <DialogTitle>{selectedRecipe?.title}</DialogTitle>
+            <DialogDescription>
+              Expert brewing recipe details and steps.
+            </DialogDescription>
           </DialogHeader>
           {selectedRecipe && (
             <div className="p-6 md:p-8">

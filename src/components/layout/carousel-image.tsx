@@ -116,7 +116,9 @@ export default function CoffeeImageCarousel({
                     alt={altText}
                     className="object-cover"
                     fill
-                    priority={index === 0}
+                    {...(index === 0
+                      ? { loading: "eager" as const, fetchPriority: "high" }
+                      : {})}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 800px"
                     src={processedUrl}
                     unoptimized
