@@ -111,10 +111,10 @@ export default function CoffeeImageCarousel({
 
             return (
               <CarouselItem key={image.id}>
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg bg">
                   <Image
                     alt={altText}
-                    className="object-cover"
+                    className="object-contain"
                     fill
                     {...(index === 0
                       ? { loading: "eager" as const, fetchPriority: "high" }
