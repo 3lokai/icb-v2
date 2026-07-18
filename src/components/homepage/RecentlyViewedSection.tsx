@@ -30,6 +30,9 @@ function mapRecentlyViewedCoffeeToSummary(coffee: {
     coffee_id: coffee.coffeeId,
     slug: coffee.coffeeSlug,
     name: coffee.name,
+    // Recently-viewed entries come from client storage and may predate the
+    // display_name backfill; null makes getCoffeeDisplayName clean at runtime.
+    display_name: null,
     roaster_id: coffee.roasterId,
     status: null,
     process: null,

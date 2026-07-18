@@ -487,6 +487,7 @@ function transformToCoffeeSummary(row: any): CoffeeSummary {
     coffee_id: row.coffee_id ?? null,
     slug: row.slug ?? null,
     name: row.name ?? null,
+    display_name: row.display_name ?? null,
     roaster_id: row.roaster_id ?? null,
     status: row.status ?? null,
     process: row.process ?? null,

@@ -1,5 +1,6 @@
 // lib/seo/schema.ts
 
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import type { CoffeeSummary } from "@/types/coffee-types";
 
 /**
@@ -23,12 +24,17 @@ export function coffeeProductListItem(
 
   // No price and no rating → no valid Product possible; emit a plain ListItem.
   if (price == null && !hasRating) {
-    return { "@type": "ListItem", position, name: c.name, url };
+    return {
+      "@type": "ListItem",
+      position,
+      name: getCoffeeDisplayName(c),
+      url,
+    };
   }
 
   const product: Record<string, unknown> = {
     "@type": "Product",
-    name: c.name,
+    name: getCoffeeDisplayName(c),
     url,
   };
   if (c.roaster_name)

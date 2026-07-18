@@ -308,6 +308,7 @@ async function buildCoffeeDetailFromRow(
     id: coffeeData.id,
     slug: coffeeData.slug,
     name: coffeeData.name,
+    display_name: (coffeeData.display_name as string | null) ?? null,
     roaster_id: coffeeData.roaster_id,
     description_md: coffeeData.description_md as string | null,
     direct_buy_url: coffeeData.direct_buy_url as string | null,

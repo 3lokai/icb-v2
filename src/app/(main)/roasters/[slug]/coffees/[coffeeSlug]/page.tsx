@@ -1,3 +1,4 @@
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import {
@@ -69,7 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const roastPart = roastStr ? capitalizeFirstLetter(roastStr) : "";
 
   // Root layout appends "| Indian Coffee Beans" via title template
-  const titleBase = `${coffee.name} by ${roasterName}`;
+  const titleBase = `${getCoffeeDisplayName(coffee)} by ${roasterName}`;
   const titleRaw =
     reviewCount >= 5
       ? `${titleBase} — Reviews & Tasting Notes`
@@ -99,7 +100,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? `${attrLine}. ${descriptionFooter}`
       : coffee.summary.seo_desc?.trim()
         ? coffee.summary.seo_desc.trim()
-        : `Discover ${coffee.name} by ${roasterName}. ${descriptionFooter}`;
+        : `Discover ${getCoffeeDisplayName(coffee)} by ${roasterName}. ${descriptionFooter}`;
   const description = clampDescription(descriptionRaw, descriptionFooter);
 
   const canonical = `${baseUrl}/roasters/${roasterSlug}/coffees/${coffeeSlug}`;
@@ -162,7 +163,7 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
   const canonical = `${baseUrl}/roasters/${roasterSlug}/coffees/${coffeeSlug}`;
   const description =
     coffee.summary.seo_desc ||
-    `Discover ${coffee.name}${coffee.roaster ? ` by ${coffee.roaster.name}` : ""}. ${coffee.roast_level_raw || coffee.roast_level || ""} roast, ${coffee.process_raw || coffee.process || ""} process.`;
+    `Discover ${getCoffeeDisplayName(coffee)}${coffee.roaster ? ` by ${coffee.roaster.name}` : ""}. ${coffee.roast_level_raw || coffee.roast_level || ""} roast, ${coffee.process_raw || coffee.process || ""} process.`;
   const ogImage =
     coffee.images.length > 0 && coffee.images[0].imagekit_url
       ? coffeeImagePresets.coffeeOG(coffee.images[0].imagekit_url)
@@ -170,7 +171,7 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
 
   const productSchema = generateSchemaOrg({
     type: "Product",
-    name: coffee.name ?? "",
+    name: getCoffeeDisplayName(coffee),
     description,
     image: ogImage,
     url: canonical,
@@ -199,7 +200,7 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
       url: `${baseUrl}/roasters/${roasterSlug}`,
     },
     { name: "Coffees", url: `${baseUrl}/roasters/${roasterSlug}/coffees` },
-    { name: coffee.name ?? "Coffee", url: canonical },
+    { name: getCoffeeDisplayName(coffee) || "Coffee", url: canonical },
   ]);
 
   // Only emit Product JSON-LD when it can be valid for Google — i.e. it has a

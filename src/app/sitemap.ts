@@ -195,11 +195,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Fetch coffees (with roaster slug for nested URL), roasters, and curators in parallel
     const [coffeesResult, roastersResult, curatorsResult] = await Promise.all([
-      // Fetch active and seasonal coffees with roaster slug for nested URL
+      // Fetch active and seasonal coffees with roaster slug for nested URL.
+      // is_coffee IS NOT FALSE mirrors the coffee_directory_mv filter — combo
+      // packs, subscriptions and wholesale SKUs are excluded from the directory,
+      // so listing their URLs here would point the sitemap at dead pages.
       supabase
         .from("coffees")
         .select("slug, updated_at, roasters(slug)")
         .in("status", ["active", "seasonal"])
+        .not("is_coffee", "is", false)
         .not("slug", "is", null),
       // Fetch active roasters only
       supabase
