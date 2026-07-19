@@ -5,6 +5,7 @@ import type {
   CoffeeStatusEnum,
   ProcessEnum,
   RoastLevelEnum,
+  SpeciesEnum,
 } from "@/types/db-enums";
 
 export type LookupOption = {
@@ -170,6 +171,33 @@ export function discoverySlugForRoastLevel(
   const candidate = ROAST_ENUM_TO_DISCOVERY_SLUG[level];
   if (!candidate) return null;
   return slugIfLanding(candidate, ["roast_level"]);
+}
+
+const SPECIES_TO_DISCOVERY_SLUG: Record<SpeciesEnum, string> = {
+  arabica: "arabica",
+  robusta: "robusta",
+  liberica: "liberica",
+  excelsa: "excelsa",
+  blend: "blends",
+  arabica_80_robusta_20: "blends",
+  arabica_70_robusta_30: "blends",
+  arabica_60_robusta_40: "blends",
+  arabica_50_robusta_50: "blends",
+  robusta_80_arabica_20: "blends",
+  arabica_chicory: "chicory-mixes",
+  robusta_chicory: "chicory-mixes",
+  blend_chicory: "chicory-mixes",
+  filter_coffee_mix: "chicory-mixes",
+};
+
+/** Bean species enum → discovery slug, or null if no landing. */
+export function discoverySlugForBeanSpecies(
+  species: SpeciesEnum | null | undefined
+): string | null {
+  if (!species) return null;
+  const candidate = SPECIES_TO_DISCOVERY_SLUG[species];
+  if (!candidate) return null;
+  return slugIfLanding(candidate, ["bean_type"]);
 }
 
 const PROCESS_ENUM_TO_DISCOVERY_SLUG: Partial<Record<ProcessEnum, string>> = {

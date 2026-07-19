@@ -40,6 +40,7 @@ import { ShareRow } from "@/components/common/ShareRow";
 import { WishlistButton } from "@/components/coffees/WishlistButton";
 import { discoveryPagePath } from "@/lib/discovery/landing-pages";
 import {
+  discoverySlugForBeanSpecies,
   discoverySlugForBrewMethodKey,
   discoverySlugForProcess,
   discoverySlugForRegionDisplayOrSubregion,
@@ -589,9 +590,14 @@ export function CoffeeDetailPage({
                               />
                               Species
                             </span>
-                            <span className="text-body font-medium">
+                            <DiscoveryInlineLink
+                              slug={discoverySlugForBeanSpecies(
+                                coffee.bean_species
+                              )}
+                              className="text-body font-medium"
+                            >
                               {coffee.bean_species}
-                            </span>
+                            </DiscoveryInlineLink>
                           </Stack>
                         )}
                         {coffee.crop_year && (
