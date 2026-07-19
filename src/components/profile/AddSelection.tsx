@@ -27,6 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useRoasters } from "@/hooks/use-roasters";
 import { useCoffees } from "@/hooks/use-coffees";
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import { useModal } from "@/components/providers/modal-provider";
 import { QuickRating } from "@/components/reviews";
 import type { CoffeeFilters } from "@/types/coffee-types";
@@ -173,7 +174,7 @@ export function AddSelection() {
               <SelectContent>
                 {coffeeData?.items.map((coffee) => (
                   <SelectItem key={coffee.coffee_id} value={coffee.coffee_id!}>
-                    {coffee.name}
+                    {getCoffeeDisplayName(coffee)}
                   </SelectItem>
                 ))}
               </SelectContent>

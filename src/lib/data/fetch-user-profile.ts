@@ -1,3 +1,4 @@
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import { createClient } from "@/lib/supabase/server";
 import type { UserProfileFull, CoffeePreferences } from "@/types/profile-types";
 
@@ -169,6 +170,7 @@ export async function fetchAnonProfile(
       `
       id,
       name,
+      display_name,
       slug,
       roaster_id,
       roasters!inner(
@@ -208,7 +210,7 @@ export async function fetchAnonProfile(
       return {
         id: r.id,
         coffee_id: r.entity_id,
-        coffee_name: coffee?.name || "Unknown Coffee",
+        coffee_name: getCoffeeDisplayName(coffee) || "Unknown Coffee",
         coffee_slug: coffee?.slug || "",
         roaster_name: roaster?.name || "Unknown Roaster",
         roaster_slug: roaster?.slug || "",
@@ -229,7 +231,7 @@ export async function fetchAnonProfile(
       return {
         review_id: r.id,
         coffee_id: r.entity_id,
-        coffee_name: coffee?.name || "Unknown Coffee",
+        coffee_name: getCoffeeDisplayName(coffee) || "Unknown Coffee",
         coffee_slug: coffee?.slug || "",
         roaster_name: roaster?.name || "Unknown Roaster",
         roaster_slug: roaster?.slug || "",

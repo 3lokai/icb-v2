@@ -28,7 +28,8 @@
     "supabase:db:push": "supabase db push",
     "migrate:convertkit": "tsx scripts/migrate-to-convertkit.ts",
     "sync:convertkit:user-profiles": "tsx scripts/sync-user-profiles-to-convertkit.ts",
-    "optimize:discovery-images": "node scripts/optimize-discovery-images.mjs"
+    "optimize:discovery-images": "node scripts/optimize-discovery-images.mjs",
+    "backfill:coffee-display-names": "tsx scripts/backfill-coffee-display-names.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -63,6 +64,7 @@
     "@supabase/supabase-js": "^2.75.1",
     "@tanstack/react-query": "^5.90.5",
     "@tanstack/react-query-devtools": "^5.90.2",
+    "@types/he": "^1.2.3",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.2",
     "@vercel/speed-insights": "^1.3.1",
@@ -72,6 +74,7 @@
     "country-state-city": "^3.2.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
+    "he": "^1.2.0",
     "html-to-image": "^1.11.13",
     "isomorphic-dompurify": "^3.18.0",
     "leaflet": "^1.9.4",

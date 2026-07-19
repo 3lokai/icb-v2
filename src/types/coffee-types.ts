@@ -30,7 +30,10 @@ export type CoffeeDetail = {
   // From coffees table
   id: string;
   slug: string;
+  /** Raw scraped name. Source of truth for matching/dedup — do NOT render. */
   name: string;
+  /** Cleaned, render-facing name. Use via getCoffeeDisplayName(). */
+  display_name: string | null;
   roaster_id: string;
   description_md: string | null;
   direct_buy_url: string | null;
@@ -200,7 +203,10 @@ export type CoffeeSummary = {
   // From coffee_summary view
   coffee_id: string | null;
   slug: string | null;
+  /** Raw scraped name. Source of truth for matching/dedup — do NOT render. */
   name: string | null;
+  /** Cleaned, render-facing name. Use via getCoffeeDisplayName(). */
+  display_name: string | null;
   roaster_id: string | null;
   status: CoffeeStatusEnum | null;
   process: ProcessEnum | null;
@@ -242,40 +248,6 @@ export type CoffeeSummary = {
   // Junction table arrays (from coffee_directory_mv)
   flavor_keys?: string[] | null;
   brew_method_canonical_keys?: string[] | null;
-};
-
-export type CoffeeCardData = {
-  // Identity
-  slug: string;
-  name: string;
-  roasterSlug: string;
-  roasterName: string;
-
-  // Location
-  roasterCity: string | null;
-  roasterCountry: string | null;
-
-  // Display
-  imageUrl: string | null;
-  roastLevel: RoastLevelEnum | null;
-  process: ProcessEnum | null;
-
-  // Commerce
-  minPriceInStock: number | null;
-  bestNormalized250g: number | null;
-  has250g: boolean | null;
-  inStockCount: number | null;
-  directBuyUrl: string | null;
-
-  // Flags / badges
-  decaf: boolean;
-  isLimited: boolean;
-  hasSensory: boolean | null;
-  worksWithMilk?: boolean | null;
-
-  // Social proof
-  ratingAvg: number | null;
-  ratingCount: number;
 };
 
 // ----------------------------------------------------------------------------

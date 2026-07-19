@@ -195,6 +195,17 @@ X-API-Key: icb_live_<your-key>`}
               <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60 mb-2">
                 Response 200
               </p>
+              <p className="text-caption text-muted-foreground mb-2">
+                <code className="rounded bg-muted px-1">name</code> is the raw
+                name as listed by the roaster and is kept stable for matching.{" "}
+                <code className="rounded bg-muted px-1">display_name</code> is
+                the cleaned version we render (HTML entities decoded, marketing
+                and pack-size suffixes removed, consistent casing). Prefer{" "}
+                <code className="rounded bg-muted px-1">display_name</code> for
+                display and fall back to{" "}
+                <code className="rounded bg-muted px-1">name</code> if it is
+                null.
+              </p>
               <pre className="overflow-x-auto rounded-lg border border-border/60 bg-muted/50 p-4 font-mono text-caption">
                 {`{
   "items": [
@@ -202,6 +213,7 @@ X-API-Key: icb_live_<your-key>`}
       "coffee_id": "uuid",
       "slug": "example-single-origin",
       "name": "Example Single Origin",
+      "display_name": "Example Single Origin",
       "roaster_id": "uuid",
       "roaster_slug": "blue-tokai",
       "roaster_name": "Blue Tokai",
@@ -265,6 +277,7 @@ X-API-Key: icb_live_<your-key>`}
   "id": "uuid",
   "slug": "example-single-origin",
   "name": "Example Single Origin",
+  "display_name": "Example Single Origin",
   "description_md": "Full markdown description...",
   "roaster": { "id": "uuid", "slug": "blue-tokai", "name": "Blue Tokai", "website": "https://..." },
   "variants": [

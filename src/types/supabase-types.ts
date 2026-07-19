@@ -638,6 +638,7 @@ export type Database = {
           default_grind: Database["public"]["Enums"]["grind_enum"] | null;
           description_md: string | null;
           direct_buy_url: string | null;
+          display_name: string | null;
           first_seen_at: string | null;
           harvest_window: string | null;
           id: string;
@@ -676,6 +677,7 @@ export type Database = {
           default_grind?: Database["public"]["Enums"]["grind_enum"] | null;
           description_md?: string | null;
           direct_buy_url?: string | null;
+          display_name?: string | null;
           first_seen_at?: string | null;
           harvest_window?: string | null;
           id?: string;
@@ -714,6 +716,7 @@ export type Database = {
           default_grind?: Database["public"]["Enums"]["grind_enum"] | null;
           description_md?: string | null;
           direct_buy_url?: string | null;
+          display_name?: string | null;
           first_seen_at?: string | null;
           harvest_window?: string | null;
           id?: string;
@@ -2749,6 +2752,7 @@ export type Database = {
           created_at: string | null;
           decaf: boolean | null;
           direct_buy_url: string | null;
+          display_name: string | null;
           estate_ids: string[] | null;
           flavor_keys: string[] | null;
           flavor_labels: string[] | null;

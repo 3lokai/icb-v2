@@ -15,6 +15,7 @@ import {
   formatRoastLevel,
 } from "@/lib/utils/coffee-card-utils";
 import type { CoffeeSummary } from "@/types/coffee-types";
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import { cn } from "@/lib/utils";
 import { StarRating } from "../common/StarRating";
 import { CardRatingFooter } from "./CardRatingFooter";
@@ -160,21 +161,25 @@ function CoffeeCardComponent({
     [coffee.best_normalized_250g]
   );
 
+  // Cleaned name for every render path in this card. `coffee.name` stays the
+  // raw scraped value and is only used for identity checks below.
+  const displayName = getCoffeeDisplayName(coffee);
+
   const ariaLabel = useMemo(
     () =>
       coffee.roaster_name
-        ? `${coffee.name} by ${coffee.roaster_name} - Add your take`
-        : `${coffee.name} - Add your take`,
-    [coffee.name, coffee.roaster_name]
+        ? `${displayName} by ${coffee.roaster_name} - Add your take`
+        : `${displayName} - Add your take`,
+    [displayName, coffee.roaster_name]
   );
 
   // Descriptive, unique alt text for the product image (SEO + a11y).
   const imageAlt = useMemo(
     () =>
       coffee.roaster_name
-        ? `${coffee.name} by ${coffee.roaster_name}`
-        : coffee.name || "Coffee",
-    [coffee.name, coffee.roaster_name]
+        ? `${displayName} by ${coffee.roaster_name}`
+        : displayName || "Coffee",
+    [displayName, coffee.roaster_name]
   );
 
   // Early returns (need roaster_slug for nested coffee detail URL)
@@ -232,7 +237,7 @@ function CoffeeCardComponent({
               style={{ background: TITLE_SCRIM }}
             >
               <h3 className="text-title text-white text-balance line-clamp-2 drop-shadow-md">
-                {coffee.name}
+                {displayName}
               </h3>
               {coffee.roaster_name && (
                 <p className="text-body font-medium text-white/85 line-clamp-1 drop-shadow">
@@ -300,7 +305,7 @@ function CoffeeCardComponent({
         <CardRatingFooter
           entityType="coffee"
           entityId={coffee.coffee_id}
-          entityName={coffee.name}
+          entityName={displayName}
           ratingAvg={coffee.rating_avg}
           ratingCount={coffee.rating_count}
           userRating={userRating}
@@ -349,7 +354,7 @@ function CoffeeCardComponent({
             <Stack gap="1">
               {/* Coffee name */}
               <h3 className="text-heading text-balance line-clamp-2">
-                {coffee.name}
+                {displayName}
               </h3>
 
               {/* Roaster */}
@@ -381,7 +386,7 @@ function CoffeeCardComponent({
         <CardRatingFooter
           entityType="coffee"
           entityId={coffee.coffee_id}
-          entityName={coffee.name}
+          entityName={displayName}
           ratingAvg={coffee.rating_avg}
           ratingCount={coffee.rating_count}
           userRating={userRating}
@@ -432,7 +437,7 @@ function CoffeeCardComponent({
               />
 
               {/* Coffee name - primary */}
-              <h3 className="text-body line-clamp-1">{coffee.name}</h3>
+              <h3 className="text-body line-clamp-1">{displayName}</h3>
 
               {/* Secondary info - roaster OR roast level, one line max */}
               {(coffee.roaster_name || roastLevel) && (
@@ -485,7 +490,7 @@ function CoffeeCardComponent({
             style={{ background: TITLE_SCRIM }}
           >
             <h3 className="text-heading text-white text-balance line-clamp-2 drop-shadow-md">
-              {coffee.name}
+              {displayName}
             </h3>
             {coffee.roaster_name && (
               <p className="text-body font-medium text-white/85 line-clamp-1 drop-shadow">
@@ -553,7 +558,7 @@ function CoffeeCardComponent({
       <CardRatingFooter
         entityType="coffee"
         entityId={coffee.coffee_id}
-        entityName={coffee.name}
+        entityName={displayName}
         ratingAvg={coffee.rating_avg}
         ratingCount={coffee.rating_count}
         userRating={userRating}

@@ -374,6 +374,7 @@ export function ProfileGearStation({
                           src={photo.image_url}
                           alt={`Station ${i + 1}`}
                           fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
                           className="object-cover"
                         />
                         {isUploadingPhoto && (
@@ -445,6 +446,7 @@ export function ProfileGearStation({
                     src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop"
                     alt="Mock Station"
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover rounded-[2rem]"
                   />
                 </div>
@@ -499,6 +501,7 @@ export function ProfileGearStation({
                     src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop"
                     alt="Mock Station"
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover rounded-[2rem]"
                   />
                 </div>

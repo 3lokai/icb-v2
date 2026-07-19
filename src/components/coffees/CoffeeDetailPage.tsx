@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
 import { Fragment, useState, useCallback, useEffect, useRef } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
 import { Icon } from "@/components/common/Icon";
 import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
@@ -124,7 +125,7 @@ function CoffeeExitIntentRating({
       onOpenChange={setOpen}
       entityType="coffee"
       entityId={coffee.id}
-      coffeeName={coffee.name}
+      coffeeName={getCoffeeDisplayName(coffee)}
       slug={coffee.slug}
     />
   );
@@ -215,7 +216,7 @@ export function CoffeeDetailPage({
   useEffect(() => {
     trackCoffeeViewItem({
       coffeeId: coffee.id,
-      coffeeName: coffee.name,
+      coffeeName: getCoffeeDisplayName(coffee),
       roasterName: coffee.roaster?.name,
       price:
         coffee.summary.min_price_in_stock ??
@@ -292,7 +293,7 @@ export function CoffeeDetailPage({
           <div className="w-full max-w-md mx-auto md:mx-0">
             <CoffeeImageCarousel
               images={coffee.images}
-              coffeeName={coffee.name}
+              coffeeName={getCoffeeDisplayName(coffee)}
               className="rounded-xl"
             />
           </div>
@@ -302,7 +303,7 @@ export function CoffeeDetailPage({
             {/* Name + Roaster */}
             <Stack gap="1">
               <h1 className="text-display italic leading-[1.05] text-balance">
-                {coffee.name}
+                {getCoffeeDisplayName(coffee)}
               </h1>
               <Cluster gap="2" align="center">
                 {coffee.roaster && (
@@ -452,7 +453,7 @@ export function CoffeeDetailPage({
               {coffee.description_md && (
                 <div className="max-w-2xl">
                   <h2 className="text-title text-balance leading-[1.1]">
-                    About <Accent>{coffee.name}</Accent>
+                    About <Accent>{getCoffeeDisplayName(coffee)}</Accent>
                   </h2>
                   <Prose className="mt-4 text-muted-foreground">
                     <p className="whitespace-pre-line">
@@ -755,7 +756,9 @@ export function CoffeeDetailPage({
               {stats?.review_count
                 ? `${stats.review_count} ${stats.review_count === 1 ? "Review" : "Reviews"} for `
                 : "Be the first to review "}
-              <span className="text-accent">{coffee.name}</span>
+              <span className="text-accent">
+                {getCoffeeDisplayName(coffee)}
+              </span>
             </h2>
             {/* Review Stats */}
             <ReviewStats stats={stats || null} />
@@ -772,7 +775,7 @@ export function CoffeeDetailPage({
               {hasUserRating && (
                 <ShareRow
                   entityType="coffee"
-                  name={coffee.name}
+                  name={getCoffeeDisplayName(coffee)}
                   slug={coffee.slug ?? ""}
                 />
               )}

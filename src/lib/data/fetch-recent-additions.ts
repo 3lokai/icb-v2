@@ -1,3 +1,4 @@
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 
@@ -38,7 +39,9 @@ export async function fetchRecentAdditions(): Promise<RecentAdditions> {
   const [coffeesResult, roastersResult] = await Promise.all([
     supabase
       .from("coffee_directory_mv")
-      .select("roaster_name, roaster_slug, name, slug, created_at")
+      .select(
+        "roaster_name, roaster_slug, name, display_name, slug, created_at"
+      )
       .in("status", PUBLIC_COFFEE_STATUSES)
       .gte("created_at", twoWeeksAgoIso)
       .order("created_at", { ascending: false })
@@ -64,6 +67,8 @@ export async function fetchRecentAdditions(): Promise<RecentAdditions> {
     );
   }
 
+  // RecentCoffeeGroup.coffees is render-only, so `name` here carries the
+  // cleaned display value rather than the raw scraped one.
   const groupedByRoaster = new Map<string, RecentCoffeeGroup>();
 
   for (const row of coffeesResult.data ?? []) {
@@ -74,14 +79,17 @@ export async function fetchRecentAdditions(): Promise<RecentAdditions> {
     const roasterKey = row.roaster_slug;
     const existing = groupedByRoaster.get(roasterKey);
     if (existing) {
-      existing.coffees.push({ name: row.name, slug: row.slug });
+      existing.coffees.push({
+        name: getCoffeeDisplayName(row),
+        slug: row.slug,
+      });
       continue;
     }
 
     groupedByRoaster.set(roasterKey, {
       roasterName: row.roaster_name,
       roasterSlug: row.roaster_slug,
-      coffees: [{ name: row.name, slug: row.slug }],
+      coffees: [{ name: getCoffeeDisplayName(row), slug: row.slug }],
     });
   }
 
