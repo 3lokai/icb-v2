@@ -72,9 +72,23 @@ Home statically imports `HeroSection` → `HeroControl` (`"use client"`); 10 hom
 → Ensure the LCP element (hero heading/panel) renders from SSR HTML with no motion dependency; make motion-driven flourishes hydrate after paint. Below-fold sections are already `dynamic()` — good; the problem is above-fold.
 Impact: high (home only, but home is worst). Effort: medium.
 
-### P1 — Slug-page CLS (0.93 / 0.29)
+### P1 — Slug-page CLS (0.93 / 0.29) — DONE (2026-07-21): CLS 0.932 → 0.000
 
-**6. Stop the roaster/coffee detail page from reflowing after hydration.**
+**Actual root cause (not what was theorized below):** the detail routes' `loading.tsx` was a
+`fixed inset-0` full-screen spinner with **zero document-flow height**. While the page streams, the
+shell is `header + empty main + footer`, so the footer sits near the top; when content streams into
+`<main>` the page grows to ~6600px and the footer drops → CLS 0.932. **Fix:** removed
+`roasters/[slug]/loading.tsx` and `roasters/[slug]/coffees/[coffeeSlug]/loading.tsx` — each page now
+renders as one server unit (footer in final position); client navigation keeps the previous page
+visible instead of a spinner overlay. Verified: **CLS 0.000, 0 shifts, Perf 47→72** on both detail pages.
+
+Independently, the detail pages were refactored to **Server Components + client islands** (`RoasterHero`/
+`CoffeeHero`, `ScrollspyTabBar`, `RatingPanel`, `ExitIntentRating`, id-wired `FloatingRateCTA`), UI
+identical — a client-JS/architecture win (matches "main page server-rendered"), though it did NOT move
+CLS (the `loading.tsx` fix did). Ruled out as causes: fonts (`display:optional` unchanged it), skeleton
+card count, and review-data-at-SSR. LCP on detail pages is still ~7s — a separate, open issue.
+
+**6. (original theory — superseded) Stop the roaster/coffee detail page from reflowing after hydration.**
 `src/components/roasters/RoasterDetailPage.tsx` is one big `"use client"` component with `min-h-screen` and a `useImageColor(logoUrl)` hook that re-themes after the logo loads. First paint ≈ 1 viewport; post-hydration content fills in and pushes the footer down ~a full screen → CLS 0.932. The coffee slug page has the same shape (0.290).
 → Two options: (a) render the detail body as a Server Component so the SSR HTML is already full-height (biggest win, also cuts JS); or (b) if it must stay client, reserve real height for the sections that mount late and make `useImageColor` not affect layout. Confirm the logo `<Image>` has explicit width/height (it uses `aspect-square` — verify the container has a fixed size before the image loads).
 Impact: high (both slug pages). Effort: medium (a) / low (b).
