@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
 import { Fragment, useState, useCallback, useEffect, useRef } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
+import { SPECIES_LABELS } from "@/types/coffee-types";
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
 import { Icon } from "@/components/common/Icon";
@@ -596,7 +597,8 @@ export function CoffeeDetailPage({
                               )}
                               className="text-body font-medium"
                             >
-                              {coffee.bean_species}
+                              {SPECIES_LABELS[coffee.bean_species] ??
+                                coffee.bean_species}
                             </DiscoveryInlineLink>
                           </Stack>
                         )}
