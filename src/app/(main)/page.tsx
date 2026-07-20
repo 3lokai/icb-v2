@@ -110,7 +110,7 @@ export default async function Home({ searchParams }: HomePageProps) {
             fallback={
               // Matches HeroSkeleton visually so there's no flash between SSR → client states.
               // Can't use HeroSkeleton directly here (it imports HeroVideoBackground, a client component).
-              <section className="relative flex min-h-[90dvh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-4 md:px-6 lg:px-8">
+              <section className="relative flex min-h-[90svh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-4 md:px-6 lg:px-8">
                 <div className="absolute inset-0 z-0 bg-black/70" />
                 <div className="relative z-10 mx-auto w-full max-w-7xl">
                   <div className="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:gap-x-6 lg:gap-y-8 xl:gap-x-8">

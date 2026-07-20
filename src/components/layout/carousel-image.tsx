@@ -19,12 +19,15 @@ type CoffeeImageCarouselProps = {
   images: CoffeeImage[];
   className?: string;
   coffeeName?: string;
+  /** Synthesized descriptive alt used when an image has no stored `alt`. */
+  altFallback?: string;
 };
 
 export default function CoffeeImageCarousel({
   images,
   className,
   coffeeName = "Coffee",
+  altFallback,
 }: CoffeeImageCarouselProps) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
@@ -103,7 +106,8 @@ export default function CoffeeImageCarousel({
         <CarouselContent>
           {images.map((image, index) => {
             const imageUrl = image.imagekit_url || null;
-            const altText = image.alt || `${coffeeName} - Image ${index + 1}`;
+            const altText =
+              image.alt || altFallback || `${coffeeName} - Image ${index + 1}`;
             const processedUrl = coffeeImagePresets.coffeeDetail(imageUrl);
             const blurDataUrl = imageUrl
               ? generateBlurPlaceholder(imageUrl)
@@ -147,7 +151,9 @@ export default function CoffeeImageCarousel({
             {images.map((image, index) => {
               const imageUrl = image.imagekit_url || null;
               const altText =
-                image.alt || `${coffeeName} - Thumbnail ${index + 1}`;
+                image.alt ||
+                altFallback ||
+                `${coffeeName} - Thumbnail ${index + 1}`;
               const isActive = current === index + 1;
 
               return (

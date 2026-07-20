@@ -15,7 +15,12 @@ import {
   truncateTitle,
   clampDescription,
 } from "@/lib/seo/metadata";
-import { generateSchemaOrg, generateBreadcrumbSchema } from "@/lib/seo/schema";
+import {
+  generateSchemaOrg,
+  generateBreadcrumbSchema,
+  generateFAQSchema,
+} from "@/lib/seo/schema";
+import { buildCoffeeFaqItems } from "@/lib/seo/coffee-faqs";
 import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeDetailPage } from "@/components/coffees/CoffeeDetailPage";
 import { coffeeImagePresets } from "@/lib/imagekit";
@@ -211,11 +216,22 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
       ? [productSchema, breadcrumbSchema]
       : [breadcrumbSchema];
 
+  // FAQ block + FAQPage JSON-LD (emitted here so it's server-rendered, like the
+  // article template). The FAQSection renders with includeStructuredData=false.
+  const faqItems = buildCoffeeFaqItems(coffee);
+  if (faqItems.length > 0) {
+    schemas.push(generateFAQSchema(faqItems));
+  }
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <>
         <StructuredData schema={schemas} />
-        <CoffeeDetailPage coffee={coffee} moreFromRoaster={moreFromRoaster} />
+        <CoffeeDetailPage
+          coffee={coffee}
+          moreFromRoaster={moreFromRoaster}
+          faqItems={faqItems}
+        />
       </>
     </HydrationBoundary>
   );

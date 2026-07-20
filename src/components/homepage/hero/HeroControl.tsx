@@ -18,7 +18,7 @@ type HeroControlProps = {
 
 export function HeroControl({ totals, hero }: HeroControlProps) {
   return (
-    <section className="relative flex min-h-[90dvh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-4 md:px-6 lg:px-8">
+    <section className="relative flex min-h-[90svh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-4 md:px-6 lg:px-8">
       <HeroVideoBackground />
 
       {/* Lighter overall scrim; a targeted radial protects headline contrast on the left */}
