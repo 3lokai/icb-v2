@@ -29,8 +29,17 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
       "chrome-extension://",
       "moz-extension://",
       "ResizeObserver loop completed",
+      // Recovered by ChunkErrorHandler (bounded reload/cooldown). The $exception is logged at the
+      // unhandled-rejection layer before recovery, so it's expected post-deploy churn, not a bug —
+      // genuine reload *exhaustion* still surfaces via the capture("chunk_load_exhausted") event.
+      // ponytail: a ChunkLoadError arriving as a plain "error" event (not a rejection) is neither
+      // caught by the handler nor reported after this — rare, upgrade path is a window "error" listener.
+      "An unexpected response was received from the server",
+      "ChunkLoadError",
+      // Cross-origin-masked. First-party bundles are same-origin + source-mapped, so real app bugs
+      // report with concrete stacks and can't collapse to this string — only third-party internals can.
+      "Script error.",
       // Transient user-side network + benign browser-policy errors (not bugs).
-      // Deliberately NOT filtering "Script error." — cross-origin-masked, can hide real bugs.
       "Load failed",
       "Failed to fetch",
       "NetworkError",

@@ -141,9 +141,7 @@ export default async function Home({ searchParams }: HomePageProps) {
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20">
             <div className="pointer-events-auto">
-              <Suspense
-                fallback={<div className="h-10 w-full bg-foreground/5" />}
-              >
+              <Suspense fallback={null}>
                 <NewAdditionsStrip />
               </Suspense>
             </div>
@@ -152,9 +150,9 @@ export default async function Home({ searchParams }: HomePageProps) {
         <Suspense fallback={<TopRatedSectionSkeleton />}>
           <TopRatedSectionServer />
         </Suspense>
-        <Suspense>
-          <FreshFromCommunitySection />
-        </Suspense>
+        {/* No Suspense: cached RPC that renders a full section or nothing. A boundary
+            here streamed 0-height then expanded to a tall section, shifting everything below. */}
+        <FreshFromCommunitySection />
         <HomeCollectionGridLazy tier="core" />
         <Section spacing="default" ground="warm" decor={{ texture: "grain" }}>
           <DiscoveryAccordionGrid description="Jump straight to top-rated coffees by roast, brew method, process, origin, and more." />
