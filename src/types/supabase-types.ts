@@ -1641,6 +1641,7 @@ export type Database = {
           created_at: string;
           entity_id: string;
           entity_type: Database["public"]["Enums"]["review_entity_type"];
+          featured: boolean;
           id: string;
           rating: number | null;
           recommend: boolean | null;
@@ -1658,6 +1659,7 @@ export type Database = {
           created_at?: string;
           entity_id: string;
           entity_type: Database["public"]["Enums"]["review_entity_type"];
+          featured?: boolean;
           id?: string;
           rating?: number | null;
           recommend?: boolean | null;
@@ -1675,6 +1677,7 @@ export type Database = {
           created_at?: string;
           entity_id?: string;
           entity_type?: Database["public"]["Enums"]["review_entity_type"];
+          featured?: boolean;
           id?: string;
           rating?: number | null;
           recommend?: boolean | null;
@@ -3134,6 +3137,7 @@ export type Database = {
         Returns: Json;
       };
       get_epic_c_parameters: { Args: { p_coffee_id: string }; Returns: Json };
+      get_featured_reviews: { Args: { p_limit?: number }; Returns: Json };
       get_or_create_estate: {
         Args: {
           p_altitude_max_m?: number;

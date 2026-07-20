@@ -159,7 +159,7 @@ export function HeroSearch() {
       <Stack gap="6">
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-4 z-10 flex items-center">
-            <Icon className="text-white/90" name="MagnifyingGlass" size={20} />
+            <Icon color="white" name="MagnifyingGlass" size={20} />
           </div>
           <Input
             aria-activedescendant={activeOptionId}
@@ -198,7 +198,7 @@ export function HeroSearch() {
                 type="button"
                 variant="ghost"
               >
-                <Icon name="XCircle" size={16} />
+                <Icon color="white" name="XCircle" size={16} />
               </Button>
             )}
             <Button
@@ -214,7 +214,12 @@ export function HeroSearch() {
               {hasQuery ? (
                 "Search"
               ) : (
-                <Icon aria-hidden name="MagnifyingGlass" size={18} />
+                <Icon
+                  aria-hidden
+                  color="white"
+                  name="MagnifyingGlass"
+                  size={18}
+                />
               )}
             </Button>
           </div>

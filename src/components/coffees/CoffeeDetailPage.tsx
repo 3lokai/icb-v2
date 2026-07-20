@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
 import { Fragment, useState, useCallback, useEffect, useRef } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
+import { SPECIES_LABELS } from "@/types/coffee-types";
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
 import { Icon } from "@/components/common/Icon";
@@ -40,6 +41,7 @@ import { ShareRow } from "@/components/common/ShareRow";
 import { WishlistButton } from "@/components/coffees/WishlistButton";
 import { discoveryPagePath } from "@/lib/discovery/landing-pages";
 import {
+  discoverySlugForBeanSpecies,
   discoverySlugForBrewMethodKey,
   discoverySlugForProcess,
   discoverySlugForRegionDisplayOrSubregion,
@@ -589,9 +591,15 @@ export function CoffeeDetailPage({
                               />
                               Species
                             </span>
-                            <span className="text-body font-medium">
-                              {coffee.bean_species}
-                            </span>
+                            <DiscoveryInlineLink
+                              slug={discoverySlugForBeanSpecies(
+                                coffee.bean_species
+                              )}
+                              className="text-body font-medium"
+                            >
+                              {SPECIES_LABELS[coffee.bean_species] ??
+                                coffee.bean_species}
+                            </DiscoveryInlineLink>
                           </Stack>
                         )}
                         {coffee.crop_year && (

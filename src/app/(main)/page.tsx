@@ -11,6 +11,7 @@ import TopProfilesSectionServer from "@/components/homepage/sections/TopProfiles
 import EducationSectionServer from "@/components/homepage/sections/EducationSectionServer";
 import CuratorSpotlightServer from "@/components/homepage/sections/CuratorSpotlightServer";
 import TopRatedSectionServer from "@/components/homepage/sections/TopRatedSectionServer";
+import FreshFromCommunitySection from "@/components/homepage/FreshFromCommunitySection";
 import { TopRatedSectionSkeleton } from "@/components/homepage/TopRatedSectionSkeleton";
 import { TopProfilesSectionSkeleton } from "@/components/homepage/TopProfilesSectionSkeleton";
 import { EducationSectionSkeleton } from "@/components/homepage/EducationSectionSkeleton";
@@ -150,6 +151,9 @@ export default async function Home({ searchParams }: HomePageProps) {
         </div>
         <Suspense fallback={<TopRatedSectionSkeleton />}>
           <TopRatedSectionServer />
+        </Suspense>
+        <Suspense>
+          <FreshFromCommunitySection />
         </Suspense>
         <HomeCollectionGridLazy tier="core" />
         <Section spacing="default" ground="warm" decor={{ texture: "grain" }}>
