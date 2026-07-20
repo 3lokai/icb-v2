@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { startTransition, useEffect, useState } from "react";
-import { useMotionValueEvent, useScroll } from "motion/react";
 import { Icon } from "@/components/common/Icon";
 import { Logo } from "@/components/layout/logo";
 import { useAuth } from "@/components/providers/auth-provider";
@@ -27,6 +26,7 @@ import {
   Navbar,
   NavItems,
 } from "@/components/ui/resizable-navbar";
+import { useScrolledPast } from "@/hooks/use-scrolled-past";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { cn } from "@/lib/utils";
 import { useSearchContext } from "@/providers/SearchProvider";
@@ -80,7 +80,6 @@ const baseNavItems = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isNavbarCompact, setIsNavbarCompact] = useState(false);
   // Shortcut hint matches the handler (Meta+K on Mac, Ctrl+K elsewhere).
   // Default to the non-Mac label so SSR/first client render agree; correct after mount.
   const [isMac, setIsMac] = useState(false);
@@ -90,15 +89,12 @@ export function Header() {
     );
     startTransition(() => setIsMac(mac));
   }, []);
-  const { scrollY } = useScroll();
   const { user, signOut, isLoading: authLoading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useUserProfile();
   const { openSearch } = useSearchContext();
   const router = useRouter();
 
-  useMotionValueEvent(scrollY, "change", (latest: number) => {
-    setIsNavbarCompact(latest > 100);
-  });
+  const isNavbarCompact = useScrolledPast(100);
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);

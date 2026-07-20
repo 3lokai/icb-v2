@@ -11,8 +11,10 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   disable_scroll_properties: false,
   // Turn on debug in development mode
   debug: process.env.NODE_ENV === "development",
-  // Avoid lazy-loading the session recorder in dev (often fails under Turbopack / ad blockers → "could not load recorder")
-  disable_session_recording: process.env.NODE_ENV === "development",
+  // Never start the recorder during init — its script (posthog-recorder.js ≈ 52KB)
+  // loaded on every page and competed with LCP. Prod starts it on idle below;
+  // dev leaves it off (often fails under Turbopack / ad blockers).
+  disable_session_recording: true,
   // Surveys and dead-click tracking are unused (Clarity covers dead clicks) — skip
   // their bundles entirely rather than paying the fetch on every page load.
   disable_surveys: true,
@@ -50,6 +52,20 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
     return event;
   },
 });
+
+// Start session recording after the browser is idle (post-LCP) so the recorder
+// script is fetched off the critical path. Costs the first ~idle-delay of the
+// session; buys back LCP on every page. Prod only — dev stays off.
+if (typeof window !== "undefined" && process.env.NODE_ENV !== "development") {
+  const start = () => posthog.startSessionRecording();
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(start, { timeout: 5000 });
+  } else {
+    window.addEventListener("load", () => window.setTimeout(start, 2000), {
+      once: true,
+    });
+  }
+}
 
 // IMPORTANT: Never combine this approach with other client-side PostHog initialization approaches,
 // especially components like a PostHogProvider. instrumentation-client.ts is the correct solution

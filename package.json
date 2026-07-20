@@ -29,7 +29,10 @@
     "migrate:convertkit": "tsx scripts/migrate-to-convertkit.ts",
     "sync:convertkit:user-profiles": "tsx scripts/sync-user-profiles-to-convertkit.ts",
     "optimize:discovery-images": "node scripts/optimize-discovery-images.mjs",
-    "backfill:coffee-display-names": "tsx scripts/backfill-coffee-display-names.ts"
+    "backfill:coffee-display-names": "tsx scripts/backfill-coffee-display-names.ts",
+    "fallow": "fallow",
+    "fallow:dead": "fallow dead-code",
+    "fallow:fix": "fallow fix --dry-run"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -63,7 +66,6 @@
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.75.1",
     "@tanstack/react-query": "^5.90.5",
-    "@tanstack/react-query-devtools": "^5.90.2",
     "@types/he": "^1.2.3",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.2",
@@ -114,6 +116,7 @@
     "eslint-config-next": "^16.0.8",
     "eslint-plugin-react": "^7.37.3",
     "eslint-plugin-react-hooks": "^5.1.0",
+    "fallow": "^3.7.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4",
     "prettier": "^3.4.2",

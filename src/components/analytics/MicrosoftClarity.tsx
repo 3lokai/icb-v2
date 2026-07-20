@@ -52,18 +52,28 @@ export function MicrosoftClarity() {
 
     // ponytail: Clarity is best-effort — ad-block scriptlets neuter window.clarity;
     // a throw here must not surface (consent/setTag call window.clarity bare).
-    try {
-      Clarity.init(projectId);
-      Clarity.consent(getStoredPreferences().analytics);
+    const init = () => {
+      try {
+        Clarity.init(projectId);
+        Clarity.consent(getStoredPreferences().analytics);
 
-      const aiSource = detectAiReferrer();
-      if (aiSource) {
-        Clarity.setTag("ai_referrer", aiSource);
-        Clarity.setTag("traffic_type", "ai");
+        const aiSource = detectAiReferrer();
+        if (aiSource) {
+          Clarity.setTag("ai_referrer", aiSource);
+          Clarity.setTag("traffic_type", "ai");
+        }
+      } catch {
+        // Clarity unavailable (blocked or neutered) — nothing to do.
       }
-    } catch {
-      // Clarity unavailable (blocked or neutered) — nothing to do.
+    };
+
+    // Defer past first paint so the Clarity script fetch doesn't compete with LCP.
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(init, { timeout: 5000 });
+      return () => window.cancelIdleCallback(id);
     }
+    const t = window.setTimeout(init, 2000);
+    return () => window.clearTimeout(t);
   }, []);
 
   return null;
