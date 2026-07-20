@@ -40,6 +40,14 @@ import { FloatingRateCTA } from "@/components/common/FloatingRateCTA";
 import { ShareRow } from "@/components/common/ShareRow";
 import { WishlistButton } from "@/components/coffees/WishlistButton";
 import { discoveryPagePath } from "@/lib/discovery/landing-pages";
+import { FAQSection } from "@/components/common/FAQ";
+import type { FaqItem } from "@/lib/seo/coffee-faqs";
+import { getVarietyDescription } from "@/lib/coffee/variety-info";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   discoverySlugForBeanSpecies,
   discoverySlugForBrewMethodKey,
@@ -54,6 +62,8 @@ type CoffeeDetailPageProps = {
   coffee: CoffeeDetail;
   /** Other coffees from the same roaster (for SKU↔SKU internal links). */
   moreFromRoaster?: CoffeeSummary[];
+  /** Data-templated FAQs; JSON-LD is emitted by the parent route. */
+  faqItems?: FaqItem[];
   className?: string;
 };
 
@@ -175,6 +185,7 @@ function DiscoveryInlineLink({
 export function CoffeeDetailPage({
   coffee,
   moreFromRoaster,
+  faqItems,
   className,
 }: CoffeeDetailPageProps) {
   const queryClient = useQueryClient();
@@ -281,6 +292,30 @@ export function CoffeeDetailPage({
 
   const trimmedDesc = trimDescription(coffee.description_md);
 
+  // Synthesized alt-text fallback for images lacking a stored `alt`.
+  const displayName = getCoffeeDisplayName(coffee);
+  const roast = coffee.roast_level_raw || coffee.roast_level;
+  const species = coffee.bean_species
+    ? (SPECIES_LABELS[coffee.bean_species] ?? coffee.bean_species)
+    : null;
+  const firstRegion = coffee.regions[0];
+  const region = firstRegion
+    ? firstRegion.display_name ||
+      [firstRegion.country, firstRegion.state, firstRegion.subregion]
+        .filter(Boolean)
+        .join(", ") ||
+      firstRegion.subregion
+    : null;
+  const descriptor = [roast && `${roast} roast`, species, "coffee"]
+    .filter(Boolean)
+    .join(" ");
+  const imageAltFallback = [
+    displayName,
+    region ? `${descriptor} from ${region}` : descriptor,
+  ]
+    .filter(Boolean)
+    .join(" — ");
+
   return (
     <div className={cn("w-full bg-background min-h-screen", className)}>
       {/* ─── Scrollspy Tab Bar ─── */}
@@ -295,7 +330,8 @@ export function CoffeeDetailPage({
           <div className="w-full max-w-md mx-auto md:mx-0">
             <CoffeeImageCarousel
               images={coffee.images}
-              coffeeName={getCoffeeDisplayName(coffee)}
+              coffeeName={displayName}
+              altFallback={imageAltFallback}
               className="rounded-xl"
             />
           </div>
@@ -577,7 +613,31 @@ export function CoffeeDetailPage({
                               Variety
                             </span>
                             <span className="text-body font-medium">
-                              {coffee.varieties.join(", ")}
+                              {coffee.varieties.map((v, i) => {
+                                const desc = getVarietyDescription(v);
+                                return (
+                                  <Fragment key={v}>
+                                    {i > 0 ? ", " : null}
+                                    {desc ? (
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <span
+                                            tabIndex={0}
+                                            className="cursor-help underline decoration-dotted underline-offset-4"
+                                          >
+                                            {v}
+                                          </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent className="max-w-xs text-pretty">
+                                          {desc}
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    ) : (
+                                      v
+                                    )}
+                                  </Fragment>
+                                );
+                              })}
                             </span>
                           </Stack>
                         )}
@@ -796,6 +856,26 @@ export function CoffeeDetailPage({
           </Stack>
         </div>
       </Band>
+
+      {/* ═══════════════════════════════════════════
+              SECTION 5b: FAQ (JSON-LD emitted by the route, not here)
+          ═══════════════════════════════════════════ */}
+      {faqItems && faqItems.length > 0 && (
+        <Band>
+          <FAQSection
+            includeStructuredData={false}
+            overline="Good to Know"
+            badge="Coffee Q&A"
+            title={
+              <>
+                Before You <Accent>Brew.</Accent>
+              </>
+            }
+            description={`Quick answers on how ${getCoffeeDisplayName(coffee)} tastes, brews, and where it comes from.`}
+            items={faqItems}
+          />
+        </Band>
+      )}
 
       {/* ═══════════════════════════════════════════
               SECTION 6: MORE FROM ROASTER + SIMILAR COFFEES (warm band)
