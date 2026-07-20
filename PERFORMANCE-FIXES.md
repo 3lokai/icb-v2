@@ -43,6 +43,74 @@ All four P0 fixes landed and were re-measured on a fresh prod build (same mobile
 
 Changed files: `src/hooks/use-scrolled-past.ts` (new), `src/components/ui/resizable-navbar.tsx` (motion→CSS), `src/components/layout/header.tsx`, `src/components/providers/query-provider.tsx` (devtools removed + dep uninstalled), `instrumentation-client.ts` (recorder deferred to idle), `src/components/analytics/MicrosoftClarity.tsx` (idle init), `src/components/providers/auth-provider.tsx` (getSession gate).
 
+---
+
+## LCP / FCP workstream — DIAGNOSIS (2026-07-21)
+
+Same discipline as the CLS work: **identify the actual LCP element before touching anything.** Homepage first — it's the worst (LCP ~7.8s, now ~12s carrying the font-preload cost). No fixes applied yet; this is the diagnosis.
+
+### The homepage LCP element is the hero **video background**, not the serif `<h1>`
+
+Two above-the-fold contentful candidates in `HeroControl`:
+
+1. **Hero `<h1>` headline** (`text-display` = Fraunces via `font-serif`). Server-rendered — it's in the initial HTML via the Suspense fallback (`HeroSuspenseFallback` → `HeroPrimaryHeadline`), so it paints at **FCP (~1.4s)** in the fallback serif and swaps to Fraunces later (`display:swap`).
+2. **Hero video background** (`HeroVideoBackground`, full-viewport `object-cover`, ~90svh × full width — the largest element on screen). But it's `"use client"` and mounts the `<video>` element **only after hydration + a 100ms timer**; before that it's a CSS-gradient `<div>` (gradients aren't LCP-eligible). So its first frame can't paint until the ~600KB bundle finishes hydrating → paints at **~7s**.
+
+**Why we can name the LCP element without a fresh trace — the font-preload regression is the proof.**
+Turning Fraunces `preload:true` regressed home LCP **7.8s → 12s** (measured, see the CLS section). But with `display:swap` the h1 **always** paints immediately in the fallback serif regardless of preload — preloading Fraunces can only make the real font arrive _sooner_, never delay the h1's first paint. So **a preload could not possibly regress an h1-driven LCP.** Since it did regress LCP by ~4s, the LCP element is **not** the h1 — it's an element whose paint competes with the high-priority font fetch for bandwidth/main-thread during the critical window. That's the **hydration-gated video background**: LCP updates to the largest element as the page loads, so the h1 is only the _interim_ LCP at FCP, and the full-viewport video paint at ~7s **overtakes** it as the final LCP. Adding a Fraunces preload delayed the JS/video pipeline → later video paint → +4s LCP.
+
+This also explains the cross-page split: home is the only page with a full-viewport, hydration-gated video, which is why it's the 7.8→12s outlier while the listing/detail pages sit at 4.4–5.9s (their LCP is the main-thread-pinned shared-bundle hydration cost from the core diagnosis, not a video).
+
+### FCP is healthy — leave it alone
+
+FCP is **1.36–1.96s** across all five pages (home slightly worst because its SSR does the hero data fetch). SSR HTML paints fast; the h1 text is already in the initial HTML. The only FCP risk is regressing it — keep the h1 server-rendered and keep fonts non-blocking (`display:swap`/`optional`, never `block`). No FCP fix needed.
+
+### Prescribed fixes (home LCP), lazy → higher rungs
+
+**L1. Give the hero a real server-rendered poster `<img>` — DONE (2026-07-21).**
+The only poster used to be an inline-SVG data-URI _on the `<video>`_, which doesn't exist until hydration. Now a static full-viewport `<img src="/videos/hero-poster.webp" fetchPriority="high">` renders **unconditionally** in `HeroVideoBackground` (server HTML, behind the scrims); the `<video>` still mounts on top after hydration (unchanged — good for TBT). The poster is the largest contentful element and lands in the first flush → it becomes the LCP element and paints at FCP.
+_Asset (15KB):_ `ffmpeg -y -i public/videos/hero-video-sm.mp4 -frames:v 1 -c:v libwebp -quality 60 public/videos/hero-poster.webp`.
+**Measured (prod build, CDP mobile-throttled: 4× CPU, 1.6Mbps):**
+
+|             |    before (post-P0)     | with font preload |          **after L1**          |
+| ----------- | :---------------------: | :---------------: | :----------------------------: |
+| Home LCP    |          7.75s          |        12s        |        **~1.8s** (cold)        |
+| LCP element | video (hydration-gated) |       video       | **`hero-poster.webp` `<img>`** |
+| Home FCP    |          1.96s          |         —         |             ~1.5s              |
+
+The LCP element flipped from the video to the poster and collapsed to ≈FCP — so the font preload (L2) no longer sits on the LCP path for home (LCP is now a font-independent image). Changed file: `src/components/homepage/hero/HeroVideoBackground.tsx` + new `public/videos/hero-poster.webp`.
+_Note:_ measured via a headless-Chrome CDP `largest-contentful-paint` PerformanceObserver, not full Lighthouse — good enough to confirm the element flip and the timing collapse; run Lighthouse for the official Perf score before/after.
+
+**L2. Fraunces `preload:true` → `display:optional` — WON'T DO (superseded by L1, 2026-07-21).**
+The whole reason to touch the font was that `preload:true` put Fraunces on home's critical path and cost ~4s LCP. **L1 removed that:** home's LCP is now the poster `<img>` (font-independent) and measured ~1.8s _with `preload:true` still on_ — the preload cost is gone. Keeping the current config (`preload:true` + `display:swap`) is the best UX: Fraunces is preloaded so it arrives before first paint on most loads → the brand font renders with minimal/no swap flash, and the PageHeader CLS stays 0. `display:optional` was rejected on UX grounds (product call). Net: **leave `src/app/layout.tsx` font config unchanged.**
+
+**L3. (only if L1+L2 leave home short) Trim above-the-fold hero client JS** — folds into existing item **#5** below (keep motion out of the hero) and **#7** (the 66% `"use client"` ratio). The faster the bundle hydrates, the sooner the video swaps in; but with L1 the poster already owns LCP, so this is TBT/polish, not the LCP lever.
+
+**Confirmation step (the team's established method):** re-run the same local-prod Lighthouse (mobile-throttled) and read the "Largest Contentful Paint element" audit before and after L1 to confirm the element flips from `<video>` to the poster `<img>` and the timing collapses. (This diagnosis is code + the measured preload regression; a headless CDP trace was attempted but the sandbox kills a Chrome debug port, and dev-server timings aren't representative anyway — Lighthouse on the prod build is the right instrument.)
+
+---
+
+### Full sweep — LCP / FCP / CLS re-measured (2026-07-21, after L1)
+
+Cold first-visit loads (browser cache disabled), prod build, CDP mobile-throttled (4× CPU, 1.6Mbps). **Canonical URLs** — note `/coffees/[slug]` is a discovery-landing route that renders a not-found shell for real coffee slugs; the canonical coffee detail is `/roasters/[roaster]/coffees/[slug]`.
+
+| Page (canonical)                                 |  FCP  |    LCP    | LCP element                |  CLS  |
+| ------------------------------------------------ | :---: | :-------: | -------------------------- | :---: |
+| `/` (home)                                       | 1.53s | **1.85s** | `hero-poster.webp` `<img>` | **0** |
+| `/roasters`                                      | 1.34s | **1.75s** | `hero-roasters.avif`       | **0** |
+| `/coffees`                                       | 1.46s | **2.60s** | `hero-bg.avif`             | **0** |
+| `/roasters/hill-groove-coffee` (detail)          | 1.34s | **1.67s** | roaster logo `<img>`       | **0** |
+| `…/coffees/orchardale-…` (coffee detail, nested) | 1.46s | **1.79s** | product `<img>`            | **0** |
+
+**CLS progress is intact** — every well-formed page measured **0** (the home poster is `absolute inset-0`, out of flow → it cannot shift anything). LCP is down massively vs the P0 table (home 7.75→1.85, roasters 4.44→1.75, coffees 5.86→2.60, details ~5.3→~1.7) and FCP holds ~1.3–1.5s. Neither the poster nor anything else regressed CLS.
+
+**Two pre-existing issues the cold sweep surfaced (NOT from L1 — both are data/content-dependent, unrelated to the home poster):**
+
+- **Cookie banner becomes the LCP element on pages that lack a large hero image.** `CookieNotice` is `"use client"`, `position:fixed` (portal to `document.body`, so **CLS stays 0**), and mounts on `requestIdleCallback` (1s timeout). On pages whose largest paint is otherwise small (e.g. `/roasters/6-degrees-coffee`, no big logo) the banner `<p>` is the largest contentful paint → **LCP ~5.8s** for first-time (no-consent) visitors. Pages _with_ a hero image (hill-groove) are unaffected — LCP is the image at ~1.7s.
+  - **Tried removing the idle-defer (mount on hydration instead) — DID NOT help, reverted (2026-07-21).** Re-measured: banner still LCP at **5.77s**. The defer was never the gate — under CPU throttle the banner (a client component) can't paint until the page's ~600KB bundle **hydrates ~5.7s**, which is ~when the idle callback fired anyway. Removing it only moved the banner's mount work onto the critical hydration path. So this is the **same hydration-gating root cause as P2 #7** (66% `"use client"`), not a banner-specific bug.
+  - **Real fix:** either give hero-less detail pages an early, reasonably-sized above-fold content element so real content owns LCP (content work), or cut the hydration cost so _all_ late client paints land sooner (P2 #7). SSR-gating the banner won't work — consent lives in `localStorage`, unreadable server-side, so a server-rendered banner would flash for consented visitors.
+- **Some roaster slugs render a late client "Bean Not Found" error boundary.** `/roasters/blue-tokai-coffee-roasters` SSRs real content but then a client island swaps in a `«4 4 Bean Not Found»` boundary at ~5.2s, shifting the footer → **CLS 0.44** and a garbage LCP. Looks like a per-roaster client-side data/hydration failure, not a layout bug. **Its own bug hunt** — separate from the perf work.
+
 ### P0 — Shared bundle, helps every page
 
 **1. Remove Framer Motion (`motion/react`) from the global header.**
@@ -69,8 +137,21 @@ Impact: medium (all pages, main-thread + network). Effort: low.
 
 **5. Keep Framer Motion out of the above-the-fold hero.**
 Home statically imports `HeroSection` → `HeroControl` (`"use client"`); 10 homepage components use `motion/react`. The hero's client JS is why home does ~3× the main-thread work of other pages.
-→ Ensure the LCP element (hero heading/panel) renders from SSR HTML with no motion dependency; make motion-driven flourishes hydrate after paint. Below-fold sections are already `dynamic()` — good; the problem is above-fold.
-Impact: high (home only, but home is worst). Effort: medium.
+→ Ensure the hero renders from SSR HTML with no motion dependency; make motion-driven flourishes hydrate after paint. Below-fold sections are already `dynamic()` — good; the problem is above-fold.
+Note: per the LCP diagnosis above, the LCP element is the hydration-gated **video**, not the heading/panel — so this is a TBT/hydration-speed win (item L3), secondary to the poster-image fix (L1). Impact: high (home only, but home is worst). Effort: medium.
+
+### Listing/hero CLS (`/coffees` 0.042) — DONE (2026-07-21): CLS → 0.000
+
+The `#coffee-filters` bar was a **victim**, not the cause. Trace `LayoutShift.impacted_nodes` showed
+everything below the hero shifting down a uniform ~30px (heights unchanged) → the shared `PageHeader`
+hero title (`text-hero` = Fraunces, `preload:false`) swaps from fallback to Fraunces, grows past its
+`min-h-[55vh]`, and pushes all content below. Affects every PageHeader page. **Fix: Fraunces
+`preload:true`** (`src/app/layout.tsx`) → CLS 0.000, LCP unchanged on the listings.
+**⚠ Known trade-off:** the global preload regressed **homepage LCP ~7.8s → 12s** (serif now on the
+critical path, competing with home's LCP element). Accepted to keep the brand font rendering; the
+homepage LCP is tracked as a separate fix (see the **LCP / FCP workstream** section above — fix L2
+revisits this preload). `display:optional` would fix the CLS with no LCP cost but shows the fallback
+serif until cached.
 
 ### P1 — Slug-page CLS (0.93 / 0.29) — DONE (2026-07-21): CLS 0.932 → 0.000
 

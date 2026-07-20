@@ -27,7 +27,9 @@ const fraunces = Fraunces({
   variable: "--font-display",
   display: "swap",
   // Preload the hero display font so it's ready before first paint — the late
-  // swap grew the hero past its min-height and shifted PageHeader pages (~0.04 CLS).
+  // swap grew the hero past its min-height and shifted every PageHeader page
+  // (~0.04 CLS). Known trade-off: adds Fraunces to the critical path and
+  // regresses homepage LCP (~7.8s→12s) — tracked as a separate LCP fix.
   preload: true,
 });
 

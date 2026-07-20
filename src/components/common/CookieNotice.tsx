@@ -50,8 +50,13 @@ export function CookieNotice() {
       }
     };
 
-    // Defer non-critical consent UI until browser is idle to avoid
-    // competing with initial render and shifting during LCP.
+    // Defer non-critical consent UI until browser is idle so its mount work stays
+    // off the critical hydration path. (Measured: this does NOT drive the banner's
+    // LCP time — under CPU throttle the banner can't paint until the page's ~600KB
+    // bundle hydrates ~5.7s anyway, which is ~when idle fires. Removing the defer
+    // moved nothing and only added main-thread contention during load, so it stays.
+    // The real fix for "banner is LCP on hero-less pages" is giving those pages real
+    // above-fold content — see the LCP workstream notes.)
     const idleCallback =
       typeof window !== "undefined" && "requestIdleCallback" in window
         ? window.requestIdleCallback(showIfNeeded, { timeout: 1000 })
