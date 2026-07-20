@@ -150,20 +150,19 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
     .slice(0, 4);
 
   const queryClient = new QueryClient();
-  const reviewStaleMs = 30 * 1000;
 
-  await Promise.all([
-    queryClient.prefetchQuery({
-      queryKey: queryKeys.reviews.stats("coffee", coffee.id),
-      queryFn: () => fetchReviewStats("coffee", coffee.id),
-      staleTime: reviewStaleMs,
-    }),
-    queryClient.prefetchQuery({
-      queryKey: queryKeys.reviews.byEntity("coffee", coffee.id),
-      queryFn: () => fetchReviews("coffee", coffee.id, 10),
-      staleTime: reviewStaleMs,
-    }),
+  // Fetch reviews/stats server-side and pass as props so the detail page renders
+  // them in the SSR HTML (no client-hook reflow → no CLS). Also seed the query
+  // cache via HydrationBoundary so QuickRating's useReviews has the data client-side.
+  const [stats, reviews] = await Promise.all([
+    fetchReviewStats("coffee", coffee.id),
+    fetchReviews("coffee", coffee.id, 10),
   ]);
+  queryClient.setQueryData(queryKeys.reviews.stats("coffee", coffee.id), stats);
+  queryClient.setQueryData(
+    queryKeys.reviews.byEntity("coffee", coffee.id),
+    reviews
+  );
 
   const canonical = `${baseUrl}/roasters/${roasterSlug}/coffees/${coffeeSlug}`;
   const description =
@@ -229,6 +228,8 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
         <StructuredData schema={schemas} />
         <CoffeeDetailPage
           coffee={coffee}
+          stats={stats}
+          reviews={reviews}
           moreFromRoaster={moreFromRoaster}
           faqItems={faqItems}
         />

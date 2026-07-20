@@ -8,7 +8,7 @@ import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/store/zustand/auth-store";
+import { useAuth } from "@/components/providers/auth-provider";
 import type { TopProfile } from "@/lib/data/fetch-top-coffee-reviewers";
 
 type TopProfilesSectionProps = {
@@ -19,9 +19,8 @@ type TopProfilesSectionProps = {
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 
 function ProfileCta() {
-  const user = useAuthStore((s) => s.user);
-  const initialized = useAuthStore((s) => s.initialized);
-  const isAuthed = initialized && Boolean(user);
+  const { user, isLoading } = useAuth();
+  const isAuthed = !isLoading && Boolean(user);
 
   return (
     <Button

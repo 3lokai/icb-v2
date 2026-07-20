@@ -135,8 +135,6 @@ const NavItemComponent = ({
           ? "font-medium text-accent-foreground"
           : "text-muted-foreground hover:text-accent-foreground"
       )}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={onLeave}
       type="button"
     >
       {showPill && (
@@ -169,8 +167,6 @@ const NavItemComponent = ({
       )}
       href={item.link}
       onClick={onItemClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={onLeave}
     >
       {showPill && (
         <span
@@ -185,53 +181,57 @@ const NavItemComponent = ({
   );
 
   return (
-    <div className="relative" key={item.link}>
+    <div
+      className="relative"
+      key={item.link}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={onLeave}
+    >
       {hasDropdown ? renderButton() : renderLink()}
 
       {hasDropdown && isDropdownOpen && (
-        <div
-          className="-translate-x-1/2 absolute top-full left-1/2 z-50 mt-2 min-w-[200px] rounded-xl bg-background/90 px-2 py-2 shadow-lg backdrop-blur-lg duration-200 animate-in fade-in slide-in-from-top-2 dark:bg-background/90"
-          onMouseEnter={() => onHover(idx)}
-          onMouseLeave={onLeave}
-        >
-          {item.children?.map((child) => {
-            const childActive = isActive(child.link);
+        // pt-2 (not mt-2) keeps the trigger→menu gap inside the hover hit area
+        <div className="-translate-x-1/2 absolute top-full left-1/2 z-50 pt-2 min-w-[200px]">
+          <div className="rounded-xl bg-background/90 px-2 py-2 shadow-lg backdrop-blur-lg duration-200 animate-in fade-in slide-in-from-top-2 dark:bg-background/90">
+            {item.children?.map((child) => {
+              const childActive = isActive(child.link);
 
-            if (child.disabled) {
+              if (child.disabled) {
+                return (
+                  <span
+                    className="relative flex items-center justify-between gap-2 rounded-full px-4 py-2 text-body text-muted-foreground/50 cursor-not-allowed"
+                    key={child.link}
+                  >
+                    <span className="relative z-20">{child.name}</span>
+                    {child.badge && (
+                      <span className="relative z-20 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                        {child.badge}
+                      </span>
+                    )}
+                  </span>
+                );
+              }
+
               return (
-                <span
-                  className="relative flex items-center justify-between gap-2 rounded-full px-4 py-2 text-body text-muted-foreground/50 cursor-not-allowed"
-                  key={child.link}
-                >
-                  <span className="relative z-20">{child.name}</span>
-                  {child.badge && (
-                    <span className="relative z-20 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                      {child.badge}
-                    </span>
+                <Link
+                  className={cn(
+                    "relative block rounded-full px-4 py-2 text-body transition-colors",
+                    childActive
+                      ? "font-medium text-accent-foreground"
+                      : "text-muted-foreground hover:bg-accent/40 hover:text-accent-foreground"
                   )}
-                </span>
+                  href={child.link}
+                  key={child.link}
+                  onClick={onItemClick}
+                >
+                  {childActive && (
+                    <span className="absolute inset-0 h-full w-full rounded-full bg-accent/80" />
+                  )}
+                  <span className="relative z-20">{child.name}</span>
+                </Link>
               );
-            }
-
-            return (
-              <Link
-                className={cn(
-                  "relative block rounded-full px-4 py-2 text-body transition-colors",
-                  childActive
-                    ? "font-medium text-accent-foreground"
-                    : "text-muted-foreground hover:bg-accent/40 hover:text-accent-foreground"
-                )}
-                href={child.link}
-                key={child.link}
-                onClick={onItemClick}
-              >
-                {childActive && (
-                  <span className="absolute inset-0 h-full w-full rounded-full bg-accent/80" />
-                )}
-                <span className="relative z-20">{child.name}</span>
-              </Link>
-            );
-          })}
+            })}
+          </div>
         </div>
       )}
     </div>
@@ -262,6 +262,8 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
     const item = items[idx];
     if (item.children && item.children.length > 0) {
       setOpenDropdown(idx);
+    } else {
+      setOpenDropdown(null);
     }
   };
 

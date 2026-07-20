@@ -290,8 +290,6 @@ export async function getMyReviews(): Promise<MyReview[]> {
 
   // Fetch reviews from latest_reviews_per_identity view
   // Filter by user_id for authenticated users
-  console.log("[getMyReviews] Fetching reviews for user:", currentUser.id);
-
   const { data: reviews, error: reviewsError } = await supabase
     .from("latest_reviews_per_identity")
     .select("*")
@@ -310,29 +308,14 @@ export async function getMyReviews(): Promise<MyReview[]> {
     return [];
   }
 
-  console.log("[getMyReviews] Query result:", {
-    reviewsFound: reviews?.length ?? 0,
-    userId: currentUser.id,
-    hasData: !!reviews,
-  });
-
   if (!reviews || reviews.length === 0) {
     // No reviews found - this is normal for new users
-    console.log("[getMyReviews] No reviews found for user:", currentUser.id);
     return [];
   }
 
   // Separate coffee and roaster reviews
   const coffeeReviews = reviews.filter((r) => r.entity_type === "coffee");
   const roasterReviews = reviews.filter((r) => r.entity_type === "roaster");
-
-  console.log("[getMyReviews] Separated reviews:", {
-    total: reviews.length,
-    coffee: coffeeReviews.length,
-    roaster: roasterReviews.length,
-    coffeeEntityIds: coffeeReviews.map((r) => r.entity_id),
-    roasterEntityIds: roasterReviews.map((r) => r.entity_id),
-  });
 
   // Fetch entity details in parallel
   const [coffeeEntities, roasterEntities] = await Promise.all([
@@ -369,13 +352,6 @@ export async function getMyReviews(): Promise<MyReview[]> {
     );
   }
 
-  console.log("[getMyReviews] Entity lookup results:", {
-    coffeeEntitiesFound: coffeeEntities.data?.length ?? 0,
-    roasterEntitiesFound: roasterEntities.data?.length ?? 0,
-    coffeeEntities: coffeeEntities.data,
-    roasterEntities: roasterEntities.data,
-  });
-
   // Create maps for quick lookup
   const coffeeMap = new Map((coffeeEntities.data || []).map((c) => [c.id, c]));
   const roasterMap = new Map(
@@ -393,13 +369,6 @@ export async function getMyReviews(): Promise<MyReview[]> {
 
     if (!entity) {
       // Entity not found - skip this review
-      console.warn("[getMyReviews] Entity not found for review:", {
-        reviewId: review.id,
-        entityType: review.entity_type,
-        entityId: review.entity_id,
-        coffeeMapSize: coffeeMap.size,
-        roasterMapSize: roasterMap.size,
-      });
       continue;
     }
 
@@ -437,12 +406,6 @@ export async function getMyReviews(): Promise<MyReview[]> {
       entity: entityData,
     });
   }
-
-  console.log("[getMyReviews] Final enriched reviews:", {
-    totalEnriched: enrichedReviews.length,
-    originalCount: reviews.length,
-    skipped: reviews.length - enrichedReviews.length,
-  });
 
   return enrichedReviews;
 }
