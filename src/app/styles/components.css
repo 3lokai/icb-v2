@@ -41,7 +41,8 @@
   transform: none !important;
   /* Performance hints for faster rendering */
   will-change: auto;
-  content-visibility: auto;
+  /* No content-visibility: it can defer layout of the above-fold LCP heading and
+     then reflow the subtitle below it (CLS). Only useful for off-screen content. */
 }
 
 /* Region card variations */

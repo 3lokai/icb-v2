@@ -26,14 +26,6 @@ async function AnnouncementBanner() {
   );
 }
 
-function AnnouncementBannerSkeleton() {
-  return (
-    <div aria-hidden="true" className="w-full border-b bg-background px-4 py-3">
-      <div className="h-5 w-full" />
-    </div>
-  );
-}
-
 export default function MainLayout({
   children,
 }: {
@@ -41,7 +33,9 @@ export default function MainLayout({
 }) {
   return (
     <div className="surface-0 relative flex min-h-screen flex-col">
-      <Suspense fallback={<AnnouncementBannerSkeleton />}>
+      {/* fallback=null: no active announcement is the common case, so reserve no
+          height — a skeleton here collapsed to null and shifted every page (incl. footer). */}
+      <Suspense fallback={null}>
         <AnnouncementBanner />
       </Suspense>
       <Header />

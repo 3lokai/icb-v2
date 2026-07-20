@@ -12,5 +12,9 @@ const CuratorSpotlight = dynamic(
 /** Async server boundary: fetches curators so the page shell isn't blocked on it. */
 export default async function CuratorSpotlightServer() {
   const curators = await getAllCurators();
-  return <CuratorSpotlight curator={curators[0] || null} />;
+  const curator = curators[0];
+  // No curator → render nothing. Rendering the dynamic anyway showed its loading
+  // skeleton, then collapsed to null when the chunk resolved (a layout shift).
+  if (!curator) return null;
+  return <CuratorSpotlight curator={curator} />;
 }
