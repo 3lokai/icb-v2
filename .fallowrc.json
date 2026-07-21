@@ -1,0 +1,88 @@
+{
+  // JSONC — fallow reads these comments; generic JSON tools may not.
+  "$schema": "./node_modules/fallow/schema.json",
+
+  // Next.js / Sanity / Supabase plugins already seed App Router routes,
+  // instrumentation, proxy, package.json scripts, and edge functions.
+  // Only add roots that are not auto-detected.
+  "entry": [
+    "env.ts",
+    "eslint-rules/**/*.{js,mjs,cjs}",
+    "scripts/**/*.{ts,mjs,js}",
+    // node:test files (no vitest/jest plugin to auto-seed them)
+    "**/*.{test,spec}.{ts,tsx,js,mjs}"
+  ],
+
+  // Keep analysis on product code; skip agent/editor skill folders + generated types.
+  "ignorePatterns": [
+    ".agents/**",
+    ".claude/**",
+    ".cursor/**",
+    ".impeccable/**",
+    ".kilocode/**",
+    ".github/skills/**",
+    "src/types/supabase-types.ts"
+  ],
+
+  // Same-file helpers (FAQ data arrays, internal utils) are not dead — only
+  // cross-module unused exports should count.
+  "ignoreExportsUsedInFile": true,
+
+  // shadcn/ui is a public component surface; many primitives are unused in-app
+  // but intentional for the design-system API.
+  "ignoreExports": [{ "file": "src/components/ui/**", "exports": ["*"] }],
+
+  // CLI / tooling deps that are used outside the import graph, or only at
+  // build/script time (not Next.js production runtime).
+  "ignoreDependencies": [
+    "cross-env",
+    "supabase",
+    "tsx",
+    "husky",
+    "lint-staged",
+    "prettier",
+    "eslint",
+    "fallow",
+    "dotenv",
+    "tailwindcss"
+  ],
+
+  "duplicates": {
+    // Hide pair-only clones; focus on widespread copy-paste.
+    // Lower to 2 to report every duplicate pair.
+    "mode": "mild",
+    "minOccurrences": 3,
+    "ignore": ["src/components/ui/**", "src/types/**"]
+  },
+
+  "health": {
+    // Established Next.js app — SIG defaults would flood the backlog.
+    "maxCyclomatic": 30,
+    "maxCognitive": 25,
+    "ignore": ["src/types/supabase-types.ts", "src/components/ui/**"]
+  },
+
+  "audit": {
+    "gate": "new-only"
+  },
+
+  "rules": {
+    // Structural cleanup — fail when something is clearly dead.
+    "unused-files": "error",
+    "unused-exports": "warn",
+    "unused-dependencies": "warn",
+    "unused-dev-dependencies": "warn",
+    "circular-dependencies": "error",
+    "unresolved-imports": "error",
+    "unlisted-dependencies": "warn",
+
+    // Advisory for a first cleanup pass; tighten later if desired.
+    "unused-types": "warn",
+    "duplicate-exports": "warn",
+    "stale-suppressions": "warn",
+
+    // Opt-in / noisy for this app — leave off.
+    "private-type-leaks": "off",
+    "coverage-gaps": "off"
+  }
+}

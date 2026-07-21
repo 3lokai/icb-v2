@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { startTransition, useEffect, useState } from "react";
-import { useMotionValueEvent, useScroll } from "motion/react";
 import { Icon } from "@/components/common/Icon";
 import { Logo } from "@/components/layout/logo";
 import { useAuth } from "@/components/providers/auth-provider";
@@ -33,6 +32,38 @@ import { useSearchContext } from "@/providers/SearchProvider";
 
 // Regex for splitting names into parts (defined at top level for performance)
 const NAME_SPLIT_REGEX = /\s+/;
+
+function NavLogo({ visible }: { visible?: boolean }) {
+  return (
+    <Link
+      aria-label="Indian Coffee Beans"
+      className="relative z-20 mr-8 flex shrink-0 items-center gap-2 px-2 py-1"
+      href="/"
+    >
+      <Logo
+        aria-label="Indian Coffee Beans"
+        className="h-8 w-auto"
+        compact={!!visible}
+      />
+    </Link>
+  );
+}
+
+function MobileNavLogo({ visible }: { visible?: boolean }) {
+  return (
+    <Link
+      aria-label="Indian Coffee Beans"
+      className="flex items-center gap-2"
+      href="/"
+    >
+      <Logo
+        aria-label="Indian Coffee Beans"
+        className="h-8 w-auto"
+        compact={!!visible}
+      />
+    </Link>
+  );
+}
 
 // Base nav items (without Profile - it's added conditionally)
 const baseNavItems = [
@@ -80,7 +111,6 @@ const baseNavItems = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isNavbarCompact, setIsNavbarCompact] = useState(false);
   // Shortcut hint matches the handler (Meta+K on Mac, Ctrl+K elsewhere).
   // Default to the non-Mac label so SSR/first client render agree; correct after mount.
   const [isMac, setIsMac] = useState(false);
@@ -90,15 +120,10 @@ export function Header() {
     );
     startTransition(() => setIsMac(mac));
   }, []);
-  const { scrollY } = useScroll();
   const { user, signOut, isLoading: authLoading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useUserProfile();
   const { openSearch } = useSearchContext();
   const router = useRouter();
-
-  useMotionValueEvent(scrollY, "change", (latest: number) => {
-    setIsNavbarCompact(latest > 100);
-  });
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -154,18 +179,7 @@ export function Header() {
   return (
     <Navbar className="top-0">
       <NavBody>
-        {/* Logo */}
-        <Link
-          aria-label="Indian Coffee Beans"
-          className="relative z-20 mr-8 flex shrink-0 items-center gap-2 px-2 py-1"
-          href="/"
-        >
-          <Logo
-            aria-label="Indian Coffee Beans"
-            className="h-8 w-auto"
-            compact={isNavbarCompact}
-          />
-        </Link>
+        <NavLogo />
 
         {/* Desktop Navigation Items */}
         <NavItems items={navItems} />
@@ -293,17 +307,7 @@ export function Header() {
         )}
       >
         <MobileNavHeader>
-          <Link
-            aria-label="Indian Coffee Beans"
-            className="flex items-center gap-2"
-            href="/"
-          >
-            <Logo
-              aria-label="Indian Coffee Beans"
-              className="h-8 w-auto"
-              compact={isNavbarCompact}
-            />
-          </Link>
+          <MobileNavLogo />
           <div className="flex items-center gap-2">
             <button
               aria-label="Search"

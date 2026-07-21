@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Indian Coffee Beans Directory (ICB v2) — a Next.js 16 App Router application for discovering Indian specialty coffee. The platform lists coffees and roasters, supports advanced filtering, has a Sanity-backed blog/learn section, community features, user profiles, and interactive tools (coffee calculator, flavor compass, expert recipes).
 
-**Stack:** Next.js 16 + React 19 + TypeScript (strict) + Tailwind CSS v4 + shadcn/ui + Supabase (PostgreSQL) + Sanity CMS + TanStack Query + Zustand + Fuse.js
+**Stack:** Next.js 16 + React 19 + TypeScript (strict) + Tailwind CSS v4 + shadcn/ui + Supabase (PostgreSQL) + Sanity CMS + TanStack Query + Fuse.js
 
 ## Commands
 
@@ -60,7 +60,7 @@ src/app/
 
 **Server-side fetches** live in `src/lib/data/fetch-*.ts` — each file wraps a Supabase query, often with `unstable_cache`. These are called directly from Server Components.
 
-**Client-side fetches** go through TanStack Query via custom hooks in `src/hooks/`. The generic `useSupabaseQuery` / `useSupabaseMutation` wrappers in `src/hooks/use-supabase-query.ts` are the primitives; domain hooks (`use-coffees.ts`, `use-roasters.ts`, `use-reviews.ts`, etc.) compose on top.
+**Client-side fetches** go through TanStack Query via domain hooks in `src/hooks/` (`use-coffees.ts`, `use-roasters.ts`, `use-reviews.ts`, etc.), each wrapping `useQuery`/`useMutation` directly.
 
 **Query key registry:** `src/lib/query-keys.ts` — always use these constants for TanStack Query keys, never inline strings.
 
@@ -75,7 +75,7 @@ src/app/
 
 ### State Management
 
-- **Zustand** (`src/store/zustand/auth-store.ts`): auth state only — `useAuthStore` is the single Zustand store.
+- **Auth**: React Context `AuthProvider` — consume via `useAuth()` from `@/components/providers/auth-provider`. Server code resolves the user from cookies via `getCurrentUser()` (`@/data/auth`). See [`docs/auth.md`](docs/auth.md) — read it before touching auth.
 - **TanStack Query**: all server/async state.
 - **URL params**: filter state for the coffee and roaster directories is serialized into URL search params (`src/lib/filters/coffee-url.ts`, `src/lib/filters/roaster-url.ts`) so filters are shareable and bookmarkable.
 

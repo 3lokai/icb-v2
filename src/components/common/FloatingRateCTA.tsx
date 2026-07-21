@@ -5,24 +5,30 @@ import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 
 type FloatingRateCTAProps = {
-  /** Ref to the hero "Rate this..." button */
-  heroButtonRef: React.RefObject<HTMLButtonElement | null>;
-  /** Ref to the rating section */
-  ratingSectionRef: React.RefObject<HTMLDivElement | null>;
+  /** id of the hero "Rate this…" button */
+  heroButtonId: string;
+  /** id of the rating section to reveal/scroll to */
+  ratingSectionId: string;
   /** Entity type for labelling */
   entityType?: "coffee" | "roaster";
 };
 
+/**
+ * Floating "Rate" button shown once the hero CTA scrolls out of view (and hidden
+ * again once the rating section is on screen). Wired by element id so it can live
+ * under a Server Component parent (no refs across the server/client boundary).
+ * Rendered output is unchanged from the ref-based version.
+ */
 export function FloatingRateCTA({
-  heroButtonRef,
-  ratingSectionRef,
+  heroButtonId,
+  ratingSectionId,
   entityType = "coffee",
 }: FloatingRateCTAProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const heroEl = heroButtonRef.current;
-    const ratingEl = ratingSectionRef.current;
+    const heroEl = document.getElementById(heroButtonId);
+    const ratingEl = document.getElementById(ratingSectionId);
     if (!heroEl || !ratingEl) return;
 
     let heroOut = false;
@@ -53,13 +59,12 @@ export function FloatingRateCTA({
       heroObserver.disconnect();
       ratingObserver.disconnect();
     };
-  }, [heroButtonRef, ratingSectionRef]);
+  }, [heroButtonId, ratingSectionId]);
 
   const handleClick = () => {
-    const el = ratingSectionRef.current;
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    document
+      .getElementById(ratingSectionId)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const label =

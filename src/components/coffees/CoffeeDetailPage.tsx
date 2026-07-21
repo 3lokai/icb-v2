@@ -1,45 +1,31 @@
-"use client";
-
 import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
-import { useQueryClient } from "@tanstack/react-query";
-import { Fragment, useState, useCallback, useEffect, useRef } from "react";
+import { Fragment } from "react";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import { SPECIES_LABELS } from "@/types/coffee-types";
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
-import type { LatestReviewPerIdentity } from "@/types/review-types";
+import type { EntityReviewStats } from "@/types/review-types";
+import type { ReviewWithProfile } from "@/lib/data/fetch-reviews";
 import { Icon } from "@/components/common/Icon";
-import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
-import { recordCoffeeView } from "@/app/actions/coffee-views";
-import { capture } from "@/lib/posthog";
-import { queryKeys } from "@/lib/query-keys";
-import { createClient } from "@/lib/supabase/client";
-import { ensureAnonId } from "@/lib/reviews/anon-id";
 import { Band } from "@/components/primitives/band";
-import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { Prose } from "@/components/primitives/prose";
-import { Button } from "@/components/ui/button";
-import {
-  ReviewList,
-  ReviewStats,
-  QuickRating,
-  ExitIntentRatingModal,
-} from "@/components/reviews";
-import { useReviews, useReviewStats } from "@/hooks/use-reviews";
-import { useExitIntentRating } from "@/hooks/use-exit-intent-rating";
+import { ReviewList, ReviewStats } from "@/components/reviews";
+import { RatingPanel } from "@/components/reviews/RatingPanel";
+import { ExitIntentRating } from "@/components/reviews/ExitIntentRating";
 import { cn } from "@/lib/utils";
 import { SimilarCoffees } from "./SimilarCoffees";
 import { MoreFromRoaster } from "./MoreFromRoaster";
 import type { CoffeeSummary } from "@/types/coffee-types";
 import { CoffeeSensoryProfile } from "./CoffeeSensoryProfile";
 import Tag, { TagList } from "@/components/common/Tag";
-import CoffeeImageCarousel from "@/components/layout/carousel-image";
 import { CoffeeVariantSelector } from "./CoffeeVariantSelector";
+import { CoffeeHero } from "@/components/coffees/CoffeeHero";
+import {
+  ScrollspyTabBar,
+  type ScrollspySection,
+} from "@/components/common/ScrollspyTabBar";
 import { FloatingRateCTA } from "@/components/common/FloatingRateCTA";
-import { ShareRow } from "@/components/common/ShareRow";
-import { WishlistButton } from "@/components/coffees/WishlistButton";
-import { discoveryPagePath } from "@/lib/discovery/landing-pages";
 import { FAQSection } from "@/components/common/FAQ";
 import type { FaqItem } from "@/lib/seo/coffee-faqs";
 import { getVarietyDescription } from "@/lib/coffee/variety-info";
@@ -48,6 +34,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { discoveryPagePath } from "@/lib/discovery/landing-pages";
 import {
   discoverySlugForBeanSpecies,
   discoverySlugForBrewMethodKey,
@@ -60,6 +47,8 @@ import {
 
 type CoffeeDetailPageProps = {
   coffee: CoffeeDetail;
+  stats: EntityReviewStats | null;
+  reviews: ReviewWithProfile[];
   /** Other coffees from the same roaster (for SKU↔SKU internal links). */
   moreFromRoaster?: CoffeeSummary[];
   /** Data-templated FAQs; JSON-LD is emitted by the parent route. */
@@ -67,92 +56,12 @@ type CoffeeDetailPageProps = {
   className?: string;
 };
 
-type CoffeeExitIntentRatingProps = {
-  coffee: CoffeeDetail;
-  reviews: LatestReviewPerIdentity[] | undefined;
-};
-
-/* ─── Scrollspy Tab Bar ─── */
-
-type TabItem = { id: string; label: string };
-
-const SECTIONS: TabItem[] = [
+const SECTIONS: ScrollspySection[] = [
   { id: "overview", label: "Overview" },
   { id: "flavor", label: "Flavor" },
   { id: "pricing", label: "Pricing" },
   { id: "reviews", label: "Reviews" },
 ];
-
-function ScrollspyTabBar({ activeId }: { activeId: string }) {
-  const handleClick = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  return (
-    <nav
-      className="sticky top-20 z-30 bg-background/80 backdrop-blur-md border-b border-border/40"
-      aria-label="Page sections"
-    >
-      <div className="max-w-5xl mx-auto px-4 md:px-6">
-        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-1">
-          {SECTIONS.map((section) => (
-            <button
-              key={section.id}
-              type="button"
-              onClick={() => handleClick(section.id)}
-              className={cn(
-                "relative px-4 py-2.5 text-caption font-medium rounded-full transition-all whitespace-nowrap",
-                activeId === section.id
-                  ? "text-primary-foreground bg-primary shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
-              )}
-            >
-              {section.label}
-            </button>
-          ))}
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-/* ─── Exit Intent (remounted per coffee via key) ─── */
-
-function CoffeeExitIntentRating({
-  coffee,
-  reviews,
-}: CoffeeExitIntentRatingProps) {
-  const { open, setOpen } = useExitIntentRating({
-    entityId: coffee.id,
-    entityType: "coffee",
-    reviews,
-    mobileDelayMs: 45_000,
-  });
-  return (
-    <ExitIntentRatingModal
-      open={open}
-      onOpenChange={setOpen}
-      entityType="coffee"
-      entityId={coffee.id}
-      coffeeName={getCoffeeDisplayName(coffee)}
-      slug={coffee.slug}
-    />
-  );
-}
-
-/* ─── Helper: Trim description ─── */
-
-function trimDescription(text: string | null, maxLen = 160): string | null {
-  if (!text) return null;
-  if (text.length <= maxLen) return text;
-  // Trim at last space before maxLen
-  const trimmed = text.slice(0, maxLen);
-  const lastSpace = trimmed.lastIndexOf(" ");
-  return (lastSpace > 0 ? trimmed.slice(0, lastSpace) : trimmed) + "…";
-}
 
 const discoveryPhraseLinkClass =
   "text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors";
@@ -180,290 +89,25 @@ function DiscoveryInlineLink({
   );
 }
 
-/* ─── Main Component ─── */
+/* ─── Main Component (Server Component) ─── */
 
 export function CoffeeDetailPage({
   coffee,
+  stats,
+  reviews,
   moreFromRoaster,
   faqItems,
   className,
 }: CoffeeDetailPageProps) {
-  const queryClient = useQueryClient();
-  const { data: reviews } = useReviews("coffee", coffee.id);
-  const { data: stats } = useReviewStats("coffee", coffee.id);
-
-  // Refs for FloatingRateCTA
-  const heroRateButtonRef = useRef<HTMLButtonElement>(null);
-  const ratingSectionRef = useRef<HTMLDivElement>(null);
-
-  // Scrollspy active section
-  const [activeSection, setActiveSection] = useState("overview");
-  const [hasUserRating, setHasUserRating] = useState(false);
-
-  useEffect(() => {
-    const sectionIds = SECTIONS.map((s) => s.id);
-    const elements = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter(Boolean) as HTMLElement[];
-
-    if (elements.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Find the topmost visible section
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible.length > 0) {
-          setActiveSection(visible[0].target.id);
-        }
-      },
-      { rootMargin: "-80px 0px -60% 0px", threshold: 0 }
-    );
-
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  // GA4 + PostHog tracking
-  useEffect(() => {
-    trackCoffeeViewItem({
-      coffeeId: coffee.id,
-      coffeeName: getCoffeeDisplayName(coffee),
-      roasterName: coffee.roaster?.name,
-      price:
-        coffee.summary.min_price_in_stock ??
-        coffee.summary.best_normalized_250g ??
-        undefined,
-      currency: "INR",
-      inStock: (coffee.summary.in_stock_count ?? 0) > 0,
-      rating: coffee.rating_avg ?? undefined,
-      ratingCount: coffee.rating_count,
-    });
-    capture("coffee_page_viewed", {
-      coffee_slug: coffee.slug,
-      roaster_name: coffee.roaster?.name ?? null,
-    });
-    capture("rating_page_viewed", {
-      entity_type: "coffee" as const,
-      entity_id: coffee.id,
-      coffee_slug: coffee.slug,
-    });
-    void (async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      const anonForAction = user ? null : ensureAnonId();
-      const res = await recordCoffeeView(coffee.id, anonForAction);
-      if (res.success) {
-        await queryClient.invalidateQueries({
-          queryKey: queryKeys.coffees.recentlyViewed(12),
-        });
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per coffee view
-  }, [coffee.id]);
-
-  // Hash scroll on mount
-  useEffect(() => {
-    if (window.location.hash === "#rating-section") {
-      requestAnimationFrame(() => {
-        ratingSectionRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      });
-    }
-  }, []);
-
-  const handleScrollToRating = useCallback(() => {
-    ratingSectionRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, []);
-
-  const handleScrollToStory = useCallback(() => {
-    document
-      .getElementById("coffee-story")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
-
-  const trimmedDesc = trimDescription(coffee.description_md);
-
-  // Synthesized alt-text fallback for images lacking a stored `alt`.
-  const displayName = getCoffeeDisplayName(coffee);
-  const roast = coffee.roast_level_raw || coffee.roast_level;
-  const species = coffee.bean_species
-    ? (SPECIES_LABELS[coffee.bean_species] ?? coffee.bean_species)
-    : null;
-  const firstRegion = coffee.regions[0];
-  const region = firstRegion
-    ? firstRegion.display_name ||
-      [firstRegion.country, firstRegion.state, firstRegion.subregion]
-        .filter(Boolean)
-        .join(", ") ||
-      firstRegion.subregion
-    : null;
-  const descriptor = [roast && `${roast} roast`, species, "coffee"]
-    .filter(Boolean)
-    .join(" ");
-  const imageAltFallback = [
-    displayName,
-    region ? `${descriptor} from ${region}` : descriptor,
-  ]
-    .filter(Boolean)
-    .join(" — ");
-
   return (
     <div className={cn("w-full bg-background min-h-screen", className)}>
-      {/* ─── Scrollspy Tab Bar ─── */}
-      <ScrollspyTabBar activeId={activeSection} />
+      {/* ─── Scrollspy Tab Bar (client island) ─── */}
+      <ScrollspyTabBar sections={SECTIONS} />
 
-      {/* ═══════════════════════════════════════════
-          SECTION 1: HERO / OVERVIEW (cream band)
-      ═══════════════════════════════════════════ */}
-      <Band id="overview" className="py-10 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-start">
-          {/* Image */}
-          <div className="w-full max-w-md mx-auto md:mx-0">
-            <CoffeeImageCarousel
-              images={coffee.images}
-              coffeeName={displayName}
-              altFallback={imageAltFallback}
-              className="rounded-xl"
-            />
-          </div>
+      {/* SECTION 1: HERO / OVERVIEW (client island — data via props) */}
+      <CoffeeHero coffee={coffee} stats={stats} />
 
-          {/* Product Info */}
-          <Stack gap="4" className="pt-2">
-            {/* Name + Roaster */}
-            <Stack gap="1">
-              <h1 className="text-display italic leading-[1.05] text-balance">
-                {getCoffeeDisplayName(coffee)}
-              </h1>
-              <Cluster gap="2" align="center">
-                {coffee.roaster && (
-                  <Link
-                    href={`/roasters/${coffee.roaster.slug}`}
-                    className="text-body-muted hover:text-foreground transition-colors font-medium"
-                  >
-                    {coffee.roaster.name}
-                  </Link>
-                )}
-              </Cluster>
-            </Stack>
-
-            {/* Rating Badge + Price */}
-            <div className="flex flex-wrap items-center gap-4">
-              {stats &&
-              stats.review_count !== null &&
-              stats.review_count > 0 ? (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border/40 bg-card">
-                  <Icon
-                    name="Star"
-                    size={16}
-                    className="fill-rating text-rating"
-                  />
-                  <span className="text-heading text-foreground">
-                    {stats.avg_rating?.toFixed(1)}
-                  </span>
-                  <span className="text-caption text-muted-foreground ml-1">
-                    ({stats.review_count})
-                  </span>
-                </div>
-              ) : (
-                <span className="text-body-muted italic text-caption">
-                  Be the first to rate
-                </span>
-              )}
-
-              {coffee.summary.min_price_in_stock && (
-                <div className="px-3 py-1.5 rounded-full border border-border/40 bg-muted/20">
-                  <span className="text-caption text-muted-foreground">
-                    From{" "}
-                  </span>
-                  <span className="font-medium text-body">
-                    ₹{coffee.summary.min_price_in_stock}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* Trimmed Description */}
-            {trimmedDesc && (
-              <p className="text-body text-muted-foreground leading-relaxed">
-                {trimmedDesc}{" "}
-                {coffee.description_md &&
-                  coffee.description_md.length > 160 && (
-                    <button
-                      type="button"
-                      onClick={handleScrollToStory}
-                      className="text-accent hover:text-accent/80 font-medium transition-colors"
-                    >
-                      Read more
-                    </button>
-                  )}
-              </p>
-            )}
-
-            {/* CTAs */}
-            <Cluster gap="3" className="pt-2">
-              <Button
-                ref={heroRateButtonRef}
-                size="lg"
-                className="bg-primary shadow-sm hover:shadow-md transition-shadow min-w-[160px]"
-                onClick={handleScrollToRating}
-              >
-                <Icon
-                  name="Star"
-                  size={18}
-                  className="mr-2 fill-rating text-rating"
-                />
-                Rate this coffee
-              </Button>
-              <WishlistButton
-                variant="button"
-                size="lg"
-                coffeeId={coffee.id}
-                className="min-w-[160px]"
-              />
-              {coffee.status === "discontinued" ? (
-                <Button
-                  variant="outline"
-                  size="lg"
-                  disabled
-                  className="text-muted-foreground min-w-[160px] opacity-60"
-                >
-                  Discontinued
-                </Button>
-              ) : (
-                coffee.direct_buy_url && (
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    asChild
-                    className="text-muted-foreground min-w-[160px]"
-                  >
-                    <a
-                      href={coffee.direct_buy_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Buy from roaster
-                    </a>
-                  </Button>
-                )
-              )}
-            </Cluster>
-          </Stack>
-        </div>
-      </Band>
-
-      {/* ═══════════════════════════════════════════
-          SECTION 2: COFFEE STORY + PRODUCTION (warm band)
-      ═══════════════════════════════════════════ */}
+      {/* SECTION 2: COFFEE STORY + PRODUCTION (warm band) */}
       {(() => {
         const hasProductionSpecs = Boolean(
           coffee.roast_level ||
@@ -755,9 +399,7 @@ export function CoffeeDetailPage({
         );
       })()}
 
-      {/* ═══════════════════════════════════════════
-              SECTION 3: FLAVOR PROFILE (cream band)
-          ═══════════════════════════════════════════ */}
+      {/* SECTION 3: FLAVOR PROFILE (cream band) */}
       <Band id="flavor">
         <Stack gap="12">
           <CoffeeSensoryProfile coffee={coffee} className="border-0" />
@@ -791,9 +433,7 @@ export function CoffeeDetailPage({
         </Stack>
       </Band>
 
-      {/* ═══════════════════════════════════════════
-              SECTION 4: PRICING & AVAILABILITY (warm band)
-          ═══════════════════════════════════════════ */}
+      {/* SECTION 4: PRICING & AVAILABILITY (warm band) */}
       <Band id="pricing" ground="warm" texture="grain-coarse">
         <Stack gap="4">
           <h2 className="text-title text-balance leading-[1.1]">
@@ -814,11 +454,9 @@ export function CoffeeDetailPage({
         </Stack>
       </Band>
 
-      {/* ═══════════════════════════════════════════
-              SECTION 5: RATE & REVIEW (cream band)
-          ═══════════════════════════════════════════ */}
+      {/* SECTION 5: RATE & REVIEW (cream band) */}
       <Band id="reviews">
-        <div ref={ratingSectionRef} className="scroll-mt-40">
+        <div id="rate-section" className="scroll-mt-40">
           <Stack gap="8">
             <h2 className="text-title text-balance leading-[1.1] italic">
               {stats?.review_count
@@ -829,37 +467,25 @@ export function CoffeeDetailPage({
               </span>
             </h2>
             {/* Review Stats */}
-            <ReviewStats stats={stats || null} />
+            <ReviewStats stats={stats} />
 
-            {/* Rating form (interactive input panel — a card is the right affordance) */}
-            <div className="surface-2 rounded-xl p-8 border border-accent/20">
-              <QuickRating
-                entityType="coffee"
-                entityId={coffee.id}
-                variant="inline"
-                slug={coffee.slug ?? undefined}
-                onSavedStateChange={setHasUserRating}
-              />
-              {hasUserRating && (
-                <ShareRow
-                  entityType="coffee"
-                  name={getCoffeeDisplayName(coffee)}
-                  slug={coffee.slug ?? ""}
-                />
-              )}
-            </div>
+            {/* Rating form (interactive client island) */}
+            <RatingPanel
+              entityType="coffee"
+              entityId={coffee.id}
+              name={getCoffeeDisplayName(coffee)}
+              slug={coffee.slug ?? ""}
+            />
 
             {/* Community Reviews */}
-            {reviews && reviews.length > 0 && (
+            {reviews.length > 0 && (
               <ReviewList entityType="coffee" reviews={reviews.slice(0, 10)} />
             )}
           </Stack>
         </div>
       </Band>
 
-      {/* ═══════════════════════════════════════════
-              SECTION 5b: FAQ (JSON-LD emitted by the route, not here)
-          ═══════════════════════════════════════════ */}
+      {/* SECTION 5b: FAQ (JSON-LD emitted by the route, not here) */}
       {faqItems && faqItems.length > 0 && (
         <Band>
           <FAQSection
@@ -877,9 +503,7 @@ export function CoffeeDetailPage({
         </Band>
       )}
 
-      {/* ═══════════════════════════════════════════
-              SECTION 6: MORE FROM ROASTER + SIMILAR COFFEES (warm band)
-          ═══════════════════════════════════════════ */}
+      {/* SECTION 6: MORE FROM ROASTER + SIMILAR COFFEES (warm band) */}
       {moreFromRoaster && moreFromRoaster.length > 0 && (
         <Band ground="warm" texture="grain">
           <MoreFromRoaster
@@ -893,17 +517,21 @@ export function CoffeeDetailPage({
         <SimilarCoffees coffee={coffee} />
       </Band>
 
-      {/* Exit Intent Modal */}
-      <CoffeeExitIntentRating
+      {/* Exit Intent Modal (client island) */}
+      <ExitIntentRating
         key={coffee.id}
-        coffee={coffee}
+        entityType="coffee"
+        entityId={coffee.id}
+        name={getCoffeeDisplayName(coffee)}
+        slug={coffee.slug ?? ""}
         reviews={reviews}
       />
 
-      {/* Floating Rate CTA */}
+      {/* Floating Rate CTA (client island) */}
       <FloatingRateCTA
-        heroButtonRef={heroRateButtonRef}
-        ratingSectionRef={ratingSectionRef}
+        heroButtonId="coffee-rate-hero"
+        ratingSectionId="rate-section"
+        entityType="coffee"
       />
     </div>
   );

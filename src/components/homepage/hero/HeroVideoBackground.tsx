@@ -54,6 +54,16 @@ export function HeroVideoBackground() {
 
   return (
     <div className="absolute inset-0 z-0" aria-hidden="true">
+      {/* Server-rendered poster = the LCP element. Paints at FCP so LCP no longer
+          waits on hydration + video decode. The video mounts on top after hydration. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover"
+        fetchPriority="high"
+        src="/videos/hero-poster.webp"
+      />
       {shouldLoadVideo ? (
         <video
           aria-hidden="true"
@@ -69,9 +79,7 @@ export function HeroVideoBackground() {
           <source src="/videos/hero-video.webm" type="video/webm" />
           <source src="/videos/hero-video-sm.mp4" type="video/mp4" />
         </video>
-      ) : (
-        <div className="absolute inset-0 h-full w-full bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
-      )}
+      ) : null}
     </div>
   );
 }

@@ -95,8 +95,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // Initial user fetch
-    refreshUser();
+    let cancelled = false;
+    // Anon fast-path: getSession() reads the local store (no network). Only
+    // validate via getUser() when a session actually exists, so anonymous
+    // visitors don't pay a /auth/v1/user round-trip on every page load.
+    void auth.getSession().then(({ session }) => {
+      if (cancelled) return;
+      if (session) {
+        void refreshUser();
+      } else {
+        setIsLoading(false);
+      }
+    });
 
     // Listen for auth state changes
     const {
@@ -119,12 +129,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => {
+      cancelled = true;
       subscription.unsubscribe();
     };
-  }, [
-    // Initial user fetch
-    refreshUser,
-  ]);
+  }, [refreshUser]);
 
   useEffect(() => {
     if (user) {

@@ -26,7 +26,11 @@ const fraunces = Fraunces({
   weight: ["400", "500", "600", "700"],
   variable: "--font-display",
   display: "swap",
-  preload: true, // Keep serif display font off critical preload path
+  // Preload the hero display font so it's ready before first paint — the late
+  // swap grew the hero past its min-height and shifted every PageHeader page
+  // (~0.04 CLS). Known trade-off: adds Fraunces to the critical path and
+  // regresses homepage LCP (~7.8s→12s) — tracked as a separate LCP fix.
+  preload: true,
 });
 
 const dmSans = DM_Sans({

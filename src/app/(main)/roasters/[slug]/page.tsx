@@ -109,20 +109,22 @@ export default async function RoasterDetailPageServer({ params }: Props) {
   }
 
   const queryClient = new QueryClient();
-  const reviewStaleMs = 30 * 1000;
 
-  await Promise.all([
-    queryClient.prefetchQuery({
-      queryKey: queryKeys.reviews.stats("roaster", roaster.id),
-      queryFn: () => fetchReviewStats("roaster", roaster.id),
-      staleTime: reviewStaleMs,
-    }),
-    queryClient.prefetchQuery({
-      queryKey: queryKeys.reviews.byEntity("roaster", roaster.id),
-      queryFn: () => fetchReviews("roaster", roaster.id, 10),
-      staleTime: reviewStaleMs,
-    }),
+  // Fetch reviews/stats server-side and pass as props so the detail page renders
+  // them in the SSR HTML (no client-hook reflow → no CLS). Also seed the query
+  // cache via HydrationBoundary so QuickRating's useReviews has the data client-side.
+  const [stats, reviews] = await Promise.all([
+    fetchReviewStats("roaster", roaster.id).catch(() => null),
+    fetchReviews("roaster", roaster.id, 10).catch(() => []),
   ]);
+  queryClient.setQueryData(
+    queryKeys.reviews.stats("roaster", roaster.id),
+    stats
+  );
+  queryClient.setQueryData(
+    queryKeys.reviews.byEntity("roaster", roaster.id),
+    reviews
+  );
 
   // Generate structured data
   const baseUrl =
@@ -171,7 +173,7 @@ export default async function RoasterDetailPageServer({ params }: Props) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <>
         <StructuredData schema={[localBusinessSchema, breadcrumbSchema]} />
-        <RoasterDetailPage roaster={roaster} />
+        <RoasterDetailPage roaster={roaster} stats={stats} reviews={reviews} />
       </>
     </HydrationBoundary>
   );

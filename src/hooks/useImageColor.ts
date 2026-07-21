@@ -46,7 +46,6 @@ export function useImageColor(imageUrl: string | null): ColorResult {
       const ctx = canvas.getContext("2d");
 
       if (!ctx) {
-        console.log("[useImageColor] Canvas context failed");
         setResult({ isDark: false, isLoading: false, dominantColor: null });
         return;
       }
@@ -80,7 +79,6 @@ export function useImageColor(imageUrl: string | null): ColorResult {
         }
 
         if (pixelCount === 0) {
-          console.log("[useImageColor] All pixels transparent");
           setResult({ isDark: false, isLoading: false, dominantColor: null });
           return;
         }
@@ -93,13 +91,6 @@ export function useImageColor(imageUrl: string | null): ColorResult {
         // Generate approximate hex color from average
         const avgVal = Math.round(avgLuminance);
         const hex = `#${avgVal.toString(16).padStart(2, "0")}${avgVal.toString(16).padStart(2, "0")}${avgVal.toString(16).padStart(2, "0")}`;
-
-        console.log("[useImageColor]", {
-          url: imageUrl.slice(-30),
-          avgLuminance: Math.round(avgLuminance),
-          pixelCount,
-          isDark: isLightImage,
-        });
 
         setResult({
           isDark: isLightImage,

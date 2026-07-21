@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import HeroSection from "@/components/homepage/hero/HeroSection";
+import { HeroSuspenseFallback } from "@/components/homepage/hero/HeroSuspenseFallback";
 import NewAdditionsStrip from "@/components/homepage/NewAdditionsStrip";
 import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGridLazy";
 import { Section } from "@/components/primitives/section";
@@ -105,37 +106,8 @@ export default async function Home({ searchParams }: HomePageProps) {
     <div className="surface-0 flex min-h-screen flex-col">
       <main className="flex-1 bg-background">
         <div className="relative">
-          {/* Wrap HeroSection in Suspense for streaming SSR - allows h1 to render earlier */}
-          <Suspense
-            fallback={
-              // Matches HeroSkeleton visually so there's no flash between SSR → client states.
-              // Can't use HeroSkeleton directly here (it imports HeroVideoBackground, a client component).
-              <section className="relative flex min-h-[90svh] items-center justify-start overflow-x-hidden pb-24 pt-16 px-4 md:px-6 lg:px-8">
-                <div className="absolute inset-0 z-0 bg-black/70" />
-                <div className="relative z-10 mx-auto w-full max-w-7xl">
-                  <div className="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:gap-x-6 lg:gap-y-8 xl:gap-x-8">
-                    <div className="order-1 flex min-w-0 flex-col gap-6 lg:col-start-1 lg:row-start-1">
-                      <div className="h-8 w-56 max-w-full animate-pulse rounded-full bg-white/10" />
-                      <div className="space-y-3">
-                        <div className="h-10 w-full max-w-md animate-pulse rounded-lg bg-white/10" />
-                        <div className="h-6 w-full max-w-lg animate-pulse rounded-lg bg-white/5" />
-                      </div>
-                    </div>
-                    <div className="order-3 min-h-[200px] min-w-0 rounded-2xl border border-white/10 bg-white/5 lg:order-0 lg:col-start-2 lg:row-span-2 lg:row-start-1" />
-                    <div className="order-2 flex min-w-0 flex-wrap gap-3 lg:col-start-1 lg:row-start-2">
-                      <div className="h-11 w-44 animate-pulse rounded-lg bg-white/15" />
-                      <div className="h-11 w-40 animate-pulse rounded-lg bg-white/10" />
-                    </div>
-                    <div className="order-4 flex flex-wrap gap-6 border-t border-white/10 pt-6 lg:col-span-2 lg:row-start-3">
-                      <div className="h-3 w-28 animate-pulse rounded bg-white/10" />
-                      <div className="h-3 w-32 animate-pulse rounded bg-white/10" />
-                      <div className="h-3 w-40 animate-pulse rounded bg-white/10" />
-                    </div>
-                  </div>
-                </div>
-              </section>
-            }
-          >
+          {/* Contentful fallback: discovery h1 streams immediately so FCP isn't gated on hero data */}
+          <Suspense fallback={<HeroSuspenseFallback />}>
             <HeroSection devSegmentParam={devSegmentParam} />
           </Suspense>
 
