@@ -9,7 +9,6 @@ import type { EntityReviewStats } from "@/types/review-types";
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import { StarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
-import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
 import { recordCoffeeView } from "@/app/actions/coffee-views";
 import { capture } from "@/lib/posthog";
 import { queryKeys } from "@/lib/query-keys";
@@ -43,21 +42,8 @@ type CoffeeHeroProps = {
 export function CoffeeHero({ coffee, stats }: CoffeeHeroProps) {
   const queryClient = useQueryClient();
 
-  // GA4 + PostHog tracking + record view
+  // PostHog tracking + record view
   useEffect(() => {
-    trackCoffeeViewItem({
-      coffeeId: coffee.id,
-      coffeeName: getCoffeeDisplayName(coffee),
-      roasterName: coffee.roaster?.name,
-      price:
-        coffee.summary.min_price_in_stock ??
-        coffee.summary.best_normalized_250g ??
-        undefined,
-      currency: "INR",
-      inStock: (coffee.summary.in_stock_count ?? 0) > 0,
-      rating: coffee.rating_avg ?? undefined,
-      ratingCount: coffee.rating_count,
-    });
     capture("coffee_page_viewed", {
       coffee_slug: coffee.slug,
       roaster_name: coffee.roaster?.name ?? null,

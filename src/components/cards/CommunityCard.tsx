@@ -171,12 +171,7 @@ function CommunityCardComponent({ community, className }: CommunityCardProps) {
     // on a non-focusable element.
     <div className="block h-full rounded-lg">{cardContent}</div>
   ) : (
-    <CommunityTrackingLink
-      ariaLabel={ariaLabel}
-      communityId={community.id}
-      communityPlatform={community.platform}
-      href={community.invite_url}
-    >
+    <CommunityTrackingLink ariaLabel={ariaLabel} href={community.invite_url}>
       {cardContent}
     </CommunityTrackingLink>
   );

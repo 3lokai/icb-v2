@@ -19,7 +19,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { GrindChart } from "@/components/tools/GrindChart";
-import { trackToolsEngagement } from "@/lib/analytics/enhanced-tracking";
 import {
   BREW_METHODS,
   GRINDERS,
@@ -96,26 +95,6 @@ export function GrindConverterClient() {
       });
     }
   }, [urlMethod, urlGrinder, updateParams]);
-
-  // Analytics: meaningful-engagement entry/exit.
-  useEffect(() => {
-    const start = Date.now();
-    trackToolsEngagement("grind-converter", {
-      sessionDuration: 0,
-      interactionCount: 0,
-      completionStatus: "started",
-    });
-    return () => {
-      const duration = Math.floor((Date.now() - start) / 1000);
-      if (duration > 30) {
-        trackToolsEngagement("grind-converter", {
-          sessionDuration: duration,
-          interactionCount: 1,
-          completionStatus: duration > 300 ? "completed" : "partial",
-        });
-      }
-    };
-  }, []);
 
   const method = getBrewMethod(methodKey);
   const grinder = getGrinder(grinderKey);

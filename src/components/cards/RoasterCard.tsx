@@ -98,9 +98,7 @@ export default function RoasterCard({
     return (
       <RoasterTrackingLink
         ariaLabel={ariaLabel}
-        coffeeCount={coffeeCount || null}
         href={`/roasters/${roaster.slug}`}
-        roasterOnlyId={roaster.id || null}
       >
         <Card
           className={cn(
@@ -188,9 +186,7 @@ export default function RoasterCard({
       <RoasterTrackingLink
         ariaLabel={ariaLabel}
         className="flex-1 flex flex-col cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
-        coffeeCount={coffeeCount || null}
         href={`/roasters/${roaster.slug}`}
-        roasterOnlyId={roaster.id || null}
       >
         {/* Logo Container - Dynamic gradient based on logo color */}
         <div
