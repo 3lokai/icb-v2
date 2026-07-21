@@ -223,7 +223,13 @@ Ran Lighthouse locally with `--throttling-method=devtools` (observed, headless C
 
 - **LCP is good sitewide (2.3–2.6s)** — every `simulate` 4–7.5s reading was a modeling artifact. No LCP work warranted.
 - **Home is the TBT/Perf outlier** (1.78s / 65) — the above-fold hero client JS. The other four sit at 73–76 / TBT 0.6–0.84s.
-- **Real CLS defect: `/roasters` 0.11 and `/roasters/{slug}` 0.12** (not 0). `/coffees` + coffee-detail are clean, so it's the roaster-path Suspense/footer streaming shift (Fix #6 territory) — its own item.
+- **Real CLS defect: `/roasters` 0.11 and `/roasters/{slug}` 0.12** (not 0) — **ROOT CAUSE FOUND & FIXED (2026-07-21), see below.**
+
+#### Roaster-path CLS — root cause & fix (2026-07-21): 0.11–0.36 → 0.000
+
+Not the footer, not the grid, not the skeleton (all prior theories wrong). Traced via `lighthouse --save-assets` → the `layout-shifts` insight named the single shifting node: `<div class="mx-auto text-center">` containing "Steeping the perfect read…" — i.e. **`src/app/loading.tsx`, the root full-screen loader**. Its centered column holds **`CoffeeFact`**, a client component that renders `null` on first paint then pops in a variable-height fact card from a `useEffect` (`getRandomCoffeeFact()` is deferred to a `useEffect` only to dodge an SSR/client hydration mismatch). Inside the loader's `flex items-center justify-center`, that null→card growth **re-centers the whole column** → layout shift (trace rect [80,262,252,299] → [24,128,364,567], a grow+recenter). `/roasters` hydrates slowly enough that the loader is still visible when CoffeeFact pops; `/coffees` clears it first — hence the roaster-only, intermittent CLS.
+
+**Fix:** reserved a stable slot for the fact — `min-h-[320px]` on the CoffeeFact wrapper in `src/app/loading.tsx` — so the spinner column never resizes when the card pops in. **Verified (devtools throttle, prod build): `/roasters` CLS 0.099→0.000 ×3 runs (Perf ~74→~90), `/roasters/{slug}` 0.12→0.000 ×2 (Perf ~95).** `layout-shifts` audit now reports zero shifts. One-line change, keeps the coffee-fact flourish.
 
 **posthog-recorder removed entirely (2026-07-21).** User does not record sessions, so the idle-`startSessionRecording()` block in `instrumentation-client.ts` was deleted (kept `disable_session_recording: true`). Verified: `posthog-recorder.js` = **0 network requests** (was a ~319ms main-thread block on every page). **Home TBT 1.78→1.42s, Perf 65→67**, LCP/CLS unchanged. Every page reclaims ~350ms TBT. Supersedes the P0 #3 "idle-defer the recorder" approach — it's now off, not deferred.
 
