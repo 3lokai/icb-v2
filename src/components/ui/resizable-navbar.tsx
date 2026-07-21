@@ -46,6 +46,7 @@ type MobileNavProps = {
 type MobileNavHeaderProps = {
   children: React.ReactNode;
   className?: string;
+  visible?: boolean;
 };
 
 type MobileNavMenuProps = {
@@ -88,7 +89,15 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => (
       minWidth: "800px",
     }}
   >
-    {children}
+    {React.Children.map(children, (child) => {
+      if (!React.isValidElement(child) || typeof child.type === "string") {
+        return child;
+      }
+      return React.cloneElement(
+        child as React.ReactElement<{ visible?: boolean }>,
+        { visible }
+      );
+    })}
   </div>
 );
 
@@ -308,13 +317,22 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => (
       className
     )}
   >
-    {children}
+    {React.Children.map(children, (child) => {
+      if (!React.isValidElement(child) || typeof child.type === "string") {
+        return child;
+      }
+      return React.cloneElement(
+        child as React.ReactElement<{ visible?: boolean }>,
+        { visible }
+      );
+    })}
   </div>
 );
 
 export const MobileNavHeader = ({
   children,
   className,
+  visible,
 }: MobileNavHeaderProps) => (
   <div
     className={cn(
@@ -322,7 +340,15 @@ export const MobileNavHeader = ({
       className
     )}
   >
-    {children}
+    {React.Children.map(children, (child) => {
+      if (!React.isValidElement(child) || typeof child.type === "string") {
+        return child;
+      }
+      return React.cloneElement(
+        child as React.ReactElement<{ visible?: boolean }>,
+        { visible }
+      );
+    })}
   </div>
 );
 

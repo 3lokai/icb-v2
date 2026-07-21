@@ -1,8 +1,11 @@
 "use client";
 
+import { useId } from "react";
 import { motion } from "motion/react";
 
 export function ComingSoonBadge() {
+  const pathId = `textPath-${useId().replace(/:/g, "")}`;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
@@ -19,12 +22,12 @@ export function ComingSoonBadge() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          id="textPath-edu"
+          id={pathId}
           d="M70 15 A 55 55 0 1 1 70 125 A 55 55 0 1 1 70 15"
           stroke="transparent"
         />
         <text className="fill-current text-caption font-bold uppercase tracking-[0.25em]">
-          <textPath href="#textPath-edu" startOffset="50%" textAnchor="middle">
+          <textPath href={`#${pathId}`} startOffset="50%" textAnchor="middle">
             • Coming Soon • Coming Soon
           </textPath>
         </text>

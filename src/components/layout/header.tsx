@@ -26,13 +26,44 @@ import {
   Navbar,
   NavItems,
 } from "@/components/ui/resizable-navbar";
-import { useScrolledPast } from "@/hooks/use-scrolled-past";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { cn } from "@/lib/utils";
 import { useSearchContext } from "@/providers/SearchProvider";
 
 // Regex for splitting names into parts (defined at top level for performance)
 const NAME_SPLIT_REGEX = /\s+/;
+
+function NavLogo({ visible }: { visible?: boolean }) {
+  return (
+    <Link
+      aria-label="Indian Coffee Beans"
+      className="relative z-20 mr-8 flex shrink-0 items-center gap-2 px-2 py-1"
+      href="/"
+    >
+      <Logo
+        aria-label="Indian Coffee Beans"
+        className="h-8 w-auto"
+        compact={!!visible}
+      />
+    </Link>
+  );
+}
+
+function MobileNavLogo({ visible }: { visible?: boolean }) {
+  return (
+    <Link
+      aria-label="Indian Coffee Beans"
+      className="flex items-center gap-2"
+      href="/"
+    >
+      <Logo
+        aria-label="Indian Coffee Beans"
+        className="h-8 w-auto"
+        compact={!!visible}
+      />
+    </Link>
+  );
+}
 
 // Base nav items (without Profile - it's added conditionally)
 const baseNavItems = [
@@ -94,8 +125,6 @@ export function Header() {
   const { openSearch } = useSearchContext();
   const router = useRouter();
 
-  const isNavbarCompact = useScrolledPast(100);
-
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
@@ -150,18 +179,7 @@ export function Header() {
   return (
     <Navbar className="top-0">
       <NavBody>
-        {/* Logo */}
-        <Link
-          aria-label="Indian Coffee Beans"
-          className="relative z-20 mr-8 flex shrink-0 items-center gap-2 px-2 py-1"
-          href="/"
-        >
-          <Logo
-            aria-label="Indian Coffee Beans"
-            className="h-8 w-auto"
-            compact={isNavbarCompact}
-          />
-        </Link>
+        <NavLogo />
 
         {/* Desktop Navigation Items */}
         <NavItems items={navItems} />
@@ -289,17 +307,7 @@ export function Header() {
         )}
       >
         <MobileNavHeader>
-          <Link
-            aria-label="Indian Coffee Beans"
-            className="flex items-center gap-2"
-            href="/"
-          >
-            <Logo
-              aria-label="Indian Coffee Beans"
-              className="h-8 w-auto"
-              compact={isNavbarCompact}
-            />
-          </Link>
+          <MobileNavLogo />
           <div className="flex items-center gap-2">
             <button
               aria-label="Search"

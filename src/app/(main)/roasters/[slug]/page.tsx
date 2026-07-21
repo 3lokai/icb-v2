@@ -114,8 +114,8 @@ export default async function RoasterDetailPageServer({ params }: Props) {
   // them in the SSR HTML (no client-hook reflow → no CLS). Also seed the query
   // cache via HydrationBoundary so QuickRating's useReviews has the data client-side.
   const [stats, reviews] = await Promise.all([
-    fetchReviewStats("roaster", roaster.id),
-    fetchReviews("roaster", roaster.id, 10),
+    fetchReviewStats("roaster", roaster.id).catch(() => null),
+    fetchReviews("roaster", roaster.id, 10).catch(() => []),
   ]);
   queryClient.setQueryData(
     queryKeys.reviews.stats("roaster", roaster.id),

@@ -57,6 +57,7 @@ export function ScrollspyTabBar({
             <button
               key={section.id}
               type="button"
+              aria-current={activeId === section.id ? "true" : undefined}
               onClick={() => handleClick(section.id)}
               className={cn(
                 "relative px-4 py-2.5 text-caption font-medium rounded-full transition-all whitespace-nowrap",

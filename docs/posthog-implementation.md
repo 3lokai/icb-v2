@@ -40,14 +40,14 @@ Single reference for how PostHog is wired in IndianCoffeeBeans (Next.js App Rout
 
 | Layer | File | Purpose |
 |-------|------|---------|
-| **Initialization** | [`instrumentation-client.ts`](../instrumentation-client.ts) | `posthog.init`: `api_host` `https://b.indiancoffeebeans.com`, `ui_host` `https://eu.posthog.com`, `defaults: "2026-01-30"`, `capture_exceptions: true`, `disable_scroll_properties: false` (scroll context for Web Analytics scroll depth / `$pageleave`), `debug` in development, `disable_session_recording` in development. |
+| **Initialization** | [`instrumentation-client.ts`](../instrumentation-client.ts) | `posthog.init`: `api_host` `https://b.indiancoffeebeans.com`, `ui_host` `https://eu.posthog.com`, `defaults: "2026-01-30"`, `capture_exceptions: true`, `disable_scroll_properties: false` (scroll context for Web Analytics scroll depth / `$pageleave`), `debug` in development, `disable_session_recording: true` always at init (prod starts recording separately on idle after load; development leaves it disabled). |
 | **Client helper** | [`src/lib/posthog.ts`](../src/lib/posthog.ts) | `capture()` → `posthog.capture` with `{ env: NODE_ENV, ...props }`; re-exports `posthog` for `identify`. |
 | **Server client** | [`src/lib/posthog-server.ts`](../src/lib/posthog-server.ts) | Singleton: `flushAt: 1`, `flushInterval: 0`; `shutdownPostHog()` for graceful shutdown (currently unused). |
 | **Rewrites** | [`next.config.ts`](../next.config.ts) | `/ingest/static/:path*` → `eu-assets.i.posthog.com`; `/ingest/:path*` → `eu.i.posthog.com`; `skipTrailingSlashRedirect: true`. |
 | **Auth shell** | [`src/components/providers/auth-provider.tsx`](../src/components/providers/auth-provider.tsx) | Session `identify`, sign-out `reset` (see [Identity](#identity)). |
 | **Root layout** | [`src/app/layout.tsx`](../src/app/layout.tsx) | Wraps the app with `AuthProvider` so identity applies to OAuth return and email sessions. |
 
-**Not automatically tracked here:** PostHog product features beyond init (e.g. session replay is disabled in development via config). Standard PostHog autocapture may still apply per project settings; this doc lists **explicit** `capture` / `getPostHogClient().capture` calls only. **Scroll depth** (Web Analytics) uses the SDK scroll manager when `disable_scroll_properties` is not `true` — we set `disable_scroll_properties: false` explicitly so scroll metrics attach to `$pageleave` (requires `capture_pageleave` to run; default with `defaults: "2026-01-30"` aligns with automatic pageviews).
+**Not automatically tracked here:** PostHog product features beyond init (e.g. session replay stays off in development; in production it is deferred until idle via `startSessionRecording`). Standard PostHog autocapture may still apply per project settings; this doc lists **explicit** `capture` / `getPostHogClient().capture` calls only. **Scroll depth** (Web Analytics) uses the SDK scroll manager when `disable_scroll_properties` is not `true` — we set `disable_scroll_properties: false` explicitly so scroll metrics attach to `$pageleave` (requires `capture_pageleave` to run; default with `defaults: "2026-01-30"` aligns with automatic pageviews).
 
 ---
 

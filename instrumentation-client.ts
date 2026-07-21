@@ -60,6 +60,8 @@ if (typeof window !== "undefined" && process.env.NODE_ENV !== "development") {
   const start = () => posthog.startSessionRecording();
   if (typeof window.requestIdleCallback === "function") {
     window.requestIdleCallback(start, { timeout: 5000 });
+  } else if (document.readyState === "complete") {
+    window.setTimeout(start, 2000);
   } else {
     window.addEventListener("load", () => window.setTimeout(start, 2000), {
       once: true,
