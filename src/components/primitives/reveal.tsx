@@ -1,35 +1,85 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 type RevealProps = {
   children: React.ReactNode;
   /** Stagger delay in seconds. */
   delay?: number;
+  /** Hidden-state offset the block animates in from. */
+  from?: "up" | "left" | "scale" | "fade";
   className?: string;
 };
+
+const HIDDEN: Record<NonNullable<RevealProps["from"]>, string> = {
+  up: "translate-y-6",
+  left: "-translate-x-5",
+  scale: "scale-95",
+  fade: "",
+};
+
+/**
+ * Fires once when the element scrolls into view (20% visible), then
+ * disconnects. For custom reveal markup that can't use <Reveal>.
+ */
+export function useInViewOnce<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return { ref, shown };
+}
 
 /**
  * Reveal - Scroll-into-view fade/rise for a section block (Layer 2).
  *
  * Isolated client leaf so server sections can opt into motion without going
  * `"use client"` wholesale. Collapses to static instantly under
- * `prefers-reduced-motion`. Animates only transform + opacity.
+ * `prefers-reduced-motion` (CSS `motion-reduce`, no JS branch). Animates only
+ * transform + opacity.
+ *
+ * Implemented with IntersectionObserver + CSS transition (not motion/react)
+ * so statically-imported sections don't pull the motion bundle into the
+ * eager route chunk.
  *
  * @example
  * <Reveal><ExpensiveServerContent /></Reveal>
  */
-export function Reveal({ children, delay = 0, className }: RevealProps) {
-  const reduce = useReducedMotion();
+export function Reveal({
+  children,
+  delay = 0,
+  from = "up",
+  className,
+}: RevealProps) {
+  const { ref, shown } = useInViewOnce<HTMLDivElement>();
+
   return (
-    <motion.div
-      className={className}
-      initial={reduce ? false : { opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+    <div
+      ref={ref}
+      className={cn(
+        "transition-[opacity,transform] duration-600 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
+        shown ? "opacity-100" : cn("opacity-0", HIDDEN[from]),
+        className
+      )}
+      style={delay ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

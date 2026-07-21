@@ -7,11 +7,11 @@ import Link from "next/link";
 import { ArrowRightIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Accent } from "@/components/primitives/accent";
+import { Reveal } from "@/components/primitives/reveal";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "motion/react";
 import type { CuratorDTO } from "@/data/curations";
 
 type CuratorSpotlightProps = {
@@ -37,46 +37,30 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
               <div className="bg-noise absolute inset-0 opacity-[0.035] pointer-events-none" />
 
               <Stack gap="6" className="relative">
-                <motion.div
-                  initial={{ x: -20, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  className="inline-flex items-center gap-4"
-                >
+                <Reveal from="left" className="inline-flex items-center gap-4">
                   <span className="h-px w-8 bg-accent/60" />
                   <span className="text-overline text-muted-foreground tracking-[0.15em] uppercase">
                     COMMUNITY TESTED
                   </span>
-                </motion.div>
+                </Reveal>
 
                 <Stack gap="4">
-                  <motion.h2
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                    className="text-title text-balance leading-[1.1] tracking-tight"
-                  >
-                    Cultivated <Accent>Taste.</Accent>
-                  </motion.h2>
+                  <Reveal delay={0.1}>
+                    <h2 className="text-title text-balance leading-[1.1] tracking-tight">
+                      Cultivated <Accent>Taste.</Accent>
+                    </h2>
+                  </Reveal>
 
-                  <motion.p
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="max-w-xl text-pretty text-body text-muted-foreground leading-relaxed"
-                  >
-                    Independent recommendations from people with a visible
-                    tasting history. No trends, just genuine preference.
-                  </motion.p>
+                  <Reveal delay={0.2}>
+                    <p className="max-w-xl text-pretty text-body text-muted-foreground leading-relaxed">
+                      Independent recommendations from people with a visible
+                      tasting history. No trends, just genuine preference.
+                    </p>
+                  </Reveal>
                 </Stack>
 
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 }}
+                <Reveal
+                  delay={0.3}
                   className="flex flex-wrap items-center gap-4 pt-2"
                 >
                   <Button asChild variant="outline" size="lg" className="group">
@@ -88,7 +72,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
                       />
                     </Link>
                   </Button>
-                </motion.div>
+                </Reveal>
               </Stack>
             </div>
 
@@ -106,12 +90,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
 
               {/* Clean Overlays (Name and Location only) — Bottom Left Aligned */}
               <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end items-start gap-3">
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5 }}
-                >
+                <Reveal delay={0.5}>
                   <Badge className="bg-white/20 backdrop-blur-md border-white/30 text-overline uppercase tracking-widest text-white px-3 py-1 rounded-full mb-3">
                     Featured Curator
                   </Badge>
@@ -124,7 +103,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
                       {curator.location}
                     </span>
                   </div>
-                </motion.div>
+                </Reveal>
               </div>
             </div>
           </div>

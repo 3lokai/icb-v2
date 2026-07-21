@@ -13,11 +13,11 @@ import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { Icon } from "@/components/common/Icon";
 import { Accent } from "@/components/primitives/accent";
 import { Decor } from "@/components/primitives/decor";
+import { Reveal } from "@/components/primitives/reveal";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { motion, MotionConfig } from "motion/react";
 import { Article } from "@/types/blog-types";
 import { PostCard } from "@/components/blog/PostCard";
 import {
@@ -63,113 +63,71 @@ const educationItems: {
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { x: -20, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut" as const,
-    },
-  },
-};
-
 export default function EducationSection({
   articles = [],
 }: {
   articles?: Article[];
 }) {
   return (
-    <MotionConfig reducedMotion="user">
-      <Section
-        id="learn"
-        spacing="loose"
-        ground="warm"
-        decor={{ texture: "grain-coarse" }}
-      >
-        <div className="relative mx-auto max-w-6xl w-full">
-          {/* Background decoration — single static wash (was two infinite-loop blurs) */}
-          <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-            <Decor wash />
-          </div>
+    <Section
+      id="learn"
+      spacing="loose"
+      ground="warm"
+      decor={{ texture: "grain-coarse" }}
+    >
+      <div className="relative mx-auto max-w-6xl w-full">
+        {/* Background decoration — single static wash (was two infinite-loop blurs) */}
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+          <Decor wash />
+        </div>
 
-          <Stack gap="12">
-            {/* Two-column layout: Content left, Image right */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Left Column: Header + List */}
-              <div className="order-1">
-                <Stack gap="12">
-                  {/* Header Section - Left aligned */}
-                  <div className="relative">
-                    <Stack gap="6">
-                      <motion.h2
-                        initial={{ y: 20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="text-title text-balance leading-[1.1] tracking-tight"
-                      >
+        <Stack gap="12">
+          {/* Two-column layout: Content left, Image right */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column: Header + List */}
+            <div className="order-1">
+              <Stack gap="12">
+                {/* Header Section - Left aligned */}
+                <div className="relative">
+                  <Stack gap="6">
+                    <Reveal delay={0.1}>
+                      <h2 className="text-title text-balance leading-[1.1] tracking-tight">
                         Unlock the World of <Accent>Indian Coffee</Accent>
-                      </motion.h2>
+                      </h2>
+                    </Reveal>
 
-                      <motion.p
-                        initial={{ y: 20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="max-w-xl text-pretty text-body-large text-muted-foreground leading-relaxed font-light"
-                      >
+                    <Reveal delay={0.2}>
+                      <p className="max-w-xl text-pretty text-body-large text-muted-foreground leading-relaxed font-light">
                         From the misty plantations of the Western Ghats to your
                         cup — dive into the heritage, science, and craft behind
                         India&apos;s finest coffee.
-                      </motion.p>
-                    </Stack>
-                  </div>
+                      </p>
+                    </Reveal>
+                  </Stack>
+                </div>
 
-                  {/* Simple List with Icons */}
-                  <motion.ul
-                    className="flex flex-col gap-5"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                  >
-                    {educationItems.map((item, index) => (
-                      <motion.li
-                        key={item.id}
-                        variants={itemVariants}
+                {/* Simple List with Icons */}
+                <ul className="flex flex-col gap-5">
+                  {educationItems.map((item, index) => (
+                    <li key={item.id}>
+                      <Reveal
+                        from="left"
+                        delay={0.2 + index * 0.1}
                         className="flex items-start gap-4"
                       >
                         {/* Animated Icon */}
-                        <motion.div
-                          animate={{ y: [0, -3, 0] }}
-                          transition={{
-                            duration: 3,
-                            ease: "easeInOut" as const,
-                            repeat: Infinity,
-                            delay: index * 0.3,
-                          }}
+                        <div
                           className={cn(
                             "h-10 w-10 flex-center rounded-lg flex-shrink-0",
+                            "animate-float motion-reduce:animate-none",
                             item.color === "accent"
                               ? "bg-accent/10 text-accent"
                               : "bg-primary/10 text-primary"
                           )}
+                          style={{ animationDelay: `${index * 0.3}s` }}
                         >
                           <Icon icon={item.icon} size={20} color={item.color} />
-                        </motion.div>
+                        </div>
 
                         {/* Text Content */}
                         <div className="pt-0.5">
@@ -187,88 +145,80 @@ export default function EducationSection({
                             {item.description}
                           </p>
                         </div>
-                      </motion.li>
-                    ))}
-                  </motion.ul>
+                      </Reveal>
+                    </li>
+                  ))}
+                </ul>
 
-                  {/* CTA Button */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 }}
+                {/* CTA Button */}
+                <Reveal delay={0.5}>
+                  <Button asChild size="lg" variant="default">
+                    <Link href="/learn">
+                      Explore Educational Content
+                      <Icon className="ml-2" icon={ArrowRightIcon} size={16} />
+                    </Link>
+                  </Button>
+                </Reveal>
+              </Stack>
+            </div>
+
+            {/* Right Column: Dynamic Articles Carousel */}
+            <div className="relative order-2">
+              <Reveal
+                from="scale"
+                delay={0.3}
+                className="relative mx-auto w-full max-w-[540px]"
+              >
+                {articles && articles.length > 0 ? (
+                  <div className="group relative">
+                    <Carousel
+                      opts={{
+                        align: "start",
+                        loop: true,
+                      }}
+                      className="w-full"
+                    >
+                      <CarouselContent>
+                        {articles.map((article) => (
+                          <CarouselItem key={article._id}>
+                            <div className="p-1">
+                              <PostCard article={article} />
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <div className="absolute -bottom-12 left-0 right-0 flex justify-center gap-4 opacity-0 transition-opacity group-hover:opacity-100 lg:static lg:mt-6 lg:opacity-100">
+                        <CarouselPrevious className="static translate-y-0" />
+                        <CarouselNext className="static translate-y-0" />
+                      </div>
+                    </Carousel>
+                  </div>
+                ) : (
+                  /* Fallback to static image if no articles are provided */
+                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-md">
+                    <Image
+                      alt="Open coffee education journal on wooden café table"
+                      className="h-full w-full object-cover"
+                      height={480}
+                      priority
+                      src="/images/home/open-book-cafe.avif"
+                      width={480}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                  </div>
+                )}
+
+                {/* Floating "Did You Know" Card - only shown with static image or on desktop */}
+                {(!articles || articles.length === 0) && (
+                  <Reveal
+                    delay={0.6}
+                    className="absolute -bottom-6 -left-6 z-20 hidden max-w-xs lg:block"
                   >
-                    <Button asChild size="lg" variant="default">
-                      <Link href="/learn">
-                        Explore Educational Content
-                        <Icon
-                          className="ml-2"
-                          icon={ArrowRightIcon}
-                          size={16}
-                        />
-                      </Link>
-                    </Button>
-                  </motion.div>
-                </Stack>
-              </div>
-
-              {/* Right Column: Dynamic Articles Carousel */}
-              <div className="relative order-2">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  className="relative mx-auto w-full max-w-[540px]"
-                >
-                  {articles && articles.length > 0 ? (
-                    <div className="group relative">
-                      <Carousel
-                        opts={{
-                          align: "start",
-                          loop: true,
-                        }}
-                        className="w-full"
-                      >
-                        <CarouselContent>
-                          {articles.map((article) => (
-                            <CarouselItem key={article._id}>
-                              <div className="p-1">
-                                <PostCard article={article} />
-                              </div>
-                            </CarouselItem>
-                          ))}
-                        </CarouselContent>
-                        <div className="absolute -bottom-12 left-0 right-0 flex justify-center gap-4 opacity-0 transition-opacity group-hover:opacity-100 lg:static lg:mt-6 lg:opacity-100">
-                          <CarouselPrevious className="static translate-y-0" />
-                          <CarouselNext className="static translate-y-0" />
-                        </div>
-                      </Carousel>
-                    </div>
-                  ) : (
-                    /* Fallback to static image if no articles are provided */
-                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-md">
-                      <Image
-                        alt="Open coffee education journal on wooden café table"
-                        className="h-full w-full object-cover"
-                        height={480}
-                        priority
-                        src="/images/home/open-book-cafe.avif"
-                        width={480}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                    </div>
-                  )}
-
-                  {/* Floating "Did You Know" Card - only shown with static image or on desktop */}
-                  {(!articles || articles.length === 0) && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.6 }}
-                      animate={{ y: [0, -8, 0] }}
-                      className="absolute -bottom-6 -left-6 z-20 hidden max-w-xs lg:block"
+                    <div
+                      className="animate-float motion-reduce:animate-none"
+                      style={
+                        { "--float-amplitude": "-8px" } as React.CSSProperties
+                      }
                     >
                       <div className="surface-1 p-4 shadow-lg rounded-xl border border-border/50">
                         <div className="flex items-start gap-3">
@@ -286,14 +236,14 @@ export default function EducationSection({
                           </div>
                         </div>
                       </div>
-                    </motion.div>
-                  )}
-                </motion.div>
-              </div>
+                    </div>
+                  </Reveal>
+                )}
+              </Reveal>
             </div>
-          </Stack>
-        </div>
-      </Section>
-    </MotionConfig>
+          </div>
+        </Stack>
+      </div>
+    </Section>
   );
 }

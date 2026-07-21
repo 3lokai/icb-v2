@@ -20,6 +20,8 @@ import {
   type ScrollspySection,
 } from "@/components/common/ScrollspyTabBar";
 import { FloatingRateCTA } from "@/components/common/FloatingRateCTA";
+import { FAQSection } from "@/components/common/FAQ";
+import type { FaqItem } from "@/lib/seo/roaster-faqs";
 import { cn } from "@/lib/utils";
 
 /* ─── Types ─── */
@@ -28,6 +30,8 @@ type RoasterDetailPageProps = {
   roaster: RoasterDetail;
   stats: EntityReviewStats | null;
   reviews: ReviewWithProfile[];
+  /** Data-templated FAQs; JSON-LD is emitted by the parent route. */
+  faqItems?: FaqItem[];
   className?: string;
 };
 
@@ -44,6 +48,7 @@ export function RoasterDetailPage({
   roaster,
   stats,
   reviews,
+  faqItems,
   className,
 }: RoasterDetailPageProps) {
   return (
@@ -161,6 +166,24 @@ export function RoasterDetailPage({
           </p>
         </div>
       </Band>
+
+      {/* SECTION 5: FAQ (JSON-LD emitted by the route, not here) */}
+      {faqItems && faqItems.length > 0 && (
+        <Band>
+          <FAQSection
+            includeStructuredData={false}
+            overline="Good to Know"
+            badge="Roaster Q&A"
+            title={
+              <>
+                About <Accent>{roaster.name}.</Accent>
+              </>
+            }
+            description={`Quick answers on where ${roaster.name} sources, what they specialize in, and how to buy.`}
+            items={faqItems}
+          />
+        </Band>
+      )}
 
       {/* Exit Intent Modal (client island) */}
       <ExitIntentRating

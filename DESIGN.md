@@ -282,8 +282,6 @@ lg:grid-cols-3 gap-8`); adopt it instead of re-typing a three-column grid. Image
 
 - **Style:** Fully rounded (`rounded-full`), `bg-muted` pale-wheat fill, `foreground` text, `0.75rem`
   medium (`.badge`). Quiet by default.
-- **Outline variant:** `.badge-outline` — transparent with a single `accent` border, for emphasis
-  without a fill.
 - **State:** Filter chips over media use the dark-scrim `chip` button variant; selected/active states
   lean on `accent` rather than a new color.
 

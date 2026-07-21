@@ -9,6 +9,17 @@ import type { Json } from "./db-enums";
 // 1. Roaster Page Type - RoasterDetail
 // ----------------------------------------------------------------------------
 
+/** A physical roaster location (roastery, cafe, store) from `physical_locations` jsonb. */
+export type RoasterLocation = {
+  name: string | null;
+  type: string | null;
+  address: string | null;
+  city: string | null;
+  lat: number | null;
+  lon: number | null;
+  google_maps_url: string | null;
+};
+
 export type RoasterDetail = {
   // From roasters table
   id: string;
@@ -33,6 +44,15 @@ export type RoasterDetail = {
   created_at: string;
   updated_at: string;
   default_concurrency: number | null;
+
+  // Editorial / sourcing detail (from roasters table)
+  founded_year: number | null;
+  has_subscription: boolean | null;
+  has_physical_store: boolean | null;
+  sourcing_approach: string | null;
+  regions_sourced: string | null;
+  regions_tags: string[] | null;
+  physical_locations: RoasterLocation[] | null;
 
   // Rating fields from roasters table
   avg_rating: number | null;

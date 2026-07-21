@@ -21,10 +21,6 @@
   @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-muted text-foreground;
 }
 
-.badge-outline {
-  @apply border border-accent bg-transparent text-foreground;
-}
-
 /* Cards */
 .card-base {
   @apply bg-card text-card-foreground border border-border/60 rounded-lg;
@@ -59,11 +55,6 @@
   @apply absolute bottom-0 left-0 p-4 text-white;
 }
 
-/* Newsletter */
-.newsletter-wrapper {
-  @apply w-full max-w-md mx-auto;
-}
-
 /* Glossary Terms
  * Accent family: this dotted-accent underline is the quiet inline cousin of the
  * coffee brush-smear `.accent-smear` (effects.css / <Accent> primitive). Both are
@@ -78,11 +69,6 @@
 
 .glossary-term:hover {
   @apply decoration-accent decoration-2 bg-accent/10 px-1 -mx-1 rounded;
-}
-
-/* Responsive image */
-.img-responsive {
-  @apply w-full h-auto object-cover;
 }
 
 /* Logo text hiding in compact navbar */
