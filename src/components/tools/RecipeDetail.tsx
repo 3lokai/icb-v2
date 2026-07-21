@@ -2,6 +2,17 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import {
+  BookOpenIcon,
+  CoffeeIcon,
+  CopyIcon,
+  LightbulbIcon,
+  ListChecksIcon,
+  PlayIcon,
+  TimerIcon,
+  WrenchIcon,
+  XIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { BrewingTimer } from "@/components/tools/BrewTimer";
 import { Badge } from "@/components/ui/badge";
@@ -170,7 +181,7 @@ From IndianCoffeeBeans.com Expert Recipes
               size="sm"
               variant="ghost"
             >
-              <Icon className="h-4 w-4" name="X" />
+              <Icon className="h-4 w-4" icon={XIcon} />
             </Button>
           </div>
         </div>
@@ -189,7 +200,7 @@ From IndianCoffeeBeans.com Expert Recipes
                 </span>
               </div>
               <h3 className="flex items-center gap-2 text-heading text-primary">
-                <Icon className="h-5 w-5 shrink-0" name="BookOpen" />
+                <Icon className="h-5 w-5 shrink-0" icon={BookOpenIcon} />
                 The Story
               </h3>
               <p className="text-pretty text-body text-muted-foreground leading-relaxed">
@@ -210,7 +221,7 @@ From IndianCoffeeBeans.com Expert Recipes
                     </span>
                   </div>
                   <h3 className="flex items-center gap-2 text-heading text-primary">
-                    <Icon className="h-5 w-5 shrink-0" name="ListChecks" />
+                    <Icon className="h-5 w-5 shrink-0" icon={ListChecksIcon} />
                     Brewing Steps
                   </h3>
                 </Stack>
@@ -221,7 +232,7 @@ From IndianCoffeeBeans.com Expert Recipes
                     size="sm"
                     variant="outline"
                   >
-                    <Icon className="h-4 w-4" name="Timer" />
+                    <Icon className="h-4 w-4" icon={TimerIcon} />
                     {showTimer ? "Hide Timer" : "Start Timer"}
                   </Button>
                 ) : null}
@@ -285,7 +296,7 @@ From IndianCoffeeBeans.com Expert Recipes
                 </span>
               </div>
               <h3 className="flex items-center gap-2 text-heading text-primary">
-                <Icon className="h-5 w-5 shrink-0" name="Lightbulb" />
+                <Icon className="h-5 w-5 shrink-0" icon={LightbulbIcon} />
                 Pro Tips
               </h3>
               <div className="space-y-3">
@@ -314,7 +325,7 @@ From IndianCoffeeBeans.com Expert Recipes
                 </span>
               </div>
               <h3 className="flex items-center gap-2 text-heading text-primary">
-                <Icon className="h-5 w-5 shrink-0" name="Wrench" />
+                <Icon className="h-5 w-5 shrink-0" icon={WrenchIcon} />
                 Equipment
               </h3>
               <div className="space-y-2">
@@ -325,7 +336,7 @@ From IndianCoffeeBeans.com Expert Recipes
                   >
                     <Icon
                       className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary"
-                      name="Coffee"
+                      icon={CoffeeIcon}
                     />
                     <span className="text-caption transition-colors group-hover:text-foreground">
                       {equipment}
@@ -356,7 +367,7 @@ From IndianCoffeeBeans.com Expert Recipes
                   size="sm"
                   variant="outline"
                 >
-                  <Icon className="mr-2 h-4 w-4" name="Copy" />
+                  <Icon className="mr-2 h-4 w-4" icon={CopyIcon} />
                   {copied ? "Copied!" : "Copy Recipe"}
                 </Button>
                 {copyError ? (
@@ -381,7 +392,7 @@ From IndianCoffeeBeans.com Expert Recipes
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      <Icon className="mr-2 h-4 w-4" name="Play" />
+                      <Icon className="mr-2 h-4 w-4" icon={PlayIcon} />
                       Watch Video
                     </a>
                   </Button>

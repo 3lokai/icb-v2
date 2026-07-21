@@ -4,6 +4,7 @@
 import { Accent } from "@/components/primitives/accent";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, startTransition, useState } from "react";
+import { WarningIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -194,7 +195,7 @@ export function CoffeeCalculator({
                 className="border-destructive/20 bg-destructive/10"
                 variant="destructive"
               >
-                <Icon className="h-4 w-4" name="Warning" />
+                <Icon className="h-4 w-4" icon={WarningIcon} />
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

@@ -5,7 +5,17 @@ import { useEffect, useMemo } from "react";
 import type { RoasterDetail } from "@/types/roaster-types";
 import type { EntityReviewStats } from "@/types/review-types";
 import { roasterImagePresets } from "@/lib/imagekit";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  FacebookLogoIcon,
+  GlobeIcon,
+  InstagramLogoIcon,
+  MapPinIcon,
+  StarIcon,
+  StorefrontIcon,
+  TwitterLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 import { useImageColor } from "@/hooks/useImageColor";
 import { Band } from "@/components/primitives/band";
 import { Cluster } from "@/components/primitives/cluster";
@@ -74,9 +84,14 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
   const location = locationParts.length > 0 ? locationParts.join(", ") : null;
 
   // Social Links
-  const socialLinks: Array<{ label: string; url: string; icon: IconName }> = [];
+  const socialLinks: Array<{ label: string; url: string; icon: PhosphorIcon }> =
+    [];
   if (roaster.website) {
-    socialLinks.push({ label: "Website", url: roaster.website, icon: "Globe" });
+    socialLinks.push({
+      label: "Website",
+      url: roaster.website,
+      icon: GlobeIcon,
+    });
   }
   if (roaster.instagram_handle) {
     const instagramUrl = roaster.instagram_handle.startsWith("http")
@@ -85,7 +100,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
     socialLinks.push({
       label: "Instagram",
       url: instagramUrl,
-      icon: "InstagramLogo",
+      icon: InstagramLogoIcon,
     });
   }
   if (roaster.social_json && typeof roaster.social_json === "object") {
@@ -96,14 +111,14 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
         url: social.twitter.startsWith("http")
           ? social.twitter
           : `https://twitter.com/${social.twitter.replace(/^@/, "")}`,
-        icon: "TwitterLogo",
+        icon: TwitterLogoIcon,
       });
     }
     if (social.facebook && typeof social.facebook === "string") {
       socialLinks.push({
         label: "Facebook",
         url: social.facebook,
-        icon: "FacebookLogo",
+        icon: FacebookLogoIcon,
       });
     }
   }
@@ -139,7 +154,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-muted-foreground/40">
-                <Icon name="Storefront" size={84} />
+                <Icon icon={StorefrontIcon} size={84} />
               </div>
             )}
           </div>
@@ -153,7 +168,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
             </h1>
             {location && (
               <div className="flex items-center gap-2 text-muted-foreground mt-1">
-                <Icon name="MapPin" size={14} className="text-accent/60" />
+                <Icon icon={MapPinIcon} size={14} className="text-accent/60" />
                 <span className="text-label uppercase tracking-widest">
                   {location}
                 </span>
@@ -173,7 +188,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
             {stats && stats.review_count ? (
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border/40 bg-card">
                 <Icon
-                  name="Star"
+                  icon={StarIcon}
                   size={16}
                   className="fill-rating text-rating"
                 />
@@ -254,7 +269,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
               onClick={handleScrollToRating}
             >
               <Icon
-                name="Star"
+                icon={StarIcon}
                 size={18}
                 className="mr-2 fill-rating text-rating"
               />
@@ -276,7 +291,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
                     trackRoasterConversion(roaster.id, "website_click");
                   }}
                 >
-                  <Icon name="Globe" size={18} className="mr-2" />
+                  <Icon icon={GlobeIcon} size={18} className="mr-2" />
                   Website
                 </a>
               </Button>
@@ -296,7 +311,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
                   title={link.label}
                   aria-label={`${roaster.name} on ${link.label}`}
                 >
-                  <Icon name={link.icon} size={18} aria-hidden="true" />
+                  <Icon icon={link.icon} size={18} aria-hidden="true" />
                 </a>
               ))}
             </Cluster>

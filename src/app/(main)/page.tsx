@@ -22,6 +22,7 @@ import { TestimonialsSectionSkeleton } from "@/components/homepage/TestimonialsS
 import { CtaSectionSkeleton } from "@/components/homepage/CtaSectionSkeleton";
 import { HowItWorksSectionSkeleton } from "@/components/homepage/HowItWorksSectionSkeleton";
 import { DiscoveryAccordionGridSkeleton } from "@/components/discovery/DiscoveryAccordionGridSkeleton";
+import { DISCOVERY_PILL_ROWS } from "@/lib/discovery/discovery-pill-labels";
 
 // Dynamic imports for below-the-fold components to reduce initial bundle size
 const RoasterInfrastructureSection = dynamic(
@@ -127,7 +128,10 @@ export default async function Home({ searchParams }: HomePageProps) {
         <FreshFromCommunitySection />
         <HomeCollectionGridLazy tier="core" />
         <Section spacing="default" ground="warm" decor={{ texture: "grain" }}>
-          <DiscoveryAccordionGrid description="Jump straight to top-rated coffees by roast, brew method, process, origin, and more." />
+          <DiscoveryAccordionGrid
+            rows={DISCOVERY_PILL_ROWS}
+            description="Jump straight to top-rated coffees by roast, brew method, process, origin, and more."
+          />
         </Section>
         <HowItWorksSection />
         <Suspense fallback={<TopProfilesSectionSkeleton />}>

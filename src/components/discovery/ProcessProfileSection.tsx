@@ -15,7 +15,23 @@ import {
   type ProcessProfileConfig,
 } from "@/lib/discovery/landing-pages";
 import { cn } from "@/lib/utils";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  ArrowDownIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
+  ArrowsLeftRightIcon,
+  CoffeeIcon,
+  DropIcon,
+  InfoIcon,
+  ListNumbersIcon,
+  MapPinIcon,
+  PackageIcon,
+  SparkleIcon,
+  StarIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 
 type ProcessProfileSectionProps = {
   profile: ProcessProfileConfig;
@@ -24,7 +40,11 @@ type ProcessProfileSectionProps = {
   className?: string;
 };
 
-const STEP_ICONS: IconName[] = ["Coffee", "Drop", "Package"];
+const STEP_ICONS: ComponentType<IconProps>[] = [
+  CoffeeIcon,
+  DropIcon,
+  PackageIcon,
+];
 
 function processSlugToLabel(slug: string): string {
   const page = getLandingPageConfig(slug);
@@ -84,7 +104,7 @@ export function ProcessProfileSection({
         {/* 1. Processing steps — 3-card horizontal grid */}
         <div>
           <div className="flex items-center gap-2 mb-6">
-            <Icon name="ListNumbers" className="h-5 w-5 text-accent/70" />
+            <Icon icon={ListNumbersIcon} className="h-5 w-5 text-accent/70" />
             <h3 className="text-heading">From Cherry to Cup</h3>
           </div>
           <ol className="grid gap-6 md:grid-cols-3">
@@ -97,7 +117,7 @@ export function ProcessProfileSection({
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                     <Icon
                       className="text-primary"
-                      name={STEP_ICONS[index] ?? "Coffee"}
+                      icon={STEP_ICONS[index] ?? CoffeeIcon}
                       size={24}
                     />
                   </div>
@@ -126,7 +146,7 @@ export function ProcessProfileSection({
             >
               Read the full guide
               <Icon
-                name="ArrowRight"
+                icon={ArrowRightIcon}
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
               />
             </Link>
@@ -162,7 +182,10 @@ export function ProcessProfileSection({
                 {/* Typical flavour tags */}
                 <Stack gap="4">
                   <div className="flex items-center gap-2">
-                    <Icon name="Sparkle" className="h-4 w-4 text-accent/60" />
+                    <Icon
+                      icon={SparkleIcon}
+                      className="h-4 w-4 text-accent/60"
+                    />
                     <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
                       Typical notes
                     </p>
@@ -191,7 +214,7 @@ export function ProcessProfileSection({
                 <div className="rounded-[1.25rem] border border-border bg-muted/30 px-5 py-5 transition-colors hover:bg-muted/50">
                   <div className="mb-3 flex items-center gap-2">
                     <Icon
-                      name="ArrowsLeftRight"
+                      icon={ArrowsLeftRightIcon}
                       className="h-4 w-4 text-accent/60"
                     />
                     <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
@@ -224,7 +247,7 @@ export function ProcessProfileSection({
               className="relative z-10 w-full text-center md:text-left"
             >
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <Icon name="MapPin" className="h-5 w-5 text-accent/70" />
+                <Icon icon={MapPinIcon} className="h-5 w-5 text-accent/70" />
                 <p className="text-overline text-accent tracking-[0.15em] uppercase">
                   Indian Specialty Context
                 </p>
@@ -239,7 +262,7 @@ export function ProcessProfileSection({
         {/* 4. Brew guidance — recommended methods + notes */}
         <div className="max-w-5xl mx-auto w-full space-y-6">
           <h3 className="text-heading mb-6 flex items-center gap-2">
-            <Icon name="Coffee" className="h-5 w-5 text-accent/70" />
+            <Icon icon={CoffeeIcon} className="h-5 w-5 text-accent/70" />
             Brew Guidance
           </h3>
 
@@ -247,7 +270,7 @@ export function ProcessProfileSection({
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
               <div className="flex items-center gap-2 w-36 shrink-0">
                 <Icon
-                  name="Star"
+                  icon={StarIcon}
                   className="h-4 w-4 text-muted-foreground/60"
                 />
                 <p className="text-label uppercase">Recommended</p>
@@ -272,7 +295,7 @@ export function ProcessProfileSection({
           <div className="surface-2 rounded-xl p-5 mt-4">
             <div className="flex items-start gap-3">
               <Icon
-                name="Info"
+                icon={InfoIcon}
                 className="mt-0.5 h-5 w-5 shrink-0 text-accent"
               />
               <p className="text-caption font-medium leading-relaxed text-foreground/80">
@@ -288,7 +311,10 @@ export function ProcessProfileSection({
         {(moreIntenseLinks.length > 0 || lessIntenseLinks.length > 0) && (
           <div className="max-w-5xl mx-auto w-full space-y-6">
             <h3 className="text-heading mb-6 flex items-center gap-2">
-              <Icon name="ArrowsLeftRight" className="h-5 w-5 text-accent/70" />
+              <Icon
+                icon={ArrowsLeftRightIcon}
+                className="h-5 w-5 text-accent/70"
+              />
               Explore Other Processes
             </h3>
 
@@ -297,7 +323,7 @@ export function ProcessProfileSection({
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                   <div className="flex items-center gap-2 w-36 shrink-0">
                     <Icon
-                      name="ArrowUp"
+                      icon={ArrowUpIcon}
                       className="h-4 w-4 text-muted-foreground/60"
                     />
                     <p className="text-label uppercase">More intense</p>
@@ -322,7 +348,7 @@ export function ProcessProfileSection({
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                   <div className="flex items-center gap-2 w-36 shrink-0">
                     <Icon
-                      name="ArrowDown"
+                      icon={ArrowDownIcon}
                       className="h-4 w-4 text-muted-foreground/60"
                     />
                     <p className="text-label uppercase">Less intense</p>

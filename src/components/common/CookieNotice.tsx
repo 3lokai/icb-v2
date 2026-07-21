@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useEffect, startTransition, useState } from "react";
 import { createPortal } from "react-dom";
+import { CookieIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -106,7 +107,7 @@ export function CookieNotice() {
             <Icon
               className="text-accent"
               color="accent"
-              name="Cookie"
+              icon={CookieIcon}
               size={20}
             />
             Cookie Preferences
@@ -116,7 +117,7 @@ export function CookieNotice() {
             onClick={() => setShowManage(false)}
             type="button"
           >
-            <Icon name="X" size={18} />
+            <Icon icon={XIcon} size={18} />
           </button>
         </div>
         <p className="mb-4 text-muted-foreground">
@@ -179,7 +180,7 @@ export function CookieNotice() {
           <Icon
             className="hidden text-accent md:block"
             color="accent"
-            name="Cookie"
+            icon={CookieIcon}
             size={24}
           />
           <p className="max-w-3xl text-foreground text-caption">

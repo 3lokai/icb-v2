@@ -1,6 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import {
+  ArrowRightIcon,
+  ListBulletsIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
@@ -25,7 +29,7 @@ export function SeriesNavigation({ value }: SeriesNavigationProps) {
         <div className="space-y-4 max-w-xl">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-accent text-white shadow-lg group-hover:rotate-12 transition-transform duration-500">
-              <Icon name="ListBullets" size={24} />
+              <Icon icon={ListBulletsIcon} size={24} />
             </div>
             <h2 className="text-title font-bold text-foreground">
               Series: {value.title || "Continue Learning"}
@@ -46,7 +50,7 @@ export function SeriesNavigation({ value }: SeriesNavigationProps) {
           >
             <Link href="/learn" className="font-bold">
               View Collection{" "}
-              <Icon name="ArrowRight" size={18} className="ml-2" />
+              <Icon icon={ArrowRightIcon} size={18} className="ml-2" />
             </Link>
           </Button>
         </div>

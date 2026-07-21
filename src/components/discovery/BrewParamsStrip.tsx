@@ -1,4 +1,11 @@
 import type { LandingPageConfig } from "@/lib/discovery/landing-pages";
+import {
+  CoffeeIcon,
+  ScalesIcon,
+  TimerIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
 import { Icon } from "@/components/common/Icon";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
@@ -14,7 +21,7 @@ const cells: Array<{
   label: string;
   key: keyof BrewParamsStripProps["brewParams"];
   subKey?: "grindSub";
-  icon: "Coffee" | "Scales" | "Timer";
+  icon: ComponentType<IconProps>;
   iconBg: string;
   iconColor: string;
 }> = [
@@ -22,21 +29,21 @@ const cells: Array<{
     label: "Grind",
     key: "grindSize",
     subKey: "grindSub",
-    icon: "Coffee",
+    icon: CoffeeIcon,
     iconBg: "bg-primary/10",
     iconColor: "text-primary",
   },
   {
     label: "Ratio",
     key: "ratio",
-    icon: "Scales",
+    icon: ScalesIcon,
     iconBg: "bg-accent/10",
     iconColor: "text-accent",
   },
   {
     label: "Brew time",
     key: "brewTime",
-    icon: "Timer",
+    icon: TimerIcon,
     iconBg: "bg-chart-2/10",
     iconColor: "text-chart-2",
   },
@@ -82,7 +89,7 @@ export function BrewParamsStrip({
                   >
                     <Icon
                       className={cell.iconColor}
-                      name={cell.icon}
+                      icon={cell.icon}
                       size={24}
                     />
                   </div>

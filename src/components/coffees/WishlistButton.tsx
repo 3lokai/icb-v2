@@ -1,5 +1,6 @@
 "use client";
 
+import { HeartIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import {
@@ -55,7 +56,7 @@ export function WishlistButton({
         className={cn("gap-2", className)}
       >
         <Icon
-          name="Heart"
+          icon={HeartIcon}
           size={18}
           color={saved ? "destructive" : "muted"}
           weight="fill"
@@ -82,7 +83,7 @@ export function WishlistButton({
           )}
         >
           <Icon
-            name="Heart"
+            icon={HeartIcon}
             size={20}
             weight="fill"
             color={saved ? "destructive" : "white"}

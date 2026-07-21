@@ -7,7 +7,18 @@ import { useMemo } from "react";
 import type { RoasterDetail } from "@/types/roaster-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
 import { roasterImagePresets } from "@/lib/imagekit";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CloudSunIcon,
+  CoffeeIcon,
+  MoonIcon,
+  SparkleIcon,
+  StorefrontIcon,
+  SunIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 import { useImageColor } from "@/hooks/useImageColor";
 
 import { Section } from "@/components/primitives/section";
@@ -26,7 +37,7 @@ type RoastGroup = {
   id: string;
   label: string;
   description: string;
-  icon: IconName;
+  icon: PhosphorIcon;
   coffees: CoffeeSummary[];
 };
 
@@ -80,7 +91,7 @@ export function RoasterCoffeesSelectionPage({
         label: "Light",
         description:
           "Bright, acidic, and complex profiles that highlight the bean's origin flavors.",
-        icon: "Sun",
+        icon: SunIcon,
         coffees: light,
       });
     }
@@ -91,7 +102,7 @@ export function RoasterCoffeesSelectionPage({
         label: "Medium",
         description:
           "Balanced body and acidity, bringing out sweetness and caramelization.",
-        icon: "CloudSun",
+        icon: CloudSunIcon,
         coffees: medium,
       });
     }
@@ -102,7 +113,7 @@ export function RoasterCoffeesSelectionPage({
         label: "Dark",
         description:
           "Bold, rich, and intense flavors with low acidity and deep chocolate notes.",
-        icon: "Moon",
+        icon: MoonIcon,
         coffees: dark,
       });
     }
@@ -113,7 +124,7 @@ export function RoasterCoffeesSelectionPage({
         label: "Unique",
         description:
           "Special releases, blends, and unique roasts outside the standard spectrum.",
-        icon: "Sparkle",
+        icon: SparkleIcon,
         coffees: other,
       });
     }
@@ -149,7 +160,7 @@ export function RoasterCoffeesSelectionPage({
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-muted-foreground/40">
-                <Icon name="Storefront" size={42} />
+                <Icon icon={StorefrontIcon} size={42} />
               </div>
             )}
           </div>
@@ -180,7 +191,7 @@ export function RoasterCoffeesSelectionPage({
                 className="rounded-full"
               >
                 <Link href={`/roasters/${roaster.slug}`}>
-                  <Icon name="ArrowLeft" size={14} className="mr-2" />
+                  <Icon icon={ArrowLeftIcon} size={14} className="mr-2" />
                   Back to Profile
                 </Link>
               </Button>
@@ -215,7 +226,7 @@ export function RoasterCoffeesSelectionPage({
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-accent/10 text-accent">
-                          <Icon name={group.icon as IconName} size={20} />
+                          <Icon icon={group.icon} size={20} />
                         </div>
                         <p className="text-overline text-muted-foreground tracking-[0.15em]">
                           {group.coffees.length} Available
@@ -244,7 +255,7 @@ export function RoasterCoffeesSelectionPage({
           <Section contained spacing="loose">
             <div className="py-20 text-center bg-card/40 backdrop-blur-[2px] rounded-3xl border border-dashed border-border/60">
               <Icon
-                name="Coffee"
+                icon={CoffeeIcon}
                 size={48}
                 className="mx-auto mb-4 text-muted-foreground/40"
               />
@@ -287,7 +298,7 @@ export function RoasterCoffeesSelectionPage({
             <Button size="lg" asChild className="rounded-full px-8 hover-lift">
               <Link href="/coffees">
                 Browse All Coffees
-                <Icon name="ArrowRight" size={16} className="ml-2" />
+                <Icon icon={ArrowRightIcon} size={16} className="ml-2" />
               </Link>
             </Button>
           </div>

@@ -7,6 +7,16 @@ import {
   useRef,
   useState,
 } from "react";
+import {
+  ArrowCounterClockwiseIcon,
+  CheckIcon,
+  PauseIcon,
+  PlayIcon,
+  SpeakerHighIcon,
+  SpeakerSlashIcon,
+  TimerIcon,
+  VibrateIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -305,11 +315,14 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
     return (
       <div className={`surface-1 card-padding rounded-lg ${className}`}>
         <div className="mb-6 flex items-center gap-2">
-          <Icon className="h-5 w-5 text-primary" name="Timer" />
+          <Icon className="h-5 w-5 text-primary" icon={TimerIcon} />
           <h3 className="text-subheading">Brewing Timer</h3>
         </div>
         <div className="py-8 text-center text-muted-foreground">
-          <Icon className="mx-auto mb-3 h-12 w-12 opacity-50" name="Timer" />
+          <Icon
+            className="mx-auto mb-3 h-12 w-12 opacity-50"
+            icon={TimerIcon}
+          />
           <p className="text-caption">
             Select a brewing method to start timing
           </p>
@@ -324,7 +337,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Icon className="h-5 w-5 text-primary" name="Timer" />
+            <Icon className="h-5 w-5 text-primary" icon={TimerIcon} />
             <h3 className="text-subheading">Brewing Timer</h3>
           </div>
 
@@ -342,9 +355,15 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
                 variant="ghost"
               >
                 {soundEnabled ? (
-                  <Icon className="h-5 w-5 sm:h-4 sm:w-4" name="SpeakerHigh" />
+                  <Icon
+                    className="h-5 w-5 sm:h-4 sm:w-4"
+                    icon={SpeakerHighIcon}
+                  />
                 ) : (
-                  <Icon className="h-5 w-5 sm:h-4 sm:w-4" name="SpeakerSlash" />
+                  <Icon
+                    className="h-5 w-5 sm:h-4 sm:w-4"
+                    icon={SpeakerSlashIcon}
+                  />
                 )}
               </Button>
 
@@ -359,7 +378,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
                   size="sm"
                   variant="ghost"
                 >
-                  <Icon className="h-5 w-5 sm:h-4 sm:w-4" name="Vibrate" />
+                  <Icon className="h-5 w-5 sm:h-4 sm:w-4" icon={VibrateIcon} />
                 </Button>
               )}
             </div>
@@ -389,7 +408,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
               onClick={pauseTimer}
               variant="outline"
             >
-              <Icon className="mr-2 h-4 w-4" name="Pause" />
+              <Icon className="mr-2 h-4 w-4" icon={PauseIcon} />
               {isPaused ? "Resume" : "Pause"}
             </Button>
           ) : (
@@ -397,7 +416,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
               className="h-12 flex-1 hover-lift px-6 sm:flex-initial"
               onClick={startTimer}
             >
-              <Icon className="mr-2 h-4 w-4" name="Play" />
+              <Icon className="mr-2 h-4 w-4" icon={PlayIcon} />
               Start Timer
             </Button>
           )}
@@ -407,7 +426,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
             onClick={resetTimer}
             variant="outline"
           >
-            <Icon className="mr-2 h-4 w-4" name="ArrowCounterClockwise" />
+            <Icon className="mr-2 h-4 w-4" icon={ArrowCounterClockwiseIcon} />
             Reset
           </Button>
         </div>
@@ -484,7 +503,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
                       className={`flex h-8 w-8 items-center justify-center rounded-full font-medium text-overline transition-colors duration-200 ${getStepBadgeClassName()}`}
                     >
                       {step.isCompleted ? (
-                        <Icon className="h-3 w-3" name="Check" />
+                        <Icon className="h-3 w-3" icon={CheckIcon} />
                       ) : (
                         <span>{formatTime(step.time)}</span>
                       )}

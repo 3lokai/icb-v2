@@ -2,6 +2,12 @@ import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import type { LandingPageConfig } from "@/lib/discovery/landing-pages";
+import {
+  ArrowRightIcon,
+  MapPinIcon,
+  MountainsIcon,
+  SparkleIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
@@ -27,9 +33,9 @@ type RegionSnapshotProps = {
 };
 
 const STAT_ICONS = [
-  { icon: "MapPin" as const, bg: "bg-primary/10", color: "text-primary" },
-  { icon: "Mountains" as const, bg: "bg-accent/10", color: "text-accent" },
-  { icon: "Sparkle" as const, bg: "bg-chart-2/10", color: "text-chart-2" },
+  { icon: MapPinIcon, bg: "bg-primary/10", color: "text-primary" },
+  { icon: MountainsIcon, bg: "bg-accent/10", color: "text-accent" },
+  { icon: SparkleIcon, bg: "bg-chart-2/10", color: "text-chart-2" },
 ];
 
 function SnapshotHeadingTitle({ children }: { children: React.ReactNode }) {
@@ -123,7 +129,7 @@ function SnapshotContent({
                   >
                     <Icon
                       className={cn(meta.color, embedded && "opacity-90")}
-                      name={meta.icon}
+                      icon={meta.icon}
                       size={embedded ? 18 : 20}
                     />
                   </div>
@@ -147,7 +153,7 @@ function SnapshotContent({
               className="inline-flex items-center gap-2 text-body font-medium text-accent hover:underline"
             >
               Full region guide
-              <Icon name="ArrowRight" className="h-4 w-4" />
+              <Icon icon={ArrowRightIcon} className="h-4 w-4" />
             </Link>
           ) : (
             <span

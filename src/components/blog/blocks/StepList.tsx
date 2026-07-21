@@ -1,9 +1,32 @@
 "use client";
 
 import { PortableText } from "@portabletext/react";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  CircleIcon,
+  CoffeeIcon,
+  DropIcon,
+  FireIcon,
+  ScalesIcon,
+  ThermometerIcon,
+  TimerIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
+
+// ponytail: Sanity's stepList icon field is a free string with no schema in this
+// repo; map the plausible brewing/process names and fall back to a circle.
+// Extend the map if editors introduce new names.
+const STEP_ICONS: Record<string, ComponentType<IconProps>> = {
+  Coffee: CoffeeIcon,
+  Timer: TimerIcon,
+  Drop: DropIcon,
+  Fire: FireIcon,
+  Thermometer: ThermometerIcon,
+  Scales: ScalesIcon,
+};
 
 interface StepListProps {
   value: {
@@ -72,14 +95,14 @@ export function StepList({ value }: StepListProps) {
               )}
               {step.icon && (
                 <Icon
-                  name={step.icon as IconName}
+                  icon={STEP_ICONS[step.icon] ?? CircleIcon}
                   size={18}
                   className="text-muted-foreground opacity-60"
                 />
               )}
               {step.time && (
                 <span className="flex items-center gap-1.5 rounded-full bg-muted/50 px-3 py-1 text-micro font-medium text-muted-foreground border border-border/40">
-                  <Icon name="Timer" size={12} />
+                  <Icon icon={TimerIcon} size={12} />
                   {step.time}
                 </span>
               )}

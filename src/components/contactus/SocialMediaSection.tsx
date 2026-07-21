@@ -1,7 +1,12 @@
 // src/components/contactus/SocialMediaSection.tsx
 "use client";
 
-import { Icon, IconName } from "@/components/common/Icon";
+import {
+  FacebookLogoIcon,
+  InstagramLogoIcon,
+  TwitterLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import { Icon } from "@/components/common/Icon";
 import { SectionHeader } from "./SectionHeader";
 import { Stack } from "../primitives/stack";
 
@@ -11,7 +16,7 @@ export function SocialMediaSection() {
       name: "Instagram",
       handle: "@indiancoffeebeans",
       href: "https://instagram.com/indiancoffeebeans",
-      icon: "InstagramLogo" as IconName,
+      icon: InstagramLogoIcon,
       description:
         "Daily doses of Indian coffee culture and roaster highlights.",
     },
@@ -19,14 +24,14 @@ export function SocialMediaSection() {
       name: "Twitter",
       handle: "@indcoffeebeans",
       href: "https://twitter.com/indcoffeebeans",
-      icon: "TwitterLogo" as IconName,
+      icon: TwitterLogoIcon,
       description: "Quick updates, industry news, and community conversations.",
     },
     {
       name: "Facebook",
       handle: "/indiacoffeebeans/",
       href: "https://www.facebook.com/indiacoffeebeans/",
-      icon: "FacebookLogo" as IconName,
+      icon: FacebookLogoIcon,
       description:
         "Join our community group and connect with fellow enthusiasts.",
     },
@@ -52,7 +57,7 @@ export function SocialMediaSection() {
             >
               <Stack gap="6">
                 <div className="h-16 w-16 flex items-center justify-center rounded-2xl border border-border bg-background shadow-sm transition-all duration-300 group-hover:border-accent/20 group-hover:bg-accent/5 group-hover:scale-110">
-                  <Icon color="accent" name={social.icon} size={32} />
+                  <Icon color="accent" icon={social.icon} size={32} />
                 </div>
 
                 <Stack gap="2">

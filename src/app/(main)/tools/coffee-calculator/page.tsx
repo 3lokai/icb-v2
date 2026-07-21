@@ -6,6 +6,12 @@ import { Suspense } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CoffeeCalculatorFAQ } from "@/components/faqs/CoffeeCalculatorFAQs";
+import {
+  BookOpenIcon,
+  CalculatorIcon,
+  CoffeeIcon,
+  TimerIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/primitives/section";
@@ -179,7 +185,7 @@ export default function CoffeeCalculatorPage() {
                       >
                         <Icon
                           className="transition-transform group-hover:scale-110"
-                          name="BookOpen"
+                          icon={BookOpenIcon}
                           size={16}
                         />
                         View Expert Recipes
@@ -232,21 +238,21 @@ export default function CoffeeCalculatorPage() {
               <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                 {[
                   {
-                    icon: "Calculator",
+                    icon: CalculatorIcon,
                     title: "Precise Calculations",
                     desc: "Get exact coffee and water measurements based on your preferred strength and brewing method.",
                     color: "text-primary",
                     bgColor: "bg-primary/10",
                   },
                   {
-                    icon: "BookOpen",
+                    icon: BookOpenIcon,
                     title: "Method Guides",
                     desc: "Learn the nuances of 11 brewing methods including flavor profiles and recommended roast levels.",
                     color: "text-accent",
                     bgColor: "bg-accent/10",
                   },
                   {
-                    icon: "Timer",
+                    icon: TimerIcon,
                     title: "Interactive Timer",
                     desc: "Follow along with method-specific brewing timers, audio notifications, and vibration alerts.",
                     color: "text-chart-2",
@@ -269,7 +275,7 @@ export default function CoffeeCalculatorPage() {
                             "h-6 w-6 transition-transform duration-300 group-hover:scale-110",
                             feature.color
                           )}
-                          name={feature.icon as any}
+                          icon={feature.icon}
                         />
                       </div>
                       <Stack gap="2">
@@ -341,7 +347,7 @@ export default function CoffeeCalculatorPage() {
                     )}
                     <Icon
                       className="mx-auto mb-3 h-6 w-6 text-primary transition-all duration-300 group-hover:scale-110 group-hover:text-accent"
-                      name="Coffee"
+                      icon={CoffeeIcon}
                     />
                     <span className="font-medium text-caption transition-colors group-hover:text-accent">
                       {method.name}

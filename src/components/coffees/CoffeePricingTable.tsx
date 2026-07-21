@@ -1,6 +1,7 @@
 import type { CoffeeVariant } from "@/types/coffee-component-types";
 import { formatPrice } from "@/lib/utils/coffee-utils";
 import { cn } from "@/lib/utils";
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 
 type CoffeePricingTableProps = {
@@ -142,7 +143,7 @@ export function CoffeePricingTable({
                 <td className="px-4 py-3 text-center">
                   {variant.in_stock ? (
                     <span className="inline-flex items-center gap-1 text-caption text-green-600 dark:text-green-400">
-                      <Icon name="Check" size={14} />
+                      <Icon icon={CheckIcon} size={14} />
                       <span className="sr-only sm:not-sr-only">In Stock</span>
                     </span>
                   ) : (

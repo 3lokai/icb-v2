@@ -10,6 +10,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  BellIcon,
+  CalendarIcon,
+  CheckCircleIcon,
+  CoffeeIcon,
+  StarIcon,
+  UserIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import Link from "next/link";
@@ -82,7 +90,7 @@ export function DashboardClient({
     <Card key="profile-status">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-heading">
-          <Icon name="User" size={20} className="h-5 w-5" />
+          <Icon icon={UserIcon} size={20} className="h-5 w-5" />
           Profile Status
         </CardTitle>
         <CardDescription>Your profile completion</CardDescription>
@@ -103,7 +111,7 @@ export function DashboardClient({
           </Stack>
           {profile.onboarding_completed ? (
             <Badge variant="default" className="w-fit">
-              <Icon name="CheckCircle" size={12} className="h-3 w-3 mr-1" />
+              <Icon icon={CheckCircleIcon} size={12} className="h-3 w-3 mr-1" />
               Onboarding Complete
             </Badge>
           ) : (
@@ -126,19 +134,19 @@ export function DashboardClient({
         <Stack gap="2">
           <Button asChild variant="outline" className="w-full justify-start">
             <Link href="/dashboard/profile">
-              <Icon name="User" size={16} className="h-4 w-4 mr-2" />
+              <Icon icon={UserIcon} size={16} className="h-4 w-4 mr-2" />
               Edit Profile
             </Link>
           </Button>
           <Button asChild variant="outline" className="w-full justify-start">
             <Link href="/dashboard/preferences">
-              <Icon name="Coffee" size={16} className="h-4 w-4 mr-2" />
+              <Icon icon={CoffeeIcon} size={16} className="h-4 w-4 mr-2" />
               Coffee Preferences
             </Link>
           </Button>
           <Button asChild variant="outline" className="w-full justify-start">
             <Link href="/dashboard/notifications">
-              <Icon name="Bell" size={16} className="h-4 w-4 mr-2" />
+              <Icon icon={BellIcon} size={16} className="h-4 w-4 mr-2" />
               Notifications
             </Link>
           </Button>
@@ -151,7 +159,7 @@ export function DashboardClient({
     <Card key="ratings-reviews">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-heading">
-          <Icon name="Star" size={20} className="h-5 w-5" />
+          <Icon icon={StarIcon} size={20} className="h-5 w-5" />
           Ratings & Reviews
         </CardTitle>
         <CardDescription>Your review contributions</CardDescription>
@@ -169,7 +177,7 @@ export function DashboardClient({
                     <span className="ml-1.5 text-muted-foreground">
                       ({initialReviewStats.coffeeAverageRating.toFixed(1)}{" "}
                       <Icon
-                        name="Star"
+                        icon={StarIcon}
                         size={12}
                         className="inline text-amber-500 fill-amber-500"
                       />
@@ -186,7 +194,7 @@ export function DashboardClient({
                     <span className="ml-1.5 text-muted-foreground">
                       ({initialReviewStats.roasterAverageRating.toFixed(1)}{" "}
                       <Icon
-                        name="Star"
+                        icon={StarIcon}
                         size={12}
                         className="inline text-amber-500 fill-amber-500"
                       />
@@ -216,7 +224,7 @@ export function DashboardClient({
     <Card key="coffee-preferences">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-heading">
-          <Icon name="Coffee" size={20} className="h-5 w-5" />
+          <Icon icon={CoffeeIcon} size={20} className="h-5 w-5" />
           Coffee Preferences
         </CardTitle>
         <CardDescription>Your coffee preferences</CardDescription>
@@ -252,7 +260,7 @@ export function DashboardClient({
     <Card key="account-info">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-heading">
-          <Icon name="Calendar" size={20} className="h-5 w-5" />
+          <Icon icon={CalendarIcon} size={20} className="h-5 w-5" />
           Account Info
         </CardTitle>
         <CardDescription>Your account details</CardDescription>

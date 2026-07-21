@@ -8,7 +8,28 @@ import {
 } from "@/lib/discovery/brew-method-labels";
 import { discoveryPagePath } from "@/lib/discovery/landing-pages/paths";
 import type { RoastProfileConfig } from "@/lib/discovery/landing-pages/types";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  CoffeeIcon,
+  DropIcon,
+  FireIcon,
+  GearIcon,
+  HourglassIcon,
+  InfoIcon,
+  LightningIcon,
+  MagnifyingGlassIcon,
+  PaletteIcon,
+  RulerIcon,
+  ScalesIcon,
+  SparkleIcon,
+  ThermometerIcon,
+  ThermometerSimpleIcon,
+  ThumbsUpIcon,
+  TimerIcon,
+  UsersIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { Badge } from "@/components/ui/badge";
@@ -27,12 +48,12 @@ function DetailBlock({
 }: {
   label: string;
   value: string;
-  icon?: IconName;
+  icon?: ComponentType<IconProps>;
 }) {
   return (
     <Stack gap="1" className="relative">
       <div className="flex items-center gap-2">
-        {icon ? <Icon name={icon} className="h-4 w-4 text-accent/60" /> : null}
+        {icon ? <Icon icon={icon} className="h-4 w-4 text-accent/60" /> : null}
         <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
           {label}
         </p>
@@ -85,19 +106,19 @@ export function RoastProfileTabbed({
           className="mb-8 flex h-auto w-full min-w-0 max-w-full flex-nowrap justify-start gap-2 overflow-x-auto overscroll-x-contain rounded-none bg-transparent p-0 pb-1 scroll-pl-4 scroll-pr-4 snap-x snap-mandatory [-webkit-overflow-scrolling:touch] md:hide-scrollbar"
         >
           <TabsTrigger value="bean" className={tabTriggerClass}>
-            <Icon name="MagnifyingGlass" className="h-4 w-4" />
+            <Icon icon={MagnifyingGlassIcon} className="h-4 w-4" />
             In the bean
           </TabsTrigger>
           <TabsTrigger value="roasting" className={tabTriggerClass}>
-            <Icon name="Fire" className="h-4 w-4" />
+            <Icon icon={FireIcon} className="h-4 w-4" />
             During roasting
           </TabsTrigger>
           <TabsTrigger value="cup" className={tabTriggerClass}>
-            <Icon name="Coffee" className="h-4 w-4" />
+            <Icon icon={CoffeeIcon} className="h-4 w-4" />
             In the cup
           </TabsTrigger>
           <TabsTrigger value="brew" className={tabTriggerClass}>
-            <Icon name="Drop" className="h-4 w-4" />
+            <Icon icon={DropIcon} className="h-4 w-4" />
             Brew guide
           </TabsTrigger>
         </TabsList>
@@ -124,22 +145,22 @@ export function RoastProfileTabbed({
             <div className="md:col-span-3">
               <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
                 <DetailBlock
-                  icon="Palette"
+                  icon={PaletteIcon}
                   label="Colour"
                   value={visual.color}
                 />
                 <DetailBlock
-                  icon="Scales"
+                  icon={ScalesIcon}
                   label="Density"
                   value={visual.density}
                 />
                 <DetailBlock
-                  icon="Gear"
+                  icon={GearIcon}
                   label="On the grind"
                   value={visual.grindNote}
                 />
                 <DetailBlock
-                  icon="Ruler"
+                  icon={RulerIcon}
                   label="Agtron range"
                   value={visual.agtronRange}
                 />
@@ -170,23 +191,23 @@ export function RoastProfileTabbed({
             <div className="md:col-span-3">
               <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
                 <DetailBlock
-                  icon="Thermometer"
+                  icon={ThermometerIcon}
                   label="Stage"
                   value={roastingProcess.stage}
                 />
                 <DetailBlock
-                  icon="Lightning"
+                  icon={LightningIcon}
                   label="First crack"
                   value={roastingProcess.firstCrack}
                 />
                 <DetailBlock
-                  icon="Lightning"
+                  icon={LightningIcon}
                   label="Second crack"
                   value={roastingProcess.secondCrack}
                 />
                 <div className="sm:col-span-2">
                   <DetailBlock
-                    icon="Timer"
+                    icon={TimerIcon}
                     label="Development"
                     value={roastingProcess.developmentNote}
                   />
@@ -219,7 +240,10 @@ export function RoastProfileTabbed({
               <Stack gap="8">
                 <Stack gap="4">
                   <div className="flex items-center gap-2">
-                    <Icon name="Sparkle" className="h-4 w-4 text-accent/60" />
+                    <Icon
+                      icon={SparkleIcon}
+                      className="h-4 w-4 text-accent/60"
+                    />
                     <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
                       Typical notes
                     </p>
@@ -243,7 +267,7 @@ export function RoastProfileTabbed({
                 </div>
                 <div className="rounded-[1.25rem] border border-border bg-muted/30 px-5 py-5 transition-colors hover:bg-muted/50">
                   <div className="mb-3 flex items-center gap-2">
-                    <Icon name="Users" className="h-4 w-4 text-accent/60" />
+                    <Icon icon={UsersIcon} className="h-4 w-4 text-accent/60" />
                     <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
                       Who it suits
                     </p>
@@ -280,18 +304,18 @@ export function RoastProfileTabbed({
               <Stack gap="8">
                 <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
                   <DetailBlock
-                    icon="ThermometerSimple"
+                    icon={ThermometerSimpleIcon}
                     label="Water temp"
                     value={brewParams.waterTemp}
                   />
                   <DetailBlock
-                    icon="Drop"
+                    icon={DropIcon}
                     label="Ratio"
                     value={brewParams.ratio}
                   />
                   <div className="sm:col-span-2">
                     <DetailBlock
-                      icon="Hourglass"
+                      icon={HourglassIcon}
                       label="Time"
                       value={brewParams.brewTime}
                     />
@@ -300,7 +324,7 @@ export function RoastProfileTabbed({
                 <div className="surface-2 rounded-xl p-5">
                   <div className="flex items-start gap-3">
                     <Icon
-                      name="Info"
+                      icon={InfoIcon}
                       className="mt-0.5 h-5 w-5 shrink-0 text-accent"
                     />
                     <p className="text-caption font-medium leading-relaxed text-foreground/80">
@@ -310,7 +334,10 @@ export function RoastProfileTabbed({
                 </div>
                 <Stack gap="4">
                   <div className="flex items-center gap-2">
-                    <Icon name="ThumbsUp" className="h-4 w-4 text-accent/60" />
+                    <Icon
+                      icon={ThumbsUpIcon}
+                      className="h-4 w-4 text-accent/60"
+                    />
                     <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
                       Pairs well with
                     </p>

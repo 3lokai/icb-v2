@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { memo, useMemo } from "react";
+import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -86,7 +87,7 @@ function TopProfileCardComponent({
               {/* Coffee badge echoing the brand mark — decorative; let clicks pass to the card link */}
               <div className="pointer-events-none absolute -bottom-0.5 -right-0.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-card bg-accent">
                 <Icon
-                  name="Coffee"
+                  icon={CoffeeIcon}
                   size={11}
                   aria-hidden
                   className="text-accent-foreground"

@@ -2,6 +2,7 @@
 
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import * as React from "react";
+import { CircleIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 
 import { cn } from "@/lib/utils";
@@ -38,7 +39,7 @@ function RadioGroupItem({
       >
         <Icon
           className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2"
-          name="Circle"
+          icon={CircleIcon}
           size={8}
         />
       </RadioGroupPrimitive.Indicator>

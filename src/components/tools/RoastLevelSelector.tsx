@@ -1,5 +1,10 @@
 // src/components/tools/calculator/RoastLevelSelector.tsx
 
+import {
+  CaretDownIcon,
+  CoffeeIcon,
+  FireIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import {
@@ -77,7 +82,7 @@ export function RoastLevelSelector({
                 className={`h-4 w-4 transition-colors ${
                   isCompleted ? "text-primary" : "text-muted-foreground"
                 }`}
-                name="Fire"
+                icon={FireIcon}
               />
               {selectedRoast ? (
                 <div className="flex items-center gap-3">
@@ -98,7 +103,7 @@ export function RoastLevelSelector({
                 </span>
               )}
             </div>
-            <Icon className="h-4 w-4 opacity-50" name="CaretDown" />
+            <Icon className="h-4 w-4 opacity-50" icon={CaretDownIcon} />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -119,7 +124,7 @@ export function RoastLevelSelector({
                 value={roast.value}
               >
                 <div className="flex w-full items-center gap-3">
-                  <Icon className="h-4 w-4 text-primary" name="Coffee" />
+                  <Icon className="h-4 w-4 text-primary" icon={CoffeeIcon} />
                   <div
                     className="h-4 w-4 rounded-full border border-border/20 shadow-sm"
                     style={{ backgroundColor: roast.color }}

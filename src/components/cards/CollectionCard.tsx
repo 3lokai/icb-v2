@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CoffeeCollection } from "@/lib/collections/coffee-collections";
 import { getCollectionFilterUrl } from "@/lib/collections/coffee-collections";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { cn } from "@/lib/utils";
@@ -126,7 +127,7 @@ export function CollectionCard({
               </>
             )}
             <Icon
-              name="ArrowRight"
+              icon={ArrowRightIcon}
               size={isSmall ? 16 : 18}
               color="glass"
               className="ml-1 transition-transform group-hover:translate-x-1"

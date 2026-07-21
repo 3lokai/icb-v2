@@ -2,13 +2,22 @@
 
 import Link from "next/link";
 import { Stack } from "@/components/primitives/stack";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  CoffeeIcon,
+  HeartIcon,
+  LockKeyIcon,
+  MapPinIcon,
+  StarIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 
 type ProfileGlanceStat = {
   label: string;
   value: string;
-  icon: IconName;
+  icon: ComponentType<IconProps>;
   suffix?: string;
 };
 
@@ -39,23 +48,23 @@ export function ProfileAtAGlance({
     {
       label: "Coffees Rated",
       value: String(totalReviews),
-      icon: "Coffee",
+      icon: CoffeeIcon,
     },
     {
       label: "Palate",
       value: avgRating != null ? String(avgRating) : "—",
       suffix: avgRating != null ? "★" : undefined,
-      icon: "Star",
+      icon: StarIcon,
     },
     {
       label: "Roasters Tried",
       value: String(distinctRoasterCount),
-      icon: "MapPin",
+      icon: MapPinIcon,
     },
     {
       label: "Selections",
       value: String(selectionsCount),
-      icon: "Heart",
+      icon: HeartIcon,
     },
   ];
 
@@ -73,7 +82,7 @@ export function ProfileAtAGlance({
           </span>
           {isAnonymous && (
             <Icon
-              name="LockKey"
+              icon={LockKeyIcon}
               size={14}
               className="shrink-0 text-muted-foreground"
               aria-hidden
@@ -106,7 +115,7 @@ export function ProfileAtAGlance({
                   className="rounded-2xl bg-background px-3 py-3 group/stat transition-colors hover:bg-muted/40"
                 >
                   <div className="flex items-center gap-1.5 text-muted-foreground mb-1">
-                    <Icon name={stat.icon} size={12} className="text-accent" />
+                    <Icon icon={stat.icon} size={12} className="text-accent" />
                     <p className="text-micro uppercase font-medium tracking-wider m-0">
                       {stat.label}
                     </p>

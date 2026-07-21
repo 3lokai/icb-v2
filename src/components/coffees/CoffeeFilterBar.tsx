@@ -1,5 +1,6 @@
 "use client";
 
+import { XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -99,7 +100,7 @@ export function CoffeeFilterBar() {
                   onClick={() => updateFilters({ in_stock_only: undefined })}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}
@@ -115,7 +116,7 @@ export function CoffeeFilterBar() {
                   onClick={() => updateFilters({ has_250g_only: undefined })}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}
@@ -131,7 +132,7 @@ export function CoffeeFilterBar() {
                   onClick={() => updateFilters({ max_price: undefined })}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}
@@ -148,7 +149,7 @@ export function CoffeeFilterBar() {
                   onClick={() => updateFilters({ roast_levels: undefined })}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}
@@ -165,7 +166,7 @@ export function CoffeeFilterBar() {
                   onClick={() => updateFilters({ processes: undefined })}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}
@@ -182,7 +183,7 @@ export function CoffeeFilterBar() {
                   onClick={() => updateFilters({ flavor_keys: undefined })}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}
@@ -198,7 +199,7 @@ export function CoffeeFilterBar() {
                   onClick={() => updateFilters({ q: undefined })}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}

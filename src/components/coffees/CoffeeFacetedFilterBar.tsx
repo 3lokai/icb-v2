@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef, startTransition } from "react";
+import { CaretDownIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -416,7 +417,7 @@ export function CoffeeFacetedFilterBar({
               >
                 Advanced Filters
                 <Icon
-                  name="CaretDown"
+                  icon={CaretDownIcon}
                   size={16}
                   className={`transition-transform ${
                     refineOpen ? "rotate-180" : ""
@@ -752,7 +753,7 @@ export function CoffeeFacetedFilterBar({
                     onClick={() => updateFilters({ q: undefined })}
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               )}
@@ -777,7 +778,7 @@ export function CoffeeFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ))}
@@ -795,7 +796,7 @@ export function CoffeeFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ) : null}
@@ -820,7 +821,7 @@ export function CoffeeFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ))}
@@ -836,7 +837,7 @@ export function CoffeeFacetedFilterBar({
                     onClick={() => updateFilters({ in_stock_only: undefined })}
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               )}
@@ -852,7 +853,7 @@ export function CoffeeFacetedFilterBar({
                     onClick={() => updateFilters({ has_250g_only: undefined })}
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               )}
@@ -870,7 +871,7 @@ export function CoffeeFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               )}
@@ -886,7 +887,7 @@ export function CoffeeFacetedFilterBar({
                     onClick={() => updateFilters({ decaf_only: undefined })}
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               )}
@@ -904,7 +905,7 @@ export function CoffeeFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               )}
@@ -925,7 +926,7 @@ export function CoffeeFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               )}
@@ -941,7 +942,7 @@ export function CoffeeFacetedFilterBar({
                     onClick={() => updateFilters({ processes: undefined })}
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ) : null}
@@ -962,7 +963,7 @@ export function CoffeeFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ) : null}
@@ -983,7 +984,7 @@ export function CoffeeFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ) : null}
@@ -1001,7 +1002,7 @@ export function CoffeeFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ) : null}

@@ -25,6 +25,11 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  GenderFemaleIcon,
+  GenderIntersexIcon,
+  GenderMaleIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { popularBrewingMethods } from "@/lib/utils/coffee-constants";
@@ -410,7 +415,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
                     type="button"
                     variant={formData.gender === "male" ? "default" : "ghost"}
                   >
-                    <Icon name="GenderMale" size={20} />
+                    <Icon icon={GenderMaleIcon} size={20} />
                     <span>Male</span>
                   </Button>
                   <Button
@@ -419,7 +424,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
                     type="button"
                     variant={formData.gender === "female" ? "default" : "ghost"}
                   >
-                    <Icon name="GenderFemale" size={20} />
+                    <Icon icon={GenderFemaleIcon} size={20} />
                     <span>Female</span>
                   </Button>
                   <Button
@@ -430,7 +435,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
                       formData.gender === "non-binary" ? "default" : "ghost"
                     }
                   >
-                    <Icon name="GenderIntersex" size={20} />
+                    <Icon icon={GenderIntersexIcon} size={20} />
                     <span>Non-binary</span>
                   </Button>
                 </div>

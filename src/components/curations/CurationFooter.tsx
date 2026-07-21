@@ -2,7 +2,16 @@
 
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  EnvelopeIcon,
+  GlobeIcon,
+  InstagramLogoIcon,
+  TwitterLogoIcon,
+  XLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 import { Curator } from "./types";
 
 type CurationFooterProps = {
@@ -17,7 +26,7 @@ export function CurationFooter({ partner }: CurationFooterProps) {
     key: string;
     label: string;
     href: string;
-    icon: IconName;
+    icon: ComponentType<IconProps>;
     external: boolean;
   }[] = [];
 
@@ -26,7 +35,7 @@ export function CurationFooter({ partner }: CurationFooterProps) {
       key: "instagram",
       label: "Instagram",
       href: partner.instagramUrl,
-      icon: "InstagramLogo",
+      icon: InstagramLogoIcon,
       external: true,
     });
   }
@@ -35,7 +44,7 @@ export function CurationFooter({ partner }: CurationFooterProps) {
       key: "email",
       label: "Email",
       href: `mailto:${partner.contactEmail}`,
-      icon: "Envelope",
+      icon: EnvelopeIcon,
       external: false,
     });
   }
@@ -44,7 +53,7 @@ export function CurationFooter({ partner }: CurationFooterProps) {
       key: "twitter",
       label: "Twitter",
       href: partner.twitterUrl,
-      icon: "TwitterLogo",
+      icon: TwitterLogoIcon,
       external: true,
     });
   }
@@ -83,7 +92,7 @@ export function CurationFooter({ partner }: CurationFooterProps) {
                   title={item.label}
                   aria-label={item.label}
                 >
-                  <Icon name={item.icon} size={18} />
+                  <Icon icon={item.icon} size={18} />
                 </a>
               ))}
             </Cluster>
@@ -105,12 +114,12 @@ export function CurationFooter({ partner }: CurationFooterProps) {
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border/40 group-hover:border-accent/40 group-hover:bg-accent/5 transition-all">
                     <Icon
-                      name={
+                      icon={
                         link.platform === "instagram"
-                          ? "InstagramLogo"
+                          ? InstagramLogoIcon
                           : link.platform === "twitter"
-                            ? "XLogo"
-                            : "Globe"
+                            ? XLogoIcon
+                            : GlobeIcon
                       }
                       size={20}
                     />

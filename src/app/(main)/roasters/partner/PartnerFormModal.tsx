@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/primitives/stack";
+import { XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 
@@ -70,7 +71,7 @@ export default function PartnerFormModal({
             onClick={onClose}
             type="button"
           >
-            <Icon name="X" size={24} />
+            <Icon icon={XIcon} size={24} />
           </button>
         </div>
 

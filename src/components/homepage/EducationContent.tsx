@@ -3,7 +3,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, IconName } from "@/components/common/Icon";
+import {
+  ArrowRightIcon,
+  BookOpenIcon,
+  CoffeeBeanIcon,
+  CoffeeIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 import { Accent } from "@/components/primitives/accent";
 import { Decor } from "@/components/primitives/decor";
 import { Section } from "@/components/primitives/section";
@@ -27,7 +34,7 @@ const educationItems: {
   id: string;
   title: string;
   description: string;
-  icon: IconName;
+  icon: PhosphorIcon;
   color: EducationColor;
 }[] = [
   {
@@ -35,7 +42,7 @@ const educationItems: {
     title: "Bean Varieties",
     description:
       "Learn about India's Arabica and Robusta varieties and what makes them special.",
-    icon: "CoffeeBean",
+    icon: CoffeeBeanIcon,
     color: "primary",
   },
   {
@@ -43,7 +50,7 @@ const educationItems: {
     title: "Brewing Guides",
     description:
       "Master brewing techniques specifically tailored to bring out the best in Indian coffees.",
-    icon: "Coffee",
+    icon: CoffeeIcon,
     color: "accent",
   },
   {
@@ -51,7 +58,7 @@ const educationItems: {
     title: "Coffee Glossary",
     description:
       "Decode coffee terminology with our comprehensive glossary of industry terms.",
-    icon: "BookOpen",
+    icon: BookOpenIcon,
     color: "primary",
   },
 ];
@@ -161,7 +168,7 @@ export default function EducationSection({
                               : "bg-primary/10 text-primary"
                           )}
                         >
-                          <Icon name={item.icon} size={20} color={item.color} />
+                          <Icon icon={item.icon} size={20} color={item.color} />
                         </motion.div>
 
                         {/* Text Content */}
@@ -194,7 +201,11 @@ export default function EducationSection({
                     <Button asChild size="lg" variant="default">
                       <Link href="/learn">
                         Explore Educational Content
-                        <Icon className="ml-2" name="ArrowRight" size={16} />
+                        <Icon
+                          className="ml-2"
+                          icon={ArrowRightIcon}
+                          size={16}
+                        />
                       </Link>
                     </Button>
                   </motion.div>
@@ -262,7 +273,7 @@ export default function EducationSection({
                       <div className="surface-1 p-4 shadow-lg rounded-xl border border-border/50">
                         <div className="flex items-start gap-3">
                           <div className="h-8 w-8 flex-center flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 text-accent">
-                            <Icon name="Coffee" size={16} color="accent" />
+                            <Icon icon={CoffeeIcon} size={16} color="accent" />
                           </div>
                           <div>
                             <p className="mb-1 font-medium text-foreground text-caption">

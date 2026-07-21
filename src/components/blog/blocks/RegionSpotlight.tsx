@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { MapPinIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ export function RegionSpotlight({ value }: RegionSpotlightProps) {
           ) : (
             <div className="flex h-full w-full items-center justify-center">
               <Icon
-                name="MapPin"
+                icon={MapPinIcon}
                 size={48}
                 className="text-emerald-500/20 group-hover:scale-110 transition-transform duration-500"
               />
@@ -88,7 +89,7 @@ export function RegionSpotlight({ value }: RegionSpotlightProps) {
               >
                 <Link href={value.link || `/regions/${regionId}`}>
                   Explore Region{" "}
-                  <Icon name="MapPin" size={18} className="ml-2" />
+                  <Icon icon={MapPinIcon} size={18} className="ml-2" />
                 </Link>
               </Button>
             )}

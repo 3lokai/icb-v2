@@ -2,6 +2,11 @@
 
 import { Accent } from "@/components/primitives/accent";
 import { Stack } from "@/components/primitives/stack";
+import {
+  BookOpenIcon,
+  LightbulbIcon,
+  QuotesIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Curator } from "./types";
 
@@ -34,7 +39,7 @@ export function CurationStory({ curator }: CurationStoryProps) {
               <Stack gap="6">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 text-accent">
-                    <Icon name="BookOpen" size={20} />
+                    <Icon icon={BookOpenIcon} size={20} />
                   </div>
                   <h3 className="text-label font-bold uppercase tracking-tight">
                     The story
@@ -52,7 +57,7 @@ export function CurationStory({ curator }: CurationStoryProps) {
               <Stack gap="6">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 text-accent">
-                    <Icon name="Lightbulb" size={20} />
+                    <Icon icon={LightbulbIcon} size={20} />
                   </div>
                   <h3 className="text-label font-bold uppercase tracking-tight">
                     Philosophy
@@ -64,7 +69,7 @@ export function CurationStory({ curator }: CurationStoryProps) {
                     &quot;{curator.philosophy}&quot;
                   </p>
                   <Icon
-                    name="Quotes"
+                    icon={QuotesIcon}
                     size={48}
                     className="absolute bottom-6 right-8 text-accent/5 rotate-0 z-0"
                   />

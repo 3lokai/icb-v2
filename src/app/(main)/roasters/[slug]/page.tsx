@@ -42,44 +42,62 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
   const canonical = `${baseUrl}/roasters/${slug}`;
 
-  const reviewCount = stats?.review_count ?? 0;
+  const ratingCount = stats?.rating_count ?? 0;
+  const coffeeCount = roaster.coffee_count ?? 0;
+  const city = roaster.hq_city?.trim() || null;
 
-  // NOTE: the root layout (src/app/layout.tsx) applies the
-  // "%s | Indian Coffee Beans" template, so titles must NOT include the suffix
-  // themselves. All variants run through truncateTitle() to stay within the
-  // 60-char rendered budget (name + suffix).
-  const titleRaw =
-    reviewCount >= 5
-      ? `${roaster.name} Reviews & Coffees — Rated by ICB Community`
-      : roaster.coffee_count
-        ? `${roaster.name} — ${roaster.coffee_count} Coffees, Reviews & Tasting Notes`
-        : `${roaster.name} Coffee Reviews`;
+  // Never promise "Reviews" on a 0-rating profile — use Ratings or city fallback.
+  const ratingText =
+    ratingCount > 0
+      ? `, ${ratingCount} Ratings`
+      : city
+        ? `, ${city} Specialty Roastery`
+        : "";
+
+  // Title: {Roaster} — {City} Specialty Roastery{, [differentiator]}
+  // NOTE: root layout applies "%s | Indian Coffee Beans"; do not include the suffix.
+  const titleRaw = city
+    ? `${roaster.name} — ${city} Specialty Roastery${
+        ratingCount > 0 ? ratingText : ""
+      }`
+    : ratingCount > 0
+      ? `${roaster.name} — ${ratingCount} Ratings`
+      : `${roaster.name} — Specialty Roastery`;
   const title = truncateTitle(titleRaw);
 
-  const avgRating = stats?.avg_rating ?? null;
+  const differentiator =
+    ratingCount > 0
+      ? `${ratingCount} Ratings`
+      : city
+        ? `${city} Specialty Roastery`
+        : "specialty coffee";
 
-  const ratingBlurb =
-    reviewCount >= 5 && avgRating != null
-      ? `Community-rated ${avgRating.toFixed(1)}/5 from ${reviewCount} reviews. `
-      : "";
+  const coffeeNoun = coffeeCount === 1 ? "coffee" : "coffees";
+  const descriptionFooter =
+    "Community ratings, tasting notes, and estate sourcing.";
 
-  const locationBlurb = roaster.hq_city
-    ? `Based in ${roaster.hq_city}${roaster.hq_state ? `, ${roaster.hq_state}` : ""}. `
-    : "";
+  // Meta: Browse all {N} coffees from {Roaster} on ICB — {differentiator}. …
+  // Keep < 155 chars; drop clauses instead of mid-sentence truncation.
+  const buildDescription = (diff: string | null) => {
+    const lead = coffeeCount
+      ? diff
+        ? `Browse all ${coffeeCount} ${coffeeNoun} from ${roaster.name} on ICB — ${diff}.`
+        : `Browse all ${coffeeCount} ${coffeeNoun} from ${roaster.name} on ICB.`
+      : diff
+        ? `Discover ${roaster.name} on ICB — ${diff}.`
+        : `Discover ${roaster.name} on ICB.`;
+    return `${lead} ${descriptionFooter}`;
+  };
 
-  const coffeeBlurb = roaster.coffee_count
-    ? `Browse ${roaster.coffee_count} ${roaster.coffee_count === 1 ? "coffee" : "coffees"} with tasting notes, processing methods, and unbiased reviews from Indian coffee drinkers. `
-    : "";
-
-  // Build a unique, benefit-led description. Prefer rating/coffee/location
-  // signals; fall back to the roaster's own copy; only the truly-empty roaster
-  // reaches the generic line (kept distinct per-roaster via the name).
-  const description =
-    ratingBlurb || coffeeBlurb
-      ? `${ratingBlurb}${locationBlurb}${coffeeBlurb}No sponsorships — just data and community.`
-      : roaster.description?.trim()
-        ? roaster.description.trim().slice(0, 200)
-        : `${locationBlurb}Discover ${roaster.name} on India's neutral specialty coffee directory — coffees, tasting notes, and unbiased community reviews.`;
+  let description = buildDescription(differentiator);
+  if (description.length > 155) {
+    description = buildDescription(null);
+  }
+  if (description.length > 155) {
+    description = coffeeCount
+      ? `Browse all ${coffeeCount} ${coffeeNoun} from ${roaster.name} on ICB. Community ratings and tasting notes.`
+      : `Discover ${roaster.name} on ICB. Community ratings and tasting notes.`;
+  }
 
   // Get logo for OG
   const ogImage = roaster.logo_url

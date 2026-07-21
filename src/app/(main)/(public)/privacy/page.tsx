@@ -3,6 +3,7 @@ import { Accent } from "@/components/primitives/accent";
 import type { Metadata } from "next";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
+import { InfoIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import StructuredData from "@/components/seo/StructuredData";
@@ -384,7 +385,7 @@ export default function PrivacyPage() {
                       </div>
                       <div className="flex items-start gap-4 p-6 rounded-2xl border border-accent/20 border-l-4 border-l-accent bg-accent/5">
                         <Icon
-                          name="Info"
+                          icon={InfoIcon}
                           className="text-accent shrink-0"
                           size={24}
                         />
@@ -445,7 +446,11 @@ export default function PrivacyPage() {
                     </p>
                     <div className="p-8 rounded-2xl border border-border/40 bg-card/5">
                       <Stack gap="4" className="items-center text-center">
-                        <Icon name="MapPin" size={32} className="text-accent" />
+                        <Icon
+                          icon={MapPinIcon}
+                          size={32}
+                          className="text-accent"
+                        />
                         <h3 className="text-heading text-primary font-serif italic">
                           IndianCoffeeBeans
                         </h3>

@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowSquareOutIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -49,7 +50,7 @@ export function CoffeeBuyButton({ coffee, className }: CoffeeBuyButtonProps) {
       type="button"
     >
       Buy Now
-      <Icon name="ArrowSquareOut" size={16} className="ml-2 h-4 w-4" />
+      <Icon icon={ArrowSquareOutIcon} size={16} className="ml-2 h-4 w-4" />
     </Button>
   );
 }

@@ -5,7 +5,19 @@ import type { CoffeeVariant } from "@/types/coffee-component-types";
 import type { GrindEnum } from "@/types/db-enums";
 import { formatPrice } from "@/lib/utils/coffee-utils";
 import { cn } from "@/lib/utils";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  CircleIcon,
+  CirclesFourIcon,
+  CoffeeBeanIcon,
+  DotIcon,
+  DotsNineIcon,
+  FlaskIcon,
+  FunnelIcon,
+  ShoppingCartIcon,
+  SquareIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { GRIND_TYPES } from "@/lib/utils/coffee-constants";
 
@@ -17,27 +29,28 @@ type CoffeeVariantSelectorProps = {
   roasterName?: string | null;
 };
 
-const grindIconMap: Record<string, IconName> = {
-  whole: "CoffeeBean",
-  filter: "DotsNine",
-  drip: "Dot",
-  espresso: "Square",
-  channi: "DotsNine",
-  french_press: "CirclesFour",
-  pour_over: "DotsNine",
-  cold_brew: "CirclesFour",
-  moka_pot: "Square",
-  aeropress: "Flask",
-  coffee_filter: "Funnel",
-  south_indian_filter: "DotsNine",
-  syphon: "Flask",
-  turkish: "Circle",
+const grindIconMap: Record<string, PhosphorIcon> = {
+  whole: CoffeeBeanIcon,
+  filter: DotsNineIcon,
+  drip: DotIcon,
+  espresso: SquareIcon,
+  channi: DotsNineIcon,
+  french_press: CirclesFourIcon,
+  pour_over: DotsNineIcon,
+  cold_brew: CirclesFourIcon,
+  moka_pot: SquareIcon,
+  aeropress: FlaskIcon,
+  coffee_filter: FunnelIcon,
+  south_indian_filter: DotsNineIcon,
+  syphon: FlaskIcon,
+  turkish: CircleIcon,
 };
 
 const getGrindInfo = (grindValue: GrindEnum | null) => {
   const lookupValue = grindValue || "whole";
   const option = GRIND_TYPES.find((t) => t.value === lookupValue);
-  const icon: IconName = grindIconMap[lookupValue.toLowerCase()] || "Circle";
+  const icon: PhosphorIcon =
+    grindIconMap[lookupValue.toLowerCase()] || CircleIcon;
 
   return {
     label: option?.label || lookupValue,
@@ -187,7 +200,7 @@ export function CoffeeVariantSelector({
                 )}
               >
                 <Icon
-                  name={info.icon}
+                  icon={info.icon}
                   size={14}
                   color={isSelected ? "glass" : inStock ? "accent" : "muted"}
                 />
@@ -255,7 +268,7 @@ export function CoffeeVariantSelector({
             disabled={!currentVariant?.in_stock}
           >
             <a href={directBuyUrl} target="_blank" rel="noopener noreferrer">
-              <Icon name="ShoppingCart" size={18} className="mr-2" />
+              <Icon icon={ShoppingCartIcon} size={18} className="mr-2" />
               Buy from {roasterName || "roaster"}
             </a>
           </Button>

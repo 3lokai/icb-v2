@@ -2,6 +2,15 @@ import Link from "next/link";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
+import {
+  ChecksIcon,
+  CurrencyCircleDollarIcon,
+  DatabaseIcon,
+  DropIcon,
+  FireIcon,
+  InfoIcon,
+  ShoppingCartIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import { brewMethodDiscoveryLinkClassName } from "@/lib/discovery/brew-method-labels";
@@ -51,7 +60,7 @@ export function PriceBucketProfileSection({
           <Stack gap="6" className="relative z-10">
             <div className="flex items-center gap-2">
               <Icon
-                name="CurrencyCircleDollar"
+                icon={CurrencyCircleDollarIcon}
                 className="h-5 w-5 text-accent/70"
               />
               <h3 className="text-heading">The Reality of this Price Range</h3>
@@ -65,7 +74,7 @@ export function PriceBucketProfileSection({
         {/* 2. Buying Guide Grid */}
         <div className="max-w-5xl mx-auto w-full pt-4">
           <div className="flex items-center gap-2 mb-6">
-            <Icon name="ShoppingCart" className="h-5 w-5 text-accent/70" />
+            <Icon icon={ShoppingCartIcon} className="h-5 w-5 text-accent/70" />
             <h3 className="text-heading">Smart Buying Guide</h3>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -75,7 +84,7 @@ export function PriceBucketProfileSection({
                 className="bg-card/40 border border-border/40 rounded-2xl p-6 flex flex-col gap-4 shadow-sm"
               >
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 text-accent/70 mb-2">
-                  <Icon name="Checks" className="w-5 h-5" />
+                  <Icon icon={ChecksIcon} className="w-5 h-5" />
                 </div>
                 <h4 className="text-subheading text-foreground">{item.tip}</h4>
                 <p className="text-body text-muted-foreground/90">
@@ -93,7 +102,7 @@ export function PriceBucketProfileSection({
           {/* Roast Expectations */}
           <div className="space-y-6">
             <div className="flex items-center gap-2 mb-2">
-              <Icon name="Fire" className="h-5 w-5 text-accent/70" />
+              <Icon icon={FireIcon} className="h-5 w-5 text-accent/70" />
               <h3 className="text-heading">Roast Profiles</h3>
             </div>
             <p className="text-body text-muted-foreground">
@@ -119,7 +128,7 @@ export function PriceBucketProfileSection({
           {/* Process Expectations */}
           <div className="space-y-6">
             <div className="flex items-center gap-2 mb-2">
-              <Icon name="Drop" className="h-5 w-5 text-accent/70" />
+              <Icon icon={DropIcon} className="h-5 w-5 text-accent/70" />
               <h3 className="text-heading">Processing Methods</h3>
             </div>
             <p className="text-body text-muted-foreground">
@@ -147,7 +156,7 @@ export function PriceBucketProfileSection({
         <div className="max-w-5xl mx-auto w-full grid md:grid-cols-2 gap-6 pt-10 border-t border-border/40">
           <aside className="rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
             <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-2">
-              <Icon name="Info" className="w-4 h-4" />
+              <Icon icon={InfoIcon} className="w-4 h-4" />
               Price Normalization
             </p>
             <p className="text-caption text-muted-foreground leading-relaxed">
@@ -157,7 +166,7 @@ export function PriceBucketProfileSection({
 
           <aside className="rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
             <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-2">
-              <Icon name="Database" className="w-4 h-4" />
+              <Icon icon={DatabaseIcon} className="w-4 h-4" />
               On Indian Coffee Beans
             </p>
             <p className="text-caption text-muted-foreground leading-relaxed">

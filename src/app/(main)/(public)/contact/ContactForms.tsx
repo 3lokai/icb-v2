@@ -14,7 +14,16 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  CheckCircleIcon,
+  GraduationCapIcon,
+  MegaphoneIcon,
+  PencilSimpleIcon,
+  PlusCircleIcon,
+  UsersThreeIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { capture } from "@/lib/posthog";
@@ -38,7 +47,7 @@ const InteractiveBentoCard = ({
   onClick,
   className,
 }: {
-  icon: IconName;
+  icon: PhosphorIcon;
   title: string;
   description: string;
   buttonText: string;
@@ -60,7 +69,7 @@ const InteractiveBentoCard = ({
       <div className="flex transform-gpu flex-col gap-4 transition-all duration-500 group-hover:-translate-y-2 grow">
         <div className="flex items-center justify-between">
           <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-accent/10 text-accent group-hover:scale-110 transition-transform duration-500">
-            <Icon name={icon} size={20} />
+            <Icon icon={icon} size={20} />
           </div>
         </div>
 
@@ -217,14 +226,14 @@ export default function ContactForms({
               {/* Action Cards - Bento Grid Style */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <InteractiveBentoCard
-                  icon="PlusCircle"
+                  icon={PlusCircleIcon}
                   title="Submit a Roaster"
                   description="Know an amazing Indian coffee roaster that should be in our directory? Help us expand our coverage and support local businesses."
                   buttonText="Submit Roaster"
                   onClick={() => setActiveForm("roaster")}
                 />
                 <InteractiveBentoCard
-                  icon="PencilSimple"
+                  icon={PencilSimpleIcon}
                   title="Suggest Changes"
                   description="Spotted outdated information? Have ideas for new features or improvements? We're always listening to our community."
                   buttonText="Suggest Changes"
@@ -282,7 +291,7 @@ export default function ContactForms({
                             key={item}
                           >
                             <Icon
-                              name="CheckCircle"
+                              icon={CheckCircleIcon}
                               className="text-accent h-4 w-4"
                             />
                             <span>{item}</span>
@@ -316,19 +325,19 @@ export default function ContactForms({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
                   {
-                    icon: "Megaphone",
+                    icon: MegaphoneIcon,
                     title: "Guest Articles",
                     description:
                       "Share your expertise through guest posts on brewing, roasting, or coffee culture.",
                   },
                   {
-                    icon: "UsersThree",
+                    icon: UsersThreeIcon,
                     title: "Collaborations",
                     description:
                       "Partner on industry research or data sharing to enhance the community.",
                   },
                   {
-                    icon: "GraduationCap",
+                    icon: GraduationCapIcon,
                     title: "Education",
                     description:
                       "Create guides, tutorials, or educational materials for coffee enthusiasts.",
@@ -339,7 +348,7 @@ export default function ContactForms({
                     className="group relative flex flex-col gap-4 p-8 rounded-2xl border border-border bg-card/50 hover:bg-card transition-all duration-300 hover:border-accent/20"
                   >
                     <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:scale-110 transition-transform duration-300">
-                      <Icon name={item.icon as IconName} size={24} />
+                      <Icon icon={item.icon} size={24} />
                     </div>
                     <div>
                       <h3 className="text-subheading font-medium text-foreground mb-2 group-hover:text-primary transition-colors">

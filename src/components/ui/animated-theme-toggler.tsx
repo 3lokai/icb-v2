@@ -1,5 +1,6 @@
 "use client";
 
+import { MoonIcon, SunIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -126,9 +127,9 @@ export const AnimatedThemeToggler = ({
       ref={buttonRef}
     >
       {mounted && isDark ? (
-        <Icon name="Sun" size={20} />
+        <Icon icon={SunIcon} size={20} />
       ) : (
-        <Icon name="Moon" size={20} />
+        <Icon icon={MoonIcon} size={20} />
       )}
       <span className="sr-only">Toggle theme</span>
     </button>

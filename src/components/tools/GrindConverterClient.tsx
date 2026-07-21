@@ -6,6 +6,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
+import { LinkIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -246,7 +247,7 @@ export function GrindConverterClient() {
                 onClick={handleCopyLink}
                 className="group border-border/50 text-caption text-muted-foreground hover:text-foreground"
               >
-                <Icon className="mr-1 h-3 w-3" name="Link" />
+                <Icon className="mr-1 h-3 w-3" icon={LinkIcon} />
                 Copy link
               </Button>
             </div>

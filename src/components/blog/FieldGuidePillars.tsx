@@ -4,7 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
-import { Icon, IconName } from "@/components/common/Icon";
+import {
+  ArrowRightIcon,
+  CheckCircleIcon,
+  CoffeeIcon,
+  FlaskIcon,
+  GraphIcon,
+  InfoIcon,
+  MapPinIcon,
+  TagIcon,
+  XIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Badge } from "@/components/ui/badge";
 import { Category } from "@/types/blog-types";
@@ -15,32 +28,35 @@ import { cn } from "@/lib/utils";
  * Keys are category slugs from Sanity.
  * This maps CMS data to presentation details (icon, image, goal text).
  */
-const pillarVisuals: Record<string, { icon: IconName; image: string }> = {
+const pillarVisuals: Record<
+  string,
+  { icon: ComponentType<IconProps>; image: string }
+> = {
   "origins-and-estates": {
-    icon: "MapPin",
+    icon: MapPinIcon,
     image: "/images/learn/pillars/origins-and-estates.webp",
   },
   "processing-and-flavors": {
-    icon: "Coffee",
+    icon: CoffeeIcon,
     image: "/images/learn/pillars/processing-and-flavors.webp",
   },
   "brewing-behaviour": {
-    icon: "Flask",
+    icon: FlaskIcon,
     image: "/images/learn/pillars/brewing-behaviour.webp",
   },
   "ecosystem-intelligence": {
-    icon: "Graph",
+    icon: GraphIcon,
     image: "/images/learn/pillars/ecosystem-intelligence.webp",
   },
   "field-notes-and-buying-guides": {
-    icon: "CheckCircle",
+    icon: CheckCircleIcon,
     image: "/images/learn/pillars/field-notes-and-buying-guides.webp",
   },
 };
 
 /** Fallback visuals for any pillar not explicitly mapped above */
 const defaultVisuals = {
-  icon: "Tag" as IconName,
+  icon: TagIcon,
   image: "/images/collections/default-filter.webp",
 };
 
@@ -150,7 +166,7 @@ function PillarCard({
           <div className="flex h-full flex-col">
             <Stack gap="3" className="flex-1 overflow-hidden">
               <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl bg-accent/10 text-accent shrink-0">
-                <Icon name={visuals.icon} size={18} color="accent" />
+                <Icon icon={visuals.icon} size={18} color="accent" />
               </div>
 
               <div className="min-w-0">
@@ -168,7 +184,7 @@ function PillarCard({
                 Explore
               </span>
               <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-accent text-white flex items-center justify-center">
-                <Icon name="ArrowRight" size={12} />
+                <Icon icon={ArrowRightIcon} size={12} />
               </div>
             </div>
           </div>
@@ -200,7 +216,7 @@ function PillarCard({
         }}
         className="absolute bottom-3 right-3 z-20 hidden h-9 w-9 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur-sm transition-colors hover:bg-black/65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white [@media(hover:none)]:flex"
       >
-        <Icon name={flipped ? "X" : "Info"} size={16} />
+        <Icon icon={flipped ? XIcon : InfoIcon} size={16} />
       </button>
     </div>
   );

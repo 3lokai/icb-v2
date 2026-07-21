@@ -1,3 +1,4 @@
+import { SpinnerIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import * as React from "react";
@@ -12,7 +13,7 @@ function Spinner({
     <Icon
       aria-label="Loading"
       className={cn("animate-spin", className)}
-      name="Spinner"
+      icon={SpinnerIcon}
       role="status"
       size={16}
       {...props}

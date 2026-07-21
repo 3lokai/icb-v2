@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion, MotionConfig } from "motion/react";
+import { ArrowRightIcon, CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { TopProfileCard } from "@/components/cards/TopProfileCard";
 import { Accent } from "@/components/primitives/accent";
@@ -31,7 +32,7 @@ function ProfileCta() {
       <Link href={isAuthed ? "/profile" : "/auth"}>
         {isAuthed ? "View your profile" : "Create your profile"}
         <Icon
-          name="ArrowRight"
+          icon={ArrowRightIcon}
           size={16}
           aria-hidden
           className="pointer-events-none transition-transform group-hover/cta:translate-x-1"
@@ -112,7 +113,7 @@ export default function TopProfilesSection({
             >
               <div className="mx-auto flex max-w-md flex-col items-center gap-4 py-8 text-center">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/15 text-accent">
-                  <Icon name="Coffee" size={20} />
+                  <Icon icon={CoffeeIcon} size={20} />
                 </div>
                 <Stack gap="2" className="items-center">
                   <h3 className="text-heading">Be the first name here</h3>

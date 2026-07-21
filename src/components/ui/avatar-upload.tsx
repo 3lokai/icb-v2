@@ -4,6 +4,11 @@ import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  CameraIcon,
+  CircleNotchIcon,
+  XIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import {
   AlertDialog,
@@ -278,12 +283,12 @@ export function AvatarUpload({
           <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             {isUploading ? (
               <Icon
-                name="CircleNotch"
+                icon={CircleNotchIcon}
                 size={24}
                 className="animate-spin text-white"
               />
             ) : (
-              <Icon name="Camera" size={24} className="text-white" />
+              <Icon icon={CameraIcon} size={24} className="text-white" />
             )}
           </div>
         )}
@@ -298,7 +303,7 @@ export function AvatarUpload({
             className="absolute -top-1 -right-1 h-6 w-6 rounded-full bg-destructive text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/90 z-10"
             aria-label="Delete avatar"
           >
-            <Icon name="X" size={12} />
+            <Icon icon={XIcon} size={12} />
           </button>
         )}
       </div>

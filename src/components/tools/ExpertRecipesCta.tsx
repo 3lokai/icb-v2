@@ -1,6 +1,13 @@
 import { Accent } from "@/components/primitives/accent";
 // src/components/tools/ExpertRecipesCta.tsx
 import Link from "next/link";
+import {
+  CalculatorIcon,
+  CoffeeIcon,
+  SlidersIcon,
+  TrophyIcon,
+  WrenchIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Decor } from "@/components/primitives/decor";
 import { Section } from "@/components/primitives/section";
@@ -30,12 +37,12 @@ export default function ExpertRecipesCta({
       ? {
           href: "/tools/expert-recipes",
           label: "Browse Expert Recipes",
-          icon: "Trophy" as const,
+          icon: TrophyIcon,
         }
       : {
           href: "/tools/coffee-calculator",
           label: "Try the Calculator",
-          icon: "Calculator" as const,
+          icon: CalculatorIcon,
         };
 
   return (
@@ -76,7 +83,7 @@ export default function ExpertRecipesCta({
                       size="lg"
                     >
                       <Link href={primary.href}>
-                        <Icon className="mr-2" name={primary.icon} size={18} />
+                        <Icon className="mr-2" icon={primary.icon} size={18} />
                         {primary.label}
                       </Link>
                     </Button>
@@ -88,7 +95,7 @@ export default function ExpertRecipesCta({
                       size="lg"
                     >
                       <Link href="/coffees">
-                        <Icon className="mr-2" name="Coffee" size={18} />
+                        <Icon className="mr-2" icon={CoffeeIcon} size={18} />
                         Explore Coffees
                       </Link>
                     </Button>
@@ -112,7 +119,7 @@ export default function ExpertRecipesCta({
                         The Toolkit
                       </span>
                       <Icon
-                        name="Wrench"
+                        icon={WrenchIcon}
                         size={18}
                         className="text-accent/40"
                       />
@@ -142,7 +149,7 @@ export default function ExpertRecipesCta({
                       <Stack gap="3">
                         <div className="flex items-center gap-2">
                           <Icon
-                            name="Sliders"
+                            icon={SlidersIcon}
                             size={14}
                             className="text-accent"
                           />

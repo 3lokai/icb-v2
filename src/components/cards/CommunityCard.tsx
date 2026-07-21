@@ -3,7 +3,17 @@
 import { memo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  DiscordLogoIcon,
+  FacebookLogoIcon,
+  RedditLogoIcon,
+  TelegramLogoIcon,
+  UsersThreeIcon,
+  WhatsappLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 import { CommunityTrackingLink } from "@/components/common/TrackingLink";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
@@ -17,26 +27,30 @@ type CommunityCardProps = {
 
 const platformConfig: Record<
   CommunityPlatform,
-  { icon: IconName; color: string; label: string }
+  { icon: ComponentType<IconProps>; color: string; label: string }
 > = {
   whatsapp: {
-    icon: "WhatsappLogo",
+    icon: WhatsappLogoIcon,
     color: "text-[#25D366]",
     label: "WhatsApp",
   },
-  discord: { icon: "DiscordLogo", color: "text-[#5865F2]", label: "Discord" },
+  discord: { icon: DiscordLogoIcon, color: "text-[#5865F2]", label: "Discord" },
   telegram: {
-    icon: "TelegramLogo",
+    icon: TelegramLogoIcon,
     color: "text-[#0088cc]",
     label: "Telegram",
   },
   facebook_group: {
-    icon: "FacebookLogo",
+    icon: FacebookLogoIcon,
     color: "text-[#1877F2]",
     label: "Facebook",
   },
-  reddit: { icon: "RedditLogo", color: "text-[#FF4500]", label: "Reddit" },
-  other: { icon: "UsersThree", color: "text-muted-foreground", label: "Other" },
+  reddit: { icon: RedditLogoIcon, color: "text-[#FF4500]", label: "Reddit" },
+  other: {
+    icon: UsersThreeIcon,
+    color: "text-muted-foreground",
+    label: "Other",
+  },
 };
 
 /** Localized digits; preserves trailing "+" (e.g. "5000+") when present. */
@@ -87,7 +101,7 @@ function CommunityCardComponent({ community, className }: CommunityCardProps) {
               config.color
             )}
           >
-            <Icon name={config.icon} size={28} />
+            <Icon icon={config.icon} size={28} />
           </div>
           <div className="flex flex-col items-end gap-2">
             <Badge variant="outline" className="shrink-0 text-overline">

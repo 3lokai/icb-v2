@@ -7,6 +7,7 @@ import type { CoffeeDetail } from "@/types/coffee-types";
 import { SPECIES_LABELS } from "@/types/coffee-types";
 import type { EntityReviewStats } from "@/types/review-types";
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
+import { StarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { trackCoffeeViewItem } from "@/lib/analytics/enhanced-tracking";
 import { recordCoffeeView } from "@/app/actions/coffee-views";
@@ -168,7 +169,7 @@ export function CoffeeHero({ coffee, stats }: CoffeeHeroProps) {
             {stats && stats.review_count !== null && stats.review_count > 0 ? (
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border/40 bg-card">
                 <Icon
-                  name="Star"
+                  icon={StarIcon}
                   size={16}
                   className="fill-rating text-rating"
                 />
@@ -222,7 +223,7 @@ export function CoffeeHero({ coffee, stats }: CoffeeHeroProps) {
               onClick={handleScrollToRating}
             >
               <Icon
-                name="Star"
+                icon={StarIcon}
                 size={18}
                 className="mr-2 fill-rating text-rating"
               />

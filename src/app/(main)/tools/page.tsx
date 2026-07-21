@@ -1,6 +1,7 @@
 // src/app/tools/page.tsx
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { ToolSuggestionTrigger } from "@/components/tools/ToolSuggestionModal";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -208,7 +209,7 @@ export default function ToolsPage() {
                     <span className="inline-flex items-center gap-2 font-medium text-primary transition-colors group-hover:text-accent">
                       {tool.cta}
                       <Icon
-                        name="ArrowRight"
+                        icon={ArrowRightIcon}
                         size={16}
                         className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
                       />

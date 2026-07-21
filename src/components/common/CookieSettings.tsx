@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, startTransition, useState } from "react";
+import { CookieIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -65,7 +66,7 @@ export function CookieSettings({
               <Icon
                 className="text-accent"
                 color="accent"
-                name="Cookie"
+                icon={CookieIcon}
                 size={20}
               />
               Cookie Preferences
@@ -75,7 +76,7 @@ export function CookieSettings({
               onClick={handleClose}
               type="button"
             >
-              <Icon name="X" size={18} />
+              <Icon icon={XIcon} size={18} />
             </button>
           </div>
 

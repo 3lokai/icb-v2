@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
+import { StarHalfIcon, StarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "./Icon";
 
 type StarRatingProps = {
@@ -134,7 +135,7 @@ export function StarRating({
                 onKeyDown={(e) => handleKeyDown(e, starValue)}
               >
                 <Icon
-                  name={isHalf ? "StarHalf" : "Star"}
+                  icon={isHalf ? StarHalfIcon : StarIcon}
                   size={sizeValues[size]}
                   color={isEmpty ? "muted" : "accent"}
                   aria-hidden
@@ -165,7 +166,7 @@ export function StarRating({
           return (
             <div key={index} className="relative">
               <Icon
-                name={isHalf ? "StarHalf" : "Star"}
+                icon={isHalf ? StarHalfIcon : StarIcon}
                 size={sizeValues[size]}
                 color={isEmpty ? "muted" : "accent"}
                 className="transition-colors duration-300"

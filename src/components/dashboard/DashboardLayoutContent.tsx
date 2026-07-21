@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ListIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardMobileDrawer } from "./DashboardMobileDrawer";
@@ -31,7 +32,7 @@ export function DashboardLayoutContent({
           onClick={() => setIsDrawerOpen(true)}
           variant="outline"
         >
-          <Icon className="mr-2" name="List" size={16} />
+          <Icon className="mr-2" icon={ListIcon} size={16} />
           Dashboard Menu
         </Button>
       </div>

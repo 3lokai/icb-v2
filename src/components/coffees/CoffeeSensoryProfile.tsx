@@ -5,6 +5,7 @@ import type { CoffeeDetail } from "@/types/coffee-types";
 import { Stack } from "@/components/primitives/stack";
 import { SensoryRadarChart } from "./SensoryRadarChart";
 import { cn } from "@/lib/utils";
+import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 
 type CoffeeSensoryProfileProps = {
@@ -62,7 +63,7 @@ export function CoffeeSensoryProfile({
           ) : (
             <div className="flex h-[280px] w-full flex-col items-center justify-center rounded-2xl border border-dashed border-border/40 bg-muted/30 p-8 text-center">
               <Icon
-                name="Coffee"
+                icon={CoffeeIcon}
                 size={32}
                 className="text-muted-foreground/40 mb-3"
               />

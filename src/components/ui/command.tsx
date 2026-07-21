@@ -2,6 +2,7 @@
 
 import { Command as CommandPrimitive } from "cmdk";
 import type * as React from "react";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import {
   Dialog,
@@ -76,7 +77,7 @@ function CommandInput({
       <Icon
         className="shrink-0"
         color="muted"
-        name="MagnifyingGlass"
+        icon={MagnifyingGlassIcon}
         size={20}
       />
       <CommandPrimitive.Input

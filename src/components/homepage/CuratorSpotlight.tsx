@@ -4,6 +4,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { ArrowRightIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
@@ -83,7 +84,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
                       Meet the Collective
                       <Icon
                         className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                        name="ArrowRight"
+                        icon={ArrowRightIcon}
                       />
                     </Link>
                   </Button>
@@ -118,7 +119,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
                     {curator.name}
                   </h3>
                   <div className="flex items-center gap-1.5 text-white">
-                    <Icon name="MapPin" size={14} className="opacity-80" />
+                    <Icon icon={MapPinIcon} size={14} className="opacity-80" />
                     <span className="text-caption font-medium uppercase tracking-wider">
                       {curator.location}
                     </span>

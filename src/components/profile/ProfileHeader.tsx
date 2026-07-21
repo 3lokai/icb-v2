@@ -4,7 +4,18 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Stack } from "@/components/primitives/stack";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  CookieIcon,
+  DropIcon,
+  FireIcon,
+  GearSixIcon,
+  MapPinIcon,
+  PencilSimpleIcon,
+  SparkleIcon,
+  UserPlusIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { AvatarUpload } from "@/components/ui/avatar-upload";
 import { Cluster } from "../primitives/cluster";
@@ -202,7 +213,7 @@ export function ProfileHeader({
                     </span>
                     {isOwner && !isAnonymous && (
                       <Icon
-                        name="PencilSimple"
+                        icon={PencilSimpleIcon}
                         size={12}
                         className="opacity-0 group-hover/loc:opacity-100 transition-opacity text-muted-foreground"
                       />
@@ -239,7 +250,7 @@ export function ProfileHeader({
               {isOwner && !isAnonymous && (
                 <span className="inline-block ml-2 opacity-0 group-hover/bio:opacity-100 transition-opacity">
                   <Icon
-                    name="PencilSimple"
+                    icon={PencilSimpleIcon}
                     size={14}
                     className="text-muted-foreground"
                   />
@@ -260,7 +271,7 @@ export function ProfileHeader({
                 size="sm"
                 className="text-micro text-muted-foreground hover:text-foreground"
               >
-                <Icon name="GearSix" size={14} className="mr-2" />
+                <Icon icon={GearSixIcon} size={14} className="mr-2" />
                 Settings
               </Button>
             </Link>
@@ -272,7 +283,7 @@ export function ProfileHeader({
         <div className="absolute top-0 right-0">
           <Link href="/login">
             <Button size="sm" className="rounded-full shadow-lg hover-lift">
-              <Icon name="UserPlus" size={14} className="mr-2" />
+              <Icon icon={UserPlusIcon} size={14} className="mr-2" />
               Create Profile
             </Button>
           </Link>
@@ -322,32 +333,32 @@ function PreferencesStrip({ preferences }: { preferences: CoffeePreferences }) {
   const regionLabels = regions?.map((v) => formatPreferenceValue(v)) || [];
 
   // Build preference groups
-  const groups: { icon: IconName; label: string; items: string[] }[] = [];
+  const groups: { icon: PhosphorIcon; label: string; items: string[] }[] = [];
 
   if (roastLabels.length > 0) {
     groups.push({
-      icon: "Fire",
+      icon: FireIcon,
       label: "ROAST",
       items: roastLabels.slice(0, 3),
     });
   }
   if (flavorLabels.length > 0) {
     groups.push({
-      icon: "Cookie",
+      icon: CookieIcon,
       label: "FLAVORS",
       items: flavorLabels.slice(0, 3),
     });
   }
   if (processingLabels.length > 0) {
     groups.push({
-      icon: "Drop",
+      icon: DropIcon,
       label: "PROCESS",
       items: processingLabels.slice(0, 2),
     });
   }
   if (regionLabels.length > 0) {
     groups.push({
-      icon: "MapPin",
+      icon: MapPinIcon,
       label: "REGIONS",
       items: regionLabels.slice(0, 2),
     });
@@ -361,7 +372,7 @@ function PreferencesStrip({ preferences }: { preferences: CoffeePreferences }) {
   if (with_milk_preference === false) traits.push("No Milk");
 
   if (traits.length > 0) {
-    groups.push({ icon: "Sparkle", label: "TRAITS", items: traits });
+    groups.push({ icon: SparkleIcon, label: "TRAITS", items: traits });
   }
 
   return (
@@ -370,7 +381,7 @@ function PreferencesStrip({ preferences }: { preferences: CoffeePreferences }) {
         {groups.map((group) => (
           <div key={group.label} className="flex flex-col gap-1.5">
             <div className="flex items-center gap-1.5 text-muted-foreground">
-              <Icon name={group.icon} size={10} />
+              <Icon icon={group.icon} size={10} />
               <span className="text-overline text-micro tracking-widest">
                 {group.label}
               </span>

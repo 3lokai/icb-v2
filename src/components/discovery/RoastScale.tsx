@@ -4,7 +4,7 @@ import { Fragment, useId } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
-import { discoveryPagePath } from "@/lib/discovery/landing-pages";
+import { discoveryPagePath } from "@/lib/discovery/landing-pages/paths";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
 import { cn } from "@/lib/utils";

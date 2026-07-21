@@ -1,5 +1,10 @@
 // src/components/home/TestimonialsSection.tsx
 
+import {
+  ArrowRightIcon,
+  ChatCircleIcon,
+  StarIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -136,7 +141,7 @@ const TestimonialCard = ({
       {/* Reddit icon to indicate source */}
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Icon className="text-accent" name="ChatCircle" size={16} />
+          <Icon className="text-accent" icon={ChatCircleIcon} size={16} />
           <span className="font-medium text-muted-foreground text-overline">
             from Reddit
           </span>
@@ -144,7 +149,12 @@ const TestimonialCard = ({
         {/* Simple 5-star rating for all since they're all positive */}
         <div className="flex">
           {["star-1", "star-2", "star-3", "star-4", "star-5"].map((starId) => (
-            <Icon className="text-accent" key={starId} name="Star" size={14} />
+            <Icon
+              className="text-accent"
+              key={starId}
+              icon={StarIcon}
+              size={14}
+            />
           ))}
         </div>
       </div>
@@ -235,7 +245,7 @@ export default function TestimonialsSection() {
               View All Reviews
               <Icon
                 className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                name="ArrowRight"
+                icon={ArrowRightIcon}
               />
             </Button>
           </Link>

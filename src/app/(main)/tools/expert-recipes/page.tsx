@@ -4,6 +4,13 @@ import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ExpertRecipesFAQ } from "@/components/faqs/ExpertRecipesFAQs";
+import {
+  CalculatorIcon,
+  CoffeeIcon,
+  FlaskIcon,
+  TrophyIcon,
+  UserIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Stack } from "@/components/primitives/stack";
@@ -210,7 +217,7 @@ export default function ExpertRecipesPage() {
                       >
                         <Icon
                           className="transition-transform group-hover:scale-110"
-                          name="Calculator"
+                          icon={CalculatorIcon}
                           size={16}
                         />
                         Try Calculator
@@ -307,7 +314,10 @@ export default function ExpertRecipesPage() {
                     <div className="relative z-10">
                       <div className="mb-6 flex items-center gap-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-transform duration-300 group-hover:scale-110">
-                          <Icon className="h-6 w-6 text-primary" name="User" />
+                          <Icon
+                            className="h-6 w-6 text-primary"
+                            icon={UserIcon}
+                          />
                         </div>
                         <div>
                           <h3 className="text-heading transition-colors group-hover:text-primary">
@@ -357,7 +367,7 @@ export default function ExpertRecipesPage() {
               <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                 <div className="surface-1 card-padding hover-lift group text-center rounded-2xl border border-border/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
                   <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500/10 text-green-600 transition-transform duration-300 group-hover:scale-110">
-                    <Icon className="h-7 w-7" name="Coffee" />
+                    <Icon className="h-7 w-7" icon={CoffeeIcon} />
                   </div>
                   <Stack gap="2">
                     <h3 className="text-heading transition-colors group-hover:text-primary">
@@ -380,7 +390,7 @@ export default function ExpertRecipesPage() {
                   <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-red-500/5 blur-2xl" />
                   <div className="relative z-10">
                     <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10 text-red-600 transition-transform duration-300 group-hover:scale-110">
-                      <Icon className="h-7 w-7" name="Trophy" />
+                      <Icon className="h-7 w-7" icon={TrophyIcon} />
                     </div>
                     <Stack gap="2">
                       <h3 className="text-heading transition-colors group-hover:text-primary">
@@ -403,7 +413,7 @@ export default function ExpertRecipesPage() {
                   <div className="absolute top-0 left-0 h-24 w-24 rounded-full bg-blue-500/5 blur-2xl" />
                   <div className="relative z-10">
                     <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-600 transition-transform duration-300 group-hover:scale-110">
-                      <Icon className="h-7 w-7" name="Flask" />
+                      <Icon className="h-7 w-7" icon={FlaskIcon} />
                     </div>
                     <Stack gap="2">
                       <h3 className="text-heading transition-colors group-hover:text-primary">

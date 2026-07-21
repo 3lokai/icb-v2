@@ -8,6 +8,7 @@ import {
 } from "@/lib/discovery/landing-pages";
 import { Stack } from "../primitives/stack";
 import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 
 type RelatedLinksProps = {
@@ -93,7 +94,7 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
 
                   <div className="flex items-center gap-2 text-label font-bold text-accent group-hover:gap-3 transition-all">
                     Explore
-                    <Icon name="ArrowRight" size={16} />
+                    <Icon icon={ArrowRightIcon} size={16} />
                   </div>
                 </Stack>
               </CardContent>

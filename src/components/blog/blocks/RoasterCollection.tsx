@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import RoasterCard from "@/components/cards/RoasterCard";
@@ -147,7 +148,8 @@ export function RoasterCollection({ value }: RoasterCollectionProps) {
             className="rounded-xl border-accent/20 text-accent hover:bg-accent/5 px-8"
           >
             <Link href={moreUrl || "/roasters"} className="font-bold">
-              {moreText} <Icon name="ArrowRight" size={18} className="ml-2" />
+              {moreText}{" "}
+              <Icon icon={ArrowRightIcon} size={18} className="ml-2" />
             </Link>
           </Button>
         </motion.div>

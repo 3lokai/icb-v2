@@ -2,6 +2,11 @@
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import * as React from "react";
+import {
+  CaretRightIcon,
+  CheckIcon,
+  CircleIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 
 import { cn } from "@/lib/utils";
@@ -100,7 +105,7 @@ function DropdownMenuCheckboxItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <Icon name="Check" size={16} />
+          <Icon icon={CheckIcon} size={16} />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -135,7 +140,7 @@ function DropdownMenuRadioItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <Icon name="Circle" size={8} />
+          <Icon icon={CircleIcon} size={8} />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -217,7 +222,7 @@ function DropdownMenuSubTrigger({
       {...props}
     >
       {children}
-      <Icon className="ml-auto" name="CaretRight" size={16} />
+      <Icon className="ml-auto" icon={CaretRightIcon} size={16} />
     </DropdownMenuPrimitive.SubTrigger>
   );
 }

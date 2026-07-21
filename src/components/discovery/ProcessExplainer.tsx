@@ -1,4 +1,10 @@
 import Link from "next/link";
+import {
+  ArrowRightIcon,
+  CoffeeIcon,
+  DropIcon,
+  PackageIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
@@ -80,7 +86,7 @@ const PROCESS_STEPS: Record<string, Step[]> = {
   ],
 };
 
-const STEP_ICONS = ["Coffee", "Drop", "Package"] as const;
+const STEP_ICONS = [CoffeeIcon, DropIcon, PackageIcon] as const;
 
 type ProcessExplainerProps = {
   processSlug: string;
@@ -125,7 +131,7 @@ export function ProcessExplainer({
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                   <Icon
                     className="text-primary"
-                    name={STEP_ICONS[index]}
+                    icon={STEP_ICONS[index]}
                     size={24}
                   />
                 </div>
@@ -156,7 +162,7 @@ export function ProcessExplainer({
           >
             Read the full guide
             <Icon
-              name="ArrowRight"
+              icon={ArrowRightIcon}
               className="h-4 w-4 transition-transform group-hover:translate-x-1"
             />
           </Link>

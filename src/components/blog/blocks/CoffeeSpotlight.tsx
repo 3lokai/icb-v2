@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
+import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -104,7 +105,7 @@ function SpotlightCard({
                     : `/roasters/${data.roaster_slug}/coffees/${data.slug}`
                 }
               >
-                View Beans <Icon name="Coffee" size={18} className="ml-2" />
+                View Beans <Icon icon={CoffeeIcon} size={18} className="ml-2" />
               </Link>
             </Button>
           </div>

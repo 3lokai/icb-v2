@@ -1,6 +1,7 @@
 // src/components/discovery/CoffeeGridTeaser.tsx
 import Link from "next/link";
 import CoffeeCard from "@/components/cards/CoffeeCard";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
@@ -72,7 +73,7 @@ export async function CoffeeGridTeaser({
                 {seeAllLabel}
                 <Icon
                   className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                  name="ArrowRight"
+                  icon={ArrowRightIcon}
                 />
               </Button>
             </Link>
@@ -109,7 +110,7 @@ export async function CoffeeGridTeaser({
             {seeAllLabel}
             <Icon
               className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-              name="ArrowRight"
+              icon={ArrowRightIcon}
             />
           </Button>
         </Link>

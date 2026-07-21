@@ -6,7 +6,19 @@ import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Input } from "@/components/ui/input";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  DiscordLogoIcon,
+  FacebookLogoIcon,
+  GhostIcon,
+  MagnifyingGlassIcon,
+  RedditLogoIcon,
+  TelegramLogoIcon,
+  UsersThreeIcon,
+  WhatsappLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 import { CommunityCard } from "@/components/cards/CommunityCard";
 import { cn } from "@/lib/utils";
 import type { CommunityDTO, CommunityPlatform } from "@/types/community-types";
@@ -17,14 +29,14 @@ type CommunityGridProps = {
 
 const PLATFORM_META: Record<
   CommunityPlatform,
-  { label: string; icon: IconName }
+  { label: string; icon: ComponentType<IconProps> }
 > = {
-  whatsapp: { label: "WhatsApp", icon: "WhatsappLogo" },
-  discord: { label: "Discord", icon: "DiscordLogo" },
-  telegram: { label: "Telegram", icon: "TelegramLogo" },
-  facebook_group: { label: "Facebook", icon: "FacebookLogo" },
-  reddit: { label: "Reddit", icon: "RedditLogo" },
-  other: { label: "Other", icon: "UsersThree" },
+  whatsapp: { label: "WhatsApp", icon: WhatsappLogoIcon },
+  discord: { label: "Discord", icon: DiscordLogoIcon },
+  telegram: { label: "Telegram", icon: TelegramLogoIcon },
+  facebook_group: { label: "Facebook", icon: FacebookLogoIcon },
+  reddit: { label: "Reddit", icon: RedditLogoIcon },
+  other: { label: "Other", icon: UsersThreeIcon },
 };
 
 const PLATFORM_ORDER: CommunityPlatform[] = [
@@ -148,7 +160,7 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
           <div className="relative w-full max-w-sm">
             <Icon
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-              name="MagnifyingGlass"
+              icon={MagnifyingGlassIcon}
               size={18}
             />
             <Input
@@ -205,7 +217,7 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
               >
                 <Stack gap="4" className="items-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-                    <Icon name="Ghost" size={32} color="muted" />
+                    <Icon icon={GhostIcon} size={32} color="muted" />
                   </div>
                   <p className="text-body-large text-muted-foreground">
                     No communities match your search.
@@ -242,7 +254,7 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
 type FilterChipProps = {
   active: boolean;
   onClick: () => void;
-  icon?: IconName;
+  icon?: ComponentType<IconProps>;
   children: React.ReactNode;
 };
 
@@ -260,7 +272,7 @@ function FilterChip({ active, onClick, icon, children }: FilterChipProps) {
           : "border-border/60 bg-transparent text-muted-foreground hover:border-accent hover:text-foreground"
       )}
     >
-      {icon && <Icon name={icon} size={15} />}
+      {icon && <Icon icon={icon} size={15} />}
       {children}
     </button>
   );

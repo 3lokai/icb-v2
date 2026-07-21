@@ -8,7 +8,19 @@ import { Stack } from "@/components/primitives/stack";
 import { PageShell } from "@/components/primitives/page-shell";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useState, Fragment } from "react";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  ArrowRightIcon,
+  ArrowSquareOutIcon,
+  CheckCircleIcon,
+  GearSixIcon,
+  HandshakeIcon,
+  ImageIcon,
+  RocketLaunchIcon,
+  StarIcon,
+  TrendUpIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics/index";
 import { capture } from "@/lib/posthog";
@@ -35,7 +47,7 @@ const InteractiveBentoCard = ({
   onClick,
   className,
 }: {
-  icon: IconName;
+  icon: PhosphorIcon;
   title: string;
   description: string;
   buttonText: string;
@@ -71,7 +83,7 @@ const InteractiveBentoCard = ({
       <div className="flex transform-gpu flex-col gap-5 transition-all duration-500 grow">
         <div className="flex items-center justify-between">
           <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-accent/10 border border-accent/20 group-hover:scale-110 group-hover:bg-accent/20 transition-all duration-500">
-            <Icon name={icon} size={24} color="accent" />
+            <Icon icon={icon} size={24} color="accent" />
           </div>
           <div className="h-px w-8 bg-border/40 group-hover:w-12 transition-all duration-500" />
         </div>
@@ -90,7 +102,7 @@ const InteractiveBentoCard = ({
         <span className="flex items-center gap-2 text-accent font-bold uppercase tracking-widest text-micro">
           {buttonText}
           <Icon
-            name="ArrowRight"
+            icon={ArrowRightIcon}
             size={14}
             color="accent"
             className="transition-transform group-hover:translate-x-1"
@@ -173,7 +185,7 @@ const BenefitsSection = ({
 }) => {
   const benefits = [
     {
-      icon: "RocketLaunch" as IconName,
+      icon: RocketLaunchIcon,
       title: "Early Presence",
       description:
         "Be listed while discovery habits are still forming. Early roasters establish context, credibility, and visibility as users begin comparing coffees across brands.",
@@ -181,7 +193,7 @@ const BenefitsSection = ({
       tier: "free" as const,
     },
     {
-      icon: "TrendUp" as IconName,
+      icon: TrendUpIcon,
       title: "Real Momentum",
       description:
         "A growing catalogue of Indian specialty coffees, active user ratings, and continuous discovery activity — all visible, verifiable, and brand-neutral. No inflated promises. Just traction you can see.",
@@ -189,7 +201,7 @@ const BenefitsSection = ({
       tier: "verified" as const,
     },
     {
-      icon: "Handshake" as IconName,
+      icon: HandshakeIcon,
       title: "Help Shape the Platform",
       description:
         "Founding roasters have direct input on structure, taxonomy, and features — ensuring the platform reflects how Indian specialty coffee actually works. We build with roasters, not around them.",
@@ -402,7 +414,7 @@ const PricingTiers = ({
 
               {tierData.badge && (
                 <div className="mt-6 flex items-center gap-2 text-accent text-micro font-bold uppercase tracking-widest">
-                  <Icon name="TrendUp" size={14} />
+                  <Icon icon={TrendUpIcon} size={14} />
                   {tierData.badge}
                 </div>
               )}
@@ -462,7 +474,7 @@ const PricingTiers = ({
 const FeaturesGrid = () => {
   const features = [
     {
-      icon: "CheckCircle" as IconName,
+      icon: CheckCircleIcon,
       title: "Verified Listing",
       description: (
         <>
@@ -479,31 +491,31 @@ const FeaturesGrid = () => {
       ),
     },
     {
-      icon: "ArrowSquareOut" as IconName,
+      icon: ArrowSquareOutIcon,
       title: "Direct Traffic",
       description:
         "We link directly to your website and purchase pages. No commissions. No intermediaries.",
     },
     {
-      icon: "Image" as IconName,
+      icon: ImageIcon,
       title: "Rich Profiles",
       description:
         "Add photos, share your story, and document your sourcing and roasting approach.",
     },
     {
-      icon: "Star" as IconName,
+      icon: StarIcon,
       title: "Community Reviews",
       description:
         "Ratings and feedback from verified users, tied to specific coffees — not generic brand scores.",
     },
     {
-      icon: "GearSix" as IconName,
+      icon: GearSixIcon,
       title: "Coffee & Product Management",
       description:
         "Add, update, and manage your coffee listings as they change through the year.",
     },
     {
-      icon: "TrendUp" as IconName,
+      icon: TrendUpIcon,
       title: "Performance Insights",
       description:
         "See how users discover and interact with your coffees — quietly, without vanity metrics.",
@@ -519,7 +531,7 @@ const FeaturesGrid = () => {
         >
           <div className="flex items-start gap-5">
             <div className="h-14 w-14 flex items-center justify-center rounded-xl bg-accent/5 text-accent border border-accent/10 group-hover:scale-110 group-hover:bg-accent/10 transition-all duration-500 shrink-0">
-              <Icon name={feature.icon} size={28} />
+              <Icon icon={feature.icon} size={28} />
             </div>
             <div>
               <h3 className="text-heading italic mb-2">{feature.title}</h3>

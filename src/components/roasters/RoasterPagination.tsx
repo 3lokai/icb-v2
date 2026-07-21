@@ -1,5 +1,6 @@
 "use client";
 
+import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -85,7 +86,7 @@ export function RoasterPagination({ totalPages }: RoasterPaginationProps) {
         size="sm"
         variant="outline"
       >
-        <Icon name="CaretLeft" size={16} />
+        <Icon icon={CaretLeftIcon} size={16} />
         <span className="hidden sm:inline">Previous</span>
       </Button>
 
@@ -117,7 +118,7 @@ export function RoasterPagination({ totalPages }: RoasterPaginationProps) {
         variant="outline"
       >
         <span className="hidden sm:inline">Next</span>
-        <Icon name="CaretRight" size={16} />
+        <Icon icon={CaretRightIcon} size={16} />
       </Button>
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { Accent } from "@/components/primitives/accent";
+import { ArrowClockwiseIcon, FunnelIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { useMemo, useState, memo } from "react";
 import { CoffeeDirectoryFAQ } from "@/components/faqs/CoffeeDirectoryFAQs";
@@ -86,7 +87,7 @@ function CoffeeDirectoryComponent({
           try again.
         </p>
         <Button variant="outline" onClick={() => refetch()}>
-          <Icon name="ArrowClockwise" className="mr-2" size={16} />
+          <Icon icon={ArrowClockwiseIcon} className="mr-2" size={16} />
           Try again
         </Button>
       </div>
@@ -108,7 +109,7 @@ function CoffeeDirectoryComponent({
           onClick={() => setIsDrawerOpen(true)}
           variant="outline"
         >
-          <Icon className="mr-2" name="Funnel" size={16} />
+          <Icon className="mr-2" icon={FunnelIcon} size={16} />
           Filters
           {activeFilterCount > 0 && (
             <Badge className="ml-2" variant="secondary">
