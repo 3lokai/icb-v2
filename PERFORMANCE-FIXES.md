@@ -90,9 +90,29 @@ The whole reason to touch the font was that `preload:true` put Fraunces on home'
 
 ---
 
-### Full sweep — LCP / FCP / CLS re-measured (2026-07-21, after L1)
+> **⚠ CORRECTION (2026-07-21, later): the sweep below is CDP `PerformanceObserver`, NOT Lighthouse — do not read it as the Perf score.**
+> A real prod Lighthouse run (mobile, simulate throttling) on `/` scored **44**, not ~75+: LCP **7.4s**, TBT **1.98s**, TTI **12.9s**, bootup **11.5s**, CLS **0**. The CDP observer records the LCP _element_ and its paint time correctly (that's why it read ~1.85s — the poster is paint-eligible), but it does **not** capture main-thread hydration cost, which is what Lighthouse penalizes. **Home is NOT done.** See the Lighthouse baseline table directly below. The CDP sweep remains useful only for confirming the LCP _element_ and CLS=0, which both still hold.
 
-Cold first-visit loads (browser cache disabled), prod build, CDP mobile-throttled (4× CPU, 1.6Mbps). **Canonical URLs** — note `/coffees/[slug]` is a discovery-landing route that renders a not-found shell for real coffee slugs; the canonical coffee detail is `/roasters/[roaster]/coffees/[slug]`.
+### Real prod Lighthouse baseline — home (2026-07-21)
+
+`next build` + `next start`, mobile, simulate throttling (Lighthouse default). This is the number that counts.
+
+| Metric                   |   Value   | Note                                                         |
+| ------------------------ | :-------: | ------------------------------------------------------------ |
+| Perf score               |  **44**   | vs P0 table's claimed 75 (that was a different/luckier run)  |
+| FCP                      |   1.8s    | healthy, unchanged                                           |
+| LCP                      | **7.4s**  | poster is the element but its paint waits behind main thread |
+| TBT                      | **1.98s** | P0 table's "0ms" does not reproduce under real Lighthouse    |
+| TTI                      |   12.9s   |                                                              |
+| **CLS**                  |   **0**   | ✅ the CLS/poster/loading.tsx work is real and holds         |
+| Script Evaluation (main) | **11.4s** | of ~14s total main-thread — **the entire bottleneck**        |
+| bootup-time              |   11.5s   | one 134KB entry chunk credited 8.3s = client-tree hydration  |
+
+**Root cause = P2 #7 (66% `"use client"`).** The 8.3s isn't the entry chunk's own code — it's the synchronous hydration of the client-component tree it boots. Fonts, poster, and the LCP element are already correct and are **not** the lever; only cutting hydration cost moves LCP/TBT/TTI. Fix workstream tracked under P2 #7 below.
+
+### Full sweep — LCP / FCP / CLS re-measured (2026-07-21, after L1) — CDP observer, not Lighthouse
+
+Cold first-visit loads (browser cache disabled), prod build, CDP mobile-throttled (4× CPU, 1.6Mbps). **Canonical URLs** — note `/coffees/[slug]` is a discovery-landing route that renders a not-found shell for real coffee slugs; the canonical coffee detail is `/roasters/[roaster]/coffees/[slug]`. **⚠ These are element-paint times, not Perf scores — see the correction above.**
 
 | Page (canonical)                                 |  FCP  |    LCP    | LCP element                |  CLS  |
 | ------------------------------------------------ | :---: | :-------: | -------------------------- | :---: |
@@ -179,6 +199,35 @@ Impact: high (both slug pages). Effort: medium (a) / low (b).
 **7. Cut the 66% `"use client"` ratio.**
 205/310 component files are client. Many are static presentational components that only need to be client because of one icon, one `motion` flourish, or a barrel re-export. Auditing these back to Server Components is the durable fix for the shared-bundle size — it compounds with every fix above.
 Impact: high (sitewide). Effort: high (incremental).
+
+**Phase A — de-clienting the shared layout primitives (2026-07-21): DONE, but ZERO metric impact.**
+Removed the gratuitous `"use client"` from 5 pure presentational primitives (`stack`, `section`, `cluster`, `prose`, `rule` — verified no hooks/events/browser-APIs/motion; kept `reveal.tsx` which genuinely needs client). Type-check/lint/build all clean, render identical. Kept the change (it's correct + tidier), but **Lighthouse home was unchanged: Perf 44→44, LCP 7.4→7.5s, TBT 1.98→2.09s.** Lesson: these primitives are thin `<div>` wrappers — making them Server Components saved nothing because the expensive client components _inside_ them (hero, motion sections, cards) stayed client and hydrate regardless.
+
+**Phase B — cards/layout/common: NO safe yield (verified file-by-file, 2026-07-21).** Every `"use client"` file in those folders is either (a) genuinely interactive (`useState`/`onClick`/`onError`/forms/custom hooks — correctly client) or (b) rendered inside a **client** parent (`CommunityCard`→`CommunityGrid`, `TopProfileCard`→`TopProfilesSection`), where removing the directive is a no-op (RSC auto-promotes it back to client) and stripping its `memo`/`useMemo` would _regress_ re-renders. Directive removal is exhausted; the real lever is island-ifying the client _parents_ (server shell + minimal client island), which is behavior-touching Phase-C work, not a directive edit.
+
+**Measurement caveat discovered:** Lighthouse `simulate` (Lantern) inflates "Script Evaluation / bootup-time" (reported 11–13s) far beyond the real long-tasks (longest single task ≤554ms; TBT ~2s). Trust **TBT and LCP**, not the bootup-time number.
+
+**CDP-vs-Lighthouse LCP contradiction — RESOLVED (2026-07-21).** Confirmed from the Lighthouse HTML report's LCP insight audits: **the LCP element IS the `hero-poster.webp` `<img>`** (full-viewport, `fetchpriority=high`, `priority:High`). Its network entry shows it **fully downloaded at 124ms** (15KB). Yet `simulate` times its paint at **7.5s** — pure _render delay_, not load delay. An already-downloaded, above-the-fold, high-priority image can only be delayed by a congested main thread. So: CDP (real browser, observed) saw the poster paint at ~1.85s; Lantern _models_ it at 7.5s because it chains the LCP render behind its simulated (inflated) main-thread queue. **Real-user LCP is almost certainly ~2s; the 7.5s is a lab-model penalty.** This is why L1 (poster) + font + CLS work can't move the `simulate` score — under Lantern, LCP is gated on main-thread script work, and the only lever is cutting above-the-fold client JS.
+
+### Observed-throttle sweep — the real numbers (2026-07-21)
+
+Ran Lighthouse locally with `--throttling-method=devtools` (observed, headless Chrome) across all 5 pages. **This is the honest picture; the `simulate` scores were Lantern artifacts.**
+
+| Page                              | Perf | FCP | LCP | TBT  |   CLS    |
+| --------------------------------- | :--: | :-: | :-: | :--: | :------: |
+| `/` (home)                        |  65  | 2.0 | 2.6 | 1.78 |    0     |
+| `/roasters`                       |  74  | 1.9 | 2.3 | 0.73 | **0.11** |
+| `/coffees`                        |  76  | 2.0 | 2.3 | 0.84 |    0     |
+| `/roasters/{slug}`                |  73  | 2.0 | 2.4 | 0.61 | **0.12** |
+| `/roasters/{slug}/coffees/{slug}` |  75  | 2.1 | 2.5 | 0.81 |    0     |
+
+- **LCP is good sitewide (2.3–2.6s)** — every `simulate` 4–7.5s reading was a modeling artifact. No LCP work warranted.
+- **Home is the TBT/Perf outlier** (1.78s / 65) — the above-fold hero client JS. The other four sit at 73–76 / TBT 0.6–0.84s.
+- **Real CLS defect: `/roasters` 0.11 and `/roasters/{slug}` 0.12** (not 0). `/coffees` + coffee-detail are clean, so it's the roaster-path Suspense/footer streaming shift (Fix #6 territory) — its own item.
+
+**posthog-recorder removed entirely (2026-07-21).** User does not record sessions, so the idle-`startSessionRecording()` block in `instrumentation-client.ts` was deleted (kept `disable_session_recording: true`). Verified: `posthog-recorder.js` = **0 network requests** (was a ~319ms main-thread block on every page). **Home TBT 1.78→1.42s, Perf 65→67**, LCP/CLS unchanged. Every page reclaims ~350ms TBT. Supersedes the P0 #3 "idle-defer the recorder" approach — it's now off, not deferred.
+
+**Hero-island refactor: NOT warranted for LCP** (LCP is 2.6s observed — fine). It would only help home's residual TBT (~1.42s post-recorder), which is diffuse hydration with no single culprit — high effort for a lab-metric that field data doesn't gate on. Deferred; revisit only if CrUX INP is poor. The candidate components if pursued: `HeroControl`/`HeroSearch`/`HeroCTAs`/`HeroContextPanel`/`HeroSegmentDevToggle`/`HeroVideoBackground` → server shell + one minimal client island.
 
 **8. Make `ModalProvider` / `SearchProvider` lazier.**
 `src/app/layout.tsx` mounts both on every page though they're only needed on interaction. `SearchCommand` is already `dynamic()` (good). Consider mounting the modal/search context contents on first use.
