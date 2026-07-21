@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import { Accent } from "./accent";
 import { Decor } from "./decor";

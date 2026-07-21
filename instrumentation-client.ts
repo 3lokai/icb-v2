@@ -53,21 +53,9 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   },
 });
 
-// Start session recording after the browser is idle (post-LCP) so the recorder
-// script is fetched off the critical path. Costs the first ~idle-delay of the
-// session; buys back LCP on every page. Prod only — dev stays off.
-if (typeof window !== "undefined" && process.env.NODE_ENV !== "development") {
-  const start = () => posthog.startSessionRecording();
-  if (typeof window.requestIdleCallback === "function") {
-    window.requestIdleCallback(start, { timeout: 5000 });
-  } else if (document.readyState === "complete") {
-    window.setTimeout(start, 2000);
-  } else {
-    window.addEventListener("load", () => window.setTimeout(start, 2000), {
-      once: true,
-    });
-  }
-}
+// Session recording is off entirely (disable_session_recording above) — we don't
+// record sessions, so posthog-recorder.js (~52KB) never loads and never blocks the
+// main thread. Re-enable by calling posthog.startSessionRecording() if that changes.
 
 // IMPORTANT: Never combine this approach with other client-side PostHog initialization approaches,
 // especially components like a PostHogProvider. instrumentation-client.ts is the correct solution
