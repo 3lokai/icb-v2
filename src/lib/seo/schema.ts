@@ -84,7 +84,18 @@ type SchemaOrgProps = {
   currency?: string;
   availability?: "InStock" | "OutOfStock";
   sku?: string;
-  address?: string;
+  /** Either a pre-joined string (legacy) or structured PostalAddress parts. */
+  address?:
+    | string
+    | {
+        streetAddress?: string | null;
+        addressLocality?: string | null;
+        addressRegion?: string | null;
+        addressCountry?: string | null;
+      };
+  geo?: { latitude: number; longitude: number };
+  /** LocalBusiness certifications (e.g. "Organic", "Fair Trade"). */
+  certifications?: string[];
   telephone?: string;
 
   authorName?: string;
@@ -109,6 +120,8 @@ export function generateSchemaOrg({
   sku,
   aggregateRating,
   address,
+  geo,
+  certifications,
   telephone,
   authorName,
   publishDate,
@@ -134,9 +147,18 @@ export function generateSchemaOrg({
     };
   };
 
+  type PostalAddress = {
+    "@type": "PostalAddress";
+    streetAddress?: string;
+    addressLocality?: string;
+    addressRegion?: string;
+    addressCountry?: string;
+  };
   type LocalBusinessSchemaSpecifics = {
-    address?: { "@type": string; streetAddress: string };
+    address?: PostalAddress;
     telephone?: string;
+    geo?: { "@type": "GeoCoordinates"; latitude: number; longitude: number };
+    hasCertification?: Array<{ "@type": "Certification"; name: string }>;
   };
 
   type ArticleSchemaSpecifics = {
@@ -212,13 +234,33 @@ export function generateSchemaOrg({
 
   if (type === "LocalBusiness") {
     if (address) {
-      schema.address = {
-        "@type": "PostalAddress",
-        streetAddress: address,
-      };
+      const parts =
+        typeof address === "string" ? { streetAddress: address } : address;
+      const postal: PostalAddress = { "@type": "PostalAddress" };
+      if (parts.streetAddress) postal.streetAddress = parts.streetAddress;
+      if (parts.addressLocality) postal.addressLocality = parts.addressLocality;
+      if (parts.addressRegion) postal.addressRegion = parts.addressRegion;
+      if (parts.addressCountry) postal.addressCountry = parts.addressCountry;
+      // Only attach when we have at least one real field beyond "@type".
+      if (Object.keys(postal).length > 1) {
+        schema.address = postal;
+      }
     }
     if (telephone) {
       schema.telephone = telephone;
+    }
+    if (geo) {
+      schema.geo = {
+        "@type": "GeoCoordinates",
+        latitude: geo.latitude,
+        longitude: geo.longitude,
+      };
+    }
+    if (certifications && certifications.length > 0) {
+      schema.hasCertification = certifications.map((name) => ({
+        "@type": "Certification",
+        name,
+      }));
     }
   }
 

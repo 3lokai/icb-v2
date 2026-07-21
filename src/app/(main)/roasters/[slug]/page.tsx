@@ -12,7 +12,12 @@ import {
   generateMetadata as generateSEOMetadata,
   truncateTitle,
 } from "@/lib/seo/metadata";
-import { generateSchemaOrg, generateBreadcrumbSchema } from "@/lib/seo/schema";
+import {
+  generateSchemaOrg,
+  generateBreadcrumbSchema,
+  generateFAQSchema,
+} from "@/lib/seo/schema";
+import { buildRoasterFaqItems } from "@/lib/seo/roaster-faqs";
 import StructuredData from "@/components/seo/StructuredData";
 import { RoasterDetailPage } from "@/components/roasters/RoasterDetailPage";
 import { roasterImagePresets } from "@/lib/imagekit";
@@ -157,12 +162,21 @@ export default async function RoasterDetailPageServer({ params }: Props) {
     ? roasterImagePresets.roasterOG(roaster.logo_url)
     : undefined;
 
-  // Build address string for LocalBusiness schema
-  const addressParts: string[] = [];
-  if (roaster.hq_city) addressParts.push(roaster.hq_city);
-  if (roaster.hq_state) addressParts.push(roaster.hq_state);
-  if (roaster.hq_country) addressParts.push(roaster.hq_country);
-  const address = addressParts.length > 0 ? addressParts.join(", ") : undefined;
+  // Structured PostalAddress for LocalBusiness. Prefer a real street from the
+  // first physical location; locality/region/country come from HQ fields.
+  const primaryLocation = roaster.physical_locations?.[0];
+  const address = {
+    streetAddress: primaryLocation?.address,
+    addressLocality: roaster.hq_city,
+    addressRegion: roaster.hq_state,
+    addressCountry: roaster.hq_country,
+  };
+
+  // Geo from HQ coordinates, falling back to the first physical location.
+  const lat = roaster.lat ?? primaryLocation?.lat ?? null;
+  const lon = roaster.lon ?? primaryLocation?.lon ?? null;
+  const geo =
+    lat != null && lon != null ? { latitude: lat, longitude: lon } : undefined;
 
   const localBusinessSchema = generateSchemaOrg({
     type: "LocalBusiness",
@@ -171,6 +185,8 @@ export default async function RoasterDetailPageServer({ params }: Props) {
     image: ogImage,
     url: canonical,
     address,
+    geo,
+    certifications: roaster.certifications ?? undefined,
     telephone: roaster.phone ?? undefined,
     aggregateRating:
       roaster.avg_rating && roaster.total_ratings_count
@@ -187,11 +203,24 @@ export default async function RoasterDetailPageServer({ params }: Props) {
     { name: roaster.name, url: canonical },
   ]);
 
+  // FAQ block + FAQPage JSON-LD (server-rendered here, like the coffee SKU and
+  // article templates). FAQSection renders with includeStructuredData={false}.
+  const faqItems = buildRoasterFaqItems(roaster);
+  const schemas = [localBusinessSchema, breadcrumbSchema];
+  if (faqItems.length > 0) {
+    schemas.push(generateFAQSchema(faqItems));
+  }
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <>
-        <StructuredData schema={[localBusinessSchema, breadcrumbSchema]} />
-        <RoasterDetailPage roaster={roaster} stats={stats} reviews={reviews} />
+        <StructuredData schema={schemas} />
+        <RoasterDetailPage
+          roaster={roaster}
+          stats={stats}
+          reviews={reviews}
+          faqItems={faqItems}
+        />
       </>
     </HydrationBoundary>
   );
