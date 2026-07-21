@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import { SidebarSimpleIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -273,7 +274,7 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <Icon name="SidebarSimple" size={16} />
+      <Icon icon={SidebarSimpleIcon} size={16} />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );

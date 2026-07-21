@@ -3,6 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Stack } from "@/components/primitives/stack";
+import {
+  CoffeeIcon,
+  PencilSimpleIcon,
+  QuotesIcon,
+  XIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -48,7 +54,7 @@ export function ProfileSelectionCard({
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <Icon
-              name="Coffee"
+              icon={CoffeeIcon}
               size={40}
               className="text-muted-foreground/20"
             />
@@ -78,7 +84,7 @@ export function ProfileSelectionCard({
           </Stack>
           <div className="relative mt-2">
             <Icon
-              name="Quotes"
+              icon={QuotesIcon}
               size={24}
               className="absolute -top-4 -left-3 text-accent/10 rotate-180"
             />
@@ -99,7 +105,7 @@ export function ProfileSelectionCard({
                 onClick={() => onEdit(selection)}
                 aria-label={`Edit rating for ${selection.name}`}
               >
-                <Icon name="PencilSimple" size={14} />
+                <Icon icon={PencilSimpleIcon} size={14} />
               </Button>
             )}
             {onRemoveFromRecommendations && (
@@ -111,7 +117,7 @@ export function ProfileSelectionCard({
                 onClick={() => onRemoveFromRecommendations(selection)}
                 aria-label={`Remove ${selection.name} from public recommendations`}
               >
-                <Icon name="X" size={14} />
+                <Icon icon={XIcon} size={14} />
               </Button>
             )}
           </div>

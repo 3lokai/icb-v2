@@ -3,6 +3,7 @@
 
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
+import { LinkIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 
@@ -51,7 +52,7 @@ export function CopyLink({ method, strength, roast, drink }: CopyLinkProps) {
       size="sm"
       variant="outline"
     >
-      <Icon className="mr-1 h-3 w-3" name="Link" />
+      <Icon className="mr-1 h-3 w-3" icon={LinkIcon} />
       <span className="font-medium">Copy Link</span>
     </Button>
   );

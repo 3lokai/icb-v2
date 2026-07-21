@@ -1,7 +1,16 @@
 "use client";
 
 import { PortableText } from "@portabletext/react";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  CheckCircleIcon,
+  InfoIcon,
+  LightbulbIcon,
+  WarningIcon,
+  XCircleIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 
@@ -17,37 +26,37 @@ export function Callout({ value }: CalloutProps) {
   const types: Record<
     string,
     {
-      icon: IconName;
+      icon: ComponentType<IconProps>;
       class: string;
       iconColor: "primary" | "accent" | "destructive";
     }
   > = {
     info: {
-      icon: "Info",
+      icon: InfoIcon,
       class:
         "bg-blue-50/30 border-blue-200/50 text-blue-900 dark:bg-blue-900/10 dark:border-blue-800/40 dark:text-blue-100",
       iconColor: "primary",
     },
     warning: {
-      icon: "Warning",
+      icon: WarningIcon,
       class:
         "bg-amber-50/30 border-amber-200/50 text-amber-900 dark:bg-amber-900/10 dark:border-amber-800/40 dark:text-amber-100",
       iconColor: "primary",
     },
     tip: {
-      icon: "Lightbulb",
+      icon: LightbulbIcon,
       class:
         "bg-emerald-50/30 border-emerald-200/50 text-emerald-900 dark:bg-emerald-900/10 dark:border-emerald-800/40 dark:text-emerald-100",
       iconColor: "accent",
     },
     success: {
-      icon: "CheckCircle",
+      icon: CheckCircleIcon,
       class:
         "bg-emerald-50/30 border-emerald-200/50 text-emerald-900 dark:bg-emerald-900/10 dark:border-emerald-800/40 dark:text-emerald-100",
       iconColor: "accent",
     },
     error: {
-      icon: "XCircle",
+      icon: XCircleIcon,
       class:
         "bg-red-50/30 border-red-200/50 text-red-900 dark:bg-red-900/10 dark:border-red-800/40 dark:text-red-100",
       iconColor: "destructive",
@@ -69,7 +78,7 @@ export function Callout({ value }: CalloutProps) {
     >
       <div className="mt-0.5">
         <Icon
-          name={config.icon}
+          icon={config.icon}
           size={24}
           className="shrink-0"
           color={config.iconColor}

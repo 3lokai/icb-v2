@@ -9,6 +9,10 @@ import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { Marquee } from "@/components/ui/marquee";
+import {
+  ArrowRightIcon,
+  ArrowUpRightIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import Image from "next/image";
 import { roasterImagePresets } from "@/lib/imagekit";
@@ -116,7 +120,7 @@ export default function RoasterInfrastructureSection() {
                   Explore Directory
                   <Icon
                     className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                    name="ArrowRight"
+                    icon={ArrowRightIcon}
                   />
                 </Button>
               </Link>
@@ -126,7 +130,7 @@ export default function RoasterInfrastructureSection() {
                 className="text-label text-muted-foreground hover:text-accent transition-colors flex items-center gap-2"
               >
                 Are you a roaster?
-                <Icon name="ArrowUpRight" className="w-3 h-3" />
+                <Icon icon={ArrowUpRightIcon} className="w-3 h-3" />
               </Link>
             </div>
           </Stack>

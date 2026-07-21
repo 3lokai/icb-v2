@@ -5,6 +5,11 @@ import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateMetadata as generateBaseMetadata } from "@/lib/seo/metadata";
+import {
+  CoffeeIcon,
+  CompassIcon,
+  TargetIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { CoffeeCompassClient } from "@/components/tools/CoffeeCompassClient";
 import {
@@ -76,17 +81,17 @@ const compassSchema = {
 
 const howItWorksSteps = [
   {
-    icon: "Target",
+    icon: TargetIcon,
     title: "Pick Your Symptoms",
     desc: "Select what you taste — sour, bitter, watery, heavy. Choose as many as apply.",
   },
   {
-    icon: "Coffee",
+    icon: CoffeeIcon,
     title: "Choose Your Method",
     desc: "Pour-over, espresso, AeroPress, French press — the engine tailors advice to your gear.",
   },
   {
-    icon: "Compass",
+    icon: CompassIcon,
     title: "Get Precise Fixes",
     desc: "Instantly see your extraction position and method-specific corrective actions. No guessing.",
   },
@@ -204,7 +209,7 @@ export default async function CoffeeCompassPage({ searchParams }: PageProps) {
                       <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-all duration-300 group-hover:scale-110">
                         <Icon
                           className="h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110"
-                          name={step.icon as any}
+                          icon={step.icon}
                         />
                       </div>
                       <Stack gap="2">

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
+import { HeartIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import {
@@ -102,7 +103,11 @@ export function ProfileSelections({
 
         {selections.length === 0 && !isOwner ? (
           <div className="border border-dashed border-border/60 rounded-3xl py-16 flex flex-col items-center justify-center text-center gap-3 bg-background/60">
-            <Icon name="Heart" size={28} className="text-muted-foreground" />
+            <Icon
+              icon={HeartIcon}
+              size={28}
+              className="text-muted-foreground"
+            />
             <p className="text-caption text-muted-foreground italic m-0 max-w-xs">
               No public selections yet. When this member recommends a coffee,
               it&apos;ll appear here.

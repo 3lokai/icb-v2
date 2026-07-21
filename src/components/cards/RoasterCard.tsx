@@ -8,6 +8,7 @@ import type { RoasterSummary } from "@/types/roaster-types";
 import { Stack } from "../primitives/stack";
 import { roasterImagePresets } from "@/lib/imagekit";
 import { RoasterTrackingLink } from "../common/TrackingLink";
+import { CoffeeIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "../common/Icon";
 import { CardRatingFooter } from "./CardRatingFooter";
 import { useImageColor } from "@/hooks/useImageColor";
@@ -146,7 +147,7 @@ export default function RoasterCard({
               {/* Secondary info - always show coffee count, location optional */}
               {coffeeCount > 0 && (
                 <div className="flex items-center gap-1.5 line-clamp-1">
-                  <Icon name="Coffee" size={12} color="muted" />
+                  <Icon icon={CoffeeIcon} size={12} color="muted" />
                   <span className="text-caption">
                     {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
                   </span>
@@ -155,7 +156,7 @@ export default function RoasterCard({
                       <span className="text-caption text-muted-foreground">
                         •
                       </span>
-                      <Icon name="MapPin" size={12} color="muted" />
+                      <Icon icon={MapPinIcon} size={12} color="muted" />
                       <span className="text-caption">{hqLocation}</span>
                     </>
                   )}
@@ -254,14 +255,14 @@ export default function RoasterCard({
             {/* Location */}
             {hqLocation && (
               <div className="flex items-center gap-1.5">
-                <Icon name="MapPin" size={14} color="muted" />
+                <Icon icon={MapPinIcon} size={14} color="muted" />
                 <p className="text-body-muted">{hqLocation}</p>
               </div>
             )}
 
             {/* Coffee count */}
             <div className="flex items-center gap-1.5">
-              <Icon name="Coffee" size={14} color="muted" />
+              <Icon icon={CoffeeIcon} size={14} color="muted" />
               <p className="text-body-muted">
                 {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
               </p>

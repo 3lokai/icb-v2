@@ -1,3 +1,8 @@
+import {
+  CoffeeIcon,
+  StarIcon,
+  StorefrontIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -38,7 +43,7 @@ export function SearchResultRow({
         ) : null}
         <AvatarFallback className="bg-muted/80 text-popover-foreground">
           <Icon
-            name={item.type === "coffee" ? "Coffee" : "Storefront"}
+            icon={item.type === "coffee" ? CoffeeIcon : StorefrontIcon}
             size={compact ? 20 : 24}
           />
         </AvatarFallback>
@@ -89,7 +94,7 @@ export function SearchResultRow({
 
       {rating != null && (
         <div className="flex shrink-0 items-center gap-1 font-medium text-caption text-muted-foreground">
-          <Icon color="accent" name="Star" size={14} />
+          <Icon color="accent" icon={StarIcon} size={14} />
           {rating.toFixed(1)}
         </div>
       )}

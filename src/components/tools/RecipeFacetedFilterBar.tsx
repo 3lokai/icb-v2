@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -83,7 +84,7 @@ export function RecipeFacetedFilterBar({
       <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
         <div className="relative w-full md:max-w-md">
           <Icon
-            name="MagnifyingGlass"
+            icon={MagnifyingGlassIcon}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             size={18}
           />

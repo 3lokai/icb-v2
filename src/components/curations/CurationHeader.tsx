@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
 import { Badge } from "@/components/ui/badge";
+import { MapPinIcon, QuotesIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Curator } from "./types";
 
@@ -67,7 +68,11 @@ export function CurationHeader({ subtitle, curator }: CurationHeaderProps) {
                 {/* Subtext: Location & Tags */}
                 <Stack gap="4">
                   <Cluster gap="2" align="center">
-                    <Icon name="MapPin" size={16} className="!text-white/40" />
+                    <Icon
+                      icon={MapPinIcon}
+                      size={16}
+                      className="!text-white/40"
+                    />
                     <span className="text-label-large font-light uppercase tracking-[0.1em] !text-white">
                       {curator.location}
                     </span>
@@ -92,7 +97,7 @@ export function CurationHeader({ subtitle, curator }: CurationHeaderProps) {
             <div className="md:col-span-12 lg:col-span-4 lg:pb-4">
               <div className="relative max-w-md lg:max-w-none ml-auto">
                 <Icon
-                  name="Quotes"
+                  icon={QuotesIcon}
                   size={48}
                   className="absolute -top-8 -left-6 !text-white/10 rotate-180 -z-10"
                 />

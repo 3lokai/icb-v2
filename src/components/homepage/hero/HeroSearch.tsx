@@ -9,6 +9,10 @@ import {
   useRef,
   useState,
 } from "react";
+import {
+  MagnifyingGlassIcon,
+  XCircleIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
@@ -159,7 +163,7 @@ export function HeroSearch() {
       <Stack gap="6">
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-4 z-10 flex items-center">
-            <Icon color="white" name="MagnifyingGlass" size={20} />
+            <Icon color="white" icon={MagnifyingGlassIcon} size={20} />
           </div>
           <Input
             aria-activedescendant={activeOptionId}
@@ -198,7 +202,7 @@ export function HeroSearch() {
                 type="button"
                 variant="ghost"
               >
-                <Icon color="white" name="XCircle" size={16} />
+                <Icon color="white" icon={XCircleIcon} size={16} />
               </Button>
             )}
             <Button
@@ -217,7 +221,7 @@ export function HeroSearch() {
                 <Icon
                   aria-hidden
                   color="white"
-                  name="MagnifyingGlass"
+                  icon={MagnifyingGlassIcon}
                   size={18}
                 />
               )}

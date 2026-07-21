@@ -1,6 +1,11 @@
 // src/app/(main)/tools/grind-size-converter/page.tsx
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import {
+  CoffeeIcon,
+  GearIcon,
+  RulerIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { GrindConverterFAQ } from "@/components/faqs/GrindConverterFAQs";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -105,17 +110,17 @@ const grindToolSchema = {
 
 const STEPS = [
   {
-    icon: "Coffee" as const,
+    icon: CoffeeIcon,
     title: "Pick your brew",
     desc: "12 brew methods from espresso to cold brew, each with its own grind window.",
   },
   {
-    icon: "Gear" as const,
+    icon: GearIcon,
     title: "Pick your grinder",
     desc: "Get the answer in your grinder's units — clicks, numbers, or rotations.",
   },
   {
-    icon: "Ruler" as const,
+    icon: RulerIcon,
     title: "Dial in by taste",
     desc: "Start from the suggested setting and microns, then adjust to your cup.",
   },
@@ -197,7 +202,7 @@ export default function GrindSizeConverterPage() {
                           className={cn(
                             "h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110"
                           )}
-                          name={step.icon}
+                          icon={step.icon}
                         />
                       </div>
                       <Stack gap="2">

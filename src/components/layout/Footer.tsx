@@ -1,7 +1,14 @@
 // components/layout/Footer.tsx - Updated
 
 import Link from "next/link";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  EnvelopeIcon,
+  EnvelopeSimpleIcon,
+  FacebookLogoIcon,
+  InstagramLogoIcon,
+  XLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import { Icon } from "@/components/common/Icon";
 import { NewsletterForm } from "@/components/common/NewsletterForm";
 import { Logo } from "@/components/layout/logo";
 import { CookieSettingsButton } from "../common/CookieSettings";
@@ -51,7 +58,7 @@ export function Footer() {
                   <p className="flex items-center gap-3 text-caption text-muted-foreground transition-colors hover:text-foreground">
                     <Icon
                       className="text-accent/60"
-                      name="Envelope"
+                      icon={EnvelopeIcon}
                       size={16}
                     />
                     support@indiancoffeebeans.com
@@ -63,22 +70,22 @@ export function Footer() {
                     {
                       label: "Instagram",
                       href: "https://instagram.com/indiancoffeebeans",
-                      icon: "InstagramLogo",
+                      icon: InstagramLogoIcon,
                     },
                     {
                       label: "X (Twitter)",
                       href: "https://x.com/indiacoffeebean",
-                      icon: "XLogo",
+                      icon: XLogoIcon,
                     },
                     {
                       label: "Facebook",
                       href: "https://www.facebook.com/profile.php?id=61577147573879#",
-                      icon: "FacebookLogo",
+                      icon: FacebookLogoIcon,
                     },
                     {
                       label: "Email",
                       href: "mailto:support@indiancoffeebeans.com",
-                      icon: "Envelope",
+                      icon: EnvelopeIcon,
                     },
                   ].map((social) => {
                     const isMailto = social.href.startsWith("mailto:");
@@ -91,7 +98,7 @@ export function Footer() {
                         rel={isMailto ? undefined : "noopener noreferrer"}
                         target={isMailto ? undefined : "_blank"}
                       >
-                        <Icon name={social.icon as IconName} size={20} />
+                        <Icon icon={social.icon} size={20} />
                       </a>
                     );
                   })}
@@ -254,7 +261,7 @@ export function Footer() {
                     <h3 className="text-overline tracking-[0.15em] text-foreground font-bold flex items-center gap-2">
                       <Icon
                         className="text-accent"
-                        name="EnvelopeSimple"
+                        icon={EnvelopeSimpleIcon}
                         size={16}
                       />
                       Updates

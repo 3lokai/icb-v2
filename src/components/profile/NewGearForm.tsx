@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { FieldError, FieldLabel } from "@/components/ui/field";
 import { Stack } from "@/components/primitives/stack";
+import { PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import type { CreateNewGearFormData } from "@/lib/validations/gear";
 
@@ -179,7 +180,7 @@ export function NewGearForm({
               "Creating..."
             ) : (
               <>
-                <Icon name="Plus" size={14} className="mr-2" />
+                <Icon icon={PlusIcon} size={14} className="mr-2" />
                 Create & Add
               </>
             )}

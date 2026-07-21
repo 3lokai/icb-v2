@@ -20,6 +20,17 @@ import {
   setReviewCount,
 } from "@/lib/reviews/anon-id";
 import { createClient } from "@/lib/supabase/client";
+import {
+  CheckIcon,
+  CircleIcon,
+  CompassIcon,
+  PencilSimpleIcon,
+  PlusIcon,
+  QuotesIcon,
+  StarIcon,
+  TrashSimpleIcon,
+  UserIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -391,7 +402,7 @@ export function ReviewCapture({
                     variant="secondary"
                     className="text-label bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-3 py-1"
                   >
-                    <Icon name="Check" size={12} className="mr-1.5" />
+                    <Icon icon={CheckIcon} size={12} className="mr-1.5" />
                     Saved
                   </Badge>
                   {entityType === "coffee" &&
@@ -401,7 +412,11 @@ export function ReviewCapture({
                         <Link
                           href={`/tools/coffee-compass?coffeeId=${encodeURIComponent(entityId)}`}
                         >
-                          <Icon name="Compass" size={14} className="mr-1.5" />
+                          <Icon
+                            icon={CompassIcon}
+                            size={14}
+                            className="mr-1.5"
+                          />
                           Fix Your Brew
                         </Link>
                       </Button>
@@ -413,7 +428,11 @@ export function ReviewCapture({
                     onClick={handleEdit}
                     className="h-8 px-3 hover:bg-accent/50 text-muted-foreground hover:text-foreground"
                   >
-                    <Icon name="PencilSimple" size={14} className="mr-1.5" />
+                    <Icon
+                      icon={PencilSimpleIcon}
+                      size={14}
+                      className="mr-1.5"
+                    />
                     Edit
                   </Button>
                   <Button
@@ -424,7 +443,7 @@ export function ReviewCapture({
                     disabled={isDeleting}
                     className="h-8 px-3 text-destructive hover:text-destructive hover:bg-destructive/10"
                   >
-                    <Icon name="TrashSimple" size={14} className="mr-1.5" />
+                    <Icon icon={TrashSimpleIcon} size={14} className="mr-1.5" />
                     Delete
                   </Button>
                 </Cluster>
@@ -443,14 +462,14 @@ export function ReviewCapture({
                       onClick={() => openSearch(undefined, true)}
                       size="sm"
                     >
-                      <Icon name="Plus" size={14} className="mr-2" />
+                      <Icon icon={PlusIcon} size={14} className="mr-2" />
                       {entityType === "coffee"
                         ? "Rate another coffee"
                         : "Rate another"}
                     </Button>
                     <Button asChild variant="outline" size="sm">
                       <Link href="/profile">
-                        <Icon name="User" size={14} className="mr-2" />
+                        <Icon icon={UserIcon} size={14} className="mr-2" />
                         View my profile
                       </Link>
                     </Button>
@@ -469,7 +488,7 @@ export function ReviewCapture({
                         {[...Array(5)].map((_, i) => (
                           <Icon
                             key={i}
-                            name="Star"
+                            icon={StarIcon}
                             size={20}
                             className={cn(
                               "transition-colors",
@@ -525,7 +544,7 @@ export function ReviewCapture({
                     </span>
                     <div className="bg-muted/30 rounded-xl p-5 border border-border/40 relative">
                       <Icon
-                        name="Quotes"
+                        icon={QuotesIcon}
                         size={24}
                         className="absolute -top-3 -left-2 text-primary/10 rotate-180"
                       />
@@ -738,7 +757,7 @@ export function ReviewCapture({
                           className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <Icon
-                            name="Star"
+                            icon={StarIcon}
                             size={28}
                             aria-hidden
                             className={cn(
@@ -914,7 +933,7 @@ export function ReviewCapture({
                   {isLoading ? (
                     <>
                       <Icon
-                        name="Circle"
+                        icon={CircleIcon}
                         size={16}
                         className="mr-2 animate-spin"
                       />

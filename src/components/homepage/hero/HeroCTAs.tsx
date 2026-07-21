@@ -2,6 +2,12 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {
+  CoffeeIcon,
+  StarIcon,
+  UserIcon,
+  UserPlusIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { capture } from "@/lib/posthog";
 import { useSearchContext } from "@/providers/SearchProvider";
@@ -53,7 +59,7 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
               <Icon
                 className="mr-2 shrink-0"
                 color="white"
-                name="Coffee"
+                icon={CoffeeIcon}
                 size={18}
               />
               Explore coffees
@@ -87,7 +93,7 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
               <Icon
                 className="mr-2 shrink-0"
                 color="white"
-                name="Coffee"
+                icon={CoffeeIcon}
                 size={18}
               />
               Explore coffees
@@ -129,7 +135,7 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
             size="lg"
             variant="default"
           >
-            <Icon className="mr-2" color="white" name="Star" size={18} />
+            <Icon className="mr-2" color="white" icon={StarIcon} size={18} />
             Rate another coffee
           </Button>
           <Button
@@ -143,7 +149,12 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
                 href="/profile"
                 onClick={() => captureCta("View your profile")}
               >
-                <Icon className="mr-2" color="accent" name="User" size={18} />
+                <Icon
+                  className="mr-2"
+                  color="accent"
+                  icon={UserIcon}
+                  size={18}
+                />
                 View your profile
               </Link>
             ) : (
@@ -154,7 +165,7 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
                 <Icon
                   className="mr-2"
                   color="accent"
-                  name="UserPlus"
+                  icon={UserPlusIcon}
                   size={18}
                 />
                 Save your coffee journey
@@ -207,7 +218,7 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
               href="/profile"
               onClick={() => captureCta("View your profile")}
             >
-              <Icon className="mr-2" color="white" name="User" size={18} />
+              <Icon className="mr-2" color="white" icon={UserIcon} size={18} />
               View your profile
             </Link>
           </Button>
@@ -220,7 +231,7 @@ export function HeroCTAs({ hero }: HeroCTAsProps) {
             size="lg"
             variant="outline"
           >
-            <Icon className="mr-2" color="accent" name="Star" size={18} />
+            <Icon className="mr-2" color="accent" icon={StarIcon} size={18} />
             Rate another coffee
           </Button>
         </>

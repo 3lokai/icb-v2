@@ -3,6 +3,7 @@
 
 import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "../ui/button";
 import { Decor } from "../primitives/decor";
@@ -62,7 +63,7 @@ export function NewsletterSection({
                     key={item}
                   >
                     <div className="h-5 w-5 flex-shrink-0 flex items-center justify-center rounded-full bg-accent/10 text-accent">
-                      <Icon name="Check" size={12} />
+                      <Icon icon={CheckIcon} size={12} />
                     </div>
                     <span>{item}</span>
                   </li>

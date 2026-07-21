@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  CheckIcon,
+  FacebookLogoIcon,
+  LinkIcon,
+  TwitterLogoIcon,
+  WhatsappLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Cluster } from "@/components/primitives/cluster";
 
@@ -64,7 +71,7 @@ export function ShareRow({ entityType, name, slug }: ShareRowProps) {
         className="flex size-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all hover:scale-110 hover:text-[#25D366] shadow-sm"
         title="Share on WhatsApp"
       >
-        <Icon name="WhatsappLogo" size={16} />
+        <Icon icon={WhatsappLogoIcon} size={16} />
       </button>
       <button
         type="button"
@@ -72,7 +79,7 @@ export function ShareRow({ entityType, name, slug }: ShareRowProps) {
         className="flex size-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all hover:scale-110 hover:text-foreground shadow-sm"
         title="Share on X"
       >
-        <Icon name="TwitterLogo" size={16} />
+        <Icon icon={TwitterLogoIcon} size={16} />
       </button>
       <button
         type="button"
@@ -80,7 +87,7 @@ export function ShareRow({ entityType, name, slug }: ShareRowProps) {
         className="flex size-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all hover:scale-110 hover:text-[#4267B2] shadow-sm"
         title="Share on Facebook"
       >
-        <Icon name="FacebookLogo" size={16} />
+        <Icon icon={FacebookLogoIcon} size={16} />
       </button>
       <button
         type="button"
@@ -88,7 +95,7 @@ export function ShareRow({ entityType, name, slug }: ShareRowProps) {
         className="flex size-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all hover:scale-110 hover:text-foreground shadow-sm"
         title="Copy link"
       >
-        <Icon name={copied ? "Check" : "Link"} size={16} />
+        <Icon icon={copied ? CheckIcon : LinkIcon} size={16} />
       </button>
     </Cluster>
   );

@@ -22,6 +22,15 @@ import {
   setReviewCount,
 } from "@/lib/reviews/anon-id";
 import { createClient } from "@/lib/supabase/client";
+import {
+  CheckIcon,
+  CircleNotchIcon,
+  CompassIcon,
+  PlusIcon,
+  StarIcon,
+  TrashSimpleIcon,
+  UserIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -477,7 +486,7 @@ export function QuickRating({
                       className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Icon
-                        name="Star"
+                        icon={StarIcon}
                         size={36}
                         aria-hidden
                         className={cn(
@@ -631,7 +640,11 @@ export function QuickRating({
             {/* Status indicator */}
             {isSaving && (
               <div className="flex items-center justify-center gap-2 text-caption text-muted-foreground">
-                <Icon name="CircleNotch" size={14} className="animate-spin" />
+                <Icon
+                  icon={CircleNotchIcon}
+                  size={14}
+                  className="animate-spin"
+                />
                 Saving...
               </div>
             )}
@@ -642,7 +655,7 @@ export function QuickRating({
                   variant="secondary"
                   className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-3 py-1"
                 >
-                  <Icon name="Check" size={12} className="mr-1.5" />
+                  <Icon icon={CheckIcon} size={12} className="mr-1.5" />
                   Saved
                 </Badge>
               </div>
@@ -659,7 +672,7 @@ export function QuickRating({
                 {isSaving ? (
                   <>
                     <Icon
-                      name="CircleNotch"
+                      icon={CircleNotchIcon}
                       size={16}
                       className="mr-2 animate-spin"
                     />
@@ -690,7 +703,7 @@ export function QuickRating({
                   className={isInline ? "w-full sm:w-auto" : "w-full"}
                   size="lg"
                 >
-                  <Icon name="Plus" size={16} className="mr-2" />
+                  <Icon icon={PlusIcon} size={16} className="mr-2" />
                   {entityType === "coffee"
                     ? "Rate another coffee"
                     : "Rate another"}
@@ -702,7 +715,7 @@ export function QuickRating({
                   size="lg"
                 >
                   <Link href="/profile">
-                    <Icon name="User" size={16} className="mr-2" />
+                    <Icon icon={UserIcon} size={16} className="mr-2" />
                     View my profile
                   </Link>
                 </Button>
@@ -724,7 +737,7 @@ export function QuickRating({
                     <Link
                       href={`/tools/coffee-compass?coffeeId=${encodeURIComponent(entityId)}`}
                     >
-                      <Icon name="Compass" size={14} className="mr-1.5" />
+                      <Icon icon={CompassIcon} size={14} className="mr-1.5" />
                       Fix Your Brew
                     </Link>
                   </Button>
@@ -736,7 +749,7 @@ export function QuickRating({
                   disabled={isDeleting}
                   className="text-destructive hover:text-destructive hover:bg-destructive/10"
                 >
-                  <Icon name="TrashSimple" size={14} className="mr-1.5" />
+                  <Icon icon={TrashSimpleIcon} size={14} className="mr-1.5" />
                   {isDeleting ? "Deleting..." : "Delete"}
                 </Button>
               </Cluster>

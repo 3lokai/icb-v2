@@ -35,9 +35,13 @@ export const LANDING_PAGES: LandingPageConfig[] = [
   ...beanTypePages,
 ];
 
-const slugs = LANDING_PAGES.map((page) => page.slug);
-if (new Set(slugs).size !== slugs.length) {
-  throw new Error("Duplicate discovery landing page slug in LANDING_PAGES");
+// Dev-only so bundlers can DCE this side effect and tree-shake LANDING_PAGES
+// out of client bundles that only import discoveryPagePath from this barrel.
+if (process.env.NODE_ENV !== "production") {
+  const slugs = LANDING_PAGES.map((page) => page.slug);
+  if (new Set(slugs).size !== slugs.length) {
+    throw new Error("Duplicate discovery landing page slug in LANDING_PAGES");
+  }
 }
 
 /**

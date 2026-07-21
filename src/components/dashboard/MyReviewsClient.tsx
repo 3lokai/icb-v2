@@ -4,6 +4,13 @@ import { Accent } from "@/components/primitives/accent";
 import { useState } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import {
+  ArrowRightIcon,
+  CaretDownIcon,
+  StarIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
@@ -113,7 +120,7 @@ export function MyReviewsClient({ initialReviews }: MyReviewsClientProps) {
                 className="w-full border-border/60 hover:border-primary/50 hover:bg-accent/30 transition-all"
               >
                 Show all {coffeeReviews.length} coffee reviews
-                <Icon name="CaretDown" size={14} className="ml-2" />
+                <Icon icon={CaretDownIcon} size={14} className="ml-2" />
               </Button>
             )}
           </Stack>
@@ -161,7 +168,7 @@ export function MyReviewsClient({ initialReviews }: MyReviewsClientProps) {
                 className="w-full border-border/60 hover:border-primary/50 hover:bg-accent/30 transition-all"
               >
                 Show all {roasterReviews.length} roaster reviews
-                <Icon name="CaretDown" size={14} className="ml-2" />
+                <Icon icon={CaretDownIcon} size={14} className="ml-2" />
               </Button>
             )}
           </Stack>
@@ -209,7 +216,7 @@ function ReviewItem({ review }: { review: MyReview }) {
               {[...Array(5)].map((_, i) => (
                 <Icon
                   key={i}
-                  name="Star"
+                  icon={StarIcon}
                   size={16}
                   className={cn(
                     "transition-colors",
@@ -235,7 +242,7 @@ function ReviewItem({ review }: { review: MyReview }) {
               )}
             >
               <Icon
-                name={review.recommend ? "ThumbsUp" : "ThumbsDown"}
+                icon={review.recommend ? ThumbsUpIcon : ThumbsDownIcon}
                 size={12}
                 className="mr-1.5"
               />
@@ -261,7 +268,7 @@ function ReviewItem({ review }: { review: MyReview }) {
             {review.value_for_money !== null && (
               <Badge variant="outline" className="text-caption bg-muted/40">
                 <Icon
-                  name={review.value_for_money ? "ThumbsUp" : "ThumbsDown"}
+                  icon={review.value_for_money ? ThumbsUpIcon : ThumbsDownIcon}
                   size={11}
                   className="mr-1.5"
                 />
@@ -310,7 +317,7 @@ function EmptyState({
         <Button asChild variant="default">
           <Link href={buttonHref}>
             {buttonText}
-            <Icon name="ArrowRight" size={14} className="ml-2" />
+            <Icon icon={ArrowRightIcon} size={14} className="ml-2" />
           </Link>
         </Button>
       </Stack>

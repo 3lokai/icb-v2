@@ -18,7 +18,15 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  CaretDownIcon,
+  CheckIcon,
+  MagicWandIcon,
+  XCircleIcon,
+  XIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 
 /**
  * Animation types and configurations
@@ -73,8 +81,8 @@ export interface MultiSelectOption {
   label: string;
   /** The unique value associated with the option. */
   value: string;
-  /** Optional icon name to display alongside the option. */
-  icon?: IconName;
+  /** Optional icon component to display alongside the option. */
+  icon?: PhosphorIcon;
   /** Whether this option is disabled */
   disabled?: boolean;
   /** Custom styling for the option */
@@ -832,7 +840,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                       .slice(0, responsiveSettings.maxCount)
                       .map((value) => {
                         const option = getOptionByValue(value);
-                        const IconName = option?.icon;
+                        const OptionIcon = option?.icon;
                         const customStyle = option?.style;
                         if (!option) {
                           return null;
@@ -870,9 +878,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               animationDelay: `${animationConfig?.delay || 0}s`,
                             }}
                           >
-                            {IconName && !responsiveSettings.hideIcons && (
+                            {OptionIcon && !responsiveSettings.hideIcons && (
                               <Icon
-                                name={IconName}
+                                icon={OptionIcon}
                                 className={cn(
                                   "h-4 w-4 mr-2",
                                   responsiveSettings.compactMode &&
@@ -912,7 +920,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               className="ml-2 h-4 w-4 cursor-pointer hover:bg-white/20 rounded-sm p-0.5 -m-0.5 focus:outline-none focus:ring-1 focus:ring-white/50"
                             >
                               <Icon
-                                name="XCircle"
+                                icon={XCircleIcon}
                                 className={cn(
                                   "h-3 w-3",
                                   responsiveSettings.compactMode &&
@@ -946,7 +954,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                           selectedValues.length - responsiveSettings.maxCount
                         } more`}
                         <Icon
-                          name="XCircle"
+                          icon={XCircleIcon}
                           className={cn(
                             "ml-2 h-4 w-4 cursor-pointer",
                             responsiveSettings.compactMode && "ml-1 h-3 w-3"
@@ -977,14 +985,14 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                       aria-label={`Clear all ${selectedValues.length} selected options`}
                       className="flex items-center justify-center h-4 w-4 mx-2 cursor-pointer text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 rounded-sm"
                     >
-                      <Icon name="X" className="h-4 w-4" />
+                      <Icon icon={XIcon} className="h-4 w-4" />
                     </div>
                     <Separator
                       orientation="vertical"
                       className="flex min-h-6 h-full"
                     />
                     <Icon
-                      name="CaretDown"
+                      icon={CaretDownIcon}
                       className="h-4 mx-2 cursor-pointer text-muted-foreground"
                       aria-hidden="true"
                     />
@@ -996,7 +1004,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                     {placeholder}
                   </span>
                   <Icon
-                    name="CaretDown"
+                    icon={CaretDownIcon}
                     className="h-4 cursor-pointer text-muted-foreground mx-2"
                   />
                 </div>
@@ -1078,7 +1086,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         )}
                         aria-hidden="true"
                       >
-                        <Icon name="Check" className="h-4 w-4" />
+                        <Icon icon={CheckIcon} className="h-4 w-4" />
                       </div>
                       <span className="text-caption font-medium">
                         (Select All
@@ -1122,11 +1130,11 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               )}
                               aria-hidden="true"
                             >
-                              <Icon name="Check" className="h-4 w-4" />
+                              <Icon icon={CheckIcon} className="h-4 w-4" />
                             </div>
                             {option.icon && (
                               <Icon
-                                name={option.icon}
+                                icon={option.icon}
                                 className="mr-2 h-4 w-4 text-muted-foreground"
                                 aria-hidden="true"
                               />
@@ -1168,11 +1176,11 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             )}
                             aria-hidden="true"
                           >
-                            <Icon name="Check" className="h-4 w-4" />
+                            <Icon icon={CheckIcon} className="h-4 w-4" />
                           </div>
                           {option.icon && (
                             <Icon
-                              name={option.icon}
+                              icon={option.icon}
                               className="mr-2 h-4 w-4 text-muted-foreground"
                               aria-hidden="true"
                             />
@@ -1215,7 +1223,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           </PopoverContent>
           {animation > 0 && selectedValues.length > 0 && (
             <Icon
-              name="MagicWand"
+              icon={MagicWandIcon}
               className={cn(
                 "cursor-pointer my-2 text-foreground bg-background w-3 h-3",
                 isAnimating ? "" : "text-muted-foreground"

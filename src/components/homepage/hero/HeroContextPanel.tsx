@@ -4,8 +4,20 @@ import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  BookmarkSimpleIcon,
+  ChartBarIcon,
+  ClockClockwiseIcon,
+  ClockCounterClockwiseIcon,
+  CoffeeIcon,
+  CompassIcon,
+  SparkleIcon,
+  StarIcon,
+  UserCircleIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
 import { Icon } from "@/components/common/Icon";
-import type { IconName } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { cn } from "@/lib/utils";
 import type { PublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
@@ -67,7 +79,7 @@ function CoffeeRowLink({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <Icon className="text-white/40" name="Coffee" size={24} />
+            <Icon className="text-white/40" icon={CoffeeIcon} size={24} />
           </div>
         )}
       </div>
@@ -87,13 +99,13 @@ function PanelHeader({
   icon,
   children,
 }: {
-  icon: IconName;
+  icon: ComponentType<IconProps>;
   children: React.ReactNode;
 }) {
   return (
     <div className="flex items-center gap-3">
       <div className="flex size-10 items-center justify-center rounded-xl bg-accent/10">
-        <Icon className="text-accent" name={icon} size={24} />
+        <Icon className="text-accent" icon={icon} size={24} />
       </div>
       <h2 className="text-title text-white">{children}</h2>
     </div>
@@ -183,7 +195,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
       return (
         <div className={panelClass}>
           <Stack gap="4">
-            <PanelHeader icon="ClockCounterClockwise">
+            <PanelHeader icon={ClockCounterClockwiseIcon}>
               Recently viewed
             </PanelHeader>
             {recentlyViewed.length === 0 ? (
@@ -215,7 +227,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
       return (
         <div className={panelClass}>
           <Stack gap="4">
-            <PanelHeader icon="Star">Your rated coffees</PanelHeader>
+            <PanelHeader icon={StarIcon}>Your rated coffees</PanelHeader>
             {ratingCount > 0 && ratedCoffees.length === 0 ? (
               <p className="text-caption leading-relaxed text-amber-200/80">
                 Some coffees couldn&apos;t be loaded. Try again later or browse
@@ -260,7 +272,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
       return (
         <div className={panelClass}>
           <Stack gap="4">
-            <PanelHeader icon="Sparkle">Your journey so far</PanelHeader>
+            <PanelHeader icon={SparkleIcon}>Your journey so far</PanelHeader>
             {ratingCount > 0 && ratedCoffees.length === 0 ? (
               <p className="text-caption leading-relaxed text-amber-200/80">
                 Some coffees couldn&apos;t be loaded. Try again later or open
@@ -300,7 +312,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                 <li className="flex items-center gap-2">
                   <Icon
                     className="text-accent/60 shrink-0"
-                    name="BookmarkSimple"
+                    icon={BookmarkSimpleIcon}
                     size={14}
                   />
                   Saved ratings
@@ -308,7 +320,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                 <li className="flex items-center gap-2">
                   <Icon
                     className="text-accent/60 shrink-0"
-                    name="ChartBar"
+                    icon={ChartBarIcon}
                     size={14}
                   />
                   Taste profile
@@ -316,7 +328,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                 <li className="flex items-center gap-2">
                   <Icon
                     className="text-accent/60 shrink-0"
-                    name="Compass"
+                    icon={CompassIcon}
                     size={14}
                   />
                   Recommendations
@@ -324,7 +336,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
                 <li className="flex items-center gap-2">
                   <Icon
                     className="text-accent/60 shrink-0"
-                    name="ClockClockwise"
+                    icon={ClockClockwiseIcon}
                     size={14}
                   />
                   Full history
@@ -340,7 +352,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
         <div className={panelClass}>
           <Stack gap="4">
             <div className="flex flex-col gap-1.5">
-              <PanelHeader icon="UserCircle">Your profile</PanelHeader>
+              <PanelHeader icon={UserCircleIcon}>Your profile</PanelHeader>
               <ProgressDots count={ratingCount} total={10} />
             </div>
 

@@ -1,5 +1,6 @@
 // src/components/tools/SelectorBase.tsx
 
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Label } from "@/components/ui/label";
 
@@ -38,7 +39,7 @@ export function SelectorBase({
             }`}
           >
             {isCompleted ? (
-              <Icon className="h-3 w-3" name="Check" />
+              <Icon className="h-3 w-3" icon={CheckIcon} />
             ) : (
               stepNumber
             )}

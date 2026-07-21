@@ -1,5 +1,15 @@
 // src/components/tools/calculator/RecipeDisplay.tsx
 import { useState } from "react";
+import {
+  CoffeeIcon,
+  CopyIcon,
+  PaletteIcon,
+  PrinterIcon,
+  ScalesIcon,
+  ShareNetworkIcon,
+  ThermometerIcon,
+  TimerIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -62,11 +72,14 @@ Made with IndianCoffeeBeans.com
     return (
       <div className={`surface-1 card-padding rounded-lg ${className}`}>
         <div className="mb-6 flex items-center gap-2">
-          <Icon className="h-5 w-5 text-primary" name="Coffee" />
+          <Icon className="h-5 w-5 text-primary" icon={CoffeeIcon} />
           <h3 className="text-subheading">Your Recipe</h3>
         </div>
         <div className="py-8 text-center text-muted-foreground">
-          <Icon className="mx-auto mb-3 h-12 w-12 opacity-50" name="Coffee" />
+          <Icon
+            className="mx-auto mb-3 h-12 w-12 opacity-50"
+            icon={CoffeeIcon}
+          />
           <p className="text-caption">
             Select brewing method to calculate your perfect recipe
           </p>
@@ -81,7 +94,7 @@ Made with IndianCoffeeBeans.com
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Icon className="h-5 w-5 text-primary" name="Coffee" />
+            <Icon className="h-5 w-5 text-primary" icon={CoffeeIcon} />
             <h3 className="text-subheading">Your Recipe</h3>
           </div>
           <Badge className="badge border-border/50 bg-background/90 text-foreground">
@@ -120,7 +133,7 @@ Made with IndianCoffeeBeans.com
         <div className="space-y-3">
           <div className="flex items-center justify-between rounded-lg bg-background/60 p-2">
             <div className="flex items-center gap-2 text-caption">
-              <Icon className="h-4 w-4 text-chart-1" name="Scales" />
+              <Icon className="h-4 w-4 text-chart-1" icon={ScalesIcon} />
               <span className="text-muted-foreground">Ratio</span>
             </div>
             <span className="text-caption font-medium text-foreground">
@@ -130,7 +143,7 @@ Made with IndianCoffeeBeans.com
 
           <div className="flex items-center justify-between rounded-lg bg-background/60 p-2">
             <div className="flex items-center gap-2 text-caption">
-              <Icon className="h-4 w-4 text-chart-2" name="Timer" />
+              <Icon className="h-4 w-4 text-chart-2" icon={TimerIcon} />
               <span className="text-muted-foreground">Time</span>
             </div>
             <span className="text-caption font-medium text-foreground">
@@ -140,7 +153,7 @@ Made with IndianCoffeeBeans.com
 
           <div className="flex items-center justify-between rounded-lg bg-background/60 p-2">
             <div className="flex items-center gap-2 text-caption">
-              <Icon className="h-4 w-4 text-chart-3" name="Thermometer" />
+              <Icon className="h-4 w-4 text-chart-3" icon={ThermometerIcon} />
               <span className="text-muted-foreground">Temperature</span>
             </div>
             <span className="text-caption font-medium text-foreground">
@@ -150,7 +163,7 @@ Made with IndianCoffeeBeans.com
 
           <div className="flex items-center justify-between rounded-lg bg-background/60 p-2">
             <div className="flex items-center gap-2 text-caption">
-              <Icon className="h-4 w-4 text-chart-4" name="Coffee" />
+              <Icon className="h-4 w-4 text-chart-4" icon={CoffeeIcon} />
               <span className="text-muted-foreground">Grind</span>
             </div>
             <span className="text-caption font-medium text-foreground">
@@ -165,7 +178,7 @@ Made with IndianCoffeeBeans.com
         <div className="surface-1 rounded-lg p-4">
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <Icon className="h-4 w-4 text-accent" name="Palette" />
+              <Icon className="h-4 w-4 text-accent" icon={PaletteIcon} />
               <span className="font-medium text-accent text-overline">
                 Flavor Profile
               </span>
@@ -189,12 +202,12 @@ Made with IndianCoffeeBeans.com
             size="sm"
             variant="outline"
           >
-            <Icon className="mr-2 h-4 w-4" name="Copy" />
+            <Icon className="mr-2 h-4 w-4" icon={CopyIcon} />
             {copied ? "Copied!" : "Copy"}
           </Button>
 
           <Button onClick={() => window.print()} size="sm" variant="outline">
-            <Icon className="h-4 w-4" name="Printer" />
+            <Icon className="h-4 w-4" icon={PrinterIcon} />
           </Button>
 
           <Button
@@ -220,7 +233,7 @@ Made with IndianCoffeeBeans.com
             size="sm"
             variant="outline"
           >
-            <Icon className="h-4 w-4" name="ShareNetwork" />
+            <Icon className="h-4 w-4" icon={ShareNetworkIcon} />
           </Button>
         </div>
 

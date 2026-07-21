@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { RecipeDetail } from "@/components/tools/RecipeDetail";
 import { Button } from "@/components/ui/button";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 
@@ -121,7 +122,7 @@ export function DiscoveryRecipeSection({
               <span className="font-semibold tracking-wide">
                 See all recipes
               </span>
-              <Icon name="ArrowRight" size={16} />
+              <Icon icon={ArrowRightIcon} size={16} />
             </Link>
           </Button>
         }

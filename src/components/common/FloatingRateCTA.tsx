@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { StarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 
@@ -88,7 +89,11 @@ export function FloatingRateCTA({
           : "translate-y-4 opacity-0 pointer-events-none"
       )}
     >
-      <Icon name="Star" size={18} className="fill-amber-400 text-amber-400" />
+      <Icon
+        icon={StarIcon}
+        size={18}
+        className="fill-amber-400 text-amber-400"
+      />
       {label}
     </button>
   );

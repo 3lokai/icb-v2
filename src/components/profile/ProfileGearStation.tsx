@@ -8,6 +8,16 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
+import {
+  CameraIcon,
+  CaretLeftIcon,
+  CaretRightIcon,
+  CircleNotchIcon,
+  PlusIcon,
+  TrashIcon,
+  UploadIcon,
+  XIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import {
@@ -227,7 +237,7 @@ export function ProfileGearStation({
                                       className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive/80 p-1"
                                       aria-label="Remove gear"
                                     >
-                                      <Icon name="Trash" size={12} />
+                                      <Icon icon={TrashIcon} size={12} />
                                     </button>
                                   )}
                                 </li>
@@ -254,7 +264,7 @@ export function ProfileGearStation({
                 onClick={() => setEditMode("add-existing")}
                 disabled={isSubmitting}
               >
-                <Icon name="Plus" size={12} className="mr-2" />
+                <Icon icon={PlusIcon} size={12} className="mr-2" />
                 Add from catalog
               </Button>
             )}
@@ -317,7 +327,7 @@ export function ProfileGearStation({
                     {isUploading ? (
                       <>
                         <Icon
-                          name="CircleNotch"
+                          icon={CircleNotchIcon}
                           size={14}
                           className="mr-2 animate-spin"
                         />
@@ -325,7 +335,7 @@ export function ProfileGearStation({
                       </>
                     ) : (
                       <>
-                        <Icon name="Camera" size={14} className="mr-2" />
+                        <Icon icon={CameraIcon} size={14} className="mr-2" />
                         Update
                       </>
                     )}
@@ -381,7 +391,7 @@ export function ProfileGearStation({
                           <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-40">
                             <div className="flex flex-col items-center gap-2">
                               <Icon
-                                name="CircleNotch"
+                                icon={CircleNotchIcon}
                                 size={24}
                                 className="animate-spin text-white"
                               />
@@ -397,7 +407,7 @@ export function ProfileGearStation({
                             className="absolute top-2 right-2 z-40 h-8 w-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:bg-black/70 transition-colors text-white"
                             aria-label="Delete photo"
                           >
-                            <Icon name="X" size={16} />
+                            <Icon icon={XIcon} size={16} />
                           </button>
                         )}
                       </div>
@@ -414,7 +424,7 @@ export function ProfileGearStation({
                     className="text-muted-foreground hover:text-foreground h-8 w-8"
                     disabled={displayPhotos.length <= 1}
                   >
-                    <Icon name="CaretLeft" size={16} />
+                    <Icon icon={CaretLeftIcon} size={16} />
                   </Button>
 
                   {isOwner && canUploadMore && (
@@ -424,7 +434,7 @@ export function ProfileGearStation({
                       disabled={isUploading}
                       aria-label="Add photo"
                     >
-                      <Icon name="Plus" size={16} />
+                      <Icon icon={PlusIcon} size={16} />
                     </button>
                   )}
 
@@ -435,7 +445,7 @@ export function ProfileGearStation({
                     className="text-muted-foreground hover:text-foreground h-8 w-8"
                     disabled={displayPhotos.length <= 1}
                   >
-                    <Icon name="CaretRight" size={16} />
+                    <Icon icon={CaretRightIcon} size={16} />
                   </Button>
                 </Cluster>
               </Stack>
@@ -454,7 +464,7 @@ export function ProfileGearStation({
                   gap="2"
                   className="z-10 bg-background/40 backdrop-blur-md p-8 rounded-3xl border border-white/10 shadow-xl max-w-xs text-center"
                 >
-                  <Icon name="Camera" size={24} className="text-accent" />
+                  <Icon icon={CameraIcon} size={24} className="text-accent" />
                   <h3 className="text-body font-serif italic">
                     This could be your station
                   </h3>
@@ -476,7 +486,7 @@ export function ProfileGearStation({
               >
                 <input {...getInputProps()} className="hidden" />
                 <Icon
-                  name={isDragActive ? "Upload" : "Plus"}
+                  icon={isDragActive ? UploadIcon : PlusIcon}
                   size={32}
                   className={cn(
                     "transition-colors mb-4",
@@ -509,7 +519,7 @@ export function ProfileGearStation({
                   gap="2"
                   className="z-10 bg-background/40 backdrop-blur-md p-8 rounded-3xl border border-white/10 shadow-xl max-w-xs text-center"
                 >
-                  <Icon name="Camera" size={24} className="text-accent" />
+                  <Icon icon={CameraIcon} size={24} className="text-accent" />
                   <h3 className="text-body font-serif italic">
                     No station shared yet
                   </h3>

@@ -1,4 +1,9 @@
 import { useState } from "react";
+import {
+  CheckIcon,
+  CoffeeIcon,
+  WarningIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -94,7 +99,11 @@ export function DrinkSizeInput({
                     : "bg-muted/50 text-muted-foreground"
                 }`}
               >
-                {isCompleted ? <Icon className="h-3 w-3" name="Check" /> : "2"}
+                {isCompleted ? (
+                  <Icon className="h-3 w-3" icon={CheckIcon} />
+                ) : (
+                  "2"
+                )}
               </span>
               What is your drink size? ({VOLUME_UNITS[drinkUnit].abbreviation})
             </Label>
@@ -138,7 +147,7 @@ export function DrinkSizeInput({
           />
           <Icon
             className={`-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transition-colors ${getIconClassName()}`}
-            name="Coffee"
+            icon={CoffeeIcon}
           />
           <span className="-translate-y-1/2 absolute top-1/2 right-3 font-medium text-muted-foreground text-caption">
             {VOLUME_UNITS[drinkUnit].abbreviation}
@@ -148,7 +157,7 @@ export function DrinkSizeInput({
         {/* Validation Error Message */}
         {validationError && (
           <div className="mb-3 flex items-start gap-2 rounded-lg bg-destructive/10 p-2 text-destructive text-caption">
-            <Icon className="mt-0.5 h-4 w-4 flex-shrink-0" name="Warning" />
+            <Icon className="mt-0.5 h-4 w-4 flex-shrink-0" icon={WarningIcon} />
             <p>{validationError}</p>
           </div>
         )}

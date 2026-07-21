@@ -15,6 +15,7 @@ import {
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 
 // ============================================================================
@@ -113,7 +114,7 @@ export function CollectionGrid({
                 {ctaText}
                 <Icon
                   className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                  name="ArrowRight"
+                  icon={ArrowRightIcon}
                 />
               </Button>
             </Link>
@@ -167,7 +168,7 @@ export function CollectionGrid({
             {ctaText}
             <Icon
               className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-              name="ArrowRight"
+              icon={ArrowRightIcon}
             />
           </Button>
         </Link>

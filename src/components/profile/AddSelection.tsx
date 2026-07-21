@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import {
+  CaretUpDownIcon,
+  PlusCircleIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
@@ -93,7 +97,7 @@ export function AddSelection() {
       {!(isHovered || selectedRoasterId) ? (
         <div className="flex flex-col items-center justify-center group pointer-events-none">
           <Icon
-            name="PlusCircle"
+            icon={PlusCircleIcon}
             size={24}
             className="text-muted-foreground group-hover:text-accent transition-colors mb-2"
           />
@@ -122,7 +126,7 @@ export function AddSelection() {
                     {selectedRoasterName || "Select a roaster..."}
                   </span>
                   <Icon
-                    name="CaretUpDown"
+                    icon={CaretUpDownIcon}
                     size={14}
                     className="opacity-50 shrink-0 ml-2"
                   />

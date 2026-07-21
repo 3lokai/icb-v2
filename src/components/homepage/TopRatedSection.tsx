@@ -3,6 +3,11 @@
 import Link from "next/link";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { CoffeeCardSkeleton } from "@/components/cards/CoffeeCardSkeleton";
+import {
+  ArrowRightIcon,
+  StarIcon,
+  UserIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Accent } from "@/components/primitives/accent";
 import { Reveal } from "@/components/primitives/reveal";
@@ -51,7 +56,7 @@ export default function TopRatedSection({
     <Section id="top-rated" spacing="loose" className={sectionSurfaceClassName}>
       {/* Decorative background element */}
       <div className="absolute -right-24 -top-24 opacity-[0.03] select-none pointer-events-none">
-        <Icon name="Star" size={400} strokeWidth={1} />
+        <Icon icon={StarIcon} size={400} strokeWidth={1} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-start relative z-10">
@@ -75,7 +80,7 @@ export default function TopRatedSection({
                   Browse all by rating
                   <Icon
                     className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                    name="ArrowRight"
+                    icon={ArrowRightIcon}
                   />
                 </Button>
               </Link>
@@ -90,7 +95,7 @@ export default function TopRatedSection({
                       key={i}
                       className="h-6 w-6 rounded-full border-2 border-background bg-muted flex items-center justify-center"
                     >
-                      <Icon name="User" size={10} />
+                      <Icon icon={UserIcon} size={10} />
                     </div>
                   ))}
                 </div>

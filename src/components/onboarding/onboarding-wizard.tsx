@@ -28,6 +28,11 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { TagsInput } from "@/components/ui/tags-input";
+import {
+  GenderFemaleIcon,
+  GenderIntersexIcon,
+  GenderMaleIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { popularBrewingMethods } from "@/lib/utils/coffee-constants";
 import {
@@ -563,7 +568,7 @@ export function OnboardingWizard({
                     type="button"
                     variant={formData.gender === "male" ? "default" : "ghost"}
                   >
-                    <Icon name="GenderMale" size={20} />
+                    <Icon icon={GenderMaleIcon} size={20} />
                     <span>Male</span>
                   </Button>
                   <Button
@@ -572,7 +577,7 @@ export function OnboardingWizard({
                     type="button"
                     variant={formData.gender === "female" ? "default" : "ghost"}
                   >
-                    <Icon name="GenderFemale" size={20} />
+                    <Icon icon={GenderFemaleIcon} size={20} />
                     <span>Female</span>
                   </Button>
                   <Button
@@ -583,7 +588,7 @@ export function OnboardingWizard({
                       formData.gender === "non-binary" ? "default" : "ghost"
                     }
                   >
-                    <Icon name="GenderIntersex" size={20} />
+                    <Icon icon={GenderIntersexIcon} size={20} />
                     <span>Non-binary</span>
                   </Button>
                 </div>

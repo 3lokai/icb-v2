@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import CoffeeCard from "@/components/cards/CoffeeCard";
@@ -154,7 +155,8 @@ export function CoffeeCollection({ value }: CoffeeCollectionProps) {
             className="rounded-xl border-primary/20 text-primary hover:bg-primary/5 px-8"
           >
             <Link href={moreUrl || "/coffees"} className="font-bold">
-              {moreText} <Icon name="ArrowRight" size={18} className="ml-2" />
+              {moreText}{" "}
+              <Icon icon={ArrowRightIcon} size={18} className="ml-2" />
             </Link>
           </Button>
         </motion.div>

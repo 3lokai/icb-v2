@@ -3,6 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { startTransition, useEffect, useState } from "react";
+import {
+  GearSixIcon,
+  ListIcon,
+  MagnifyingGlassIcon,
+  SignOutIcon,
+  UserIcon,
+  XIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Logo } from "@/components/layout/logo";
 import { useAuth } from "@/components/providers/auth-provider";
@@ -195,7 +203,7 @@ export function Header() {
             onClick={() => openSearch()}
             type="button"
           >
-            <Icon color="muted" name="MagnifyingGlass" size={20} />
+            <Icon color="muted" icon={MagnifyingGlassIcon} size={20} />
             <kbd className="hidden items-center gap-0.5 rounded border border-border/70 bg-muted/60 px-1.5 py-0.5 font-medium text-overline text-muted-foreground lg:inline-flex">
               {isMac ? "⌘K" : "Ctrl K"}
             </kbd>
@@ -244,7 +252,7 @@ export function Header() {
                         <Icon
                           className="mr-2"
                           color="muted"
-                          name="User"
+                          icon={UserIcon}
                           size={16}
                         />
                         My Profile
@@ -258,7 +266,7 @@ export function Header() {
                         <Icon
                           className="mr-2"
                           color="muted"
-                          name="GearSix"
+                          icon={GearSixIcon}
                           size={16}
                         />
                         Settings
@@ -273,7 +281,7 @@ export function Header() {
                       <Icon
                         className="mr-2"
                         color="destructive"
-                        name="SignOut"
+                        icon={SignOutIcon}
                         size={16}
                       />
                       Log out
@@ -315,7 +323,7 @@ export function Header() {
               onClick={() => openSearch()}
               type="button"
             >
-              <Icon color="muted" name="MagnifyingGlass" size={20} />
+              <Icon color="muted" icon={MagnifyingGlassIcon} size={20} />
             </button>
             <AnimatedThemeToggler
               className={cn(buttonVariants({ size: "icon", variant: "ghost" }))}
@@ -328,9 +336,19 @@ export function Header() {
               type="button"
             >
               {mobileMenuOpen ? (
-                <Icon className="h-6 w-6" color="muted" name="X" size={24} />
+                <Icon
+                  className="h-6 w-6"
+                  color="muted"
+                  icon={XIcon}
+                  size={24}
+                />
               ) : (
-                <Icon className="h-6 w-6" color="muted" name="List" size={24} />
+                <Icon
+                  className="h-6 w-6"
+                  color="muted"
+                  icon={ListIcon}
+                  size={24}
+                />
               )}
             </button>
           </div>

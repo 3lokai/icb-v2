@@ -15,6 +15,18 @@ import {
   type RegionProfileConfig,
 } from "@/lib/discovery/landing-pages";
 import { cn } from "@/lib/utils";
+import {
+  ArrowRightIcon,
+  CoffeeIcon,
+  DatabaseIcon,
+  DropIcon,
+  InfoIcon,
+  MapPinIcon,
+  MapTrifoldIcon,
+  SparkleIcon,
+  StarIcon,
+  UsersIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 
 type RegionDetailSectionProps = {
@@ -80,7 +92,10 @@ export function RegionDetailSection({
                 {/* Typical flavour tags */}
                 <Stack gap="4">
                   <div className="flex items-center gap-2">
-                    <Icon name="Sparkle" className="h-4 w-4 text-accent/60" />
+                    <Icon
+                      icon={SparkleIcon}
+                      className="h-4 w-4 text-accent/60"
+                    />
                     <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
                       Typical notes
                     </p>
@@ -101,7 +116,7 @@ export function RegionDetailSection({
                 {/* Process Variation */}
                 <div className="rounded-[1.25rem] border border-border bg-muted/30 px-5 py-5 transition-colors hover:bg-muted/50">
                   <div className="mb-3 flex items-center gap-2">
-                    <Icon name="Drop" className="h-4 w-4 text-accent/60" />
+                    <Icon icon={DropIcon} className="h-4 w-4 text-accent/60" />
                     <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
                       Process Variation
                     </p>
@@ -116,7 +131,7 @@ export function RegionDetailSection({
             {/* Roaster Context */}
             <div className="relative flex h-full w-full flex-col justify-center gap-4 overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 p-6 md:col-span-5 lg:col-span-2">
               <div className="relative z-10 flex items-center gap-2">
-                <Icon name="Users" className="h-5 w-5 text-accent/70" />
+                <Icon icon={UsersIcon} className="h-5 w-5 text-accent/70" />
                 <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
                   Roaster Sourcing
                 </p>
@@ -145,7 +160,7 @@ export function RegionDetailSection({
               className="relative z-10 w-full text-center md:text-left"
             >
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <Icon name="MapPin" className="h-5 w-5 text-accent/70" />
+                <Icon icon={MapPinIcon} className="h-5 w-5 text-accent/70" />
                 <p className="text-overline text-accent/80 tracking-[0.15em] uppercase">
                   Indian Specialty Context
                 </p>
@@ -160,7 +175,7 @@ export function RegionDetailSection({
         {/* 3. Brew guidance — recommended methods + notes */}
         <div className="max-w-5xl mx-auto w-full space-y-6">
           <h3 className="text-heading mb-6 flex items-center gap-2">
-            <Icon name="Coffee" className="h-5 w-5 text-accent/70" />
+            <Icon icon={CoffeeIcon} className="h-5 w-5 text-accent/70" />
             Brew Guidance
           </h3>
 
@@ -168,7 +183,7 @@ export function RegionDetailSection({
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
               <div className="flex items-center gap-2 w-36 shrink-0">
                 <Icon
-                  name="Star"
+                  icon={StarIcon}
                   className="h-4 w-4 text-muted-foreground/60"
                 />
                 <p className="text-label uppercase">Recommended</p>
@@ -193,7 +208,7 @@ export function RegionDetailSection({
           <div className="surface-2 rounded-xl p-5 mt-4">
             <div className="flex items-start gap-3">
               <Icon
-                name="Info"
+                icon={InfoIcon}
                 className="mt-0.5 h-5 w-5 shrink-0 text-accent/70"
               />
               <p className="text-body leading-relaxed text-muted-foreground">
@@ -209,7 +224,7 @@ export function RegionDetailSection({
             >
               Read the full guide
               <Icon
-                name="ArrowRight"
+                icon={ArrowRightIcon}
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
               />
             </Link>
@@ -222,7 +237,7 @@ export function RegionDetailSection({
         {nearbyRegionLinks.length > 0 && (
           <div className="max-w-5xl mx-auto w-full space-y-6">
             <h3 className="text-heading mb-6 flex items-center gap-2">
-              <Icon name="MapTrifold" className="h-5 w-5 text-accent/70" />
+              <Icon icon={MapTrifoldIcon} className="h-5 w-5 text-accent/70" />
               Explore Nearby Regions
             </h3>
 
@@ -250,7 +265,7 @@ export function RegionDetailSection({
         {/* 5. ICB data note */}
         <aside className="max-w-5xl mx-auto w-full rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
           <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-2">
-            <Icon name="Database" className="h-4 w-4" />
+            <Icon icon={DatabaseIcon} className="h-4 w-4" />
             On Indian Coffee Beans
           </p>
           <p className="text-caption text-muted-foreground leading-relaxed">

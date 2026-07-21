@@ -13,13 +13,23 @@ import { cn } from "@/lib/utils";
 import { Accent } from "@/components/primitives/accent";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
-import { Icon, type IconName } from "@/components/common/Icon";
+import { Icon } from "@/components/common/Icon";
 import {
-  DISCOVERY_PILL_ROWS,
-  type DiscoveryPillRow,
-} from "@/lib/discovery/discovery-pill-labels";
+  CoffeeBeanIcon,
+  CoffeeIcon,
+  CurrencyInrIcon,
+  FireIcon,
+  MagnifyingGlassIcon,
+  MapPinIcon,
+  PlantIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import type { DiscoveryPillRow } from "@/lib/discovery/discovery-pill-labels";
 
 type DiscoveryAccordionGridProps = {
+  /** Pill rows computed server-side (DISCOVERY_PILL_ROWS) — keeps the landing-page config data out of the client bundle. */
+  rows: DiscoveryPillRow[];
   className?: string;
   showHeading?: boolean;
   overline?: string;
@@ -30,39 +40,39 @@ type DiscoveryAccordionGridProps = {
 };
 
 type CategoryMeta = {
-  icon: IconName;
+  icon: ComponentType<IconProps>;
   image: string;
   subtext: string;
 };
 
 const CATEGORY_STYLE_MAP: Record<string, CategoryMeta> = {
   Roast: {
-    icon: "Fire",
+    icon: FireIcon,
     image: "/images/discovery/roast.avif",
     subtext: "Light, medium, or bold cups",
   },
   "Brew method": {
-    icon: "Coffee",
+    icon: CoffeeIcon,
     image: "/images/discovery/brew.avif",
     subtext: "Filters, presses, and more",
   },
   Process: {
-    icon: "Plant",
+    icon: PlantIcon,
     image: "/images/discovery/process.avif",
     subtext: "Washed, natural, and beyond",
   },
   "Bean type": {
-    icon: "CoffeeBean",
+    icon: CoffeeBeanIcon,
     image: "/images/discovery/bean-types.avif",
     subtext: "Arabica, robusta, blends",
   },
   Budget: {
-    icon: "CurrencyInr",
+    icon: CurrencyInrIcon,
     image: "/images/discovery/budget.avif",
     subtext: "Great coffee at every price",
   },
   Region: {
-    icon: "MapPin",
+    icon: MapPinIcon,
     image: "/images/discovery/region.avif",
     subtext: "Origins across India",
   },
@@ -168,7 +178,7 @@ function DiscoveryAccordionCard({
           <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-accent shadow-lg shadow-accent/20 ring-1 ring-white/20">
             <Icon
               className="h-4 w-4"
-              name={meta.icon}
+              icon={meta.icon}
               size={16}
               color="white"
             />
@@ -220,6 +230,7 @@ function DiscoveryAccordionCard({
 }
 
 export function DiscoveryAccordionGrid({
+  rows,
   className,
   showHeading = true,
   overline = "Explore by category",
@@ -272,9 +283,9 @@ export function DiscoveryAccordionGrid({
 
       <div className="overflow-hidden rounded-xl border border-border/40 shadow-sm">
         <div className="flex flex-col md:h-[440px] md:flex-row">
-          {DISCOVERY_PILL_ROWS.map((row, index) => {
+          {rows.map((row, index) => {
             const meta = CATEGORY_STYLE_MAP[row.title] ?? {
-              icon: "MagnifyingGlass" as IconName,
+              icon: MagnifyingGlassIcon,
               image: "/images/discovery/roast.avif",
               subtext: "Curated lists to explore",
             };

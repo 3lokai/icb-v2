@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { RoasterDetail } from "@/types/roaster-types";
 import type { EntityReviewStats } from "@/types/review-types";
 import type { ReviewWithProfile } from "@/lib/data/fetch-reviews";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Band } from "@/components/primitives/band";
 import { Stack } from "@/components/primitives/stack";
@@ -103,7 +104,7 @@ export function RoasterDetailPage({
                     className="inline-flex items-center gap-2"
                   >
                     Explore All Coffees
-                    <Icon name="ArrowRight" size={16} />
+                    <Icon icon={ArrowRightIcon} size={16} />
                   </Link>
                 </Button>
               </div>

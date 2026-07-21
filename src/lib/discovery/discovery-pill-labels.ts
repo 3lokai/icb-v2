@@ -1,3 +1,6 @@
+// server-only: pulls the full LANDING_PAGES dataset (~270KB) — compute rows on the
+// server and pass them as props to client components (see DiscoveryAccordionGrid).
+import "server-only";
 import {
   discoveryPagePath,
   getLandingPageConfig,

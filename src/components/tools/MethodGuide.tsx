@@ -2,6 +2,15 @@
 "use client";
 
 import { Accent } from "@/components/primitives/accent";
+import {
+  ArrowRightIcon,
+  CoffeeIcon,
+  DropIcon,
+  GearIcon,
+  LightbulbIcon,
+  PaletteIcon,
+  TimerIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -47,7 +56,7 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Icon className="h-6 w-6 text-primary" name="Coffee" />
+            <Icon className="h-6 w-6 text-primary" icon={CoffeeIcon} />
             <h3 className="text-subheading transition-colors group-hover:text-primary">
               {method.name}
             </h3>
@@ -64,7 +73,7 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
         {/* Flavor Profile */}
         <div className="rounded-lg bg-muted/30 p-3">
           <Cluster gap="2" align="center">
-            <Icon className="h-3.5 w-3.5 text-accent" name="Palette" />
+            <Icon className="h-3.5 w-3.5 text-accent" icon={PaletteIcon} />
             <span className="font-medium text-accent text-overline">
               Flavor Profile
             </span>
@@ -145,7 +154,7 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
           Use This Method
           <Icon
             className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5"
-            name="ArrowRight"
+            icon={ArrowRightIcon}
           />
         </span>
       </Stack>
@@ -313,7 +322,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
             <div className="text-center">
               <Stack gap="4" className="items-center">
                 <Cluster gap="3" align="center" className="justify-center">
-                  <Icon className="h-8 w-8 text-accent" name="Lightbulb" />
+                  <Icon className="h-8 w-8 text-accent" icon={LightbulbIcon} />
                   <h2 className="text-title text-primary">Pro Tips</h2>
                 </Cluster>
                 <div className="h-0.5 w-16 bg-accent" />
@@ -325,7 +334,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               <div className="card-bordered bg-background p-6 rounded-xl">
                 <Stack gap="3">
                   <h3 className="flex items-center gap-2 font-semibold text-primary">
-                    <Icon className="h-4 w-4 text-accent" name="Drop" />
+                    <Icon className="h-4 w-4 text-accent" icon={DropIcon} />
                     Water Quality Matters
                   </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">
@@ -340,7 +349,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               <div className="card-bordered bg-background p-6 rounded-xl">
                 <Stack gap="3">
                   <h3 className="flex items-center gap-2 font-semibold text-primary">
-                    <Icon className="h-4 w-4 text-accent" name="Coffee" />
+                    <Icon className="h-4 w-4 text-accent" icon={CoffeeIcon} />
                     Fresh Coffee is Key
                   </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">
@@ -355,7 +364,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               <div className="card-bordered bg-background p-6 rounded-xl">
                 <Stack gap="3">
                   <h3 className="flex items-center gap-2 font-semibold text-primary">
-                    <Icon className="h-4 w-4 text-accent" name="Gear" />
+                    <Icon className="h-4 w-4 text-accent" icon={GearIcon} />
                     Consistent Grind Size
                   </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">
@@ -370,7 +379,7 @@ export function MethodGuide({ onMethodSelect, className }: MethodGuideProps) {
               <div className="card-bordered bg-background p-6 rounded-xl">
                 <Stack gap="3">
                   <h3 className="flex items-center gap-2 font-semibold text-primary">
-                    <Icon className="h-4 w-4 text-accent" name="Timer" />
+                    <Icon className="h-4 w-4 text-accent" icon={TimerIcon} />
                     Precise Measurements
                   </h3>
                   <p className="text-muted-foreground text-caption leading-relaxed">

@@ -1,6 +1,12 @@
 // src/components/discovery/UtilityCard.tsx
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {
+  ArrowRightIcon,
+  BookOpenIcon,
+  CalculatorIcon,
+  LightbulbIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import type { UtilityCardConfig } from "@/lib/discovery/landing-pages";
 import { Stack } from "@/components/primitives/stack";
@@ -14,12 +20,12 @@ type UtilityCardProps = {
  * Uses existing Card component
  */
 export function UtilityCard({ config }: UtilityCardProps) {
-  const iconName =
+  const icon =
     config.type === "brew_guide"
-      ? "BookOpen"
+      ? BookOpenIcon
       : config.type === "calculator"
-        ? "Calculator"
-        : "Lightbulb";
+        ? CalculatorIcon
+        : LightbulbIcon;
 
   return (
     <div className="group surface-1 relative overflow-hidden rounded-2xl card-padding card-hover hover-lift transition-all duration-500 shadow-sm border border-border/40">
@@ -27,7 +33,7 @@ export function UtilityCard({ config }: UtilityCardProps) {
         <Stack gap="4">
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm ring-1 ring-white/10">
-              <Icon name={iconName} size={24} />
+              <Icon icon={icon} size={24} />
             </div>
             <Stack gap="2">
               <h3 className="text-heading font-serif tracking-tight leading-none text-balance">
@@ -52,7 +58,7 @@ export function UtilityCard({ config }: UtilityCardProps) {
             </span>
             <Icon
               className="ml-2.5 h-4 w-4 transition-transform group-hover:translate-x-1"
-              name="ArrowRight"
+              icon={ArrowRightIcon}
             />
           </Link>
         </Button>

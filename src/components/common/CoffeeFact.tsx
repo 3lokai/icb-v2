@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, startTransition, useState } from "react";
+import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { getRandomCoffeeFact } from "@/lib/coffee-facts";
 import { cn } from "@/lib/utils";
@@ -36,7 +37,7 @@ export default function CoffeeFact({ className = "" }: CoffeeFactProps) {
       <div className="flex items-start gap-4">
         <div className="mt-1 shrink-0">
           <div className="rounded-xl bg-accent/10 p-2.5">
-            <Icon className="text-accent" name="Coffee" size={24} />
+            <Icon className="text-accent" icon={CoffeeIcon} size={24} />
           </div>
         </div>
         <div>

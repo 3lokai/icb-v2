@@ -2,7 +2,18 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, IconName } from "@/components/common/Icon";
+import {
+  ArrowRightIcon,
+  CoffeeIcon,
+  GearIcon,
+  MagnifyingGlassIcon,
+  NotebookIcon,
+  SlidersHorizontalIcon,
+  StarIcon,
+  UsersThreeIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 import { NewsletterForm } from "@/components/common/NewsletterForm";
 import { AboutFAQs } from "@/components/faqs/AboutFAQs";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -35,24 +46,28 @@ export const metadata: Metadata = generateMetadata({
   type: "website",
 });
 
-const PRINCIPLES: { title: string; description: string; icon: IconName }[] = [
+const PRINCIPLES: {
+  title: string;
+  description: string;
+  icon: PhosphorIcon;
+}[] = [
   {
     title: "Fair Discovery",
     description:
       "Highlight every quality Indian roaster, not just the loudest or most followed. Great coffee shouldn't hide behind algorithms.",
-    icon: "MagnifyingGlass",
+    icon: MagnifyingGlassIcon,
   },
   {
     title: "Smarter Choices",
     description:
       "Explore beans by what really matters: flavor, process, roast, brew style, and feel confident in every bag you buy.",
-    icon: "SlidersHorizontal",
+    icon: SlidersHorizontalIcon,
   },
   {
     title: "Powered by Community",
     description:
       "Real reviews, shared brews, and lived experiences, because coffee should be shaped by people, not promotions.",
-    icon: "UsersThree",
+    icon: UsersThreeIcon,
   },
 ];
 
@@ -79,30 +94,34 @@ const LANDSCAPE: { title: string; content: string }[] = [
   },
 ];
 
-const AUDIENCES: { title: string; description: string; icon: IconName }[] = [
+const AUDIENCES: {
+  title: string;
+  description: string;
+  icon: PhosphorIcon;
+}[] = [
   {
     title: "Home Brewers",
     description:
       "Whether you're just getting started with a simple French press or have a dedicated brewing corner with multiple devices, our platform helps you find the perfect beans for your method and taste preferences.",
-    icon: "Coffee",
+    icon: CoffeeIcon,
   },
   {
     title: "Specialty Enthusiasts",
     description:
       "For those chasing the perfect cup, we provide detailed information on processing methods, varietals, and flavor notes to help you explore India's finest specialty offerings.",
-    icon: "Star",
+    icon: StarIcon,
   },
   {
     title: "Equipment Buyers",
     description:
       "Upgrading your setup? Our resources help you understand which coffees work best with different brewing methods, so your new equipment investment pays off in delicious results.",
-    icon: "Gear",
+    icon: GearIcon,
   },
   {
     title: "Self-Researchers",
     description:
       "If you prefer to make informed decisions based on data rather than Instagram hype, our comprehensive filters and community reviews provide the substance behind the style.",
-    icon: "Notebook",
+    icon: NotebookIcon,
   },
 ];
 
@@ -213,7 +232,7 @@ export default function AboutPage() {
             >
               <Stack gap="6" className="items-center text-center">
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/5 text-primary">
-                  <Icon name={item.icon} size={28} />
+                  <Icon icon={item.icon} size={28} />
                 </div>
                 <Stack gap="3">
                   <h3 className="text-heading">{item.title}</h3>
@@ -283,7 +302,7 @@ export default function AboutPage() {
                     Explore Indian Coffee Regions
                     <Icon
                       className="ml-2 transition-transform duration-200 group-hover:translate-x-1"
-                      name="ArrowRight"
+                      icon={ArrowRightIcon}
                       size={14}
                     />
                   </Link>
@@ -329,7 +348,7 @@ export default function AboutPage() {
               className="flex items-start gap-5 border-t border-border/40 pt-6"
             >
               <span className="mt-1 flex-shrink-0 text-primary">
-                <Icon name={user.icon} size={26} />
+                <Icon icon={user.icon} size={26} />
               </span>
               <Stack gap="2">
                 <h3 className="text-heading">{user.title}</h3>

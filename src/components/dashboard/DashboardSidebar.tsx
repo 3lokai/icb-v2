@@ -2,7 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  BellIcon,
+  CodeIcon,
+  CoffeeIcon,
+  HeartIcon,
+  ShieldIcon,
+  SquaresFourIcon,
+  StarIcon,
+  UserIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { cn } from "@/lib/utils";
 
@@ -10,42 +20,42 @@ const menuItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
-    icon: "SquaresFour",
+    icon: SquaresFourIcon,
   },
   {
     title: "Profile",
     url: "/dashboard/profile",
-    icon: "User",
+    icon: UserIcon,
   },
   {
     title: "Coffee Preferences",
     url: "/dashboard/preferences",
-    icon: "Coffee",
+    icon: CoffeeIcon,
   },
   {
     title: "My Reviews",
     url: "/dashboard/my-reviews",
-    icon: "Star",
+    icon: StarIcon,
   },
   {
     title: "Wishlist",
     url: "/dashboard/wishlist",
-    icon: "Heart",
+    icon: HeartIcon,
   },
   {
     title: "Notifications",
     url: "/dashboard/notifications",
-    icon: "Bell",
+    icon: BellIcon,
   },
   {
     title: "Privacy & Data",
     url: "/dashboard/privacy",
-    icon: "Shield",
+    icon: ShieldIcon,
   },
   {
     title: "Developer",
     url: "/dashboard/developer",
-    icon: "Code",
+    icon: CodeIcon,
   },
 ] as const;
 
@@ -100,7 +110,7 @@ export function DashboardSidebarContent({
                 )}
               >
                 <Icon
-                  name={item.icon as IconName}
+                  icon={item.icon}
                   size={16}
                   className={cn(
                     "h-4 w-4 transition-colors",

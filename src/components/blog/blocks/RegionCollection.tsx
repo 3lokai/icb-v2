@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRightIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
@@ -47,7 +48,7 @@ export function RegionCollection({ value }: RegionCollectionProps) {
         transition={{ delay: 0.2, type: "spring" }}
       >
         <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-xl group-hover:scale-110 transition-transform duration-500">
-          <Icon name="MapPin" size={32} />
+          <Icon icon={MapPinIcon} size={32} />
         </div>
       </motion.div>
 
@@ -68,7 +69,7 @@ export function RegionCollection({ value }: RegionCollectionProps) {
           className="rounded-xl bg-emerald-600 hover:bg-emerald-700 shadow-md transition-all hover:translate-y-[-2px] px-10"
         >
           <Link href={moreUrl || "/regions"} className="font-bold">
-            {moreText} <Icon name="ArrowRight" size={18} className="ml-2" />
+            {moreText} <Icon icon={ArrowRightIcon} size={18} className="ml-2" />
           </Link>
         </Button>
       )}

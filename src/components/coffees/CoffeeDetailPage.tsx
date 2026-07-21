@@ -6,6 +6,17 @@ import { SPECIES_LABELS } from "@/types/coffee-types";
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import type { EntityReviewStats } from "@/types/review-types";
 import type { ReviewWithProfile } from "@/lib/data/fetch-reviews";
+import {
+  CalendarIcon,
+  CoffeeIcon,
+  FireIcon,
+  FlaskIcon,
+  FunnelIcon,
+  LeafIcon,
+  MapPinIcon,
+  MountainsIcon,
+  SunIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Band } from "@/components/primitives/band";
 import { Stack } from "@/components/primitives/stack";
@@ -157,7 +168,7 @@ export function CoffeeDetailPage({
                           <Stack gap="1">
                             <span className="flex items-center gap-1.5 text-label">
                               <Icon
-                                name="Fire"
+                                icon={FireIcon}
                                 size={14}
                                 className="text-accent shrink-0"
                               />
@@ -177,7 +188,7 @@ export function CoffeeDetailPage({
                           <Stack gap="1">
                             <span className="flex items-center gap-1.5 text-label">
                               <Icon
-                                name="Funnel"
+                                icon={FunnelIcon}
                                 size={14}
                                 className="text-accent shrink-0"
                               />
@@ -195,7 +206,7 @@ export function CoffeeDetailPage({
                           <Stack gap="1">
                             <span className="flex items-center gap-1.5 text-label">
                               <Icon
-                                name="MapPin"
+                                icon={MapPinIcon}
                                 size={14}
                                 className="text-accent shrink-0"
                               />
@@ -233,7 +244,7 @@ export function CoffeeDetailPage({
                           <Stack gap="1">
                             <span className="flex items-center gap-1.5 text-label">
                               <Icon
-                                name="Mountains"
+                                icon={MountainsIcon}
                                 size={14}
                                 className="text-accent shrink-0"
                               />
@@ -250,7 +261,7 @@ export function CoffeeDetailPage({
                           <Stack gap="1">
                             <span className="flex items-center gap-1.5 text-label">
                               <Icon
-                                name="Leaf"
+                                icon={LeafIcon}
                                 size={14}
                                 className="text-accent shrink-0"
                               />
@@ -289,7 +300,7 @@ export function CoffeeDetailPage({
                           <Stack gap="1">
                             <span className="flex items-center gap-1.5 text-label">
                               <Icon
-                                name="Flask"
+                                icon={FlaskIcon}
                                 size={14}
                                 className="text-accent shrink-0"
                               />
@@ -310,7 +321,7 @@ export function CoffeeDetailPage({
                           <Stack gap="1">
                             <span className="flex items-center gap-1.5 text-label">
                               <Icon
-                                name="Calendar"
+                                icon={CalendarIcon}
                                 size={14}
                                 className="text-accent shrink-0"
                               />
@@ -325,7 +336,7 @@ export function CoffeeDetailPage({
                           <Stack gap="1">
                             <span className="flex items-center gap-1.5 text-label">
                               <Icon
-                                name="Sun"
+                                icon={SunIcon}
                                 size={14}
                                 className="text-accent shrink-0"
                               />
@@ -341,7 +352,7 @@ export function CoffeeDetailPage({
                             <Stack gap="1" className="col-span-2 md:col-span-4">
                               <span className="flex items-center gap-1.5 text-label">
                                 <Icon
-                                  name="Coffee"
+                                  icon={CoffeeIcon}
                                   size={14}
                                   className="text-accent shrink-0"
                                 />

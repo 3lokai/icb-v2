@@ -1,5 +1,6 @@
 "use client";
 
+import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
@@ -87,7 +88,7 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
         size="sm"
         variant="outline"
       >
-        <Icon name="CaretLeft" size={16} />
+        <Icon icon={CaretLeftIcon} size={16} />
         <span className="sr-only md:not-sr-only md:ml-1">Previous</span>
       </Button>
 
@@ -128,7 +129,7 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
         variant="outline"
       >
         <span className="sr-only md:not-sr-only md:mr-1">Next</span>
-        <Icon name="CaretRight" size={16} />
+        <Icon icon={CaretRightIcon} size={16} />
       </Button>
 
       <div className="ml-4 text-muted-foreground text-caption">

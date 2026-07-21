@@ -3,6 +3,7 @@
 
 import { Button } from "../ui/button";
 import { Stack } from "../primitives/stack";
+import { XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "../common/Icon";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -518,7 +519,7 @@ export function FormModal({
             onClick={onClose}
             type="button"
           >
-            <Icon name="X" size={24} />
+            <Icon icon={XIcon} size={24} />
           </button>
         </div>
 

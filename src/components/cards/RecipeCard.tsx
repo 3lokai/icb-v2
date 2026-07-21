@@ -2,6 +2,11 @@
 "use client";
 
 import React from "react";
+import {
+  ArrowRightIcon,
+  CheckCircleIcon,
+  LightbulbIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardFooter } from "@/components/ui/card";
@@ -87,11 +92,11 @@ export function RecipeCard({
           )}
         >
           {isSelected ? (
-            <Icon className="h-4 w-4" name="CheckCircle" />
+            <Icon className="h-4 w-4" icon={CheckCircleIcon} />
           ) : (
             <Icon
               className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-              name="ArrowRight"
+              icon={ArrowRightIcon}
             />
           )}
         </div>
@@ -157,7 +162,7 @@ export function RecipeCard({
         {/* Key Technique Preview */}
         <div className="mt-4 rounded-md bg-background/30 p-2">
           <div className="mb-1 flex items-center gap-1.5">
-            <Icon className="h-3 w-3 text-accent" name="Lightbulb" />
+            <Icon className="h-3 w-3 text-accent" icon={LightbulbIcon} />
             <span className="text-accent text-overline">Key Technique</span>
           </div>
           <p className="line-clamp-2 text-caption leading-relaxed">
@@ -181,7 +186,7 @@ export function RecipeCard({
           {isSelected ? "Selected" : "View Recipe"}
           <Icon
             className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-            name="ArrowRight"
+            icon={ArrowRightIcon}
           />
         </div>
       </CardFooter>

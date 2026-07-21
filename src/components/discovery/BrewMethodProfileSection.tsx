@@ -19,7 +19,16 @@ import {
   type BrewMethodProfileConfig,
 } from "@/lib/discovery/landing-pages";
 import { cn } from "@/lib/utils";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  FireIcon,
+  MapPinIcon,
+  StarIcon,
+  ThumbsUpIcon,
+  WarningCircleIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 
 type BrewMethodProfileSectionProps = {
   profile: BrewMethodProfileConfig;
@@ -55,7 +64,7 @@ function RoastPairingLinks({
 }: {
   label: string;
   slugs: string[];
-  icon?: IconName;
+  icon?: ComponentType<IconProps>;
 }) {
   const links = slugs
     .map((slug) => {
@@ -71,7 +80,7 @@ function RoastPairingLinks({
     <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
       <div className="flex items-center gap-2 w-36 shrink-0">
         {icon && (
-          <Icon name={icon} className="h-4 w-4 text-muted-foreground/60" />
+          <Icon icon={icon} className="h-4 w-4 text-muted-foreground/60" />
         )}
         <p className="text-label uppercase">{label}</p>
       </div>
@@ -186,7 +195,7 @@ export function BrewMethodProfileSection({
               className="relative z-10 w-full text-center md:text-left"
             >
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <Icon name="MapPin" className="h-5 w-5 text-accent/70" />
+                <Icon icon={MapPinIcon} className="h-5 w-5 text-accent/70" />
                 <p className="text-overline text-accent tracking-[0.15em] uppercase">
                   Indian Specialty Context
                 </p>
@@ -203,7 +212,7 @@ export function BrewMethodProfileSection({
           <div className="max-w-4xl mx-auto w-full pt-4">
             <div className="flex items-center gap-2 mb-6">
               <Icon
-                name="WarningCircle"
+                icon={WarningCircleIcon}
                 className="h-5 w-5 text-destructive/70"
               />
               <h3 className="text-heading">Common Mistakes</h3>
@@ -233,17 +242,17 @@ export function BrewMethodProfileSection({
         {hasRoastPairings ? (
           <div className="max-w-5xl mx-auto w-full space-y-6">
             <h3 className="text-heading mb-6 flex items-center gap-2">
-              <Icon name="Fire" className="h-5 w-5 text-accent/70" />
+              <Icon icon={FireIcon} className="h-5 w-5 text-accent/70" />
               Roast Pairing Guide
             </h3>
             <Stack gap="4">
               <RoastPairingLinks
-                icon="Star"
+                icon={StarIcon}
                 label="Best Match"
                 slugs={profile.roastPairing.best}
               />
               <RoastPairingLinks
-                icon="ThumbsUp"
+                icon={ThumbsUpIcon}
                 label="Also Works"
                 slugs={profile.roastPairing.works}
               />

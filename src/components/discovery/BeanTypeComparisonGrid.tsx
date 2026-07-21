@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CoffeeIcon, StackIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import {
   BEAN_CATEGORY_LINKS,
@@ -48,7 +49,7 @@ export function BeanTypeComparisonGrid({
   return (
     <div className={cn(className)}>
       <div className="flex items-center gap-2 mb-6">
-        <Icon name="Coffee" className="h-5 w-5 text-accent/70" />
+        <Icon icon={CoffeeIcon} className="h-5 w-5 text-accent/70" />
         <h3 className="text-heading">Bean types at a glance</h3>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -91,7 +92,7 @@ export function BeanTypeComparisonGrid({
       {/* Categorical bean types — no morphology image, shown as link pills */}
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="flex items-center gap-2 shrink-0">
-          <Icon name="Stack" className="h-4 w-4 text-muted-foreground/60" />
+          <Icon icon={StackIcon} className="h-4 w-4 text-muted-foreground/60" />
           <p className="text-label uppercase">Also browse</p>
         </div>
         <div className="flex flex-wrap gap-2">

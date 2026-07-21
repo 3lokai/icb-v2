@@ -1,5 +1,6 @@
 "use client";
 
+import { XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -191,7 +192,7 @@ export function RecipeSidebar({
                   onClick={() => onMethodChange(undefined)}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}
@@ -207,7 +208,7 @@ export function RecipeSidebar({
                   onClick={() => onDifficultyChange(undefined)}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}
@@ -223,7 +224,7 @@ export function RecipeSidebar({
                   onClick={() => onUseChange(undefined)}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}
@@ -239,7 +240,7 @@ export function RecipeSidebar({
                   onClick={() => onExpertChange(undefined)}
                   type="button"
                 >
-                  <Icon name="X" size={10} />
+                  <Icon icon={XIcon} size={10} />
                 </button>
               </Badge>
             )}

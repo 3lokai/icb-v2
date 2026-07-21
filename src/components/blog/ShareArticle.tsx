@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  FacebookLogoIcon,
+  LinkIcon,
+  TwitterLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -23,13 +28,13 @@ export function ShareArticle({
   const shareLinks = [
     {
       name: "Twitter",
-      icon: "TwitterLogo" as const,
+      icon: TwitterLogoIcon,
       href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
       color: "hover:text-[#1DA1F2]",
     },
     {
       name: "Facebook",
-      icon: "FacebookLogo" as const,
+      icon: FacebookLogoIcon,
       href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
       color: "hover:text-[#4267B2]",
     },
@@ -62,7 +67,7 @@ export function ShareArticle({
           title={`Share on ${link.name}`}
           aria-label={`Share on ${link.name}`}
         >
-          <Icon name={link.icon} size={20} color="muted" />
+          <Icon icon={link.icon} size={20} color="muted" />
         </a>
       ))}
       <button
@@ -72,7 +77,7 @@ export function ShareArticle({
         title="Copy link"
         aria-label="Copy link to this article"
       >
-        <Icon name="Link" size={20} color="muted" />
+        <Icon icon={LinkIcon} size={20} color="muted" />
       </button>
     </div>
   );

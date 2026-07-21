@@ -3,6 +3,7 @@
 import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
 import Link from "next/link";
+import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Card, CardContent } from "@/components/ui/card";
@@ -135,7 +136,7 @@ function SelectionGrid({
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <Icon
-                  name="Coffee"
+                  icon={CoffeeIcon}
                   size={28}
                   className="text-muted-foreground/30"
                 />

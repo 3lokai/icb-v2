@@ -12,6 +12,7 @@ import {
   RECIPE_USE_OPTIONS,
   type RecipeFilters,
 } from "@/lib/tools/expert-recipes";
+import { FunnelIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { RecipeMainPanel } from "./RecipeMainPanel";
@@ -217,7 +218,7 @@ export function ExpertRecipesClient() {
           onClick={() => setIsFiltersDrawerOpen(true)}
           variant="outline"
         >
-          <Icon className="mr-2" name="Funnel" size={16} />
+          <Icon className="mr-2" icon={FunnelIcon} size={16} />
           Filters
           {activeFilterCount > 0 && (
             <Badge className="ml-2" variant="secondary">

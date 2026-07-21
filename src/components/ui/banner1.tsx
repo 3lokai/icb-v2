@@ -1,5 +1,6 @@
 "use client";
 
+import { XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { useState } from "react";
 
@@ -65,7 +66,7 @@ const Banner1 = ({
           size="icon"
           variant="ghost"
         >
-          <Icon name="X" size={16} />
+          <Icon icon={XIcon} size={16} />
         </Button>
       </div>
     </section>

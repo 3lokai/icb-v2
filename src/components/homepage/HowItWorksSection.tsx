@@ -1,6 +1,12 @@
 "use client";
 
-import { Icon, IconName } from "@/components/common/Icon";
+import {
+  MagnifyingGlassIcon,
+  ShareNetworkIcon,
+  StarIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Icon } from "@/components/common/Icon";
 import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -10,27 +16,27 @@ import { motion, MotionConfig } from "motion/react";
 type StepColor = "primary" | "accent";
 
 const steps: {
-  icon: IconName;
+  icon: PhosphorIcon;
   title: string;
   description: string;
   color: StepColor;
 }[] = [
   {
-    icon: "MagnifyingGlass",
+    icon: MagnifyingGlassIcon,
     title: "Discover",
     description:
       "Browse 1000+ coffees. Filter by roast, flavour, how you brew, or budget.",
     color: "primary",
   },
   {
-    icon: "Star",
+    icon: StarIcon,
     title: "Rate",
     description:
       "Say how it tasted. A quick rating is enough. No essay needed.",
     color: "accent",
   },
   {
-    icon: "ShareNetwork",
+    icon: ShareNetworkIcon,
     title: "Share",
     description:
       "Those ratings become a page you can send someone: what you like, who you buy from, what you brew with.",
@@ -185,7 +191,7 @@ export default function HowItWorksSection() {
                             )}
                           >
                             <Icon
-                              name={step.icon}
+                              icon={step.icon}
                               size={32}
                               color={step.color}
                             />

@@ -2,6 +2,14 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  LinkIcon,
+  RedditLogoIcon,
+  ShareIcon,
+  ShareNetworkIcon,
+  WhatsappLogoIcon,
+  XLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import {
@@ -114,20 +122,20 @@ export function ShareSection({ section, username }: ShareSectionProps) {
           size="sm"
           className="h-8 text-muted-foreground hover:text-foreground"
         >
-          <Icon name="Share" size={16} className="mr-1.5" />
+          <Icon icon={ShareIcon} size={16} className="mr-1.5" />
           Share
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem onClick={handleCopyLink}>
-          <Icon name="Link" size={16} className="mr-2" />
+          <Icon icon={LinkIcon} size={16} className="mr-2" />
           Copy link
         </DropdownMenuItem>
         {typeof navigator !== "undefined" &&
           "share" in navigator &&
           typeof navigator.share === "function" && (
             <DropdownMenuItem onClick={handleNativeShare}>
-              <Icon name="ShareNetwork" size={16} className="mr-2" />
+              <Icon icon={ShareNetworkIcon} size={16} className="mr-2" />
               Share...
             </DropdownMenuItem>
           )}
@@ -139,21 +147,21 @@ export function ShareSection({ section, username }: ShareSectionProps) {
               className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-accent transition-colors"
               aria-label="Share on WhatsApp"
             >
-              <Icon name="WhatsappLogo" size={20} />
+              <Icon icon={WhatsappLogoIcon} size={20} />
             </button>
             <button
               onClick={handleShareTwitter}
               className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-accent transition-colors"
               aria-label="Share on X"
             >
-              <Icon name="XLogo" size={20} />
+              <Icon icon={XLogoIcon} size={20} />
             </button>
             <button
               onClick={handleShareReddit}
               className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-accent transition-colors"
               aria-label="Share on Reddit"
             >
-              <Icon name="RedditLogo" size={20} />
+              <Icon icon={RedditLogoIcon} size={20} />
             </button>
           </div>
         </div>

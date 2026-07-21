@@ -3,6 +3,14 @@ import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import type { RegionProfileConfig } from "@/lib/discovery/landing-pages";
 import { cn } from "@/lib/utils";
+import {
+  CloudRainIcon,
+  MapPinIcon,
+  MountainsIcon,
+  PlantIcon,
+  TreeIcon,
+  TrendUpIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { RegionSnapshot } from "./RegionSnapshot";
 
@@ -41,7 +49,7 @@ export function RegionOverviewSection({
         <div className="grid gap-8 md:grid-cols-2 md:items-start lg:gap-12">
           <Stack gap="6">
             <h3 className="text-heading flex items-center gap-2">
-              <Icon name="MapPin" className="h-5 w-5 text-accent/70" />
+              <Icon icon={MapPinIcon} className="h-5 w-5 text-accent/70" />
               About the Region
             </h3>
             <p className="text-body-large text-pretty leading-relaxed text-muted-foreground">
@@ -61,13 +69,13 @@ export function RegionOverviewSection({
         {/* 2. Terroir details grid */}
         <div>
           <div className="flex items-center gap-2 mb-6">
-            <Icon name="Mountains" className="h-5 w-5 text-accent/70" />
+            <Icon icon={MountainsIcon} className="h-5 w-5 text-accent/70" />
             <h3 className="text-heading">Terroir & Growing Conditions</h3>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-2xl border border-border/40 bg-card/40 p-6 shadow-sm transition-colors hover:bg-muted/50">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-                <Icon name="CloudRain" className="h-5 w-5 text-accent/70" />
+                <Icon icon={CloudRainIcon} className="h-5 w-5 text-accent/70" />
               </div>
               <h4 className="text-label mb-2">Climate</h4>
               <p className="text-caption text-muted-foreground leading-relaxed">
@@ -77,7 +85,7 @@ export function RegionOverviewSection({
 
             <div className="rounded-2xl border border-border/40 bg-card/40 p-6 shadow-sm transition-colors hover:bg-muted/50">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-                <Icon name="Tree" className="h-5 w-5 text-accent/70" />
+                <Icon icon={TreeIcon} className="h-5 w-5 text-accent/70" />
               </div>
               <h4 className="text-label mb-2">Soil</h4>
               <p className="text-caption text-muted-foreground leading-relaxed">
@@ -87,7 +95,7 @@ export function RegionOverviewSection({
 
             <div className="rounded-2xl border border-border/40 bg-card/40 p-6 shadow-sm transition-colors hover:bg-muted/50">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-                <Icon name="TrendUp" className="h-5 w-5 text-accent/70" />
+                <Icon icon={TrendUpIcon} className="h-5 w-5 text-accent/70" />
               </div>
               <h4 className="text-label mb-2">Altitude</h4>
               <p className="text-caption text-muted-foreground leading-relaxed">
@@ -97,7 +105,7 @@ export function RegionOverviewSection({
 
             <div className="rounded-2xl border border-border/40 bg-card/40 p-6 shadow-sm transition-colors hover:bg-muted/50">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-                <Icon name="Plant" className="h-5 w-5 text-accent/70" />
+                <Icon icon={PlantIcon} className="h-5 w-5 text-accent/70" />
               </div>
               <h4 className="text-label mb-2">Varieties</h4>
               <p className="text-caption text-muted-foreground leading-relaxed">

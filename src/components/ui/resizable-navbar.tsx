@@ -1,4 +1,5 @@
 "use client";
+import { CaretDownIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -160,7 +161,7 @@ const NavItemComponent = ({
           "relative z-20 transition-transform",
           isDropdownOpen && "rotate-180"
         )}
-        name="CaretDown"
+        icon={CaretDownIcon}
         size={12}
       />
     </button>
@@ -407,7 +408,7 @@ export const MobileNavDropdown = ({
         <span>{item.name}</span>
         <Icon
           className={cn("transition-transform", isOpen && "rotate-180")}
-          name="CaretDown"
+          icon={CaretDownIcon}
           size={16}
         />
       </button>

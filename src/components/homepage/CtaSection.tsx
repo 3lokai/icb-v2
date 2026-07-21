@@ -1,5 +1,11 @@
 // src/components/home/CtaSection.tsx
 import Link from "next/link";
+import {
+  ArrowRightIcon,
+  CoffeeIcon,
+  MapPinIcon,
+  StorefrontIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -61,7 +67,7 @@ export default async function CtaSection() {
                       size="lg"
                     >
                       <Link href="/coffees">
-                        <Icon className="mr-2" name="Coffee" size={18} />
+                        <Icon className="mr-2" icon={CoffeeIcon} size={18} />
                         Explore Directory
                       </Link>
                     </Button>
@@ -73,7 +79,11 @@ export default async function CtaSection() {
                       size="lg"
                     >
                       <Link href="/roasters">
-                        <Icon className="mr-2" name="Storefront" size={18} />
+                        <Icon
+                          className="mr-2"
+                          icon={StorefrontIcon}
+                          size={18}
+                        />
                         Meet Roasters
                       </Link>
                     </Button>
@@ -86,7 +96,7 @@ export default async function CtaSection() {
                       <Link href="/tools">
                         Usage Tools
                         <Icon
-                          name="ArrowRight"
+                          icon={ArrowRightIcon}
                           size={16}
                           className="transition-transform group-hover/link:translate-x-1"
                         />
@@ -112,7 +122,7 @@ export default async function CtaSection() {
                         The Snapshot
                       </span>
                       <Icon
-                        name="Coffee"
+                        icon={CoffeeIcon}
                         size={18}
                         className="text-accent/40"
                       />
@@ -142,7 +152,7 @@ export default async function CtaSection() {
                       <Stack gap="3">
                         <div className="flex items-center gap-2">
                           <Icon
-                            name="MapPin"
+                            icon={MapPinIcon}
                             size={14}
                             className="text-accent"
                           />

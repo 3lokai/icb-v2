@@ -2,6 +2,12 @@
 
 import { Accent } from "@/components/primitives/accent";
 import { useState } from "react";
+import {
+  CaretDownIcon,
+  StarIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
@@ -80,7 +86,7 @@ export function ReviewList({
           className="w-full border-border/60 hover:border-primary/50 hover:bg-accent/30 transition-all"
         >
           Show all {reviews.length} reviews
-          <Icon name="CaretDown" size={14} className="ml-2" />
+          <Icon icon={CaretDownIcon} size={14} className="ml-2" />
         </Button>
       )}
     </Stack>
@@ -118,7 +124,7 @@ function ReviewItem({ review }: { review: ReviewWithProfile }) {
               {[...Array(5)].map((_, i) => (
                 <Icon
                   key={i}
-                  name="Star"
+                  icon={StarIcon}
                   size={16}
                   className={cn(
                     "transition-colors",
@@ -144,7 +150,7 @@ function ReviewItem({ review }: { review: ReviewWithProfile }) {
               )}
             >
               <Icon
-                name={review.recommend ? "ThumbsUp" : "ThumbsDown"}
+                icon={review.recommend ? ThumbsUpIcon : ThumbsDownIcon}
                 size={12}
                 className="mr-1.5"
               />
@@ -170,7 +176,7 @@ function ReviewItem({ review }: { review: ReviewWithProfile }) {
             {review.value_for_money !== null && (
               <Badge variant="outline" className="text-caption bg-muted/40">
                 <Icon
-                  name={review.value_for_money ? "ThumbsUp" : "ThumbsDown"}
+                  icon={review.value_for_money ? ThumbsUpIcon : ThumbsDownIcon}
                   size={11}
                   className="mr-1.5"
                 />

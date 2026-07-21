@@ -4,6 +4,7 @@ import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
+import { CoffeeIcon, PlusIcon, StarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -50,7 +51,7 @@ export function ProfileRatings({
         {isOwner && (
           <Button asChild size="sm" className="rounded-full shadow-md ml-auto">
             <Link href="/coffees">
-              <Icon name="Plus" size={14} className="mr-2" />
+              <Icon icon={PlusIcon} size={14} className="mr-2" />
               {isAnonymous ? "Rate more coffees" : "Rate a coffee"}
             </Link>
           </Button>
@@ -60,7 +61,7 @@ export function ProfileRatings({
       {ratings.length === 0 ? (
         <Card className="bg-background py-20 border border-dashed border-border/60 rounded-3xl flex flex-col items-center justify-center text-center gap-0">
           <Icon
-            name="Coffee"
+            icon={CoffeeIcon}
             size={32}
             className="text-muted-foreground mb-4"
           />
@@ -90,7 +91,11 @@ export function ProfileRatings({
                       </p>
                     </Stack>
                     <div className="bg-amber-500/10 text-amber-600 px-1.5 py-0.5 rounded text-micro font-bold flex items-center gap-0.5 border border-amber-500/20">
-                      <Icon name="Star" size={10} className="fill-amber-600" />
+                      <Icon
+                        icon={StarIcon}
+                        size={10}
+                        className="fill-amber-600"
+                      />
                       {rating.rating.toFixed(1)}
                     </div>
                   </Cluster>

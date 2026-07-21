@@ -1,3 +1,4 @@
+import { CheckCircleIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
@@ -36,7 +37,11 @@ export function ValueTips({ tips, className }: ValueTipsProps) {
             {bullets.map((tip, idx) => (
               <li key={idx} className="flex gap-4">
                 <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10">
-                  <Icon className="text-accent" name="CheckCircle" size={18} />
+                  <Icon
+                    className="text-accent"
+                    icon={CheckCircleIcon}
+                    size={18}
+                  />
                 </span>
                 <p className="text-body text-muted-foreground leading-relaxed pt-0.5">
                   {tip}

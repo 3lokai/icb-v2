@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef, startTransition } from "react";
+import { XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -270,7 +271,7 @@ export function RoasterFacetedFilterBar({
                     }
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               )}
@@ -287,7 +288,7 @@ export function RoasterFacetedFilterBar({
                     onClick={() => updateFilters({ countries: undefined })}
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ) : null}
@@ -304,7 +305,7 @@ export function RoasterFacetedFilterBar({
                     onClick={() => updateFilters({ states: undefined })}
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ) : null}
@@ -321,7 +322,7 @@ export function RoasterFacetedFilterBar({
                     onClick={() => updateFilters({ cities: undefined })}
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               ) : null}
@@ -337,7 +338,7 @@ export function RoasterFacetedFilterBar({
                     onClick={() => updateFilters({ active_only: undefined })}
                     type="button"
                   >
-                    <Icon name="X" size={10} />
+                    <Icon icon={XIcon} size={10} />
                   </button>
                 </Badge>
               )}

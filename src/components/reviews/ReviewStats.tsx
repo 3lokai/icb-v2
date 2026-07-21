@@ -1,5 +1,6 @@
 "use client";
 
+import { StarIcon, ThumbsUpIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Cluster } from "@/components/primitives/cluster";
 import type { EntityReviewStats } from "@/types/review-types";
@@ -34,7 +35,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
             <div className="flex items-center gap-2 px-4 py-2.5 bg-muted/30 rounded-lg border border-border/40">
               <div className="flex items-center gap-1">
                 <Icon
-                  name="Star"
+                  icon={StarIcon}
                   size={22}
                   className="text-rating fill-rating drop-shadow-sm"
                 />
@@ -64,7 +65,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
           {/* Recommend % */}
           {recommend_pct != null && recommend_pct > 0 && (
             <div className="flex items-center gap-2 px-4 py-2.5 bg-muted/30 rounded-lg border border-border/40">
-              <Icon name="ThumbsUp" size={16} className="text-primary" />
+              <Icon icon={ThumbsUpIcon} size={16} className="text-primary" />
               <span className="text-body font-medium text-foreground">
                 {Math.round(recommend_pct)}% recommend
               </span>

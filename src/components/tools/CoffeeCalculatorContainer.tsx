@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BookOpenIcon, CalculatorIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Cluster } from "@/components/primitives/cluster";
 import { Button } from "@/components/ui/button";
@@ -78,7 +79,7 @@ export function CoffeeCalculatorContainer({
               size="default"
             >
               <Cluster gap="2" align="center">
-                <Icon className="h-4 w-4" name="Calculator" />
+                <Icon className="h-4 w-4" icon={CalculatorIcon} />
                 <span className="font-medium">Calculator</span>
               </Cluster>
             </Button>
@@ -94,7 +95,7 @@ export function CoffeeCalculatorContainer({
               size="default"
             >
               <Cluster gap="2" align="center">
-                <Icon className="h-4 w-4" name="BookOpen" />
+                <Icon className="h-4 w-4" icon={BookOpenIcon} />
                 <span className="font-medium">Brewing Guide</span>
               </Cluster>
             </Button>

@@ -5,7 +5,23 @@ import Link from "next/link";
 import { Stack } from "@/components/primitives/stack";
 import { TagList } from "@/components/common/Tag";
 import Tag from "@/components/common/Tag";
-import { Icon, type IconName } from "@/components/common/Icon";
+import {
+  ArrowUpRightIcon,
+  CoffeeIcon,
+  FlaskIcon,
+  GlobeIcon,
+  HeartIcon,
+  LockKeyIcon,
+  MagnifyingGlassIcon,
+  MapPinIcon,
+  SparkleIcon,
+  StarIcon,
+  StorefrontIcon,
+  TargetIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import { Icon } from "@/components/common/Icon";
 import type { TasteProfileData } from "@/types/profile-types";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
@@ -31,7 +47,7 @@ type TierTeaserProps = {
   required: number;
   label: string;
   totalReviews: number;
-  icon?: IconName;
+  icon?: ComponentType<IconProps>;
 };
 
 function TierTeaser({ required, label, totalReviews, icon }: TierTeaserProps) {
@@ -49,7 +65,7 @@ function TierTeaser({ required, label, totalReviews, icon }: TierTeaserProps) {
           {label}
         </h3>
         <div className="text-muted-foreground">
-          <Icon name={icon ?? "LockKey"} size={16} />
+          <Icon icon={icon ?? LockKeyIcon} size={16} />
         </div>
       </div>
 
@@ -140,7 +156,7 @@ export function ProfileTasteProfile({
             animate={{ opacity: 1, scale: 1 }}
             className="group py-24 border border-dashed border-border/60 rounded-3xl flex flex-col items-center justify-center text-center gap-6 bg-background/60 hover:bg-background/80 transition-colors"
           >
-            <Icon name="Sparkle" size={48} className="text-accent/70" />
+            <Icon icon={SparkleIcon} size={48} className="text-accent/70" />
             <Stack gap="3" className="items-center px-6">
               <p className="text-body-large font-serif italic text-foreground m-0">
                 A journey in the making.
@@ -175,25 +191,25 @@ export function ProfileTasteProfile({
                     label: "Library Count",
                     value: total_reviews,
                     suffix: "",
-                    icon: "Coffee",
+                    icon: CoffeeIcon,
                   },
                   {
                     label: "Palate Standard",
                     value: avg_rating || "—",
                     suffix: "★",
-                    icon: "Star",
+                    icon: StarIcon,
                   },
                   {
                     label: "Roaster Reach",
                     value: distinct_roaster_count,
                     suffix: "",
-                    icon: "MapPin",
+                    icon: MapPinIcon,
                   },
                   {
                     label: "Hall of Fame",
                     value: selectionsCount,
                     suffix: "",
-                    icon: "Heart",
+                    icon: HeartIcon,
                   },
                 ].map((stat, i) => (
                   <div
@@ -202,7 +218,7 @@ export function ProfileTasteProfile({
                   >
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <Icon
-                        name={stat.icon as IconName}
+                        icon={stat.icon}
                         size={12}
                         className="text-accent"
                       />
@@ -234,7 +250,7 @@ export function ProfileTasteProfile({
                   className="bg-accent/8 rounded-3xl p-8 md:p-10 border border-accent/20 flex flex-col md:flex-row items-center gap-8"
                 >
                   <div className="bg-background p-6 rounded-2xl border border-accent/20 shrink-0">
-                    <Icon name="Target" size={40} className="text-accent" />
+                    <Icon icon={TargetIcon} size={40} className="text-accent" />
                   </div>
                   <Stack gap="1" className="flex-1 text-center md:text-left">
                     <span className="text-overline text-muted-foreground tracking-[0.15em]">
@@ -344,7 +360,7 @@ export function ProfileTasteProfile({
                           >
                             {roaster.name}
                             <Icon
-                              name="ArrowUpRight"
+                              icon={ArrowUpRightIcon}
                               size={10}
                               className="text-accent opacity-0 group-hover:opacity-100 -translate-y-0.5 transition-opacity"
                             />
@@ -359,13 +375,13 @@ export function ProfileTasteProfile({
                       required={5}
                       label="Flavor Palate"
                       totalReviews={total_reviews}
-                      icon="MagnifyingGlass"
+                      icon={MagnifyingGlassIcon}
                     />
                     <TierTeaser
                       required={5}
                       label="Preferred Roasters"
                       totalReviews={total_reviews}
-                      icon="Storefront"
+                      icon={StorefrontIcon}
                     />
                   </>
                 )}
@@ -425,13 +441,13 @@ export function ProfileTasteProfile({
                       required={10}
                       label="Origin Insights"
                       totalReviews={total_reviews}
-                      icon="Globe"
+                      icon={GlobeIcon}
                     />
                     <TierTeaser
                       required={10}
                       label="Processing Stats"
                       totalReviews={total_reviews}
-                      icon="Flask"
+                      icon={FlaskIcon}
                     />
                   </>
                 )}
@@ -536,7 +552,7 @@ export function ProfileTasteProfile({
                   ) : (
                     <div className="py-2 flex flex-col gap-3">
                       <div className="flex items-center gap-2 text-micro italic text-muted-foreground">
-                        <Icon name="LockKey" size={12} />
+                        <Icon icon={LockKeyIcon} size={12} />
                         <span>Analysis unlocks at Tier 3</span>
                       </div>
                       <div className="space-y-3 opacity-30">

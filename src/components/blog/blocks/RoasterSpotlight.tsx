@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -84,7 +85,7 @@ function SpotlightCard({
                 href={isLegacy ? data.link || "#" : `/roasters/${data.slug}`}
               >
                 Visit Roaster{" "}
-                <Icon name="ArrowRight" size={18} className="ml-2" />
+                <Icon icon={ArrowRightIcon} size={18} className="ml-2" />
               </Link>
             </Button>
           </div>

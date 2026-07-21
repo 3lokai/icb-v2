@@ -20,6 +20,23 @@ import {
   type BeanTypeProfileConfig,
 } from "@/lib/discovery/landing-pages";
 import { cn } from "@/lib/utils";
+import {
+  ArrowsLeftRightIcon,
+  CheckCircleIcon,
+  CoffeeIcon,
+  FireIcon,
+  InfoIcon,
+  ListNumbersIcon,
+  MapPinIcon,
+  PlantIcon,
+  SparkleIcon,
+  StarIcon,
+  ThumbsUpIcon,
+  WarningCircleIcon,
+  XCircleIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
 import { Icon } from "@/components/common/Icon";
 import { BeanTypeComparisonGrid } from "@/components/discovery/BeanTypeComparisonGrid";
 import { BEAN_TYPE_NAV_SLUGS } from "@/lib/discovery/landing-pages/bean-species-visuals";
@@ -51,7 +68,7 @@ function RoastPairingLinks({
 }: {
   label: string;
   slugs: string[];
-  icon?: Parameters<typeof Icon>[0]["name"];
+  icon?: ComponentType<IconProps>;
 }) {
   const links = slugs
     .map((s) => {
@@ -67,7 +84,7 @@ function RoastPairingLinks({
     <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
       <div className="flex items-center gap-2 w-36 shrink-0">
         {icon && (
-          <Icon name={icon} className="h-4 w-4 text-muted-foreground/60" />
+          <Icon icon={icon} className="h-4 w-4 text-muted-foreground/60" />
         )}
         <p className="text-label uppercase">{label}</p>
       </div>
@@ -147,7 +164,7 @@ export function BeanTypeProfileSection({
         {characteristics.length > 0 && (
           <div>
             <div className="flex items-center gap-2 mb-6">
-              <Icon name="ListNumbers" className="h-5 w-5 text-accent/70" />
+              <Icon icon={ListNumbersIcon} className="h-5 w-5 text-accent/70" />
               <h3 className="text-heading">At a Glance</h3>
             </div>
             <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -176,7 +193,7 @@ export function BeanTypeProfileSection({
             <Stack gap="8">
               <Stack gap="4">
                 <div className="flex items-center gap-2">
-                  <Icon name="Sparkle" className="h-4 w-4 text-accent/60" />
+                  <Icon icon={SparkleIcon} className="h-4 w-4 text-accent/60" />
                   <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
                     Typical notes
                   </p>
@@ -212,7 +229,7 @@ export function BeanTypeProfileSection({
         {varietyHighlights && varietyHighlights.length > 0 && (
           <div>
             <div className="flex items-center gap-2 mb-6">
-              <Icon name="Plant" className="h-5 w-5 text-accent/70" />
+              <Icon icon={PlantIcon} className="h-5 w-5 text-accent/70" />
               <h3 className="text-heading">Key Varieties</h3>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -228,7 +245,7 @@ export function BeanTypeProfileSection({
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
                         <Icon
-                          name="Coffee"
+                          icon={CoffeeIcon}
                           className="mt-0.5 h-4 w-4 shrink-0 text-accent/60"
                         />
                         <p className="text-caption text-foreground/80 leading-relaxed">
@@ -237,7 +254,7 @@ export function BeanTypeProfileSection({
                       </div>
                       <div className="flex items-start gap-2">
                         <Icon
-                          name="MapPin"
+                          icon={MapPinIcon}
                           className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/60"
                         />
                         <p className="text-caption text-muted-foreground leading-relaxed">
@@ -256,7 +273,7 @@ export function BeanTypeProfileSection({
         <div className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-accent/5 shadow-sm p-6 py-10 md:px-12 md:py-14">
           <Stack gap="6" className="relative z-10 w-full">
             <div className="flex items-center gap-2">
-              <Icon name="MapPin" className="h-5 w-5 text-accent/70" />
+              <Icon icon={MapPinIcon} className="h-5 w-5 text-accent/70" />
               <p className="text-overline text-accent tracking-[0.15em] uppercase">
                 Indian Coffee Context
               </p>
@@ -270,7 +287,7 @@ export function BeanTypeProfileSection({
         {/* 5. Brew guidance */}
         <div className="max-w-5xl mx-auto w-full space-y-6">
           <h3 className="text-heading mb-6 flex items-center gap-2">
-            <Icon name="Coffee" className="h-5 w-5 text-accent/70" />
+            <Icon icon={CoffeeIcon} className="h-5 w-5 text-accent/70" />
             Brew Guidance
           </h3>
 
@@ -278,7 +295,7 @@ export function BeanTypeProfileSection({
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
               <div className="flex items-center gap-2 w-36 shrink-0">
                 <Icon
-                  name="Star"
+                  icon={StarIcon}
                   className="h-4 w-4 text-muted-foreground/60"
                 />
                 <p className="text-label uppercase">Recommended</p>
@@ -303,7 +320,7 @@ export function BeanTypeProfileSection({
           <div className="surface-2 rounded-xl p-5 mt-4">
             <div className="flex items-start gap-3">
               <Icon
-                name="Info"
+                icon={InfoIcon}
                 className="mt-0.5 h-5 w-5 shrink-0 text-accent"
               />
               <p className="text-caption font-medium leading-relaxed text-foreground/80">
@@ -319,17 +336,17 @@ export function BeanTypeProfileSection({
             <div className="h-px w-full bg-border/40 max-w-5xl mx-auto my-8" />
             <div className="max-w-5xl mx-auto w-full space-y-6">
               <h3 className="text-heading mb-6 flex items-center gap-2">
-                <Icon name="Fire" className="h-5 w-5 text-accent/70" />
+                <Icon icon={FireIcon} className="h-5 w-5 text-accent/70" />
                 Roast Pairing
               </h3>
               <Stack gap="4">
                 <RoastPairingLinks
-                  icon="Star"
+                  icon={StarIcon}
                   label="Best Match"
                   slugs={roastPairing!.best}
                 />
                 <RoastPairingLinks
-                  icon="ThumbsUp"
+                  icon={ThumbsUpIcon}
                   label="Also Works"
                   slugs={roastPairing!.works}
                 />
@@ -351,7 +368,10 @@ export function BeanTypeProfileSection({
             <div className="h-px w-full bg-border/40 max-w-5xl mx-auto my-8" />
             <div className="max-w-5xl mx-auto w-full space-y-6">
               <h3 className="text-heading mb-6 flex items-center gap-2">
-                <Icon name="WarningCircle" className="h-5 w-5 text-accent/70" />
+                <Icon
+                  icon={WarningCircleIcon}
+                  className="h-5 w-5 text-accent/70"
+                />
                 Common Mistakes
               </h3>
               <Accordion type="multiple" className="space-y-3">
@@ -364,7 +384,7 @@ export function BeanTypeProfileSection({
                     <AccordionTrigger className="text-body font-medium py-4 [&[data-state=open]>svg]:rotate-180">
                       <span className="flex items-center gap-2 text-left">
                         <Icon
-                          name="XCircle"
+                          icon={XCircleIcon}
                           className="h-4 w-4 shrink-0 text-destructive/60"
                         />
                         {item.mistake}
@@ -373,7 +393,7 @@ export function BeanTypeProfileSection({
                     <AccordionContent className="pb-4 pl-6 text-caption leading-relaxed text-foreground/80">
                       <span className="flex items-start gap-2">
                         <Icon
-                          name="CheckCircle"
+                          icon={CheckCircleIcon}
                           className="mt-0.5 h-4 w-4 shrink-0 text-green-600 dark:text-green-400"
                         />
                         <span>{item.fix}</span>
@@ -393,7 +413,7 @@ export function BeanTypeProfileSection({
             <div className="max-w-5xl mx-auto w-full space-y-6">
               <h3 className="text-heading mb-6 flex items-center gap-2">
                 <Icon
-                  name="ArrowsLeftRight"
+                  icon={ArrowsLeftRightIcon}
                   className="h-5 w-5 text-accent/70"
                 />
                 Compare Bean Types

@@ -18,6 +18,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { CaretUpDownIcon, PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 
@@ -83,7 +84,7 @@ export function GearSelector({
             {searchQuery || "Search gear catalog..."}
           </span>
           <Icon
-            name="CaretUpDown"
+            icon={CaretUpDownIcon}
             size={14}
             className="opacity-50 shrink-0 ml-2"
           />
@@ -160,7 +161,7 @@ export function GearSelector({
                 }}
                 className="text-accent cursor-pointer"
               >
-                <Icon name="Plus" size={14} className="mr-2" />
+                <Icon icon={PlusIcon} size={14} className="mr-2" />
                 Create new gear item
               </CommandItem>
             </CommandGroup>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import {
@@ -121,7 +122,7 @@ export function DeveloperPortal({
             </CardDescription>
           </div>
           <Button onClick={() => setCreateOpen(true)}>
-            <Icon name="Plus" size={16} className="mr-2" />
+            <Icon icon={PlusIcon} size={16} className="mr-2" />
             Create key
           </Button>
         </CardHeader>

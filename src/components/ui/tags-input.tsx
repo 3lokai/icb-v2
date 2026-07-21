@@ -5,6 +5,7 @@ import { forwardRef, useState, useRef, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "../common/Icon";
 
 export interface LookupOption {
@@ -146,7 +147,7 @@ const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
                     removeTag(tag);
                   }}
                 >
-                  <Icon name="X" className="h-3 w-3" />
+                  <Icon icon={XIcon} className="h-3 w-3" />
                 </Button>
               )}
             </Badge>

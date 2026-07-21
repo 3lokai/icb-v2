@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useMemo, memo } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { CoffeeBeanIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { coffeeImagePresets } from "@/lib/imagekit";
 import { formatPrice } from "@/lib/utils/coffee-utils";
@@ -96,7 +97,7 @@ function RoastLevelIndicator({
         {beans.map((filled, idx) => (
           <Icon
             key={idx}
-            name="CoffeeBean"
+            icon={CoffeeBeanIcon}
             size={12}
             color="muted"
             className={cn(

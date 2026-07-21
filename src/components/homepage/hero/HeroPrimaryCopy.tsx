@@ -1,17 +1,24 @@
+import {
+  ArrowBendUpLeftIcon,
+  MapPinIcon,
+  PathIcon,
+  UserCircleIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconProps } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
 import { Announcement, AnnouncementTitle } from "@/components/ui/announcement";
 import { Icon } from "@/components/common/Icon";
-import type { IconName } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import type { HeroSegmentPayload } from "@/types/hero-segment";
 import type { HeroSegment } from "@/types/hero-segment";
 import { getHeroPrimaryCopy } from "./heroCopy";
 
-const EYEBROW_ICON: Record<HeroSegment, IconName> = {
-  discovery: "MapPin",
-  returning_browser: "ArrowBendUpLeft",
-  rating_progress: "Path",
-  anon_conversion: "Path",
-  authenticated_profile: "UserCircle",
+const EYEBROW_ICON: Record<HeroSegment, ComponentType<IconProps>> = {
+  discovery: MapPinIcon,
+  returning_browser: ArrowBendUpLeftIcon,
+  rating_progress: PathIcon,
+  anon_conversion: PathIcon,
+  authenticated_profile: UserCircleIcon,
 };
 
 type HeroPrimaryCopyProps = {
@@ -23,7 +30,7 @@ function getPrimaryCopyParts(hero: HeroSegmentPayload) {
     displayNameShort: hero.displayNameShort,
     isAuthenticated: hero.isAuthenticated,
   });
-  const iconName = EYEBROW_ICON[hero.segment] ?? "MapPin";
+  const iconName = EYEBROW_ICON[hero.segment] ?? MapPinIcon;
   return { copy, iconName };
 }
 
@@ -37,7 +44,7 @@ export function HeroPrimaryEyebrow({ hero }: HeroPrimaryCopyProps) {
     <div className="flex items-center justify-start">
       <Announcement variant="onMedia">
         <AnnouncementTitle className="gap-2">
-          <Icon className="text-accent" name={iconName} size={16} />
+          <Icon className="text-accent" icon={iconName} size={16} />
           {copy.eyebrow}
         </AnnouncementTitle>
       </Announcement>

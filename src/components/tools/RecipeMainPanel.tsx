@@ -1,4 +1,5 @@
 // Enhanced RecipeMainPanel.tsx - UI only changes
+import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import type { ExpertRecipe } from "@/lib/tools/expert-recipes";
@@ -34,7 +35,7 @@ export function RecipeMainPanel({
           <div>
             <Icon
               className="mx-auto mb-6 h-12 w-12 text-muted-foreground opacity-50"
-              name="Coffee"
+              icon={CoffeeIcon}
             />
             <Stack className="items-center" gap="4">
               <h3 className="text-heading text-primary">No recipes found</h3>

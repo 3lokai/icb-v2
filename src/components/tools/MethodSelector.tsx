@@ -1,5 +1,6 @@
 // src/components/tools/calculator/MethodSelector.tsx
 
+import { CaretDownIcon, CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import {
@@ -56,13 +57,13 @@ export function MethodSelector({
                 className={`h-4 w-4 transition-colors ${
                   isCompleted ? "text-primary" : "text-muted-foreground"
                 }`}
-                name="Coffee"
+                icon={CoffeeIcon}
               />
               <span className={value ? "" : "text-muted-foreground"}>
                 {selectedMethod?.name || "Select brewing method"}
               </span>
             </div>
-            <Icon className="h-4 w-4 opacity-50" name="CaretDown" />
+            <Icon className="h-4 w-4 opacity-50" icon={CaretDownIcon} />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -84,7 +85,7 @@ export function MethodSelector({
                   value={method.id}
                 >
                   <div className="flex items-center gap-2">
-                    <Icon className="h-4 w-4 text-primary" name="Coffee" />
+                    <Icon className="h-4 w-4 text-primary" icon={CoffeeIcon} />
                     <div className="flex flex-col">
                       <span className="font-medium">{method.name}</span>
                       <span className="text-muted-foreground text-overline">
