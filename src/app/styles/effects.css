@@ -4,10 +4,6 @@
     animation: fade-in-scale 0.3s ease-out;
   }
 
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
-
   .animate-marquee {
     animation: marquee var(--duration, 40s) linear infinite;
   }
@@ -35,7 +31,7 @@
     }
   }
 
-  /* Animation delay utilities (used by animate-fade-in-scale, animate-float) */
+  /* Animation delay utilities (used by animate-fade-in-scale) */
   .delay-200 {
     animation-delay: 200ms;
   }
@@ -198,13 +194,14 @@
   }
 }
 
+/* Gentle idle bob for icons/cards. Override --float-amplitude for larger travel. */
 @keyframes float {
   0%,
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(var(--float-amplitude, -3px));
   }
 }
 

@@ -42,6 +42,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  --animate-float: float 3s ease-in-out infinite;
 }
 
 /* ===== CSS CUSTOM PROPERTIES (LIGHT THEME) ===== */

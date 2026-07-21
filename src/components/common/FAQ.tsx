@@ -11,7 +11,7 @@ import { Section } from "@/components/primitives/section";
 import StructuredData from "@/components/seo/StructuredData";
 import { generateFAQSchema } from "@/lib/seo/schema";
 import { cn } from "@/lib/utils";
-import { motion, useReducedMotion } from "motion/react";
+import { Reveal } from "@/components/primitives/reveal";
 import type { ReactNode } from "react";
 
 type FAQItem = {
@@ -38,8 +38,6 @@ type SimpleFAQProps = {
 
 // Simple FAQ component without section header (for MDX/embeds)
 export function FAQ({ items, className }: SimpleFAQProps) {
-  const reduceMotion = useReducedMotion();
-
   if (!items?.length) {
     return (
       <div className="my-8 rounded-lg border-2 border-border/40 border-dashed bg-muted/20 p-6 text-center">
@@ -49,13 +47,7 @@ export function FAQ({ items, className }: SimpleFAQProps) {
   }
 
   return (
-    <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5 }}
-      className={cn("my-8", className)}
-    >
+    <Reveal className={cn("my-8", className)}>
       <Accordion className="w-full" collapsible type="single">
         {items.map((item) => {
           const itemId = item.question
@@ -74,7 +66,7 @@ export function FAQ({ items, className }: SimpleFAQProps) {
           );
         })}
       </Accordion>
-    </motion.div>
+    </Reveal>
   );
 }
 
