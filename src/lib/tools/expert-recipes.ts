@@ -1782,13 +1782,13 @@ export const EXPERT_RECIPES: Record<ExpertKey, ExpertRecipe> = {
 };
 
 // Utility functions for recipe filtering and display
-export function getRecipesByMethod(method: BrewingMethodKey): ExpertRecipe[] {
+function getRecipesByMethod(method: BrewingMethodKey): ExpertRecipe[] {
   return Object.values(EXPERT_RECIPES).filter(
     (recipe) => recipe.method === method
   );
 }
 
-export function getRecipesByDifficulty(
+function getRecipesByDifficulty(
   difficulty: ExpertRecipe["difficulty"]
 ): ExpertRecipe[] {
   return Object.values(EXPERT_RECIPES).filter(
@@ -1796,7 +1796,7 @@ export function getRecipesByDifficulty(
   );
 }
 
-export function getRecipesByExpert(expertName: string): ExpertRecipe[] {
+function getRecipesByExpert(expertName: string): ExpertRecipe[] {
   return Object.values(EXPERT_RECIPES).filter((recipe) =>
     recipe.expert.name.toLowerCase().includes(expertName.toLowerCase())
   );
@@ -1867,14 +1867,12 @@ export function filterRecipes(filters: RecipeFilters): ExpertRecipe[] {
 export type DifficultyLevel = ExpertRecipe["difficulty"];
 export type RecommendedUse = ExpertRecipe["recommendedUse"];
 export type MethodKey = BrewingMethodKey;
-export function sortRecipesByDifficulty(
-  recipes: ExpertRecipe[]
-): ExpertRecipe[] {
+function sortRecipesByDifficulty(recipes: ExpertRecipe[]): ExpertRecipe[] {
   return [...recipes].sort((a, b) => a.difficultyIndex - b.difficultyIndex);
 }
 
 // Get unique flavor notes across all recipes
-export function getAllFlavorNotes(): string[] {
+function getAllFlavorNotes(): string[] {
   const allNotes = new Set<string>();
   Object.values(EXPERT_RECIPES).forEach((recipe) => {
     recipe.flavorNotes.forEach((note) => allNotes.add(note));
@@ -1883,18 +1881,14 @@ export function getAllFlavorNotes(): string[] {
 }
 
 // Get recipes by recommended use
-export function getRecipesByUse(
-  use: ExpertRecipe["recommendedUse"]
-): ExpertRecipe[] {
+function getRecipesByUse(use: ExpertRecipe["recommendedUse"]): ExpertRecipe[] {
   return Object.values(EXPERT_RECIPES).filter(
     (recipe) => recipe.recommendedUse === use
   );
 }
 
 // Auto-generate tags from recipe properties (utility for data consistency)
-export function generateAutoTags(
-  recipe: Omit<ExpertRecipe, "tags">
-): Set<string> {
+function generateAutoTags(recipe: Omit<ExpertRecipe, "tags">): Set<string> {
   const autoTags = new Set<string>();
 
   // Add method
@@ -1952,7 +1946,7 @@ export const RECIPE_EXPERT_OPTIONS: RecipeFacetOption[] = Array.from(
   .sort((a, b) => a.label.localeCompare(b.label));
 
 // Expert info for display
-export const EXPERTS = [
+const EXPERTS = [
   {
     name: "James Hoffmann",
     recipes: ["hoffman-v60", "hoffman-french-press", "hoffman-chemex"],
@@ -2021,7 +2015,7 @@ export const EXPERTS = [
 ];
 
 // Recipe categories for organization
-export const RECIPE_CATEGORIES = {
+const RECIPE_CATEGORIES = {
   "Pour Over Masters": [
     "hoffman-v60",
     "scott-rao-v60",
@@ -2044,7 +2038,7 @@ export const RECIPE_CATEGORIES = {
 } as const;
 
 // Difficulty explanations
-export const DIFFICULTY_GUIDE = {
+const DIFFICULTY_GUIDE = {
   Beginner: "Simple technique, forgiving timing, minimal equipment needed",
   Intermediate: "Requires attention to detail, some technique practice needed",
   Advanced:
@@ -2052,14 +2046,14 @@ export const DIFFICULTY_GUIDE = {
 } as const;
 
 // Recommended use explanations
-export const USE_GUIDE = {
+const USE_GUIDE = {
   everyday: "Perfect for daily brewing - reliable, approachable, and delicious",
   competition: "Competition-level techniques requiring precision and practice",
   experiment: "For coffee exploration and trying new flavor profiles",
 } as const;
 
 // Source type explanations
-export const SOURCE_TYPE_GUIDE = {
+const SOURCE_TYPE_GUIDE = {
   video: "Watch the expert demonstrate the technique",
   blog: "Detailed written guide from the expert",
   championship: "Official competition-winning recipe",

@@ -228,7 +228,7 @@ export const ARTICLE_BY_SLUG_QUERY = `
   }
 `;
 
-export const FEATURED_ARTICLES_QUERY = `
+const FEATURED_ARTICLES_QUERY = `
   *[_type == "article" && featured == true]
   | order(date desc) {
     ${ARTICLE_CARD_PROJECTION}

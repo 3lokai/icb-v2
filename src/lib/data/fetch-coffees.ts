@@ -66,7 +66,7 @@ export async function getCoffeeIdsFromJunction(
  * Helper to get coffee IDs from flavor keys filter
  * Exported for use in filter meta calculations
  */
-export async function getCoffeeIdsFromFlavorKeys(
+async function getCoffeeIdsFromFlavorKeys(
   supabase: any,
   flavorKeys: string[]
 ): Promise<string[] | null> {

@@ -12,7 +12,7 @@ type ReviewSectionProps = {
   entityId: string;
 };
 
-export function ReviewSection({ entityType, entityId }: ReviewSectionProps) {
+function ReviewSection({ entityType, entityId }: ReviewSectionProps) {
   const { data: stats } = useReviewStats(entityType, entityId);
   const { data: reviews } = useReviews(entityType, entityId);
   const hasReviews = reviews && reviews.length > 0;

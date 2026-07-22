@@ -35,9 +35,9 @@ export const QUADRANT_COLORS: Record<
   positive: { fill: "#4ade80", text: "#14532d" }, // green
 };
 
-export const MIDDLE_RING_OPACITY = 0.55;
-export const OUTER_RING_OPACITY = 0.8;
-export const INNER_RING_OPACITY = 0.25;
+const MIDDLE_RING_OPACITY = 0.55;
+const OUTER_RING_OPACITY = 0.8;
+const INNER_RING_OPACITY = 0.25;
 
 // ---------------------------------------------------------------------------
 // Segment layout
@@ -357,7 +357,7 @@ export const COMPASS_LABELS = [
 ];
 
 // Clickable segments as a quick lookup map
-export const CLICKABLE_KEYS = new Set(
+const CLICKABLE_KEYS = new Set(
   WHEEL_SEGMENTS.filter((s) => s.clickable && s.key !== "sour_and_bitter").map(
     (s) => s.key
   )

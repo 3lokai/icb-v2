@@ -397,7 +397,7 @@ export function getStrengthLabel(strength: StrengthLevel): string {
 }
 
 // Common volume presets
-export const COMMON_VOLUMES = [
+const COMMON_VOLUMES = [
   { label: "1 Cup", ml: 237, cups: 1, oz: 8 },
   { label: "2 Cups", ml: 474, cups: 2, oz: 16 },
   { label: "3 Cups", ml: 711, cups: 3, oz: 24 },

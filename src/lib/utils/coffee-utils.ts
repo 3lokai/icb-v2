@@ -18,7 +18,7 @@ export function formatPrice(price: number | null | undefined): string {
 /**
  * Compute ribbon badge for coffee based on various criteria
  */
-export function computeCoffeeRibbon(
+function computeCoffeeRibbon(
   coffee: CoffeeSummary
 ): "featured" | "new" | "editors-pick" | "seasonal" | null {
   // Check if coffee has featured tag

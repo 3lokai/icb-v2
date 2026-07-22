@@ -45,7 +45,7 @@ export const symptomMap: Record<CompassSymptomKey, SymptomMapping> = {
   sour_and_bitter: { extraction: 0, strength: 0, flag: "uneven" },
 };
 
-export const symptomMetadata: SymptomMetadata[] = [
+const symptomMetadata: SymptomMetadata[] = [
   // Primary - Acidity
   { key: "sour", label: "Sour", category: "acidic", isPrimary: true },
   { key: "sharp", label: "Sharp", category: "acidic", isPrimary: true },

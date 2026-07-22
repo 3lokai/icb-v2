@@ -264,9 +264,7 @@ type RoasterFilterSidebarProps = {
  * URL sync is handled automatically by RoasterDirectory component
  * Hidden on mobile, visible on desktop
  */
-export function RoasterFilterSidebar({
-  filterMeta,
-}: RoasterFilterSidebarProps) {
+function RoasterFilterSidebar({ filterMeta }: RoasterFilterSidebarProps) {
   return (
     <aside className="hidden w-full md:block md:w-64">
       <RoasterFilterContent filterMeta={filterMeta} />

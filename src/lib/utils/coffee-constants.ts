@@ -24,7 +24,7 @@ export const ROAST_LEVELS: LookupOption[] = [
   { value: "dark", label: "Dark" },
 ];
 
-export const BEAN_TYPES: LookupOption[] = [
+const BEAN_TYPES: LookupOption[] = [
   { value: "arabica", label: "Arabica" },
   { value: "robusta", label: "Robusta" },
   { value: "liberica", label: "Liberica" },
@@ -57,7 +57,7 @@ export const PROCESSING_METHODS: LookupOption[] = [
 ];
 
 // Coffee status enum
-export const COFFEE_STATUS: LookupOption[] = [
+const COFFEE_STATUS: LookupOption[] = [
   { value: "active", label: "Active" },
   { value: "seasonal", label: "Seasonal" },
   { value: "discontinued", label: "Discontinued" },
@@ -94,20 +94,20 @@ export const GRIND_TYPES: LookupOption[] = [
 ];
 
 // Sensory confidence enum
-export const SENSORY_CONFIDENCE: LookupOption[] = [
+const SENSORY_CONFIDENCE: LookupOption[] = [
   { value: "high", label: "High" },
   { value: "medium", label: "Medium" },
   { value: "low", label: "Low" },
 ];
 
 // Sensory source enum
-export const SENSORY_SOURCE: LookupOption[] = [
+const SENSORY_SOURCE: LookupOption[] = [
   { value: "roaster", label: "Roaster" },
   { value: "icb_inferred", label: "ICB Inferred" },
   { value: "icb_manual", label: "ICB Manual" },
 ];
 
-export const popularRoastLevels = ["Light", "Medium", "Dark"];
+const popularRoastLevels = ["Light", "Medium", "Dark"];
 export const popularFlavorProfiles = [
   "Chocolate",
   "Fruity",
@@ -135,7 +135,7 @@ export const popularRegions = [
   "Manipur",
   "Nilgiris",
 ];
-export const popularBeanTypes = ["Arabica", "Robusta", "Blend"];
+const popularBeanTypes = ["Arabica", "Robusta", "Blend"];
 export const popularProcessingMethods = [
   "Washed",
   "Natural",

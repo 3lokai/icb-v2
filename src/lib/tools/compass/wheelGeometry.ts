@@ -31,12 +31,12 @@ export function arcPath(
 }
 
 /** Midpoint angle of a segment in SVG space */
-export function midAngle(center: number, _span: number) {
+function midAngle(center: number, _span: number) {
   return center;
 }
 
 /** Text transform: radially oriented inside a segment, always readable */
-export function textTransform(
+function textTransform(
   cx: number,
   cy: number,
   r: number,

@@ -121,7 +121,7 @@ export function getPlaceholderImage(
 /**
  * Check if ImageKit is configured
  */
-export function isImageKitConfigured(): boolean {
+function isImageKitConfigured(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT);
 }
 

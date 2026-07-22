@@ -66,7 +66,7 @@ const homepageCoffeeFilters: CoffeeFilters = {
 /**
  * Hook for fetching new arrival coffees (sorted by newest)
  */
-export function useNewArrivalCoffees(limit: number = 6) {
+function useNewArrivalCoffees(limit: number = 6) {
   return useQuery({
     queryKey: queryKeys.coffees.list(homepageCoffeeFilters, 1, limit, "newest"),
     queryFn: () =>
@@ -95,7 +95,7 @@ export function useTopRatedCoffees(limit: number = 6) {
 /**
  * Hook for fetching featured roasters (sorted by rating, active only)
  */
-export function useFeaturedRoasters(limit: number = 6) {
+function useFeaturedRoasters(limit: number = 6) {
   return useQuery({
     queryKey: queryKeys.roasters.list(
       { active_only: true },

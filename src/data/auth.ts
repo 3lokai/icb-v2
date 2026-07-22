@@ -44,7 +44,7 @@ export const getCurrentUser = cache(async () => {
  *
  * @returns true if user is authenticated, false otherwise
  */
-export async function isAuthenticated(): Promise<boolean> {
+async function isAuthenticated(): Promise<boolean> {
   const user = await getCurrentUser();
   return user !== null;
 }
