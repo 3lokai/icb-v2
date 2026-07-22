@@ -1,43 +1,17 @@
 // src/lib/analytics/index.ts
-// GA4 Measurement ID (G-XXXX) - used for event tracking
-// Note: Pageview tracking is handled automatically by @next/third-parties/google component
-// Consent mode is initialized by beforeInteractive script in layout.tsx
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-
-// Check if consent has been granted
-// Defaults to true (opt-out model) unless explicitly rejected
-export const hasAnalyticsConsent = (): boolean => {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  try {
-    const consent = localStorage.getItem("icb-cookie-consent");
-    if (consent) {
-      const { analytics } = JSON.parse(consent);
-      // If analytics is explicitly false, return false
-      // Otherwise default to true (opt-out model)
-      return analytics !== false;
-    }
-    // No consent stored = default to granted (opt-out model)
-    return true;
-  } catch (e) {
-    console.error("Error checking analytics consent", e);
-    // Default to granted on error (opt-out model)
-    return true;
-  }
-};
+// Cookie-consent wiring + UTM attribution capture.
+// Product event tracking lives in PostHog (@/lib/posthog); session replay in
+// Microsoft Clarity. This module only handles consent updates and storing the
+// visitor's original UTM attribution for later reference.
 
 // Update consent status
-// Note: Consent mode is initialized by beforeInteractive script in layout.tsx
-// This function is called when user changes preferences via cookie consent UI
+// Consent mode is initialized by the beforeInteractive script in layout.tsx;
+// this is called when the user changes preferences via the cookie-consent UI.
 export const updateAnalyticsConsent = (granted: boolean) => {
   if (typeof window !== "undefined" && window.gtag) {
     window.gtag("consent", "update", {
       analytics_storage: granted ? "granted" : "denied",
     });
-    // Note: Removed 'icb-consent-updated' event dispatch since we're not manually tracking pageviews
-    // Next.js GoogleAnalytics component handles pageview tracking automatically
   }
   // window.clarity only exists once MicrosoftClarity has called Clarity.init;
   // optional-chain rather than the Clarity.consent() helper, which throws if
@@ -47,23 +21,7 @@ export const updateAnalyticsConsent = (granted: boolean) => {
   }
 };
 
-export const trackEvent = (
-  action: string,
-  category: string,
-  label?: string,
-  value?: number
-) => {
-  // Only track if consent is given
-  if (typeof window !== "undefined" && window.gtag && hasAnalyticsConsent()) {
-    window.gtag("event", action, {
-      event_category: category,
-      event_label: label,
-      value,
-    });
-  }
-};
-
-// UTM Parameter Extraction and Attribution (REAL)
+// UTM Parameter Extraction and Attribution
 export type UTMParams = {
   utm_source?: string;
   utm_medium?: string;
@@ -79,10 +37,10 @@ export type AttributionData = {
   touchpoints: number;
   first_visit_time: number;
   last_visit_time: number;
-  session_quality_score: number; // ✅ REAL metric based on behavior
+  session_quality_score: number;
 };
 
-// Extract UTM parameters from URL (REAL)
+// Extract UTM parameters from the current URL
 export const getUTMParams = (): UTMParams => {
   if (typeof window === "undefined") {
     return {};
@@ -98,8 +56,8 @@ export const getUTMParams = (): UTMParams => {
   };
 };
 
-// Calculate session quality based on REAL behavior (HONEST)
-export const calculateSessionQuality = (): number => {
+// Calculate session quality based on real behavior
+const calculateSessionQuality = (): number => {
   if (typeof window === "undefined") {
     return 1;
   }
@@ -115,10 +73,9 @@ export const calculateSessionQuality = (): number => {
         document.documentElement.scrollHeight,
       0
     ),
-    hasEngaged: sessionStorage.getItem("icb_has_engaged") === "true", // Clicked something, used tools, etc.
+    hasEngaged: sessionStorage.getItem("icb_has_engaged") === "true",
   };
 
-  // Real quality scoring
   let qualityScore = 1; // Base score
 
   if (sessionData.timeOnSite > 120) {
@@ -137,7 +94,35 @@ export const calculateSessionQuality = (): number => {
   return Math.min(qualityScore, 5); // Cap at 5
 };
 
-// Store attribution data with REAL quality metrics
+// Get stored attribution data
+export const getStoredAttribution = (): AttributionData => {
+  if (typeof window === "undefined") {
+    return {
+      touchpoints: 0,
+      first_visit_time: 0,
+      last_visit_time: 0,
+      session_quality_score: 1,
+    };
+  }
+
+  try {
+    const stored = sessionStorage.getItem("icb_attribution");
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (error) {
+    console.error("Error reading attribution data:", error);
+  }
+
+  return {
+    touchpoints: 0,
+    first_visit_time: 0,
+    last_visit_time: 0,
+    session_quality_score: 1,
+  };
+};
+
+// Store attribution data with quality metrics
 export const storeAttributionData = (utmParams: UTMParams): void => {
   if (typeof window === "undefined") {
     return;
@@ -188,283 +173,10 @@ export const storeAttributionData = (utmParams: UTMParams): void => {
   }
 };
 
-// Get stored attribution data (REAL)
-export const getStoredAttribution = (): AttributionData => {
-  if (typeof window === "undefined") {
-    return {
-      touchpoints: 0,
-      first_visit_time: 0,
-      last_visit_time: 0,
-      session_quality_score: 1,
-    };
-  }
-
-  try {
-    const stored = sessionStorage.getItem("icb_attribution");
-    if (stored) {
-      return JSON.parse(stored);
-    }
-  } catch (error) {
-    console.error("Error reading attribution data:", error);
-  }
-
-  return {
-    touchpoints: 0,
-    first_visit_time: 0,
-    last_visit_time: 0,
-    session_quality_score: 1,
-  };
-};
-
-// Mark user engagement for quality scoring
-export const markUserEngagement = (
-  engagementType: "tool_use" | "filter_apply" | "content_read" | "link_click"
-) => {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  sessionStorage.setItem("icb_has_engaged", "true");
-  sessionStorage.setItem("icb_last_engagement", engagementType);
-};
-
-// HONEST track event with attribution (NO FAKE COMMISSIONS)
-type TrackEventWithAttributionOptions = {
-  action: string;
-  category: string;
-  label?: string;
-  value?: number;
-  customParams?: Record<string, unknown>;
-};
-
-export const trackEventWithAttribution = (
-  options: TrackEventWithAttributionOptions
-): void => {
-  const { action, category, label, value, customParams } = options;
-  if (!hasAnalyticsConsent()) {
-    return;
-  }
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  const attribution = getStoredAttribution();
-  const currentUTM = getUTMParams();
-  const sessionQuality = calculateSessionQuality();
-
-  const enhancedParams = {
-    event_category: category,
-    event_label: label,
-    value,
-
-    // REAL Attribution data
-    utm_source: currentUTM.utm_source || attribution.original_source,
-    utm_campaign: currentUTM.utm_campaign || attribution.original_campaign,
-    utm_content: currentUTM.utm_content || attribution.original_content,
-    attribution_touchpoints: attribution.touchpoints,
-
-    // REAL Quality metrics
-    session_quality_score: sessionQuality,
-    time_on_site: Math.floor(performance.now() / 1000),
-    page_count: Number.parseInt(
-      sessionStorage.getItem("icb_page_count") || "1",
-      10
-    ),
-
-    // Custom parameters
-    ...(customParams || {}),
-  };
-
-  // Send to GA4
-  if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", action, enhancedParams);
-  }
-
-  // Also send to your API endpoint
-  fetch("/api/analytics/event", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      event: action,
-      properties: enhancedParams,
-    }),
-  }).catch(console.error);
-};
-
-// HONEST roaster click tracking (NO FAKE COMMISSION VALUES)
-export const trackRoasterClick = (
-  roasterId: string,
-  clickType: "website" | "social" | "phone" | "email"
-) => {
-  const attribution = getStoredAttribution();
-  const sessionQuality = calculateSessionQuality();
-
-  markUserEngagement("link_click"); // Mark as engaged user
-
-  // Calculate HONEST partnership value estimate
-  const partnershipValue = calculatePartnershipValue(
-    sessionQuality,
-    attribution.touchpoints
-  );
-
-  trackEventWithAttribution({
-    action: "roaster_external_click",
-    category: "conversion",
-    label: roasterId,
-    customParams: {
-      roaster_id: roasterId,
-      click_type: clickType,
-      original_traffic_source: attribution.original_source,
-      customer_journey_length: attribution.touchpoints,
-      session_quality_score: sessionQuality,
-
-      // HONEST estimated value for partnership discussions
-      estimated_partnership_value: partnershipValue,
-      value_calculation_method: "session_quality_based",
-      is_high_quality_click: sessionQuality >= 3,
-    },
-  });
-};
-
-// Helper: Calculate quality multiplier based on session quality
-function calculateQualityMultiplier(sessionQuality: number): number {
-  if (sessionQuality >= 4) {
-    return 2.0;
-  }
-  if (sessionQuality >= 3) {
-    return 1.5;
-  }
-  if (sessionQuality >= 2) {
-    return 1.2;
-  }
-  return 1.0;
-}
-
-// Helper: Calculate journey multiplier based on touchpoints
-function calculateJourneyMultiplier(touchpoints: number): number {
-  if (touchpoints >= 3) {
-    return 1.3;
-  }
-  if (touchpoints >= 2) {
-    return 1.1;
-  }
-  return 1.0;
-}
-
-// REALISTIC partnership value calculation
-const calculatePartnershipValue = (
-  sessionQuality: number,
-  touchpoints: number
-): number => {
-  // Industry-standard directory referral values (HONEST estimates)
-  const baseValue = 1.5; // Base value per click
-
-  // Quality multipliers (REAL factors)
-  const qualityMultiplier = calculateQualityMultiplier(sessionQuality);
-  const journeyMultiplier = calculateJourneyMultiplier(touchpoints);
-
-  return (
-    Math.round(baseValue * qualityMultiplier * journeyMultiplier * 100) / 100
-  );
-};
-
-// Helper: Calculate engagement value based on engagement type
-function calculateEngagementValue(
-  engagementType: "view" | "rating" | "share" | "purchase_link_click"
-): number {
-  if (engagementType === "purchase_link_click") {
-    return 5;
-  }
-  if (engagementType === "rating") {
-    return 3;
-  }
-  if (engagementType === "share") {
-    return 2;
-  }
-  return 1;
-}
-
-// REALISTIC coffee engagement tracking
-export const trackCoffeeEngagement = (
-  coffeeId: string,
-  roasterId: string,
-  engagementType: "view" | "rating" | "share" | "purchase_link_click"
-): void => {
-  markUserEngagement(
-    engagementType === "purchase_link_click" ? "link_click" : "content_read"
-  );
-
-  const sessionQuality = calculateSessionQuality();
-
-  trackEventWithAttribution({
-    action: "coffee_engagement",
-    category: "engagement",
-    label: engagementType,
-    customParams: {
-      coffee_id: coffeeId,
-      roaster_id: roasterId,
-      engagement_type: engagementType,
-      session_quality_score: sessionQuality,
-      is_purchase_intent: engagementType === "purchase_link_click",
-
-      // HONEST engagement value
-      engagement_value: calculateEngagementValue(engagementType),
-    },
-  });
-};
-
-// Helper: Calculate engagement level based on session duration
-function calculateEngagementLevel(sessionDuration: number): string {
-  if (sessionDuration > 300) {
-    return "high";
-  }
-  if (sessionDuration > 120) {
-    return "medium";
-  }
-  return "low";
-}
-
-// Helper: Calculate tool engagement value based on session duration
-function calculateToolEngagementValue(sessionDuration: number): number {
-  if (sessionDuration > 300) {
-    return 10;
-  }
-  if (sessionDuration > 120) {
-    return 5;
-  }
-  return 2;
-}
-
-// REALISTIC tools engagement tracking
-export const trackToolsUsage = (
-  toolType: "calculator" | "recipes" | "guides",
-  sessionDuration: number
-): void => {
-  markUserEngagement("tool_use"); // Mark as highly engaged user
-
-  trackEventWithAttribution({
-    action: "tools_engagement",
-    category: "engagement",
-    label: toolType,
-    value: sessionDuration,
-    customParams: {
-      tool_type: toolType,
-      session_duration_seconds: sessionDuration,
-      engagement_level: calculateEngagementLevel(sessionDuration),
-
-      // HONEST tool value for business decisions
-      tool_engagement_value: calculateToolEngagementValue(sessionDuration),
-    },
-  });
-};
-
-// Type declarations for Google Analytics
-// @next/third-parties/google provides Window.dataLayer and Window.gtag types
-// We only need to augment gtag if needed for our specific usage
+// Type declarations for Google Analytics consent + Microsoft Clarity
 declare global {
   interface Window {
-    // gtag function signature for our event tracking
-    // dataLayer is provided by @next/third-parties/google types
+    // gtag consent signature (GA scripts only load when a measurement ID is set)
     gtag?: (
       command: "event" | "config" | "consent" | "js",
       actionOrTarget: any,

@@ -56,11 +56,7 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
   const canonicalUrl = `https://www.indiancoffeebeans.com${profileHref}`;
 
   return (
-    <CuratorTrackingLink
-      ariaLabel={ariaLabel}
-      curatorId={curator.id}
-      href={profileHref}
-    >
+    <CuratorTrackingLink ariaLabel={ariaLabel} href={profileHref}>
       <Card
         className={cn(
           "group relative flex h-full flex-col overflow-hidden",

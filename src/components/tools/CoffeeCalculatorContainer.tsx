@@ -1,12 +1,11 @@
 // src/components/tools/CoffeeCalculatorContainer.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BookOpenIcon, CalculatorIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Cluster } from "@/components/primitives/cluster";
 import { Button } from "@/components/ui/button";
-import { trackToolsEngagement } from "@/lib/analytics/enhanced-tracking";
 import { cn } from "@/lib/utils";
 import type { BrewingMethodKey } from "@/lib/tools/brewing-guide";
 // Import our components
@@ -28,30 +27,6 @@ export function CoffeeCalculatorContainer({
   const [selectedBrewingMethod, setSelectedBrewingMethod] = useState<
     BrewingMethodKey | undefined
   >(undefined);
-
-  // Analytics tracking
-  useEffect(() => {
-    const startTime = Date.now();
-
-    // Track calculator tool entry
-    trackToolsEngagement("calculator", {
-      sessionDuration: 0,
-      interactionCount: 0,
-      completionStatus: "started",
-    });
-
-    return () => {
-      const sessionDuration = Math.floor((Date.now() - startTime) / 1000);
-      if (sessionDuration > 30) {
-        // Only track meaningful engagement
-        trackToolsEngagement("calculator", {
-          sessionDuration,
-          interactionCount: 1, // Estimate based on calculator usage
-          completionStatus: sessionDuration > 300 ? "completed" : "partial",
-        });
-      }
-    };
-  }, []);
 
   // Handle method selection from guide - switches to calculator tab
   const handleMethodSelect = (method: BrewingMethodKey) => {

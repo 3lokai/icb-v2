@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { trackToolsEngagement } from "@/lib/analytics/enhanced-tracking";
+import { useMemo, useState } from "react";
 import type { BrewingMethodKey } from "@/lib/tools/brewing-guide";
 import {
   type ExpertRecipe,
@@ -35,27 +34,6 @@ export function ExpertRecipesClient() {
     ExpertRecipe["recommendedUse"] | undefined
   >();
   const [selectedExpert, setSelectedExpert] = useState<string | undefined>();
-  useEffect(() => {
-    const startTime = Date.now();
-
-    // Track recipes tool entry
-    trackToolsEngagement("recipes", {
-      sessionDuration: 0,
-      interactionCount: 0,
-      completionStatus: "started",
-    });
-
-    return () => {
-      const sessionDuration = Math.floor((Date.now() - startTime) / 1000);
-      if (sessionDuration > 30) {
-        trackToolsEngagement("recipes", {
-          sessionDuration,
-          interactionCount: 1,
-          completionStatus: sessionDuration > 240 ? "completed" : "partial",
-        });
-      }
-    };
-  }, []);
 
   // Selected recipe state
   const [selectedRecipeId, setSelectedRecipeId] = useState<

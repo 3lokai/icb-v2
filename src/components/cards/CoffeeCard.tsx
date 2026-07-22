@@ -21,7 +21,6 @@ import { cn } from "@/lib/utils";
 import { StarRating } from "../common/StarRating";
 import { CardRatingFooter } from "./CardRatingFooter";
 import { Stack } from "../primitives/stack";
-import { trackCoffeeDiscovery } from "@/lib/analytics/enhanced-tracking";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { WishlistButton } from "@/components/coffees/WishlistButton";
 
@@ -190,15 +189,6 @@ function CoffeeCardComponent({
 
   const detailHref = coffeeDetailHref(coffee.roaster_slug, coffee.slug!);
 
-  const handleTrackClick = () => {
-    if (coffee.coffee_id && coffee.roaster_id) {
-      trackCoffeeDiscovery(coffee.coffee_id, coffee.roaster_id, "browse", {
-        resultCount: undefined,
-        responseTime: undefined,
-      });
-    }
-  };
-
   // Hero variant - large, interactive rating, spacious
   if (variant === "hero") {
     return (
@@ -217,11 +207,7 @@ function CoffeeCardComponent({
           coffeeId={coffee.coffee_id}
           className="absolute top-2 right-2 z-10"
         />
-        <Link
-          href={detailHref}
-          onClick={handleTrackClick}
-          className="flex-1 flex flex-col"
-        >
+        <Link href={detailHref} className="flex-1 flex flex-col">
           {/* Hero Image with title scrim */}
           <div className="relative aspect-square w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
             <Image
@@ -333,11 +319,7 @@ function CoffeeCardComponent({
           coffeeId={coffee.coffee_id}
           className="absolute top-2 right-2 z-10"
         />
-        <Link
-          href={detailHref}
-          onClick={handleTrackClick}
-          className="flex-1 flex flex-col"
-        >
+        <Link href={detailHref} className="flex-1 flex flex-col">
           {/* Image - 3:4 aspect ratio */}
           <div className="relative aspect-[3/4] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
             <Image
@@ -412,7 +394,6 @@ function CoffeeCardComponent({
       >
         <Link
           href={detailHref}
-          onClick={handleTrackClick}
           className="flex flex-row items-center gap-3 card-padding-compact h-full"
         >
           {/* Small image - fixed square */}
@@ -470,11 +451,7 @@ function CoffeeCardComponent({
         coffeeId={coffee.coffee_id}
         className="absolute top-2 right-2 z-10"
       />
-      <Link
-        href={detailHref}
-        onClick={handleTrackClick}
-        className="flex-1 flex flex-col"
-      >
+      <Link href={detailHref} className="flex-1 flex flex-col">
         {/* Image with title scrim */}
         <div className="relative aspect-[4/5] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
           <Image

@@ -23,11 +23,6 @@ import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Tag, { TagList } from "@/components/common/Tag";
-import { trackRoasterClick } from "@/lib/analytics";
-import {
-  trackRoasterConversion,
-  trackRoasterEngagement,
-} from "@/lib/analytics/enhanced-tracking";
 import { capture } from "@/lib/posthog";
 
 function hasValues(arr: string[] | null | undefined): arr is string[] {
@@ -45,11 +40,8 @@ type RoasterHeroProps = {
  * output already matches hydration and it never reflows. UI is unchanged.
  */
 export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
-  // GA + Tracking (mount)
+  // PostHog tracking (mount)
   useEffect(() => {
-    trackRoasterEngagement(roaster.id, "profile_view", {
-      coffeeCount: roaster.coffee_count ?? undefined,
-    });
     capture("rating_page_viewed", {
       entity_type: "roaster" as const,
       entity_id: roaster.id,
@@ -286,10 +278,6 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
                   href={roaster.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => {
-                    trackRoasterClick(roaster.id, "website");
-                    trackRoasterConversion(roaster.id, "website_click");
-                  }}
                 >
                   <Icon icon={GlobeIcon} size={18} className="mr-2" />
                   Website
