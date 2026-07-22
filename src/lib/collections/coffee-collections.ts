@@ -385,13 +385,6 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
 // ============================================================================
 
 /**
- * Get collection by ID
- */
-function getCollectionById(id: string): CoffeeCollection | undefined {
-  return COFFEE_COLLECTIONS.find((c) => c.id === id);
-}
-
-/**
  * Filter collections by tier
  */
 export function getCollectionsByTier(tier: CollectionTier): CoffeeCollection[] {
@@ -412,11 +405,4 @@ export function getFeaturedCollection(): CoffeeCollection | undefined {
  */
 export function getCoreCollections(): CoffeeCollection[] {
   return getCollectionsByTier("core");
-}
-
-/**
- * Get collection count for a specific tier
- */
-function getCollectionCountByTier(tier: CollectionTier): number {
-  return getCollectionsByTier(tier).length;
 }

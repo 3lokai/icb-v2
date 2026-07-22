@@ -38,13 +38,3 @@ export const getCurrentUser = cache(async () => {
     // The full user object from Supabase Auth is not serialized to client
   };
 });
-
-/**
- * Check if user is authenticated
- *
- * @returns true if user is authenticated, false otherwise
- */
-async function isAuthenticated(): Promise<boolean> {
-  const user = await getCurrentUser();
-  return user !== null;
-}

@@ -220,33 +220,3 @@ export function setReviewCount(count: number): void {
 
   setCookie(REVIEW_COUNT_COOKIE_NAME, countStr, COOKIE_MAX_AGE);
 }
-
-/**
- * Increment review count by 1 and return new count.
- * Returns null on server.
- */
-function incrementReviewCount(): number {
-  if (typeof window === "undefined") return 0;
-
-  const current = getReviewCount() ?? 0;
-  const newCount = current + 1;
-  setReviewCount(newCount);
-  return newCount;
-}
-
-/**
- * Reset review count (clear from localStorage and cookie).
- * Useful when user logs in or for testing.
- */
-function resetReviewCount(): void {
-  if (typeof window === "undefined") return;
-
-  try {
-    localStorage.removeItem(REVIEW_COUNT_STORAGE_KEY);
-  } catch {
-    // ignore
-  }
-
-  // Clear cookie by setting it with past expiry
-  setCookie(REVIEW_COUNT_COOKIE_NAME, "", -1);
-}

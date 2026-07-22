@@ -45,12 +45,3 @@ export function getGlossaryTermsServer(): GlossaryTerm[] {
     return cachedGlossary?.terms || [];
   }
 }
-
-// Optional: Pre-warm the cache at startup
-function preloadGlossary() {
-  try {
-    getGlossaryTermsServer();
-  } catch {
-    // Silent fail - cache will be populated on first request
-  }
-}

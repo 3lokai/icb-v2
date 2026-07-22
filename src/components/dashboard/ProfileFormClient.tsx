@@ -2,7 +2,7 @@
 
 import { useState, useEffect, startTransition } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useSettingsForm } from "@/hooks/use-settings-form";
 import { useGeoData } from "@/hooks/use-geo-data";
 import { useProfile, useUpdateProfile } from "@/hooks/use-profile";
 import { AvatarUpload } from "@/components/ui/avatar-upload";
@@ -32,6 +32,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { popularBrewingMethods } from "@/lib/utils/coffee-constants";
 import { profileUpdateSchema } from "@/lib/validations/profile";
 import type { ProfileUpdateFormData } from "@/lib/validations/profile";
@@ -48,21 +49,36 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
   // Use hook with server-fetched initialData
   const { data: profile } = useProfile(initialProfile);
 
-  const [formData, setFormData] = useState<Partial<ProfileUpdateFormData>>({
-    fullName: "",
-    username: "",
-    bio: "",
-    city: "",
-    state: "",
-    country: "India",
-    gender: undefined,
-    experienceLevel: undefined,
-    preferredBrewingMethods: [],
+  const {
+    formData,
+    setFormData,
+    updateField: updateFormData,
+    isSaving,
+    error,
+    setError,
+    fieldErrors,
+    handleSubmit,
+  } = useSettingsForm({
+    initial: {
+      fullName: "",
+      username: "",
+      bio: "",
+      city: "",
+      state: "",
+      country: "India",
+      gender: undefined,
+      experienceLevel: undefined,
+      preferredBrewingMethods: [],
+    } satisfies Partial<ProfileUpdateFormData>,
+    schema: profileUpdateSchema,
+    save: (data) => updateProfile.mutateAsync(data),
+    messages: {
+      success: "Profile updated successfully!",
+      errorTitle: "Failed to update profile",
+      fallback: "Failed to update profile. Please try again.",
+    },
+    onSuccess: () => router.refresh(),
   });
-
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>("IN");
   const [selectedStateCode, setSelectedStateCode] = useState<string>("");
 
@@ -88,7 +104,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
         preferredBrewingMethods: profile.preferred_brewing_methods || [],
       });
     }
-  }, [profile]);
+  }, [profile, setFormData]);
 
   // Load geo data from server — no client bundle cost
   const { countries, states, cities } = useGeoData(
@@ -112,21 +128,6 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
     startTransition(() => setSelectedStateCode(state.isoCode));
   }, [profile?.state, states]);
 
-  const updateFormData = <K extends keyof ProfileUpdateFormData>(
-    key: K,
-    value: ProfileUpdateFormData[K]
-  ) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-    setError(null);
-    if (fieldErrors[key]) {
-      setFieldErrors((prev) => {
-        const updated = { ...prev };
-        delete updated[key];
-        return updated;
-      });
-    }
-  };
-
   const toggleArrayItem = (key: keyof ProfileUpdateFormData, value: string) => {
     setFormData((prev) => {
       const current = (prev[key] as string[] | undefined) ?? [];
@@ -138,72 +139,13 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
     setError(null);
   };
 
-  const handleSubmit = async () => {
-    setIsSaving(true);
-    setError(null);
-    setFieldErrors({});
-
-    // Validate with Zod
-    const validationResult = profileUpdateSchema.safeParse(formData);
-
-    if (!validationResult.success) {
-      const errors: Record<string, string> = {};
-      validationResult.error.issues.forEach((issue) => {
-        const path = issue.path.join(".");
-        errors[path] = issue.message;
-      });
-      setFieldErrors(errors);
-      setError("Please correct the errors below.");
-      setIsSaving(false);
-      return;
-    }
-
-    try {
-      const result = await updateProfile.mutateAsync(validationResult.data);
-
-      if (result.success) {
-        toast.success("Profile updated successfully!", {
-          description: "Your changes have been saved.",
-        });
-        router.refresh();
-      }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Failed to update profile. Please try again.";
-      setError(errorMessage);
-      toast.error("Failed to update profile", {
-        description: errorMessage,
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   return (
     <Stack gap="8">
-      {/* Magazine-style header */}
-      <div className="mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-          <div className="md:col-span-8">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                  Account Settings
-                </span>
-              </div>
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                Profile
-              </h2>
-              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                Manage your profile information and personal details.
-              </p>
-            </Stack>
-          </div>
-        </div>
-      </div>
+      <DashboardPageHeader
+        eyebrow="Account Settings"
+        title="Profile"
+        description="Manage your profile information and personal details."
+      />
 
       <Stack gap="6">
         {error && (

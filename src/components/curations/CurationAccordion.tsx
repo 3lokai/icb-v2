@@ -1,5 +1,3 @@
-"use client";
-
 import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
 import Link from "next/link";

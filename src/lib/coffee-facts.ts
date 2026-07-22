@@ -81,24 +81,3 @@ export function getRandomCoffeeFact() {
   const randomIndex = Math.floor(Math.random() * coffeeFacts.length);
   return coffeeFacts[randomIndex];
 }
-
-/**
- * Get a specific number of random coffee facts
- * @param count Number of facts to return
- * @returns Array of random coffee facts
- */
-function getRandomCoffeeFacts(count: number) {
-  // Create a copy of the array to avoid modifying the original
-  const factsCopy: typeof coffeeFacts = [...coffeeFacts];
-  const result: typeof coffeeFacts = [];
-
-  // Get random facts
-  for (let i = 0; i < Math.min(count, factsCopy.length); i++) {
-    const randomIndex = Math.floor(Math.random() * factsCopy.length);
-    result.push(factsCopy[randomIndex]);
-    // Remove the selected fact to avoid duplicates
-    factsCopy.splice(randomIndex, 1);
-  }
-
-  return result;
-}

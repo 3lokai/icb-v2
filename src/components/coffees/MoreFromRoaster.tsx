@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Accent } from "@/components/primitives/accent";
 import { Stack } from "@/components/primitives/stack";

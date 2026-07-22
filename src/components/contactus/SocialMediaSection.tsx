@@ -1,5 +1,4 @@
 // src/components/contactus/SocialMediaSection.tsx
-"use client";
 
 import {
   FacebookLogoIcon,

@@ -155,29 +155,6 @@ export async function deleteFromImageKit(fileId: string): Promise<void> {
 }
 
 /**
- * Extract file ID from ImageKit URL
- * ImageKit URLs typically contain the file ID in the path
- * Format: https://ik.imagekit.io/{imagekitId}/{path}/{fileId}
- * @param imageUrl - Full ImageKit URL
- * @returns File ID or null if not found
- */
-function extractFileIdFromUrl(imageUrl: string): string | null {
-  try {
-    new URL(imageUrl);
-    // The file ID is typically the last part of the path (before any query params)
-    // Or it might be in the filename
-
-    // ImageKit file IDs are typically UUIDs or alphanumeric strings
-    // If the last part looks like a file ID (no extension or has extension), use it
-    // We'll need to query ImageKit API to get the actual fileId from the URL
-    // For now, return null and handle in server action by querying ImageKit
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-/**
  * Convert File to base64 string
  */
 async function fileToBase64(file: File): Promise<string> {

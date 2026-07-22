@@ -1,5 +1,3 @@
-"use client";
-
 import { memo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +12,6 @@ import {
 import type { IconProps } from "@phosphor-icons/react";
 import type { ComponentType } from "react";
 import { Icon } from "@/components/common/Icon";
-import { CommunityTrackingLink } from "@/components/common/TrackingLink";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
 import { cn } from "@/lib/utils";
@@ -171,9 +168,15 @@ function CommunityCardComponent({ community, className }: CommunityCardProps) {
     // on a non-focusable element.
     <div className="block h-full rounded-lg">{cardContent}</div>
   ) : (
-    <CommunityTrackingLink ariaLabel={ariaLabel} href={community.invite_url}>
+    <a
+      aria-label={ariaLabel}
+      className="block h-full rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      href={community.invite_url}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
       {cardContent}
-    </CommunityTrackingLink>
+    </a>
   );
 }
 

@@ -64,18 +64,6 @@ const homepageCoffeeFilters: CoffeeFilters = {
 };
 
 /**
- * Hook for fetching new arrival coffees (sorted by newest)
- */
-function useNewArrivalCoffees(limit: number = 6) {
-  return useQuery({
-    queryKey: queryKeys.coffees.list(homepageCoffeeFilters, 1, limit, "newest"),
-    queryFn: () =>
-      fetchCoffeesFromAPI(homepageCoffeeFilters, 1, limit, "newest"),
-    staleTime: 60 * 1000, // 1 minute
-  });
-}
-
-/**
  * Hook for fetching top-rated coffees (directory sort: rating_avg, then rating_count)
  */
 export function useTopRatedCoffees(limit: number = 6) {
@@ -88,23 +76,6 @@ export function useTopRatedCoffees(limit: number = 6) {
     ),
     queryFn: () =>
       fetchCoffeesFromAPI(homepageCoffeeFilters, 1, limit, "rating_desc"),
-    staleTime: 60 * 1000, // 1 minute
-  });
-}
-
-/**
- * Hook for fetching featured roasters (sorted by rating, active only)
- */
-function useFeaturedRoasters(limit: number = 6) {
-  return useQuery({
-    queryKey: queryKeys.roasters.list(
-      { active_only: true },
-      1,
-      limit,
-      "rating_desc"
-    ),
-    queryFn: () =>
-      fetchRoastersFromAPI({ active_only: true }, 1, limit, "rating_desc"),
     staleTime: 60 * 1000, // 1 minute
   });
 }

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { AuthResetPasswordForm } from "@/components/layout/auth-reset-password-form";
 import { AuthScreen } from "@/components/layout/auth-screen";
@@ -33,7 +34,11 @@ export default function ResetPasswordPage() {
         caption: "A new password, and you're back to the coffee.",
       }}
     >
-      <AuthResetPasswordForm />
+      {/* AuthResetPasswordForm reads useSearchParams(); Suspense keeps the page
+          statically prerenderable (CSR-bailout boundary). */}
+      <Suspense fallback={null}>
+        <AuthResetPasswordForm />
+      </Suspense>
     </AuthScreen>
   );
 }

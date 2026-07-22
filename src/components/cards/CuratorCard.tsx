@@ -2,11 +2,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { memo, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { CuratorTrackingLink } from "@/components/common/TrackingLink";
 import { Stack } from "../primitives/stack";
 import { cn } from "@/lib/utils";
 import type { Curator } from "@/components/curations/types";
@@ -56,7 +56,11 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
   const canonicalUrl = `https://www.indiancoffeebeans.com${profileHref}`;
 
   return (
-    <CuratorTrackingLink ariaLabel={ariaLabel} href={profileHref}>
+    <Link
+      aria-label={ariaLabel}
+      className="block h-full rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      href={profileHref}
+    >
       <Card
         className={cn(
           "group relative flex h-full flex-col overflow-hidden",
@@ -152,7 +156,7 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
 
         <meta content={canonicalUrl} itemProp="url" />
       </Card>
-    </CuratorTrackingLink>
+    </Link>
   );
 }
 

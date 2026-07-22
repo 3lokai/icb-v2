@@ -20,6 +20,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import Link from "next/link";
 import type { PrivateProfileDTO } from "@/data/user-dto";
 import { queryKeys } from "@/lib/query-keys";
@@ -301,28 +302,11 @@ export function DashboardClient({
 
   return (
     <Stack gap="8">
-      {/* Magazine-style header */}
-      <div className="mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-          <div className="md:col-span-8">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                  Your Dashboard
-                </span>
-              </div>
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                Welcome back, {profile.full_name || profile.email}!
-              </h2>
-              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                Manage your profile, preferences, and account settings from your
-                personal dashboard.
-              </p>
-            </Stack>
-          </div>
-        </div>
-      </div>
+      <DashboardPageHeader
+        eyebrow="Your Dashboard"
+        title={`Welcome back, ${profile.full_name || profile.email}!`}
+        description="Manage your profile, preferences, and account settings from your personal dashboard."
+      />
 
       <div className="grid gap-6 md:grid-cols-2">{cards}</div>
     </Stack>

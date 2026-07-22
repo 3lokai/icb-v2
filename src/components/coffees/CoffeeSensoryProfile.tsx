@@ -1,5 +1,3 @@
-"use client";
-
 import { Accent } from "@/components/primitives/accent";
 import type { CoffeeDetail } from "@/types/coffee-types";
 import { Stack } from "@/components/primitives/stack";

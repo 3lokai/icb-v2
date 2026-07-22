@@ -1,7 +1,7 @@
 "use client";
 
 import { Accent } from "@/components/primitives/accent";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -13,6 +13,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { Cluster } from "@/components/primitives/cluster";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -62,51 +63,31 @@ export function MyReviewsClient({ initialReviews }: MyReviewsClientProps) {
 
   return (
     <Stack gap="8">
-      {/* Main header */}
-      <div className="mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-          <div className="md:col-span-8">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                  Your Contributions
-                </span>
-              </div>
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                My <Accent>Reviews.</Accent>
-              </h2>
-              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                View and manage all the reviews you've shared with the
-                community.
-              </p>
-            </Stack>
-          </div>
-        </div>
-      </div>
+      <DashboardPageHeader
+        eyebrow="Your Contributions"
+        title={
+          <>
+            My <Accent>Reviews.</Accent>
+          </>
+        }
+        description="View and manage all the reviews you've shared with the community."
+      />
 
       {/* Coffee Reviews Section */}
       <div className="mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mb-8">
-          <div className="md:col-span-8">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                  Coffee Reviews
-                </span>
-              </div>
-              <h3 className="text-subheading text-balance leading-[1.1] tracking-tight">
-                Coffee <Accent>Reviews.</Accent>
-              </h3>
-              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                {coffeeReviews.length === 0
-                  ? "Reviews you've shared for coffees in our directory."
-                  : `${coffeeReviews.length} ${coffeeReviews.length === 1 ? "review" : "reviews"} you've shared for coffees in our directory.`}
-              </p>
-            </Stack>
-          </div>
-        </div>
+        <ReviewSectionHeader
+          eyebrow="Coffee Reviews"
+          title={
+            <>
+              Coffee <Accent>Reviews.</Accent>
+            </>
+          }
+          description={
+            coffeeReviews.length === 0
+              ? "Reviews you've shared for coffees in our directory."
+              : `${coffeeReviews.length} ${coffeeReviews.length === 1 ? "review" : "reviews"} you've shared for coffees in our directory.`
+          }
+        />
 
         {coffeeReviews.length > 0 ? (
           <Stack gap="6">
@@ -135,26 +116,19 @@ export function MyReviewsClient({ initialReviews }: MyReviewsClientProps) {
 
       {/* Roaster Reviews Section */}
       <div>
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mb-8">
-          <div className="md:col-span-8">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                  Roaster Reviews
-                </span>
-              </div>
-              <h3 className="text-subheading text-balance leading-[1.1] tracking-tight">
-                Roaster <Accent>Reviews.</Accent>
-              </h3>
-              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                {roasterReviews.length === 0
-                  ? "Reviews you've shared for roasters in our directory."
-                  : `${roasterReviews.length} ${roasterReviews.length === 1 ? "review" : "reviews"} you've shared for roasters in our directory.`}
-              </p>
-            </Stack>
-          </div>
-        </div>
+        <ReviewSectionHeader
+          eyebrow="Roaster Reviews"
+          title={
+            <>
+              Roaster <Accent>Reviews.</Accent>
+            </>
+          }
+          description={
+            roasterReviews.length === 0
+              ? "Reviews you've shared for roasters in our directory."
+              : `${roasterReviews.length} ${roasterReviews.length === 1 ? "review" : "reviews"} you've shared for roasters in our directory.`
+          }
+        />
 
         {roasterReviews.length > 0 ? (
           <Stack gap="6">
@@ -181,6 +155,37 @@ export function MyReviewsClient({ initialReviews }: MyReviewsClientProps) {
         )}
       </div>
     </Stack>
+  );
+}
+
+function ReviewSectionHeader({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  description: ReactNode;
+}) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mb-8">
+      <div className="md:col-span-8">
+        <Stack gap="6">
+          <div className="inline-flex items-center gap-4">
+            <span className="h-px w-8 md:w-12 bg-accent/60" />
+            <span className="text-overline text-muted-foreground tracking-[0.15em]">
+              {eyebrow}
+            </span>
+          </div>
+          <h3 className="text-subheading text-balance leading-[1.1] tracking-tight">
+            {title}
+          </h3>
+          <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
+            {description}
+          </p>
+        </Stack>
+      </div>
+    </div>
   );
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import posthog from "posthog-js";
+import { captureException } from "@/lib/posthog";
 import { ErrorPageContent } from "@/components/common/ErrorPageContent";
 import "./globals.css";
 
@@ -17,7 +17,7 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     console.error(error);
-    posthog.captureException(error);
+    captureException(error);
   }, [error]);
 
   return (

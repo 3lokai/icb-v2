@@ -35,10 +35,6 @@ export const QUADRANT_COLORS: Record<
   positive: { fill: "#4ade80", text: "#14532d" }, // green
 };
 
-const MIDDLE_RING_OPACITY = 0.55;
-const OUTER_RING_OPACITY = 0.8;
-const INNER_RING_OPACITY = 0.25;
-
 // ---------------------------------------------------------------------------
 // Segment layout
 // Each group is spaced so no adjacent segments overlap.
@@ -355,10 +351,3 @@ export const COMPASS_LABELS = [
   { label: "Weak", angle: 270, major: true },
   { label: "UE / W", angle: 315, major: false },
 ];
-
-// Clickable segments as a quick lookup map
-const CLICKABLE_KEYS = new Set(
-  WHEEL_SEGMENTS.filter((s) => s.clickable && s.key !== "sour_and_bitter").map(
-    (s) => s.key
-  )
-);

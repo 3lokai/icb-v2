@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import posthog from "posthog-js";
+import { identifyUser, resetPostHog } from "@/lib/posthog";
 import { runPostLoginAnonMerges } from "@/app/actions/post-login-anon-merges";
 import { getAnonId } from "@/lib/reviews/anon-id";
 import { auth } from "@/lib/supabase/auth-helpers";
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = async () => {
     const { error } = await auth.signOut();
     if (!error) {
-      posthog.reset();
+      resetPostHog();
       setUser(null);
     }
     return { error };
@@ -136,7 +136,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (user) {
-      posthog.identify(user.id, {
+      identifyUser(user.id, {
         email: user.email,
       });
     }

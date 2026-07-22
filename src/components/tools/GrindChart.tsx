@@ -1,4 +1,3 @@
-"use client";
 // src/components/tools/GrindChart.tsx
 // Inline-SVG micron-scale grind chart. Renders the fixed 0–1400µm axis with the
 // 7 category bands, one bar per brew method, and (when a grinder is picked) the

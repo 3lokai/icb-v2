@@ -29,22 +29,3 @@ export function arcPath(
     "Z",
   ].join(" ");
 }
-
-/** Midpoint angle of a segment in SVG space */
-function midAngle(center: number, _span: number) {
-  return center;
-}
-
-/** Text transform: radially oriented inside a segment, always readable */
-function textTransform(
-  cx: number,
-  cy: number,
-  r: number,
-  angleDeg: number
-): string {
-  const p = polar(cx, cy, r, angleDeg);
-  // Flip text in the bottom half so it's always readable
-  const flip = angleDeg > 90 && angleDeg <= 270;
-  const rot = flip ? angleDeg + 180 : angleDeg;
-  return `rotate(${rot}, ${p.x.toFixed(2)}, ${p.y.toFixed(2)})`;
-}

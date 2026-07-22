@@ -16,7 +16,6 @@ import type {
   CreateReviewInput,
   DeleteReviewInput,
   LatestReviewPerIdentity,
-  EntityReviewStats,
 } from "@/types/review-types";
 
 /**
@@ -88,39 +87,6 @@ export function useReviews(entityType: "coffee" | "roaster", entityId: string) {
           avatar_url: string | null;
         } | null;
       })[];
-    },
-    staleTime: 30 * 1000, // 30 seconds
-  });
-}
-
-/**
- * Fetch review statistics for an entity
- * Uses the entity_review_stats view
- */
-export function useReviewStats(
-  entityType: "coffee" | "roaster",
-  entityId: string
-) {
-  return useQuery({
-    queryKey: queryKeys.reviews.stats(entityType, entityId),
-    queryFn: async () => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("entity_review_stats")
-        .select("*")
-        .eq("entity_type", entityType)
-        .eq("entity_id", entityId)
-        .single();
-
-      if (error) {
-        // If no stats exist yet, return null (not an error)
-        if (error.code === "PGRST116") {
-          return null;
-        }
-        throw error;
-      }
-
-      return data as EntityReviewStats | null;
     },
     staleTime: 30 * 1000, // 30 seconds
   });

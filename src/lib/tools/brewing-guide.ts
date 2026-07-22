@@ -396,18 +396,5 @@ export function getStrengthLabel(strength: StrengthLevel): string {
   return STRENGTH_LABELS[strength];
 }
 
-// Common volume presets
-const COMMON_VOLUMES = [
-  { label: "1 Cup", ml: 237, cups: 1, oz: 8 },
-  { label: "2 Cups", ml: 474, cups: 2, oz: 16 },
-  { label: "3 Cups", ml: 711, cups: 3, oz: 24 },
-  { label: "4 Cups", ml: 948, cups: 4, oz: 32 },
-  { label: "6 Cups", ml: 1422, cups: 6, oz: 48 },
-  { label: "8 Cups", ml: 1896, cups: 8, oz: 64 },
-  { label: "Single Serve (250ml)", ml: 250, cups: 1.05, oz: 8.5 },
-  { label: "Large Mug (350ml)", ml: 350, cups: 1.5, oz: 12 },
-  { label: "Thermos (500ml)", ml: 500, cups: 2.1, oz: 17 },
-];
-
 // Export default methods array for dropdowns
 export const BREWING_METHODS_ARRAY = Object.values(BREWING_METHODS);

@@ -1,5 +1,3 @@
-"use client";
-
 import { Suspense } from "react";
 import type { PublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 import type { HeroSegmentPayload } from "@/types/hero-segment";

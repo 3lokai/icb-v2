@@ -228,13 +228,6 @@ export const ARTICLE_BY_SLUG_QUERY = `
   }
 `;
 
-const FEATURED_ARTICLES_QUERY = `
-  *[_type == "article" && featured == true]
-  | order(date desc) {
-    ${ARTICLE_CARD_PROJECTION}
-  }
-`;
-
 export const PILLAR_CATEGORIES_QUERY = `
   *[_type == "category" && defined(slug.current) && kind == "pillar"] {
     _id,

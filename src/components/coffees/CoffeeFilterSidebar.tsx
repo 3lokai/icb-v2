@@ -682,22 +682,3 @@ export function CoffeeFilterContent({
     </Stack>
   );
 }
-
-type CoffeeFilterSidebarProps = {
-  filterMeta: CoffeeFilterMeta;
-};
-
-/**
- * Coffee Filter Sidebar Component
- * Full filter UI with multi-selects, price range, and boolean toggles
- * URL sync is handled automatically by CoffeeDirectory component
- * Hidden on mobile, visible on desktop
- */
-function CoffeeFilterSidebar({ filterMeta }: CoffeeFilterSidebarProps) {
-  // Sidebar is always visible on desktop (when this component renders)
-  return (
-    <aside className="hidden w-full md:block md:w-64">
-      <CoffeeFilterContent filterMeta={filterMeta} isVisible={true} />
-    </aside>
-  );
-}
