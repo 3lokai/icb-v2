@@ -21,7 +21,12 @@ import { RoasterCollection } from "./blocks/RoasterCollection";
 import { RegionCollection } from "./blocks/RegionCollection";
 import { FAQBlock } from "./blocks/FAQBlock";
 import { SeriesNavigation } from "./blocks/SeriesNavigation";
-import { DataChart } from "./blocks/DataChart";
+import dynamic from "next/dynamic";
+
+// Code-split recharts (~283 KB) — only loads on articles that embed a chart.
+const DataChart = dynamic(() =>
+  import("./blocks/DataChart").then((m) => m.DataChart)
+);
 
 interface ArticleContentProps {
   body: any[];
@@ -61,7 +66,7 @@ const createComponents = (
     regionCollection: RegionCollection,
     faqBlock: (props) => <FAQBlock {...props} articleFaqs={articleFaqs} />,
     seriesNavigation: SeriesNavigation,
-    dataChart: DataChart,
+    dataChart: (props) => <DataChart value={props.value} />,
   },
   block: {
     // Body content starts at h2 — the single page <h1> is the article title in

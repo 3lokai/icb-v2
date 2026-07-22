@@ -4,20 +4,20 @@ import { PageShell } from "@/components/primitives/page-shell";
 import { Stack } from "@/components/primitives/stack";
 import { Accent } from "@/components/primitives/accent";
 import StructuredData from "@/components/seo/StructuredData";
-import {
-  ProcessBreakdownChart,
-  StateConcentrationChart,
-  TopRegionsChart,
-  PriceByProcessChart,
-  VarietyDistributionChart,
-  RoasterCityChart,
-} from "@/components/insights/InsightsCharts";
+import dynamic from "next/dynamic";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import {
   fetchPublicDirectoryTotals,
   type PublicDirectoryTotals,
 } from "@/lib/data/fetch-public-directory-totals";
 import { createAnonServerClient } from "@/lib/supabase/server";
+
+// Dynamic-imported so recharts (~283 KB) code-splits out of first-load JS.
+const InsightsChartsGrid = dynamic(() =>
+  import("@/components/insights/InsightsCharts").then(
+    (m) => m.InsightsChartsGrid
+  )
+);
 
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -184,25 +184,7 @@ export default async function InsightsPage() {
 
           {/* Charts grid */}
           <div className="py-10 md:py-14 lg:py-16">
-            <Stack gap="12">
-              {/* Row 1: full-width lead chart */}
-              <ProcessBreakdownChart />
-
-              {/* Row 2: 2-col — State treemap + Top regions bar */}
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <StateConcentrationChart />
-                <TopRegionsChart />
-              </div>
-
-              {/* Row 3: full-width pricing */}
-              <PriceByProcessChart />
-
-              {/* Row 4: 2-col — Variety radial + Roaster bubbles */}
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <VarietyDistributionChart />
-                <RoasterCityChart />
-              </div>
-            </Stack>
+            <InsightsChartsGrid />
           </div>
 
           {/* Citation footer */}
