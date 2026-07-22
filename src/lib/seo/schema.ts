@@ -67,7 +67,7 @@ export function getSeoBaseUrl(): string {
 }
 
 /** Build absolute URL from path (e.g. "/roasters" or "roasters/foo") for breadcrumbs */
-export function breadcrumbUrl(path: string): string {
+function breadcrumbUrl(path: string): string {
   const base = getSeoBaseUrl();
   const p = path.startsWith("/") ? path : `/${path}`;
   return `${base}${p}`;

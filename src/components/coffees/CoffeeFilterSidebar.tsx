@@ -693,7 +693,7 @@ type CoffeeFilterSidebarProps = {
  * URL sync is handled automatically by CoffeeDirectory component
  * Hidden on mobile, visible on desktop
  */
-export function CoffeeFilterSidebar({ filterMeta }: CoffeeFilterSidebarProps) {
+function CoffeeFilterSidebar({ filterMeta }: CoffeeFilterSidebarProps) {
   // Sidebar is always visible on desktop (when this component renders)
   return (
     <aside className="hidden w-full md:block md:w-64">

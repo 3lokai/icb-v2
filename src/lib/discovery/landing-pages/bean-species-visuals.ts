@@ -44,7 +44,7 @@ export const BEAN_SPECIES_VISUALS: BeanSpeciesVisual[] = [
 ];
 
 /** Slugs that have a species image card in the comparison grid. */
-export const BEAN_SPECIES_SLUGS: Set<string> = new Set(
+const BEAN_SPECIES_SLUGS: Set<string> = new Set(
   BEAN_SPECIES_VISUALS.map((s) => s.slug)
 );
 

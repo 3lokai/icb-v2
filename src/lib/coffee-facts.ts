@@ -87,7 +87,7 @@ export function getRandomCoffeeFact() {
  * @param count Number of facts to return
  * @returns Array of random coffee facts
  */
-export function getRandomCoffeeFacts(count: number) {
+function getRandomCoffeeFacts(count: number) {
   // Create a copy of the array to avoid modifying the original
   const factsCopy: typeof coffeeFacts = [...coffeeFacts];
   const result: typeof coffeeFacts = [];

@@ -61,9 +61,7 @@ export type PrivateProfileDTO = PublicProfileDTO & {
  * return <ProfileClient profile={profile} />;
  * ```
  */
-export async function getProfileDTO(
-  userId: string
-): Promise<PublicProfileDTO | null> {
+async function getProfileDTO(userId: string): Promise<PublicProfileDTO | null> {
   // Validate input (never trust user input!)
   if (typeof userId !== "string" || userId.length === 0) {
     return null;
@@ -168,7 +166,7 @@ export async function getMyProfileDTO(): Promise<PrivateProfileDTO | null> {
  * @param userId - The ID of the user to check
  * @returns true if profile exists, false otherwise
  */
-export async function profileExists(userId: string): Promise<boolean> {
+async function profileExists(userId: string): Promise<boolean> {
   if (typeof userId !== "string" || userId.length === 0) {
     return false;
   }

@@ -47,7 +47,7 @@ export function getGlossaryTermsServer(): GlossaryTerm[] {
 }
 
 // Optional: Pre-warm the cache at startup
-export function preloadGlossary() {
+function preloadGlossary() {
   try {
     getGlossaryTermsServer();
   } catch {

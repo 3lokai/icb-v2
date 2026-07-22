@@ -387,7 +387,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
 /**
  * Get collection by ID
  */
-export function getCollectionById(id: string): CoffeeCollection | undefined {
+function getCollectionById(id: string): CoffeeCollection | undefined {
   return COFFEE_COLLECTIONS.find((c) => c.id === id);
 }
 
@@ -417,6 +417,6 @@ export function getCoreCollections(): CoffeeCollection[] {
 /**
  * Get collection count for a specific tier
  */
-export function getCollectionCountByTier(tier: CollectionTier): number {
+function getCollectionCountByTier(tier: CollectionTier): number {
   return getCollectionsByTier(tier).length;
 }

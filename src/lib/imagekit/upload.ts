@@ -161,7 +161,7 @@ export async function deleteFromImageKit(fileId: string): Promise<void> {
  * @param imageUrl - Full ImageKit URL
  * @returns File ID or null if not found
  */
-export function extractFileIdFromUrl(imageUrl: string): string | null {
+function extractFileIdFromUrl(imageUrl: string): string | null {
   try {
     new URL(imageUrl);
     // The file ID is typically the last part of the path (before any query params)

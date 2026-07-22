@@ -21,7 +21,7 @@ export type {
   UtilityCardConfig,
   UtilityCardType,
 } from "./types";
-export { discoveryPagePath, discoverySlugSchema } from "./paths";
+export { discoveryPagePath } from "./paths";
 
 /**
  * Landing page configurations (order preserved for sitemap / static params)

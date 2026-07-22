@@ -50,7 +50,7 @@ export async function incrementUsage(keyId: string): Promise<void> {
 /**
  * Increment error count for an API key (call from route on 5xx/4xx if desired).
  */
-export async function incrementErrorCount(keyId: string): Promise<void> {
+async function incrementErrorCount(keyId: string): Promise<void> {
   const redis = getRedis();
   if (!redis) return;
 

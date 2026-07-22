@@ -225,7 +225,7 @@ export function setReviewCount(count: number): void {
  * Increment review count by 1 and return new count.
  * Returns null on server.
  */
-export function incrementReviewCount(): number {
+function incrementReviewCount(): number {
   if (typeof window === "undefined") return 0;
 
   const current = getReviewCount() ?? 0;
@@ -238,7 +238,7 @@ export function incrementReviewCount(): number {
  * Reset review count (clear from localStorage and cookie).
  * Useful when user logs in or for testing.
  */
-export function resetReviewCount(): void {
+function resetReviewCount(): void {
   if (typeof window === "undefined") return;
 
   try {

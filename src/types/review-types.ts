@@ -94,7 +94,7 @@ export interface ReviewStatsDisplay {
 /**
  * Check if a review is for a coffee
  */
-export function isCoffeeReview(
+function isCoffeeReview(
   review: Review | LatestReviewPerIdentity
 ): review is Review & { entity_type: "coffee" } {
   return review.entity_type === "coffee";
@@ -103,7 +103,7 @@ export function isCoffeeReview(
 /**
  * Check if a review is for a roaster
  */
-export function isRoasterReview(
+function isRoasterReview(
   review: Review | LatestReviewPerIdentity
 ): review is Review & { entity_type: "roaster" } {
   return review.entity_type === "roaster";
@@ -112,9 +112,7 @@ export function isRoasterReview(
 /**
  * Check if a review is active
  */
-export function isActiveReview(
-  review: Review | LatestReviewPerIdentity
-): boolean {
+function isActiveReview(review: Review | LatestReviewPerIdentity): boolean {
   return review.status === "active";
 }
 
