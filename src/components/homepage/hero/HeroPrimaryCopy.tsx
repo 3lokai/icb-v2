@@ -71,15 +71,3 @@ export function HeroPrimaryHeadline({ hero }: HeroPrimaryCopyProps) {
     </div>
   );
 }
-
-/**
- * Server component: SSR headline and subcopy for LCP + SEO (no client swap).
- */
-function HeroPrimaryCopy({ hero }: HeroPrimaryCopyProps) {
-  return (
-    <>
-      <HeroPrimaryEyebrow hero={hero} />
-      <HeroPrimaryHeadline hero={hero} />
-    </>
-  );
-}

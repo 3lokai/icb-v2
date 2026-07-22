@@ -66,13 +66,6 @@ export function getSeoBaseUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 }
 
-/** Build absolute URL from path (e.g. "/roasters" or "roasters/foo") for breadcrumbs */
-function breadcrumbUrl(path: string): string {
-  const base = getSeoBaseUrl();
-  const p = path.startsWith("/") ? path : `/${path}`;
-  return `${base}${p}`;
-}
-
 type SchemaOrgProps = {
   type: "Product" | "LocalBusiness" | "Article" | "WebPage";
   name: string;

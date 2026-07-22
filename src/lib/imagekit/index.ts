@@ -119,13 +119,6 @@ export function getPlaceholderImage(
 }
 
 /**
- * Check if ImageKit is configured
- */
-function isImageKitConfigured(): boolean {
-  return Boolean(process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT);
-}
-
-/**
  * Component-specific image presets
  */
 export const coffeeImagePresets = {

@@ -43,11 +43,6 @@ export const BEAN_SPECIES_VISUALS: BeanSpeciesVisual[] = [
   },
 ];
 
-/** Slugs that have a species image card in the comparison grid. */
-const BEAN_SPECIES_SLUGS: Set<string> = new Set(
-  BEAN_SPECIES_VISUALS.map((s) => s.slug)
-);
-
 /**
  * Categorical bean-type pages (sourcing / commercial concepts rather than
  * species). These have no bean morphology image, so they render as link pills

@@ -48,24 +48,6 @@ export async function incrementUsage(keyId: string): Promise<void> {
 }
 
 /**
- * Increment error count for an API key (call from route on 5xx/4xx if desired).
- */
-async function incrementErrorCount(keyId: string): Promise<void> {
-  const redis = getRedis();
-  if (!redis) return;
-
-  const date = dateKey();
-  const key = `${USAGE_PREFIX}:${keyId}:${date}:errors`;
-
-  try {
-    await redis.incr(key);
-    await redis.expire(key, DAILY_TTL_SECONDS);
-  } catch (err) {
-    console.error("[usage] error count increment:", err);
-  }
-}
-
-/**
  * Get usage for a key: today's total, and hourly breakdown for today.
  * Used by developer portal charts.
  */

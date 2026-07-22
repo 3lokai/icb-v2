@@ -253,21 +253,3 @@ export function RoasterFilterContent({
     </Stack>
   );
 }
-
-type RoasterFilterSidebarProps = {
-  filterMeta: RoasterFilterMeta;
-};
-
-/**
- * Roaster Filter Sidebar Component
- * Full filter UI with dropdowns for location filters
- * URL sync is handled automatically by RoasterDirectory component
- * Hidden on mobile, visible on desktop
- */
-function RoasterFilterSidebar({ filterMeta }: RoasterFilterSidebarProps) {
-  return (
-    <aside className="hidden w-full md:block md:w-64">
-      <RoasterFilterContent filterMeta={filterMeta} />
-    </aside>
-  );
-}

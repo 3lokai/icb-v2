@@ -88,35 +88,6 @@ export interface ReviewStatsDisplay {
 }
 
 // ============================================================================
-// TYPE GUARDS
-// ============================================================================
-
-/**
- * Check if a review is for a coffee
- */
-function isCoffeeReview(
-  review: Review | LatestReviewPerIdentity
-): review is Review & { entity_type: "coffee" } {
-  return review.entity_type === "coffee";
-}
-
-/**
- * Check if a review is for a roaster
- */
-function isRoasterReview(
-  review: Review | LatestReviewPerIdentity
-): review is Review & { entity_type: "roaster" } {
-  return review.entity_type === "roaster";
-}
-
-/**
- * Check if a review is active
- */
-function isActiveReview(review: Review | LatestReviewPerIdentity): boolean {
-  return review.status === "active";
-}
-
-// ============================================================================
 // VALIDATION HELPERS
 // ============================================================================
 

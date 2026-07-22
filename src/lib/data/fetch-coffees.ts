@@ -10,9 +10,6 @@ import type {
   CoffeeSummary,
 } from "@/types/coffee-types";
 
-// Note: getCoffeeIdsFromJunction and getCoffeeIdsFromFlavorKeys are kept for backward compatibility
-// but are no longer used in fetchCoffees - they may be used by filter meta calculations
-
 /**
  * Discovery landing pages and /coffees filters use short slugs; `canon_regions.slug` may differ.
  * Must match [supabase/migrations/20260106000001_seed_canon_regions.sql](supabase/migrations/20260106000001_seed_canon_regions.sql).
@@ -31,61 +28,6 @@ async function getReadClient(): Promise<SupabaseClient> {
   return process.env.SUPABASE_SECRET_KEY
     ? createServiceRoleClient()
     : createClient();
-}
-
-/**
- * Helper to get coffee IDs from junction table filters
- * Exported for use in filter meta calculations
- */
-export async function getCoffeeIdsFromJunction(
-  supabase: any,
-  tableName: string,
-  idColumn: string,
-  filterIds: string[]
-): Promise<string[] | null> {
-  const { data } = await supabase
-    .from(tableName)
-    .select("coffee_id")
-    .in(idColumn, filterIds);
-
-  if (!data || data.length === 0) {
-    return null;
-  }
-
-  const coffeeIds: string[] = [];
-  for (const row of data) {
-    const coffeeId = row.coffee_id as string | null | undefined;
-    if (coffeeId) {
-      coffeeIds.push(coffeeId);
-    }
-  }
-  return [...new Set(coffeeIds)];
-}
-
-/**
- * Helper to get coffee IDs from flavor keys filter
- * Exported for use in filter meta calculations
- */
-async function getCoffeeIdsFromFlavorKeys(
-  supabase: any,
-  flavorKeys: string[]
-): Promise<string[] | null> {
-  const { data: flavorNotesData } = await supabase
-    .from("flavor_notes")
-    .select("id")
-    .in("key", flavorKeys);
-
-  if (!flavorNotesData || flavorNotesData.length === 0) {
-    return null;
-  }
-
-  const flavorNoteIds = flavorNotesData.map((fn: any) => fn.id);
-  return getCoffeeIdsFromJunction(
-    supabase,
-    "coffee_flavor_notes",
-    "flavor_note_id",
-    flavorNoteIds
-  );
 }
 
 /**

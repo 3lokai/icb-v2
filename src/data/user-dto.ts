@@ -40,69 +40,6 @@ export type PrivateProfileDTO = PublicProfileDTO & {
 };
 
 /**
- * Get user profile with access control
- *
- * Returns different data based on viewer permissions:
- * - If profile is public OR viewer is the owner: returns PublicProfileDTO
- * - If profile is private AND viewer is not owner: returns null
- *
- * This function respects RLS policies and implements additional access control
- * at the application layer for defense in depth.
- *
- * @param userId - The ID of the user profile to fetch
- * @returns PublicProfileDTO if accessible, null if not found or not accessible
- *
- * @example
- * ```ts
- * const profile = await getProfileDTO(params.id);
- * if (!profile) {
- *   notFound();
- * }
- * return <ProfileClient profile={profile} />;
- * ```
- */
-async function getProfileDTO(userId: string): Promise<PublicProfileDTO | null> {
-  // Validate input (never trust user input!)
-  if (typeof userId !== "string" || userId.length === 0) {
-    return null;
-  }
-
-  const supabase = await createClient();
-  const currentUser = await getCurrentUser();
-
-  // Fetch profile data (RLS policies will apply)
-  const { data: profile, error } = await supabase
-    .from("user_profiles")
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  if (error || !profile) {
-    // Profile might not exist or RLS blocked access
-    return null;
-  }
-
-  // Check if profile is public or viewer is the owner
-  const isOwner = currentUser?.id === userId;
-  const isPublic = profile.is_public_profile ?? true; // Default to public
-
-  // Profile is private and viewer is not owner - deny access
-  if (!(isPublic || isOwner)) {
-    return null;
-  }
-
-  // Return public DTO (safe for client)
-  return {
-    id: profile.id,
-    username: profile.username,
-    full_name: profile.full_name,
-    avatar_url: profile.avatar_url,
-    bio: profile.bio,
-    experience_level: profile.experience_level,
-  };
-}
-
-/**
  * Get current user's own profile (includes private fields)
  *
  * Returns the full profile including sensitive fields that only the owner
@@ -158,27 +95,6 @@ export async function getMyProfileDTO(): Promise<PrivateProfileDTO | null> {
     onboarding_completed: profile.onboarding_completed,
     newsletter_subscribed: profile.newsletter_subscribed,
   };
-}
-
-/**
- * Check if a user profile exists
- *
- * @param userId - The ID of the user to check
- * @returns true if profile exists, false otherwise
- */
-async function profileExists(userId: string): Promise<boolean> {
-  if (typeof userId !== "string" || userId.length === 0) {
-    return false;
-  }
-
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("user_profiles")
-    .select("id")
-    .eq("id", userId)
-    .single();
-
-  return !error && data !== null;
 }
 
 /**

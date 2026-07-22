@@ -1782,26 +1782,6 @@ export const EXPERT_RECIPES: Record<ExpertKey, ExpertRecipe> = {
 };
 
 // Utility functions for recipe filtering and display
-function getRecipesByMethod(method: BrewingMethodKey): ExpertRecipe[] {
-  return Object.values(EXPERT_RECIPES).filter(
-    (recipe) => recipe.method === method
-  );
-}
-
-function getRecipesByDifficulty(
-  difficulty: ExpertRecipe["difficulty"]
-): ExpertRecipe[] {
-  return Object.values(EXPERT_RECIPES).filter(
-    (recipe) => recipe.difficulty === difficulty
-  );
-}
-
-function getRecipesByExpert(expertName: string): ExpertRecipe[] {
-  return Object.values(EXPERT_RECIPES).filter((recipe) =>
-    recipe.expert.name.toLowerCase().includes(expertName.toLowerCase())
-  );
-}
-
 export function getAllRecipes(): ExpertRecipe[] {
   return Object.values(EXPERT_RECIPES);
 }
@@ -1863,51 +1843,8 @@ export function filterRecipes(filters: RecipeFilters): ExpertRecipe[] {
   return recipes;
 }
 
-// Sort recipes by difficulty index
 export type DifficultyLevel = ExpertRecipe["difficulty"];
 export type RecommendedUse = ExpertRecipe["recommendedUse"];
-export type MethodKey = BrewingMethodKey;
-function sortRecipesByDifficulty(recipes: ExpertRecipe[]): ExpertRecipe[] {
-  return [...recipes].sort((a, b) => a.difficultyIndex - b.difficultyIndex);
-}
-
-// Get unique flavor notes across all recipes
-function getAllFlavorNotes(): string[] {
-  const allNotes = new Set<string>();
-  Object.values(EXPERT_RECIPES).forEach((recipe) => {
-    recipe.flavorNotes.forEach((note) => allNotes.add(note));
-  });
-  return Array.from(allNotes).sort();
-}
-
-// Get recipes by recommended use
-function getRecipesByUse(use: ExpertRecipe["recommendedUse"]): ExpertRecipe[] {
-  return Object.values(EXPERT_RECIPES).filter(
-    (recipe) => recipe.recommendedUse === use
-  );
-}
-
-// Auto-generate tags from recipe properties (utility for data consistency)
-function generateAutoTags(recipe: Omit<ExpertRecipe, "tags">): Set<string> {
-  const autoTags = new Set<string>();
-
-  // Add method
-  autoTags.add(recipe.method);
-
-  // Add difficulty (lowercase)
-  autoTags.add(recipe.difficulty.toLowerCase());
-
-  // Add expert name (slug format)
-  autoTags.add(recipe.expert.name.toLowerCase().replace(/\s+/g, "-"));
-
-  // Add recommended use
-  autoTags.add(recipe.recommendedUse);
-
-  // Add some flavor notes as tags
-  recipe.flavorNotes.slice(0, 3).forEach((note) => autoTags.add(note));
-
-  return autoTags;
-}
 
 // Export individual recipes for direct access
 export const RECIPES_ARRAY = Object.values(EXPERT_RECIPES);
@@ -1944,118 +1881,3 @@ export const RECIPE_EXPERT_OPTIONS: RecipeFacetOption[] = Array.from(
 )
   .map((name) => ({ value: name, label: name }))
   .sort((a, b) => a.label.localeCompare(b.label));
-
-// Expert info for display
-const EXPERTS = [
-  {
-    name: "James Hoffmann",
-    recipes: ["hoffman-v60", "hoffman-french-press", "hoffman-chemex"],
-    bio: "World Barista Champion 2007, coffee educator, and YouTube creator",
-  },
-  {
-    name: "Tetsu Kasuya",
-    recipes: ["tetsu-kasuya-46", "tetsu-kasuya-10-pour"],
-    bio: "World Brewers Cup Champion 2016, creator of the 4:6 and 10-pour methods",
-  },
-  {
-    name: "Scott Rao",
-    recipes: ["scott-rao-v60"],
-    bio: "Coffee consultant, author, and roasting expert focused on uniform extraction",
-  },
-  {
-    name: "Carolina Ibarra Garay",
-    recipes: ["carolina-aeropress"],
-    bio: "World AeroPress Champion 2018, known for innovative temperature control",
-  },
-  {
-    name: "George Stanica",
-    recipes: ["george-aeropress-2024"],
-    bio: "World AeroPress Champion 2024, software engineer and passionate home brewer",
-  },
-  {
-    name: "Intelligentsia Coffee",
-    recipes: ["intelligentsia-pourover"],
-    bio: "Third-wave coffee pioneer and industry leader in specialty coffee",
-  },
-  {
-    name: "Tim Wendelboe",
-    recipes: ["tim-wendelboe-aeropress"],
-    bio: "World Barista Champion 2004, renowned roaster from Oslo, Norway",
-  },
-  {
-    name: "Lance Hedrick",
-    recipes: ["lance-hedrick-v60"],
-    bio: "Coffee Expert & Educator, World Latte Art Champion Finalist",
-  },
-  {
-    name: "Onyx Coffee Lab",
-    recipes: ["onyx-kalita-wave"],
-    bio: "Acclaimed US specialty coffee roaster and competition champions",
-  },
-  {
-    name: "Blue Bottle Coffee",
-    recipes: ["blue-bottle-french-press"],
-    bio: "Pioneers of modern specialty coffee experience and cafe culture",
-  },
-  {
-    name: "Traditional Origin",
-    recipes: ["traditional-south-indian"],
-    bio: "Cultural heritage methods passed down through generations",
-  },
-  {
-    name: "Popular Method",
-    recipes: [
-      "classic-inverted-aeropress",
-      "japanese-iced-v60",
-      "standard-cold-brew",
-      "classic-moka-pot",
-    ],
-    bio: "Tried and true brewing techniques favored by the global coffee community.",
-  },
-];
-
-// Recipe categories for organization
-const RECIPE_CATEGORIES = {
-  "Pour Over Masters": [
-    "hoffman-v60",
-    "scott-rao-v60",
-    "tetsu-kasuya-46",
-    "tetsu-kasuya-10-pour",
-    "lance-hedrick-v60",
-    "hoffman-chemex",
-    "intelligentsia-pourover",
-  ],
-  "Flat Bottom Brewers": ["onyx-kalita-wave"],
-  "AeroPress Champions": [
-    "carolina-aeropress",
-    "george-aeropress-2024",
-    "tim-wendelboe-aeropress",
-  ],
-  "Full Immersion": ["hoffman-french-press", "blue-bottle-french-press"],
-  "Cold & Iced Coffee": ["japanese-iced-v60", "standard-cold-brew"],
-  "Traditional Methods": ["traditional-south-indian", "classic-moka-pot"],
-  "Community Favorites": ["classic-inverted-aeropress"],
-} as const;
-
-// Difficulty explanations
-const DIFFICULTY_GUIDE = {
-  Beginner: "Simple technique, forgiving timing, minimal equipment needed",
-  Intermediate: "Requires attention to detail, some technique practice needed",
-  Advanced:
-    "Precise timing and technique required, specialized equipment recommended",
-} as const;
-
-// Recommended use explanations
-const USE_GUIDE = {
-  everyday: "Perfect for daily brewing - reliable, approachable, and delicious",
-  competition: "Competition-level techniques requiring precision and practice",
-  experiment: "For coffee exploration and trying new flavor profiles",
-} as const;
-
-// Source type explanations
-const SOURCE_TYPE_GUIDE = {
-  video: "Watch the expert demonstrate the technique",
-  blog: "Detailed written guide from the expert",
-  championship: "Official competition-winning recipe",
-  brand: "Method developed by coffee company",
-} as const;
