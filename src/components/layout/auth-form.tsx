@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { capture, posthog } from "@/lib/posthog";
+import { capture, identifyUser } from "@/lib/posthog";
 import { Accent } from "@/components/primitives/accent";
 import { Stack } from "@/components/primitives/stack";
 import { Button } from "@/components/ui/button";
@@ -106,7 +106,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
           return;
         }
 
-        posthog.identify(signInData?.user?.id ?? formData.email.trim(), {
+        identifyUser(signInData?.user?.id ?? formData.email.trim(), {
           email: formData.email.trim(),
         });
         capture("user_signed_in", { method: "email" });
@@ -149,7 +149,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
       }
 
       // Track sign-up event
-      posthog.identify(signUpData?.user?.id || formData.email.trim(), {
+      identifyUser(signUpData?.user?.id || formData.email.trim(), {
         email: formData.email.trim(),
       });
       capture("user_signed_up", { method: "email" });

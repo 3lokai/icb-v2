@@ -1,24 +1,42 @@
-import CoffeeFact from "@/components/common/CoffeeFact";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
-import { Stack } from "@/components/primitives/stack";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
+/**
+ * Dashboard route loading: in-flow skeleton reserves height (footer CLS),
+ * Lottie overlay keeps the familiar loading UX.
+ */
 export default function DashboardLoading() {
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-background p-6 z-50">
-      <div className="mx-auto text-center">
-        <Stack gap="12" className="items-center">
-          <LoadingSpinner size="xl" text="Brewing your dashboard..." />
-
-          <div className="relative w-full overflow-hidden pt-12">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-24 bg-accent/40" />
-            <CoffeeFact />
-          </div>
-
-          <p className="text-micro font-bold uppercase tracking-[0.2em] text-muted-foreground/60 italic">
-            Quality takes time. One bean at a time.
-          </p>
-        </Stack>
+    <>
+      <div className="space-y-8" aria-hidden="true">
+        <div>
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="mt-2 h-4 w-96 max-w-full" />
+        </div>
+        <Card>
+          <CardHeader className="space-y-2">
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="h-4 w-64 max-w-full" />
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-24 w-full" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="space-y-2">
+            <Skeleton className="h-6 w-40" />
+            <Skeleton className="h-4 w-56 max-w-full" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-32 w-full" />
+          </CardContent>
+        </Card>
       </div>
-    </div>
+
+      <LoadingOverlay text="Brewing your dashboard..." />
+    </>
   );
 }

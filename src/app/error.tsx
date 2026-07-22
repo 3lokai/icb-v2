@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import posthog from "posthog-js";
+import { captureException } from "@/lib/posthog";
 import { ErrorPageContent } from "@/components/common/ErrorPageContent";
 
 export default function Error({
@@ -13,7 +13,7 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error(error);
-    posthog.captureException(error);
+    captureException(error);
   }, [error]);
 
   return <ErrorPageContent reset={reset} />;

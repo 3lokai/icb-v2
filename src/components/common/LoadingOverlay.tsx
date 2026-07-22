@@ -1,23 +1,26 @@
-// app/loading.tsx
-
 import CoffeeFact from "@/components/common/CoffeeFact";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { Stack } from "@/components/primitives/stack";
 
-export default function Loading() {
+type LoadingOverlayProps = {
+  text?: string;
+};
+
+/**
+ * Fixed Lottie loading overlay. Pair with an in-flow skeleton sibling so
+ * document height is reserved (footer CLS) while the familiar spinner shows.
+ */
+export function LoadingOverlay({ text = "Loading..." }: LoadingOverlayProps) {
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-background p-6 z-50">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background p-6">
       <div className="mx-auto text-center">
         <Stack gap="12" className="items-center">
-          <LoadingSpinner size="xl" text="Steeping the perfect read..." />
+          <LoadingSpinner size="xl" text={text} />
 
           {/* Reserve stable space: CoffeeFact renders null on first paint then
-              pops in a variable-height card post-mount. Without a reserved slot,
-              that grows this centered column and re-centers it → CLS (measured
-              0.10–0.36 on slower-hydrating routes). min-h holds the space so the
-              spinner above never moves. */}
+              pops in a variable-height card post-mount. */}
           <div className="relative w-full overflow-hidden pt-12 min-h-[320px]">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-24 bg-accent/40" />
+            <div className="absolute top-0 left-1/2 h-px w-24 -translate-x-1/2 bg-accent/40" />
             <CoffeeFact />
           </div>
 
