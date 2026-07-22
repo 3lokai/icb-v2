@@ -1,5 +1,3 @@
-"use client";
-
 import { ChartDownloadButton } from "./ChartDownloadButton";
 import { cn } from "@/lib/utils";
 

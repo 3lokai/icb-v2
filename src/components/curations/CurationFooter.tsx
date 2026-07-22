@@ -1,5 +1,3 @@
-"use client";
-
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
 import {

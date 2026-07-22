@@ -1,5 +1,3 @@
-"use client";
-
 import { CollectionCard } from "@/components/cards/CollectionCard";
 import type { CoffeeCollection } from "@/lib/collections/coffee-collections";
 import {

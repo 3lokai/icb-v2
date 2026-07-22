@@ -59,7 +59,7 @@ export function HeroPrimaryHeadline({ hero }: HeroPrimaryCopyProps) {
   const { copy } = getPrimaryCopyParts(hero);
 
   return (
-    <div className="lcp-optimized min-w-0 lg:mt-6">
+    <div className="min-w-0 lg:mt-6">
       <Stack gap="2" className="w-full max-w-[520px] text-left lg:max-w-none">
         <h1 className="text-display text-white text-balance leading-[1.15] pb-[0.08em]">
           {copy.headline}

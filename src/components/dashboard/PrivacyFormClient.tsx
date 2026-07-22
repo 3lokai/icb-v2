@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useProfile, useUpdatePrivacySettings } from "@/hooks/use-profile";
+import { useSettingsForm } from "@/hooks/use-settings-form";
 import { Button } from "@/components/ui/button";
 import {
   FieldDescription,
@@ -15,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Stack } from "@/components/primitives/stack";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { Rule } from "@/components/primitives/rule";
 import { privacySettingsSchema } from "@/lib/validations/profile";
 import type { PrivacySettingsFormData } from "@/lib/validations/profile";
@@ -41,14 +43,26 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
   // Use hook with server-fetched initialData
   const { data: profile } = useProfile(initialProfile);
 
-  const [formData, setFormData] = useState<Partial<PrivacySettingsFormData>>({
-    isPublicProfile: true,
-    showLocation: true,
+  const {
+    formData,
+    setFormData,
+    updateField: updateFormData,
+    isSaving,
+    error,
+    handleSubmit,
+  } = useSettingsForm({
+    initial: {
+      isPublicProfile: true,
+      showLocation: true,
+    } satisfies Partial<PrivacySettingsFormData>,
+    schema: privacySettingsSchema,
+    save: (data) => updatePrivacy.mutateAsync(data),
+    messages: {
+      success: "Privacy settings updated successfully!",
+      errorTitle: "Failed to update settings",
+      fallback: "Failed to update privacy settings. Please try again.",
+    },
   });
-
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   // Account deletion state
   const [deleteStep, setDeleteStep] = useState<
@@ -67,74 +81,9 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
         showLocation: profile.show_location ?? true,
       });
     }
-  }, [profile]);
+  }, [profile, setFormData]);
 
-  const updateFormData = <K extends keyof PrivacySettingsFormData>(
-    key: K,
-    value: PrivacySettingsFormData[K]
-  ) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-    setError(null);
-    if (fieldErrors[key]) {
-      setFieldErrors((prev) => {
-        const updated = { ...prev };
-        delete updated[key];
-        return updated;
-      });
-    }
-  };
-
-  const handleSubmit = async () => {
-    setIsSaving(true);
-    setError(null);
-    setFieldErrors({});
-
-    // Validate with Zod
-    const validationResult = privacySettingsSchema.safeParse(formData);
-
-    if (!validationResult.success) {
-      const errors: Record<string, string> = {};
-      validationResult.error.issues.forEach((issue) => {
-        const path = issue.path.join(".");
-        errors[path] = issue.message;
-      });
-      setFieldErrors(errors);
-      setError("Please correct the errors below.");
-      setIsSaving(false);
-      return;
-    }
-
-    try {
-      const result = await updatePrivacy.mutateAsync(validationResult.data);
-
-      if (result.success) {
-        toast.success("Privacy settings updated successfully!", {
-          description: "Your changes have been saved.",
-        });
-      }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Failed to update privacy settings. Please try again.";
-      setError(errorMessage);
-      toast.error("Failed to update settings", {
-        description: errorMessage,
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  // Reset delete dialog state when it closes
-  useEffect(() => {
-    if (!isDeleteDialogOpen) {
-      setDeleteStep("initial");
-      setPassword("");
-      setPasswordError(null);
-      setIsDeleting(false);
-    }
-  }, [isDeleteDialogOpen]);
+  // Reset delete dialog state when it closes (handled in Dialog onOpenChange).
 
   const handlePasswordConfirm = async () => {
     if (!password.trim()) {
@@ -201,28 +150,15 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
 
   return (
     <Stack gap="8">
-      {/* Magazine-style header */}
-      <div className="mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-          <div className="md:col-span-8">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                  Security & Privacy
-                </span>
-              </div>
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                Privacy & <Accent>Data.</Accent>
-              </h2>
-              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                Manage your privacy settings and account data with full control
-                over what you share.
-              </p>
-            </Stack>
-          </div>
-        </div>
-      </div>
+      <DashboardPageHeader
+        eyebrow="Security & Privacy"
+        title={
+          <>
+            Privacy & <Accent>Data.</Accent>
+          </>
+        }
+        description="Manage your privacy settings and account data with full control over what you share."
+      />
 
       <Stack gap="6">
         {error && (
@@ -319,7 +255,15 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
               </p>
               <Dialog
                 open={isDeleteDialogOpen}
-                onOpenChange={setIsDeleteDialogOpen}
+                onOpenChange={(open) => {
+                  setIsDeleteDialogOpen(open);
+                  if (!open) {
+                    setDeleteStep("initial");
+                    setPassword("");
+                    setPasswordError(null);
+                    setIsDeleting(false);
+                  }
+                }}
               >
                 <DialogTrigger asChild>
                   <Button variant="destructive">Delete Account</Button>

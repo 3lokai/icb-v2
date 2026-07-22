@@ -2,12 +2,12 @@
 // src/components/cards/RoasterCard.tsx
 import { useState, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Card, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { RoasterSummary } from "@/types/roaster-types";
 import { Stack } from "../primitives/stack";
 import { roasterImagePresets } from "@/lib/imagekit";
-import { RoasterTrackingLink } from "../common/TrackingLink";
 import { CoffeeIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "../common/Icon";
 import { CardRatingFooter } from "./CardRatingFooter";
@@ -96,10 +96,7 @@ export default function RoasterCard({
   // Compact variant - dense, horizontal row card
   if (variant === "compact") {
     return (
-      <RoasterTrackingLink
-        ariaLabel={ariaLabel}
-        href={`/roasters/${roaster.slug}`}
-      >
+      <Link aria-label={ariaLabel} href={`/roasters/${roaster.slug}`}>
         <Card
           className={cn(
             "group relative overflow-hidden cursor-pointer",
@@ -168,7 +165,7 @@ export default function RoasterCard({
             itemProp="url"
           />
         </Card>
-      </RoasterTrackingLink>
+      </Link>
     );
   }
 
@@ -183,8 +180,8 @@ export default function RoasterCard({
       itemScope
       itemType="https://schema.org/Organization"
     >
-      <RoasterTrackingLink
-        ariaLabel={ariaLabel}
+      <Link
+        aria-label={ariaLabel}
         className="flex-1 flex flex-col cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
         href={`/roasters/${roaster.slug}`}
       >
@@ -265,7 +262,7 @@ export default function RoasterCard({
             </div>
           </Stack>
         </div>
-      </RoasterTrackingLink>
+      </Link>
 
       {/* Opinion-first rating footer — roaster ratings (QuickRating entityType="roaster") */}
       <CardRatingFooter

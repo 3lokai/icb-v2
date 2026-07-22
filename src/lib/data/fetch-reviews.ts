@@ -29,7 +29,7 @@ async function getServerSupabase(
 }
 
 /**
- * Entity review aggregates ( mirrors useReviewStats queryFn ).
+ * Entity review aggregates from the entity_review_stats view.
  */
 export async function fetchReviewStats(
   entityType: "coffee" | "roaster",

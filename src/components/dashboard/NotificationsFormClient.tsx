@@ -1,8 +1,8 @@
 "use client";
 
 import { Accent } from "@/components/primitives/accent";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
+import { useEffect } from "react";
+import { useSettingsForm } from "@/hooks/use-settings-form";
 import {
   useNotificationPreferences,
   useUpdateNotificationPreferences,
@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Stack } from "@/components/primitives/stack";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { notificationPreferencesUpdateSchema } from "@/lib/validations/profile";
 import type { NotificationPreferencesUpdateFormData } from "@/lib/validations/profile";
 import type { Database } from "@/types/supabase-types";
@@ -43,19 +44,30 @@ export function NotificationsFormClient({
   // Use hook with server-fetched initialData
   const { data: preferences } = useNotificationPreferences(initialPreferences);
 
-  const [formData, setFormData] = useState<
-    Partial<NotificationPreferencesUpdateFormData>
-  >({
-    newRoasters: true,
-    coffeeUpdates: true,
-    newsletter: true,
-    platformUpdates: true,
-    emailFrequency: "weekly",
+  const {
+    formData,
+    setFormData,
+    updateField: updateFormData,
+    isSaving,
+    error,
+    fieldErrors,
+    handleSubmit,
+  } = useSettingsForm({
+    initial: {
+      newRoasters: true,
+      coffeeUpdates: true,
+      newsletter: true,
+      platformUpdates: true,
+      emailFrequency: "weekly",
+    } satisfies Partial<NotificationPreferencesUpdateFormData>,
+    schema: notificationPreferencesUpdateSchema,
+    save: (data) => updatePreferences.mutateAsync(data),
+    messages: {
+      success: "Notification preferences updated successfully!",
+      errorTitle: "Failed to update preferences",
+      fallback: "Failed to update notification preferences. Please try again.",
+    },
   });
-
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   // Initialize form data from preferences
   useEffect(() => {
@@ -74,91 +86,19 @@ export function NotificationsFormClient({
             | "never") || "weekly",
       });
     }
-  }, [preferences]);
-
-  const updateFormData = <
-    K extends keyof NotificationPreferencesUpdateFormData,
-  >(
-    key: K,
-    value: NotificationPreferencesUpdateFormData[K]
-  ) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-    setError(null);
-    if (fieldErrors[key]) {
-      setFieldErrors((prev) => {
-        const updated = { ...prev };
-        delete updated[key];
-        return updated;
-      });
-    }
-  };
-
-  const handleSubmit = async () => {
-    setIsSaving(true);
-    setError(null);
-    setFieldErrors({});
-
-    // Validate with Zod
-    const validationResult =
-      notificationPreferencesUpdateSchema.safeParse(formData);
-
-    if (!validationResult.success) {
-      const errors: Record<string, string> = {};
-      validationResult.error.issues.forEach((issue) => {
-        const path = issue.path.join(".");
-        errors[path] = issue.message;
-      });
-      setFieldErrors(errors);
-      setError("Please correct the errors below.");
-      setIsSaving(false);
-      return;
-    }
-
-    try {
-      const result = await updatePreferences.mutateAsync(validationResult.data);
-
-      if (result.success) {
-        toast.success("Notification preferences updated successfully!", {
-          description: "Your changes have been saved.",
-        });
-      }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Failed to update notification preferences. Please try again.";
-      setError(errorMessage);
-      toast.error("Failed to update preferences", {
-        description: errorMessage,
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  }, [preferences, setFormData]);
 
   return (
     <Stack gap="8">
-      {/* Magazine-style header */}
-      <div className="mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-          <div className="md:col-span-8">
-            <Stack gap="6">
-              <div className="inline-flex items-center gap-4">
-                <span className="h-px w-8 md:w-12 bg-accent/60" />
-                <span className="text-overline text-muted-foreground tracking-[0.15em]">
-                  Communication
-                </span>
-              </div>
-              <h2 className="text-title text-balance leading-[1.1] tracking-tight">
-                Notification <Accent>Settings.</Accent>
-              </h2>
-              <p className="max-w-2xl text-pretty text-body text-muted-foreground leading-relaxed">
-                Manage your notification preferences and email frequency.
-              </p>
-            </Stack>
-          </div>
-        </div>
-      </div>
+      <DashboardPageHeader
+        eyebrow="Communication"
+        title={
+          <>
+            Notification <Accent>Settings.</Accent>
+          </>
+        }
+        description="Manage your notification preferences and email frequency."
+      />
 
       <Stack gap="6">
         {error && (
