@@ -24,19 +24,36 @@ const supabase = createClient(
 
 const norm = (e) => (e || "").trim().toLowerCase();
 
-const { data: subs, error } = await supabase
-  .from("form_submissions")
-  .select("email")
-  .eq("form_type", "newsletter")
-  .not("email", "is", null);
-if (error) throw error;
+const PAGE = 1000;
+const subs = [];
+for (let from = 0; ; from += PAGE) {
+  const { data, error } = await supabase
+    .from("form_submissions")
+    .select("email")
+    .eq("form_type", "newsletter")
+    .not("email", "is", null)
+    .order("id", { ascending: true })
+    .range(from, from + PAGE - 1);
+  if (error) throw error;
+  if (!data?.length) break;
+  subs.push(...data);
+  if (data.length < PAGE) break;
+}
 
-const { data: userData, error: uErr } = await supabase.auth.admin.listUsers({
-  perPage: 1000,
-});
-if (uErr) throw uErr;
+const authUsers = [];
+for (let page = 1; ; page++) {
+  const { data: userData, error: uErr } = await supabase.auth.admin.listUsers({
+    page,
+    perPage: PAGE,
+  });
+  if (uErr) throw uErr;
+  const batch = userData?.users ?? [];
+  if (!batch.length) break;
+  authUsers.push(...batch);
+  if (batch.length < PAGE) break;
+}
 const userEmails = new Set(
-  userData.users.map((u) => norm(u.email)).filter(Boolean)
+  authUsers.map((u) => norm(u.email)).filter(Boolean)
 );
 
 // newsletter subscribers who are NOT registered users
@@ -57,6 +74,7 @@ for (const email of targets) {
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
     },
+    signal: AbortSignal.timeout(8000),
     body: JSON.stringify({
       workspace_id: ws,
       contact: { email },
