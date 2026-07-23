@@ -4,14 +4,7 @@ import { PageShell } from "@/components/primitives/page-shell";
 import { Stack } from "@/components/primitives/stack";
 import { Accent } from "@/components/primitives/accent";
 import StructuredData from "@/components/seo/StructuredData";
-import {
-  ProcessBreakdownChart,
-  StateConcentrationChart,
-  TopRegionsChart,
-  PriceByProcessChart,
-  VarietyDistributionChart,
-  RoasterCityChart,
-} from "@/components/insights/InsightsCharts";
+import { InsightsChartsGridLoader } from "@/components/insights/InsightsChartsGridLoader";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import {
   fetchPublicDirectoryTotals,
@@ -184,25 +177,7 @@ export default async function InsightsPage() {
 
           {/* Charts grid */}
           <div className="py-10 md:py-14 lg:py-16">
-            <Stack gap="12">
-              {/* Row 1: full-width lead chart */}
-              <ProcessBreakdownChart />
-
-              {/* Row 2: 2-col — State treemap + Top regions bar */}
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <StateConcentrationChart />
-                <TopRegionsChart />
-              </div>
-
-              {/* Row 3: full-width pricing */}
-              <PriceByProcessChart />
-
-              {/* Row 4: 2-col — Variety radial + Roaster bubbles */}
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <VarietyDistributionChart />
-                <RoasterCityChart />
-              </div>
-            </Stack>
+            <InsightsChartsGridLoader />
           </div>
 
           {/* Citation footer */}

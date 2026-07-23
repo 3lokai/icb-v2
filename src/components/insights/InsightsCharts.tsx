@@ -17,6 +17,7 @@ import {
   Legend,
 } from "recharts";
 import { cn } from "@/lib/utils";
+import { Stack } from "@/components/primitives/stack";
 import { ChartCard } from "./ChartCard";
 
 /* Leaflet map — SSR-disabled (window / document required) */
@@ -628,5 +629,33 @@ export function RoasterCityChart() {
         ))}
       </div>
     </ChartCard>
+  );
+}
+
+/**
+ * Single client boundary for the whole insights grid so InsightsChartsGridLoader
+ * can dynamic-import it once, keeping recharts (~283 KB) out of first-load JS.
+ */
+export function InsightsChartsGrid() {
+  return (
+    <Stack gap="12">
+      {/* Row 1: full-width lead chart */}
+      <ProcessBreakdownChart />
+
+      {/* Row 2: 2-col — State treemap + Top regions bar */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <StateConcentrationChart />
+        <TopRegionsChart />
+      </div>
+
+      {/* Row 3: full-width pricing */}
+      <PriceByProcessChart />
+
+      {/* Row 4: 2-col — Variety radial + Roaster bubbles */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <VarietyDistributionChart />
+        <RoasterCityChart />
+      </div>
+    </Stack>
   );
 }

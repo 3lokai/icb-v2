@@ -156,6 +156,34 @@ Deno.serve(async (req: Request) => {
     );
   }
 
+  // 1b) Subscribe to the lifecycle list — ONLY at signup. Do NOT re-subscribe on
+  // later events, or we'd resurrect anyone who unsubscribed. Best-effort: a
+  // subscribe hiccup must not block the contact/event flow.
+  const lifecycleListId = Deno.env.get("NOTIFUSE_LIFECYCLE_LIST_ID");
+  if (eventName === "signed_up" && lifecycleListId) {
+    try {
+      const subRes = await fetch(`${notifuseUrl}/api/lists.subscribe`, {
+        method: "POST",
+        headers: authHeaders,
+        signal: AbortSignal.timeout(8000),
+        body: JSON.stringify({
+          workspace_id: workspaceId,
+          contact: { email, external_id: userId },
+          list_ids: [lifecycleListId],
+        }),
+      });
+      if (!subRes.ok) {
+        console.error(
+          "Notifuse lists.subscribe error",
+          subRes.status,
+          await subRes.text()
+        );
+      }
+    } catch (err) {
+      console.error("Notifuse lists.subscribe unreachable", err);
+    }
+  }
+
   // 2) Fire the lifecycle event (drives automations / contact timeline).
   // signed_up is idempotent (stable external_id); other events are per-occurrence.
   const externalId =

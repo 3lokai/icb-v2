@@ -28,8 +28,13 @@ import {
   type ApiKeyListItem,
   type KeyUsage,
 } from "@/app/actions/api-keys";
-import { UsageCharts } from "./UsageCharts";
+import dynamic from "next/dynamic";
 import { formatDistanceToNow } from "date-fns";
+
+// Code-split recharts (~283 KB) out of the dashboard first-load bundle.
+const UsageCharts = dynamic(() =>
+  import("./UsageCharts").then((m) => m.UsageCharts)
+);
 
 type DeveloperPortalProps = {
   initialKeys: ApiKeyListItem[];
