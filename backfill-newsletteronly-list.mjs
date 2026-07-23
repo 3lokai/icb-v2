@@ -52,9 +52,7 @@ for (let page = 1; ; page++) {
   authUsers.push(...batch);
   if (batch.length < PAGE) break;
 }
-const userEmails = new Set(
-  authUsers.map((u) => norm(u.email)).filter(Boolean)
-);
+const userEmails = new Set(authUsers.map((u) => norm(u.email)).filter(Boolean));
 
 // newsletter subscribers who are NOT registered users
 const targets = [
