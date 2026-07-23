@@ -633,8 +633,8 @@ export function RoasterCityChart() {
 }
 
 /**
- * Single client boundary for the whole insights grid so the server page can
- * dynamic-import it once, keeping recharts (~283 KB) out of first-load JS.
+ * Single client boundary for the whole insights grid so InsightsChartsGridLoader
+ * can dynamic-import it once, keeping recharts (~283 KB) out of first-load JS.
  */
 export function InsightsChartsGrid() {
   return (

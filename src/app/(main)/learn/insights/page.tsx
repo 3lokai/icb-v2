@@ -4,20 +4,13 @@ import { PageShell } from "@/components/primitives/page-shell";
 import { Stack } from "@/components/primitives/stack";
 import { Accent } from "@/components/primitives/accent";
 import StructuredData from "@/components/seo/StructuredData";
-import dynamic from "next/dynamic";
+import { InsightsChartsGridLoader } from "@/components/insights/InsightsChartsGridLoader";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import {
   fetchPublicDirectoryTotals,
   type PublicDirectoryTotals,
 } from "@/lib/data/fetch-public-directory-totals";
 import { createAnonServerClient } from "@/lib/supabase/server";
-
-// Dynamic-imported so recharts (~283 KB) code-splits out of first-load JS.
-const InsightsChartsGrid = dynamic(() =>
-  import("@/components/insights/InsightsCharts").then(
-    (m) => m.InsightsChartsGrid
-  )
-);
 
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -184,7 +177,7 @@ export default async function InsightsPage() {
 
           {/* Charts grid */}
           <div className="py-10 md:py-14 lg:py-16">
-            <InsightsChartsGrid />
+            <InsightsChartsGridLoader />
           </div>
 
           {/* Citation footer */}
