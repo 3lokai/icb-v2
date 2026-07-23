@@ -35,12 +35,14 @@ const { data: userData, error: uErr } = await supabase.auth.admin.listUsers({
   perPage: 1000,
 });
 if (uErr) throw uErr;
-const userEmails = new Set(userData.users.map((u) => norm(u.email)).filter(Boolean));
+const userEmails = new Set(
+  userData.users.map((u) => norm(u.email)).filter(Boolean)
+);
 
 // newsletter subscribers who are NOT registered users
-const targets = [...new Set(subs.map((r) => norm(r.email)).filter(Boolean))].filter(
-  (e) => !userEmails.has(e)
-);
+const targets = [
+  ...new Set(subs.map((r) => norm(r.email)).filter(Boolean)),
+].filter((e) => !userEmails.has(e));
 
 let done = 0;
 for (const email of targets) {
@@ -51,14 +53,18 @@ for (const email of targets) {
   }
   const res = await fetch(`${url}/api/lists.subscribe`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       workspace_id: ws,
       contact: { email },
       list_ids: [listId],
     }),
   });
-  if (!res.ok) throw new Error(`lists.subscribe ${res.status}: ${await res.text()}`);
+  if (!res.ok)
+    throw new Error(`lists.subscribe ${res.status}: ${await res.text()}`);
   console.log(`subscribed ${++done}/${targets.length} ${email}`);
 }
 console.log(
