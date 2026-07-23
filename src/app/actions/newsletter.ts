@@ -184,6 +184,43 @@ export async function subscribeToNewsletter(formData: FormData) {
         console.error("[ConvertKit] Subscription sync error:", err);
       });
 
+    // Anonymous newsletter signup → Notifuse "newsletter only" list. Logged-in
+    // users already land on icblifecycle via the signed_up trigger, so skip them.
+    // Fire-and-forget: a Notifuse hiccup must not fail the newsletter submission.
+    const nfUrl = process.env.NOTIFUSE_API_URL?.replace(/\/+$/, "");
+    const nfKey = process.env.NOTIFUSE_API_KEY;
+    const nfWs = process.env.NOTIFUSE_WORKSPACE_ID;
+    const nlListId = process.env.NOTIFUSE_NEWSLETTER_ONLY_LIST_ID;
+    if (!user?.id && nfUrl && nfKey && nfWs && nlListId) {
+      fetch(`${nfUrl}/api/lists.subscribe`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${nfKey}`,
+          "Content-Type": "application/json",
+        },
+        signal: AbortSignal.timeout(8000),
+        body: JSON.stringify({
+          workspace_id: nfWs,
+          contact: { email },
+          list_ids: [nlListId],
+        }),
+      })
+        .then(async (r) => {
+          if (!r.ok) {
+            console.error(
+              "Notifuse lists.subscribe error",
+              r.status,
+              await r.text()
+            );
+          }
+        })
+        .catch((err) =>
+          console.error("Notifuse lists.subscribe unreachable", err)
+        );
+      // ponytail: anon subscriber who later registers ends up on both lists.
+      // Acceptable for now; upgrade path = unsubscribe from newsletteronly on signed_up.
+    }
+
     // Track newsletter subscription
     getPostHogClient().capture({
       distinctId: user?.id || email,
