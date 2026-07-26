@@ -17,11 +17,14 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const { filters, page, limit, sort } =
       parseRoasterSearchParams(searchParams);
+    // The shared parser defaults to 100 so the /roasters hub ships every profile
+    // link in server HTML. Public API consumers keep the 15 they were built on.
+    const apiLimit = searchParams.get("limit") ? limit : 15;
 
     const roasterListResponse = await fetchRoasters(
       filters,
       page,
-      limit,
+      apiLimit,
       sort,
       supabase
     );
