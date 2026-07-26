@@ -2,7 +2,9 @@ import type { RoasterFilters, RoasterSort } from "@/types/roaster-types";
 
 // Default values for filters
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 15;
+// ponytail: 92 active roasters — one unpaginated page so every profile link
+// ships in server HTML (Googlebot never scrolls). Revisit past ~200 roasters.
+const DEFAULT_LIMIT = 100;
 const DEFAULT_SORT: RoasterSort = "relevance";
 
 /**
@@ -24,9 +26,11 @@ export function parseRoasterSearchParams(searchParams: URLSearchParams): {
   const pageParam = searchParams.get("page");
   const validPage = pageParam ? Number.parseInt(pageParam, 10) : DEFAULT_PAGE;
   const limitParam = searchParams.get("limit");
-  const validLimit = limitParam
+  const parsedLimit = limitParam
     ? Number.parseInt(limitParam, 10)
     : DEFAULT_LIMIT;
+  const validLimit =
+    Number.isNaN(parsedLimit) || parsedLimit < 1 ? DEFAULT_LIMIT : parsedLimit;
   const sortParam = searchParams.get("sort") as RoasterSort;
   const validSort = sortParam || DEFAULT_SORT;
 
