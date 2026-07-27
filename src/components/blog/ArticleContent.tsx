@@ -24,8 +24,15 @@ import { SeriesNavigation } from "./blocks/SeriesNavigation";
 import dynamic from "next/dynamic";
 
 // Code-split recharts (~283 KB) — only loads on articles that embed a chart.
-const DataChart = dynamic(() =>
-  import("./blocks/DataChart").then((m) => m.DataChart)
+// Sized loading fallback (matches DataChart's own internal loading state)
+// prevents a layout shift while the chart bundle streams in (CLS fix).
+const DataChart = dynamic(
+  () => import("./blocks/DataChart").then((m) => m.DataChart),
+  {
+    loading: () => (
+      <div className="h-80 my-12 rounded-2xl border border-border/40 bg-muted/50 animate-pulse" />
+    ),
+  }
 );
 
 interface ArticleContentProps {
