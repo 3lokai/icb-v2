@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<style>
+  @font-face{font-family:"DM Sans";src:url("fonts/DMSans.ttf");font-weight:100 1000;font-display:swap}
+  @font-face{font-family:"Fraunces";src:url("fonts/Fraunces.ttf");font-weight:100 1000;font-display:swap}
+  body{margin:0;background:oklch(0.982 0.009 79.92);color:oklch(0.222 0.03 54.20);font-family:"DM Sans",sans-serif}
+  input[type="range"]{-webkit-appearance:none;appearance:none;background:transparent}
+  input[type="range"]::-webkit-slider-runnable-track{height:8px;border-radius:9999px;background:oklch(0.901 0.05 84.54)}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:oklch(0.628 0.120 60.55);border:3px solid oklch(0.982 0.009 79.92);box-shadow:0 1px 3px oklch(0.222 0.03 54.20 / 0.3);margin-top:-9px;cursor:pointer}
+  input[type="range"]::-moz-range-track{height:8px;border-radius:9999px;background:oklch(0.901 0.05 84.54)}
+  input[type="range"]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:oklch(0.628 0.120 60.55);border:3px solid oklch(0.982 0.009 79.92);cursor:pointer}
+  a{color:oklch(0.628 0.120 60.55)}
+  a:hover{color:oklch(0.722 0.139 40.48)}
+</style>
+</helmet>
+<div style="min-height:100vh;padding:28px 20px 64px">
+  <div style="max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:28px">
+
+    <div style="display:flex;align-items:center;gap:12px">
+      <img src="assets/logo-192.png" alt="" style="width:32px;height:32px;border-radius:8px;object-fit:cover">
+      <div>
+        <h1 style="margin:0;font-family:Fraunces,serif;font-weight:500;font-size:22px;letter-spacing:-0.01em">Perfect brew calculator</h1>
+        <p style="margin:2px 0 0;font-size:14px;color:oklch(0.55 0.04 80)">Set how much coffee you're using — we'll tell you the water.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+
+      <div style="flex:1 1 420px;background:oklch(0.965 0.015 79.92);border:1px solid oklch(0.87 0.02 80 / 0.6);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:22px;min-width:300px">
+
+        <div>
+          <div style="font-size:12px;font-weight:500;letter-spacing:0.04em;color:oklch(0.55 0.04 80);margin-bottom:10px">Brewing method</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ methodChips }}" as="chip" hint-placeholder-count="6">
+              <button type="button" onClick="{{ chip.onClick }}" style="{{ chip.style }}">{{ chip.name }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+            <span style="font-size:12px;font-weight:500;letter-spacing:0.04em;color:oklch(0.55 0.04 80)">How much coffee are you using?</span>
+            <span style="font-size:13px;color:oklch(0.55 0.04 80)">{{ tbspLabel }}</span>
+          </div>
+          <div style="text-align:center;padding:10px 0 6px">
+            <span style="font-family:Fraunces,serif;font-weight:400;font-size:clamp(48px,10vw,64px);letter-spacing:-0.02em">{{ gramsDisplay }}</span>
+            <span style="font-family:Fraunces,serif;font-size:24px;color:oklch(0.55 0.04 80)"> g</span>
+          </div>
+          <input type="range" min="{{ method.minGrams }}" max="{{ method.maxGrams }}" step="{{ method.stepGrams }}" value="{{ coffeeGrams }}" onChange="{{ onGramsInput }}" style="width:100%;height:26px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:oklch(0.55 0.04 80);margin-top:4px">
+            <span>{{ method.minGrams }}g</span>
+            <span>{{ method.maxGrams }}g</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:12px;font-weight:500;letter-spacing:0.04em;color:oklch(0.55 0.04 80);margin-bottom:8px">Strength</div>
+          <div style="display:flex;gap:8px">
+            <sc-for list="{{ strengthOptions }}" as="opt" hint-placeholder-count="3">
+              <button type="button" onClick="{{ opt.onClick }}" style="{{ opt.style }}">{{ opt.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:12px;font-weight:500;letter-spacing:0.04em;color:oklch(0.55 0.04 80);margin-bottom:8px">Roast level</div>
+          <div style="display:flex;gap:8px">
+            <sc-for list="{{ roastOptions }}" as="opt" hint-placeholder-count="3">
+              <button type="button" onClick="{{ opt.onClick }}" style="{{ opt.style }}">{{ opt.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="flex:1 1 340px;background:oklch(0.901 0.05 84.54 / 0.55);border:1px solid oklch(0.87 0.02 80 / 0.6);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px;min-width:280px">
+
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="font-size:12px;font-weight:500;letter-spacing:0.04em;color:oklch(0.55 0.04 80)">You'll need</span>
+          <button type="button" onClick="{{ copyLink }}" style="{{ copyButtonStyle }}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            {{ copyLabel }}
+          </button>
+        </div>
+
+        <div style="text-align:center">
+          <span style="font-family:Fraunces,serif;font-weight:400;font-size:clamp(48px,10vw,64px);letter-spacing:-0.02em;color:oklch(0.722 0.139 40.48)">{{ waterDisplay }}</span>
+          <span style="font-family:Fraunces,serif;font-size:24px;color:oklch(0.55 0.04 80)"> ml water</span>
+          <div style="font-size:13px;color:oklch(0.55 0.04 80);margin-top:4px">ratio {{ ratioLabel }} · {{ method.name }}</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid oklch(0.87 0.02 80 / 0.6)">
+          <div style="display:flex;justify-content:space-between;padding:10px 2px;border-bottom:1px solid oklch(0.87 0.02 80 / 0.5);font-size:14px">
+            <span style="color:oklch(0.55 0.04 80)">Water temperature</span>
+            <span>{{ temp }}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 2px;border-bottom:1px solid oklch(0.87 0.02 80 / 0.5);font-size:14px">
+            <span style="color:oklch(0.55 0.04 80)">Grind size</span>
+            <span>{{ method.grindSize }}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 2px;font-size:14px">
+            <span style="color:oklch(0.55 0.04 80)">Brew time</span>
+            <span>{{ method.brewTimeLabel }}</span>
+          </div>
+        </div>
+
+        <sc-if value="{{ hasTimer }}" hint-placeholder-val="{{ true }}">
+          <div style="background:oklch(0.982 0.009 79.92);border:1px solid oklch(0.87 0.02 80 / 0.6);border-radius:10px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px">
+            <span style="font-family:Fraunces,serif;font-size:32px;font-variant-numeric:tabular-nums">{{ timerDisplay }}</span>
+            <div style="display:flex;gap:8px">
+              <button type="button" onClick="{{ toggleTimer }}" style="{{ timerButtonStyle }}">{{ timerButtonLabel }}</button>
+              <sc-if value="{{ timerShowReset }}" hint-placeholder-val="{{ false }}">
+                <button type="button" onClick="{{ resetTimer }}" style="height:40px;padding:0 16px;border-radius:8px;border:1px solid oklch(0.87 0.02 80);background:transparent;color:oklch(0.222 0.03 54.20);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer">Reset</button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ hasTimerFalse }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:13px;color:oklch(0.55 0.04 80);text-align:center;padding:8px 0">{{ noTimerNote }}</div>
+        </sc-if>
+
+      </div>
+
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:500;letter-spacing:0.04em;color:oklch(0.55 0.04 80);margin-bottom:10px">Tips for {{ method.name }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        <sc-for list="{{ tips }}" as="tip" hint-placeholder-count="2">
+          <div style="flex:1 1 280px;background:oklch(0.965 0.015 79.92);border:1px solid oklch(0.87 0.02 80 / 0.6);border-radius:10px;padding:16px;display:flex;gap:12px;min-width:220px">
+            <span style="flex-shrink:0;width:22px;height:22px;border-radius:50%;background:oklch(0.628 0.120 60.55 / 0.14);color:oklch(0.628 0.120 60.55);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center">{{ tip.n }}</span>
+            <span style="font-size:13px;line-height:1.6;color:oklch(0.222 0.03 54.20)">{{ tip.text }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CHIP_BASE = "height:34px;padding:0 14px;border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;border:1px solid ";
+const SEG_BASE = "flex:1;height:40px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background .15s,color .15s;border:1px solid ";
+
+const METHODS = [
+  { id: "pourover", name: "Pour over", ratios: { mild: 18, average: 16, robust: 13 }, grindSize: "Medium-fine", brewTimeLabel: "3-4 min total", timerSeconds: 210, temps: { light: "95-100°C", medium: "90-93°C", dark: "87-90°C" }, defaultGrams: 20, minGrams: 10, maxGrams: 40, stepGrams: 1, tips: ["Use a gooseneck kettle for controlled, circular pouring.", "Bloom for 30-45 seconds with 2x coffee weight in water."] },
+  { id: "frenchpress", name: "French press", ratios: { mild: 18, average: 15, robust: 13 }, grindSize: "Coarse", brewTimeLabel: "4 min steep", timerSeconds: 240, temps: { light: "95-100°C", medium: "90-93°C", dark: "87-90°C" }, defaultGrams: 25, minGrams: 15, maxGrams: 50, stepGrams: 1, tips: ["Stir the grounds after adding water for even saturation.", "Press slowly, then serve immediately to avoid over-extraction."] },
+  { id: "chemex", name: "Chemex", ratios: { mild: 18, average: 16, robust: 13 }, grindSize: "Medium-coarse", brewTimeLabel: "4-6 min total", timerSeconds: 300, temps: { light: "95-100°C", medium: "90-93°C", dark: "87-90°C" }, defaultGrams: 30, minGrams: 15, maxGrams: 60, stepGrams: 1, tips: ["Rinse the filter thoroughly to remove any papery taste.", "Use a slower pour rate for even saturation."] },
+  { id: "aeropress", name: "AeroPress", ratios: { mild: 18, average: 15, robust: 12 }, grindSize: "Medium-fine", brewTimeLabel: "1-2 min", timerSeconds: 90, temps: { light: "85-90°C", medium: "80-85°C", dark: "74-79°C" }, defaultGrams: 15, minGrams: 10, maxGrams: 25, stepGrams: 0.5, tips: ["Try the inverted method for longer steep times.", "Press slowly and steadily over 20-30 seconds."] },
+  { id: "autodrip", name: "Auto drip", ratios: { mild: 18, average: 17, robust: 13 }, grindSize: "Medium", brewTimeLabel: "5-6 min cycle", timerSeconds: 330, temps: { light: "93-96°C", medium: "90-93°C", dark: "87-90°C" }, defaultGrams: 60, minGrams: 20, maxGrams: 100, stepGrams: 1, tips: ["Use filtered water for the best taste.", "Clean the machine regularly to prevent mineral buildup."] },
+  { id: "mokapot", name: "Moka pot", ratios: { mild: 9, average: 8, robust: 6 }, grindSize: "Fine, not powder", brewTimeLabel: "5-8 min heating", timerSeconds: 390, temps: { light: "Medium heat", medium: "Medium-low heat", dark: "Low heat" }, defaultGrams: 15, minGrams: 8, maxGrams: 25, stepGrams: 0.5, tips: ["Fill the water chamber to the safety valve only.", "Remove from heat once gurgling starts."] },
+  { id: "siphon", name: "Siphon", ratios: { mild: 16, average: 14, robust: 12 }, grindSize: "Medium-fine", brewTimeLabel: "3-5 min cycle", timerSeconds: 240, temps: { light: "95-100°C", medium: "90-93°C", dark: "87-90°C" }, defaultGrams: 25, minGrams: 12, maxGrams: 45, stepGrams: 1, tips: ["Maintain consistent heat throughout the cycle.", "Stir gently once after adding coffee."] },
+  { id: "coldbrew", name: "Cold brew", ratios: { mild: 8, average: 6, robust: 4 }, grindSize: "Extra coarse", brewTimeLabel: "12-24 hr steep", timerSeconds: null, temps: { light: "Room temp", medium: "Room temp", dark: "Room temp" }, defaultGrams: 100, minGrams: 50, maxGrams: 200, stepGrams: 5, tips: ["Use extra coarse grind to avoid cloudiness.", "Dilute the concentrate 1:1 with water, ice, or milk to taste."] },
+  { id: "espresso", name: "Espresso", ratios: { mild: 3, average: 2, robust: 1.5 }, grindSize: "Extra fine", brewTimeLabel: "25-30 sec", timerSeconds: 27, temps: { light: "93-96°C", medium: "90-93°C", dark: "87-90°C" }, defaultGrams: 18, minGrams: 14, maxGrams: 22, stepGrams: 0.5, tips: ["Tamp evenly for consistent extraction.", "Fresh grind is crucial for proper crema."] },
+  { id: "turkish", name: "Turkish coffee", ratios: { mild: 12, average: 10, robust: 8 }, grindSize: "Powder fine", brewTimeLabel: "3-4 min simmer", timerSeconds: 210, temps: { light: "Slow simmer", medium: "Slow simmer", dark: "Slow simmer" }, defaultGrams: 7, minGrams: 5, maxGrams: 15, stepGrams: 0.5, tips: ["Watch for foam carefully — remove just as it rises.", "Serve immediately without stirring the settled grounds."] },
+  { id: "southindianfilter", name: "South Indian filter", ratios: { mild: 4, average: 3, robust: 2.5 }, grindSize: "Fine to medium-fine", brewTimeLabel: "15-20 min drip", timerSeconds: null, temps: { light: "100°C", medium: "100°C", dark: "100°C" }, defaultGrams: 20, minGrams: 10, maxGrams: 40, stepGrams: 1, tips: ["Pack the grounds firmly but not too tight.", "Mix decoction with hot milk in a 1:3 or 1:4 ratio."] },
+  { id: "v60", name: "Hario V60", ratios: { mild: 18, average: 16, robust: 14 }, grindSize: "Medium-fine", brewTimeLabel: "2:30-3:30 total", timerSeconds: 180, temps: { light: "95-100°C", medium: "92-95°C", dark: "88-92°C" }, defaultGrams: 20, minGrams: 10, maxGrams: 40, stepGrams: 1, tips: ["Requires precise pouring technique for best results.", "Excellent for highlighting origin characteristics."] },
+  { id: "kalitawave", name: "Kalita Wave", ratios: { mild: 17, average: 15, robust: 13 }, grindSize: "Medium", brewTimeLabel: "3-4 min total", timerSeconds: 210, temps: { light: "95-100°C", medium: "90-93°C", dark: "87-90°C" }, defaultGrams: 22, minGrams: 10, maxGrams: 40, stepGrams: 1, tips: ["Flat bottom gives even water contact with the bed.", "Less technique-sensitive than V60 — great for beginners."] },
+];
+
+const STRENGTH_LABELS = { mild: "Mild", average: "Medium", robust: "Robust" };
+const ROAST_LABELS = { light: "Light", medium: "Medium", dark: "Dark" };
+
+function formatTime(totalSeconds) {
+  const m = Math.floor(totalSeconds / 60);
+  const s = Math.floor(totalSeconds % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+class Component extends DCLogic {
+  state = {
+    methodId: "pourover",
+    coffeeGrams: 20,
+    strength: "average",
+    roast: "medium",
+    timerRunning: false,
+    timerRemaining: 210,
+    copied: false,
+  };
+
+  timerHandle = null;
+
+  componentWillUnmount() {
+    if (this.timerHandle) clearInterval(this.timerHandle);
+  }
+
+  selectMethod(id) {
+    if (this.timerHandle) clearInterval(this.timerHandle);
+    const method = METHODS.find((m) => m.id === id);
+    this.setState({
+      methodId: id,
+      coffeeGrams: method.defaultGrams,
+      timerRunning: false,
+      timerRemaining: method.timerSeconds || 0,
+    });
+  }
+
+  setGrams(val) {
+    this.setState({ coffeeGrams: parseFloat(val) });
+  }
+
+  setStrength(s) {
+    this.setState({ strength: s });
+  }
+
+  setRoast(r) {
+    this.setState({ roast: r });
+  }
+
+  toggleTimer() {
+    const method = this.getMethod();
+    if (this.state.timerRunning) {
+      clearInterval(this.timerHandle);
+      this.setState({ timerRunning: false });
+      return;
+    }
+    let remaining = this.state.timerRemaining;
+    if (remaining <= 0) remaining = method.timerSeconds || 0;
+    this.setState({ timerRunning: true, timerRemaining: remaining });
+    this.timerHandle = setInterval(() => {
+      this.setState((s) => {
+        const next = s.timerRemaining - 1;
+        if (next <= 0) {
+          clearInterval(this.timerHandle);
+          return { timerRemaining: 0, timerRunning: false };
+        }
+        return { timerRemaining: next };
+      });
+    }, 1000);
+  }
+
+  resetTimer() {
+    if (this.timerHandle) clearInterval(this.timerHandle);
+    const method = this.getMethod();
+    this.setState({ timerRunning: false, timerRemaining: method.timerSeconds || 0 });
+  }
+
+  copyLink() {
+    const s = this.state;
+    const summary = `${this.getMethod().name}: ${s.coffeeGrams}g coffee, ratio 1:${this.getMethod().ratios[s.strength]}, ${s.roast} roast`;
+    if (navigator.clipboard) navigator.clipboard.writeText(summary).catch(() => {});
+    this.setState({ copied: true });
+    setTimeout(() => this.setState({ copied: false }), 1500);
+  }
+
+  getMethod() {
+    return METHODS.find((m) => m.id === this.state.methodId);
+  }
+
+  renderVals() {
+    const { methodId, coffeeGrams, strength, roast, timerRunning, timerRemaining, copied } = this.state;
+    const method = this.getMethod();
+    const ratio = method.ratios[strength];
+    const water = Math.round(coffeeGrams * ratio);
+    const tbsp = Math.round((coffeeGrams / 6) * 10) / 10;
+    const hasTimer = method.timerSeconds != null;
+
+    const methodChips = METHODS.map((m) => {
+      const active = m.id === methodId;
+      return {
+        id: m.id,
+        name: m.name,
+        onClick: () => this.selectMethod(m.id),
+        style: CHIP_BASE + (active ? "oklch(0.628 0.120 60.55);background:oklch(0.628 0.120 60.55);color:oklch(0.965 0.012 65.81)" : "oklch(0.87 0.02 80);background:transparent;color:oklch(0.222 0.03 54.20)"),
+      };
+    });
+
+    const strengthOptions = ["mild", "average", "robust"].map((k) => {
+      const active = k === strength;
+      return {
+        key: k,
+        label: STRENGTH_LABELS[k],
+        onClick: () => this.setStrength(k),
+        style: SEG_BASE + (active ? "oklch(0.628 0.120 60.55);background:oklch(0.628 0.120 60.55);color:oklch(0.965 0.012 65.81)" : "oklch(0.87 0.02 80);background:oklch(0.982 0.009 79.92);color:oklch(0.222 0.03 54.20)"),
+      };
+    });
+
+    const roastOptions = ["light", "medium", "dark"].map((k) => {
+      const active = k === roast;
+      return {
+        key: k,
+        label: ROAST_LABELS[k],
+        onClick: () => this.setRoast(k),
+        style: SEG_BASE + (active ? "oklch(0.722 0.139 40.48);background:oklch(0.722 0.139 40.48);color:oklch(0.961 0.01 46.74)" : "oklch(0.87 0.02 80);background:oklch(0.982 0.009 79.92);color:oklch(0.222 0.03 54.20)"),
+      };
+    });
+
+    const tips = (method.tips || []).map((text, i) => ({ n: i + 1, text }));
+
+    return {
+      method,
+      coffeeGrams,
+      gramsDisplay: coffeeGrams,
+      tbspLabel: `≈ ${tbsp} tbsp`,
+      waterDisplay: water,
+      ratioLabel: `1:${ratio}`,
+      temp: method.temps[roast],
+      methodChips,
+      strengthOptions,
+      roastOptions,
+      tips,
+      onGramsInput: (e) => this.setGrams(e.target.value),
+      hasTimer,
+      hasTimerFalse: !hasTimer,
+      noTimerNote: method.id === "coldbrew" ? "Steeps 12-24 hours in the fridge — no timer needed." : "Drips slowly over 15-20 minutes, unattended.",
+      timerDisplay: formatTime(timerRemaining),
+      timerRunning,
+      timerShowReset: timerRemaining !== (method.timerSeconds || 0) || timerRunning,
+      timerButtonLabel: timerRunning ? "Pause timer" : timerRemaining > 0 && timerRemaining < (method.timerSeconds || 0) ? "Resume timer" : "Start brew timer",
+      timerButtonStyle: "height:40px;padding:0 20px;border-radius:8px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;background:oklch(0.628 0.120 60.55);color:oklch(0.965 0.012 65.81)",
+      toggleTimer: () => this.toggleTimer(),
+      resetTimer: () => this.resetTimer(),
+      copyLink: () => this.copyLink(),
+      copyLabel: copied ? "Copied" : "Copy recipe",
+      copyButtonStyle: "display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:9999px;border:1px solid oklch(0.87 0.02 80);background:transparent;color:oklch(0.55 0.04 80);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer",
+    };
+  }
+}
+
+</script>
+</body>
+</html>

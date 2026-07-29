@@ -28,6 +28,10 @@ export type BrewingMethod = {
   flavorProfile: string;
   recommendedRoast: RoastLevel[];
   tips: string[];
+  minGrams: number;
+  maxGrams: number;
+  stepGrams: number;
+  defaultGrams: number;
 };
 
 export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
@@ -52,6 +56,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Bloom for 30-45 seconds with 2x coffee weight in water",
       "Maintain steady pour rate to hit target brew time",
     ],
+    minGrams: 10,
+    maxGrams: 40,
+    stepGrams: 1,
+    defaultGrams: 20,
   },
   frenchpress: {
     id: "frenchpress",
@@ -74,6 +82,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Steep for exactly 4 minutes, then press slowly",
       "Serve immediately to prevent over-extraction",
     ],
+    minGrams: 15,
+    maxGrams: 50,
+    stepGrams: 1,
+    defaultGrams: 25,
   },
   chemex: {
     id: "chemex",
@@ -96,6 +108,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Grind slightly coarser than V60 to compensate for thick filter",
       "Focus on even saturation with slower pour rate",
     ],
+    minGrams: 15,
+    maxGrams: 60,
+    stepGrams: 1,
+    defaultGrams: 30,
   },
   aeropress: {
     id: "aeropress",
@@ -118,6 +134,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Press slowly and steadily over 20-30 seconds",
       "Dilute concentrate to taste with hot water if desired",
     ],
+    minGrams: 10,
+    maxGrams: 25,
+    stepGrams: 0.5,
+    defaultGrams: 15,
   },
   autodrip: {
     id: "autodrip",
@@ -140,6 +160,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Use filtered water for best taste and machine longevity",
       "Replace heating element if brew temperature drops below 90°C",
     ],
+    minGrams: 20,
+    maxGrams: 100,
+    stepGrams: 1,
+    defaultGrams: 60,
   },
   mokapot: {
     id: "mokapot",
@@ -162,6 +186,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Pack coffee grounds lightly, level but not compressed",
       "Remove from heat when gurgling starts, let sit 30 seconds before serving",
     ],
+    minGrams: 8,
+    maxGrams: 25,
+    stepGrams: 0.5,
+    defaultGrams: 15,
   },
   siphon: {
     id: "siphon",
@@ -184,6 +212,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Time the brewing carefully - 1-2 minutes is optimal",
       "Let vacuum draw coffee down naturally for clean finish",
     ],
+    minGrams: 12,
+    maxGrams: 45,
+    stepGrams: 1,
+    defaultGrams: 25,
   },
   coldbrew: {
     id: "coldbrew",
@@ -206,6 +238,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Filter through fine mesh or paper filter before serving",
       "Dilute concentrate 1:1 with water, ice, or milk to taste",
     ],
+    minGrams: 50,
+    maxGrams: 200,
+    stepGrams: 5,
+    defaultGrams: 100,
   },
   espresso: {
     id: "espresso",
@@ -228,6 +264,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Aim for 25-30 second extraction time for balanced flavor",
       "Fresh grind is crucial for proper crema formation",
     ],
+    minGrams: 14,
+    maxGrams: 22,
+    stepGrams: 0.5,
+    defaultGrams: 18,
   },
   turkish: {
     id: "turkish",
@@ -250,6 +290,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Watch for foam formation carefully - remove just as it rises",
       "Serve immediately with grounds settled at bottom, do not stir",
     ],
+    minGrams: 5,
+    maxGrams: 15,
+    stepGrams: 0.5,
+    defaultGrams: 7,
   },
   southindianfilter: {
     id: "southindianfilter",
@@ -272,6 +316,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Let decoction drip slowly - patience creates better extraction",
       "Mix decoction with hot milk in 1:3 or 1:4 ratio, add sugar to taste",
     ],
+    minGrams: 10,
+    maxGrams: 40,
+    stepGrams: 1,
+    defaultGrams: 20,
   },
   v60: {
     id: "v60",
@@ -294,6 +342,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Spiral ridges promote even extraction",
       "Excellent for highlighting origin characteristics",
     ],
+    minGrams: 10,
+    maxGrams: 40,
+    stepGrams: 1,
+    defaultGrams: 20,
   },
   kalitawave: {
     id: "kalitawave",
@@ -316,6 +368,10 @@ export const BREWING_METHODS: Record<BrewingMethodKey, BrewingMethod> = {
       "Less technique-sensitive than V60 - great for beginners",
       "Wave filters prevent clogging and over-extraction",
     ],
+    minGrams: 10,
+    maxGrams: 40,
+    stepGrams: 1,
+    defaultGrams: 22,
   },
 };
 

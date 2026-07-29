@@ -270,8 +270,27 @@ export function GrindConverterClient() {
             )}
 
             <p className="text-micro leading-relaxed text-muted-foreground/80">
-              Settings are interpolated starting points, not exact factory
-              calibration. Dial in by taste from here.
+              {result.source === "estimated" ? (
+                <>
+                  Estimated from the {grinder.label}&apos;s micron range — not a
+                  published setting. Treat it as a starting point.
+                </>
+              ) : (
+                <>
+                  Published starting point, not exact factory calibration.{" "}
+                  {result.sourceUrl ? (
+                    <a
+                      href={result.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-2 hover:text-foreground"
+                    >
+                      Source
+                    </a>
+                  ) : null}
+                </>
+              )}{" "}
+              Dial in by taste from here.
             </p>
           </Stack>
         </div>

@@ -9,6 +9,7 @@ import {
 } from "react";
 import {
   ArrowCounterClockwiseIcon,
+  CaretDownIcon,
   CheckIcon,
   PauseIcon,
   PlayIcon,
@@ -43,6 +44,7 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [vibrationSupported, setVibrationSupported] = useState(false);
   const [vibrationEnabled, setVibrationEnabled] = useState(true);
+  const [showAllSteps, setShowAllSteps] = useState(false);
 
   // Refs
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -386,25 +388,28 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
         </div>
 
         {/* Timer Display */}
-        <div className="surface-1 rounded-2xl p-6 text-center">
-          <div
-            className={`mb-4 font-bold font-mono text-display transition-colors duration-300 ${
+        <div className="flex flex-col items-center gap-3 py-2 text-center">
+          <span
+            className={`font-serif text-display leading-none tabular-nums tracking-tight transition-colors duration-300 ${
               isRunning ? "text-primary" : "text-foreground"
             }`}
           >
             {formatTime(currentTime)}
-          </div>
-          <Progress className="mb-2 h-2 w-full" value={progressPercentage} />
-          <div className="text-muted-foreground text-caption">
+          </span>
+          <Progress
+            className="h-1.5 w-full max-w-xs"
+            value={progressPercentage}
+          />
+          <span className="text-muted-foreground text-overline">
             Total brew time: {formatTime(steps.at(-1)?.time || 0)}
-          </div>
+          </span>
         </div>
 
         {/* Timer Controls */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+        <div className="flex justify-center gap-3">
           {isRunning ? (
             <Button
-              className="h-12 flex-1 hover-lift px-6 sm:flex-initial"
+              className="h-10 rounded-full px-6"
               onClick={pauseTimer}
               variant="outline"
             >
@@ -412,23 +417,22 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
               {isPaused ? "Resume" : "Pause"}
             </Button>
           ) : (
-            <Button
-              className="h-12 flex-1 hover-lift px-6 sm:flex-initial"
-              onClick={startTimer}
-            >
+            <Button className="h-10 rounded-full px-6" onClick={startTimer}>
               <Icon className="mr-2 h-4 w-4" icon={PlayIcon} />
-              Start Timer
+              {currentTime > 0 ? "Resume" : "Start brew timer"}
             </Button>
           )}
 
-          <Button
-            className="h-12 flex-1 hover-lift px-6 sm:flex-initial"
-            onClick={resetTimer}
-            variant="outline"
-          >
-            <Icon className="mr-2 h-4 w-4" icon={ArrowCounterClockwiseIcon} />
-            Reset
-          </Button>
+          {currentTime > 0 && (
+            <Button
+              className="h-10 rounded-full px-6"
+              onClick={resetTimer}
+              variant="outline"
+            >
+              <Icon className="mr-2 h-4 w-4" icon={ArrowCounterClockwiseIcon} />
+              Reset
+            </Button>
+          )}
         </div>
 
         {/* Current Step */}
@@ -452,72 +456,83 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
           </div>
         )}
 
-        {/* All Steps */}
-        <div className="space-y-4">
-          <div>
-            <h4 className="mb-2 font-medium text-primary text-caption">
-              Brewing Steps
+        {/* All Steps — collapsed by default to keep the card compact */}
+        <div>
+          <button
+            className="flex w-full items-center justify-between text-left"
+            onClick={() => setShowAllSteps((prev) => !prev)}
+            type="button"
+          >
+            <h4 className="font-medium text-primary text-caption">
+              All brewing steps
             </h4>
-            <div className="h-1 w-16 rounded-full bg-accent" />
-          </div>
-          <div className="space-y-2">
-            {steps.map((step, index) => {
-              // Calculate step state classes
-              const getStepCardClassName = () => {
-                if (step.isCompleted) {
-                  return "border-green-500/30 bg-green-500/10";
-                }
-                if (currentTime >= step.time) {
-                  return "border-accent/30 bg-accent/10";
-                }
-                return "";
-              };
+            <Icon
+              className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
+                showAllSteps ? "rotate-180" : ""
+              }`}
+              icon={CaretDownIcon}
+            />
+          </button>
+          {showAllSteps && (
+            <div className="mt-3 space-y-2">
+              {steps.map((step, index) => {
+                // Calculate step state classes
+                const getStepCardClassName = () => {
+                  if (step.isCompleted) {
+                    return "border-green-500/30 bg-green-500/10";
+                  }
+                  if (currentTime >= step.time) {
+                    return "border-accent/30 bg-accent/10";
+                  }
+                  return "";
+                };
 
-              const getStepBadgeClassName = () => {
-                if (step.isCompleted) {
-                  return "bg-green-500 text-white shadow-sm";
-                }
-                if (currentTime >= step.time) {
-                  return "bg-accent text-accent-foreground";
-                }
-                return "bg-muted text-muted-foreground";
-              };
+                const getStepBadgeClassName = () => {
+                  if (step.isCompleted) {
+                    return "bg-green-500 text-white shadow-sm";
+                  }
+                  if (currentTime >= step.time) {
+                    return "bg-accent text-accent-foreground";
+                  }
+                  return "bg-muted text-muted-foreground";
+                };
 
-              const getStepTextClassName = () => {
-                if (step.isCompleted) {
-                  return "font-medium text-green-700 dark:text-green-300";
-                }
-                if (currentTime >= step.time) {
-                  return "font-medium text-foreground";
-                }
-                return "text-muted-foreground";
-              };
+                const getStepTextClassName = () => {
+                  if (step.isCompleted) {
+                    return "font-medium text-green-700 dark:text-green-300";
+                  }
+                  if (currentTime >= step.time) {
+                    return "font-medium text-foreground";
+                  }
+                  return "text-muted-foreground";
+                };
 
-              return (
-                <div
-                  className={`surface-1 card-padding card-hover group rounded-lg ${getStepCardClassName()}`}
-                  key={`step-${step.time}-${step.instruction.slice(0, 10)}-${index}`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`flex h-8 w-8 items-center justify-center rounded-full font-medium text-overline transition-colors duration-200 ${getStepBadgeClassName()}`}
-                    >
-                      {step.isCompleted ? (
-                        <Icon className="h-3 w-3" icon={CheckIcon} />
-                      ) : (
-                        <span>{formatTime(step.time)}</span>
-                      )}
+                return (
+                  <div
+                    className={`surface-1 card-padding card-hover group rounded-lg ${getStepCardClassName()}`}
+                    key={`step-${step.time}-${step.instruction.slice(0, 10)}-${index}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`flex h-8 w-8 items-center justify-center rounded-full font-medium text-overline transition-colors duration-200 ${getStepBadgeClassName()}`}
+                      >
+                        {step.isCompleted ? (
+                          <Icon className="h-3 w-3" icon={CheckIcon} />
+                        ) : (
+                          <span>{formatTime(step.time)}</span>
+                        )}
+                      </div>
+                      <span
+                        className={`flex-1 text-caption transition-colors ${getStepTextClassName()}`}
+                      >
+                        {step.instruction}
+                      </span>
                     </div>
-                    <span
-                      className={`flex-1 text-caption transition-colors ${getStepTextClassName()}`}
-                    >
-                      {step.instruction}
-                    </span>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>

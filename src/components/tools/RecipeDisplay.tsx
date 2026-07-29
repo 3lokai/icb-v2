@@ -3,15 +3,11 @@ import { useState } from "react";
 import {
   CoffeeIcon,
   CopyIcon,
-  PaletteIcon,
-  PrinterIcon,
   ScalesIcon,
-  ShareNetworkIcon,
   ThermometerIcon,
   TimerIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -73,7 +69,7 @@ Made with IndianCoffeeBeans.com
       <div className={`surface-1 card-padding rounded-lg ${className}`}>
         <div className="mb-6 flex items-center gap-2">
           <Icon className="h-5 w-5 text-primary" icon={CoffeeIcon} />
-          <h3 className="text-subheading">Your Recipe</h3>
+          <h3 className="text-subheading">You&apos;ll need</h3>
         </div>
         <div className="py-8 text-center text-muted-foreground">
           <Icon
@@ -81,7 +77,7 @@ Made with IndianCoffeeBeans.com
             icon={CoffeeIcon}
           />
           <p className="text-caption">
-            Select brewing method to calculate your perfect recipe
+            Select a brewing method to see your recipe
           </p>
         </div>
       </div>
@@ -92,44 +88,39 @@ Made with IndianCoffeeBeans.com
     <div className={`surface-1 card-padding rounded-lg ${className}`}>
       <div className="space-y-4">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Icon className="h-5 w-5 text-primary" icon={CoffeeIcon} />
-            <h3 className="text-subheading">Your Recipe</h3>
-          </div>
-          <Badge className="badge border-border/50 bg-background/90 text-foreground">
-            {results.method.name}
-          </Badge>
+        <div className="flex items-start justify-between">
+          <span className="font-medium text-caption text-muted-foreground">
+            You&apos;ll need
+          </span>
+          <Button
+            aria-describedby={copyError ? "recipe-copy-error" : undefined}
+            aria-invalid={copyError ? true : undefined}
+            className="h-8 gap-1.5 rounded-full text-overline"
+            onClick={handleCopyRecipe}
+            size="sm"
+            variant="outline"
+          >
+            <Icon className="h-3.5 w-3.5" icon={CopyIcon} />
+            {copied ? "Copied" : "Copy recipe"}
+          </Button>
         </div>
 
-        {/* Main Recipe Amounts */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="surface-1 card-padding card-hover text-center rounded-lg">
-            <div className="mb-1 text-title text-primary">
-              {Math.round(results.coffeeAmount * 10) / 10}g
-            </div>
-            <div className="mb-1 text-muted-foreground text-caption">
-              Coffee
-            </div>
-            <div className="text-muted-foreground text-overline">
-              {Math.round((results.coffeeAmount / 6) * 10) / 10} tbsp
-            </div>
-          </div>
-
-          <div className="surface-1 card-padding card-hover text-center rounded-lg">
-            <div className="mb-1 text-title text-primary">
-              {Math.round(results.waterAmount)}ml
-            </div>
-            <div className="mb-1 text-muted-foreground text-caption">Water</div>
-            <div className="text-muted-foreground text-overline">
-              {Math.round((results.waterAmount / 29.5735) * 10) / 10} fl oz
-            </div>
+        {/* Water output */}
+        <div className="text-center">
+          <span className="font-serif text-display leading-none tracking-tight text-accent">
+            {Math.round(results.waterAmount)}
+          </span>
+          <span className="ml-1 font-serif text-subheading text-muted-foreground">
+            ml water
+          </span>
+          <div className="mt-1 text-caption text-muted-foreground">
+            ratio {results.ratio} · {results.method.name}
           </div>
         </div>
 
         <Separator className="bg-border/50" />
 
-        {/* Recipe Details - Enhanced with icons */}
+        {/* Recipe Details */}
         <div className="space-y-3">
           <div className="flex items-center justify-between rounded-lg bg-background/60 p-2">
             <div className="flex items-center gap-2 text-caption">
@@ -170,71 +161,6 @@ Made with IndianCoffeeBeans.com
               {results.grindSize}
             </span>
           </div>
-        </div>
-
-        <Separator className="bg-border/50" />
-
-        {/* Method Info */}
-        <div className="surface-1 rounded-lg p-4">
-          <div>
-            <div className="mb-2 flex items-center gap-2">
-              <Icon className="h-4 w-4 text-accent" icon={PaletteIcon} />
-              <span className="font-medium text-accent text-overline">
-                Flavor Profile
-              </span>
-            </div>
-            <p className="mb-1 font-medium text-caption">
-              {results.method.flavorProfile}
-            </p>
-            <p className="text-muted-foreground text-caption leading-relaxed">
-              {results.method.description}
-            </p>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex gap-2">
-          <Button
-            aria-describedby={copyError ? "recipe-copy-error" : undefined}
-            aria-invalid={copyError ? true : undefined}
-            className="flex-1"
-            onClick={handleCopyRecipe}
-            size="sm"
-            variant="outline"
-          >
-            <Icon className="mr-2 h-4 w-4" icon={CopyIcon} />
-            {copied ? "Copied!" : "Copy"}
-          </Button>
-
-          <Button onClick={() => window.print()} size="sm" variant="outline">
-            <Icon className="h-4 w-4" icon={PrinterIcon} />
-          </Button>
-
-          <Button
-            onClick={() => {
-              if (navigator.share) {
-                // Share can reject when the user dismisses the sheet (AbortError);
-                // swallow that, fall back to copy on a real failure.
-                navigator
-                  .share({
-                    title: `${results.method.name} Coffee Recipe`,
-                    text: `Perfect ${results.method.name} recipe: ${formatCoffeeAmount(results.coffeeAmount)} coffee + ${results.waterAmount}ml water`,
-                    url: window.location.href,
-                  })
-                  .catch((err) => {
-                    if (err?.name !== "AbortError") {
-                      handleCopyRecipe();
-                    }
-                  });
-              } else {
-                handleCopyRecipe();
-              }
-            }}
-            size="sm"
-            variant="outline"
-          >
-            <Icon className="h-4 w-4" icon={ShareNetworkIcon} />
-          </Button>
         </div>
 
         {copyError ? (

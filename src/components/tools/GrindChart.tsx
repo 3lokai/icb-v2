@@ -12,6 +12,8 @@ import {
   MICRON_AXIS_MAX,
   MICRON_AXIS_MIN,
   formatSetting,
+  micronForSetting,
+  publishedRangeForMethod,
 } from "@/lib/tools/grind-guide";
 
 type GrindChartProps = {
@@ -114,8 +116,15 @@ export function GrindChart({ selectedMethodKey, grinder }: GrindChartProps) {
           // Selected-method setting markers (when a grinder is chosen).
           let markers: React.ReactNode = null;
           if (selected && grinder) {
-            const loMicron = Math.max(m.micronMin, grinder.micronMin);
-            const hiMicron = Math.min(m.micronMax, grinder.micronMax);
+            // Prefer the published setting range so the marker matches the
+            // number on the result card; fall back to the method's own band.
+            const published = publishedRangeForMethod(grinder, m.key);
+            const loMicron = published
+              ? micronForSetting(grinder, published.settingMin)
+              : Math.max(m.micronMin, grinder.micronMin);
+            const hiMicron = published
+              ? micronForSetting(grinder, published.settingMax)
+              : Math.min(m.micronMax, grinder.micronMax);
             if (hiMicron >= loMicron) {
               const lx = x(loMicron);
               const lw = Math.max(2, x(hiMicron) - lx);

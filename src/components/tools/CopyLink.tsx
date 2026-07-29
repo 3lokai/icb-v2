@@ -11,10 +11,10 @@ type CopyLinkProps = {
   method: string | null;
   strength: string;
   roast: string;
-  drink: number; // Changed from 'water' to 'drink'
+  grams: number;
 };
 
-export function CopyLink({ method, strength, roast, drink }: CopyLinkProps) {
+export function CopyLink({ method, strength, roast, grams }: CopyLinkProps) {
   const pathname = usePathname();
 
   const handleCopyLink = async () => {
@@ -28,7 +28,7 @@ export function CopyLink({ method, strength, roast, drink }: CopyLinkProps) {
     }
     params.set("strength", strength);
     params.set("roast", roast);
-    params.set("drink", drink.toString()); // Changed from 'water' to 'drink'
+    params.set("grams", grams.toString());
 
     const url = `${window.location.origin}${pathname}?${params.toString()}`;
 
