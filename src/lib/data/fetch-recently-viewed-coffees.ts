@@ -3,6 +3,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { getCurrentUser } from "@/data/auth";
 import { createServiceRoleClient } from "@/lib/supabase/server";
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -13,6 +14,7 @@ function isUuid(value: string): boolean {
 
 export type RecentlyViewedCoffeeItem = {
   coffeeId: string;
+  /** Render-facing name (`display_name` / cleaned `name`). */
   name: string;
   coffeeSlug: string;
   roasterId: string;
@@ -38,6 +40,7 @@ export async function fetchRecentlyViewedCoffees(
       coffees!inner (
         id,
         name,
+        display_name,
         slug,
         roaster_id,
         roasters!inner (
@@ -77,6 +80,7 @@ export async function fetchRecentlyViewedCoffees(
     coffees: {
       id: string;
       name: string;
+      display_name: string | null;
       slug: string;
       roaster_id: string;
       roasters: { name: string; slug: string };
@@ -102,9 +106,14 @@ export async function fetchRecentlyViewedCoffees(
   return (rows as unknown as Row[]).map((row) => {
     const c = row.coffees;
     const r = c.roasters;
+    // `name` is render-facing (display_name / cleaned), same as recent additions.
     return {
       coffeeId: c.id,
-      name: c.name,
+      name: getCoffeeDisplayName({
+        display_name: c.display_name,
+        name: c.name,
+        roaster_name: r.name,
+      }),
       coffeeSlug: c.slug,
       roasterId: c.roaster_id,
       roasterSlug: r.slug,

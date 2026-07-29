@@ -25,6 +25,7 @@ export const HERO_SEGMENT_OPTIONS: {
 
 export type HeroRatedCoffee = {
   coffeeId: string;
+  /** Render-facing name (`display_name` / cleaned `name`). */
   name: string;
   coffeeSlug: string;
   roasterSlug: string;

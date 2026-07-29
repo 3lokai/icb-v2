@@ -13,6 +13,7 @@ import {
   parseDevHeroSegmentParam,
 } from "@/lib/data/hero-segment-dev-preview";
 import { fetchRecentlyViewedCoffees } from "@/lib/data/fetch-recently-viewed-coffees";
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -157,6 +158,7 @@ async function enrichRatedCoffees(
       `
       id,
       name,
+      display_name,
       slug,
       roaster_id,
       roasters!inner(
@@ -194,7 +196,13 @@ async function enrichRatedCoffees(
     const missing = !coffee;
     return {
       coffeeId: row.entity_id,
-      name: missing ? "Coffee unavailable" : (coffee?.name ?? "Coffee"),
+      name: missing
+        ? "Coffee unavailable"
+        : getCoffeeDisplayName({
+            display_name: coffee?.display_name,
+            name: coffee?.name,
+            roaster_name: roaster?.name,
+          }) || "Coffee",
       coffeeSlug: coffee?.slug ?? "",
       roasterSlug: roaster?.slug ?? "",
       roasterName: roaster?.name ?? "",
