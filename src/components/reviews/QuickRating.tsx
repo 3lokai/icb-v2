@@ -520,6 +520,7 @@ export function QuickRating({
             {/* Comment - always visible */}
             <Stack gap="3">
               <Textarea
+                aria-label={`Add a comment about this ${entityType}`}
                 placeholder={`Any notes to share about this ${entityType}?`}
                 value={comment}
                 onChange={(e) => {
@@ -549,7 +550,10 @@ export function QuickRating({
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Stack gap="3">
-                    <label className="text-label uppercase tracking-widest">
+                    <label
+                      className="text-label uppercase tracking-widest"
+                      htmlFor="quick-rating-brew-method"
+                    >
                       Brew method
                     </label>
                     <Select
@@ -562,7 +566,11 @@ export function QuickRating({
                       }}
                       disabled={isSaving || isDeleting}
                     >
-                      <SelectTrigger className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5">
+                      <SelectTrigger
+                        id="quick-rating-brew-method"
+                        aria-label="Brew method"
+                        className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5"
+                      >
                         <SelectValue placeholder="How did you brew this coffee?" />
                       </SelectTrigger>
                       <SelectContent>

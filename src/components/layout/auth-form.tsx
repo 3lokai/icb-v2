@@ -313,6 +313,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
               <Input
                 id="email"
                 type="email"
+                autoComplete="email"
                 placeholder="m@example.com"
                 value={formData.email}
                 onChange={handleInputChange}

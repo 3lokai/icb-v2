@@ -60,11 +60,15 @@ export function DashboardClient({
 
   if (!profile) {
     return (
-      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
+      <div
+        className="flex min-h-[calc(100vh-8rem)] items-center justify-center"
+        role="status"
+      >
         <Stack gap="4" className="text-center">
-          <h2 className="text-subheading text-destructive">Error</h2>
+          <h2 className="text-subheading">No profile data yet</h2>
           <p className="text-muted-foreground text-caption">
-            Failed to load profile data. Please try again.
+            We couldn&apos;t load your dashboard. Check your connection and try
+            again.
           </p>
           <Button onClick={() => window.location.reload()} variant="outline">
             Retry
@@ -135,19 +139,34 @@ export function DashboardClient({
         <Stack gap="2">
           <Button asChild variant="outline" className="w-full justify-start">
             <Link href="/dashboard/profile">
-              <Icon icon={UserIcon} size={16} className="h-4 w-4 mr-2" />
+              <Icon
+                icon={UserIcon}
+                size={16}
+                data-icon="inline-start"
+                className="h-4 w-4 mr-2"
+              />
               Edit Profile
             </Link>
           </Button>
           <Button asChild variant="outline" className="w-full justify-start">
             <Link href="/dashboard/preferences">
-              <Icon icon={CoffeeIcon} size={16} className="h-4 w-4 mr-2" />
+              <Icon
+                icon={CoffeeIcon}
+                size={16}
+                data-icon="inline-start"
+                className="h-4 w-4 mr-2"
+              />
               Coffee Preferences
             </Link>
           </Button>
           <Button asChild variant="outline" className="w-full justify-start">
             <Link href="/dashboard/notifications">
-              <Icon icon={BellIcon} size={16} className="h-4 w-4 mr-2" />
+              <Icon
+                icon={BellIcon}
+                size={16}
+                data-icon="inline-start"
+                className="h-4 w-4 mr-2"
+              />
               Notifications
             </Link>
           </Button>

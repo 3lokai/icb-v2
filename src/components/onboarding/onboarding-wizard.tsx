@@ -404,6 +404,7 @@ export function OnboardingWizard({
               </FieldLabel>
               <div className="flex flex-col gap-2">
                 <Input
+                  autoComplete="name"
                   data-invalid={!!fieldErrors.fullName}
                   id="fullName"
                   onChange={(e) => updateFormData("fullName", e.target.value)}
@@ -442,6 +443,7 @@ export function OnboardingWizard({
                     }
                   >
                     <SelectTrigger
+                      aria-label="Country"
                       className="w-full"
                       data-invalid={!!fieldErrors.country}
                       id="country"
@@ -481,6 +483,7 @@ export function OnboardingWizard({
                     }
                   >
                     <SelectTrigger
+                      aria-label="State"
                       className="w-full"
                       data-invalid={!!fieldErrors.state}
                       id="state"
@@ -617,6 +620,7 @@ export function OnboardingWizard({
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-4">
                   <Slider
+                    aria-label="Experience Level"
                     max={2}
                     min={0}
                     onValueChange={(value) => {

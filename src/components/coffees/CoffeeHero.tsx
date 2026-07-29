@@ -211,6 +211,7 @@ export function CoffeeHero({ coffee, stats }: CoffeeHeroProps) {
               <Icon
                 icon={StarIcon}
                 size={18}
+                data-icon="inline-start"
                 className="mr-2 fill-rating text-rating"
               />
               Rate this coffee

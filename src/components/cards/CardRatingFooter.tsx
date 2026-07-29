@@ -29,11 +29,10 @@ type CardRatingFooterProps = {
 /**
  * CardRatingFooter — shared, accessible rating-submission affordance for cards.
  *
- * Opening flow: clicking the shell (pointer) or activating a star (pointer/keyboard)
- * opens the QuickRating modal pre-filled with that value. The stars are the real
- * keyboard control (a `radiogroup` via StarRating); the shell `onClick` is a
- * pointer-only convenience that duplicates it, so the markup stays valid (no nested
- * interactive elements) while remaining fully operable by keyboard.
+ * Opening flow: activating a star (pointer/keyboard) opens the QuickRating modal
+ * pre-filled with that value. StarRating is the sole interactive control (a
+ * radiogroup), so the footer shell stays a non-interactive layout container —
+ * no nested interactive elements, fully operable by keyboard and pointer.
  */
 export function CardRatingFooter({
   entityType,
@@ -111,17 +110,11 @@ export function CardRatingFooter({
   }
 
   // Full: opinion-first footer (number block left, stars + microcopy right).
-  // Outer shell is a div (not a button) so StarRating's radio buttons stay valid HTML.
+  // Outer shell is a non-interactive layout container; StarRating owns all input.
   return (
     <div
-      onClick={() => openRatingModal()}
-      onKeyDown={(e) => {
-        // Shell is pointer convenience; stars own keyboard. Still allow Enter on shell
-        // when focus lands here via click-then-tab edge cases.
-        if (e.key === "Enter") openRatingModal();
-      }}
       className={cn(
-        "mt-auto border-t border-border/40 bg-muted/20 cursor-pointer",
+        "mt-auto border-t border-border/40 bg-muted/20",
         "transition-transform duration-200 ease-out origin-bottom",
         "group-hover:scale-[1.02] group-hover:bg-muted/30",
         "motion-reduce:transition-none motion-reduce:group-hover:scale-100"
@@ -148,14 +141,8 @@ export function CardRatingFooter({
           <div aria-hidden />
         )}
 
-        {/* Right: Action block — stars are the real (keyboard) control */}
-        <div
-          className="flex flex-col items-end gap-0.5"
-          onClick={(e) => {
-            // Prevent shell click when activating stars (pointer).
-            e.stopPropagation();
-          }}
-        >
+        {/* Right: Action block — stars are the sole interactive control */}
+        <div className="flex flex-col items-end gap-0.5">
           <StarRating
             rating={starRating}
             size={size}
