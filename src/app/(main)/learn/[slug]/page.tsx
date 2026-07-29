@@ -1,6 +1,12 @@
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { client } from "@/lib/sanity/client";
 import { ARTICLE_BY_SLUG_QUERY } from "@/lib/sanity/queries";
 import { Article } from "@/types/blog-types";
+import { prefetchArticleBlocks } from "@/lib/blog/prefetch-article-blocks";
 import { ArticleHeader } from "@/components/blog/ArticleHeader";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { ShareArticle } from "@/components/blog/ShareArticle";
@@ -71,6 +77,9 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) {
     notFound();
   }
+
+  const queryClient = new QueryClient();
+  await prefetchArticleBlocks(queryClient, article.body);
 
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -190,7 +199,9 @@ export default async function ArticlePage({ params }: Props) {
           {/* Main Content Area */}
           <main className="min-w-0">
             {/* Article Body */}
-            <ArticleContent body={article.body} faqItems={article.faqItems} />
+            <HydrationBoundary state={dehydrate(queryClient)}>
+              <ArticleContent body={article.body} faqItems={article.faqItems} />
+            </HydrationBoundary>
 
             {/* Top-level FAQ Section (if field is populated) */}
             {article.faqItems && article.faqItems.length > 0 && (

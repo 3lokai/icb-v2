@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import { motion } from "motion/react";
 import { ChartDataItem } from "@/lib/data/fetch-chart-data";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
 interface DataChartProps {
   value: {
@@ -91,10 +92,11 @@ export function DataChart({ value }: DataChartProps) {
 
   if (isLoading) {
     return (
-      <div className="h-80 flex items-center justify-center bg-muted/50 animate-pulse rounded-2xl border border-border/40 my-12">
-        <span className="text-caption text-muted-foreground font-medium">
-          Loading {value.dataKey.replace("_", " ")}...
-        </span>
+      <div
+        className="h-80 flex items-center justify-center bg-muted/50 rounded-2xl border border-border/40 my-12 pointer-events-none"
+        aria-hidden="true"
+      >
+        <LoadingSpinner size="sm" text="" />
       </div>
     );
   }

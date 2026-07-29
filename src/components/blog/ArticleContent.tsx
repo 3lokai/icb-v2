@@ -30,7 +30,10 @@ const DataChart = dynamic(
   () => import("./blocks/DataChart").then((m) => m.DataChart),
   {
     loading: () => (
-      <div className="h-80 my-12 rounded-2xl border border-border/40 bg-muted/50 animate-pulse" />
+      <div
+        className="h-80 my-12 rounded-2xl border border-border/40 bg-muted/50 animate-pulse pointer-events-none"
+        aria-hidden="true"
+      />
     ),
   }
 );
