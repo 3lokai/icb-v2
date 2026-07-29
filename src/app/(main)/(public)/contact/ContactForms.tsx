@@ -9,7 +9,7 @@ import { FormModal } from "@/components/contactus/FormModal";
 import { NewsletterSection } from "@/components/contactus/NewsletterSection";
 import { SectionHeader } from "@/components/contactus/SectionHeader";
 import { SocialMediaSection } from "@/components/contactus/SocialMediaSection";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -54,11 +54,13 @@ const InteractiveBentoCard = ({
   onClick: () => void;
   className?: string;
 }) => (
-  <div
+  <button
+    type="button"
     className={cn(
-      "group relative flex flex-col justify-between overflow-hidden rounded-2xl",
+      "group relative flex flex-col justify-between overflow-hidden rounded-2xl text-left",
       "border border-border bg-card shadow-sm transition-all duration-500 hover:shadow-md",
       "transform-gpu dark:border-border/40 dark:bg-card/40 cursor-pointer",
+      "appearance-none p-0 font-inherit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       className
     )}
     onClick={onClick}
@@ -92,7 +94,7 @@ const InteractiveBentoCard = ({
     </div>
 
     <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-500 group-hover:bg-accent/2" />
-  </div>
+  </button>
 );
 
 export default function ContactForms({
@@ -105,7 +107,9 @@ export default function ContactForms({
   >("general");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [formError, setFormError] = useState<string | null>(null);
+  const pending = formSubmitting || isPending;
 
   // Check for form query parameter on mount
   useEffect(() => {
@@ -116,31 +120,31 @@ export default function ContactForms({
   }, [searchParams]);
 
   const getNewsletterButtonText = () => {
-    if (formSubmitting) return "Joining...";
+    if (pending) return "Joining...";
     if (formSubmitted) return "Joined!";
     return "Join Newsletter";
   };
 
   const getRoasterButtonText = () => {
-    if (formSubmitting) return "Submitting...";
+    if (pending) return "Submitting...";
     if (formSubmitted) return "Submitted!";
     return "Submit Roaster";
   };
 
   const getSuggestionButtonText = () => {
-    if (formSubmitting) return "Submitting...";
+    if (pending) return "Submitting...";
     if (formSubmitted) return "Submitted!";
     return "Submit Suggestion";
   };
 
   const getProfessionalButtonText = () => {
-    if (formSubmitting) return "Submitting...";
+    if (pending) return "Submitting...";
     if (formSubmitted) return "Submitted!";
     return "Submit Inquiry";
   };
 
   const getClaimButtonText = () => {
-    if (formSubmitting) return "Submitting...";
+    if (pending) return "Submitting...";
     if (formSubmitted) return "Submitted!";
     return "Submit Claim Request";
   };
@@ -152,55 +156,59 @@ export default function ContactForms({
     return getProfessionalButtonText();
   };
 
-  const handleFormSubmit = async (e: React.FormEvent, formType: string) => {
+  const handleFormSubmit = (e: React.FormEvent, formType: string) => {
     e.preventDefault();
-    setFormSubmitting(true);
-    setFormError(null);
+    if (pending) return;
 
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
+    startTransition(async () => {
+      setFormSubmitting(true);
+      setFormError(null);
 
-    try {
-      let result: { success: boolean; error?: string; id?: string };
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
 
-      if (formType === "newsletter") {
-        result = await subscribeToNewsletter(formData);
-      } else {
-        result = await submitForm(formType, formData);
-      }
+      try {
+        let result: { success: boolean; error?: string; id?: string };
 
-      if (result.success) {
-        if (formType !== "newsletter") {
-          capture("contact_form_submitted", { form_type: formType });
-        }
         if (formType === "newsletter") {
-          toast.success("Subscribed!", {
-            description: "🎉 You have been added to our newsletter!",
-          });
-          form.reset();
+          result = await subscribeToNewsletter(formData);
         } else {
-          setFormSubmitted(true);
-          setTimeout(() => {
-            setFormSubmitted(false);
-            form.reset();
-            setActiveForm("general");
-          }, 3000);
+          result = await submitForm(formType, formData);
         }
-      } else if (formType === "newsletter") {
-        toast.error("Subscription Failed", {
-          description: result.error || "Something went wrong.",
-        });
-      } else {
-        setFormError(
-          result.error || "There was a problem submitting your form"
-        );
+
+        if (result.success) {
+          if (formType !== "newsletter") {
+            capture("contact_form_submitted", { form_type: formType });
+          }
+          if (formType === "newsletter") {
+            toast.success("Subscribed!", {
+              description: "🎉 You have been added to our newsletter!",
+            });
+            form.reset();
+          } else {
+            setFormSubmitted(true);
+            setTimeout(() => {
+              setFormSubmitted(false);
+              form.reset();
+              setActiveForm("general");
+            }, 3000);
+          }
+        } else if (formType === "newsletter") {
+          toast.error("Subscription Failed", {
+            description: result.error || "Something went wrong.",
+          });
+        } else {
+          setFormError(
+            result.error || "There was a problem submitting your form"
+          );
+        }
+      } catch (err) {
+        setFormError("An unexpected error occurred");
+        console.error(err);
+      } finally {
+        setFormSubmitting(false);
       }
-    } catch (err) {
-      setFormError("An unexpected error occurred");
-      console.error(err);
-    } finally {
-      setFormSubmitting(false);
-    }
+    });
   };
 
   return (
@@ -215,13 +223,31 @@ export default function ContactForms({
                 title="For Coffee Enthusiasts"
               />
 
+              {pending && (
+                <p className="sr-only" role="status" aria-live="polite">
+                  Submitting…
+                </p>
+              )}
               <NewsletterSection
                 formError={formError}
                 formSubmitted={formSubmitted}
-                formSubmitting={formSubmitting}
+                formSubmitting={pending}
                 getButtonText={getNewsletterButtonText}
-                onSubmit={(e) => handleFormSubmit(e, "newsletter")}
+                onSubmit={async (e) => {
+                  if (pending) return;
+                  handleFormSubmit(e, "newsletter");
+                }}
               />
+              <Button
+                type="button"
+                className="sr-only"
+                disabled={pending}
+                aria-busy={pending}
+                tabIndex={-1}
+                aria-hidden="true"
+              >
+                {pending ? "Submitting..." : "Submit"}
+              </Button>
 
               {/* Action Cards - Bento Grid Style */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -384,10 +410,12 @@ export default function ContactForms({
               activeForm={activeForm}
               formError={formError}
               formSubmitted={formSubmitted}
-              formSubmitting={formSubmitting}
+              formSubmitting={pending}
               getButtonText={getModalButtonText}
               onClose={() => setActiveForm("general")}
-              onSubmit={handleFormSubmit}
+              onSubmit={async (e, formType) => {
+                handleFormSubmit(e, formType);
+              }}
             />
           )}
         </Stack>

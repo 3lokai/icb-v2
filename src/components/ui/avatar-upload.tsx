@@ -25,6 +25,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useRef, useState } from "react";
+import { FieldError } from "@/components/ui/field";
 
 type AvatarUploadProps = {
   currentAvatarUrl?: string | null;
@@ -78,6 +79,7 @@ export function AvatarUpload({
 }: AvatarUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [optimisticAvatarUrl, setOptimisticAvatarUrl] = useState<string | null>(
     null
   );
@@ -171,18 +173,25 @@ export function AvatarUpload({
     multiple: false,
     disabled: disabled || isUploading || !isReady,
     onDrop: async (acceptedFiles, rejectedFiles) => {
+      setUploadError(null);
+
       if (rejectedFiles.length > 0) {
+        const messages: string[] = [];
         rejectedFiles.forEach(({ file, errors }) => {
           errors.forEach((error) => {
+            let message: string;
             if (error.code === "file-too-large") {
-              toast.error("File size must be less than 2MB");
+              message = "File size must be less than 2MB";
             } else if (error.code === "file-invalid-type") {
-              toast.error("File must be JPEG, PNG, or WebP");
+              message = "File must be JPEG, PNG, or WebP";
             } else {
-              toast.error(error.message);
+              message = error.message;
             }
+            messages.push(message);
+            toast.error(message);
           });
         });
+        setUploadError(messages[0] ?? "Upload failed");
         return;
       }
 
@@ -192,12 +201,16 @@ export function AvatarUpload({
 
       // Client-side validation
       if (file.size > MAX_FILE_SIZE) {
-        toast.error("File size must be less than 2MB");
+        const message = "File size must be less than 2MB";
+        toast.error(message);
+        setUploadError(message);
         return;
       }
 
       if (!ALLOWED_TYPES.includes(file.type)) {
-        toast.error("File must be JPEG, PNG, or WebP");
+        const message = "File must be JPEG, PNG, or WebP";
+        toast.error(message);
+        setUploadError(message);
         return;
       }
 
@@ -248,63 +261,85 @@ export function AvatarUpload({
 
   return (
     <>
-      <div
-        {...getRootProps()}
-        className={cn(
-          "relative group cursor-pointer",
-          (disabled || isUploading) && "cursor-not-allowed",
-          isUploading && "opacity-50",
-          className
-        )}
-        onClick={handleClick}
-      >
-        <input {...getInputProps()} ref={fileInputRef} className="hidden" />
-
-        <Avatar
+      <div className="flex flex-col gap-2">
+        <div
+          {...getRootProps()}
+          role="button"
+          tabIndex={disabled || isUploading ? -1 : 0}
+          aria-label="Upload avatar image"
           className={cn(
-            sizeClasses[size],
-            "border-2 border-border/40 transition-all duration-300",
-            isDragActive && "ring-2 ring-accent ring-offset-2",
-            !disabled && "hover:border-accent/60"
+            "relative group cursor-pointer",
+            (disabled || isUploading) && "cursor-not-allowed",
+            isUploading && "opacity-50",
+            className
           )}
+          onClick={handleClick}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleClick();
+            }
+          }}
         >
-          <AvatarImage
-            src={displayAvatarUrl || undefined}
-            alt={name}
-            className="object-cover"
+          <input
+            {...getInputProps()}
+            ref={fileInputRef}
+            className="hidden"
+            aria-label="Upload avatar image"
+            aria-invalid={!!uploadError}
+            aria-describedby={uploadError ? "avatar-upload-error" : undefined}
           />
-          <AvatarFallback className="text-title font-serif italic">
-            {name.charAt(0).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
 
-        {/* Upload overlay */}
-        {!disabled && (
-          <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            {isUploading ? (
-              <Icon
-                icon={CircleNotchIcon}
-                size={24}
-                className="animate-spin text-white"
-              />
-            ) : (
-              <Icon icon={CameraIcon} size={24} className="text-white" />
+          <Avatar
+            className={cn(
+              sizeClasses[size],
+              "border-2 border-border/40 transition-all duration-300",
+              isDragActive && "ring-2 ring-accent ring-offset-2",
+              !disabled && "hover:border-accent/60",
+              uploadError && "border-destructive/40"
             )}
-          </div>
-        )}
-
-        {/* Delete button (only show if avatar exists and not uploading) */}
-        {!disabled && displayAvatarUrl && !isUploading && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowDeleteDialog(true);
-            }}
-            className="absolute -top-1 -right-1 h-6 w-6 rounded-full bg-destructive text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/90 z-10"
-            aria-label="Delete avatar"
           >
-            <Icon icon={XIcon} size={12} />
-          </button>
+            <AvatarImage
+              src={displayAvatarUrl || undefined}
+              alt={name}
+              className="object-cover"
+            />
+            <AvatarFallback className="text-title font-serif italic">
+              {name.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+
+          {/* Upload overlay */}
+          {!disabled && (
+            <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              {isUploading ? (
+                <Icon
+                  icon={CircleNotchIcon}
+                  size={24}
+                  className="animate-spin text-white"
+                />
+              ) : (
+                <Icon icon={CameraIcon} size={24} className="text-white" />
+              )}
+            </div>
+          )}
+
+          {/* Delete button (only show if avatar exists and not uploading) */}
+          {!disabled && displayAvatarUrl && !isUploading && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowDeleteDialog(true);
+              }}
+              className="absolute -top-1 -right-1 h-6 w-6 rounded-full bg-destructive text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/90 z-10"
+              aria-label="Delete avatar"
+            >
+              <Icon icon={XIcon} size={12} />
+            </button>
+          )}
+        </div>
+        {uploadError && (
+          <FieldError id="avatar-upload-error">{uploadError}</FieldError>
         )}
       </div>
 

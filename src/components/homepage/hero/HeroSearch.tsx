@@ -171,6 +171,7 @@ export function HeroSearch() {
             aria-controls={listboxId}
             aria-expanded={listExpanded}
             aria-haspopup="listbox"
+            aria-label="Search coffees and roasters"
             className="h-12 w-full rounded-xl bg-white/5 border-white/10 py-3 pr-32 pl-12 text-white transition-all duration-300 placeholder:text-white/70 focus:border-white/30 focus:bg-white/10 focus:outline-none focus:ring-0"
             id={inputId}
             onChange={(e) => {
@@ -243,6 +244,7 @@ export function HeroSearch() {
                   >
                     {displayedResults.map((item, index) => (
                       <button
+                        aria-label={item.title || "Search result"}
                         aria-selected={index === selectedIndex}
                         className={cn(
                           "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors",

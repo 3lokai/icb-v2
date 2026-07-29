@@ -175,6 +175,7 @@ export function ProfileHeader({
               {editingField === "name" ? (
                 <Input
                   ref={inputRef as any}
+                  aria-label="Display name"
                   value={tempValue}
                   onChange={(e) => setTempValue(e.target.value)}
                   onBlur={handleSave}
@@ -191,12 +192,28 @@ export function ProfileHeader({
               )}
 
               <div
+                role={isOwner && !isAnonymous ? "button" : undefined}
+                tabIndex={isOwner && !isAnonymous ? 0 : undefined}
                 className={`flex items-center gap-2 group/loc ${isOwner && !isAnonymous ? "cursor-pointer" : ""} transition-colors w-fit`}
                 onClick={() => handleStartEdit("location", city || "")}
+                onKeyDown={(e) => {
+                  if (
+                    isOwner &&
+                    !isAnonymous &&
+                    (e.key === "Enter" || e.key === " ")
+                  ) {
+                    e.preventDefault();
+                    handleStartEdit("location", city || "");
+                  }
+                }}
+                aria-label={
+                  isOwner && !isAnonymous ? "Edit location" : undefined
+                }
               >
                 {editingField === "location" ? (
                   <Input
                     ref={inputRef as any}
+                    aria-label="Location"
                     value={tempValue}
                     onChange={(e) => setTempValue(e.target.value)}
                     onBlur={handleSave}
@@ -235,6 +252,7 @@ export function ProfileHeader({
               onChange={(e) => setTempValue(e.target.value)}
               onBlur={handleSave}
               onKeyDown={handleKeyDown}
+              aria-label="Bio"
               className="text-body-large leading-relaxed min-h-[100px] border-none bg-transparent focus-visible:ring-0 focus-visible:bg-surface-1 p-0"
               placeholder="Add a short bio about your coffee journey..."
             />
@@ -265,28 +283,33 @@ export function ProfileHeader({
       {isOwner && !isAnonymous && (
         <div className="absolute top-0 right-0">
           <Cluster gap="2">
-            <Link href="/dashboard/profile">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-micro text-muted-foreground hover:text-foreground"
-              >
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="text-micro text-muted-foreground hover:text-foreground"
+            >
+              <Link href="/dashboard/profile">
                 <Icon icon={GearSixIcon} size={14} className="mr-2" />
                 Settings
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </Cluster>
         </div>
       )}
 
       {isAnonymous && (
         <div className="absolute top-0 right-0">
-          <Link href="/login">
-            <Button size="sm" className="rounded-full shadow-lg hover-lift">
+          <Button
+            asChild
+            size="sm"
+            className="rounded-full shadow-lg hover-lift"
+          >
+            <Link href="/login">
               <Icon icon={UserPlusIcon} size={14} className="mr-2" />
               Create Profile
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       )}
 

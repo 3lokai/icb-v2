@@ -115,15 +115,15 @@ export default function RoasterInfrastructureSection() {
             </div>
 
             <div className="pt-4 flex items-center gap-6">
-              <Link href="/roasters">
-                <Button variant="outline" className="group">
+              <Button asChild variant="outline" className="group">
+                <Link href="/roasters">
                   Explore Directory
                   <Icon
                     className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
                     icon={ArrowRightIcon}
                   />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
 
               <Link
                 href="/roasters/partner"

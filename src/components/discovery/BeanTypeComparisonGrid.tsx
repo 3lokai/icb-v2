@@ -78,6 +78,7 @@ export function BeanTypeComparisonGrid({
             <Link
               key={species.slug}
               href={discoveryPagePath(species.slug)}
+              aria-label={species.label}
               className={cn(
                 CARD_BASE,
                 "hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 hover:ring-1 hover:ring-accent/30"

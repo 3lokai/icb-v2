@@ -88,7 +88,7 @@ export function CardRatingFooter({
           "px-3 py-2 md:px-4 md:py-2.5",
           "transition-colors duration-200 group-hover:bg-muted/30"
         )}
-        onClick={(e) => {
+        onPointerDown={(e) => {
           // Keep card navigation isolated from the rating zone.
           e.stopPropagation();
         }}
@@ -111,9 +111,15 @@ export function CardRatingFooter({
   }
 
   // Full: opinion-first footer (number block left, stars + microcopy right).
+  // Outer shell is a div (not a button) so StarRating's radio buttons stay valid HTML.
   return (
     <div
       onClick={() => openRatingModal()}
+      onKeyDown={(e) => {
+        // Shell is pointer convenience; stars own keyboard. Still allow Enter on shell
+        // when focus lands here via click-then-tab edge cases.
+        if (e.key === "Enter") openRatingModal();
+      }}
       className={cn(
         "mt-auto border-t border-border/40 bg-muted/20 cursor-pointer",
         "transition-transform duration-200 ease-out origin-bottom",

@@ -118,9 +118,9 @@ function MethodCard({ method, onSelect }: MethodCardProps) {
 
         {/* Strength Options */}
         <div>
-          <h5 className="mb-3 font-medium text-muted-foreground text-overline">
+          <h4 className="mb-3 font-medium text-muted-foreground text-overline">
             Strength Ratios
-          </h5>
+          </h4>
           <div className="flex items-center justify-between">
             <div className="text-center">
               <div className="mx-auto mb-1 h-2 w-2 rounded-full bg-amber-500" />

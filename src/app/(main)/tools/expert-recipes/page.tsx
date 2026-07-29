@@ -217,6 +217,7 @@ export default function ExpertRecipesPage() {
                       >
                         <Icon
                           className="transition-transform group-hover:scale-110"
+                          data-icon="inline-start"
                           icon={CalculatorIcon}
                           size={16}
                         />

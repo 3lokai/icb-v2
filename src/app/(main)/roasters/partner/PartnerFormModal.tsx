@@ -1,5 +1,6 @@
 "use client";
 
+import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Stack } from "@/components/primitives/stack";
 import { XIcon } from "@phosphor-icons/react/dist/ssr";
@@ -9,7 +10,7 @@ import { cn } from "@/lib/utils";
 type PartnerFormModalProps = {
   activeForm: "free" | "verified" | "premium";
   onClose: () => void;
-  onSubmit: (e: React.FormEvent, formData: FormData) => Promise<void>;
+  onSubmit: (e: React.FormEvent, formData: FormData) => void | Promise<void>;
   formSubmitting: boolean;
   formSubmitted: boolean;
   formError: string | null;
@@ -23,6 +24,9 @@ export default function PartnerFormModal({
   formSubmitted,
   formError,
 }: PartnerFormModalProps) {
+  const [isPending, startTransition] = useTransition();
+  const pending = formSubmitting || isPending;
+
   const getModalTitle = () => {
     if (activeForm === "free") return "Get Listed Free";
     if (activeForm === "verified") return "Claim Your Founding Spot";
@@ -31,7 +35,7 @@ export default function PartnerFormModal({
   };
 
   const getButtonText = () => {
-    if (formSubmitting) return "Submitting...";
+    if (pending) return "Submitting...";
     if (formSubmitted) return "Submitted!";
     if (activeForm === "free") return "Submit Request";
     if (activeForm === "verified") return "Claim Founding Spot";
@@ -46,9 +50,12 @@ export default function PartnerFormModal({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (pending || formSubmitted) return;
     const form = e.currentTarget;
     const formData = new FormData(form);
-    onSubmit(e, formData);
+    startTransition(() => {
+      void onSubmit(e, formData);
+    });
   };
 
   return (
@@ -67,19 +74,26 @@ export default function PartnerFormModal({
             </p>
           </Stack>
           <button
+            aria-label="Close"
             className="p-3 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
             onClick={onClose}
             type="button"
           >
             <Icon icon={XIcon} size={24} />
+            <span className="sr-only">Close</span>
           </button>
         </div>
 
         <div className="flex-1 p-8 md:p-10 overflow-y-auto">
-          <form className="space-y-8" onSubmit={handleSubmit}>
+          <form
+            className="space-y-8"
+            onSubmit={handleSubmit}
+            aria-busy={pending}
+          >
             {/* Honeypot field */}
             <input
               aria-hidden="true"
+              aria-label="Leave blank"
               autoComplete="off"
               className="pointer-events-none absolute opacity-0"
               name="icb_partner_hp"
@@ -111,6 +125,7 @@ export default function PartnerFormModal({
                   Your Name*
                 </label>
                 <input
+                  autoComplete="name"
                   className={inputClasses}
                   id="yourName"
                   name="yourName"
@@ -124,6 +139,7 @@ export default function PartnerFormModal({
                   Email*
                 </label>
                 <input
+                  autoComplete="email"
                   className={inputClasses}
                   id="email"
                   name="email"
@@ -142,6 +158,7 @@ export default function PartnerFormModal({
                   className={inputClasses}
                   id="phoneNumber"
                   name="phoneNumber"
+                  autoComplete="tel"
                   placeholder="+91 98765 43210"
                   type="tel"
                 />
@@ -202,7 +219,8 @@ export default function PartnerFormModal({
             <Stack gap="4">
               <Button
                 className="w-full h-14 text-body font-bold uppercase tracking-widest hover-lift shadow-xl shadow-accent/5"
-                disabled={formSubmitting || formSubmitted}
+                disabled={pending || formSubmitted}
+                aria-busy={pending}
                 type="submit"
               >
                 {getButtonText()}

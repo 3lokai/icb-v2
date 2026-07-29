@@ -39,7 +39,11 @@ export function AuthScreen({
         <Decor texture="grain" />
         <Stack gap="8" className="relative h-full">
           <div className="flex justify-center md:justify-start">
-            <Link className="flex items-center" href="/">
+            <Link
+              aria-label="Indian Coffee Beans home"
+              className="flex items-center"
+              href="/"
+            >
               <Logo />
             </Link>
           </div>

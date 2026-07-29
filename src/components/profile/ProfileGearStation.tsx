@@ -27,6 +27,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
+import { FieldError } from "@/components/ui/field";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -71,6 +72,7 @@ export function ProfileGearStation({
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletePhotoId, setDeletePhotoId] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [removeGearItem, setRemoveGearItem] = useState<ProfileGear | null>(
     null
   );
@@ -105,21 +107,30 @@ export function ProfileGearStation({
     maxFiles: 5 - displayPhotos.length,
     disabled: !isOwner || isAnonymous || !canUploadMore || isUploading,
     onDrop: (acceptedFiles, rejectedFiles) => {
+      setUploadError(null);
+
       acceptedFiles.forEach((file) => {
         uploadPhoto(file);
       });
 
-      rejectedFiles.forEach(({ file, errors }) => {
-        errors.forEach((error) => {
-          if (error.code === "file-too-large") {
-            toast.error(`${file.name}: File size must be less than 2MB`);
-          } else if (error.code === "file-invalid-type") {
-            toast.error(`${file.name}: File must be JPEG, PNG, or WebP`);
-          } else {
-            toast.error(`${file.name}: ${error.message}`);
-          }
+      if (rejectedFiles.length > 0) {
+        const messages: string[] = [];
+        rejectedFiles.forEach(({ file, errors }) => {
+          errors.forEach((error) => {
+            let message: string;
+            if (error.code === "file-too-large") {
+              message = `${file.name}: File size must be less than 2MB`;
+            } else if (error.code === "file-invalid-type") {
+              message = `${file.name}: File must be JPEG, PNG, or WebP`;
+            } else {
+              message = `${file.name}: ${error.message}`;
+            }
+            messages.push(message);
+            toast.error(message);
+          });
         });
-      });
+        setUploadError(messages[0] ?? "Upload failed");
+      }
     },
   });
 
@@ -316,6 +327,7 @@ export function ProfileGearStation({
                     {...getInputProps()}
                     ref={fileInputRef}
                     className="hidden"
+                    aria-label="Upload station photos"
                   />
                   <Button
                     variant="outline"
@@ -423,6 +435,7 @@ export function ProfileGearStation({
                     onClick={handlePrev}
                     className="text-muted-foreground hover:text-foreground h-8 w-8"
                     disabled={displayPhotos.length <= 1}
+                    aria-label="Previous photo"
                   >
                     <Icon icon={CaretLeftIcon} size={16} />
                   </Button>
@@ -444,6 +457,7 @@ export function ProfileGearStation({
                     onClick={handleNext}
                     className="text-muted-foreground hover:text-foreground h-8 w-8"
                     disabled={displayPhotos.length <= 1}
+                    aria-label="Next photo"
                   >
                     <Icon icon={CaretRightIcon} size={16} />
                   </Button>
@@ -475,35 +489,51 @@ export function ProfileGearStation({
                 </Stack>
               </div>
             ) : isOwner ? (
-              <Card
-                {...getRootProps()}
-                className={cn(
-                  "h-[280px] border border-dashed rounded-3xl flex flex-col items-center justify-center bg-muted/5 group py-0 gap-0 cursor-pointer transition-colors",
-                  isDragActive
-                    ? "border-accent bg-accent/10"
-                    : "border-border/60 hover:border-border hover:bg-muted/10"
-                )}
-              >
-                <input {...getInputProps()} className="hidden" />
-                <Icon
-                  icon={isDragActive ? UploadIcon : PlusIcon}
-                  size={32}
+              <Stack gap="2">
+                <Card
+                  {...getRootProps()}
                   className={cn(
-                    "transition-colors mb-4",
+                    "h-[280px] border border-dashed rounded-3xl flex flex-col items-center justify-center bg-muted/5 group py-0 gap-0 cursor-pointer transition-colors",
                     isDragActive
-                      ? "text-accent"
-                      : "text-muted-foreground/50 group-hover:text-accent"
+                      ? "border-accent bg-accent/10"
+                      : "border-border/60 hover:border-border hover:bg-muted/10",
+                    uploadError && "border-destructive/40"
                   )}
-                />
-                <p className="text-caption italic text-muted-foreground text-center px-4">
-                  {isDragActive
-                    ? "Drop photos here"
-                    : "Drop photos here or click to upload"}
-                </p>
-                <p className="text-micro text-muted-foreground mt-2 text-center px-4">
-                  Up to 5 photos, 2MB each
-                </p>
-              </Card>
+                >
+                  <input
+                    {...getInputProps()}
+                    className="hidden"
+                    aria-label="Upload station photos"
+                    aria-invalid={!!uploadError}
+                    aria-describedby={
+                      uploadError ? "station-photo-upload-error" : undefined
+                    }
+                  />
+                  <Icon
+                    icon={isDragActive ? UploadIcon : PlusIcon}
+                    size={32}
+                    className={cn(
+                      "transition-colors mb-4",
+                      isDragActive
+                        ? "text-accent"
+                        : "text-muted-foreground/50 group-hover:text-accent"
+                    )}
+                  />
+                  <p className="text-caption italic text-muted-foreground text-center px-4">
+                    {isDragActive
+                      ? "Drop photos here"
+                      : "Drop photos here or click to upload"}
+                  </p>
+                  <p className="text-micro text-muted-foreground mt-2 text-center px-4">
+                    Up to 5 photos, 2MB each
+                  </p>
+                </Card>
+                {uploadError && (
+                  <FieldError id="station-photo-upload-error">
+                    {uploadError}
+                  </FieldError>
+                )}
+              </Stack>
             ) : (
               <div className="relative h-[280px] w-full flex items-center justify-center">
                 <div className="absolute inset-0 grayscale opacity-40 blur-[2px] transition-all hover:blur-0 hover:opacity-60 duration-700">

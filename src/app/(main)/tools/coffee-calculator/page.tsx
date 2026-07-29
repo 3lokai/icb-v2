@@ -185,6 +185,7 @@ export default function CoffeeCalculatorPage() {
                       >
                         <Icon
                           className="transition-transform group-hover:scale-110"
+                          data-icon="inline-start"
                           icon={BookOpenIcon}
                           size={16}
                         />

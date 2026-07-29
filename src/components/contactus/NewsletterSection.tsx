@@ -70,9 +70,15 @@ export function NewsletterSection({
                 ))}
               </ul>
 
-              <form className="space-y-5" onSubmit={onSubmit}>
+              <form
+                className="space-y-5"
+                onSubmit={onSubmit}
+                aria-busy={formSubmitting}
+                noValidate={false}
+              >
                 <input
                   aria-hidden="true"
+                  aria-label="Leave blank"
                   autoComplete="off"
                   className="pointer-events-none absolute opacity-0"
                   name="website"
@@ -89,12 +95,14 @@ export function NewsletterSection({
                     Email Address
                   </label>
                   <input
+                    autoComplete="email"
                     className="w-full px-5 py-3.5 rounded-xl border border-border/60 bg-background text-body focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all outline-none"
                     id="email"
                     name="email"
                     placeholder="yourname@gmail.com"
                     required
                     type="email"
+                    disabled={formSubmitting}
                   />
                 </Stack>
 
@@ -117,6 +125,7 @@ export function NewsletterSection({
                 <Button
                   className="w-full h-14 text-body font-bold uppercase tracking-widest shadow-xl shadow-accent/5 hover-lift"
                   disabled={formSubmitting}
+                  aria-busy={formSubmitting}
                   type="submit"
                 >
                   {getButtonText()}

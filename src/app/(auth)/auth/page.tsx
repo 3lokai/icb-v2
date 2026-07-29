@@ -1,6 +1,20 @@
 import { Suspense } from "react";
 import { AuthForm } from "@/components/layout/auth-form";
 import { AuthScreen } from "@/components/layout/auth-screen";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Stack } from "@/components/primitives/stack";
+
+function AuthFormFallback() {
+  return (
+    <Stack gap="4" aria-busy="true" aria-label="Loading sign-in form">
+      <Skeleton className="h-8 w-40" />
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+    </Stack>
+  );
+}
 
 export default function AuthPage() {
   return (
@@ -14,7 +28,7 @@ export default function AuthPage() {
     >
       {/* AuthForm reads useSearchParams(); Suspense keeps the page statically
           prerenderable (CSR-bailout boundary) instead of erroring the build. */}
-      <Suspense fallback={null}>
+      <Suspense fallback={<AuthFormFallback />}>
         <AuthForm />
       </Suspense>
     </AuthScreen>

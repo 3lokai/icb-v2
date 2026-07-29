@@ -21,6 +21,7 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
     <div className="relative">
       <Input
         {...props}
+        aria-label={props["aria-label"] ?? "Password"}
         className={cn("pr-10", className)}
         type={visible ? "text" : "password"}
       />

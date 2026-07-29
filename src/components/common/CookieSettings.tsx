@@ -72,11 +72,13 @@ export function CookieSettings({
               Cookie Preferences
             </h3>
             <button
+              aria-label="Close cookie preferences"
               className="text-muted-foreground hover:text-foreground"
               onClick={handleClose}
               type="button"
             >
               <Icon icon={XIcon} size={18} />
+              <span className="sr-only">Close</span>
             </button>
           </div>
 
@@ -93,7 +95,7 @@ export function CookieSettings({
                   Required for the website to function. Cannot be disabled.
                 </p>
               </div>
-              <Switch checked disabled />
+              <Switch checked disabled aria-label="Necessary Cookies" />
             </div>
 
             <div className="flex items-center justify-between rounded-md border border-border p-3">
@@ -105,6 +107,7 @@ export function CookieSettings({
               </div>
               <Switch
                 checked={preferences.analytics}
+                aria-label="Analytics Cookies"
                 onCheckedChange={() =>
                   setPreferences((p: CookiePreferences) => ({
                     ...p,

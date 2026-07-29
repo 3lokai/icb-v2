@@ -49,7 +49,13 @@ export function HeroControl({ totals, hero }: HeroControlProps) {
         </div>
 
         {process.env.NODE_ENV === "development" ? (
-          <Suspense fallback={null}>
+          <Suspense
+            fallback={
+              <div className="sr-only" aria-busy="true">
+                Loading segment toggle
+              </div>
+            }
+          >
             <HeroSegmentDevToggle
               activeSegment={hero.segment}
               devPreview={hero.devSegmentPreview}

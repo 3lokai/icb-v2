@@ -71,7 +71,7 @@ export function NewGearForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} noValidate={false}>
       <Stack
         gap="12"
         className="surface-1 rounded-lg p-4 border border-border/20"
@@ -95,9 +95,14 @@ export function NewGearForm({
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
               placeholder="e.g., C40 MK4"
+              required
+              minLength={1}
               aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "gear-name-error" : undefined}
             />
-            {errors.name && <FieldError>{errors.name}</FieldError>}
+            {errors.name && (
+              <FieldError id="gear-name-error">{errors.name}</FieldError>
+            )}
           </div>
         </div>
 
@@ -115,6 +120,9 @@ export function NewGearForm({
               <SelectTrigger
                 id="gear-category"
                 aria-invalid={!!errors.category}
+                aria-describedby={
+                  errors.category ? "gear-category-error" : undefined
+                }
               >
                 <SelectValue />
               </SelectTrigger>
@@ -124,7 +132,11 @@ export function NewGearForm({
                 <SelectItem value="accessory">Accessory</SelectItem>
               </SelectContent>
             </Select>
-            {errors.category && <FieldError>{errors.category}</FieldError>}
+            {errors.category && (
+              <FieldError id="gear-category-error">
+                {errors.category}
+              </FieldError>
+            )}
           </div>
         </div>
 

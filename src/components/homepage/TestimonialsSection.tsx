@@ -240,15 +240,15 @@ export default function TestimonialsSection() {
         </div>
 
         <div className="mt-8 text-center md:hidden">
-          <Link href="/reviews">
-            <Button className="group w-full sm:w-auto" variant="outline">
+          <Button asChild className="group w-full sm:w-auto" variant="outline">
+            <Link href="/reviews">
               View All Reviews
               <Icon
                 className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
                 icon={ArrowRightIcon}
               />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </Stack>
     </Section>

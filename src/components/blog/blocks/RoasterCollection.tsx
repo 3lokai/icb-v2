@@ -119,19 +119,32 @@ export function RoasterCollection({ value }: RoasterCollectionProps) {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        {isLoading
-          ? Array.from({ length: limit }).map((_, i) => (
-              <motion.div
-                key={i}
-                variants={itemVariants}
-                className="h-64 w-full animate-pulse rounded-2xl bg-muted/50 border border-border/20"
-              />
-            ))
-          : data?.items?.map((roaster: any) => (
-              <motion.div key={roaster.id} variants={itemVariants}>
-                <RoasterCard roaster={roaster} />
-              </motion.div>
-            ))}
+        {isLoading ? (
+          Array.from({ length: limit }).map((_, i) => (
+            <motion.div
+              key={i}
+              variants={itemVariants}
+              className="h-64 w-full animate-pulse rounded-2xl bg-muted/50 border border-border/20"
+            />
+          ))
+        ) : !data?.items || data.items.length === 0 ? (
+          <div className="col-span-full py-16 text-center" role="status">
+            <p className="text-body text-muted-foreground">
+              No roasters found in this collection.
+            </p>
+            <Button asChild variant="outline" size="sm" className="mt-4">
+              <Link href={moreUrl || "/roasters"}>
+                {moreText || "Explore roasters"}
+              </Link>
+            </Button>
+          </div>
+        ) : (
+          data.items.map((roaster: any) => (
+            <motion.div key={roaster.id} variants={itemVariants}>
+              <RoasterCard roaster={roaster} />
+            </motion.div>
+          ))
+        )}
       </motion.div>
 
       {showMoreButton && (

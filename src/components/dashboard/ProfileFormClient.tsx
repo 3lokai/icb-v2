@@ -178,6 +178,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
               </FieldLabel>
               <div className="flex flex-col gap-2">
                 <Input
+                  autoComplete="name"
                   data-invalid={!!fieldErrors.fullName}
                   id="fullName"
                   onChange={(e) => updateFormData("fullName", e.target.value)}
@@ -196,6 +197,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
               <FieldLabel htmlFor="username">Username</FieldLabel>
               <div className="flex flex-col gap-2">
                 <Input
+                  autoComplete="username"
                   data-invalid={!!fieldErrors.username}
                   id="username"
                   onChange={(e) => updateFormData("username", e.target.value)}
@@ -258,6 +260,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
                       className="w-full"
                       data-invalid={!!fieldErrors.country}
                       id="country"
+                      aria-label="Country"
                     >
                       <SelectValue placeholder="Select country" />
                     </SelectTrigger>
@@ -295,6 +298,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
                       className="w-full"
                       data-invalid={!!fieldErrors.state}
                       id="state"
+                      aria-label="State"
                     >
                       <SelectValue placeholder="Select state" />
                     </SelectTrigger>
@@ -324,6 +328,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
                       className="w-full"
                       data-invalid={!!fieldErrors.city}
                       id="city"
+                      aria-label="City"
                     >
                       <SelectValue placeholder="Select city" />
                     </SelectTrigger>
@@ -396,6 +401,7 @@ export function ProfileFormClient({ initialProfile }: ProfileFormClientProps) {
                   <Slider
                     max={2}
                     min={0}
+                    aria-label="Experience Level"
                     onValueChange={(value) => {
                       const levels = ["beginner", "enthusiast", "expert"];
                       updateFormData(

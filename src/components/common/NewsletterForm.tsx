@@ -54,6 +54,7 @@ export function NewsletterForm({
       {/* Honeypot field - hidden from users but visible to bots */}
       <input
         aria-hidden="true"
+        aria-label="Leave blank"
         autoComplete="off"
         className="pointer-events-none absolute opacity-0"
         name="website"
@@ -61,9 +62,13 @@ export function NewsletterForm({
         tabIndex={-1}
         type="text"
       />
+      <label className="sr-only" htmlFor="newsletter-email">
+        Email address
+      </label>
       <input
         autoComplete="email"
         className="w-full rounded-md border border-border bg-muted p-2 text-foreground font-sans transition-shadow focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        id="newsletter-email"
         name="email"
         placeholder={placeholderText}
         required

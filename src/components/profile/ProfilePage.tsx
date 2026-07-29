@@ -301,20 +301,21 @@ export function ProfilePage({
               </p>
             </Stack>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/login">
-                <Button size="lg" className="rounded-full px-8 hover-lift">
-                  Create Your Profile
-                </Button>
-              </Link>
-              <Link href="/coffees">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="rounded-full px-8 hover-lift"
-                >
-                  Explore More Coffees
-                </Button>
-              </Link>
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full px-8 hover-lift"
+              >
+                <Link href="/login">Create Your Profile</Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-full px-8 hover-lift"
+              >
+                <Link href="/coffees">Explore More Coffees</Link>
+              </Button>
             </div>
           </Stack>
         </Band>

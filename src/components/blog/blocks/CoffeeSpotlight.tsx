@@ -7,6 +7,7 @@ import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { urlFor } from "@/lib/sanity/image";
+import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +31,10 @@ function SpotlightCard({
   data: any;
   isLegacy?: boolean;
 }) {
+  const displayName = isLegacy
+    ? (data.name as string)
+    : getCoffeeDisplayName(data);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -46,7 +51,7 @@ function SpotlightCard({
                 ? urlFor(data.image).width(600).height(600).url()
                 : data.image_url
             }
-            alt={data.name}
+            alt={displayName}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
@@ -57,7 +62,7 @@ function SpotlightCard({
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <h2 className="text-title font-bold text-foreground leading-tight tracking-tight">
-                {data.name}
+                {displayName}
               </h2>
               <Badge
                 variant="secondary"
@@ -74,7 +79,7 @@ function SpotlightCard({
           <p className="text-body text-muted-foreground leading-relaxed line-clamp-2 lg:line-clamp-3">
             {isLegacy
               ? data.description
-              : `Experience the unique flavor profile of ${data.name}. This ${data.process || "carefully processed"} coffee offers a balanced and distinctive cup.`}
+              : `Experience the unique flavor profile of ${displayName}. This ${data.process || "carefully processed"} coffee offers a balanced and distinctive cup.`}
           </p>
 
           <div className="flex flex-wrap gap-2">
@@ -105,7 +110,13 @@ function SpotlightCard({
                     : `/roasters/${data.roaster_slug}/coffees/${data.slug}`
                 }
               >
-                View Beans <Icon icon={CoffeeIcon} size={18} className="ml-2" />
+                View Beans{" "}
+                <Icon
+                  icon={CoffeeIcon}
+                  size={18}
+                  className="ml-2"
+                  data-icon="inline-end"
+                />
               </Link>
             </Button>
           </div>
@@ -127,18 +138,38 @@ export function CoffeeSpotlight({ value }: CoffeeSpotlightProps) {
     enabled: !!value.coffeeId,
   });
 
+  const items = coffee
+    ? [coffee]
+    : value.name && !value.coffeeId
+      ? [value]
+      : [];
+
   if (value.coffeeId && isLoading) {
     return (
       <div className="h-64 w-full animate-pulse rounded-2xl bg-muted/50 border border-border/20" />
     );
   }
 
-  // Handle studio-icb (dynamic fetch)
+  if (!isLoading && items.length === 0) {
+    return (
+      <div
+        className="rounded-2xl border border-border/20 bg-muted/30 px-6 py-12 text-center"
+        role="status"
+      >
+        <p className="text-body text-muted-foreground">
+          No coffees found in this spotlight.
+        </p>
+        <Button asChild variant="outline" size="sm" className="mt-4">
+          <Link href="/coffees">Browse coffees</Link>
+        </Button>
+      </div>
+    );
+  }
+
   if (value.coffeeId && coffee) {
     return <SpotlightCard data={coffee} />;
   }
 
-  // Legacy support for filled-in data
   if (!value.coffeeId && value.name) {
     return <SpotlightCard data={value} isLegacy />;
   }

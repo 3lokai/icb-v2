@@ -9,6 +9,7 @@ import { useSettingsForm } from "@/hooks/use-settings-form";
 import { Button } from "@/components/ui/button";
 import {
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
@@ -322,6 +323,7 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
                           <Input
                             id="password"
                             type="password"
+                            autoComplete="current-password"
                             value={password}
                             onChange={(e) => {
                               setPassword(e.target.value);
@@ -329,6 +331,11 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
                             }}
                             disabled={isDeleting}
                             aria-invalid={!!passwordError}
+                            aria-describedby={
+                              passwordError
+                                ? "delete-account-password-error"
+                                : undefined
+                            }
                             onKeyDown={(e) => {
                               if (
                                 e.key === "Enter" &&
@@ -340,9 +347,9 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
                             }}
                           />
                           {passwordError && (
-                            <p className="text-destructive text-caption">
+                            <FieldError id="delete-account-password-error">
                               {passwordError}
-                            </p>
+                            </FieldError>
                           )}
                         </div>
                       </div>

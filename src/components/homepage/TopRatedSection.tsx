@@ -72,18 +72,19 @@ export default function TopRatedSection({
             </p>
 
             <div className="pt-2">
-              <Link href={COFFEES_RATING_SORT_HREF}>
-                <Button
-                  variant="secondary"
-                  className="group text-micro font-bold uppercase tracking-[0.15em] text-foreground hover:bg-transparent hover:text-accent transition-all"
-                >
+              <Button
+                asChild
+                variant="secondary"
+                className="group text-micro font-bold uppercase tracking-[0.15em] text-foreground hover:bg-transparent hover:text-accent transition-all"
+              >
+                <Link href={COFFEES_RATING_SORT_HREF}>
                   Browse all by rating
                   <Icon
                     className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
                     icon={ArrowRightIcon}
                   />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
 
             {/* Microstats or subtle proof point */}

@@ -89,7 +89,12 @@ export function RegionSpotlight({ value }: RegionSpotlightProps) {
               >
                 <Link href={value.link || `/regions/${regionId}`}>
                   Explore Region{" "}
-                  <Icon icon={MapPinIcon} size={18} className="ml-2" />
+                  <Icon
+                    icon={MapPinIcon}
+                    size={18}
+                    className="ml-2"
+                    data-icon="inline-end"
+                  />
                 </Link>
               </Button>
             )}

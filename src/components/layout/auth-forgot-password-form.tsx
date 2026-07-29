@@ -127,6 +127,7 @@ export function AuthForgotPasswordForm({
               <Input
                 id="email"
                 type="email"
+                autoComplete="email"
                 placeholder="m@example.com"
                 value={email}
                 onChange={handleInputChange}
