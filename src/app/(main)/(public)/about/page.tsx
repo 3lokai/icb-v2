@@ -302,6 +302,7 @@ export default function AboutPage() {
                     Explore Indian Coffee Regions
                     <Icon
                       className="ml-2 transition-transform duration-200 group-hover:translate-x-1"
+                      data-icon="inline-end"
                       icon={ArrowRightIcon}
                       size={14}
                     />

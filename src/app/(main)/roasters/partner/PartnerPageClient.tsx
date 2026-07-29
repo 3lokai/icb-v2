@@ -7,7 +7,7 @@ import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { PageShell } from "@/components/primitives/page-shell";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { useState, Fragment } from "react";
+import { useState, useTransition, Fragment } from "react";
 import {
   ArrowRightIcon,
   ArrowSquareOutIcon,
@@ -53,11 +53,13 @@ const InteractiveBentoCard = ({
   onClick: () => void;
   className?: string;
 }) => (
-  <div
+  <button
+    type="button"
     className={cn(
-      "group relative flex flex-col justify-between overflow-hidden rounded-2xl",
+      "group relative flex flex-col justify-between overflow-hidden rounded-2xl text-left",
       "border border-border/50 bg-card/40 transition-all duration-500 hover:shadow-xl",
       "transform-gpu hover:-translate-y-1 cursor-pointer",
+      "appearance-none p-0 font-inherit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       className
     )}
     onClick={onClick}
@@ -109,7 +111,7 @@ const InteractiveBentoCard = ({
         </span>
       </div>
     </div>
-  </div>
+  </button>
 );
 
 // StatsBar Component - Refactored to a compact, editorial ribbon
@@ -637,36 +639,41 @@ export default function PartnerPageClient({
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const pending = formSubmitting || isPending;
 
-  const handleFormSubmit = async (e: React.FormEvent, formData: FormData) => {
+  const handleFormSubmit = (e: React.FormEvent, formData: FormData) => {
     e.preventDefault();
+    if (pending) return;
     setFormSubmitting(true);
     setFormError(null);
 
-    try {
-      const result = await submitForm("partner_inquiry", formData);
+    startTransition(async () => {
+      try {
+        const result = await submitForm("partner_inquiry", formData);
 
-      if (result.success) {
-        setFormSubmitted(true);
-        capture("partner_form_submitted", { form_type: activeForm || "" });
-        toast.success("Request Submitted!", {
-          description: "We'll reach out within 24 hours.",
-        });
-        setTimeout(() => {
-          setFormSubmitted(false);
-          setActiveForm(null);
-        }, 3000);
-      } else {
-        setFormError(
-          result.error || "There was a problem submitting your form"
-        );
+        if (result.success) {
+          setFormSubmitted(true);
+          capture("partner_form_submitted", { form_type: activeForm || "" });
+          toast.success("Request Submitted!", {
+            description: "We'll reach out within 24 hours.",
+          });
+          setTimeout(() => {
+            setFormSubmitted(false);
+            setActiveForm(null);
+          }, 3000);
+        } else {
+          setFormError(
+            result.error || "There was a problem submitting your form"
+          );
+        }
+      } catch (err) {
+        setFormError("An unexpected error occurred");
+        console.error(err);
+      } finally {
+        setFormSubmitting(false);
       }
-    } catch (err) {
-      setFormError("An unexpected error occurred");
-      console.error(err);
-    } finally {
-      setFormSubmitting(false);
-    }
+    });
   };
 
   const scrollToPricing = () => {
@@ -890,14 +897,28 @@ export default function PartnerPageClient({
 
       {/* Form Modal */}
       {activeForm && (
-        <PartnerFormModal
-          activeForm={activeForm}
-          onClose={() => setActiveForm(null)}
-          onSubmit={handleFormSubmit}
-          formSubmitting={formSubmitting}
-          formSubmitted={formSubmitted}
-          formError={formError}
-        />
+        <>
+          <span className="sr-only" role="status" aria-live="polite">
+            {pending ? "Submitting..." : ""}
+          </span>
+          <Button
+            type="button"
+            disabled={pending}
+            aria-busy={pending}
+            className="sr-only"
+            tabIndex={-1}
+          >
+            {pending ? "Submitting..." : "Submit"}
+          </Button>
+          <PartnerFormModal
+            activeForm={activeForm}
+            onClose={() => setActiveForm(null)}
+            onSubmit={handleFormSubmit}
+            formSubmitting={pending}
+            formSubmitted={formSubmitted}
+            formError={formError}
+          />
+        </>
       )}
     </div>
   );

@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { AuthResetPasswordForm } from "@/components/layout/auth-reset-password-form";
 import { AuthScreen } from "@/components/layout/auth-screen";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Stack } from "@/components/primitives/stack";
 
 export const metadata: Metadata = {
   title: "Reset Password",
@@ -24,6 +26,18 @@ export const metadata: Metadata = {
   },
 };
 
+function ResetPasswordFormFallback() {
+  return (
+    <Stack gap="4" aria-busy="true" aria-label="Loading reset password form">
+      <Skeleton className="h-8 w-48" />
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+    </Stack>
+  );
+}
+
 export default function ResetPasswordPage() {
   return (
     <AuthScreen
@@ -36,7 +50,7 @@ export default function ResetPasswordPage() {
     >
       {/* AuthResetPasswordForm reads useSearchParams(); Suspense keeps the page
           statically prerenderable (CSR-bailout boundary). */}
-      <Suspense fallback={null}>
+      <Suspense fallback={<ResetPasswordFormFallback />}>
         <AuthResetPasswordForm />
       </Suspense>
     </AuthScreen>

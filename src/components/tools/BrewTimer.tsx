@@ -379,6 +379,9 @@ export function BrewingTimer({ results, className }: BrewingTimerProps) {
                   onClick={() => setVibrationEnabled(!vibrationEnabled)}
                   size="sm"
                   variant="ghost"
+                  aria-label={
+                    vibrationEnabled ? "Disable vibration" : "Enable vibration"
+                  }
                 >
                   <Icon className="h-5 w-5 sm:h-4 sm:w-4" icon={VibrateIcon} />
                 </Button>

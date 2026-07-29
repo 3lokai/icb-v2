@@ -77,6 +77,7 @@ export function FormModal({
     >
       <input
         aria-hidden="true"
+        aria-label="Leave blank"
         autoComplete="off"
         className="pointer-events-none absolute opacity-0"
         name="url"
@@ -160,6 +161,7 @@ export function FormModal({
               Your Email*
             </label>
             <input
+              autoComplete="email"
               className={inputClasses}
               id="yourEmail"
               name="yourEmail"
@@ -198,6 +200,7 @@ export function FormModal({
     <form className="space-y-8" onSubmit={(e) => onSubmit(e, "suggestion")}>
       <input
         aria-hidden="true"
+        aria-label="Leave blank"
         autoComplete="off"
         className="pointer-events-none absolute opacity-0"
         name="website"
@@ -262,6 +265,7 @@ export function FormModal({
               Your Email*
             </label>
             <input
+              autoComplete="email"
               className={inputClasses}
               id="suggesterEmail"
               name="suggesterEmail"
@@ -300,6 +304,7 @@ export function FormModal({
     <form className="space-y-8" onSubmit={(e) => onSubmit(e, "roaster_claim")}>
       <input
         aria-hidden="true"
+        aria-label="Leave blank"
         autoComplete="off"
         className="pointer-events-none absolute opacity-0"
         name="website"
@@ -338,6 +343,7 @@ export function FormModal({
           Your Email Address*
         </label>
         <input
+          autoComplete="email"
           className={inputClasses}
           id="claimEmail"
           name="email"
@@ -383,6 +389,7 @@ export function FormModal({
     >
       <input
         aria-hidden="true"
+        aria-label="Leave blank"
         autoComplete="off"
         className="pointer-events-none absolute opacity-0"
         name="website"
@@ -397,6 +404,7 @@ export function FormModal({
             Full Name*
           </label>
           <input
+            autoComplete="name"
             className={inputClasses}
             id="proName"
             name="name"
@@ -410,6 +418,7 @@ export function FormModal({
             Organization
           </label>
           <input
+            autoComplete="organization"
             className={inputClasses}
             id="organization"
             name="organization"
@@ -424,6 +433,7 @@ export function FormModal({
           Work Email*
         </label>
         <input
+          autoComplete="email"
           className={inputClasses}
           id="proEmail"
           name="email"
@@ -515,11 +525,13 @@ export function FormModal({
             </p>
           </Stack>
           <button
+            aria-label="Close"
             className="p-3 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
             onClick={onClose}
             type="button"
           >
             <Icon icon={XIcon} size={24} />
+            <span className="sr-only">Close</span>
           </button>
         </div>
 

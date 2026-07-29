@@ -130,7 +130,13 @@ const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
             disabled && "cursor-not-allowed opacity-50",
             className
           )}
-          onClick={() => !disabled && inputRef.current?.focus()}
+          onMouseDown={(e) => {
+            // Focus the input when clicking the container (not a nested control)
+            if (disabled) return;
+            if ((e.target as HTMLElement).closest("button, a, input")) return;
+            e.preventDefault();
+            inputRef.current?.focus();
+          }}
         >
           {/* Selected Tags */}
           {value.map((tag) => (
@@ -142,6 +148,7 @@ const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
                   variant="ghost"
                   size="sm"
                   className="h-4 w-4 p-0 hover:bg-transparent"
+                  aria-label={`Remove ${tag}`}
                   onClick={(e) => {
                     e.stopPropagation();
                     removeTag(tag);
@@ -169,7 +176,7 @@ const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
             disabled={
               disabled || (maxTags !== undefined && value.length >= maxTags)
             }
-            className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
+            className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
 
@@ -177,13 +184,14 @@ const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
         {showSuggestions && filteredSuggestions.length > 0 && (
           <div className="absolute top-full left-0 right-0 z-50 mt-1 max-h-60 overflow-auto rounded-md border bg-popover p-1 shadow-md">
             {filteredSuggestions.map((suggestion) => (
-              <div
+              <button
+                type="button"
                 key={suggestion.value}
-                className="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground"
+                className="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring"
                 onClick={() => handleSuggestionClick(suggestion)}
               >
                 {suggestion.label}
-              </div>
+              </button>
             ))}
           </div>
         )}

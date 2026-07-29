@@ -68,15 +68,15 @@ export async function CoffeeGridTeaser({
         description={description}
         rightAside={
           <>
-            <Link className="hidden md:block" href={seeAllHref}>
-              <Button className="group" variant="outline">
+            <Button asChild className="group hidden md:block" variant="outline">
+              <Link href={seeAllHref}>
                 {seeAllLabel}
                 <Icon
                   className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
                   icon={ArrowRightIcon}
                 />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
             <div className="flex md:hidden items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
               <span className="h-1 w-1 rounded-full bg-accent/40" />
               {result.total} Available
@@ -105,15 +105,15 @@ export async function CoffeeGridTeaser({
       </div>
 
       <div className="mt-8 text-center md:hidden">
-        <Link href={seeAllHref}>
-          <Button className="group w-full sm:w-auto" variant="outline">
+        <Button asChild className="group w-full sm:w-auto" variant="outline">
+          <Link href={seeAllHref}>
             {seeAllLabel}
             <Icon
               className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
               icon={ArrowRightIcon}
             />
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
     </Section>
   );

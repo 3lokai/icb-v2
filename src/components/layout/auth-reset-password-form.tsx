@@ -250,6 +250,7 @@ export function AuthResetPasswordForm({
                 value={password}
                 onChange={handlePasswordChange}
                 required
+                minLength={8}
               />
               <FieldDescription>
                 Must be at least 8 characters long.
@@ -265,6 +266,7 @@ export function AuthResetPasswordForm({
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
                 required
+                minLength={8}
               />
               <FieldDescription>
                 Please confirm your new password.

@@ -7,7 +7,7 @@ import { useEffect, useMemo, startTransition, useState } from "react";
 import { WarningIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 // Import calculation logic
 import {
   BREWING_METHODS_ARRAY,
@@ -193,6 +193,7 @@ export function CoffeeCalculator({
                 variant="destructive"
               >
                 <Icon className="h-4 w-4" icon={WarningIcon} />
+                <AlertTitle>Error</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

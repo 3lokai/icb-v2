@@ -33,9 +33,14 @@ export default function MainLayout({
 }) {
   return (
     <div className="surface-0 relative flex min-h-screen flex-col">
-      {/* fallback=null: no active announcement is the common case, so reserve no
-          height — a skeleton here collapsed to null and shifted every page (incl. footer). */}
-      <Suspense fallback={null}>
+      {/* Prefer a non-layout-shifting fallback: announcements are usually empty. */}
+      <Suspense
+        fallback={
+          <div className="sr-only" aria-busy="true">
+            Loading announcements
+          </div>
+        }
+      >
         <AnnouncementBanner />
       </Suspense>
       <Header />

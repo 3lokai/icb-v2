@@ -265,6 +265,7 @@ export function DeveloperPortal({
             <div className="flex gap-2">
               <Input
                 readOnly
+                aria-label="API key"
                 value={rawKeyValue ?? ""}
                 className="flex-1 font-mono text-caption px-5 py-3.5 rounded-xl border border-border bg-muted/5"
               />

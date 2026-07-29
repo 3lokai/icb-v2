@@ -50,7 +50,12 @@ export function SeriesNavigation({ value }: SeriesNavigationProps) {
           >
             <Link href="/learn" className="font-bold">
               View Collection{" "}
-              <Icon icon={ArrowRightIcon} size={18} className="ml-2" />
+              <Icon
+                icon={ArrowRightIcon}
+                size={18}
+                className="ml-2"
+                data-icon="inline-end"
+              />
             </Link>
           </Button>
         </div>

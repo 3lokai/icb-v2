@@ -503,6 +503,7 @@ export function OnboardingWizard({
                 <div className="flex flex-col gap-2">
                   <div className="relative">
                     <Input
+                      aria-label="City"
                       data-invalid={!!fieldErrors.city}
                       disabled={!selectedStateCode}
                       id="city"

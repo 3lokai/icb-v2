@@ -128,17 +128,30 @@ export function CoffeeCollection({ value }: CoffeeCollectionProps) {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        {isLoading
-          ? Array.from({ length: limit }).map((_, i) => (
-              <motion.div key={i} variants={itemVariants}>
-                <CoffeeCardSkeleton />
-              </motion.div>
-            ))
-          : data?.items?.map((coffee: any) => (
-              <motion.div key={coffee.coffee_id} variants={itemVariants}>
-                <CoffeeCard coffee={coffee} variant="compact" />
-              </motion.div>
-            ))}
+        {isLoading ? (
+          Array.from({ length: limit }).map((_, i) => (
+            <motion.div key={i} variants={itemVariants}>
+              <CoffeeCardSkeleton />
+            </motion.div>
+          ))
+        ) : !data?.items || data.items.length === 0 ? (
+          <div className="col-span-full py-16 text-center" role="status">
+            <p className="text-body text-muted-foreground">
+              No coffees found in this collection.
+            </p>
+            <Button asChild variant="outline" size="sm" className="mt-4">
+              <Link href={moreUrl || "/coffees"}>
+                {moreText || "Explore coffees"}
+              </Link>
+            </Button>
+          </div>
+        ) : (
+          data.items.map((coffee: any) => (
+            <motion.div key={coffee.coffee_id} variants={itemVariants}>
+              <CoffeeCard coffee={coffee} variant="compact" />
+            </motion.div>
+          ))
+        )}
       </motion.div>
 
       {showMoreButton && (

@@ -85,7 +85,12 @@ function SpotlightCard({
                 href={isLegacy ? data.link || "#" : `/roasters/${data.slug}`}
               >
                 Visit Roaster{" "}
-                <Icon icon={ArrowRightIcon} size={18} className="ml-2" />
+                <Icon
+                  icon={ArrowRightIcon}
+                  size={18}
+                  className="ml-2"
+                  data-icon="inline-end"
+                />
               </Link>
             </Button>
           </div>
@@ -107,9 +112,31 @@ export function RoasterSpotlight({ value }: RoasterSpotlightProps) {
     enabled: !!value.roasterId,
   });
 
+  const items = roaster
+    ? [roaster]
+    : value.name && !value.roasterId
+      ? [value]
+      : [];
+
   if (value.roasterId && isLoading) {
     return (
       <div className="h-64 w-full animate-pulse rounded-2xl bg-muted/50 border border-border/20" />
+    );
+  }
+
+  if (!isLoading && items.length === 0) {
+    return (
+      <div
+        className="rounded-2xl border border-border/20 bg-muted/30 px-6 py-12 text-center"
+        role="status"
+      >
+        <p className="text-body text-muted-foreground">
+          No roasters found in this spotlight.
+        </p>
+        <Button asChild variant="outline" size="sm" className="mt-4">
+          <Link href="/roasters">Browse roasters</Link>
+        </Button>
+      </div>
     );
   }
 

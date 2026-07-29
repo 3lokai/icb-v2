@@ -111,7 +111,14 @@ export function CommunitySubmissionModal() {
                   if (platformError) setPlatformError("");
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger
+                  id="platform"
+                  aria-label="Platform"
+                  aria-invalid={!!platformError}
+                  aria-describedby={
+                    platformError ? "platform-error" : undefined
+                  }
+                >
                   <SelectValue placeholder="Select platform" />
                 </SelectTrigger>
                 <SelectContent>
@@ -124,7 +131,9 @@ export function CommunitySubmissionModal() {
                 </SelectContent>
               </Select>
               {platformError ? (
-                <p className="text-body text-destructive">{platformError}</p>
+                <p id="platform-error" className="text-body text-destructive">
+                  {platformError}
+                </p>
               ) : null}
             </div>
 
