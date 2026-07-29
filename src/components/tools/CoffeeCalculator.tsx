@@ -13,13 +13,12 @@ import {
   BREWING_METHODS_ARRAY,
   type BrewingMethodKey,
   type CalculatorResults,
-  calculateBrewRatio,
   type RoastLevel,
   type StrengthLevel,
 } from "@/lib/tools/brewing-guide";
 import { BrewingTimer } from "./BrewTimer";
 import { CopyLink } from "./CopyLink";
-import { DrinkSizeInput } from "./DrinkSizeInput";
+import { GramsInput } from "./GramsInput";
 // Import our components
 import { MethodSelector } from "./MethodSelector";
 import { RecipeDisplay } from "./RecipeDisplay";
@@ -37,29 +36,33 @@ export function CoffeeCalculator({
 }: CoffeeCalculatorProps) {
   const searchParams = useSearchParams();
 
-  // Initialize state from URL params or defaults
+  // Initialize state from URL params, falling back to a visible default
+  // (pour over, 15g) so the recipe/timer render on first paint.
   const initialMethodFromUrl =
-    (searchParams.get("method") as BrewingMethodKey) || initialMethod || null;
+    (searchParams.get("method") as BrewingMethodKey) ||
+    initialMethod ||
+    "pourover";
   const initialStrengthFromUrl =
     (searchParams.get("strength") as StrengthLevel) || "average";
   const initialRoastFromUrl =
     (searchParams.get("roast") as RoastLevel) || "medium";
-  // Change from 'water' to 'drink' for better UX
-  const initialDrinkFromUrl =
-    Number.parseInt(
-      searchParams.get("drink") || searchParams.get("water") || "300",
-      10
-    ) || 300;
+
+  const initialGramsFromUrl =
+    Number.parseInt(searchParams.get("grams") || "", 10) || 15;
 
   const [method, setMethod] = useState<BrewingMethodKey | null>(
     initialMethodFromUrl
   );
-  const [drinkSize, setDrinkSize] = useState<number>(initialDrinkFromUrl);
+  const [coffeeGrams, setCoffeeGrams] = useState<number>(initialGramsFromUrl);
   const [strength, setStrength] = useState<StrengthLevel>(
     initialStrengthFromUrl
   );
   const [roastLevel, setRoastLevel] = useState<RoastLevel>(initialRoastFromUrl);
   const [error, setError] = useState<string | null>(null);
+
+  const methodData = method
+    ? BREWING_METHODS_ARRAY.find((m) => m.id === method)
+    : null;
 
   // Validate initial method from URL
   useEffect(() => {
@@ -73,23 +76,32 @@ export function CoffeeCalculator({
     }
   }, [initialMethodFromUrl]);
 
-  // Calculate results - ONE WAY ONLY! 🎯
+  // Switch brewing method — reset coffee weight to that method's default
+  const handleMethodChange = (newMethod: BrewingMethodKey) => {
+    const newMethodData = BREWING_METHODS_ARRAY.find((m) => m.id === newMethod);
+    setMethod(newMethod);
+    if (newMethodData) {
+      setCoffeeGrams(newMethodData.defaultGrams);
+    }
+  };
+
+  // Calculate results from coffee weight — water is derived, one direction only
   const results: CalculatorResults | null = useMemo(() => {
-    if (!method) {
+    if (!methodData) {
       return null;
     }
 
-    try {
-      return calculateBrewRatio({
-        method,
-        volume: drinkSize, // User's desired drink size
-        strength,
-        roastLevel,
-      });
-    } catch {
-      return null;
-    }
-  }, [method, drinkSize, strength, roastLevel]);
+    const ratio = methodData.ratios[strength];
+    return {
+      coffeeAmount: coffeeGrams,
+      waterAmount: Math.round(coffeeGrams * ratio),
+      ratio: `1:${ratio}`,
+      grindSize: methodData.grindSize,
+      brewTime: methodData.brewTime,
+      temperature: methodData.temperatures[roastLevel],
+      method: methodData,
+    };
+  }, [methodData, coffeeGrams, strength, roastLevel]);
 
   // Handle error state based on calculation result
   useEffect(() => {
@@ -106,21 +118,15 @@ export function CoffeeCalculator({
   useEffect(() => {
     if (initialMethod) {
       startTransition(() => {
-        setMethod(initialMethod);
+        handleMethodChange(initialMethod);
       });
     }
   }, [initialMethod]);
 
-  // Handle drink size changes - ONLY ONE DIRECTION! 🚀
-  const handleDrinkSizeChange = (newDrinkSize: number) => {
-    setDrinkSize(newDrinkSize);
-    // That's it! No reverse calculations, no madness!
-  };
-
   // Reset calculator
   const handleReset = () => {
-    setMethod(null);
-    setDrinkSize(300);
+    setMethod("pourover");
+    setCoffeeGrams(15);
     setStrength("average");
     setRoastLevel("medium");
     setError(null);
@@ -132,7 +138,7 @@ export function CoffeeCalculator({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Left Column - Brewing Parameters (Surface Card) */}
         <div className="card-bordered rounded-xl bg-background p-6">
-          <Stack gap="6">
+          <Stack gap="8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <h3 className="flex items-center gap-2 text-subheading">
                 <div className="h-2 w-2 rounded-full bg-primary" />
@@ -149,40 +155,31 @@ export function CoffeeCalculator({
                   </button>
                 )}
                 <CopyLink
-                  drink={drinkSize}
+                  grams={coffeeGrams}
                   method={method}
                   roast={roastLevel}
-                  strength={strength} // Changed from 'water' to 'drink'
+                  strength={strength}
                 />
               </div>
             </div>
 
             {/* Method Selection */}
-            <MethodSelector
-              isCompleted={!!method}
-              onChange={setMethod}
-              value={method}
-            />
+            <MethodSelector onChange={handleMethodChange} value={method} />
 
-            {/* Drink Size Input - Clean & Simple! */}
-            <DrinkSizeInput
-              calculatedCoffee={results?.coffeeAmount || 0}
-              drinkSize={drinkSize}
-              isCompleted={drinkSize > 0}
-              onDrinkSizeChange={handleDrinkSizeChange}
-            />
+            {/* Coffee Weight - the primary input */}
+            {methodData && (
+              <GramsInput
+                grams={coffeeGrams}
+                method={methodData}
+                onChange={setCoffeeGrams}
+              />
+            )}
 
             {/* Strength & Roast Level */}
             {method && (
               <>
-                <StrengthSelector
-                  isCompleted={!!strength}
-                  onChange={setStrength}
-                  value={strength}
-                />
-
+                <StrengthSelector onChange={setStrength} value={strength} />
                 <RoastLevelSelector
-                  isCompleted={!!roastLevel}
                   onChange={setRoastLevel}
                   value={roastLevel}
                 />
@@ -203,17 +200,17 @@ export function CoffeeCalculator({
         </div>
 
         {/* Right Column - Recipe Display (Enhanced) */}
-        <RecipeDisplay results={results} strength={strength} />
-      </div>
+        <div className="flex flex-col gap-6">
+          <RecipeDisplay results={results} strength={strength} />
 
-      {/* Brewing Timer */}
-      {results && (
-        <div className="mt-2">
-          <div className="card-bordered rounded-xl bg-background px-6 py-8 shadow-sm">
-            <BrewingTimer results={results} />
-          </div>
+          {/* Brewing Timer */}
+          {results && (
+            <div className="card-bordered rounded-xl bg-background px-6 py-8 shadow-sm">
+              <BrewingTimer results={results} />
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Method Tips (Full Width) */}
       {results?.method.tips && results.method.tips.length > 0 && (
