@@ -32,7 +32,12 @@ export function DashboardLayoutContent({
           onClick={() => setIsDrawerOpen(true)}
           variant="outline"
         >
-          <Icon className="mr-2" icon={ListIcon} size={16} />
+          <Icon
+            className="mr-2"
+            icon={ListIcon}
+            size={16}
+            data-icon="inline-start"
+          />
           Dashboard Menu
         </Button>
       </div>

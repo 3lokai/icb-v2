@@ -65,6 +65,7 @@ export function ReviewList({
         </div>
         {reviews.length > 1 && (
           <select
+            aria-label="Sort reviews"
             className="text-caption text-foreground bg-background border border-input/60 rounded-md px-3 py-1.5 hover:border-primary/50 focus:border-primary/50 transition-colors"
             defaultValue="latest"
           >

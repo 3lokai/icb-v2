@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import { motion } from "motion/react";
 import { ChartDataItem } from "@/lib/data/fetch-chart-data";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
 interface DataChartProps {
   value: {
@@ -75,7 +76,11 @@ const itemVariants = {
 
 export function DataChart({ value }: DataChartProps) {
   const { data, isLoading, error } = useQuery<ChartDataItem[]>({
-    queryKey: queryKeys.blog.dataChart(value.dataKey, value.limit),
+    queryKey: queryKeys.blog.dataChart(
+      value.dataKey,
+      value.limit,
+      value.region
+    ),
     queryFn: async () => {
       let url = `/api/blog/chart-data?dataKey=${value.dataKey}&limit=${
         value.limit || 10
@@ -91,10 +96,12 @@ export function DataChart({ value }: DataChartProps) {
 
   if (isLoading) {
     return (
-      <div className="h-80 flex items-center justify-center bg-muted/50 animate-pulse rounded-2xl border border-border/40 my-12">
-        <span className="text-caption text-muted-foreground font-medium">
-          Loading {value.dataKey.replace("_", " ")}...
-        </span>
+      <div
+        className="h-80 flex items-center justify-center bg-muted/50 rounded-2xl border border-border/40 my-12 pointer-events-none"
+        role="status"
+      >
+        <LoadingSpinner size="sm" text="" />
+        <span className="sr-only">Loading chart data…</span>
       </div>
     );
   }

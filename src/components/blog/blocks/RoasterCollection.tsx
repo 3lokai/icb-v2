@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
+import { buildRoasterCollectionParams } from "@/lib/blog/collection-params";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
@@ -56,8 +57,6 @@ export function RoasterCollection({ value }: RoasterCollectionProps) {
   const {
     title,
     description,
-    type = "dynamic",
-    roasterIds,
     limit = 3,
     columns = 3,
     showMoreButton = true,
@@ -68,20 +67,7 @@ export function RoasterCollection({ value }: RoasterCollectionProps) {
   const { data, isLoading } = useQuery({
     queryKey: queryKeys.blog.roasterCollection(value),
     queryFn: async () => {
-      const params = new URLSearchParams();
-      params.set("limit", limit.toString());
-
-      if (type === "manual" && roasterIds?.length) {
-        params.set("roasterIds", roasterIds.join(","));
-      } else {
-        if (value.states?.length) params.set("states", value.states.join(","));
-        if (value.cities?.length) params.set("cities", value.cities.join(","));
-        if (value.hasPhysicalStore) params.set("hasPhysicalStore", "1");
-        if (value.hasSubscription) params.set("hasSubscription", "1");
-        if (value.isFeatured) params.set("isFeatured", "1");
-        if (value.tags?.length) params.set("tags", value.tags.join(","));
-      }
-
+      const params = buildRoasterCollectionParams(value);
       const res = await fetch(`/api/roasters?${params.toString()}`);
       if (!res.ok) throw new Error("Failed to fetch roasters");
       return res.json();

@@ -87,7 +87,12 @@ function CoffeeDirectoryComponent({
           try again.
         </p>
         <Button variant="outline" onClick={() => refetch()}>
-          <Icon icon={ArrowClockwiseIcon} className="mr-2" size={16} />
+          <Icon
+            icon={ArrowClockwiseIcon}
+            className="mr-2"
+            size={16}
+            data-icon="inline-start"
+          />
           Try again
         </Button>
       </div>

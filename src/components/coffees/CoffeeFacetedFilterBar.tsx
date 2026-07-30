@@ -419,6 +419,7 @@ export function CoffeeFacetedFilterBar({
                 <Icon
                   icon={CaretDownIcon}
                   size={16}
+                  data-icon="inline-end"
                   className={`transition-transform ${
                     refineOpen ? "rotate-180" : ""
                   }`}

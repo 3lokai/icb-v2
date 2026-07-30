@@ -166,7 +166,10 @@ export function AddSelection() {
               disabled={!selectedRoasterId}
               onValueChange={handleCoffeeSelect}
             >
-              <SelectTrigger className="w-full bg-background/50 border-border/40 font-normal h-10 hover:border-accent/40 transition-colors">
+              <SelectTrigger
+                aria-label="Select coffee"
+                className="w-full bg-background/50 border-border/40 font-normal h-10 hover:border-accent/40 transition-colors"
+              >
                 <SelectValue
                   placeholder={
                     selectedRoasterId

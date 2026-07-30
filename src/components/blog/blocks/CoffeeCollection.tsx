@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
+import { buildCoffeeCollectionParams } from "@/lib/blog/collection-params";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
@@ -57,8 +58,6 @@ export function CoffeeCollection({ value }: CoffeeCollectionProps) {
   const {
     title,
     description,
-    type = "dynamic",
-    coffeeIds,
     limit = 3,
     columns = 3,
     showMoreButton = true,
@@ -69,28 +68,7 @@ export function CoffeeCollection({ value }: CoffeeCollectionProps) {
   const { data, isLoading } = useQuery({
     queryKey: queryKeys.blog.coffeeCollection(value),
     queryFn: async () => {
-      const params = new URLSearchParams();
-      params.set("limit", limit.toString());
-
-      if (type === "manual" && coffeeIds?.length) {
-        params.set("coffeeIds", coffeeIds.join(","));
-      } else {
-        if (value.roastLevel?.length)
-          params.set("roastLevels", value.roastLevel.join(","));
-        if (value.beanType?.length)
-          params.set("beanSpecies", value.beanType.join(","));
-        if (value.processingMethod?.length)
-          params.set("processes", value.processingMethod.join(","));
-        if (value.regions?.length)
-          params.set("regions", value.regions.join(","));
-        if (value.roasters?.length)
-          params.set("roasters", value.roasters.join(","));
-        if (value.isSingleOrigin) params.set("isSingleOrigin", "1");
-        if (value.isFeatured) params.set("isFeatured", "1");
-        if (value.isSeasonal) params.set("isSeasonal", "1");
-        if (value.tags?.length) params.set("tags", value.tags.join(","));
-      }
-
+      const params = buildCoffeeCollectionParams(value);
       const res = await fetch(`/api/coffees?${params.toString()}`);
       if (!res.ok) throw new Error("Failed to fetch coffees");
       return res.json();

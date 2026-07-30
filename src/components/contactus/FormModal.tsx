@@ -176,6 +176,7 @@ export function FormModal({
         <Button
           className="w-full h-14 text-body font-bold uppercase tracking-widest hover-lift shadow-xl shadow-accent/5"
           disabled={formSubmitting || formSubmitted}
+          aria-busy={formSubmitting}
           type="submit"
         >
           {getButtonText()}
@@ -280,6 +281,7 @@ export function FormModal({
         <Button
           className="w-full h-14 text-body font-bold uppercase tracking-widest hover-lift shadow-xl shadow-accent/5"
           disabled={formSubmitting || formSubmitted}
+          aria-busy={formSubmitting}
           type="submit"
         >
           {getButtonText()}
@@ -361,6 +363,7 @@ export function FormModal({
         <Button
           className="w-full h-14 text-body font-bold uppercase tracking-widest hover-lift shadow-xl shadow-accent/5"
           disabled={formSubmitting || formSubmitted || loadingRoasters}
+          aria-busy={formSubmitting}
           type="submit"
         >
           {getButtonText()}
@@ -481,6 +484,7 @@ export function FormModal({
         <Button
           className="w-full h-14 text-body font-bold uppercase tracking-widest hover-lift shadow-xl shadow-accent/5"
           disabled={formSubmitting || formSubmitted}
+          aria-busy={formSubmitting}
           type="submit"
         >
           {getButtonText()}

@@ -88,7 +88,7 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
         size="sm"
         variant="outline"
       >
-        <Icon icon={CaretLeftIcon} size={16} />
+        <Icon icon={CaretLeftIcon} size={16} data-icon="inline-start" />
         <span className="sr-only md:not-sr-only md:ml-1">Previous</span>
       </Button>
 
@@ -129,7 +129,7 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
         variant="outline"
       >
         <span className="sr-only md:not-sr-only md:mr-1">Next</span>
-        <Icon icon={CaretRightIcon} size={16} />
+        <Icon icon={CaretRightIcon} size={16} data-icon="inline-end" />
       </Button>
 
       <div className="ml-4 text-muted-foreground text-caption">

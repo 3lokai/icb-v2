@@ -22,6 +22,7 @@ interface TagsInputProps {
   className?: string;
   maxTags?: number;
   disabled?: boolean;
+  "aria-label"?: string;
 }
 
 const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
@@ -35,6 +36,7 @@ const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
       className,
       maxTags,
       disabled = false,
+      "aria-label": ariaLabel,
     },
     ref
   ) => {
@@ -173,6 +175,7 @@ const TagsInput = forwardRef<HTMLDivElement, TagsInputProps>(
               }
             }}
             placeholder={value.length === 0 ? placeholder : ""}
+            aria-label={ariaLabel ?? placeholder}
             disabled={
               disabled || (maxTags !== undefined && value.length >= maxTags)
             }
