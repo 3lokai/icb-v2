@@ -106,6 +106,30 @@ export const queryKeys = {
       ["roasters", "filter-meta", filters] as const,
   },
 
+  // Region-related queries
+  regions: {
+    all: ["regions"] as const,
+    list: (
+      filters: Record<string, any> | undefined,
+      page: number,
+      limit: number,
+      sort: string
+    ) => ["regions", "list", { filters, page, limit, sort }] as const,
+    detail: (slug: string) => ["regions", "detail", slug] as const,
+  },
+
+  // Estate-related queries
+  estates: {
+    all: ["estates"] as const,
+    list: (
+      filters: Record<string, any> | undefined,
+      page: number,
+      limit: number,
+      sort: string
+    ) => ["estates", "list", { filters, page, limit, sort }] as const,
+    detail: (slug: string) => ["estates", "detail", slug] as const,
+  },
+
   // Wishlist (current user's set of coffee ids)
   wishlist: {
     mine: ["wishlist", "mine"] as const,
