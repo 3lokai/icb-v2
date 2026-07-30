@@ -47,7 +47,11 @@ export async function prefetchArticleBlocks(
 
       case "dataChart":
         return queryClient.prefetchQuery({
-          queryKey: queryKeys.blog.dataChart(block.dataKey, block.limit),
+          queryKey: queryKeys.blog.dataChart(
+            block.dataKey,
+            block.limit,
+            block.region
+          ),
           queryFn: () =>
             fetchChartData(block.dataKey, block.limit || 10, block.region),
         });

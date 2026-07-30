@@ -65,7 +65,7 @@ export function DashboardClient({
         role="status"
       >
         <Stack gap="4" className="text-center">
-          <h2 className="text-subheading">No profile data yet</h2>
+          <h2 className="text-subheading">Couldn&apos;t load your dashboard</h2>
           <p className="text-muted-foreground text-caption">
             We couldn&apos;t load your dashboard. Check your connection and try
             again.

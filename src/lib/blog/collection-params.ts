@@ -79,6 +79,7 @@ export function buildRoasterCollectionParams(
     if (value.hasPhysicalStore) params.set("hasPhysicalStore", "1");
     if (value.hasSubscription) params.set("hasSubscription", "1");
     if (value.isFeatured) params.set("isFeatured", "1");
+    if (value.isVerified) params.set("isVerified", "1");
     if (value.tags?.length) params.set("tags", value.tags.join(","));
   }
 

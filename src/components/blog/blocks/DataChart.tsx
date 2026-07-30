@@ -76,7 +76,11 @@ const itemVariants = {
 
 export function DataChart({ value }: DataChartProps) {
   const { data, isLoading, error } = useQuery<ChartDataItem[]>({
-    queryKey: queryKeys.blog.dataChart(value.dataKey, value.limit),
+    queryKey: queryKeys.blog.dataChart(
+      value.dataKey,
+      value.limit,
+      value.region
+    ),
     queryFn: async () => {
       let url = `/api/blog/chart-data?dataKey=${value.dataKey}&limit=${
         value.limit || 10
@@ -94,9 +98,10 @@ export function DataChart({ value }: DataChartProps) {
     return (
       <div
         className="h-80 flex items-center justify-center bg-muted/50 rounded-2xl border border-border/40 my-12 pointer-events-none"
-        aria-hidden="true"
+        role="status"
       >
         <LoadingSpinner size="sm" text="" />
+        <span className="sr-only">Loading chart data…</span>
       </div>
     );
   }
