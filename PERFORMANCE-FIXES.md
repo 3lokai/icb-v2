@@ -251,3 +251,84 @@ Impact: low–medium. Effort: medium.
 - Server/TTFB (already 4–30ms).
 - `recharts` / `embla` — route-scoped to dashboard/insights/blog, not in the global path.
 - `optimizePackageImports` for `motion` / phosphor icons is already configured.
+
+---
+
+## CWV field residuals — 2026-07-31
+
+Three items still open in GSC/CrUX after the earlier work: desktop CLS 0.17 🟡, mobile LCP 2.72s 🟡,
+and "reduce unused JS" stuck at 1,050 ms on `/learn/indian-coffee-varieties-explained` and
+`/roasters/kcroasters-by-koinonia`. All three are addressed below. Method: prod build, headless
+Chrome + CDP `LayoutShift` observer with `sources`/rects, cache disabled, desktop widths 1280/1440/1920.
+
+### Two tracker claims that were wrong
+
+- **"preconnect/preload to font origins"** — fonts are `next/font/google`, which **self-hosts** under
+  `/_next/static/media`. Same origin, nothing to preconnect to. (The `fonts.googleapis.com` preconnect
+  in `src/app/global-error.tsx` is the standalone error document, irrelevant to CWV.)
+- **"the size-adjust/adjustFontFallback gap"** — `adjustFontFallback` is on by default; the metric
+  fallback is already emitted. Not the desktop CLS cause. Both notes are now closed as stale.
+
+### Desktop CLS — ROOT CAUSE FOUND & FIXED: `/roasters` 0.264 → 0.002
+
+The lab default (one width, ~1350px) never hit it; a width sweep did. `/roasters` at 1440px measured
+**CLS 0.264**, single source `DIV.mx-auto text-center` — the centered column inside `LoadingOverlay`.
+The rects show a **horizontal** jump, not the vertical one everyone assumed:
+`x=589 w=251` → `x=48 w=1333`, height unchanged at 635. The column had only `mx-auto`, so its width was
+entirely content-derived and re-resolved when the Suspense fallback swapped out. Mobile never hit it
+because the column is already viewport-wide there — which is exactly why this survived as a
+desktop-only residual.
+
+**Fix:** declare the width — `mx-auto w-full max-w-md text-center` in
+`src/components/common/LoadingOverlay.tsx`. One line, and it covers every consumer at once
+(`/roasters`, `/coffees`, `/dashboard`, `/dashboard/developer`, `/profile/[username]`, `/profile/anon`,
+`/tools/coffee-compass`). This is the same component as the 07-21 CoffeeFact fix — that one reserved
+_height_, this one reserves _width_.
+
+**Verified:** `/roasters` 0.264 → **0.0023** at 1440px; 0.0029 / 0.0013 at 1280 / 1920; **0.000** at 390px
+(mobile unregressed). `/coffees`, `/tools/coffee-compass` also 0.0023.
+
+Residual on every page is a **0.001–0.003** shift from the header's right-hand action cluster
+(`DIV.relative z-20 ml-auto flex shrink-0…`) as the auth buttons resolve at ~400 ms. Two orders of
+magnitude under the budget — leaving it.
+
+### Mobile LCP — preconnect to the two image CDNs
+
+Detail/card/article LCP images bypass the Next optimizer (`unoptimized` in `RoasterHero.tsx:145`,
+`CoffeeCard.tsx:219,331,407,463`), so they're fetched **cross-origin** from `ik.imagekit.io`; `/learn`
+covers come from `cdn.sanity.io`. Both already carry `priority`, so Next emits `<link rel=preload>` —
+but that preload still paid a cold DNS+TCP+TLS handshake (~250–500 ms on mobile) before the first byte.
+
+**Fix:** two `<link rel="preconnect">` in a new `<head>` in `src/app/layout.tsx`. Verified present in
+the SSR HTML on every route. Only these two origins — analytics/Supabase are off the LCP path and
+already idle-deferred. Field confirmation needs a CrUX cycle (~28 days).
+
+### Unused JS — `dynamic()` on DataChart was a no-op; `ssr: false` was the missing half
+
+Measured per-route initial JS (sum of `<script>` bytes in the SSR HTML, uncompressed):
+
+| Route                                      |   before    |    after    |
+| ------------------------------------------ | :---------: | :---------: |
+| `/`                                        |   1,839KB   |   1,839KB   |
+| `/learn/indian-coffee-varieties-explained` | **2,417KB** | **2,035KB** |
+| `/roasters/kcroasters-by-koinonia`         |   1,762KB   |   1,762KB   |
+| `/coffees`                                 |   1,818KB   |      —      |
+| `/roasters`                                |   1,764KB   |      —      |
+
+The article shipped **+578 KB over `/`**, ~382 KB of it recharts. `ArticleContent.tsx` already wrapped
+`DataChart` in `dynamic()` — but **without `ssr: false`**, so Next server-rendered the chart
+(`recharts-responsive-container` was in the SSR HTML) and preloaded the recharts chunk into the
+_initial_ script set. The split saved nothing on exactly the articles that have a chart.
+
+**Fix:** `ssr: false` on that `dynamic()`. −382 KB off the initial script set; the existing sized
+`animate-pulse` fallback already reserves the height, so CLS is unaffected, and chart SVG isn't
+indexable so there's no SEO cost. Verified via headless render that the chart still mounts
+post-hydration (0 matches in SSR HTML, 1 in the rendered DOM).
+
+**`/roasters/kcroasters-by-koinonia` needs no change.** At 1,762 KB it is the _lightest_ of the five
+pages — lighter than `/`. Its 1,050 ms "unused JS" is under-use of the shared bundle, not extra bytes,
+so there is nothing route-specific to split. Closing that half of the item as no-op.
+
+**Not done:** the other 12 blog blocks in `ArticleContent.tsx` are still statically imported. They're
+67–178 lines each and the measurement did not implicate them — splitting them would be under the
+~50 KB-per-`dynamic()` threshold. Revisit only if a measurement says otherwise.
