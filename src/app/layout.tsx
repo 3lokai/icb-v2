@@ -119,6 +119,24 @@ export default async function RootLayout({
       lang="en"
       suppressHydrationWarning
     >
+      <head>
+        {/* LCP images bypass the Next optimizer (`unoptimized`), so hero/logo/
+            card images are fetched cross-origin. `priority` already emits a
+            preload, but that preload still pays a cold DNS+TCP+TLS handshake
+            (~250-500ms on mobile) before the first byte. Only these two — each
+            preconnect costs a speculative connection, and everything else
+            (analytics, Supabase) is off the LCP path and idle-deferred. */}
+        <link
+          crossOrigin="anonymous"
+          href="https://ik.imagekit.io"
+          rel="preconnect"
+        />
+        <link
+          crossOrigin="anonymous"
+          href="https://cdn.sanity.io"
+          rel="preconnect"
+        />
+      </head>
       <body>
         <StructuredData schema={[organizationSchema, websiteSchema]} />
         {/* Google Analytics Consent Mode - Must run before Next.js GoogleAnalytics component */}
