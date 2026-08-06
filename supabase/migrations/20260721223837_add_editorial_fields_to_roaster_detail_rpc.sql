@@ -1,6 +1,3 @@
--- Expose editorial / sourcing columns on the roaster detail RPC so the profile
--- page (types + FAQ) can use regions_sourced, physical_locations, subscription
--- and where-to-buy signals. Pure passthrough additions to the top-level object.
 CREATE OR REPLACE FUNCTION public.get_roaster_detail(p_slug text, p_limit integer DEFAULT 15)
  RETURNS jsonb
  LANGUAGE sql
@@ -21,7 +18,6 @@ AS $function$
       'created_at', r.created_at, 'updated_at', r.updated_at,
       'default_concurrency', r.default_concurrency,
 
-      -- Editorial / sourcing detail (ADDED)
       'founded_year', r.founded_year,
       'has_subscription', r.has_subscription,
       'has_physical_store', r.has_physical_store,
@@ -91,8 +87,6 @@ AS $function$
         WHERE co.roaster_id = r.id AND co.rating_count > 0 AND co.rating_avg IS NOT NULL
       ),
 
-      -- Breakdown of ALL public coffees (active + seasonal) by roast level.
-      -- value = enum text, count = number; labels are mapped client-side.
       'roast_distribution', COALESCE((
         SELECT jsonb_agg(jsonb_build_object('value', d.roast_level, 'count', d.cnt)
                          ORDER BY d.cnt DESC, d.roast_level)
@@ -106,7 +100,6 @@ AS $function$
         ) d
       ), '[]'::jsonb),
 
-      -- Breakdown of ALL public coffees (active + seasonal) by process.
       'process_distribution', COALESCE((
         SELECT jsonb_agg(jsonb_build_object('value', d.process, 'count', d.cnt)
                          ORDER BY d.cnt DESC, d.process)

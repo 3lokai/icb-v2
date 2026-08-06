@@ -155,59 +155,136 @@ export type Database = {
         };
         Relationships: [];
       };
+      canon_estate_trade: {
+        Row: {
+          canon_estate_id: string;
+          contact_email: string | null;
+          contact_name: string | null;
+          contact_phone: string | null;
+          created_at: string;
+          export_capacity_kg: number | null;
+          id: string;
+          moq_kg: number | null;
+          notes: string | null;
+          partner_status: string;
+          updated_at: string;
+        };
+        Insert: {
+          canon_estate_id: string;
+          contact_email?: string | null;
+          contact_name?: string | null;
+          contact_phone?: string | null;
+          created_at?: string;
+          export_capacity_kg?: number | null;
+          id?: string;
+          moq_kg?: number | null;
+          notes?: string | null;
+          partner_status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          canon_estate_id?: string;
+          contact_email?: string | null;
+          contact_name?: string | null;
+          contact_phone?: string | null;
+          created_at?: string;
+          export_capacity_kg?: number | null;
+          id?: string;
+          moq_kg?: number | null;
+          notes?: string | null;
+          partner_status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "canon_estate_trade_canon_estate_id_fkey";
+            columns: ["canon_estate_id"];
+            isOneToOne: true;
+            referencedRelation: "canon_estates";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       canon_estates: {
         Row: {
           altitude_max_m: number | null;
           altitude_min_m: number | null;
           canon_region_id: string;
-          certifications: string | null;
+          certifications: string[] | null;
           created_at: string;
           description: string | null;
+          family_story: string | null;
           founded_year: number | null;
+          founder_name: string | null;
           hero_image_url: string | null;
           id: string;
           name: string;
           notes: string | null;
           owner: string | null;
+          owner_generation: string | null;
+          primary_varieties: string[] | null;
+          processing_methods: string[] | null;
+          quote: string | null;
+          quote_attribution: string | null;
           seo_description: string | null;
           seo_title: string | null;
+          signature_profile: string | null;
           slug: string;
+          specialty_notes: string | null;
           updated_at: string;
         };
         Insert: {
           altitude_max_m?: number | null;
           altitude_min_m?: number | null;
           canon_region_id: string;
-          certifications?: string | null;
+          certifications?: string[] | null;
           created_at?: string;
           description?: string | null;
+          family_story?: string | null;
           founded_year?: number | null;
+          founder_name?: string | null;
           hero_image_url?: string | null;
           id?: string;
           name: string;
           notes?: string | null;
           owner?: string | null;
+          owner_generation?: string | null;
+          primary_varieties?: string[] | null;
+          processing_methods?: string[] | null;
+          quote?: string | null;
+          quote_attribution?: string | null;
           seo_description?: string | null;
           seo_title?: string | null;
+          signature_profile?: string | null;
           slug: string;
+          specialty_notes?: string | null;
           updated_at?: string;
         };
         Update: {
           altitude_max_m?: number | null;
           altitude_min_m?: number | null;
           canon_region_id?: string;
-          certifications?: string | null;
+          certifications?: string[] | null;
           created_at?: string;
           description?: string | null;
+          family_story?: string | null;
           founded_year?: number | null;
+          founder_name?: string | null;
           hero_image_url?: string | null;
           id?: string;
           name?: string;
           notes?: string | null;
           owner?: string | null;
+          owner_generation?: string | null;
+          primary_varieties?: string[] | null;
+          processing_methods?: string[] | null;
+          quote?: string | null;
+          quote_attribution?: string | null;
           seo_description?: string | null;
           seo_title?: string | null;
+          signature_profile?: string | null;
           slug?: string;
+          specialty_notes?: string | null;
           updated_at?: string;
         };
         Relationships: [
@@ -220,10 +297,48 @@ export type Database = {
           },
         ];
       };
+      canon_media: {
+        Row: {
+          caption: string | null;
+          created_at: string;
+          entity_id: string;
+          entity_type: string;
+          id: string;
+          image_url: string;
+          is_hero: boolean;
+          sort_order: number;
+          updated_at: string;
+        };
+        Insert: {
+          caption?: string | null;
+          created_at?: string;
+          entity_id: string;
+          entity_type: string;
+          id?: string;
+          image_url: string;
+          is_hero?: boolean;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Update: {
+          caption?: string | null;
+          created_at?: string;
+          entity_id?: string;
+          entity_type?: string;
+          id?: string;
+          image_url?: string;
+          is_hero?: boolean;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       canon_regions: {
         Row: {
           altitude_max_m: number | null;
           altitude_min_m: number | null;
+          annual_production_mt: number | null;
+          area_hectares: number | null;
           climate: string | null;
           country: string;
           created_at: string;
@@ -232,19 +347,27 @@ export type Database = {
           harvest_season: string | null;
           hero_image_url: string | null;
           id: string;
+          intercrop_species: string[] | null;
+          logo_url: string | null;
           notes: string | null;
+          primary_processing_methods: string[] | null;
+          primary_varieties: string[] | null;
           rainfall_mm: number | null;
           seo_description: string | null;
           seo_title: string | null;
+          signature_profile: string | null;
           slug: string;
           soil: string | null;
           state: string | null;
           subregion: string | null;
+          terroir_notes: string | null;
           updated_at: string;
         };
         Insert: {
           altitude_max_m?: number | null;
           altitude_min_m?: number | null;
+          annual_production_mt?: number | null;
+          area_hectares?: number | null;
           climate?: string | null;
           country: string;
           created_at?: string;
@@ -253,19 +376,27 @@ export type Database = {
           harvest_season?: string | null;
           hero_image_url?: string | null;
           id?: string;
+          intercrop_species?: string[] | null;
+          logo_url?: string | null;
           notes?: string | null;
+          primary_processing_methods?: string[] | null;
+          primary_varieties?: string[] | null;
           rainfall_mm?: number | null;
           seo_description?: string | null;
           seo_title?: string | null;
+          signature_profile?: string | null;
           slug: string;
           soil?: string | null;
           state?: string | null;
           subregion?: string | null;
+          terroir_notes?: string | null;
           updated_at?: string;
         };
         Update: {
           altitude_max_m?: number | null;
           altitude_min_m?: number | null;
+          annual_production_mt?: number | null;
+          area_hectares?: number | null;
           climate?: string | null;
           country?: string;
           created_at?: string;
@@ -274,14 +405,20 @@ export type Database = {
           harvest_season?: string | null;
           hero_image_url?: string | null;
           id?: string;
+          intercrop_species?: string[] | null;
+          logo_url?: string | null;
           notes?: string | null;
+          primary_processing_methods?: string[] | null;
+          primary_varieties?: string[] | null;
           rainfall_mm?: number | null;
           seo_description?: string | null;
           seo_title?: string | null;
+          signature_profile?: string | null;
           slug?: string;
           soil?: string | null;
           state?: string | null;
           subregion?: string | null;
+          terroir_notes?: string | null;
           updated_at?: string;
         };
         Relationships: [];
@@ -3137,7 +3274,12 @@ export type Database = {
         Returns: Json;
       };
       get_epic_c_parameters: { Args: { p_coffee_id: string }; Returns: Json };
+      get_estate_detail: {
+        Args: { p_limit?: number; p_slug: string };
+        Returns: Json;
+      };
       get_featured_reviews: { Args: { p_limit?: number }; Returns: Json };
+      get_last_scrape_completed_at: { Args: never; Returns: string };
       get_or_create_estate: {
         Args: {
           p_altitude_max_m?: number;
@@ -3159,6 +3301,10 @@ export type Database = {
           date: string;
           price_updates: number;
         }[];
+      };
+      get_region_detail: {
+        Args: { p_limit?: number; p_slug: string };
+        Returns: Json;
       };
       get_roaster_detail: {
         Args: { p_limit?: number; p_slug: string };

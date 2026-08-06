@@ -15,7 +15,11 @@ import { createAnonServerClient } from "@/lib/supabase/server";
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
-const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+const TOTALS_FALLBACK: PublicDirectoryTotals = {
+  coffees: 0,
+  roasters: 0,
+  asOf: null,
+};
 
 async function getDirectoryTotals(): Promise<PublicDirectoryTotals> {
   try {
