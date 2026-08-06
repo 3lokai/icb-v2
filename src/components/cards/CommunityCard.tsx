@@ -81,9 +81,9 @@ function CommunityCardComponent({ community, className }: CommunityCardProps) {
   const cardContent = (
     <Card
       className={cn(
-        "group relative flex h-full flex-col overflow-hidden",
+        "relative flex h-full flex-col overflow-hidden",
         "surface-1 rounded-lg transition-all duration-300",
-        isInviteOnRequest ? "cursor-default" : "card-hover",
+        isInviteOnRequest ? "cursor-default" : "group card-hover",
         "p-0",
         className
       )}
