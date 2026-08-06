@@ -9,7 +9,11 @@ import type { HeroSegmentPayload } from "@/types/hero-segment";
 import { HeroControl } from "./HeroControl";
 
 /** When `fetchPublicDirectoryTotals` fails, show neutral counts (hero uses `HERO_SEGMENT_FALLBACK`). */
-const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+const TOTALS_FALLBACK: PublicDirectoryTotals = {
+  coffees: 0,
+  roasters: 0,
+  asOf: null,
+};
 
 type HeroSectionProps = {
   /** Raw `heroSegment` query string (development preview only) */

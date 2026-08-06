@@ -265,6 +265,26 @@ export default function HowICBWorksPage() {
               </Prose>
             </Stack>
           </div>
+
+          <Stack gap="6" className="mt-12">
+            <h2 className="text-title">How Scores Are Calculated</h2>
+            <Prose>
+              <p>
+                Each coffee&apos;s score is a 1–5 average of every individual
+                rating submitted for it. Any visitor can rate a coffee, no
+                account or purchase required (anonymous ratings are rate limited
+                to prevent abuse).
+              </p>
+              <ul>
+                <li>
+                  The average recalculates immediately on every new, edited, or
+                  removed rating
+                </li>
+                <li>No minimum-review threshold before a score is shown</li>
+                <li>No weighting, recency decay, or manual override</li>
+              </ul>
+            </Prose>
+          </Stack>
         </Reveal>
       </Band>
 

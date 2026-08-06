@@ -28,6 +28,17 @@ export function HeroStatsStrip({ totals }: HeroStatsStripProps) {
         <span className="h-1 w-1 shrink-0 rounded-full bg-accent/60" />
         Free to use
       </div>
+      {totals.asOf && (
+        <div className="flex items-center gap-3 text-micro text-white/85 uppercase tracking-[0.2em] font-semibold">
+          <span className="h-1 w-1 shrink-0 rounded-full bg-accent/60" />
+          Prices last updated{" "}
+          {new Date(totals.asOf).toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })}
+        </div>
+      )}
     </div>
   );
 }
