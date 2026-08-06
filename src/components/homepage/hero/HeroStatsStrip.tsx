@@ -36,6 +36,7 @@ export function HeroStatsStrip({ totals }: HeroStatsStripProps) {
             day: "numeric",
             month: "short",
             year: "numeric",
+            timeZone: "Asia/Kolkata",
           })}
         </div>
       )}

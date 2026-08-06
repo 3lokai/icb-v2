@@ -38,6 +38,10 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
   const linkProps = (targetPage: number) => ({
     href: hrefFor(targetPage),
     onClick: (e: MouseEvent) => {
+      // Let modified / non-primary clicks open a new tab natively
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
+        return;
+      }
       e.preventDefault();
       handlePageChange(targetPage);
     },
@@ -101,7 +105,6 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
         aria-label="Previous page"
         asChild={page !== 1}
         disabled={page === 1}
-        onClick={page === 1 ? undefined : () => handlePageChange(page - 1)}
         size="sm"
         variant="outline"
       >
@@ -152,9 +155,6 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
         aria-label="Next page"
         asChild={page !== totalPages}
         disabled={page === totalPages}
-        onClick={
-          page === totalPages ? undefined : () => handlePageChange(page + 1)
-        }
         size="sm"
         variant="outline"
       >

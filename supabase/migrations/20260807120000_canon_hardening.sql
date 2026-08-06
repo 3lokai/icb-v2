@@ -1,15 +1,24 @@
--- Migration: Create get_region_detail and get_estate_detail RPCs
--- Description: Single-call jsonb assembly for region and estate detail pages,
---   mirroring get_coffee_detail/get_roaster_detail (20260625195049_create_detail_rpcs.sql).
---   SECURITY DEFINER is REQUIRED: anon/authenticated have no direct SELECT grant on
---   regions, estates, coffee_directory_mv. The function owner (postgres) can read them.
---   Never references canon_estate_trade — it has no public SELECT policy (B2B-gated).
+-- Canon hardening:
+--   1. updated_at triggers for canon_media / canon_estate_trade (columns existed, nothing maintained them)
+--   2. at most one hero image per entity
+--   3. cap p_limit on the anon-callable detail RPCs (was unbounded)
+
+create trigger canon_media_updated_at
+  before update on canon_media
+  for each row execute function public.handle_updated_at();
+
+create trigger canon_estate_trade_updated_at
+  before update on canon_estate_trade
+  for each row execute function public.handle_updated_at();
+
+create unique index canon_media_hero_uidx
+  on canon_media (entity_type, entity_id)
+  where is_hero;
 
 -- ============================================================================
--- FUNCTION: get_region_detail(p_slug, p_limit)
+-- Re-create both detail RPCs with a hard upper bound on p_limit.
+-- Bodies are otherwise identical to 20260730120000; Postgres has no partial replace.
 -- ============================================================================
-DROP FUNCTION IF EXISTS public.get_region_detail(text, int);
-
 CREATE OR REPLACE FUNCTION public.get_region_detail(
   p_slug  text,
   p_limit int default 24
@@ -80,7 +89,7 @@ AS $$
               FROM regions rg WHERE rg.canon_region_id = cr.id
             )
           ORDER BY mv.name ASC
-          LIMIT GREATEST(COALESCE(p_limit, 24), 0)
+          LIMIT LEAST(GREATEST(COALESCE(p_limit, 24), 0), 100)
         ) sub
       ), '[]'::jsonb),
 
@@ -99,18 +108,6 @@ AS $$
     LIMIT 1
   );
 $$;
-
-GRANT EXECUTE ON FUNCTION public.get_region_detail(text, int)
-  TO anon, authenticated, service_role;
-
-COMMENT ON FUNCTION public.get_region_detail(text, int) IS
-  'Single-call jsonb assembly of RegionDetail (canon_regions row + media + estates + coffees). Returns NULL when not found.';
-
--- ============================================================================
--- FUNCTION: get_estate_detail(p_slug, p_limit)
--- ============================================================================
-DROP FUNCTION IF EXISTS public.get_estate_detail(text, int);
-
 CREATE OR REPLACE FUNCTION public.get_estate_detail(
   p_slug  text,
   p_limit int default 24
@@ -177,7 +174,7 @@ AS $$
               FROM estates es WHERE es.canon_estate_id = ce.id
             )
           ORDER BY mv.name ASC
-          LIMIT GREATEST(COALESCE(p_limit, 24), 0)
+          LIMIT LEAST(GREATEST(COALESCE(p_limit, 24), 0), 100)
         ) sub
       ), '[]'::jsonb),
 
@@ -196,9 +193,3 @@ AS $$
     LIMIT 1
   );
 $$;
-
-GRANT EXECUTE ON FUNCTION public.get_estate_detail(text, int)
-  TO anon, authenticated, service_role;
-
-COMMENT ON FUNCTION public.get_estate_detail(text, int) IS
-  'Single-call jsonb assembly of EstateDetail (canon_estates row + region + media + coffees). Never joins canon_estate_trade (no public SELECT policy). Returns NULL when not found.';
