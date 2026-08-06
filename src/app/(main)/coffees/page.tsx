@@ -99,13 +99,21 @@ export async function generateMetadata({
   });
   const fullUrl = currentUrl.toString();
 
-  // Canonical always points to the clean base path (no query params)
-  // This prevents infinite filter combinations from creating unique canonical URLs
-  const canonicalUrl = `${baseUrl}/coffees`;
+  // Only `page` is allowed through for indexation — any other param (filters,
+  // sort, limit) means this is a filtered/sorted view, which stays noindex and
+  // canonicalizes to the bare path to avoid infinite filter-combination indexation.
+  // Bare pagination (?page=N) is real, unique content and gets its own canonical.
+  const nonPageParams = [...urlSearchParams.keys()].filter((k) => k !== "page");
+  const hasFilterParams = nonPageParams.length > 0;
+  const shouldIndex = !hasFilterParams;
+  const canonicalUrl =
+    hasFilterParams || page === 1
+      ? `${baseUrl}/coffees`
+      : `${baseUrl}/coffees?page=${page}`;
 
-  // Index only the bare /coffees URL — any query string = noindex (avoid filter URL indexation)
-  const hasAnySearchParams = urlSearchParams.toString().length > 0;
-  const shouldIndex = page === 1 && !hasAnySearchParams;
+  if (page > 1) {
+    title = `${title} — Page ${page}`;
+  }
 
   return {
     title,

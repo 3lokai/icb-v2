@@ -54,6 +54,8 @@ export type CurationSelectionDTO = {
   roaster: string;
   note: string;
   image?: string;
+  coffeeSlug?: string;
+  roasterSlug?: string;
 };
 
 /**
@@ -244,7 +246,7 @@ export async function getCuratorBySlug(
       supabase
         .from("curation_selections")
         .select(
-          "id, coffee_id, roaster_id, coffee_name, roaster_name, curator_note, image_url, sort_order"
+          "id, coffee_id, roaster_id, coffee_name, roaster_name, curator_note, image_url, sort_order, coffees(slug), roasters(slug)"
         )
         .eq("curation_list_id", list.id)
         .order("sort_order", { ascending: true })
@@ -306,6 +308,13 @@ export async function getCuratorBySlug(
     }
   }
 
+  // The generated Supabase types mistype this to-one embed as an array; PostgREST
+  // actually returns a single object at runtime for a table-side FK relationship.
+  const embeddedSlug = (
+    embed: { slug: string } | { slug: string }[] | null | undefined
+  ): string | undefined =>
+    (Array.isArray(embed) ? embed[0]?.slug : embed?.slug) ?? undefined;
+
   const resolveSelectionImage = (row: {
     image_url: string | null;
     coffee_id: string | null;
@@ -332,6 +341,8 @@ export async function getCuratorBySlug(
       roaster: row.roaster_name,
       note: row.curator_note ?? "",
       image: resolveSelectionImage(row),
+      coffeeSlug: embeddedSlug(row.coffees),
+      roasterSlug: embeddedSlug(row.roasters),
     }));
     return {
       id: list.id,
