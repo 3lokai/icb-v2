@@ -16,9 +16,20 @@ const TOTALS_FALLBACK: PublicDirectoryTotals = {
 };
 
 type HeroSectionProps = {
-  /** Raw `heroSegment` query string (development preview only) */
-  devSegmentParam?: string | null;
+  /** The page's unawaited `searchParams`; read here, inside the Suspense boundary,
+   *  so the `heroSegment` dev-preview param never blocks the route's first flush. */
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 };
+
+/** Raw `heroSegment` query string (development preview only). */
+function readDevSegmentParam(sp: {
+  [key: string]: string | string[] | undefined;
+}): string | null {
+  const raw = sp.heroSegment;
+  if (typeof raw === "string") return raw;
+  if (Array.isArray(raw)) return raw[0] ?? null;
+  return null;
+}
 
 /**
  * Loads directory totals and hero personalization in parallel. On failure, degrades to
@@ -26,10 +37,14 @@ type HeroSectionProps = {
  * (Uncaught errors would also reach `src/app/error.tsx`, but we avoid a full error UI for partial fetch failures.)
  */
 export default async function HeroSection({
-  devSegmentParam,
+  searchParams,
 }: HeroSectionProps = {}) {
   let totals: PublicDirectoryTotals;
   let hero: HeroSegmentPayload;
+
+  const devSegmentParam = searchParams
+    ? readDevSegmentParam(await searchParams)
+    : null;
 
   try {
     [totals, hero] = await Promise.all([
