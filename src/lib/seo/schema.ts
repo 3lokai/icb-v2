@@ -384,6 +384,13 @@ export const founderPersonSchema = {
   ],
 };
 
+/** About page subject is the site/org; founder lives on organizationSchema.founder. */
+const aboutPageOrganization = {
+  "@type": "Organization",
+  name: "IndianCoffeeBeans.com",
+  url: "https://www.indiancoffeebeans.com",
+};
+
 export const aboutPageSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
@@ -391,8 +398,8 @@ export const aboutPageSchema = {
   description:
     "Learn what IndianCoffeeBeans is, who it's for, and how our independent directory helps you discover Indian specialty coffee — with answers to common questions.",
   url: "https://www.indiancoffeebeans.com/about",
-  mainEntity: founderPersonSchema,
-  about: founderPersonSchema,
+  mainEntity: aboutPageOrganization,
+  about: aboutPageOrganization,
 };
 
 export const howICBWorksPageSchema = {
