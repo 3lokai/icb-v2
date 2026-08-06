@@ -13,6 +13,7 @@ import EducationSectionServer from "@/components/homepage/sections/EducationSect
 import CuratorSpotlightServer from "@/components/homepage/sections/CuratorSpotlightServer";
 import TopRatedSectionServer from "@/components/homepage/sections/TopRatedSectionServer";
 import FreshFromCommunitySection from "@/components/homepage/FreshFromCommunitySection";
+import { FreshFromCommunitySkeleton } from "@/components/homepage/FreshFromCommunitySkeleton";
 import { TopRatedSectionSkeleton } from "@/components/homepage/TopRatedSectionSkeleton";
 import { TopProfilesSectionSkeleton } from "@/components/homepage/TopProfilesSectionSkeleton";
 import { EducationSectionSkeleton } from "@/components/homepage/EducationSectionSkeleton";
@@ -93,23 +94,16 @@ type HomePageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export default async function Home({ searchParams }: HomePageProps) {
-  const sp = await searchParams;
-  const heroSegmentRaw = sp.heroSegment;
-  const devSegmentParam =
-    typeof heroSegmentRaw === "string"
-      ? heroSegmentRaw
-      : Array.isArray(heroSegmentRaw)
-        ? heroSegmentRaw[0]
-        : null;
-
+// The promise is handed to HeroSection unawaited so the `heroSegment` read happens
+// inside its Suspense boundary — nothing above a boundary may block the first flush.
+export default function Home({ searchParams }: HomePageProps) {
   return (
     <div className="surface-0 flex min-h-screen flex-col">
       <main className="flex-1 bg-background">
         <div className="relative">
           {/* Contentful fallback: discovery h1 streams immediately so FCP isn't gated on hero data */}
           <Suspense fallback={<HeroSuspenseFallback />}>
-            <HeroSection devSegmentParam={devSegmentParam} />
+            <HeroSection searchParams={searchParams} />
           </Suspense>
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20">
@@ -129,9 +123,12 @@ export default async function Home({ searchParams }: HomePageProps) {
         <Suspense fallback={<TopRatedSectionSkeleton />}>
           <TopRatedSectionServer />
         </Suspense>
-        {/* No Suspense: cached RPC that renders a full section or nothing. A boundary
-            here streamed 0-height then expanded to a tall section, shifting everything below. */}
-        <FreshFromCommunitySection />
+        {/* Boundary is required: unwrapped, this section's RPC blocks the document's
+            first flush and is the homepage's TTFB floor. The fallback is height-matched
+            (an earlier 0-height one expanded into a tall section and shifted everything below). */}
+        <Suspense fallback={<FreshFromCommunitySkeleton />}>
+          <FreshFromCommunitySection />
+        </Suspense>
         <HomeCollectionGridLazy tier="core" />
         <Section spacing="default" ground="warm" decor={{ texture: "grain" }}>
           <DiscoveryAccordionGrid
