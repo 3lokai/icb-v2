@@ -354,6 +354,36 @@ export const partnerPageSchema = {
   },
 };
 
+/** Site founder — shared by /about UI, footer credit, and Person JSON-LD. */
+export const FOUNDER = {
+  name: "Thrilok Abhishek",
+  jobTitle: "Founder",
+  aboutHref: "/about#founder",
+  linkedInHref: "https://www.linkedin.com/in/gtabhishek",
+  imageSrc: "/images/about/founder.jpg",
+  imageAlt: "Thrilok Abhishek, founder of IndianCoffeeBeans, brewing coffee",
+} as const;
+
+export const founderPersonSchema = {
+  "@type": "Person",
+  "@id": "https://www.indiancoffeebeans.com/about#founder",
+  name: FOUNDER.name,
+  url: "https://www.indiancoffeebeans.com/about#founder",
+  image: "https://www.indiancoffeebeans.com/images/about/founder.jpg",
+  jobTitle: FOUNDER.jobTitle,
+  worksFor: {
+    "@type": "Organization",
+    name: "IndianCoffeeBeans.com",
+    url: "https://www.indiancoffeebeans.com",
+  },
+  sameAs: [FOUNDER.linkedInHref],
+  knowsAbout: [
+    "Indian specialty coffee",
+    "Coffee roasting",
+    "Specialty coffee",
+  ],
+};
+
 export const aboutPageSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
@@ -361,6 +391,8 @@ export const aboutPageSchema = {
   description:
     "Learn what IndianCoffeeBeans is, who it's for, and how our independent directory helps you discover Indian specialty coffee — with answers to common questions.",
   url: "https://www.indiancoffeebeans.com/about",
+  mainEntity: founderPersonSchema,
+  about: founderPersonSchema,
 };
 
 export const howICBWorksPageSchema = {
@@ -447,13 +479,16 @@ export const organizationSchema = {
   description:
     "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
   foundingDate: "2024",
+  founder: founderPersonSchema,
   areaServed: {
     "@type": "Country",
     name: "India",
   },
   sameAs: [
-    "https://twitter.com/indcoffeebeans",
-    // Add more social links as you create them
+    "https://x.com/indiacoffeebean",
+    "https://instagram.com/indiancoffeebeans",
+    "https://www.linkedin.com/company/indiancoffeebeans",
+    "https://www.facebook.com/profile.php?id=61577147573879",
   ],
 };
 

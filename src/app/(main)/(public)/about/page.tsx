@@ -28,7 +28,7 @@ import { Stack } from "@/components/primitives/stack";
 import StructuredData from "@/components/seo/StructuredData";
 import { Button } from "@/components/ui/button";
 import { generateMetadata } from "@/lib/seo/metadata";
-import { aboutPageSchema } from "@/lib/seo/schema";
+import { aboutPageSchema, FOUNDER } from "@/lib/seo/schema";
 
 export const metadata: Metadata = generateMetadata({
   title: "About Us",
@@ -374,17 +374,17 @@ export default function AboutPage() {
       </Section>
 
       {/* About the founder */}
-      <Section title="About" accentWord="Me" spacing="default">
+      <Section id="founder" title="About" accentWord="Me" spacing="default">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4 lg:sticky lg:top-24">
             <Stack gap="8">
               <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-border/40">
                 <Image
-                  alt="The founder, brewing coffee"
+                  alt={FOUNDER.imageAlt}
                   className="object-cover"
                   fill
                   sizes="(max-width: 1024px) 100vw, 33vw"
-                  src="/images/about/founder.jpg"
+                  src={FOUNDER.imageSrc}
                 />
               </div>
 
@@ -411,6 +411,17 @@ export default function AboutPage() {
 
           <div className="lg:col-span-8">
             <Prose className="text-foreground">
+              <p className="text-body-large font-medium">
+                <Link
+                  className="text-foreground underline-offset-4 hover:underline"
+                  href={FOUNDER.linkedInHref}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {FOUNDER.name}
+                </Link>
+                , {FOUNDER.jobTitle}
+              </p>
               <p className="text-body-large font-medium">
                 This platform was born from my personal coffee journey, which
                 has had a few pivotal moments.

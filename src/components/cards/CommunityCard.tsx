@@ -82,8 +82,8 @@ function CommunityCardComponent({ community, className }: CommunityCardProps) {
     <Card
       className={cn(
         "group relative flex h-full flex-col overflow-hidden",
-        "surface-1 rounded-lg card-hover transition-all duration-300",
-        isInviteOnRequest && "cursor-default",
+        "surface-1 rounded-lg transition-all duration-300",
+        isInviteOnRequest ? "cursor-default" : "card-hover",
         "p-0",
         className
       )}
@@ -125,13 +125,12 @@ function CommunityCardComponent({ community, className }: CommunityCardProps) {
           {community.tags.length > 0 && (
             <Cluster gap="2">
               {community.tags.map((tag) => (
-                <Badge
+                <span
                   key={tag}
-                  variant="outline"
-                  className="text-micro lowercase"
+                  className="text-micro lowercase text-muted-foreground/70"
                 >
                   #{tag}
-                </Badge>
+                </span>
               ))}
             </Cluster>
           )}
