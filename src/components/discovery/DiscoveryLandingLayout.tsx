@@ -45,6 +45,7 @@ import {
   generateFAQSchema,
 } from "@/lib/seo/schema";
 import { fetchCoffeesCached } from "@/lib/data/fetch-coffees";
+import { fetchPublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 import type { CoffeeSummary } from "@/types/coffee-types";
 
 type DiscoveryLandingLayoutProps = {
@@ -74,6 +75,20 @@ function getDiscoveryPageLabel(config: LandingPageConfig): string {
     return config.displayRange;
   }
   return config.entityLabel;
+}
+
+/**
+ * Catalogue freshness = when the scraper last completed, not when a row last
+ * mutated. Cached + tag-invalidated upstream, and already warm from the
+ * homepage / insights page, so this is effectively free here.
+ */
+async function getCatalogueAsOf(): Promise<string | null> {
+  try {
+    return (await fetchPublicDirectoryTotals()).asOf;
+  } catch (e) {
+    console.error("[DiscoveryLandingLayout] fetchPublicDirectoryTotals", e);
+    return null;
+  }
 }
 
 function buildDiscoveryCoffeeListItems(
@@ -122,12 +137,10 @@ export async function DiscoveryLandingLayout({
   // visible grid and the JSON-LD via the shared filter below.
   const discoveryFilter = { ...config.filter, in_stock_only: true };
 
-  const coffeeResult = await fetchCoffeesCached(
-    discoveryFilter,
-    1,
-    20,
-    config.sortOrder
-  );
+  const [coffeeResult, catalogueAsOf] = await Promise.all([
+    fetchCoffeesCached(discoveryFilter, 1, 20, config.sortOrder),
+    getCatalogueAsOf(),
+  ]);
   const coffeeItems = buildDiscoveryCoffeeListItems(
     coffeeResult.items,
     BASE_URL
@@ -187,7 +200,17 @@ export async function DiscoveryLandingLayout({
       {/* 1. Hero Section - PageHeader breaks out of PageShell via its own ml/mr calc for full bleed */}
       <PageHeader
         title={config.h1}
-        description={config.intro}
+        description={
+          <>
+            {config.intro}
+            {coffeeResult.total > 0 && (
+              <span className="mt-3 block text-caption text-white/60">
+                {coffeeResult.total} in-stock{" "}
+                {coffeeResult.total === 1 ? "coffee" : "coffees"} · {pageLabel}
+              </span>
+            )}
+          </>
+        }
         overline={overline}
         backgroundImage={backgroundImage}
         rightSideContent={rightSideContent}
@@ -308,6 +331,22 @@ export async function DiscoveryLandingLayout({
           seeAllLabel="See All Coffees"
           nudge={config.gridNudge}
         />
+
+        {/* Catalogue freshness. Provenance is covered by each profile
+            section's own `icbDataNote` aside — don't restate it here. */}
+        {catalogueAsOf && (
+          <p className="mx-auto max-w-6xl w-full px-4 md:px-0 pb-4 text-caption text-muted-foreground/70">
+            Catalogue last refreshed{" "}
+            <time dateTime={catalogueAsOf}>
+              {new Date(catalogueAsOf).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </time>
+            .
+          </p>
+        )}
 
         {(config.type === "brew_method" || config.type === "roast_level") && (
           <DiscoveryRecipeSection
