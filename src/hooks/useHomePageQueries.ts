@@ -67,16 +67,25 @@ const homepageCoffeeFilters: CoffeeFilters = {
  * Hook for fetching top-rated coffees (directory sort: rating_avg, then rating_count)
  */
 export function useTopRatedCoffees(limit: number = 6) {
+  // Sort puts rated rows first but doesn't exclude unrated ones; overfetch so the
+  // unrated padding can be dropped without leaving the grid short.
+  const fetchLimit = limit * 2;
   return useQuery({
     queryKey: queryKeys.coffees.list(
       homepageCoffeeFilters,
       1,
-      limit,
+      fetchLimit,
       "rating_desc"
     ),
     queryFn: () =>
-      fetchCoffeesFromAPI(homepageCoffeeFilters, 1, limit, "rating_desc"),
+      fetchCoffeesFromAPI(homepageCoffeeFilters, 1, fetchLimit, "rating_desc"),
     staleTime: 60 * 1000, // 1 minute
+    select: (data) => ({
+      ...data,
+      items: data.items
+        .filter((coffee) => coffee.rating_count > 0 && coffee.slug)
+        .slice(0, limit),
+    }),
   });
 }
 
