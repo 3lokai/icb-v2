@@ -31,8 +31,12 @@ type TopRatedSectionProps = {
 export default function TopRatedSection({
   communityCoffeeReviewCount = null,
 }: TopRatedSectionProps) {
-  const { data, isLoading } = useTopRatedCoffees(6);
+  const { data, isLoading, isError } = useTopRatedCoffees(6);
   const coffees = data?.items || [];
+
+  // ponytail: one band among many — drop it on fetch failure rather than claim
+  // the community has no ratings.
+  if (isError) return null;
 
   if (!isLoading && coffees.length === 0) {
     return (
