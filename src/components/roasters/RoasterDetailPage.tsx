@@ -15,6 +15,7 @@ import { ExitIntentRating } from "@/components/reviews/ExitIntentRating";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { RoasterCoffeeBreakdown } from "@/components/roasters/RoasterCoffeeBreakdown";
 import { RoasterHero } from "@/components/roasters/RoasterHero";
+import { SimilarRoasters } from "@/components/roasters/SimilarRoasters";
 import {
   ScrollspyTabBar,
   type ScrollspySection,
@@ -146,6 +147,16 @@ export function RoasterDetailPage({
           </Stack>
         </div>
       </Band>
+
+      {/* SIMILAR ROASTERS — profile↔profile internal links */}
+      {roaster.similar && roaster.similar.length > 0 && (
+        <Band>
+          <SimilarRoasters
+            roasters={roaster.similar}
+            roasterName={roaster.name}
+          />
+        </Band>
+      )}
 
       {/* CLAIM YOUR PAGE CTA (cream band) */}
       <Band>

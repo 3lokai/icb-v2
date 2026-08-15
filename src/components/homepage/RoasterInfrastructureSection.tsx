@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
 import { useRoasterDirectory } from "@/hooks/useHomePageQueries";
-import { useImageColor } from "@/hooks/useImageColor";
+import { useRoasterLogoPlate } from "@/hooks/useRoasterLogoPlate";
 import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -15,30 +14,17 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import Image from "next/image";
-import { roasterImagePresets } from "@/lib/imagekit";
 import { cn } from "@/lib/utils";
 import type { RoasterSummary } from "@/types/roaster-types";
 
 function RoasterLogoTile({ roaster }: { roaster: RoasterSummary }) {
-  const logoUrl = useMemo(
-    () =>
-      roaster.slug
-        ? roasterImagePresets.roasterLogo(`roasters/${roaster.slug}-logo`)
-        : null,
-    [roaster.slug]
-  );
-  // isDark = logo is light/white → needs a darker plate, and vice versa
-  const { isDark } = useImageColor(logoUrl);
-
-  const logoBgClass = isDark
-    ? "bg-[radial-gradient(circle_at_center,oklch(0.24_0.014_59.46)_0%,oklch(0.195_0.01_59.58)_100%)] dark:bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)]"
-    : "bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)] dark:bg-[radial-gradient(circle_at_center,oklch(0.965_0.015_79.92)_0%,oklch(0.982_0.009_79.92)_100%)]";
+  const { logoUrl, plateClass } = useRoasterLogoPlate(roaster.slug);
 
   return (
     <div
       className={cn(
         "group flex h-14 w-14 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-sm border border-border/40 p-2 shadow-sm transition-colors hover:border-accent/20",
-        logoBgClass
+        plateClass
       )}
       title={roaster.name}
     >

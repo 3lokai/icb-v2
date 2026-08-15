@@ -20,6 +20,18 @@ export type RoasterLocation = {
   google_maps_url: string | null;
 };
 
+/**
+ * A roaster with a comparable profile, from the `roaster_similar` materialized view.
+ * `shared_tags` are prefixed (`focus:`, `roast:`, `process:`, `species:`, `variety:`,
+ * `sourcing:`, `cert:`) and already filtered to the discriminating ones — render them
+ * as the reason for the match. Empty when the pair shares nothing rare.
+ */
+export type SimilarRoaster = {
+  slug: string;
+  name: string;
+  shared_tags: string[];
+};
+
 export type RoasterDetail = {
   // From roasters table
   id: string;
@@ -76,6 +88,9 @@ export type RoasterDetail = {
   // Aggregated server-side over the full catalog, not just the embedded coffees[].
   roast_distribution?: Array<{ value: string; count: number }>;
   process_distribution?: Array<{ value: string; count: number }>;
+
+  /** Up to 4 roasters with the closest profile. Non-geographic — see `roaster_similar`. */
+  similar?: SimilarRoaster[];
 };
 
 // ----------------------------------------------------------------------------

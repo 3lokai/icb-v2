@@ -1,22 +1,34 @@
 "use client";
 // src/components/cards/RoasterCard.tsx
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { RoasterSummary } from "@/types/roaster-types";
+import type { RoasterSummary, SimilarRoaster } from "@/types/roaster-types";
 import { Stack } from "../primitives/stack";
-import { roasterImagePresets } from "@/lib/imagekit";
 import { CoffeeIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "../common/Icon";
 import { CardRatingFooter } from "./CardRatingFooter";
-import { useImageColor } from "@/hooks/useImageColor";
+import { useRoasterLogoPlate } from "@/hooks/useRoasterLogoPlate";
+import { labelForTag } from "@/lib/utils/roaster-tags";
 
-type RoasterCardProps = {
-  roaster: RoasterSummary;
-  variant?: "default" | "compact";
-};
+// The "similar" variant is fed by the roaster_similar matview, which carries only
+// slug/name/shared_tags — no ratings, no counts. Discriminating on `variant` keeps
+// it honest instead of faking a RoasterSummary full of nulls.
+type RoasterCardProps =
+  | { variant?: "default" | "compact"; roaster: RoasterSummary }
+  | { variant: "similar"; roaster: SimilarRoaster };
+
+function initialsFor(name: string): string {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
 
 function formatAddress(roaster: RoasterSummary): string {
   const parts: string[] = [];
@@ -29,20 +41,113 @@ function formatAddress(roaster: RoasterSummary): string {
   return parts.join(", ");
 }
 
-export default function RoasterCard({
-  roaster,
-  variant = "default",
-}: RoasterCardProps) {
+/**
+ * "Roasters like this one" tile. Fed by the roaster_similar matview, so it has no
+ * ratings or coffee count to show — the shared traits are the payload.
+ */
+function SimilarRoasterCard({ roaster }: { roaster: SimilarRoaster }) {
   const [hasError, setHasError] = useState(false);
+  const { logoUrl, plateClass } = useRoasterLogoPlate(roaster.slug);
 
-  // Memoize logo URL for color extraction
-  const logoUrl = useMemo(() => {
-    if (!roaster?.slug) return null;
-    return roasterImagePresets.roasterLogo(`roasters/${roaster.slug}-logo`);
-  }, [roaster]);
+  return (
+    <Card
+      className={cn(
+        "group relative overflow-hidden",
+        "surface-1 rounded-lg card-hover",
+        "h-full flex flex-col p-0"
+      )}
+      itemScope
+      itemType="https://schema.org/Organization"
+    >
+      <Link
+        aria-label={`View ${roaster.name} roaster profile`}
+        className="flex h-full flex-col cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+        href={`/roasters/${roaster.slug}`}
+      >
+        {/* Logo plate - shorter than the directory tile */}
+        <div
+          className={cn(
+            "relative flex w-full items-center justify-center overflow-hidden border-b border-border/40 p-6 transition-colors duration-300",
+            plateClass
+          )}
+        >
+          <div className="relative flex h-14 w-full max-w-[120px] items-center justify-center">
+            {!hasError && logoUrl ? (
+              <Image
+                alt={roaster.name}
+                className="object-contain"
+                fill
+                itemProp="logo"
+                sizes="(max-width: 640px) 50vw, 120px"
+                src={logoUrl}
+                onError={() => setHasError(true)}
+                unoptimized
+              />
+            ) : (
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10 border-2 border-accent/20">
+                <span className="text-body font-black tracking-tighter text-accent">
+                  {initialsFor(roaster.name)}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
 
-  // Extract dominant color to determine background variant
-  const { isDark } = useImageColor(logoUrl);
+        {/* Content */}
+        <div className="flex-1 card-padding-compact">
+          <Stack gap="2">
+            <CardTitle
+              className="text-heading text-balance line-clamp-2 leading-tight"
+              itemProp="name"
+            >
+              {roaster.name}
+            </CardTitle>
+
+            {/* Why this roaster matched */}
+            {roaster.shared_tags.length > 0 && (
+              <div className="flex flex-wrap items-center gap-1.5">
+                {roaster.shared_tags.map((tag) => (
+                  <Badge key={tag} variant="outline" className="text-micro">
+                    {labelForTag(tag)}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </Stack>
+        </div>
+      </Link>
+
+      <meta
+        content={`https://www.indiancoffeebeans.com/roasters/${roaster.slug}`}
+        itemProp="url"
+      />
+    </Card>
+  );
+}
+
+export default function RoasterCard(props: RoasterCardProps) {
+  // Narrow before any hooks run — the similar variant takes a different shape
+  // (roaster_similar rows carry no ratings or counts).
+  if (props.variant === "similar") {
+    return <SimilarRoasterCard roaster={props.roaster} />;
+  }
+  return (
+    <RoasterSummaryCard
+      roaster={props.roaster}
+      variant={props.variant ?? "default"}
+    />
+  );
+}
+
+function RoasterSummaryCard({
+  roaster,
+  variant,
+}: {
+  roaster: RoasterSummary;
+  variant: "default" | "compact";
+}) {
+  const [hasError, setHasError] = useState(false);
+  const { logoUrl, plateClass } = useRoasterLogoPlate(roaster?.slug);
 
   if (!roaster) {
     return null;
@@ -57,41 +162,9 @@ export default function RoasterCard({
   const hqLocation = formatAddress(roaster);
   const coffeeCount = roaster.coffee_count || 0;
 
-  const initials = roaster.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const initials = initialsFor(roaster.name);
 
   const ariaLabel = `View coffees from ${roaster.name} roaster`;
-
-  // Background gradient classes based on logo color analysis + theme
-  // isDark = true means logo is light/white
-  // isDark = false means logo is dark/colored
-  //
-  // Option A (inverse contrast per theme):
-  // Light mode: Light logo → dark bg, Dark logo → default
-  // Dark mode:  Dark logo → light bg, Light logo → default
-  //
-  // Using oklch values from design system
-  const defaultBg =
-    "bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)]";
-  // Dark contrast: dark theme background colors
-  const darkContrastBg =
-    "bg-[radial-gradient(circle_at_center,oklch(0.24_0.014_59.46)_0%,oklch(0.195_0.01_59.58)_100%)]";
-
-  // In light mode: isDark=true gets dark bg, isDark=false gets default
-  // In dark mode: isDark=false gets light bg, isDark=true gets default
-  const logoBgClass = isDark
-    ? cn(
-        darkContrastBg,
-        "dark:bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)]"
-      )
-    : cn(
-        defaultBg,
-        "dark:bg-[radial-gradient(circle_at_center,oklch(0.965_0.015_79.92)_0%,oklch(0.982_0.009_79.92)_100%)]"
-      );
 
   // Compact variant - dense, horizontal row card
   if (variant === "compact") {
@@ -116,9 +189,7 @@ export default function RoasterCard({
                 fill
                 itemProp="logo"
                 sizes="40px"
-                src={roasterImagePresets.roasterLogo(
-                  `roasters/${roaster.slug}-logo`
-                )}
+                src={logoUrl ?? ""}
                 onError={() => setHasError(true)}
                 unoptimized
               />
@@ -189,7 +260,7 @@ export default function RoasterCard({
         <div
           className={cn(
             "relative w-full overflow-hidden flex items-center justify-center border-b border-border/40 transition-colors duration-300",
-            logoBgClass
+            plateClass
           )}
         >
           {/* Subtle Plate Texture */}
@@ -217,9 +288,7 @@ export default function RoasterCard({
                   fill
                   itemProp="logo"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 160px"
-                  src={roasterImagePresets.roasterLogo(
-                    `roasters/${roaster.slug}-logo`
-                  )}
+                  src={logoUrl ?? ""}
                   onError={() => setHasError(true)}
                   unoptimized
                 />

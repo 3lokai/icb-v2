@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useMemo } from "react";
 import type { RoasterDetail } from "@/types/roaster-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
-import { roasterImagePresets } from "@/lib/imagekit";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -19,7 +18,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { Icon } from "@/components/common/Icon";
-import { useImageColor } from "@/hooks/useImageColor";
+import { useRoasterLogoPlate } from "@/hooks/useRoasterLogoPlate";
 
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -45,23 +44,7 @@ export function RoasterCoffeesSelectionPage({
   roaster,
   className,
 }: RoasterCoffeesSelectionPageProps) {
-  const logoUrl = useMemo(() => {
-    if (!roaster?.slug) return null;
-    return roasterImagePresets.roasterLogo(`roasters/${roaster.slug}-logo`);
-  }, [roaster]);
-
-  const { isDark } = useImageColor(logoUrl);
-
-  const defaultBg =
-    "bg-[radial-gradient(circle_at_center,var(--muted)_0%,var(--background)_100%)]";
-  const darkContrastBg =
-    "bg-[radial-gradient(circle_at_center,oklch(0.24_0.014_59.46)_0%,oklch(0.195_0.01_59.58)_100%)]";
-  const lightContrastBg =
-    "bg-[radial-gradient(circle_at_center,oklch(0.965_0.015_79.92)_0%,oklch(0.982_0.009_79.92)_100%)]";
-
-  const logoBgClass = isDark
-    ? `${darkContrastBg} dark:${defaultBg}`
-    : `${defaultBg} dark:${lightContrastBg}`;
+  const { logoUrl, plateClass } = useRoasterLogoPlate(roaster?.slug);
 
   // Grouping logic
   const groups = useMemo(() => {
@@ -144,7 +127,7 @@ export function RoasterCoffeesSelectionPage({
           <div
             className={cn(
               "relative aspect-square w-32 md:w-40 overflow-hidden rounded-2xl border border-border/60 shadow-sm transition-transform hover:scale-105 duration-500",
-              logoBgClass
+              plateClass
             )}
           >
             {roaster.slug ? (
@@ -153,9 +136,7 @@ export function RoasterCoffeesSelectionPage({
                 className="object-contain p-4"
                 fill
                 priority
-                src={roasterImagePresets.roasterLogo(
-                  `roasters/${roaster.slug}-logo`
-                )}
+                src={logoUrl ?? ""}
                 unoptimized
               />
             ) : (

@@ -3097,6 +3097,18 @@ export type Database = {
         }
         Relationships: []
       }
+      roaster_similar: {
+        Row: {
+          rank: number | null
+          roaster_id: string | null
+          score: number | null
+          shared_tags: string[] | null
+          similar_name: string | null
+          similar_roaster_id: string | null
+          similar_slug: string | null
+        }
+        Relationships: []
+      }
       user_recommended_coffees: {
         Row: {
           coffee_id: string | null
