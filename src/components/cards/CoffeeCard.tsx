@@ -1,9 +1,12 @@
 // src/components/cards/CoffeeCard.tsx
-"use client";
-
+//
+// No "use client": this card has no handlers and no browser APIs of its own, so
+// it renders on the server under a server parent (MoreFromRoaster,
+// CoffeeGridTeaser) and is bundled as ordinary client code under a client one
+// (CoffeeGrid, SimilarCoffees). Its interactive parts — WishlistButton,
+// CardRatingFooter, StarRating — declare their own boundaries and stay islands.
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, memo } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CoffeeBeanIcon } from "@phosphor-icons/react/dist/ssr";
@@ -115,77 +118,51 @@ function RoastLevelIndicator({
   );
 }
 
-function CoffeeCardComponent({
+export default function CoffeeCard({
   coffee,
   variant = "default",
   userRating,
   matchInfo,
 }: CoffeeCardProps) {
-  // Memoize expensive computations
-  const imageUrl = useMemo(
-    () =>
-      variant === "hero"
-        ? coffeeImagePresets.coffeeCardHero(coffee.image_url)
-        : coffeeImagePresets.coffeeCard(coffee.image_url),
-    [coffee.image_url, variant]
-  );
+  // Early returns (need roaster_slug for nested coffee detail URL)
+  if (!coffee || !coffee.slug || !coffee.name || !coffee.roaster_slug) {
+    return null;
+  }
+
+  const imageUrl =
+    variant === "hero"
+      ? coffeeImagePresets.coffeeCardHero(coffee.image_url)
+      : coffeeImagePresets.coffeeCard(coffee.image_url);
 
   // Format metadata - limit to 2-3 soft signals total
-  const roastLevel = useMemo(
-    () =>
-      formatRoastLevel(
-        coffee.roast_level,
-        coffee.roast_level_raw,
-        coffee.roast_style_raw
-      ),
-    [coffee.roast_level, coffee.roast_level_raw, coffee.roast_style_raw]
+  const roastLevel = formatRoastLevel(
+    coffee.roast_level,
+    coffee.roast_level_raw,
+    coffee.roast_style_raw
   );
 
-  const processLabel = useMemo(
-    () => formatProcess(coffee.process),
-    [coffee.process]
-  );
+  const processLabel = formatProcess(coffee.process);
 
-  const flavorLabels = useMemo(
-    () => formatFlavorLabels(coffee.flavor_keys, 3),
-    [coffee.flavor_keys]
-  );
+  const flavorLabels = formatFlavorLabels(coffee.flavor_keys, 3);
   const extraFlavorCount =
     (coffee.flavor_keys?.length ?? 0) - flavorLabels.length;
 
-  const formattedPrice = useMemo(
-    () =>
-      coffee.best_normalized_250g
-        ? formatPrice(coffee.best_normalized_250g).replace(/₹/g, "").trim()
-        : null,
-    [coffee.best_normalized_250g]
-  );
+  const formattedPrice = coffee.best_normalized_250g
+    ? formatPrice(coffee.best_normalized_250g).replace(/₹/g, "").trim()
+    : null;
 
   // Cleaned name for every render path in this card. `coffee.name` stays the
   // raw scraped value and is only used for identity checks below.
   const displayName = getCoffeeDisplayName(coffee);
 
-  const ariaLabel = useMemo(
-    () =>
-      coffee.roaster_name
-        ? `${displayName} by ${coffee.roaster_name} - Add your take`
-        : `${displayName} - Add your take`,
-    [displayName, coffee.roaster_name]
-  );
+  const ariaLabel = coffee.roaster_name
+    ? `${displayName} by ${coffee.roaster_name} - Add your take`
+    : `${displayName} - Add your take`;
 
   // Descriptive, unique alt text for the product image (SEO + a11y).
-  const imageAlt = useMemo(
-    () =>
-      coffee.roaster_name
-        ? `${displayName} by ${coffee.roaster_name}`
-        : displayName || "Coffee",
-    [displayName, coffee.roaster_name]
-  );
-
-  // Early returns (need roaster_slug for nested coffee detail URL)
-  if (!coffee || !coffee.slug || !coffee.name || !coffee.roaster_slug) {
-    return null;
-  }
+  const imageAlt = coffee.roaster_name
+    ? `${displayName} by ${coffee.roaster_name}`
+    : displayName || "Coffee";
 
   const detailHref = coffeeDetailHref(coffee.roaster_slug, coffee.slug!);
 
@@ -545,21 +522,3 @@ function CoffeeCardComponent({
     </Card>
   );
 }
-
-// Memoize component
-const CoffeeCard = memo(CoffeeCardComponent, (prevProps, nextProps) => {
-  return (
-    prevProps.coffee.coffee_id === nextProps.coffee.coffee_id &&
-    prevProps.coffee.slug === nextProps.coffee.slug &&
-    prevProps.coffee.name === nextProps.coffee.name &&
-    prevProps.coffee.image_url === nextProps.coffee.image_url &&
-    prevProps.coffee.rating_avg === nextProps.coffee.rating_avg &&
-    prevProps.coffee.rating_count === nextProps.coffee.rating_count &&
-    prevProps.variant === nextProps.variant &&
-    JSON.stringify(prevProps.matchInfo) === JSON.stringify(nextProps.matchInfo)
-  );
-});
-
-CoffeeCard.displayName = "CoffeeCard";
-
-export default CoffeeCard;

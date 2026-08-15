@@ -1,7 +1,8 @@
-"use client";
-
+// src/components/cards/TopProfileCard.tsx
+//
+// No "use client": no handlers, no browser APIs. Renders on the server under a
+// server parent and is bundled as client code under a client one.
 import Link from "next/link";
-import { memo, useMemo } from "react";
 import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
@@ -38,20 +39,14 @@ function humanizeMethod(method: string): string {
   return method.replace(/[_-]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-function TopProfileCardComponent({
+export function TopProfileCard({
   profile,
   rank,
   className,
 }: TopProfileCardProps) {
-  const initials = useMemo(
-    () => profileInitials(profile.full_name || profile.username),
-    [profile.full_name, profile.username]
-  );
-  const location = useMemo(() => locationLabel(profile), [profile]);
-  const methods = useMemo(
-    () => (profile.preferred_brewing_methods ?? []).slice(0, 3),
-    [profile.preferred_brewing_methods]
-  );
+  const initials = profileInitials(profile.full_name || profile.username);
+  const location = locationLabel(profile);
+  const methods = (profile.preferred_brewing_methods ?? []).slice(0, 3);
 
   const profileHref = `/profile/${profile.username}`;
 
@@ -150,19 +145,3 @@ function TopProfileCardComponent({
     </Link>
   );
 }
-
-export const TopProfileCard = memo(TopProfileCardComponent, (prev, next) => {
-  const a = prev.profile;
-  const b = next.profile;
-  return (
-    a.id === b.id &&
-    a.username === b.username &&
-    a.full_name === b.full_name &&
-    a.avatar_url === b.avatar_url &&
-    a.bio === b.bio &&
-    a.review_count === b.review_count &&
-    prev.rank === next.rank &&
-    prev.className === next.className
-  );
-});
-TopProfileCard.displayName = "TopProfileCard";

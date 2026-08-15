@@ -1,9 +1,11 @@
-"use client";
-
+// src/components/roasters/RoasterCoffeesSelectionPage.tsx
+//
+// No "use client": the roast grouping is pure, and the logo plate now comes from
+// roasters.logo_is_light rather than a canvas read. CoffeeCard and the rating
+// footers bring their own boundaries.
 import { Accent } from "@/components/primitives/accent";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo } from "react";
 import type { RoasterDetail } from "@/types/roaster-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
 import {
@@ -18,7 +20,10 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { Icon } from "@/components/common/Icon";
-import { useRoasterLogoPlate } from "@/hooks/useRoasterLogoPlate";
+import {
+  roasterLogoUrl,
+  roasterPlateClass,
+} from "@/lib/utils/roaster-logo-plate";
 
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -44,10 +49,11 @@ export function RoasterCoffeesSelectionPage({
   roaster,
   className,
 }: RoasterCoffeesSelectionPageProps) {
-  const { logoUrl, plateClass } = useRoasterLogoPlate(roaster?.slug);
+  const logoUrl = roasterLogoUrl(roaster?.slug);
+  const plateClass = roasterPlateClass(roaster?.logo_is_light);
 
   // Grouping logic
-  const groups = useMemo(() => {
+  const groups = ((): RoastGroup[] => {
     const light: CoffeeSummary[] = [];
     const medium: CoffeeSummary[] = [];
     const dark: CoffeeSummary[] = [];
@@ -113,7 +119,7 @@ export function RoasterCoffeesSelectionPage({
     }
 
     return result;
-  }, [roaster.coffees]);
+  })();
 
   return (
     <div className={cn("w-full bg-background min-h-screen", className)}>

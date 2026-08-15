@@ -15,7 +15,10 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { Icon } from "@/components/common/Icon";
-import { useRoasterLogoPlate } from "@/hooks/useRoasterLogoPlate";
+import {
+  roasterLogoUrl,
+  roasterPlateClass,
+} from "@/lib/utils/roaster-logo-plate";
 import { Band } from "@/components/primitives/band";
 import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
@@ -49,7 +52,8 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roaster.id]);
 
-  const { logoUrl, plateClass } = useRoasterLogoPlate(roaster?.slug);
+  const logoUrl = roasterLogoUrl(roaster?.slug);
+  const plateClass = roasterPlateClass(roaster?.logo_is_light);
 
   // Location string
   const locationParts: string[] = [];

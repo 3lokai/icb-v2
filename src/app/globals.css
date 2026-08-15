@@ -157,6 +157,26 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Roaster logo plates.
+     A logo plate has to keep its tint when the theme it belongs to is NOT the
+     active one — a white logo needs a dark plate even in light mode — so these
+     four are deliberately theme-invariant and are never redefined under .dark.
+     They mirror the opposite theme's --card/--background.
+
+     They exist as tokens because Tailwind does not emit an arbitrary value
+     containing a nested colour function: `bg-[radial-gradient(...,oklch(...))]`
+     silently produces no rule at all, while the var() form does. */
+  --plate-on-light-center: oklch(
+    0.24 0.014 59.45795227102491
+  ); /* dark --card */
+  --plate-on-light-edge: oklch(
+    0.195 0.01 59.576673464027834
+  ); /* dark --background */
+  --plate-on-dark-center: oklch(
+    0.982 0.009 79.91662433125839
+  ); /* light --background */
+  --plate-on-dark-edge: oklch(0.965 0.015 79.91662433125839); /* light --card */
 }
 
 /* ===== CSS CUSTOM PROPERTIES (DARK THEME) ===== */
