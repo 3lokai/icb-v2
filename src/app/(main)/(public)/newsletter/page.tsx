@@ -5,7 +5,7 @@ import { BroadcastCard } from "@/components/newsletter/BroadcastCard";
 import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import StructuredData from "@/components/seo/StructuredData";
-import { fetchBroadcasts } from "@/lib/data/fetch-broadcasts";
+import { listNewsletters } from "@/lib/data/fetch-newsletters";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import {
   generateBreadcrumbSchema,
@@ -30,8 +30,8 @@ export const metadata: Metadata = generateSEOMetadata({
   type: "website",
 });
 
-export default async function NewsletterPage() {
-  const broadcasts = await fetchBroadcasts();
+export default function NewsletterPage() {
+  const issues = listNewsletters();
 
   const baseUrl = getSeoBaseUrl();
   const newsletterUrl = `${baseUrl}/newsletter`;
@@ -40,16 +40,14 @@ export default async function NewsletterPage() {
     "Newsletter Archive",
     NEWSLETTER_DESCRIPTION,
     newsletterUrl,
-    broadcasts.slice(0, 20).map((broadcast, index) => ({
+    issues.slice(0, 20).map((issue, index) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
         "@type": "Article",
-        name: broadcast.subject,
-        url: `${newsletterUrl}/${broadcast.id}`,
-        ...(broadcast.preview_text
-          ? { description: broadcast.preview_text }
-          : {}),
+        name: issue.subject,
+        url: `${newsletterUrl}/${issue.date}`,
+        ...(issue.preview ? { description: issue.preview } : {}),
       },
     }))
   );
@@ -77,10 +75,10 @@ export default async function NewsletterPage() {
       <NewsletterSection />
 
       <Section eyebrow="The Archive" spacing="default" title="Past issues">
-        {broadcasts.length > 0 ? (
+        {issues.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
-            {broadcasts.map((broadcast) => (
-              <BroadcastCard broadcast={broadcast} key={broadcast.id} />
+            {issues.map((issue) => (
+              <BroadcastCard issue={issue} key={issue.date} />
             ))}
           </div>
         ) : (

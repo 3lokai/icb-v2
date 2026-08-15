@@ -58,6 +58,42 @@ Every event carries the same facts in its `properties` (for the timeline), but
 **automations must filter on the contact custom fields below** — raw event
 properties are not documented as filterable in Notifuse.
 
+## Newsletter list (app-driven, separate from lifecycle)
+
+Newsletter opt-in is **not** part of the trigger pipeline. `src/lib/notifuse.ts`
+talks to the Notifuse list API directly from the app:
+
+| Function | Endpoint | Called from |
+|----------|----------|-------------|
+| `subscribeToNewsletterList(email, {externalId, fullName})` | `POST /api/lists.subscribe` — `{workspace_id, contact, list_ids}` | `actions/newsletter.ts` (form + `syncUserToNewsletterList`), `auth/callback/route.ts` |
+| `unsubscribeFromNewsletterList(email)` | `POST /api/contactLists.updateStatus` — `{workspace_id, email, list_id, status:"unsubscribed"}` | `actions/profile.ts` (notification prefs, newsletter true→false) |
+
+Everyone — anonymous and logged-in — goes on the single list
+`NOTIFUSE_NEWSLETTER_ONLY_LIST_ID`. The lifecycle list
+(`NOTIFUSE_LIFECYCLE_LIST_ID`, subscribed by the edge function) stays
+product-lifecycle only. Both calls are fire-and-forget and no-op with a warn when
+the `NOTIFUSE_*` env vars are unset.
+
+> `lists.unsubscribe` is the *public* one-click endpoint (`wid`/`email`/`lids` +
+> HMAC, for links inside emails) — not usable server-side, hence `updateStatus`.
+
+> Migrated off ConvertKit/Kit on 2026-08-15. `user_profiles.convertkit_subscriber_id`
+> was dropped; Notifuse keys contacts by email, so there is no ID to store.
+
+## Newsletter archive (`/newsletter`)
+
+Also moved off Kit on 2026-08-15, and it reads **no** email API at all. Issues are
+static files in `src/content/newsletters/` — `<send-date>.html` (the email as it
+went out) plus `index.json` (`date`, `subject`, `preview`, and `kitId` on the ten
+Kit-era issues). `src/lib/data/fetch-newsletters.ts` reads them, `/newsletter/[date]`
+is fully prerendered (`dynamicParams = false`), and `next.config.ts` derives
+`/newsletter/<kitId>` → `/newsletter/<date>` 301s from the same manifest.
+
+The files are written by `icb-claude/newsletter/scripts/push-to-notifuse.mjs` when an
+issue is pushed (site path override: `ICB_SITE_DIR`); committing here stays manual.
+Notifuse has no public archive URL and stores issues as an MJML tree, not HTML —
+hence files rather than a read API.
+
 ## Notifuse contact mapping
 
 `contacts.upsert` writes these on every sync. Label the slots in

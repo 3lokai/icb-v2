@@ -2,7 +2,8 @@ import type { MetadataRoute } from "next";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { getAllLandingPageSlugs } from "@/lib/discovery/landing-pages";
 import { client } from "@/lib/sanity/client";
-import { fetchBroadcasts } from "@/lib/data/fetch-broadcasts";
+import { listNewsletters } from "@/lib/data/fetch-newsletters";
+import { issueDate } from "@/types/newsletter-types";
 import {
   SITEMAP_ARTICLES_QUERY,
   SITEMAP_CATEGORIES_QUERY,
@@ -147,23 +148,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ];
 
-  // Newsletter issues from Kit (empty when KIT_API_KEY is not configured)
-  let newsletterRoutes: MetadataRoute.Sitemap = [];
-  try {
-    const broadcasts = await fetchBroadcasts();
-    newsletterRoutes = broadcasts.map((broadcast) =>
+  // Newsletter issues from the static archive manifest
+  const newsletterRoutes: MetadataRoute.Sitemap = listNewsletters().map(
+    (issue) =>
       withHreflang({
-        url: `${baseUrl}/newsletter/${broadcast.id}`,
-        lastModified: broadcast.send_at
-          ? new Date(broadcast.send_at)
-          : new Date(),
+        url: `${baseUrl}/newsletter/${issue.date}`,
+        lastModified: issueDate(issue),
         changeFrequency: "yearly" as const,
         priority: 0.5,
       })
-    );
-  } catch (kitError) {
-    console.error("Failed to fetch newsletter routes for sitemap:", kitError);
-  }
+  );
 
   // Discovery landing pages (brew method, roast, price, process, region, bean type)
   const discoveryRoutes: MetadataRoute.Sitemap = getAllLandingPageSlugs().map(
