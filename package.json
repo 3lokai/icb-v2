@@ -26,8 +26,6 @@
     "supabase:migration:down": "supabase migration down",
     "supabase:db:pull": "supabase db pull",
     "supabase:db:push": "supabase db push",
-    "migrate:convertkit": "tsx scripts/migrate-to-convertkit.ts",
-    "sync:convertkit:user-profiles": "tsx scripts/sync-user-profiles-to-convertkit.ts",
     "optimize:discovery-images": "node scripts/optimize-discovery-images.mjs",
     "backfill:coffee-display-names": "tsx scripts/backfill-coffee-display-names.ts",
     "fallow": "fallow",

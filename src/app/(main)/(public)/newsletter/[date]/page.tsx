@@ -6,56 +6,49 @@ import { BroadcastContent } from "@/components/newsletter/BroadcastContent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import {
-  fetchBroadcastById,
-  fetchBroadcasts,
-} from "@/lib/data/fetch-broadcasts";
+  getNewsletter,
+  getNewsletterHtml,
+  listNewsletters,
+} from "@/lib/data/fetch-newsletters";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
-import { broadcastDate, type KitBroadcast } from "@/types/newsletter-types";
-
-export const revalidate = 3600;
+import { issueDate, type NewsletterIssue } from "@/types/newsletter-types";
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ date: string }>;
 };
 
-async function getCompletedBroadcast(
-  idParam: string
-): Promise<KitBroadcast | null> {
-  const id = Number(idParam);
-  if (!Number.isInteger(id) || id <= 0) return null;
-
-  const broadcast = await fetchBroadcastById(id);
-  if (!broadcast || broadcast.status !== "completed") return null;
-  return broadcast;
+export function generateStaticParams() {
+  return listNewsletters().map((issue) => ({ date: issue.date }));
 }
 
+// The archive is a fixed set of files; anything else is a 404, and nothing
+// touches the filesystem at request time.
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-  const broadcast = await getCompletedBroadcast(id);
+  const { date } = await params;
+  const issue = getNewsletter(date);
 
   // Emit a real 404 status: without this the page shell starts streaming
   // with a 200 before the page body throws notFound().
-  if (!broadcast) notFound();
-
-  const date = broadcastDate(broadcast);
+  if (!issue) notFound();
 
   return generateSEOMetadata({
-    title: broadcast.subject,
+    title: issue.subject,
     description:
-      broadcast.preview_text ||
-      broadcast.description ||
+      issue.preview ||
       `An issue of the Indian Coffee Beans newsletter — new roasters, coffee drops, and brewing tips from India's specialty coffee scene.`,
-    canonical: `/newsletter/${broadcast.id}`,
+    canonical: `/newsletter/${issue.date}`,
     type: "article",
-    articleDetails: date ? { publishedTime: date.toISOString() } : undefined,
+    articleDetails: { publishedTime: issueDate(issue).toISOString() },
   });
 }
 
 function IssueNavLink({
-  broadcast,
+  issue,
   direction,
 }: {
-  broadcast: KitBroadcast;
+  issue: NewsletterIssue;
   direction: "prev" | "next";
 }) {
   const isPrev = direction === "prev";
@@ -64,39 +57,35 @@ function IssueNavLink({
       className={`group flex flex-col gap-1 rounded-xl border bg-card p-4 transition-all hover:-translate-y-0.5 hover:shadow-md ${
         isPrev ? "" : "items-end text-right"
       }`}
-      href={`/newsletter/${broadcast.id}`}
+      href={`/newsletter/${issue.date}`}
     >
       <span className="text-caption text-muted-foreground">
         {isPrev ? "← Previous issue" : "Next issue →"}
       </span>
       <span className="line-clamp-2 text-body font-medium transition-colors group-hover:text-primary">
-        {broadcast.subject}
+        {issue.subject}
       </span>
     </Link>
   );
 }
 
 export default async function NewsletterIssuePage({ params }: Props) {
-  const { id } = await params;
-  const [broadcast, allBroadcasts] = await Promise.all([
-    getCompletedBroadcast(id),
-    fetchBroadcasts(),
-  ]);
+  const { date } = await params;
+  const issue = getNewsletter(date);
 
-  if (!broadcast) {
+  if (!issue) {
     notFound();
   }
 
-  const date = broadcastDate(broadcast);
-  const formattedDate = date ? format(date, "MMMM d, yyyy") : null;
+  const html = await getNewsletterHtml(issue.date);
+  const formattedDate = format(issueDate(issue), "MMMM d, yyyy");
 
-  // fetchBroadcasts is sorted newest first: the previous (older) issue sits
-  // after the current one in the list, the next (newer) issue before it.
-  const currentIndex = allBroadcasts.findIndex((b) => b.id === broadcast.id);
-  const prevIssue =
-    currentIndex !== -1 ? (allBroadcasts[currentIndex + 1] ?? null) : null;
-  const nextIssue =
-    currentIndex > 0 ? (allBroadcasts[currentIndex - 1] ?? null) : null;
+  // The manifest is newest first: the previous (older) issue sits after the
+  // current one in the list, the next (newer) issue before it.
+  const issues = listNewsletters();
+  const currentIndex = issues.findIndex((i) => i.date === issue.date);
+  const prevIssue = issues[currentIndex + 1] ?? null;
+  const nextIssue = currentIndex > 0 ? (issues[currentIndex - 1] ?? null) : null;
 
   return (
     <Section spacing="default">
@@ -111,35 +100,26 @@ export default async function NewsletterIssuePage({ params }: Props) {
 
           <div className="mt-6 flex items-center gap-3">
             <span className="h-px w-8 bg-accent/60" />
-            {formattedDate && (
-              <time
-                className="text-overline text-muted-foreground tracking-[0.15em]"
-                dateTime={date!.toISOString()}
-              >
-                {formattedDate}
-              </time>
-            )}
+            <time
+              className="text-overline text-muted-foreground tracking-[0.15em]"
+              dateTime={issue.date}
+            >
+              {formattedDate}
+            </time>
           </div>
 
           <h1 className="mt-4 text-title text-balance tracking-tight">
-            {broadcast.subject}
+            {issue.subject}
           </h1>
 
-          {broadcast.preview_text && (
+          {issue.preview && (
             <p className="mt-3 text-body-large text-muted-foreground text-pretty">
-              {broadcast.preview_text}
+              {issue.preview}
             </p>
           )}
         </div>
 
-        {broadcast.content ? (
-          <BroadcastContent html={broadcast.content} />
-        ) : (
-          <p className="rounded-xl border border-dashed bg-card p-8 text-body text-muted-foreground">
-            The full content of this issue isn&apos;t available online. It went
-            out by email only.
-          </p>
-        )}
+        <BroadcastContent html={html} />
 
         {(prevIssue || nextIssue) && (
           <nav
@@ -147,13 +127,11 @@ export default async function NewsletterIssuePage({ params }: Props) {
             className="grid grid-cols-1 gap-4 border-t border-border/60 pt-8 sm:grid-cols-2"
           >
             {prevIssue ? (
-              <IssueNavLink broadcast={prevIssue} direction="prev" />
+              <IssueNavLink direction="prev" issue={prevIssue} />
             ) : (
               <div aria-hidden="true" className="hidden sm:block" />
             )}
-            {nextIssue && (
-              <IssueNavLink broadcast={nextIssue} direction="next" />
-            )}
+            {nextIssue && <IssueNavLink direction="next" issue={nextIssue} />}
           </nav>
         )}
       </Stack>

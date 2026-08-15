@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/data/auth";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
-import { unsubscribeFromConvertKit } from "@/lib/convertkit/client";
+import { unsubscribeFromNewsletterList } from "@/lib/notifuse";
 import {
   type OnboardingFormData,
   onboardingSchema,
@@ -571,41 +571,18 @@ export async function updateNotificationPreferences(
         return result;
       }
 
-      // If unsubscribing from newsletter, also update newsletter_subscribed in user_profiles
-      // and sync to ConvertKit
+      // If unsubscribing from newsletter, also update newsletter_subscribed in
+      // user_profiles and drop them from the Notifuse newsletter list.
       if (isUnsubscribing) {
         const serviceClient = await createServiceRoleClient();
 
-        // Get ConvertKit subscriber ID before updating
-        const { data: profile } = await serviceClient
-          .from("user_profiles")
-          .select("convertkit_subscriber_id")
-          .eq("id", currentUser.id)
-          .single();
-
-        // Update newsletter_subscribed in user_profiles
         await serviceClient
           .from("user_profiles")
           .update({ newsletter_subscribed: false })
           .eq("id", currentUser.id);
 
-        // Unsubscribe from ConvertKit if we have subscriber ID
-        if (profile?.convertkit_subscriber_id) {
-          unsubscribeFromConvertKit(profile.convertkit_subscriber_id)
-            .then((success) => {
-              if (success) {
-                console.log(
-                  `[ConvertKit] Unsubscribed user ${currentUser.id} (subscriber ID: ${profile.convertkit_subscriber_id})`
-                );
-              }
-            })
-            .catch((err) => {
-              console.error("[ConvertKit] Unsubscribe error:", err);
-            });
-        } else {
-          console.warn(
-            `[ConvertKit] No subscriber ID found for user ${currentUser.id}, cannot unsubscribe`
-          );
+        if (currentUser.email) {
+          void unsubscribeFromNewsletterList(currentUser.email);
         }
       }
     }

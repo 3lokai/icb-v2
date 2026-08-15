@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import newsletterIssues from "./src/content/newsletters/index.json";
 
 // Bundle analyzer - only load when ANALYZE env var is set
 let withBundleAnalyzer = (config: NextConfig) => config;
@@ -86,6 +87,15 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Newsletter issues used to be keyed by Kit broadcast id; the archive is
+      // now file-backed and keyed by send date (src/content/newsletters).
+      ...newsletterIssues
+        .filter((issue) => issue.kitId)
+        .map((issue) => ({
+          source: `/newsletter/${issue.kitId}`,
+          destination: `/newsletter/${issue.date}`,
+          permanent: true,
+        })),
       {
         source: "/under-500",
         destination: "/coffees/budget",
