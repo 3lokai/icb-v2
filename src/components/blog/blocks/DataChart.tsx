@@ -13,6 +13,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  LabelList,
   ResponsiveContainer,
 } from "recharts";
 import { motion } from "motion/react";
@@ -37,6 +38,56 @@ const COLORS = [
   "var(--chart-4)",
   "var(--chart-5)",
 ];
+
+const BAR_VALUE_LABEL = {
+  position: "right" as const,
+  fill: "var(--muted-foreground)",
+  fontSize: 12,
+  fontWeight: 600,
+};
+
+const renderPieSliceLabel = (props: {
+  cx?: number;
+  cy?: number;
+  midAngle?: number;
+  outerRadius?: number;
+  percent?: number;
+  name?: string;
+  value?: number;
+}) => {
+  const {
+    cx = 0,
+    cy = 0,
+    midAngle = 0,
+    outerRadius = 0,
+    percent = 0,
+    name = "",
+    value = 0,
+  } = props;
+
+  // Skip callouts on slivers — they overlap and read as noise.
+  if (percent < 0.04) return null;
+
+  const RADIAN = Math.PI / 180;
+  const radius = outerRadius + 22;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const textAnchor = x > cx ? "start" : "end";
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="var(--muted-foreground)"
+      textAnchor={textAnchor}
+      dominantBaseline="central"
+      fontSize={11}
+      fontWeight={600}
+    >
+      {`${name} · ${value}`}
+    </text>
+  );
+};
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
@@ -143,14 +194,14 @@ export function DataChart({ value }: DataChartProps) {
 
       <motion.div
         variants={itemVariants}
-        className="relative h-[450px] w-full rounded-2xl border border-border/40 bg-card p-8 shadow-lg overflow-hidden transition-all hover:shadow-xl hover:border-border/60"
+        className="relative h-[450px] w-full rounded-2xl border border-border/40 bg-card p-8 shadow-lg overflow-visible transition-all hover:shadow-xl hover:border-border/60"
       >
         <ResponsiveContainer width="100%" height="100%">
           {value.chartType === "bar" ? (
             <BarChart
               data={data}
               layout="vertical"
-              margin={{ left: 0, right: 30, top: 0, bottom: 0 }}
+              margin={{ left: 0, right: 48, top: 0, bottom: 0 }}
             >
               <CartesianGrid
                 strokeDasharray="4 4"
@@ -162,7 +213,7 @@ export function DataChart({ value }: DataChartProps) {
               <YAxis
                 dataKey="label"
                 type="category"
-                width={120}
+                width={140}
                 tick={{
                   fontSize: 12,
                   fill: "var(--muted-foreground)",
@@ -186,22 +237,26 @@ export function DataChart({ value }: DataChartProps) {
                     key="dark"
                     dataKey="dark"
                     name="Dark roast"
-                    fill="var(--chart-1)"
-                    radius={[0, 6, 6, 0]}
-                    barSize={14}
-                    animationDuration={1500}
-                    animationEasing="ease-out"
-                  />,
-                  <Bar
-                    key="light"
-                    dataKey="light"
-                    name="Light roast"
                     fill="var(--chart-3)"
                     radius={[0, 6, 6, 0]}
                     barSize={14}
                     animationDuration={1500}
                     animationEasing="ease-out"
-                  />,
+                  >
+                    <LabelList dataKey="dark" {...BAR_VALUE_LABEL} />
+                  </Bar>,
+                  <Bar
+                    key="light"
+                    dataKey="light"
+                    name="Light roast"
+                    fill="var(--chart-4)"
+                    radius={[0, 6, 6, 0]}
+                    barSize={14}
+                    animationDuration={1500}
+                    animationEasing="ease-out"
+                  >
+                    <LabelList dataKey="light" {...BAR_VALUE_LABEL} />
+                  </Bar>,
                 ]
               ) : (
                 <Bar
@@ -218,20 +273,27 @@ export function DataChart({ value }: DataChartProps) {
                       fill={COLORS[index % COLORS.length]}
                     />
                   ))}
+                  <LabelList dataKey="value" {...BAR_VALUE_LABEL} />
                 </Bar>
               )}
             </BarChart>
           ) : (
-            <PieChart>
+            <PieChart margin={{ top: 16, right: 32, bottom: 16, left: 32 }}>
               <Pie
                 data={data}
                 cx="50%"
                 cy="50%"
-                innerRadius={value.chartType === "donut" ? 90 : 0}
-                outerRadius={130}
+                innerRadius={value.chartType === "donut" ? 80 : 0}
+                outerRadius={100}
                 paddingAngle={value.chartType === "donut" ? 6 : 2}
                 dataKey="value"
                 nameKey="label"
+                label={renderPieSliceLabel}
+                labelLine={{
+                  stroke: "var(--muted-foreground)",
+                  strokeWidth: 1,
+                  strokeOpacity: 0.35,
+                }}
                 animationDuration={1500}
                 animationEasing="ease-out"
               >
@@ -244,7 +306,6 @@ export function DataChart({ value }: DataChartProps) {
                   />
                 ))}
               </Pie>
-              <Tooltip content={<CustomTooltip />} />
             </PieChart>
           )}
         </ResponsiveContainer>

@@ -16,6 +16,11 @@ colors:
   border: "oklch(0.870 0.020 80.00)"
   ring: "oklch(0.628 0.080 60.55)"
   destructive: "oklch(0.653 0.177 28.10)"
+  chart-1: "oklch(0.520 0.120 60.55)"
+  chart-2: "oklch(0.640 0.135 38.00)"
+  chart-3: "oklch(0.420 0.075 52.00)"
+  chart-4: "oklch(0.660 0.105 85.00)"
+  chart-5: "oklch(0.550 0.140 25.00)"
 typography:
   display:
     fontFamily: "Fraunces, Georgia, serif"
@@ -170,6 +175,35 @@ are contrast-tuned for WCAG AA in both themes.
 - **Paper Edge** (`oklch(0.87 0.02 80)`, border/input): Neutral hairline dividers and field strokes.
 - **Alert Red** (`oklch(0.653 0.177 28.10)`, destructive): Errors and destructive actions only.
 
+### Chart Ramp
+
+Data series get their own five-step scale (`--chart-1…5`), but it is **the same palette, not a
+second one** — a warm walk from primary (h60.55) through accent (h40) to clay (h25), plus wheat
+(h85). It replaced the stock shadcn defaults, which were teal, blue, violet and pink at up to 0.265
+chroma and read as a foreign palette dropped onto the page.
+
+| Token | Light | Dark | Reads as |
+| --- | --- | --- | --- |
+| `--chart-1` | `oklch(0.52 0.12 60.55)` | `oklch(0.68 0.11 60.55)` | Roasted bean (= primary) |
+| `--chart-2` | `oklch(0.64 0.135 38)` | `oklch(0.76 0.125 38)` | Terracotta |
+| `--chart-3` | `oklch(0.42 0.075 52)` | `oklch(0.6 0.07 52)` | Dark cocoa |
+| `--chart-4` | `oklch(0.66 0.105 85)` | `oklch(0.84 0.1 85)` | Amber wheat |
+| `--chart-5` | `oklch(0.55 0.14 25)` | `oklch(0.7 0.13 25)` | Clay red |
+
+Three constraints govern any future edit to this ramp:
+
+- **Chroma ≤ 0.14.** The palette's own ceiling (accent is 0.139). A series more saturated than the
+  brand accent turns a chart into the loudest thing on the page and breaks the One Smear Rule.
+- **Lightness zig-zags** (`.52 → .64 → .42 → .66 → .55`). Adjacent series must separate by
+  lightness, not hue alone, so the chart survives greyscale printing and colorblind readers. This is
+  what lets a single-hue-family ramp stay legible.
+- **Light-mode steps stay ≤ 0.66 L** to hold 3:1 non-text contrast against cream; dark-mode steps
+  stay ≥ 0.60 against the brown-black ground.
+
+Semantic pairings beat ramp order: a dark-roast vs light-roast comparison uses `chart-3` against
+`chart-4` (cocoa vs wheat), not `chart-1`/`chart-2`, because the colors should mean what the data
+means.
+
 ### Named Rules
 
 **The One Smear Rule.** Terracotta is the only accent and it appears on roughly one phrase per page —
@@ -178,6 +212,10 @@ fighting for the accent, one of them is wrong.
 
 **The Ink-Never-Black Rule.** Text is roasted-brown ink (`foreground`), never `#000`. The warmth of
 the paper system breaks the moment a pure-black glyph lands on it.
+
+**The Charts-Are-Not-A-Second-Palette Rule.** Data visualization draws from the chart ramp above and
+nothing else — no per-chart color literals, no borrowed library defaults. If five series are not
+enough, the chart needs fewer series, not a sixth hue.
 
 ## 3. Typography
 

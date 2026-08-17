@@ -51,20 +51,25 @@ const createComponents = (
         )}
       </figure>
     ),
-    callout: Callout,
-    imageGallery: ImageGallery,
-    brewingTable: BrewingTable,
-    dataTable: DataTable,
-    stepList: StepList,
-    coffeeSpotlight: CoffeeSpotlight,
-    roasterSpotlight: RoasterSpotlight,
-    regionSpotlight: RegionSpotlight,
-    coffeeCollection: CoffeeCollection,
-    roasterCollection: RoasterCollection,
-    regionCollection: RegionCollection,
-    faqBlock: (props) => <FAQBlock {...props} articleFaqs={articleFaqs} />,
-    seriesNavigation: SeriesNavigation,
-    dataChart: (props) => <DataChart value={props.value} />,
+    // Only pass serializable props into client blocks — PortableText also hands
+    // type renderers renderNode/index/isInline, which cannot cross RSC boundaries
+    // when the component reference itself is a Client Component.
+    callout: ({ value }) => <Callout value={value} />,
+    imageGallery: ({ value }) => <ImageGallery value={value} />,
+    brewingTable: ({ value }) => <BrewingTable value={value} />,
+    dataTable: ({ value }) => <DataTable value={value} />,
+    stepList: ({ value }) => <StepList value={value} />,
+    coffeeSpotlight: ({ value }) => <CoffeeSpotlight value={value} />,
+    roasterSpotlight: ({ value }) => <RoasterSpotlight value={value} />,
+    regionSpotlight: ({ value }) => <RegionSpotlight value={value} />,
+    coffeeCollection: ({ value }) => <CoffeeCollection value={value} />,
+    roasterCollection: ({ value }) => <RoasterCollection value={value} />,
+    regionCollection: ({ value }) => <RegionCollection value={value} />,
+    faqBlock: ({ value }) => (
+      <FAQBlock value={value} articleFaqs={articleFaqs} />
+    ),
+    seriesNavigation: ({ value }) => <SeriesNavigation value={value} />,
+    dataChart: ({ value }) => <DataChart value={value} />,
   },
   block: {
     // Body content starts at h2 — the single page <h1> is the article title in
