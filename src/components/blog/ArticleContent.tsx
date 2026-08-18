@@ -1,7 +1,10 @@
-"use client";
+// src/components/blog/ArticleContent.tsx
+//
+// No "use client": PortableText rendering is pure. The recharts block keeps its
+// ssr:false code-split inside DataChartLazy, which owns that boundary; the
+// query-backed spotlight/collection blocks declare their own.
 
 import { PortableText, PortableTextComponents } from "@portabletext/react";
-import { useMemo } from "react";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity/image";
 import { slugifyHeading } from "@/lib/utils";
@@ -21,29 +24,7 @@ import { RoasterCollection } from "./blocks/RoasterCollection";
 import { RegionCollection } from "./blocks/RegionCollection";
 import { FAQBlock } from "./blocks/FAQBlock";
 import { SeriesNavigation } from "./blocks/SeriesNavigation";
-import dynamic from "next/dynamic";
-
-// Code-split recharts (~382 KB raw) — only loads on articles that embed a chart.
-// `ssr: false` is load-bearing: without it Next server-renders the chart and
-// preloads the recharts chunk into the *initial* script set, so the dynamic()
-// saved nothing on the articles that actually have a chart (measured: the
-// varieties article shipped 2,417 KB vs 1,839 KB on `/`, ~382 KB of it recharts
-// — the whole of its stuck 1,050 ms "reduce unused JS" opportunity).
-// Chart SVG isn't indexable content, so losing it from SSR HTML costs no SEO.
-// Sized loading fallback (matches DataChart's own internal loading state)
-// prevents a layout shift while the chart bundle streams in (CLS fix).
-const DataChart = dynamic(
-  () => import("./blocks/DataChart").then((m) => m.DataChart),
-  {
-    ssr: false,
-    loading: () => (
-      <div
-        className="h-80 my-12 rounded-2xl border border-border/40 bg-muted/50 animate-pulse pointer-events-none"
-        aria-hidden="true"
-      />
-    ),
-  }
-);
+import { DataChartLazy as DataChart } from "@/components/blog/blocks/DataChartLazy";
 
 interface ArticleContentProps {
   body: any[];
@@ -70,20 +51,25 @@ const createComponents = (
         )}
       </figure>
     ),
-    callout: Callout,
-    imageGallery: ImageGallery,
-    brewingTable: BrewingTable,
-    dataTable: DataTable,
-    stepList: StepList,
-    coffeeSpotlight: CoffeeSpotlight,
-    roasterSpotlight: RoasterSpotlight,
-    regionSpotlight: RegionSpotlight,
-    coffeeCollection: CoffeeCollection,
-    roasterCollection: RoasterCollection,
-    regionCollection: RegionCollection,
-    faqBlock: (props) => <FAQBlock {...props} articleFaqs={articleFaqs} />,
-    seriesNavigation: SeriesNavigation,
-    dataChart: (props) => <DataChart value={props.value} />,
+    // Only pass serializable props into client blocks — PortableText also hands
+    // type renderers renderNode/index/isInline, which cannot cross RSC boundaries
+    // when the component reference itself is a Client Component.
+    callout: ({ value }) => <Callout value={value} />,
+    imageGallery: ({ value }) => <ImageGallery value={value} />,
+    brewingTable: ({ value }) => <BrewingTable value={value} />,
+    dataTable: ({ value }) => <DataTable value={value} />,
+    stepList: ({ value }) => <StepList value={value} />,
+    coffeeSpotlight: ({ value }) => <CoffeeSpotlight value={value} />,
+    roasterSpotlight: ({ value }) => <RoasterSpotlight value={value} />,
+    regionSpotlight: ({ value }) => <RegionSpotlight value={value} />,
+    coffeeCollection: ({ value }) => <CoffeeCollection value={value} />,
+    roasterCollection: ({ value }) => <RoasterCollection value={value} />,
+    regionCollection: ({ value }) => <RegionCollection value={value} />,
+    faqBlock: ({ value }) => (
+      <FAQBlock value={value} articleFaqs={articleFaqs} />
+    ),
+    seriesNavigation: ({ value }) => <SeriesNavigation value={value} />,
+    dataChart: ({ value }) => <DataChart value={value} />,
   },
   block: {
     // Body content starts at h2 — the single page <h1> is the article title in
@@ -164,7 +150,7 @@ export default function ArticleContent({
   body,
   faqItems,
 }: ArticleContentProps) {
-  const components = useMemo(() => createComponents(faqItems), [faqItems]);
+  const components = createComponents(faqItems);
 
   // No Tailwind Typography plugin is installed, so `prose`/`prose-slate` would
   // be inert dead classes (and `prose-slate` would inject a cool gray ramp into

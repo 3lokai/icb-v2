@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useRoasterDirectory } from "@/hooks/useHomePageQueries";
-import { useRoasterLogoPlate } from "@/hooks/useRoasterLogoPlate";
+import {
+  roasterLogoUrl,
+  roasterPlateClass,
+} from "@/lib/utils/roaster-logo-plate";
 import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -18,7 +21,8 @@ import { cn } from "@/lib/utils";
 import type { RoasterSummary } from "@/types/roaster-types";
 
 function RoasterLogoTile({ roaster }: { roaster: RoasterSummary }) {
-  const { logoUrl, plateClass } = useRoasterLogoPlate(roaster.slug);
+  const logoUrl = roasterLogoUrl(roaster.slug);
+  const plateClass = roasterPlateClass(roaster.logo_is_light);
 
   return (
     <div

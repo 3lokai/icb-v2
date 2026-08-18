@@ -29,6 +29,8 @@ export type RoasterLocation = {
 export type SimilarRoaster = {
   slug: string;
   name: string;
+  /** roasters.logo_is_light — picks the plate behind the logo. */
+  logo_is_light: boolean | null;
   shared_tags: string[];
 };
 
@@ -39,6 +41,8 @@ export type RoasterDetail = {
   name: string;
   description: string | null;
   logo_url: string | null;
+  /** roasters.logo_is_light — picks the plate behind the logo. */
+  logo_is_light: boolean | null;
   website: string | null;
   is_active: boolean;
   hq_city: string | null;
@@ -131,6 +135,8 @@ export type RoasterSummary = {
   hq_country: string | null;
   is_active: boolean;
   instagram_handle: string | null;
+  /** roasters.logo_is_light — picks the plate behind the logo. */
+  logo_is_light: boolean | null;
 
   // Badge fields
   is_featured: boolean | null;

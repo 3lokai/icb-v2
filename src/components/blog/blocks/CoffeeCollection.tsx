@@ -1,6 +1,8 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
-import { buildCoffeeCollectionParams } from "@/lib/blog/collection-params";
+import { buildCoffeeCollectionParams, hasCollectionFilter } from "@/lib/blog/collection-params";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
@@ -74,6 +76,11 @@ export function CoffeeCollection({ value }: CoffeeCollectionProps) {
       return res.json();
     },
   });
+
+  // An unfiltered dynamic collection would render arbitrary catalogue rows that
+  // have nothing to do with the article — render nothing instead. Placed after the
+  // hooks so hook order stays stable.
+  if (!hasCollectionFilter(value as never)) return null;
 
   const columnClass =
     {

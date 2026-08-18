@@ -35,6 +35,18 @@ function SpotlightCard({
     ? (data.name as string)
     : getCoffeeDisplayName(data);
 
+  // fetchCoffeeBySlug returns a CoffeeDetail (nested `roaster`, `images[]`,
+  // `flavor_notes[]`), but this card was written against the flat list/summary
+  // shape (roaster_slug, image_url, flavor_notes_canonical). Read either, so the
+  // card works whichever shape it is handed.
+  const roasterName = data.roaster_name ?? data.roaster?.name;
+  const roasterSlug = data.roaster_slug ?? data.roaster?.slug;
+  const imageUrl = data.image_url ?? data.images?.[0]?.imagekit_url;
+  const noteLabels: string[] =
+    data.flavor_notes_canonical ??
+    data.flavor_notes?.map((n: { label: string }) => n.label) ??
+    [];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -45,16 +57,18 @@ function SpotlightCard({
     >
       <div className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-10">
         <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl bg-muted/50 md:w-48 lg:w-56 shadow-inner">
-          <Image
-            src={
-              isLegacy
-                ? urlFor(data.image).width(600).height(600).url()
-                : data.image_url
-            }
-            alt={displayName}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
-          />
+          {(isLegacy ? data.image : imageUrl) && (
+            <Image
+              src={
+                isLegacy
+                  ? urlFor(data.image).width(600).height(600).url()
+                  : imageUrl
+              }
+              alt={displayName}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
 
@@ -72,7 +86,7 @@ function SpotlightCard({
               </Badge>
             </div>
             <p className="text-body-large font-medium text-muted-foreground/80 italic font-serif">
-              {isLegacy ? "Specialty Coffee" : data.roaster_name}
+              {isLegacy ? "Specialty Coffee" : roasterName}
             </p>
           </div>
 
@@ -83,7 +97,7 @@ function SpotlightCard({
           </p>
 
           <div className="flex flex-wrap gap-2">
-            {(isLegacy ? data.tags : data.flavor_notes_canonical)
+            {(isLegacy ? data.tags : noteLabels)
               ?.slice(0, 4)
               .map((note: string) => (
                 <Badge
@@ -107,7 +121,7 @@ function SpotlightCard({
                 href={
                   isLegacy
                     ? data.link || "#"
-                    : `/roasters/${data.roaster_slug}/coffees/${data.slug}`
+                    : `/roasters/${roasterSlug}/coffees/${data.slug}`
                 }
               >
                 View Beans{" "}

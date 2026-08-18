@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-06-13T00:00:00Z",
+  "generatedAt": "2026-08-17T22:21:43.806Z",
   "title": "Design System: Indian Coffee Beans (ICB)",
   "extensions": {
     "colorMeta": {
@@ -78,36 +78,190 @@
           "oklch(0.78 0.02 80.00)",
           "oklch(0.90 0.015 80.00)"
         ]
+      },
+      "chart-1": {
+        "role": "chart",
+        "displayName": "Roasted Bean",
+        "canonical": "oklch(0.52 0.12 60.55)",
+        "purpose": "Series 1 and single-series bars. Identical to primary, so a lone chart reads as the brand.",
+        "tonalRamp": [
+          "oklch(0.150 0.066 60.55)",
+          "oklch(0.264 0.081 60.55)",
+          "oklch(0.379 0.097 60.55)",
+          "oklch(0.493 0.112 60.55)",
+          "oklch(0.607 0.112 60.55)",
+          "oklch(0.721 0.097 60.55)",
+          "oklch(0.836 0.081 60.55)",
+          "oklch(0.950 0.066 60.55)"
+        ]
+      },
+      "chart-2": {
+        "role": "chart",
+        "displayName": "Terracotta",
+        "canonical": "oklch(0.64 0.135 38)",
+        "purpose": "Series 2. The accent hue held one step darker so it clears 3:1 on cream.",
+        "tonalRamp": [
+          "oklch(0.150 0.074 38)",
+          "oklch(0.264 0.092 38)",
+          "oklch(0.379 0.109 38)",
+          "oklch(0.493 0.126 38)",
+          "oklch(0.607 0.126 38)",
+          "oklch(0.721 0.109 38)",
+          "oklch(0.836 0.092 38)",
+          "oklch(0.950 0.074 38)"
+        ]
+      },
+      "chart-3": {
+        "role": "chart",
+        "displayName": "Dark Cocoa",
+        "canonical": "oklch(0.42 0.075 52)",
+        "purpose": "Series 3, and the dark half of any dark-vs-light roast comparison.",
+        "tonalRamp": [
+          "oklch(0.150 0.041 52)",
+          "oklch(0.264 0.051 52)",
+          "oklch(0.379 0.061 52)",
+          "oklch(0.493 0.070 52)",
+          "oklch(0.607 0.070 52)",
+          "oklch(0.721 0.061 52)",
+          "oklch(0.836 0.051 52)",
+          "oklch(0.950 0.041 52)"
+        ]
+      },
+      "chart-4": {
+        "role": "chart",
+        "displayName": "Amber Wheat",
+        "canonical": "oklch(0.66 0.105 85)",
+        "purpose": "Series 4, and the light half of a roast comparison.",
+        "tonalRamp": [
+          "oklch(0.150 0.058 85)",
+          "oklch(0.264 0.071 85)",
+          "oklch(0.379 0.085 85)",
+          "oklch(0.493 0.098 85)",
+          "oklch(0.607 0.098 85)",
+          "oklch(0.721 0.085 85)",
+          "oklch(0.836 0.071 85)",
+          "oklch(0.950 0.058 85)"
+        ]
+      },
+      "chart-5": {
+        "role": "chart",
+        "displayName": "Clay Red",
+        "canonical": "oklch(0.55 0.14 25)",
+        "purpose": "Series 5. The warm end of the walk; nearest to destructive, so never use it for a neutral series beside an error state.",
+        "tonalRamp": [
+          "oklch(0.150 0.077 25)",
+          "oklch(0.264 0.095 25)",
+          "oklch(0.379 0.113 25)",
+          "oklch(0.493 0.131 25)",
+          "oklch(0.607 0.131 25)",
+          "oklch(0.721 0.113 25)",
+          "oklch(0.836 0.095 25)",
+          "oklch(0.950 0.077 25)"
+        ]
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display / Hero", "purpose": "Fraunces 400, page heroes and headers. Authority via size + serif, never bold." },
-      "title": { "displayName": "Title (h2)", "purpose": "Fraunces 500, section headers." },
-      "heading": { "displayName": "Heading (h3)", "purpose": "Fraunces 500, card/subsection headers; one step below Title." },
-      "body": { "displayName": "Body", "purpose": "DM Sans 400, reading text, measure 65-75ch." },
-      "label": { "displayName": "Label", "purpose": "DM Sans 500 capitalized, metadata/tags; sparing, not all-caps eyebrows." }
+      "display": {
+        "displayName": "Display / Hero",
+        "purpose": "Fraunces 400, page heroes and headers. Authority via size + serif, never bold."
+      },
+      "title": {
+        "displayName": "Title (h2)",
+        "purpose": "Fraunces 500, section headers."
+      },
+      "heading": {
+        "displayName": "Heading (h3)",
+        "purpose": "Fraunces 500, card/subsection headers; one step below Title."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "DM Sans 400, reading text, measure 65-75ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "DM Sans 500 capitalized, metadata/tags; sparing, not all-caps eyebrows."
+      }
     },
     "shadows": [
-      { "name": "shadow-sm", "value": "0 1px 3px 0 color-mix(in oklch, var(--shadow-color), transparent 92%)", "purpose": "Subtle resting lift on a few key surfaces. Coffee-tinted." },
-      { "name": "shadow-md", "value": "0 4px 6px -1px color-mix(in oklch, var(--shadow-color), transparent 90%)", "purpose": "Hover lift." },
-      { "name": "shadow-lg", "value": "0 10px 15px -3px color-mix(in oklch, var(--shadow-color), transparent 90%)", "purpose": "Elevation / raised surfaces." },
-      { "name": "shadow-2xl", "value": "0 25px 50px -12px color-mix(in oklch, var(--shadow-color), transparent 80%)", "purpose": "Modals, toasts, popovers (surface-2)." },
-      { "name": "shadow-focus-visible", "value": "0 0 0 3px color-mix(in oklch, var(--shadow-color-dark), transparent 60%)", "purpose": "Focus ring — warm tinted glow, not a hard outline." }
+      {
+        "name": "shadow-sm",
+        "value": "0 1px 3px 0 color-mix(in oklch, var(--shadow-color), transparent 92%)",
+        "purpose": "Subtle resting lift on a few key surfaces. Coffee-tinted."
+      },
+      {
+        "name": "shadow-md",
+        "value": "0 4px 6px -1px color-mix(in oklch, var(--shadow-color), transparent 90%)",
+        "purpose": "Hover lift."
+      },
+      {
+        "name": "shadow-lg",
+        "value": "0 10px 15px -3px color-mix(in oklch, var(--shadow-color), transparent 90%)",
+        "purpose": "Elevation / raised surfaces."
+      },
+      {
+        "name": "shadow-2xl",
+        "value": "0 25px 50px -12px color-mix(in oklch, var(--shadow-color), transparent 80%)",
+        "purpose": "Modals, toasts, popovers (surface-2)."
+      },
+      {
+        "name": "shadow-focus-visible",
+        "value": "0 0 0 3px color-mix(in oklch, var(--shadow-color-dark), transparent 60%)",
+        "purpose": "Focus ring — warm tinted glow, not a hard outline."
+      }
     ],
     "motion": [
-      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The canonical Reveal scroll-in curve (opacity + 24px rise, 0.6s, fires once)." },
-      { "name": "ease-out-standard", "value": "ease-out", "purpose": "Default state transitions; exponential ease-out, no bounce." },
-      { "name": "duration-fast", "value": "200ms", "purpose": "Buttons, hovers, accordions." },
-      { "name": "duration-image-zoom", "value": "700ms", "purpose": "Subtle .image-hover-zoom scale-105." },
-      { "name": "duration-card", "value": "500ms", "purpose": "Card border-tone hover shift." },
-      { "name": "reduced-motion", "value": "@media (prefers-reduced-motion: reduce)", "purpose": "Collapses all motion to static; film grain drops opacity, marquees stop, Reveal renders without entrance." }
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The canonical Reveal scroll-in curve (opacity + 24px rise, 0.6s, fires once)."
+      },
+      {
+        "name": "ease-out-standard",
+        "value": "ease-out",
+        "purpose": "Default state transitions; exponential ease-out, no bounce."
+      },
+      {
+        "name": "duration-fast",
+        "value": "200ms",
+        "purpose": "Buttons, hovers, accordions."
+      },
+      {
+        "name": "duration-image-zoom",
+        "value": "700ms",
+        "purpose": "Subtle .image-hover-zoom scale-105."
+      },
+      {
+        "name": "duration-card",
+        "value": "500ms",
+        "purpose": "Card border-tone hover shift."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce)",
+        "purpose": "Collapses all motion to static; film grain drops opacity, marquees stop, Reveal renders without entrance."
+      }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px" },
-      { "name": "md", "value": "768px" },
-      { "name": "lg", "value": "1024px" },
-      { "name": "xl", "value": "1280px" },
-      { "name": "2xl", "value": "1400px" }
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "2xl",
+        "value": "1400px"
+      }
     ]
   },
   "components": [
@@ -172,12 +326,41 @@
       "Editorial rhythm enforced structurally through layout primitives, not by reflex."
     ],
     "rules": [
-      { "name": "The One Smear Rule", "body": "Terracotta is the only accent and it appears on roughly one phrase per page — through the <Accent> brush-smear or a glossary underline. Its rarity is the point.", "section": "colors" },
-      { "name": "The Ink-Never-Black Rule", "body": "Text is roasted-brown ink (foreground), never #000. The warmth of the paper system breaks the moment a pure-black glyph lands on it.", "section": "colors" },
-      { "name": "The Hero-Is-Not-Bold Rule", "body": "The largest type on the page is Fraunces at weight 400. Size and the serif carry the authority; bold display weight reads as shouting and is forbidden on heroes.", "section": "typography" },
-      { "name": "The h2 != h3 Rule", "body": ".text-title and .text-heading must never style the same heading level. The visible step between them is the document's spine.", "section": "typography" },
-      { "name": "The Flat-Paper Rule", "body": "Cards are flat at rest, separated by tonal surface steps and a hairline border. Shadow appears only on hover/elevation; reach for surface-1 first.", "section": "elevation" },
-      { "name": "The Warm-Shadow Rule", "body": "Shadows are coffee-tinted via color-mix toward accent/foreground. A neutral-gray shadow on this cream system is prohibited.", "section": "elevation" }
+      {
+        "name": "The One Smear Rule",
+        "body": "Terracotta is the only accent and it appears on roughly one phrase per page — through the <Accent> brush-smear or a glossary underline. Its rarity is the point.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink-Never-Black Rule",
+        "body": "Text is roasted-brown ink (foreground), never #000. The warmth of the paper system breaks the moment a pure-black glyph lands on it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Hero-Is-Not-Bold Rule",
+        "body": "The largest type on the page is Fraunces at weight 400. Size and the serif carry the authority; bold display weight reads as shouting and is forbidden on heroes.",
+        "section": "typography"
+      },
+      {
+        "name": "The h2 != h3 Rule",
+        "body": ".text-title and .text-heading must never style the same heading level. The visible step between them is the document's spine.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-Paper Rule",
+        "body": "Cards are flat at rest, separated by tonal surface steps and a hairline border. Shadow appears only on hover/elevation; reach for surface-1 first.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Warm-Shadow Rule",
+        "body": "Shadows are coffee-tinted via color-mix toward accent/foreground. A neutral-gray shadow on this cream system is prohibited.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Charts-Are-Not-A-Second-Palette Rule",
+        "body": "Data visualization draws from the chart ramp (--chart-1..5) and nothing else - no per-chart color literals, no borrowed library defaults. If five series are not enough, the chart needs fewer series, not a sixth hue.",
+        "section": "colors"
+      }
     ],
     "dos": [
       "Do keep cream paper as the ground, roasted-bean ink as the text, and terracotta as the only accent.",
@@ -187,7 +370,8 @@
       "Do hold the visible step between .text-title (h2) and .text-heading (h3); never skip heading levels.",
       "Do keep body text at AA contrast on both cream and card, in light and dark, including placeholders.",
       "Do give every animation a prefers-reduced-motion fallback.",
-      "Do ration the <Accent> brush-smear to one phrase per page; keep it in family with .glossary-term."
+      "Do ration the <Accent> brush-smear to one phrase per page; keep it in family with .glossary-term.",
+      "Do draw every data series from the --chart-1..5 ramp, keep chart chroma at or below 0.14, and pair colors semantically (cocoa chart-3 vs wheat chart-4 for dark vs light roast) rather than in ramp order."
     ],
     "donts": [
       "Don't ship generic SaaS/startup marketing patterns: no hero-metric template, no repeated identical icon-heading-text card grids, no eyebrow above every section, no gradient accents.",
@@ -200,7 +384,8 @@
       "Don't introduce a second accent color, a second radius scale, or a second emphasis language. One accent, one radius, one theme per page.",
       "Don't use a colored left/right border >1px as a card/list/callout/alert accent. Magazine accents live on the top edge (<Decor stripe>), never the side.",
       "Don't use wide-tracked all-caps eyebrows as section scaffolding; labels are capitalized print-UI caps, used sparingly.",
-      "Don't nest cards. Ever."
+      "Don't nest cards. Ever.",
+      "Don't reintroduce a library's default chart palette. The shadcn defaults (teal h184, blue h227, violet h264, pink h16, up to 0.265 chroma) were removed on purpose - they read as a second palette dropped onto the page."
     ]
   }
 }

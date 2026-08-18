@@ -1917,6 +1917,7 @@ export type Database = {
           last_etag: string | null
           last_modified: string | null
           lat: number | null
+          logo_is_light: boolean | null
           logo_url: string | null
           lon: number | null
           mission_philosophy: string | null
@@ -1981,6 +1982,7 @@ export type Database = {
           last_etag?: string | null
           last_modified?: string | null
           lat?: number | null
+          logo_is_light?: boolean | null
           logo_url?: string | null
           lon?: number | null
           mission_philosophy?: string | null
@@ -2045,6 +2047,7 @@ export type Database = {
           last_etag?: string | null
           last_modified?: string | null
           lat?: number | null
+          logo_is_light?: boolean | null
           logo_url?: string | null
           lon?: number | null
           mission_philosophy?: string | null

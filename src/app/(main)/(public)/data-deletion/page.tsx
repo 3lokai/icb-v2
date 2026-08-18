@@ -1,9 +1,11 @@
-"use client";
+// src/app/(main)/(public)/data-deletion/page.tsx
+//
+// No "use client": static policy copy. The one interactive control is the
+// clipboard button, which is its own island.
 import { Accent } from "@/components/primitives/accent";
-import { Button } from "@/components/ui/button";
+import { CopyToClipboardButton } from "@/components/common/CopyToClipboardButton";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
-import { toast } from "sonner";
 
 const CONTACT_EMAIL = "support@indiancoffeebeans.com";
 
@@ -28,13 +30,6 @@ Please confirm when deletion is complete.
 
 Thank you,
 [Your name]`;
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(emailTemplate);
-    toast.success("Template Copied!", {
-      description: "You can now paste it into your email client.",
-    });
-  };
 
   return (
     <Stack gap="12" className="pb-20">
@@ -164,14 +159,13 @@ Thank you,
                     {emailTemplate}
                   </div>
                   <div className="absolute top-4 right-4">
-                    <Button
-                      variant="secondary"
-                      size="sm"
+                    <CopyToClipboardButton
+                      value={emailTemplate}
+                      label="Copy Template"
+                      toastTitle="Template Copied!"
+                      toastDescription="You can now paste it into your email client."
                       className="bg-background border-border shadow-sm group-hover:scale-105 transition-transform"
-                      onClick={handleCopy}
-                    >
-                      Copy Template
-                    </Button>
+                    />
                   </div>
                 </div>
               </Stack>

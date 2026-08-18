@@ -1,7 +1,10 @@
-"use client";
-
+// src/components/homepage/hero/HeroContextPanel.tsx
+//
+// No "use client": this panel is static markup on the homepage LCP path. Its one
+// interactive child, HeroSearch, declares its own boundary, so importing it
+// directly from here already yields a separate client chunk — which is all the
+// previous next/dynamic wrapper was buying.
 import type { ReactNode } from "react";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -22,10 +25,7 @@ import { Stack } from "@/components/primitives/stack";
 import { cn } from "@/lib/utils";
 import type { PublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 import type { HeroSegmentPayload } from "@/types/hero-segment";
-
-const HeroSearch = dynamic(() =>
-  import("./HeroSearch").then((mod) => ({ default: mod.HeroSearch }))
-);
+import { HeroSearch } from "@/components/homepage/hero/HeroSearch";
 
 function coffeeHref(
   c: { coffeeSlug: string; roasterSlug: string },

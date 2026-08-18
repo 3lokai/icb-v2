@@ -9,14 +9,96 @@ export type ChartDataItem = {
   light?: number;
 };
 
+const PAGE_SIZE = 1000;
+
+/**
+ * Reads every row a chart query matches, not just the first page.
+ *
+ * PostgREST caps an unbounded select at 1000 rows. Because these aggregations run
+ * client-side over the returned rows, that cap silently truncated every chart on
+ * the site: `roast_distribution` over a 1684-row catalogue returned exactly 1000
+ * rows and reported *zero* dark and medium-dark coffees, on an article about dark
+ * roast. Ordering is required for stable paging — without it Postgres may repeat
+ * or skip rows across pages.
+ *
+ * ponytail: paging, not SQL aggregation — it is the contained fix and needs no
+ * migration. Upgrade path when the catalogue grows: aggregate server-side like
+ * the single_origin_* keys already do via their RPCs, which also drops the
+ * full-table transfer done to count a handful of values.
+ */
+async function fetchAllRows(
+  buildQuery: () => any,
+  dataKey: string
+): Promise<any[]> {
+  const rows: any[] = [];
+
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await buildQuery()
+      .order("coffee_id", { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) {
+      console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
+      throw new Error(`Failed to fetch chart data for ${dataKey}`);
+    }
+
+    if (!data?.length) break;
+    rows.push(...data);
+    if (data.length < PAGE_SIZE) break;
+  }
+
+  return rows;
+}
+
+/**
+ * Every dataKey this function knows how to serve. A Sanity `dataChart` block
+ * carrying anything else is a typo (a published article shipped
+ * "processing_distribution" for "process_distribution"), and DataChart renders
+ * nothing at all for an empty result — so the block silently vanished, title and
+ * all, with no signal anywhere. Reject unknown keys up front: it makes the
+ * mistake visible in logs and skips the table scan that would return nothing.
+ */
+const VALID_DATA_KEYS = new Set([
+  "arabica_top_flavor_notes",
+  "brew_method_distribution",
+  "brew_method_distribution_light_roast",
+  "espresso_process_distribution",
+  "estate_region_distribution",
+  "estate_roaster_count",
+  "flavor_by_roast",
+  "price_distribution_250g",
+  "process_distribution",
+  "roast_distribution",
+  "roaster_concentration",
+  "robusta_process_distribution",
+  "robusta_top_flavor_notes",
+  "single_origin_by_region",
+  "single_origin_vs_blend",
+  "species_distribution",
+  "top_flavors",
+  "top_flavors_washed_espresso",
+  "top_regions",
+  "top_roasters",
+]);
+
 /**
  * Fetches and aggregates data for blog charts from Supabase.
  */
 export async function fetchChartData(
   dataKey: string,
   limit: number = 10,
-  region?: string
+  region?: string,
+  brewMethod?: string,
+  process?: string
 ): Promise<ChartDataItem[]> {
+  if (!VALID_DATA_KEYS.has(dataKey)) {
+    console.error(
+      `[fetchChartData] Unknown dataKey "${dataKey}" — no chart will render. ` +
+        `Fix the dataChart block in Sanity; valid keys: ${[...VALID_DATA_KEYS].join(", ")}`
+    );
+    return [];
+  }
+
   const supabase = await createClient();
 
   // ── Single-origin charts: served by dedicated SQL aggregation RPCs ──
@@ -81,8 +163,7 @@ export async function fetchChartData(
     selectFields = "best_normalized_250g, in_stock_count";
   if (dataKey === "roaster_concentration") selectFields = "roaster_name";
 
-  let query = supabase.from("coffee_directory_mv").select(selectFields);
-
+  let regionNames: string[] | null = null;
   if (region) {
     // The MV exposes canon region display names (GIN-indexed), not slugs. `region`
     // may be a single slug or a comma-separated set covering a district and its
@@ -100,47 +181,61 @@ export async function fetchChartData(
       .map((r) => r.display_name)
       .filter((n): n is string => Boolean(n));
     if (names.length === 0) return [];
-    query = query.overlaps("canon_region_names", names);
+    regionNames = names;
   }
 
-  // Species-filtered charts — filter at DB level
-  if (dataKey === "arabica_top_flavor_notes") {
-    query = query.eq("bean_species", "arabica");
-  }
-  if (
-    dataKey === "robusta_top_flavor_notes" ||
-    dataKey === "robusta_process_distribution"
-  ) {
-    query = query.eq("bean_species", "robusta");
-  }
+  // Rebuilt per page — a PostgREST query builder is single-use, and paging needs
+  // a fresh one each time.
+  const buildQuery = () => {
+    let q = supabase.from("coffee_directory_mv").select(selectFields);
 
-  if (dataKey === "price_distribution_250g") {
-    query = query
-      .gt("best_normalized_250g", 0)
-      .gt("in_stock_count", 0)
-      .lt("best_normalized_250g", 5000);
-  }
+    if (regionNames) q = q.overlaps("canon_region_names", regionNames);
 
-  // Espresso-tagged charts — array containment on brew method keys, scoped to
-  // in-stock (matches the espresso guide's "in-stock espresso-tagged" framing).
-  if (
-    dataKey === "espresso_process_distribution" ||
-    dataKey === "top_flavors_washed_espresso"
-  ) {
-    query = query
-      .contains("brew_method_canonical_keys", ["espresso"])
-      .gt("in_stock_count", 0);
-  }
-  if (dataKey === "top_flavors_washed_espresso") {
-    query = query.eq("process", "washed");
-  }
+    // Generic subset scoping. Previously only `region` could narrow a chart, so
+    // brew-method / process subsets were either faked with a bespoke dataKey
+    // (espresso_process_distribution, top_flavors_washed_espresso) or — far more
+    // often — not applied at all, leaving a sitewide chart under a subset title.
+    if (brewMethod) {
+      q = q.contains("brew_method_canonical_keys", [brewMethod]);
+    }
+    if (process) q = q.eq("process", process);
 
-  const { data: coffees, error } = await query;
+    // Species-filtered charts — filter at DB level
+    if (dataKey === "arabica_top_flavor_notes") {
+      q = q.eq("bean_species", "arabica");
+    }
+    if (
+      dataKey === "robusta_top_flavor_notes" ||
+      dataKey === "robusta_process_distribution"
+    ) {
+      q = q.eq("bean_species", "robusta");
+    }
 
-  if (error) {
-    console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
-    throw new Error(`Failed to fetch chart data for ${dataKey}`);
-  }
+    if (dataKey === "price_distribution_250g") {
+      q = q
+        .gt("best_normalized_250g", 0)
+        .gt("in_stock_count", 0)
+        .lt("best_normalized_250g", 5000);
+    }
+
+    // Espresso-tagged charts — array containment on brew method keys, scoped to
+    // in-stock (matches the espresso guide's "in-stock espresso-tagged" framing).
+    if (
+      dataKey === "espresso_process_distribution" ||
+      dataKey === "top_flavors_washed_espresso"
+    ) {
+      q = q
+        .contains("brew_method_canonical_keys", ["espresso"])
+        .gt("in_stock_count", 0);
+    }
+    if (dataKey === "top_flavors_washed_espresso") {
+      q = q.eq("process", "washed");
+    }
+
+    return q;
+  };
+
+  const coffees = await fetchAllRows(buildQuery, dataKey);
 
   if (!coffees) return [];
 
