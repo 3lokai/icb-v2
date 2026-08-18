@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/supabase-types";
 import {
   createAnonServerClient,
   createServiceRoleClient,
@@ -13,7 +14,7 @@ const UUID_RE =
 export type FetchRoasterBySlugOptions = {
   /** Max coffees to load from `coffee_summary` (default 15). */
   limit?: number;
-  supabaseClient?: SupabaseClient;
+  supabaseClient?: SupabaseClient<Database>;
 };
 
 /**
@@ -42,11 +43,14 @@ export async function fetchRoasterBySlug(
   // translating the id once fixes every caller.
   let lookupSlug = slug;
   if (UUID_RE.test(slug)) {
-    const { data: byId } = await supabase
+    const { data: byId, error: byIdError } = await supabase
       .from("roasters")
       .select("slug")
       .eq("id", slug)
       .maybeSingle();
+    // Throw on a real failure so a transient error isn't cached as a 24h "not
+    // found" (same reasoning as the RPC call below); null only for a clean miss.
+    if (byIdError) throw byIdError;
     if (!byId?.slug) return null;
     lookupSlug = byId.slug;
   }

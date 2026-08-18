@@ -102,6 +102,12 @@ export async function fetchChartData(
     return [];
   }
 
+  // `limit` reaches here from a query string via parseInt, so it can be NaN, 0 or
+  // negative. Every branch below does `.slice(0, safeLimit)`: NaN yields an
+  // EMPTY chart and a negative value silently trims from the end. Normalise once.
+  const safeLimit =
+    Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 10;
+
   const supabase = await createClient();
 
   // ── Single-origin charts: served by dedicated SQL aggregation RPCs ──
@@ -121,7 +127,7 @@ export async function fetchChartData(
   }
   if (dataKey === "single_origin_by_region") {
     const { data, error } = await supabase.rpc("get_single_origin_by_region", {
-      p_limit: limit || 10,
+      p_limit: safeLimit,
     });
     if (error) {
       console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
@@ -196,7 +202,7 @@ export async function fetchChartData(
     // Cohorts read chronologically; the others rank by size.
     return dataKey === "roaster_founding_cohorts"
       ? items.sort((a, b) => a.label.localeCompare(b.label))
-      : items.sort((a, b) => b.value - a.value).slice(0, limit || undefined);
+      : items.sort((a, b) => b.value - a.value).slice(0, safeLimit);
   }
 
   // Optimization: only select columns we need for the specific dataKey
@@ -332,22 +338,22 @@ export async function fetchChartData(
       );
 
     case "top_roasters":
-      return aggregateSimpleDistribution(coffees, "roaster_name", limit);
+      return aggregateSimpleDistribution(coffees, "roaster_name", safeLimit);
 
     case "top_regions":
-      return aggregateArrayField(coffees, "canon_region_names", limit);
+      return aggregateArrayField(coffees, "canon_region_names", safeLimit);
 
     case "top_flavors":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
 
     case "estate_roaster_count":
-      return aggregateEstateRoasterCounts(coffees, limit);
+      return aggregateEstateRoasterCounts(coffees, safeLimit);
 
     case "estate_region_distribution":
       return aggregateEstateRegionDistribution(coffees);
 
     case "brew_method_distribution_light_roast":
-      return aggregateLightRoastBrewMethods(coffees, limit);
+      return aggregateLightRoastBrewMethods(coffees, safeLimit);
 
     case "brew_method_distribution":
       return aggregateArrayField(
@@ -357,12 +363,12 @@ export async function fetchChartData(
       ).map((item) => ({ ...item, label: formatEnumLabel(item.label) }));
 
     case "espresso_process_distribution":
-      return aggregateSimpleDistribution(coffees, "process", limit).map(
+      return aggregateSimpleDistribution(coffees, "process", safeLimit).map(
         (item) => ({ ...item, label: formatEnumLabel(item.label) })
       );
 
     case "top_flavors_washed_espresso":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
 
     case "roaster_concentration":
       return aggregateSimpleDistribution(coffees, "roaster_name", limit || 10);
@@ -371,10 +377,10 @@ export async function fetchChartData(
       return aggregatePriceDistribution(coffees);
 
     case "arabica_top_flavor_notes":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
 
     case "robusta_top_flavor_notes":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
 
     case "robusta_process_distribution":
       return aggregateSimpleDistribution(coffees, "process").map((item) => ({
@@ -383,7 +389,7 @@ export async function fetchChartData(
       }));
 
     case "flavor_by_roast":
-      return aggregateFlavorByRoast(coffees, limit);
+      return aggregateFlavorByRoast(coffees, safeLimit);
 
     default:
       return [];
@@ -424,7 +430,7 @@ function aggregateEstateRoasterCounts(
   return Object.entries(estateRoasters)
     .map(([label, roasters]) => ({ label, value: roasters.size }))
     .sort((a, b) => b.value - a.value)
-    .slice(0, limit);
+    .slice(0, limit || undefined);
 }
 
 /**
