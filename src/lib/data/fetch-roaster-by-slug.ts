@@ -1,16 +1,20 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/supabase-types";
 import {
   createAnonServerClient,
   createServiceRoleClient,
 } from "@/lib/supabase/server";
 import type { RoasterDetail } from "@/types/roaster-types";
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export type FetchRoasterBySlugOptions = {
   /** Max coffees to load from `coffee_summary` (default 15). */
   limit?: number;
-  supabaseClient?: SupabaseClient;
+  supabaseClient?: SupabaseClient<Database>;
 };
 
 /**
@@ -32,12 +36,31 @@ export async function fetchRoasterBySlug(
       ? await createServiceRoleClient()
       : createAnonServerClient());
 
+  // Sanity's `roasterSpotlight.roasterId` holds the Supabase id (the studio field is
+  // documented that way), but the RPC below keys on slug — so a UUID matched nothing
+  // and the block rendered its empty state. Same defect as coffeeSpotlight had; both
+  // consumers (the API route and prefetch-article-blocks) resolve through here, so
+  // translating the id once fixes every caller.
+  let lookupSlug = slug;
+  if (UUID_RE.test(slug)) {
+    const { data: byId, error: byIdError } = await supabase
+      .from("roasters")
+      .select("slug")
+      .eq("id", slug)
+      .maybeSingle();
+    // Throw on a real failure so a transient error isn't cached as a 24h "not
+    // found" (same reasoning as the RPC call below); null only for a clean miss.
+    if (byIdError) throw byIdError;
+    if (!byId?.slug) return null;
+    lookupSlug = byId.slug;
+  }
+
   // Single round-trip: the get_roaster_detail RPC assembles the entire
   // RoasterDetail jsonb server-side (roaster + coffees[] from coffee_directory_mv
   // + live counts), replacing the ~4 PostgREST queries this previously fired.
   // See migration 20260625195049_create_detail_rpcs.sql.
   const { data, error } = await supabase.rpc("get_roaster_detail", {
-    p_slug: slug,
+    p_slug: lookupSlug,
     p_limit: limit,
   });
 

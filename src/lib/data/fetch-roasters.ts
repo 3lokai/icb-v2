@@ -65,6 +65,22 @@ function applyFilters(query: any, filters: RoasterFilters) {
     filteredQuery = filteredQuery.in("hq_state", filters.states);
   }
 
+  // sourcing_model / specialty_focus are text[] on roasters — overlap, so a roaster
+  // matches if it carries ANY of the requested values.
+  if (filters.sourcing_model && filters.sourcing_model.length > 0) {
+    filteredQuery = filteredQuery.overlaps(
+      "sourcing_model",
+      filters.sourcing_model
+    );
+  }
+
+  if (filters.specialty_focus && filters.specialty_focus.length > 0) {
+    filteredQuery = filteredQuery.overlaps(
+      "specialty_focus",
+      filters.specialty_focus
+    );
+  }
+
   if (filters.cities && filters.cities.length > 0) {
     filteredQuery = filteredQuery.in("hq_city", filters.cities);
   }

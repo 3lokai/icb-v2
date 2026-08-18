@@ -10,6 +10,8 @@ export interface CoffeeCollectionValue {
   isFeatured?: boolean;
   isSeasonal?: boolean;
   tags?: string[];
+  brewMethod?: string[];
+  estates?: string[];
   limit?: number;
 }
 
@@ -23,6 +25,8 @@ export interface RoasterCollectionValue {
   isVerified?: boolean;
   isFeatured?: boolean;
   tags?: string[];
+  sourcingModel?: string[];
+  specialtyFocus?: string[];
   limit?: number;
 }
 
@@ -54,6 +58,13 @@ export function buildCoffeeCollectionParams(
     if (value.isFeatured) params.set("isFeatured", "1");
     if (value.isSeasonal) params.set("isSeasonal", "1");
     if (value.tags?.length) params.set("tags", value.tags.join(","));
+    // Despite the name, the coffees API matches `brewMethodIds` against
+    // `brew_method_canonical_keys` (see fetch-coffees.ts), so these are keys like
+    // "moka_pot" / "cold_brew" — not UUIDs.
+    if (value.brewMethod?.length)
+      params.set("brewMethodIds", value.brewMethod.join(","));
+    // Estate keys are resolved to ids server-side (resolveEstateKeysToIds).
+    if (value.estates?.length) params.set("estates", value.estates.join(","));
   }
 
   return params;
@@ -81,6 +92,10 @@ export function buildRoasterCollectionParams(
     if (value.isFeatured) params.set("isFeatured", "1");
     if (value.isVerified) params.set("isVerified", "1");
     if (value.tags?.length) params.set("tags", value.tags.join(","));
+    if (value.sourcingModel?.length)
+      params.set("sourcingModel", value.sourcingModel.join(","));
+    if (value.specialtyFocus?.length)
+      params.set("specialtyFocus", value.specialtyFocus.join(","));
   }
 
   return params;
@@ -110,6 +125,10 @@ export function hasCollectionFilter(
       value.tags?.length ||
       value.states?.length ||
       value.cities?.length ||
+      value.brewMethod?.length ||
+      value.estates?.length ||
+      value.sourcingModel?.length ||
+      value.specialtyFocus?.length ||
       value.isSingleOrigin ||
       value.isFeatured ||
       value.isSeasonal ||

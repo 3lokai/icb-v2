@@ -107,6 +107,10 @@ export type RoasterFilters = {
   states?: string[];
   countries?: string[];
   active_only?: boolean;
+  /** roasters.sourcing_model values, e.g. "direct-trade", "estate-owned". */
+  sourcing_model?: string[];
+  /** roasters.specialty_focus values, e.g. "single-origin", "robusta". */
+  specialty_focus?: string[];
   roaster_slugs?: string[]; // Slugs from roasters table (human-readable URLs)
   roaster_ids?: string[]; // Internal use, resolved from slugs
 };

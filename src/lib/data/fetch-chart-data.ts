@@ -70,6 +70,9 @@ const VALID_DATA_KEYS = new Set([
   "process_distribution",
   "roast_distribution",
   "roaster_concentration",
+  "roaster_founding_cohorts",
+  "roaster_region_distribution",
+  "roaster_sourcing_model",
   "robusta_process_distribution",
   "robusta_top_flavor_notes",
   "single_origin_by_region",
@@ -99,6 +102,12 @@ export async function fetchChartData(
     return [];
   }
 
+  // `limit` reaches here from a query string via parseInt, so it can be NaN, 0 or
+  // negative. Every branch below does `.slice(0, safeLimit)`: NaN yields an
+  // EMPTY chart and a negative value silently trims from the end. Normalise once.
+  const safeLimit =
+    Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 10;
+
   const supabase = await createClient();
 
   // ── Single-origin charts: served by dedicated SQL aggregation RPCs ──
@@ -118,7 +127,7 @@ export async function fetchChartData(
   }
   if (dataKey === "single_origin_by_region") {
     const { data, error } = await supabase.rpc("get_single_origin_by_region", {
-      p_limit: limit || 10,
+      p_limit: safeLimit,
     });
     if (error) {
       console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
@@ -128,6 +137,72 @@ export async function fetchChartData(
       label: r.label,
       value: Number(r.value),
     }));
+  }
+
+  // ── Roaster-shaped charts: these aggregate the roasters table, not the coffee MV ──
+  // Added 2026-08-19: drafts had invented dataKeys (roaster_founding_cohorts,
+  // region_distribution) for facts that live on `roasters`, and rendered nothing.
+  if (
+    dataKey === "roaster_founding_cohorts" ||
+    dataKey === "roaster_region_distribution" ||
+    dataKey === "roaster_sourcing_model"
+  ) {
+    const column =
+      dataKey === "roaster_founding_cohorts"
+        ? "founded_year"
+        : dataKey === "roaster_sourcing_model"
+          ? "sourcing_model"
+          : "regions_tags";
+
+    const { data, error } = await supabase
+      .from("roasters")
+      .select(column)
+      .eq("is_active", true);
+
+    if (error) {
+      console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
+      throw new Error(`Failed to fetch chart data for ${dataKey}`);
+    }
+
+    const counts: Record<string, number> = {};
+    const bump = (label: string) => {
+      counts[label] = (counts[label] || 0) + 1;
+    };
+
+    for (const row of (data ?? []) as any[]) {
+      if (dataKey === "roaster_founding_cohorts") {
+        const y = row.founded_year as number | null;
+        // Guard junk years — the table holds a few 0/near-zero values, and a
+        // "0s" bucket beside "2010s" reads as a real cohort rather than bad data.
+        if (!y || y < 1800 || y > new Date().getFullYear()) continue;
+        bump(`${Math.floor(y / 10) * 10}s`);
+      } else if (dataKey === "roaster_sourcing_model") {
+        for (const v of (row.sourcing_model as string[] | null) ?? [])
+          bump(formatEnumLabel(v));
+      } else {
+        // regions_tags is jsonb — an array of tags, or an object keyed by region.
+        // Values are slugs ("kodagu-coorg"), so title-case them for the axis.
+        const titleCase = (v: string) =>
+          v
+            .split("-")
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join("-");
+        const tags = row.regions_tags;
+        if (Array.isArray(tags))
+          tags.forEach((t) => t && bump(titleCase(String(t))));
+        else if (tags && typeof tags === "object")
+          Object.keys(tags).forEach((k) => k && bump(titleCase(k)));
+      }
+    }
+
+    const items = Object.entries(counts).map(([label, value]) => ({
+      label,
+      value,
+    }));
+    // Cohorts read chronologically; the others rank by size.
+    return dataKey === "roaster_founding_cohorts"
+      ? items.sort((a, b) => a.label.localeCompare(b.label))
+      : items.sort((a, b) => b.value - a.value).slice(0, safeLimit);
   }
 
   // Optimization: only select columns we need for the specific dataKey
@@ -263,22 +338,22 @@ export async function fetchChartData(
       );
 
     case "top_roasters":
-      return aggregateSimpleDistribution(coffees, "roaster_name", limit);
+      return aggregateSimpleDistribution(coffees, "roaster_name", safeLimit);
 
     case "top_regions":
-      return aggregateArrayField(coffees, "canon_region_names", limit);
+      return aggregateArrayField(coffees, "canon_region_names", safeLimit);
 
     case "top_flavors":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
 
     case "estate_roaster_count":
-      return aggregateEstateRoasterCounts(coffees, limit);
+      return aggregateEstateRoasterCounts(coffees, safeLimit);
 
     case "estate_region_distribution":
       return aggregateEstateRegionDistribution(coffees);
 
     case "brew_method_distribution_light_roast":
-      return aggregateLightRoastBrewMethods(coffees, limit);
+      return aggregateLightRoastBrewMethods(coffees, safeLimit);
 
     case "brew_method_distribution":
       return aggregateArrayField(
@@ -288,12 +363,12 @@ export async function fetchChartData(
       ).map((item) => ({ ...item, label: formatEnumLabel(item.label) }));
 
     case "espresso_process_distribution":
-      return aggregateSimpleDistribution(coffees, "process", limit).map(
+      return aggregateSimpleDistribution(coffees, "process", safeLimit).map(
         (item) => ({ ...item, label: formatEnumLabel(item.label) })
       );
 
     case "top_flavors_washed_espresso":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
 
     case "roaster_concentration":
       return aggregateSimpleDistribution(coffees, "roaster_name", limit || 10);
@@ -302,10 +377,10 @@ export async function fetchChartData(
       return aggregatePriceDistribution(coffees);
 
     case "arabica_top_flavor_notes":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
 
     case "robusta_top_flavor_notes":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
 
     case "robusta_process_distribution":
       return aggregateSimpleDistribution(coffees, "process").map((item) => ({
@@ -314,7 +389,7 @@ export async function fetchChartData(
       }));
 
     case "flavor_by_roast":
-      return aggregateFlavorByRoast(coffees, limit);
+      return aggregateFlavorByRoast(coffees, safeLimit);
 
     default:
       return [];
@@ -355,7 +430,7 @@ function aggregateEstateRoasterCounts(
   return Object.entries(estateRoasters)
     .map(([label, roasters]) => ({ label, value: roasters.size }))
     .sort((a, b) => b.value - a.value)
-    .slice(0, limit);
+    .slice(0, limit || undefined);
 }
 
 /**
