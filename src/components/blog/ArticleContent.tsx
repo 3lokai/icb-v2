@@ -24,7 +24,7 @@ import { RoasterCollection } from "./blocks/RoasterCollection";
 import { RegionCollection } from "./blocks/RegionCollection";
 import { FAQBlock } from "./blocks/FAQBlock";
 import { SeriesNavigation } from "./blocks/SeriesNavigation";
-import { DataChartLazy as DataChart } from "./blocks/DataChartLazy";
+import { DataChartLazy as DataChart } from "@/components/blog/blocks/DataChartLazy";
 
 interface ArticleContentProps {
   body: any[];

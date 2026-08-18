@@ -54,14 +54,14 @@ export function RoasterLogo({
   if (variant === "compact") {
     return (
       <div className="relative w-10 h-10 shrink-0 overflow-hidden rounded">
-        {!hasError ? (
+        {!hasError && logoUrl ? (
           <Image
             alt={name || "Coffee roaster logo"}
             className="object-contain"
             fill
             itemProp="logo"
             sizes="40px"
-            src={logoUrl ?? ""}
+            src={logoUrl}
             onError={() => setHasError(true)}
             unoptimized
           />
@@ -135,14 +135,14 @@ export function RoasterLogo({
       {/* Logo Frame: Centered, larger size */}
       <div className="relative z-10 flex h-full w-full items-center justify-center p-8">
         <div className="relative flex h-20 w-full items-center justify-center max-w-[160px]">
-          {!hasError ? (
+          {!hasError && logoUrl ? (
             <Image
               alt={name || "Coffee roaster logo"}
               className="object-contain"
               fill
               itemProp="logo"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 160px"
-              src={logoUrl ?? ""}
+              src={logoUrl}
               onError={() => setHasError(true)}
               unoptimized
             />

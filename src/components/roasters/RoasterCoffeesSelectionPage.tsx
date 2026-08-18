@@ -45,6 +45,76 @@ type RoastGroup = {
   coffees: CoffeeSummary[];
 };
 
+function groupByRoast(
+  coffees: CoffeeSummary[] | null | undefined
+): RoastGroup[] {
+  const light: CoffeeSummary[] = [];
+  const medium: CoffeeSummary[] = [];
+  const dark: CoffeeSummary[] = [];
+  const other: CoffeeSummary[] = [];
+
+  (coffees ?? []).forEach((coffee) => {
+    const level = coffee.roast_level;
+    if (level === "light" || level === "light_medium") {
+      light.push(coffee);
+    } else if (level === "medium") {
+      medium.push(coffee);
+    } else if (level === "medium_dark" || level === "dark") {
+      dark.push(coffee);
+    } else {
+      other.push(coffee);
+    }
+  });
+
+  const result: RoastGroup[] = [];
+
+  if (light.length > 0) {
+    result.push({
+      id: "light",
+      label: "Light",
+      description:
+        "Bright, acidic, and complex profiles that highlight the bean's origin flavors.",
+      icon: SunIcon,
+      coffees: light,
+    });
+  }
+
+  if (medium.length > 0) {
+    result.push({
+      id: "medium",
+      label: "Medium",
+      description:
+        "Balanced body and acidity, bringing out sweetness and caramelization.",
+      icon: CloudSunIcon,
+      coffees: medium,
+    });
+  }
+
+  if (dark.length > 0) {
+    result.push({
+      id: "dark",
+      label: "Dark",
+      description:
+        "Bold, rich, and intense flavors with low acidity and deep chocolate notes.",
+      icon: MoonIcon,
+      coffees: dark,
+    });
+  }
+
+  if (other.length > 0) {
+    result.push({
+      id: "other",
+      label: "Unique",
+      description:
+        "Special releases, blends, and unique roasts outside the standard spectrum.",
+      icon: SparkleIcon,
+      coffees: other,
+    });
+  }
+
+  return result;
+}
+
 export function RoasterCoffeesSelectionPage({
   roaster,
   className,
@@ -52,74 +122,7 @@ export function RoasterCoffeesSelectionPage({
   const logoUrl = roasterLogoUrl(roaster?.slug);
   const plateClass = roasterPlateClass(roaster?.logo_is_light);
 
-  // Grouping logic
-  const groups = ((): RoastGroup[] => {
-    const light: CoffeeSummary[] = [];
-    const medium: CoffeeSummary[] = [];
-    const dark: CoffeeSummary[] = [];
-    const other: CoffeeSummary[] = [];
-
-    (roaster.coffees ?? []).forEach((coffee) => {
-      const level = coffee.roast_level;
-      if (level === "light" || level === "light_medium") {
-        light.push(coffee);
-      } else if (level === "medium") {
-        medium.push(coffee);
-      } else if (level === "medium_dark" || level === "dark") {
-        dark.push(coffee);
-      } else {
-        other.push(coffee);
-      }
-    });
-
-    const result: RoastGroup[] = [];
-
-    if (light.length > 0) {
-      result.push({
-        id: "light",
-        label: "Light",
-        description:
-          "Bright, acidic, and complex profiles that highlight the bean's origin flavors.",
-        icon: SunIcon,
-        coffees: light,
-      });
-    }
-
-    if (medium.length > 0) {
-      result.push({
-        id: "medium",
-        label: "Medium",
-        description:
-          "Balanced body and acidity, bringing out sweetness and caramelization.",
-        icon: CloudSunIcon,
-        coffees: medium,
-      });
-    }
-
-    if (dark.length > 0) {
-      result.push({
-        id: "dark",
-        label: "Dark",
-        description:
-          "Bold, rich, and intense flavors with low acidity and deep chocolate notes.",
-        icon: MoonIcon,
-        coffees: dark,
-      });
-    }
-
-    if (other.length > 0) {
-      result.push({
-        id: "other",
-        label: "Unique",
-        description:
-          "Special releases, blends, and unique roasts outside the standard spectrum.",
-        icon: SparkleIcon,
-        coffees: other,
-      });
-    }
-
-    return result;
-  })();
+  const groups = groupByRoast(roaster.coffees);
 
   return (
     <div className={cn("w-full bg-background min-h-screen", className)}>

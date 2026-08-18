@@ -40,7 +40,7 @@ const supabase = createClient(url, key);
 
 /** Mean luminance over non-transparent pixels, or null if nothing to sample. */
 async function sampleIsLight(logoUrl: string): Promise<boolean | null> {
-  const res = await fetch(logoUrl);
+  const res = await fetch(logoUrl, { signal: AbortSignal.timeout(15_000) });
   if (!res.ok) {
     return null;
   }
@@ -90,6 +90,7 @@ async function main() {
     dark: 0,
     failed: [],
   };
+  const warnings: string[] = [];
 
   // Plain sliding window — 96 rows does not warrant a queue library.
   for (let i = 0; i < roasters.length; i += CONCURRENCY) {
@@ -104,7 +105,7 @@ async function main() {
           isLight = await sampleIsLight(logoUrl);
         } catch (e) {
           isLight = null;
-          console.warn(`  ! ${r.slug}: ${(e as Error).message}`);
+          warnings.push(`  ! ${r.slug}: ${(e as Error).message}`);
         }
 
         if (isLight === null) {
@@ -123,7 +124,7 @@ async function main() {
             .update({ logo_is_light: isLight })
             .eq("id", r.id);
           if (upErr) {
-            console.warn(`  ! ${r.slug}: update failed — ${upErr.message}`);
+            warnings.push(`  ! ${r.slug}: update failed — ${upErr.message}`);
           }
         }
       })
@@ -131,6 +132,10 @@ async function main() {
     process.stdout.write(
       `  ${Math.min(i + CONCURRENCY, roasters.length)}/${roasters.length}\r`
     );
+  }
+
+  for (const warning of warnings) {
+    console.warn(warning);
   }
 
   console.log(`\n\nlight logos (dark plate): ${results.light}`);

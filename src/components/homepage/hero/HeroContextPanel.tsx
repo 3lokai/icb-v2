@@ -25,7 +25,7 @@ import { Stack } from "@/components/primitives/stack";
 import { cn } from "@/lib/utils";
 import type { PublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 import type { HeroSegmentPayload } from "@/types/hero-segment";
-import { HeroSearch } from "./HeroSearch";
+import { HeroSearch } from "@/components/homepage/hero/HeroSearch";
 
 function coffeeHref(
   c: { coffeeSlug: string; roasterSlug: string },

@@ -16,7 +16,7 @@ import dynamic from "next/dynamic";
 // Server Component — keeping it here is what lets ArticleContent render on the
 // server. The boundary is the only reason this file exists.
 export const DataChartLazy = dynamic(
-  () => import("./DataChart").then((m) => m.DataChart),
+  () => import("@/components/blog/blocks/DataChart").then((m) => m.DataChart),
   {
     ssr: false,
     loading: () => (
