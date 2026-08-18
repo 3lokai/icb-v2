@@ -123,7 +123,16 @@ async function resolveEstateKeysToIds(
     .from("estates")
     .select("id")
     .in("estate_key", keys);
-  return (data || []).map((e: any) => e.id);
+  const ids = (data || []).map((e: any) => e.id);
+  // A key that resolves to nothing drops the filter entirely, so the caller
+  // silently gets the WHOLE catalogue instead of one estate. Say so — estate_key
+  // uses underscores ("ratnagiri_estate"), which is easy to get wrong from a slug.
+  if (ids.length === 0) {
+    console.warn(
+      `[fetchCoffees] No estate matched estate_key(s) ${keys.join(", ")} — estate filter NOT applied, results are unfiltered.`
+    );
+  }
+  return ids;
 }
 
 /**
