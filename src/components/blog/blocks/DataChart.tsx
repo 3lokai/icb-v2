@@ -28,6 +28,8 @@ interface DataChartProps {
     dataKey: string;
     limit?: number;
     region?: string;
+    brewMethod?: string;
+    process?: string;
   };
 }
 
@@ -130,7 +132,9 @@ export function DataChart({ value }: DataChartProps) {
     queryKey: queryKeys.blog.dataChart(
       value.dataKey,
       value.limit,
-      value.region
+      value.region,
+      value.brewMethod,
+      value.process
     ),
     queryFn: async () => {
       let url = `/api/blog/chart-data?dataKey=${value.dataKey}&limit=${
@@ -138,6 +142,12 @@ export function DataChart({ value }: DataChartProps) {
       }`;
       if (value.region) {
         url += `&region=${encodeURIComponent(value.region)}`;
+      }
+      if (value.brewMethod) {
+        url += `&brewMethod=${encodeURIComponent(value.brewMethod)}`;
+      }
+      if (value.process) {
+        url += `&process=${encodeURIComponent(value.process)}`;
       }
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch chart data");

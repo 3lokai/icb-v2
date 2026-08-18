@@ -85,3 +85,36 @@ export function buildRoasterCollectionParams(
 
   return params;
 }
+
+/**
+ * True when a collection block carries at least one real filter.
+ *
+ * A `dynamic` collection with no filter is not "the whole catalogue" — the API
+ * returns the first N rows in whatever order it likes, so the block renders items
+ * unrelated to the article (a direct-trade piece listed the first six roasters
+ * alphabetically). Callers render nothing in that case rather than showing noise.
+ * `manual` collections pin explicit ids and are always considered filtered.
+ */
+export function hasCollectionFilter(
+  value: CoffeeCollectionValue & RoasterCollectionValue
+): boolean {
+  if (value.type === "manual") {
+    return Boolean(value.coffeeIds?.length || value.roasterIds?.length);
+  }
+  return Boolean(
+    value.roastLevel?.length ||
+      value.beanType?.length ||
+      value.processingMethod?.length ||
+      value.regions?.length ||
+      value.roasters?.length ||
+      value.tags?.length ||
+      value.states?.length ||
+      value.cities?.length ||
+      value.isSingleOrigin ||
+      value.isFeatured ||
+      value.isSeasonal ||
+      value.isVerified ||
+      value.hasSubscription ||
+      value.hasPhysicalStore
+  );
+}

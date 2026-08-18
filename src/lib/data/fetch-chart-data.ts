@@ -87,7 +87,9 @@ const VALID_DATA_KEYS = new Set([
 export async function fetchChartData(
   dataKey: string,
   limit: number = 10,
-  region?: string
+  region?: string,
+  brewMethod?: string,
+  process?: string
 ): Promise<ChartDataItem[]> {
   if (!VALID_DATA_KEYS.has(dataKey)) {
     console.error(
@@ -188,6 +190,15 @@ export async function fetchChartData(
     let q = supabase.from("coffee_directory_mv").select(selectFields);
 
     if (regionNames) q = q.overlaps("canon_region_names", regionNames);
+
+    // Generic subset scoping. Previously only `region` could narrow a chart, so
+    // brew-method / process subsets were either faked with a bespoke dataKey
+    // (espresso_process_distribution, top_flavors_washed_espresso) or — far more
+    // often — not applied at all, leaving a sitewide chart under a subset title.
+    if (brewMethod) {
+      q = q.contains("brew_method_canonical_keys", [brewMethod]);
+    }
+    if (process) q = q.eq("process", process);
 
     // Species-filtered charts — filter at DB level
     if (dataKey === "arabica_top_flavor_notes") {
