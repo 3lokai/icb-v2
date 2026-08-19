@@ -9,7 +9,7 @@ export const processPages: LandingPageConfig[] = [
     h1: "Best Natural Process in India",
     entityLabel: "Natural Process",
     intro:
-      "Explore Indian specialty coffees processed naturally — dried whole in the cherry for bold fruit, wine-like complexity, and heavy body. The oldest processing method, and still the most expressive.",
+      "Indian naturals dry whole in the cherry — bold fruit, wine-like complexity, heavy body. Chikmagalur, Baba Budangiri, and the Shevaroy Hills lead the category, with Ratnagiri and Orchardale among the estates doing it best.",
     headerNudge:
       "Expect pronounced fruit and fermentation-forward profiles when dialed in.",
     teaserTitle: "Natural process picks",
@@ -59,7 +59,7 @@ export const processPages: LandingPageConfig[] = [
       },
       // Where India fits in this process globally
       indiaContext:
-        "Natural processing has a long history in India — it was the dominant method before wet processing infrastructure arrived. Today it's experiencing a revival in specialty. Karnataka estates are the primary source of quality Indian naturals, with a growing number of small-lot producers experimenting with raised-bed drying to improve consistency. The humid coastal climate makes drying challenging — producers who invest in covered or raised beds produce noticeably better naturals.",
+        "Natural processing has a long history in India — it was the dominant method before wet processing infrastructure arrived. Today it's experiencing a revival in specialty. Chikmagalur, Baba Budangiri, and the Shevaroy Hills are the primary source of quality Indian naturals — Ratnagiri, Orchardale, and Baarbara among the estates doing it consistently — with a growing number of small-lot producers experimenting with raised-bed drying. The humid coastal climate makes drying challenging — producers who invest in covered or raised beds produce noticeably better naturals.",
       // Brew guidance specific to this process
       brewGuidance: {
         recommended: ["v60", "aeropress", "french-press", "cold-brew"],
@@ -74,14 +74,14 @@ export const processPages: LandingPageConfig[] = [
           "Natural is the most flavour-intense process — if natural feels too heavy or fermented, try honey process next. Washed is the cleanest and most restrained.",
       },
       icbDataNote:
-        "Natural process is the highest rated process category in the ICB catalogue — community ratings average 4.64, the highest of any process. It has 116 coffees across the catalogue, making it the third largest process segment. Karnataka estate naturals dominate the top-rated lots.",
+        "Natural is one of the larger process categories in the ICB catalogue and consistently one of the better-rated. Estate naturals from Ratnagiri, Orchardale, and Baarbara — Chikmagalur, Baba Budangiri, and the Shevaroy Hills — dominate the top-scoring lots.",
     },
 
     filter: {
       processes: ["natural" as ProcessEnum],
     },
     sortOrder: "rating_desc",
-    blogArticleHref: "/learn/indian-coffee-processing-methods",
+    blogArticleHref: "/learn/processing-methods-flavor-indian-coffee",
     faqs: [
       {
         question: "What is natural process coffee?",
@@ -109,9 +109,23 @@ export const processPages: LandingPageConfig[] = [
       title: "Indian coffee processing guide",
       description:
         "How natural, washed, honey, and anaerobic processing affects flavour in Indian specialty coffees.",
-      href: "/learn/indian-coffee-processing-methods",
+      href: "/learn/processing-methods-flavor-indian-coffee",
       ctaText: "Read the guide",
     },
+    learnLinks: [
+      {
+        label: "Washed vs natural vs honey: what processing does to flavour",
+        href: "/learn/washed-natural-honey-processing-flavor",
+      },
+      {
+        label: "How fermentation shapes coffee flavour",
+        href: "/learn/coffee-fermentation-flavor-india",
+      },
+      {
+        label: "Pour over for Indian naturals: parameters and drippers",
+        href: "/learn/pour-over-for-indian-naturals",
+      },
+    ],
     related: ["honey", "washed", "light-roast", "chikmagalur"],
   },
 
@@ -121,7 +135,7 @@ export const processPages: LandingPageConfig[] = [
     h1: "Best Washed Process in India",
     entityLabel: "Washed Process",
     intro:
-      "Find washed Indian specialty coffees — clean cups, vibrant acidity, and remarkable clarity that lets origin character and varietal shine without interference from fermentation.",
+      "Washed Indian coffees are the clean ones — vibrant acidity, and the clarity that lets SLN 795 from Chikmagalur and Baba Budangiri show jasmine, peach, and bergamot with no fermentation in the way.",
     headerNudge:
       "Great when you want crisp definition and less ferment than naturals.",
     teaserTitle: "Washed process picks",
@@ -162,12 +176,12 @@ export const processPages: LandingPageConfig[] = [
           "Tea-like clarity",
         ],
         indianContext:
-          "Washed Indian coffees are where varietal and terroir express most clearly. SL-795 washed lots from Chikmagalur estates show jasmine, peach, and clean bergamot — profiles that are only visible because fermentation isn't masking them. Washed Coorg arabica tends toward citrus and brown sugar. Araku Valley washed coffees are lighter and more delicate. This is the process that made Indian specialty coffee credible internationally — washed Karnataka lots are what producers show at international competitions.",
+          "Washed Indian coffees are where varietal and terroir express most clearly. SLN 795 washed lots from Chikmagalur estates — Balanoor, Kerehaklu, Ratnagiri — show jasmine, peach, and clean bergamot — profiles that are only visible because fermentation isn't masking them. Washed Coorg arabica tends toward citrus and brown sugar. Araku Valley washed coffees are lighter and more delicate. This is the process that made Indian specialty coffee credible internationally — washed Karnataka lots are what producers show at international competitions.",
         comparedTo:
           "Washed vs natural: more clarity, higher perceived acidity, lighter body, less sweetness. Washed vs honey: cleaner and brighter than honey, less body and sweetness.",
       },
       indiaContext:
-        "Washed processing requires clean water and infrastructure — it's more capital-intensive than natural processing. Large Karnataka estates have had wet mills for decades; smaller producers are increasingly building wet-processing capacity as specialty demand grows. India's washed coffees are most concentrated in Chikmagalur, Coorg, and Araku Valley — these regions consistently produce the most competition-grade lots.",
+        "Washed processing requires clean water and infrastructure — it's more capital-intensive than natural processing. Large Karnataka estates have had wet mills for decades; smaller producers are increasingly building wet-processing capacity as specialty demand grows. India's washed coffees are most concentrated in Chikmagalur, with Coorg, Baba Budangiri, and Koraput behind it — these regions consistently produce the most competition-grade lots.",
       brewGuidance: {
         recommended: ["v60", "chemex", "aeropress", "kalita", "espresso"],
         notes:
@@ -180,14 +194,14 @@ export const processPages: LandingPageConfig[] = [
           "Washed is the cleanest and most restrained process — if you want more sweetness and body, try honey next. For maximum fruit intensity, try natural.",
       },
       icbDataNote:
-        "Washed has the highest rating volume of any process — 56 community ratings — making it the most compared process in the catalogue. Average rating is 3.78, lower than natural and anaerobic, which reflects the broader range of quality across 216 coffees from budget blends to competition-grade estate lots.",
+        "Washed is the largest process category in the ICB catalogue and carries more community ratings than any other, which makes it the most compared. Its average sits below natural and anaerobic — a fair reflection of a category running from budget blends to competition-grade estate lots from Balanoor, Baarbara, Ratnagiri, and Kerehaklu.",
     },
 
     filter: {
       processes: ["washed" as ProcessEnum],
     },
     sortOrder: "rating_desc",
-    blogArticleHref: "/learn/indian-coffee-processing-methods",
+    blogArticleHref: "/learn/processing-methods-flavor-indian-coffee",
     faqs: [
       {
         question: "What is washed coffee?",
@@ -202,7 +216,7 @@ export const processPages: LandingPageConfig[] = [
       {
         question: "Why do Indian washed coffees win competitions?",
         answer:
-          "Washed processing lets varietal character — particularly SL-795 from high-altitude Chikmagalur estates — express clearly. When the processing is clean, the terroir speaks. Indian estates at 1,200m+ with SL-795 and proper washed processing produce genuinely world-class coffees.",
+          "Washed processing lets varietal character — particularly SLN 795 from high-altitude Chikmagalur estates — express clearly. When the processing is clean, the terroir speaks. Indian estates at 1,200m+ with SLN 795 and proper washed processing produce genuinely world-class coffees.",
       },
       {
         question: "Best brewing for washed coffees?",
@@ -215,9 +229,23 @@ export const processPages: LandingPageConfig[] = [
       title: "Indian coffee processing guide",
       description:
         "How natural, washed, honey, and anaerobic processing affects flavour in Indian specialty coffees.",
-      href: "/learn/indian-coffee-processing-methods",
+      href: "/learn/processing-methods-flavor-indian-coffee",
       ctaText: "Read the guide",
     },
+    learnLinks: [
+      {
+        label: "Washed vs natural vs honey: what processing does to flavour",
+        href: "/learn/washed-natural-honey-processing-flavor",
+      },
+      {
+        label: "How processing methods shape Indian coffee flavour",
+        href: "/learn/processing-methods-flavor-indian-coffee",
+      },
+      {
+        label: "AeroPress variables for washed vs natural Indian coffees",
+        href: "/learn/aeropress-variables-indian-washed-natural",
+      },
+    ],
     related: ["natural", "honey", "v60", "chikmagalur"],
   },
 
@@ -227,7 +255,7 @@ export const processPages: LandingPageConfig[] = [
     h1: "Best Honey Process in India",
     entityLabel: "Honey Process",
     intro:
-      "Discover honey and pulped-natural style Indian coffees — sweetness, body, and balance between washed clarity and natural fruit intensity. The most versatile process for everyday drinkers.",
+      "Honey and pulped-natural Indian coffees sit between washed clarity and natural fruit — sweet, round, forgiving. Salawara, Baarbara, and Tat Tvam Asi lead it, across Chikmagalur, Coorg, and Sakleshpur.",
     headerNudge:
       "Mucilage left on the bean during drying adds sweetness and mouthfeel.",
     teaserTitle: "Honey process picks",
@@ -274,7 +302,7 @@ export const processPages: LandingPageConfig[] = [
           "Honey vs washed: more body, more sweetness, less acidity and clarity. Honey vs natural: less fruit intensity and fermentation character, more control and consistency. Honey is the bridge — most approachable of the three for new specialty drinkers.",
       },
       indiaContext:
-        "Honey processing has grown significantly in Indian specialty over the last 5 years — producers discovered it as a way to add sweetness and complexity to lots that weren't quite exciting enough for specialty on washed processing. It's now common across Karnataka estates. The classification system (black/red/yellow/white honey) isn't always labelled clearly by Indian roasters — the terms 'pulped natural' and 'honey' are often used interchangeably.",
+        "Honey processing has grown significantly in Indian specialty over the last 5 years — producers discovered it as a way to add sweetness and complexity to lots that weren't quite exciting enough for specialty on washed processing. It's now common across Chikmagalur, Coorg, and Sakleshpur — Salawara, Baarbara, and Tat Tvam Asi among the estates producing it regularly. The classification system (black/red/yellow/white honey) isn't always labelled clearly by Indian roasters — the terms 'pulped natural' and 'honey' are often used interchangeably.",
       brewGuidance: {
         recommended: [
           "v60",
@@ -300,7 +328,7 @@ export const processPages: LandingPageConfig[] = [
       processes: ["honey" as ProcessEnum],
     },
     sortOrder: "rating_desc",
-    blogArticleHref: "/learn/indian-coffee-processing-methods",
+    blogArticleHref: "/learn/processing-methods-flavor-indian-coffee",
     faqs: [
       {
         question: "What is honey process — does it contain honey?",
@@ -328,9 +356,23 @@ export const processPages: LandingPageConfig[] = [
       title: "Indian coffee processing guide",
       description:
         "How natural, washed, honey, and anaerobic processing affects flavour in Indian specialty coffees.",
-      href: "/learn/indian-coffee-processing-methods",
+      href: "/learn/processing-methods-flavor-indian-coffee",
       ctaText: "Read the guide",
     },
+    learnLinks: [
+      {
+        label: "Honey process in India: what the colour labels mean",
+        href: "/learn/honey-process-coffee-india",
+      },
+      {
+        label: "Washed vs natural vs honey: what processing does to flavour",
+        href: "/learn/washed-natural-honey-processing-flavor",
+      },
+      {
+        label: "How processing methods shape Indian coffee flavour",
+        href: "/learn/processing-methods-flavor-indian-coffee",
+      },
+    ],
     related: ["natural", "washed", "medium-roast", "coorg"],
   },
 
@@ -340,7 +382,7 @@ export const processPages: LandingPageConfig[] = [
     h1: "Best Anaerobic Process in India",
     entityLabel: "Anaerobic Process",
     intro:
-      "Browse anaerobic and experimental ferment Indian specialty coffees — intense aromatics, complex fruit, and distinctive cup profiles unlike anything traditional processing produces.",
+      "Anaerobic and experimental ferments from Ratnagiri, Melkodige, and Salawara — intense aromatics and complex fruit from India's most progressive estates in Chikmagalur, Coorg, and Sakleshpur.",
     headerNudge:
       "Fermentation in controlled low-oxygen environments amplifies fruit, spice, and fermentation character.",
     teaserTitle: "Anaerobic picks",
@@ -381,12 +423,12 @@ export const processPages: LandingPageConfig[] = [
           "Syrupy body",
         ],
         indianContext:
-          "Indian anaerobic coffees are still emerging — most are produced by progressive Karnataka estates experimenting with fermentation. The best Indian anaerobics show tropical fruit (mango, pineapple, passionfruit), complex spice notes, and a distinctive funkiness that polarises opinion. They tend toward wine-like profiles rather than the cleaner citrus anaerobics you get from other origins. Some Indian producers are combining anaerobic fermentation with natural drying (anaerobic natural) for maximum intensity — these are among the most experimental and highest-priced lots in the ICB catalogue.",
+          "Indian anaerobic coffees are still emerging — most are produced by progressive estates in Chikmagalur, Coorg, and Sakleshpur — Ratnagiri, Melkodige, Salawara, and Kalyancool among them — experimenting with fermentation. The best Indian anaerobics show tropical fruit (mango, pineapple, passionfruit), complex spice notes, and a distinctive funkiness that polarises opinion. They tend toward wine-like profiles rather than the cleaner citrus anaerobics you get from other origins. Some Indian producers are combining anaerobic fermentation with natural drying (anaerobic natural) for maximum intensity — these are among the most experimental and highest-priced lots in the ICB catalogue.",
         comparedTo:
           "Anaerobic vs natural: more controlled fermentation — the flavour is intense but usually cleaner and more intentional than an over-fermented natural. Anaerobic vs washed: far more fermentation character, heavier body, lower clarity. Not a comparison — these are fundamentally different cups.",
       },
       indiaContext:
-        "Anaerobic processing arrived in India relatively recently — most Indian anaerobic lots have appeared in the last 3–5 years. A small number of progressive Karnataka estates are leading: they're investing in stainless steel fermentation tanks and working with fermentation consultants to develop consistent profiles. Demand is primarily from urban specialty buyers and competition circuits — these aren't everyday coffees. Expect to pay a premium: anaerobic lots from India are priced at the top of the market.",
+        "Anaerobic processing arrived in India relatively recently — most Indian anaerobic lots have appeared in the last 3–5 years. A small number of progressive estates are leading — Ratnagiri and Melkodige in Chikmagalur, Salawara and Kalyancool around Sakleshpur and Coorg: they're investing in stainless steel fermentation tanks and working with fermentation consultants to develop consistent profiles. Demand is primarily from urban specialty buyers and competition circuits — these aren't everyday coffees. Expect to pay a premium: anaerobic lots from India are priced at the top of the market.",
       brewGuidance: {
         recommended: ["v60", "aeropress", "cold-brew"],
         notes:
@@ -399,14 +441,14 @@ export const processPages: LandingPageConfig[] = [
           "Anaerobic is the most experimental and intense process category. If it feels too much, try natural next — similar fruit intensity but more familiar fermentation character.",
       },
       icbDataNote:
-        "Anaerobic is the fourth largest process category in the ICB catalogue with 85 coffees across multiple roasters — larger than honey and monsooned. Community ratings average 4.44, second only to natural process. Ratings are polarised between enthusiasts who score high and drinkers who find the fermentation character off-putting.",
+        "Anaerobic is one of the larger process categories in the ICB catalogue — bigger than honey or monsooned — and one of the highest-rated. Ratnagiri, Melkodige, Salawara, and Kalyancool account for much of it. Ratings are polarised between enthusiasts who score high and drinkers who find the fermentation character off-putting.",
     },
 
     filter: {
       processes: ["anaerobic" as ProcessEnum],
     },
     sortOrder: "rating_desc",
-    blogArticleHref: "/learn/indian-coffee-processing-methods",
+    blogArticleHref: "/learn/processing-methods-flavor-indian-coffee",
     faqs: [
       {
         question: "What does anaerobic mean?",
@@ -434,9 +476,23 @@ export const processPages: LandingPageConfig[] = [
       title: "Indian coffee processing guide",
       description:
         "How natural, washed, honey, and anaerobic processing affects flavour in Indian specialty coffees.",
-      href: "/learn/indian-coffee-processing-methods",
+      href: "/learn/processing-methods-flavor-indian-coffee",
       ctaText: "Read the guide",
     },
+    learnLinks: [
+      {
+        label: "Anaerobic and experimental processing in Indian coffee",
+        href: "/learn/anaerobic-experimental-processing-india",
+      },
+      {
+        label: "Carbonic maceration, explained",
+        href: "/learn/carbonic-maceration-coffee-explained",
+      },
+      {
+        label: "How fermentation shapes coffee flavour",
+        href: "/learn/coffee-fermentation-flavor-india",
+      },
+    ],
     related: ["natural", "mid-range", "light-roast"],
   },
 
@@ -446,7 +502,7 @@ export const processPages: LandingPageConfig[] = [
     h1: "Best Monsooned Malabar in India",
     entityLabel: "Monsooned Malabar",
     intro:
-      "Explore monsooned coffees from India's Malabar coast — low acidity, mellow spice, and a distinctive heritage profile that exists nowhere else in the world of specialty coffee.",
+      "Monsooned coffees from India's Malabar coast — low acidity, mellow spice, and a heritage profile that exists nowhere else in specialty. Niche, but a steady handful of roasters carry it year-round.",
     headerNudge:
       "Monsooning swells beans and mellows acidity — profiles are earthy, smooth, and unlike anything else.",
     teaserTitle: "Monsooned Malabar picks",
@@ -550,6 +606,20 @@ export const processPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "What monsooning actually does to the bean",
+        href: "/learn/what-is-monsooned-malabar-coffee",
+      },
+      {
+        label: "How India's coffee processing mix is changing",
+        href: "/learn/how-coffee-process-mix-changing-india",
+      },
+      {
+        label: "Coffee GI tags in India: what they certify",
+        href: "/learn/coffee-gi-tags-india",
+      },
+    ],
     related: ["dark-roast", "french-press", "coorg", "filter-coffee"],
   },
 ];

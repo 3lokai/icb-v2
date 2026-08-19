@@ -9,7 +9,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Light Roast Coffee in India",
     entityLabel: "Light Roast",
     intro:
-      "Light roast is where a coffee tells you most about where it grew. Stopped not long after first crack, it keeps the bright acidity, florals, and delicate origin notes that darker roasting burns away — the least developed roast, and the most expressive of its terroir.",
+      "Light roast is where a coffee tells you most about where it grew — SLN 9 and Chandragiri out of Chikmagalur and Baba Budangiri keep their florals and stone fruit here. Stopped not long after first crack, it is the least developed roast and the most expressive of its terroir.",
     headerNudge:
       "Best for those who love bright, tea-like coffees with complex origin notes.",
     teaserTitle: "The *light* end of the spectrum",
@@ -53,7 +53,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
           "Tea-like body",
         ],
         indianContext:
-          "Indian light roasts from Chikmagalur and Coorg tend toward stone fruit and jasmine. Araku Valley lights often show more citrus and bergamot. Natural-processed light roasts from Karnataka estates can push into blueberry and tropical fruit territory.",
+          "Indian light roasts from Chikmagalur and Coorg tend toward stone fruit and jasmine. Araku Valley lights often show more citrus and bergamot. Natural-processed light roasts from Baarbara, Ratnagiri, and Balanoor can push into blueberry and tropical fruit territory.",
       },
       // Brew parameters
       brewParams: {
@@ -67,9 +67,11 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       // Who it's for
       whoIsItFor:
         "If you're switching from dark roast or instant coffee, light roast will taste unfamiliar at first — less bitter, more acidic, almost fruity. Give it 2–3 brews before judging. If you love tea, wine, or fresh fruit juice, this is likely your roast level.",
-      // ICB data callout — populate dynamically if possible, or update quarterly
+      // ICB data callout — directional only. Never hardcode counts or rating
+      // averages here; they go stale and the live in-stock count already renders
+      // under the intro (DiscoveryLandingLayout).
       icbDataNote:
-        "Light roast has 192 coffees in the ICB catalogue with a community average rating of 4.08 across 26 ratings. Natural light roasts are less common than washed but tend to score higher — consistent with the natural process category's overall average of 4.64 being the highest in the catalogue.",
+        "Light roast is a solid mid-sized slice of the ICB catalogue and rates well. SLN 9, SLN 795, and Chandragiri carry most of it, out of Baarbara, Ratnagiri, Balanoor, and Kerehaklu. Natural light roasts are less common than washed but tend to score higher.",
     },
 
     filter: {
@@ -116,6 +118,20 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn More",
     },
+    learnLinks: [
+      {
+        label: "How Indian roasters actually define roast levels",
+        href: "/learn/understanding-roast-levels-indian-context",
+      },
+      {
+        label: "Brewing light roast Indian coffee: what changes",
+        href: "/learn/brewing-light-roast-indian-coffee",
+      },
+      {
+        label: "Why your grinder matters most with light roasts",
+        href: "/learn/grinder-choice-indian-light-roast-extraction",
+      },
+    ],
     related: ["aeropress", "v60", "natural", "light-medium-roast"],
   },
 
@@ -125,7 +141,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Light-Medium Roast Coffee in India",
     entityLabel: "Light-Medium Roast",
     intro:
-      "Light-medium roast splits the difference: enough development for an approachable sweetness, not so much that origin clarity disappears. For most pour-over drinkers it's the everyday sweet spot — bright enough to stay interesting, round enough to stay easy.",
+      "Light-medium splits the difference: enough development for approachable sweetness, not so much that origin clarity disappears. Ratnagiri and Harley lots from Chikmagalur, Baba Budangiri, and Sakleshpur define the level — bright enough to stay interesting, round enough to stay easy.",
     headerNudge:
       "Great bridge roast if light feels too bright and medium feels too heavy.",
     teaserTitle: "The everyday *sweet spot*",
@@ -186,7 +202,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       whoIsItFor:
         "This is the entry roast for specialty coffee. If you're moving away from dark roast or commercial blends, light-medium gives you sweetness and body you're used to, with more flavour clarity than you've had before. Also the everyday roast for experienced drinkers who want consistency.",
       icbDataNote:
-        "Light-medium is the most represented roast level in the ICB catalogue. It accounts for a significant share of coffees from established Indian roasters — most flagship single-origins from Blue Tokai, Third Wave, and Corridor Seven sit in this range.",
+        "Light-medium is one of the most represented roast levels in the ICB catalogue. Classic Coffees, Fraction 9 Coffee, Baarbara Coffee, and Coffeeverse carry the most of it, largely from Chikmagalur, Baba Budangiri, Sakleshpur, and Manjarabad.",
     },
 
     filter: {
@@ -229,6 +245,20 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn More",
     },
+    learnLinks: [
+      {
+        label: "How Indian roasters actually define roast levels",
+        href: "/learn/understanding-roast-levels-indian-context",
+      },
+      {
+        label: "Brewing light roast Indian coffee: what changes",
+        href: "/learn/brewing-light-roast-indian-coffee",
+      },
+      {
+        label: "Pour over behaviour with Indian light roasts",
+        href: "/learn/pour-over-behavior-indian-light-roasts",
+      },
+    ],
     related: ["light-roast", "medium-roast", "v60", "washed"],
   },
 
@@ -238,7 +268,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Medium Roast Coffee in India",
     entityLabel: "Medium Roast",
     intro:
-      "Medium roast is the great all-rounder. Roast development and origin character meet in the middle — chocolate and caramel sweetness with a little brightness still showing — and it holds up across espresso, pour-over, and French Press alike. The safe first pick that's rarely the wrong one.",
+      "Medium roast is the great all-rounder — chocolate and caramel sweetness with a little brightness still showing. SLN 795 and SLN 9 from Chikmagalur and Coorg dominate the level, and it holds up across espresso, pour-over, and French Press alike. The safe first pick that is rarely the wrong one.",
     headerNudge:
       "The most versatile roast — works beautifully with any brewing method.",
     teaserTitle: "The reliable *all-rounder*",
@@ -301,7 +331,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       whoIsItFor:
         "The default roast for most coffee drinkers. If you enjoy coffee with milk, this is your level — it holds up to milk without disappearing. If you drink black coffee and want something familiar but better than commercial brands, medium roast Indian specialty is the place to start.",
       icbDataNote:
-        "Medium roast is the highest rated roast level in the ICB catalogue — community average of 4.49 across 53 ratings, more ratings than any other roast level. It also has the largest catalogue count at 245 coffees. If you want the most community comparison data before buying, medium roast is where to start.",
+        "Medium roast is the largest roast level in the ICB catalogue and the highest rated, and it carries more community ratings than any other. SLN 795 and SLN 9 from Chikmagalur and Coorg dominate it. If you want the most community comparison data before buying, medium roast is where to start.",
     },
 
     filter: {
@@ -343,6 +373,20 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn More",
     },
+    learnLinks: [
+      {
+        label: "How Indian roasters actually define roast levels",
+        href: "/learn/understanding-roast-levels-indian-context",
+      },
+      {
+        label: "Why the same estate tastes different from two roasters",
+        href: "/learn/roaster-effect-same-estate-different-taste",
+      },
+      {
+        label: "Reading coffee flavour notes without overthinking it",
+        href: "/learn/how-to-read-coffee-flavor-notes",
+      },
+    ],
     related: [
       "light-medium-roast",
       "medium-dark-roast",
@@ -357,7 +401,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Medium-Dark Roast Coffee in India",
     entityLabel: "Medium-Dark Roast",
     intro:
-      "Medium-dark roast trades a little origin nuance for richer body and deeper, rounder sweetness. It's the roast for espresso and milk drinks — bold and full without tipping into the smoky bitterness of a true dark roast.",
+      "Medium-dark trades a little origin nuance for richer body and deeper, rounder sweetness — the roast for espresso and milk drinks. Baarbara Estate leads it, out of Chikmagalur and Baba Budangiri: bold and full without tipping into the smoky bitterness of a true dark roast.",
     headerNudge:
       "A great choice for fuller cups and lower perceived acidity without going fully dark.",
     teaserTitle: "Bold without the *char*",
@@ -400,7 +444,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
           "Mild smokiness",
         ],
         indianContext:
-          "Indian robusta at medium-dark is where traditional filter coffee blends live — bold, heavy body, low acid, designed to cut through hot milk. Arabica at this level from Karnataka estates often shows bittersweet chocolate and dried fruit without the smokiness of a full dark roast.",
+          "Indian robusta at medium-dark is where traditional filter coffee blends live — bold, heavy body, low acid, designed to cut through hot milk. Arabica at this level from Chikmagalur and Baba Budangiri — Baarbara Estate above all — often shows bittersweet chocolate and dried fruit without the smokiness of a full dark roast.",
       },
       brewParams: {
         waterTemp: "89–93°C",
@@ -419,7 +463,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       whoIsItFor:
         "Traditional South Indian filter coffee drinkers stepping into specialty will feel at home here — the body and boldness are familiar, but the quality of the bean is higher. Also suits espresso drinkers who find light-to-medium roast espresso too sour or thin.",
       icbDataNote:
-        "Medium-dark is the dominant roast level for robusta and robusta-arabica blends in the ICB catalogue. Many traditional Indian roasters who are moving into specialty territory start here — it bridges the gap between commodity dark roast and full specialty.",
+        "Medium-dark is the dominant roast level for robusta and robusta-arabica blends in the ICB catalogue, and Baarbara Estate accounts for more of it than any other estate — mostly out of Chikmagalur and Baba Budangiri. Many traditional Indian roasters moving into specialty start here: it bridges the gap between commodity dark roast and full specialty.",
     },
 
     filter: {
@@ -461,6 +505,20 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn More",
     },
+    learnLinks: [
+      {
+        label: "How Indian roasters actually define roast levels",
+        href: "/learn/understanding-roast-levels-indian-context",
+      },
+      {
+        label: "Pulling espresso at home with Indian coffees",
+        href: "/learn/espresso-at-home-indian-coffees",
+      },
+      {
+        label: "How Indian roast levels behave in a moka pot",
+        href: "/learn/moka-pot-behaviour-indian-roast-levels",
+      },
+    ],
     related: ["medium-roast", "dark-roast", "french-press", "filter-coffee"],
   },
 
@@ -470,7 +528,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Dark Roast Coffee in India",
     entityLabel: "Dark Roast",
     intro:
-      "Dark roast is bold, low in acid, and heavy in body — the roast most bound up with traditional Indian coffee culture. Specialty roasters are reimagining it now: still bittersweet and intense, but with the smoke kept in check rather than charred.",
+      "Dark roast — mostly robusta and blends out of Chikmagalur and Baba Budangiri — is bold, low in acid, and heavy in body, the roast most bound up with traditional Indian coffee culture. Specialty roasters are reimagining it now: bittersweet and intense, with the smoke kept in check rather than charred.",
     headerNudge:
       "Bold, full-bodied coffees with rich oils and intense flavors.",
     teaserTitle: "Deep, dark, and *low-acid*",
@@ -533,7 +591,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       whoIsItFor:
         "Traditional Indian filter coffee drinkers, those who take coffee with a lot of milk and sugar, and anyone who finds lighter roasts too acidic or thin. Dark roast is also where cold brew shines — the low acidity and heavy body translate exceptionally well to cold extraction.",
       icbDataNote:
-        "Dark roast has the lowest average community rating of any roast level in the ICB catalogue — 3.27 across 12 ratings — which reflects the mix of commodity blends and specialty lots in the 143-coffee segment. Traditional South Indian filter blends dominate the listings.",
+        "Dark roast has the lowest average community rating of any roast level in the ICB catalogue, which reflects a segment that mixes commodity blends with genuine specialty lots. Traditional South Indian filter blends dominate the listings, mostly from Chikmagalur and Baba Budangiri.",
     },
 
     filter: {
@@ -580,6 +638,20 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn More",
     },
+    learnLinks: [
+      {
+        label: "How Indian roasters actually define roast levels",
+        href: "/learn/understanding-roast-levels-indian-context",
+      },
+      {
+        label: "Pulling espresso at home with Indian coffees",
+        href: "/learn/espresso-at-home-indian-coffees",
+      },
+      {
+        label: "Roast dates: how fresh is fresh, really?",
+        href: "/learn/how-fresh-is-fresh-understanding-roast-dates",
+      },
+    ],
     related: [
       "medium-dark-roast",
       "french-press",

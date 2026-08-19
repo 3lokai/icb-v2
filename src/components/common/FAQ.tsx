@@ -58,7 +58,10 @@ export function FAQ({ items, className }: SimpleFAQProps) {
               <AccordionTrigger className="text-left text-body font-bold text-foreground">
                 {item.question}
               </AccordionTrigger>
-              <AccordionContent className="text-body text-muted-foreground leading-relaxed">
+              <AccordionContent
+                forceMount
+                className="text-body text-muted-foreground leading-relaxed data-[state=closed]:hidden"
+              >
                 {item.answer}
               </AccordionContent>
             </AccordionItem>

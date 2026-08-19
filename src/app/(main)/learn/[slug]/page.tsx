@@ -223,8 +223,13 @@ export default async function ArticlePage({ params }: Props) {
                       <AccordionTrigger className="text-left text-body font-bold text-foreground py-4 hover:no-underline">
                         {item.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-body text-muted-foreground leading-relaxed pt-2 pb-6 whitespace-pre-wrap">
-                        {item.answer}
+                      <AccordionContent
+                        forceMount
+                        className="text-body text-muted-foreground leading-relaxed data-[state=closed]:hidden"
+                      >
+                        <div className="pt-2 pb-6 whitespace-pre-wrap">
+                          {item.answer}
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
                   ))}

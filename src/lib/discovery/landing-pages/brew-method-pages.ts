@@ -8,7 +8,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for AeroPress in India",
     entityLabel: "AeroPress",
     intro:
-      "The AeroPress is the most forgiving brewer in specialty coffee, and the quickest way to read an Indian roaster's range. Gentle pressure and a short steep pull a clean, concentrated cup with almost none of the bitterness longer methods drag out — flattering everything from a jammy Karnataka natural to a bright washed Chikmagalur lot.",
+      "The AeroPress is the most forgiving brewer in specialty coffee — the quickest way to read a roaster's range, from a jammy Coorg natural to a bright washed Chikmagalur lot. Gentle pressure and a short steep pull a clean, concentrated cup with almost none of the bitterness longer methods drag out.",
     headerNudge:
       "Great for clean, bright cups and experimenting with different origins.",
     teaserTitle: "What to brew on *AeroPress*",
@@ -101,6 +101,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       href: "/tools/expert-recipes?method=aeropress",
       ctaText: "View Recipes",
     },
+    learnLinks: [
+      {
+        label: "AeroPress recipes by processing method",
+        href: "/learn/aeropress-indian-coffee-recipe",
+      },
+      {
+        label: "AeroPress variables for washed vs natural Indian coffees",
+        href: "/learn/aeropress-variables-indian-washed-natural",
+      },
+      {
+        label: "Calibrating grind size by method and roast",
+        href: "/learn/grind-size-calibration-indian-coffee",
+      },
+    ],
     related: ["light-roast", "budget", "v60", "natural"],
   },
 
@@ -110,7 +124,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for V60 in India",
     entityLabel: "V60",
     intro:
-      "No brewer shows you an Indian coffee's terroir as plainly as the V60. The cone and single large hole hand you control over every variable, and a thin paper filter strips away anything between you and the cup — which is why washed Chikmagalur lots and Araku light roasts taste their clearest here.",
+      "No brewer shows you an Indian coffee's terroir as plainly as the V60 — washed Chikmagalur lots and Araku light roasts taste their clearest here. The cone and single large hole hand you control over every variable, and a thin paper filter strips away anything between you and the cup.",
     headerNudge:
       "Perfect for highlighting delicate origin flavors and bright acidity.",
     teaserTitle: "Made for the *V60*",
@@ -134,7 +148,7 @@ export const brewMethodPages: LandingPageConfig[] = [
           "Thin paper filter — removes oils and fines for a very clean cup",
       },
       indianCoffeeContext:
-        "V60 is where Indian washed coffees from Chikmagalur and Coorg show their best. The clarity of the brew lets the terroir speak — SL-795 washed lots from high-altitude estates come through with jasmine, stone fruit, and clean acidity that would be muddied in French Press. Indian naturals are excellent on V60 too but extract faster — a slightly coarser grind and shorter pour helps. Araku Valley light roasts are exceptional on V60: the citrus and bergamot notes that define the region's identity are cleanest through a thin paper filter.",
+        "V60 is where Indian washed coffees from Chikmagalur and Coorg show their best. The clarity of the brew lets the terroir speak — SLN 795 washed lots from high-altitude estates come through with jasmine, stone fruit, and clean acidity that would be muddied in French Press. Indian naturals are excellent on V60 too but extract faster — a slightly coarser grind and shorter pour helps. Araku Valley light roasts are exceptional on V60: the citrus and bergamot notes that define the region's identity are cleanest through a thin paper filter.",
       commonMistakes: [
         {
           mistake: "Pouring too fast",
@@ -204,6 +218,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       href: "/tools/expert-recipes?method=v60",
       ctaText: "View Recipes",
     },
+    learnLinks: [
+      {
+        label: "Pour over behaviour with Indian light roasts",
+        href: "/learn/pour-over-behavior-indian-light-roasts",
+      },
+      {
+        label: "Pour over for Indian naturals: parameters and drippers",
+        href: "/learn/pour-over-for-indian-naturals",
+      },
+      {
+        label: "Calibrating grind size by method and roast",
+        href: "/learn/grind-size-calibration-indian-coffee",
+      },
+    ],
     related: ["light-roast", "medium-roast", "aeropress", "washed"],
   },
 
@@ -213,7 +241,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for Chemex in India",
     entityLabel: "Chemex",
     intro:
-      "The Chemex's thick bonded filter pulls almost everything from the cup but the flavour itself — oils, fines, and murk all stay behind. What's left is an Indian coffee at its cleanest and most tea-like: jasmine, peach, and bright citrus from washed Karnataka light roasts, with none of the weight.",
+      "The Chemex's thick bonded filter leaves an Indian coffee at its cleanest and most tea-like: jasmine, peach, and bright citrus from washed Chikmagalur and Baba Budangiri light roasts. Oils, fines, and murk all stay behind, and none of the weight comes with it.",
     headerNudge:
       "Chemex highlights sweetness and clarity — choose coffees with defined origin character.",
     teaserTitle: "Clean enough for *Chemex*",
@@ -259,7 +287,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       },
       siblingMethods: ["v60", "kalita"],
       icbDataNote:
-        "Chemex ownership is less common in India than V60 or AeroPress, but the coffees that suit it — washed light roasts from Karnataka estates — are well represented in the ICB catalogue. The same pour-over filter on ICB surfaces these lots.",
+        "Chemex ownership is less common in India than V60 or AeroPress, but the coffees that suit it — washed light roasts from Chikmagalur and Baba Budangiri, out of estates like Balanoor, Kerehaklu, and Ratnagiri — are well represented in the ICB catalogue. The same pour-over filter on ICB surfaces these lots.",
     },
 
     brewParams: {
@@ -300,6 +328,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       href: "/tools/expert-recipes?method=v60",
       ctaText: "View Recipes",
     },
+    learnLinks: [
+      {
+        label: "Pour over behaviour with Indian light roasts",
+        href: "/learn/pour-over-behavior-indian-light-roasts",
+      },
+      {
+        label: "Water for brewing: Indian tap water and extraction",
+        href: "/learn/water-for-brewing-indian-tap-coffee",
+      },
+      {
+        label: "Calibrating grind size by method and roast",
+        href: "/learn/grind-size-calibration-indian-coffee",
+      },
+    ],
     related: ["kalita", "v60", "light-roast", "washed"],
   },
 
@@ -309,7 +351,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for Kalita Wave in India",
     entityLabel: "Kalita Wave",
     intro:
-      "The Kalita Wave is the pour-over for people who'd rather drink good coffee than fuss over it. Its flat bed and three small holes even out an imperfect pour, so washed Karnataka light-mediums and Indian naturals land balanced and clean cup after cup — V60 quality without V60's demands.",
+      "The Kalita Wave is the pour-over for people who'd rather drink good coffee than fuss over it — washed Chikmagalur and Sakleshpur light-mediums land balanced cup after cup. Its flat bed and three small holes even out an imperfect pour: V60 quality without V60's demands.",
     headerNudge:
       "Kalita's flat bottom and wave filters encourage even extraction — great for daily pour overs.",
     teaserTitle: "Easy days on the *Kalita*",
@@ -332,7 +374,7 @@ export const brewMethodPages: LandingPageConfig[] = [
           "Proprietary wave paper filter — medium oil retention, even extraction",
       },
       indianCoffeeContext:
-        "Kalita Wave is a strong everyday brewer for Indian specialty coffees — its consistency makes it reliable across different origins and roast levels. Light-medium washed coffees from Karnataka estates produce a balanced, clean cup that's slightly more forgiving than V60. Indian naturals work particularly well on Kalita — the flat bed slows extraction slightly compared to V60, which prevents the over-extraction that can turn heavy Indian naturals muddy. For daily drinkers who want pour-over quality without V60's precision demands, Kalita is the answer.",
+        "Kalita Wave is a strong everyday brewer for Indian specialty coffees — its consistency makes it reliable across different origins and roast levels. Light-medium washed coffees from Ratnagiri and Harley, out of Chikmagalur and Sakleshpur, produce a balanced, clean cup that's slightly more forgiving than V60. Indian naturals work particularly well on Kalita — the flat bed slows extraction slightly compared to V60, which prevents the over-extraction that can turn heavy Indian naturals muddy. For daily drinkers who want pour-over quality without V60's precision demands, Kalita is the answer.",
       commonMistakes: [
         {
           mistake: "Using V60 filters",
@@ -381,7 +423,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "Same coffees as V60?",
         answer:
-          "Mostly yes — both suit washed and honey light roasts from Indian estates. The difference is in the cup: Kalita produces a slightly rounder, more balanced result; V60 is more transparent and precise.",
+          "Mostly yes — both suit washed and honey light roasts from Chikmagalur and Baba Budangiri estates. The difference is in the cup: Kalita produces a slightly rounder, more balanced result; V60 is more transparent and precise.",
       },
       {
         question: "Kalita Wave grind size?",
@@ -401,6 +443,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       href: "/tools/expert-recipes?method=v60",
       ctaText: "View Recipes",
     },
+    learnLinks: [
+      {
+        label: "Pour over for Indian naturals: parameters and drippers",
+        href: "/learn/pour-over-for-indian-naturals",
+      },
+      {
+        label: "Pour over behaviour with Indian light roasts",
+        href: "/learn/pour-over-behavior-indian-light-roasts",
+      },
+      {
+        label: "Choosing your first brew device",
+        href: "/learn/choosing-first-brew-device-indian-specialty-coffee",
+      },
+    ],
     related: ["chemex", "v60", "medium-roast", "honey"],
   },
 
@@ -410,7 +466,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for French Press in India",
     entityLabel: "French Press",
     intro:
-      "The French Press keeps everything paper takes away — the oils, the body, the full weight of the bean. For Indian coffee that's a natural fit: medium-dark Karnataka arabica and robusta blends come through deep, chocolatey, and low in acid, about as close as specialty gets to a traditional South Indian filter cup.",
+      "The French Press keeps the oils, the body, the full weight of the bean — a natural fit for medium-dark Chikmagalur, Baba Budangiri, and Coorg arabica and robusta blends, which come through deep, chocolatey, and low in acid. About as close as specialty gets to a traditional South Indian filter cup.",
     headerNudge:
       "Ideal for bold, full-bodied cups that showcase natural coffee oils.",
     teaserTitle: "Full-bodied for the *French Press*",
@@ -503,6 +559,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       href: "/tools/expert-recipes?method=frenchpress",
       ctaText: "View Recipes",
     },
+    learnLinks: [
+      {
+        label: "French press with Indian coffees: body and sediment",
+        href: "/learn/french-press-indian-coffee-body-sediment-roast",
+      },
+      {
+        label: "Why some Indian coffees taste flat in a French press",
+        href: "/learn/indian-coffee-flat-french-press",
+      },
+      {
+        label: "Calibrating grind size by method and roast",
+        href: "/learn/grind-size-calibration-indian-coffee",
+      },
+    ],
     related: [
       "medium-roast",
       "dark-roast",
@@ -526,7 +596,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     teaserDescription:
       "Crema, body, and balance that hold up under nine bars of pressure.",
     gridNudge:
-      "Look for medium-dark roasts from Karnataka estates — they pull rich, balanced shots with natural sweetness.",
+      "Look for medium-dark roasts from Chikmagalur and Baba Budangiri — Baarbara Estate above all — for rich, balanced shots with natural sweetness.",
     heroBackgroundImage: "/images/discovery/espresso-hero.avif",
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
@@ -614,6 +684,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       href: "/tools/expert-recipes?method=espresso",
       ctaText: "View Recipes",
     },
+    learnLinks: [
+      {
+        label: "Pulling espresso at home with Indian coffees",
+        href: "/learn/espresso-at-home-indian-coffees",
+      },
+      {
+        label: "Calibrating grind size by method and roast",
+        href: "/learn/grind-size-calibration-indian-coffee",
+      },
+      {
+        label: "Common extraction issues that flatten a cup",
+        href: "/learn/why-specialty-coffee-tastes-flat-extraction-issues",
+      },
+    ],
     related: ["dark-roast", "medium-dark-roast", "moka-pot", "french-press"],
   },
 
@@ -623,7 +707,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for Cold Brew in India",
     entityLabel: "Cold Brew",
     intro:
-      "Cold brew trades heat for time, and the result is about as smooth and sweet as coffee gets. The chocolate, nut, and spice notes that run through Karnataka arabica translate beautifully over a long cold steep — and Monsooned Malabar turns mellow and lingering in a way no other origin quite manages.",
+      "Cold brew trades heat for time, and the result is about as smooth and sweet as coffee gets. The chocolate, nut, and spice notes that run through Chikmagalur and Coorg arabica translate beautifully over a long cold steep — and Monsooned Malabar turns mellow and lingering in a way no other origin quite manages.",
     headerNudge:
       "Cold brew extracts smoothness and sweetness — choose coffees with chocolate, nut, and caramel notes.",
     teaserTitle: "Slow and sweet on *cold brew*",
@@ -717,6 +801,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       href: "/tools/expert-recipes?method=coldbrew",
       ctaText: "View Recipes",
     },
+    learnLinks: [
+      {
+        label: "Cold brew with Indian coffees: process and roast behaviour",
+        href: "/learn/cold-brew-indian-coffees-process-roast",
+      },
+      {
+        label: "Calibrating grind size by method and roast",
+        href: "/learn/grind-size-calibration-indian-coffee",
+      },
+      {
+        label: "Storing beans at home in Indian humidity",
+        href: "/learn/storing-coffee-beans-at-home-india",
+      },
+    ],
     related: ["medium-roast", "dark-roast", "french-press", "natural"],
   },
 
@@ -726,7 +824,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for Moka Pot in India",
     entityLabel: "Moka Pot",
     intro:
-      "The Moka Pot makes strong, concentrated, espresso-adjacent coffee with nothing but a stovetop — which is why it sits on so many Indian kitchen shelves. Medium-dark Chikmagalur and Coorg roasts come through with chocolate, spice, and roasted nuts; robusta blends add the body that stands up to milk.",
+      "The Moka Pot makes strong, espresso-adjacent coffee on a stovetop, which is why it sits on so many Indian kitchen shelves. Medium-dark Chikmagalur and Coorg roasts come through with chocolate, spice, and roasted nuts; robusta blends add the body that stands up to milk.",
     headerNudge:
       "Moka Pot produces intense, espresso-like coffee — choose medium-dark roasts for the best balance.",
     teaserTitle: "Stovetop strength for the *Moka Pot*",
@@ -820,6 +918,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       href: "/tools/expert-recipes?method=mokapot",
       ctaText: "View Recipes",
     },
+    learnLinks: [
+      {
+        label: "How Indian roast levels behave in a moka pot",
+        href: "/learn/moka-pot-behaviour-indian-roast-levels",
+      },
+      {
+        label: "Calibrating grind size by method and roast",
+        href: "/learn/grind-size-calibration-indian-coffee",
+      },
+      {
+        label: "How Indian roasters actually define roast levels",
+        href: "/learn/understanding-roast-levels-indian-context",
+      },
+    ],
     related: ["espresso", "dark-roast", "medium-dark-roast", "french-press"],
   },
 
@@ -829,7 +941,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for South Indian Filter in India",
     entityLabel: "South Indian Filter",
     intro:
-      "The South Indian filter is how coffee has been made in the south for generations: a slow drip through a metal filter into a thick, heavy decoction that meets hot milk and sugar. It runs on dark-roasted robusta and chicory blends — though specialty roasters are now building 100% arabica filter blends that keep the body without the harshness.",
+      "The South Indian filter runs on dark-roasted robusta and chicory blends, mostly out of Chikmagalur and Baba Budangiri: a slow drip through a metal filter into a thick decoction that meets hot milk and sugar. Specialty roasters are now building 100% arabica filter blends that keep the body without the harshness.",
     headerNudge:
       "The quintessential Indian brewing method — rich, intense, and meant to be enjoyed with milk.",
     teaserTitle: "Decoction-ready *filter* blends",
@@ -919,6 +1031,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       href: "/tools/expert-recipes?method=filtercoffee",
       ctaText: "View Recipes",
     },
+    learnLinks: [
+      {
+        label: "How to brew South Indian filter coffee",
+        href: "/learn/how-to-brew-south-indian-filter-coffee",
+      },
+      {
+        label: "Arabica vs robusta in India: what's actually different",
+        href: "/learn/arabica-vs-robusta-india",
+      },
+      {
+        label: "What brew devices Indian homes actually use",
+        href: "/learn/indian-home-brewing-equipment-landscape",
+      },
+    ],
     related: ["dark-roast", "medium-dark-roast", "moka-pot", "french-press"],
   },
 ];

@@ -360,6 +360,8 @@ export const FOUNDER = {
   jobTitle: "Founder",
   aboutHref: "/about#founder",
   linkedInHref: "https://www.linkedin.com/in/gtabhishek",
+  githubHref: "https://github.com/3lokai",
+  instagramHref: "https://www.instagram.com/gt3lok/",
   imageSrc: "/images/about/founder.jpg",
   imageAlt: "Thrilok Abhishek, founder of IndianCoffeeBeans, brewing coffee",
 } as const;
@@ -376,7 +378,7 @@ export const founderPersonSchema = {
     name: "IndianCoffeeBeans.com",
     url: "https://www.indiancoffeebeans.com",
   },
-  sameAs: [FOUNDER.linkedInHref],
+  sameAs: [FOUNDER.linkedInHref, FOUNDER.githubHref, FOUNDER.instagramHref],
   knowsAbout: [
     "Indian specialty coffee",
     "Coffee roasting",
@@ -496,6 +498,8 @@ export const organizationSchema = {
     "https://instagram.com/indiancoffeebeans",
     "https://www.linkedin.com/company/indiancoffeebeans",
     "https://www.facebook.com/profile.php?id=61577147573879",
+    "https://www.crunchbase.com/organization/indiancoffeebeans-com",
+    "https://www.indiehackers.com/product/indiancoffeebeans-com",
   ],
 };
 
