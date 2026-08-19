@@ -35,6 +35,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return generateSEOMetadata({
     title: issue.subject,
+    // Newsletter subject lines are editorial, like /learn — give them the full
+    // 60 chars instead of the 38 the brand suffix would leave.
+    absoluteTitle: true,
     description:
       issue.preview ||
       `An issue of the Indian Coffee Beans newsletter — new roasters, coffee drops, and brewing tips from India's specialty coffee scene.`,
@@ -85,7 +88,8 @@ export default async function NewsletterIssuePage({ params }: Props) {
   const issues = listNewsletters();
   const currentIndex = issues.findIndex((i) => i.date === issue.date);
   const prevIssue = issues[currentIndex + 1] ?? null;
-  const nextIssue = currentIndex > 0 ? (issues[currentIndex - 1] ?? null) : null;
+  const nextIssue =
+    currentIndex > 0 ? (issues[currentIndex - 1] ?? null) : null;
 
   return (
     <Section spacing="default">

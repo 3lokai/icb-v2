@@ -17,8 +17,7 @@ import {
 } from "@/lib/seo/schema";
 
 export const metadata: Metadata = generateMetadata({
-  title:
-    "How IndianCoffeeBeans Works | Discovery, Reviews & Rankings Explained",
+  title: "How ICB Ranks and Verifies Coffee",
   description:
     "How IndianCoffeeBeans works, from structured coffee data and reviews to transparent discovery, rankings, and verification. No ads. No commissions.",
   keywords: [

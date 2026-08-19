@@ -5,9 +5,10 @@ export const priceBucketPages: LandingPageConfig[] = [
   {
     slug: "budget",
     type: "price_bucket",
-    h1: "Best Coffees Under ₹500 in India",
+    h1: "Best Budget Coffee Under ₹500 in India",
     entityLabel: "Under ₹500",
     displayRange: "Under ₹500",
+    seoTitle: "Best Budget Coffee Under ₹500 India",
     ctaLabel: "Browse all coffees under ₹500",
     intro:
       "Good Indian specialty coffee under ₹500 is more common than the price suggests — Coorg and Chikmagalur daily drinkers from Baarbara, Thogarihunkal, Mercara Gold, and Malakodu. Every one is community-rated and normalized to 250g, so you can compare honestly before you buy.",

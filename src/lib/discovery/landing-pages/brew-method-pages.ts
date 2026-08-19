@@ -940,6 +940,8 @@ export const brewMethodPages: LandingPageConfig[] = [
     type: "brew_method",
     h1: "Best Coffees for South Indian Filter in India",
     entityLabel: "South Indian Filter",
+    // Default template runs 67 chars once the title suffix is appended; override to fit.
+    seoTitle: "Best Coffees for South Indian Filter",
     intro:
       "The South Indian filter runs on dark-roasted robusta and chicory blends, mostly out of Chikmagalur and Baba Budangiri: a slow drip through a metal filter into a thick decoction that meets hot milk and sugar. Specialty roasters are now building 100% arabica filter blends that keep the body without the harshness.",
     headerNudge:

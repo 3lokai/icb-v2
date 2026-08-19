@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const canonicalUrl = `${baseUrl}${canonicalPath}`;
 
   const baseMetadata = generateBaseMetadata({
-    title: "Coffee Ratio Calculator with Brew Timer",
+    title: "Coffee Ratio Calculator",
     description:
       "Master coffee brewing with our interactive ratio calculator. Get precise measurements, step-by-step timer, and expert tips for pour over, French press, espresso, and 11 brewing methods.",
     keywords: [

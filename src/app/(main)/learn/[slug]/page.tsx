@@ -49,6 +49,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return generateSEOMetadata({
     title: article.metadata?.metaTitle || article.title,
+    // Editorial titles need the full 60 chars; the brand suffix would leave 38
+    // and force a mid-word ellipsis on nearly every article.
+    absoluteTitle: true,
     description:
       article.metadata?.metaDescription ||
       article.description ||
