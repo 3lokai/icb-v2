@@ -16,14 +16,14 @@ export const beanTypePages: LandingPageConfig[] = [
     h1: "Best Arabica in India",
     entityLabel: "Arabica",
     intro:
-      "Explore Indian Arabica — the species behind almost all of the country's specialty coffee. Grown under shade at 1,000–1,700m across Karnataka, Tamil Nadu, and Andhra Pradesh, Indian Arabica delivers clarity, aromatic complexity, and a chocolate-and-spice sweetness that sets it apart from its African and Central American counterparts.",
+      "Explore Indian Arabica — the species behind almost all of the country's specialty coffee. SLN 795, SLN 9, and Chandragiri grown under shade at 1,000–1,700m in Chikmagalur, Baba Budangiri, and Coorg deliver clarity, aromatic complexity, and a chocolate-and-spice sweetness that sets Indian Arabica apart from its African and Central American counterparts.",
     headerNudge:
       "Start with 15g coffee to 250ml water at 93°C on a V60 — Indian Arabica's florals open up with a medium-fine grind and 3-minute brew.",
     teaserTitle: "Top Arabica picks",
     teaserDescription:
       "High-grown Indian Arabica lots, sorted by community rating.",
     gridNudge:
-      "Light and light-medium roasts reveal the most variety character — try SL-795 lots on pour-over before reaching for milk.",
+      "Light and light-medium roasts reveal the most variety character — try SLN 795 lots on pour-over before reaching for milk.",
     heroBadge: "Species",
     faqOverline: "Arabica",
     faqTitle: "About *Arabica* coffee",
@@ -47,10 +47,10 @@ export const beanTypePages: LandingPageConfig[] = [
           "Clean finish",
         ],
         indianContext:
-          "Indian Arabica is grown almost entirely under shade at 1,000–1,700m across Karnataka (Chikmagalur, Coorg, Baba Budangiri), Tamil Nadu (Shevaroy Hills, Nilgiris), and Andhra Pradesh (Araku Valley). The dominant varieties — SL-795, Cauvery (Catimor), Chandragiri, and Kent — give Indian Arabica a recognisable profile: medium body, restrained acidity, and chocolate-and-spice sweetness rather than the sharp brightness of African or Central American washed lots. SL-795 is the variety to watch: high-altitude SL-795 from Chikmagalur and Araku reaches genuine competition quality — jasmine, peach, and clean citrus when washed; ripe stone fruit and berry when natural. Cauvery is hardier and more widely planted, producing a rounder, nuttier cup. Kent, one of India's oldest cultivated varieties, gives gentle citrus and tea-like lightness at its best.",
+          "Indian Arabica is grown almost entirely under shade at 1,000–1,700m across Karnataka (Chikmagalur, Coorg, Baba Budangiri), Tamil Nadu (Shevaroy Hills, Nilgiris), and Andhra Pradesh (Araku Valley). The dominant varieties — SLN 795, Cauvery (Catimor), Chandragiri, and Kent — give Indian Arabica a recognisable profile: medium body, restrained acidity, and chocolate-and-spice sweetness rather than the sharp brightness of African or Central American washed lots. SLN 795 is the variety to watch: high-altitude SLN 795 from Chikmagalur and Araku reaches genuine competition quality — jasmine, peach, and clean citrus when washed; ripe stone fruit and berry when natural. Cauvery is hardier and more widely planted, producing a rounder, nuttier cup. Kent, one of India's oldest cultivated varieties, gives gentle citrus and tea-like lightness at its best.",
       },
       indiaContext:
-        "Arabica is the foundation of Indian specialty coffee. While India grows more Robusta by volume, almost every coffee positioned as 'specialty' — estate lots, single origins, competition coffees — is Arabica. Shade-grown under native canopy alongside pepper and cardamom, Indian Arabica has a distinct terroir signature that international cuppers describe as 'soft, sweet, and spice-forward'. The challenge is altitude: most Indian growing regions sit lower than the prime Arabica belts of East Africa or Central America (1,800–2,200m), so the best lots come from the highest estates — above 1,200m — with careful processing. This is why washed SL-795 from Baba Budangiri and high-altitude Chikmagalur estates consistently score highest in cupping competitions.",
+        "Arabica is the foundation of Indian specialty coffee. While India grows more Robusta by volume, almost every coffee positioned as 'specialty' — estate lots, single origins, competition coffees — is Arabica. Shade-grown under native canopy alongside pepper and cardamom, Indian Arabica has a distinct terroir signature that international cuppers describe as 'soft, sweet, and spice-forward'. The challenge is altitude: most Indian growing regions sit lower than the prime Arabica belts of East Africa or Central America (1,800–2,200m), so the best lots come from the highest estates — above 1,200m — with careful processing. This is why washed SLN 795 from Baba Budangiri and high-altitude Chikmagalur estates consistently score highest in cupping competitions.",
       brewGuidance: {
         recommended: ["v60", "chemex", "aeropress", "kalita", "filter-coffee"],
         notes:
@@ -62,14 +62,14 @@ export const beanTypePages: LandingPageConfig[] = [
       },
       varietyHighlights: [
         {
-          name: "SL-795",
+          name: "SLN 795",
           cup: "Jasmine, peach, clean citrus — India's competition variety. At altitude, the most aromatic and complex Indian Arabica.",
           cultivation:
             "High-altitude Chikmagalur, Baba Budangiri, Araku Valley. Susceptible to leaf rust but produces the best lots.",
         },
         {
           name: "Cauvery (Catimor)",
-          cup: "Round, nutty, chocolate with mild sweetness. Less aromatic complexity than SL-795 but consistently solid.",
+          cup: "Round, nutty, chocolate with mild sweetness. Less aromatic complexity than SLN 795 but consistently solid.",
           cultivation:
             "Widely planted across Karnataka. Hardy, disease-resistant, higher yield — the reliable workhorse of Indian estates.",
         },
@@ -107,7 +107,7 @@ export const beanTypePages: LandingPageConfig[] = [
         },
       ],
       icbDataNote:
-        "Arabica is the largest species category in the ICB catalogue, accounting for the majority of listed coffees and the overwhelming share of top-rated single origins. Community-rated Arabica lots average higher than any other species. Most estate and competition lots listed by Indian roasters are Arabica, with SL-795 and Cauvery the most frequently listed varieties.",
+        "Arabica is the largest species category in the ICB catalogue, accounting for the majority of listed coffees and the overwhelming share of top-rated single origins. Community-rated Arabica lots average higher than any other species. Most estate and competition lots listed by Indian roasters are Arabica, with SLN 795, SLN 9, and Chandragiri the most frequently listed varieties, and Baarbara, Ratnagiri, and Harley the most frequently listed estates.",
     },
 
     filter: {
@@ -123,18 +123,18 @@ export const beanTypePages: LandingPageConfig[] = [
       {
         question: "Is all Indian specialty coffee Arabica?",
         answer:
-          "Almost all of it. India grows more Robusta by volume, but the estate lots, single origins, and competition coffees that define Indian specialty are overwhelmingly Arabica — particularly SL-795 and Cauvery from high-altitude Karnataka and Araku estates. Fine single-estate Robusta is a growing niche, but Arabica remains the default for anything labelled 'specialty'.",
+          "Almost all of it. India grows more Robusta by volume, but the estate lots, single origins, and competition coffees that define Indian specialty are overwhelmingly Arabica — particularly SLN 795 and Cauvery from high-altitude Karnataka and Araku estates. Fine single-estate Robusta is a growing niche, but Arabica remains the default for anything labelled 'specialty'.",
       },
       {
         question:
           "Why does Indian Arabica taste different from African or Central American coffee?",
         answer:
-          "Three factors: lower average altitude (1,000–1,700m vs 1,800–2,200m elsewhere), distinctive shade-grown terroir under mixed canopy with pepper and cardamom, and varieties like SL-795 and Cauvery that are adapted to Indian conditions. The result is a softer, chocolate-and-spice profile with restrained acidity — less sharp brightness than high-grown East African washed lots, more warmth and sweetness.",
+          "Three factors: lower average altitude (1,000–1,700m vs 1,800–2,200m elsewhere), distinctive shade-grown terroir under mixed canopy with pepper and cardamom, and varieties like SLN 795 and Cauvery that are adapted to Indian conditions. The result is a softer, chocolate-and-spice profile with restrained acidity — less sharp brightness than high-grown East African washed lots, more warmth and sweetness.",
       },
       {
-        question: "What's the difference between SL-795 and Cauvery?",
+        question: "What's the difference between SLN 795 and Cauvery?",
         answer:
-          "SL-795 is Indian Arabica's competition variety — at altitude it produces jasmine, peach, and clean citrus notes with delicate body. Cauvery (a Catimor hybrid) is hardier, more disease-resistant, and more widely planted, giving a rounder, nuttier cup with less aromatic complexity. SL-795 is what producers show at cuppings; Cauvery is the reliable workhorse of Indian estate coffee.",
+          "SLN 795 is Indian Arabica's competition variety — at altitude it produces jasmine, peach, and clean citrus notes with delicate body. Cauvery (a Catimor hybrid) is hardier, more disease-resistant, and more widely planted, giving a rounder, nuttier cup with less aromatic complexity. SLN 795 is what producers show at cuppings; Cauvery is the reliable workhorse of Indian estate coffee.",
       },
       {
         question: "How should I brew Indian Arabica?",
@@ -146,10 +146,25 @@ export const beanTypePages: LandingPageConfig[] = [
       type: "tips",
       title: "Indian coffee varieties explained",
       description:
-        "SL-795, Cauvery, Chandragiri, Kent — what each variety brings to the cup.",
+        "SLN 795, Cauvery, Chandragiri, Kent — what each variety brings to the cup.",
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Arabica vs robusta in India: what's actually different",
+        href: "/learn/arabica-vs-robusta-india",
+      },
+      {
+        label:
+          "Indian coffee varieties explained: SLN 795, Chandragiri and more",
+        href: "/learn/indian-coffee-varieties-explained",
+      },
+      {
+        label: "How altitude shapes flavour on Indian estates",
+        href: "/learn/altitude-affects-flavor-indian-coffee",
+      },
+    ],
     related: ["robusta", "blends", "single-origin", "chikmagalur", "washed"],
   },
 
@@ -159,7 +174,7 @@ export const beanTypePages: LandingPageConfig[] = [
     h1: "Best Robusta in India",
     entityLabel: "Robusta",
     intro:
-      "Discover Indian Robusta — bold, full-bodied, and high in caffeine. India is one of the world's most respected Robusta origins, producing everything from export-grade Kaapi Royale to fine specialty-processed lots that challenge assumptions about what Robusta can be.",
+      "Discover Indian Robusta — bold, full-bodied, high in caffeine, and increasingly specialty. C × R and Old Peradeniya lots out of Kodagu and Chikmagalur challenge every assumption about what Robusta can be, and India is one of the world's most respected Robusta origins.",
     headerNudge:
       "Pull espresso at 90–92°C with a slightly coarser grind than Arabica — Robusta's bitterness softens and the crema thickens.",
     teaserTitle: "Top Robusta picks",
@@ -250,7 +265,7 @@ export const beanTypePages: LandingPageConfig[] = [
         },
       ],
       icbDataNote:
-        "Robusta is a smaller but growing segment of the ICB catalogue as fine, specialty-processed Robusta gains traction with Indian roasters. It appears both as single-estate lots and as the base of espresso and filter blends. Community engagement on Robusta listings is increasing as more roasters offer it as a named single-origin rather than an anonymous blend component.",
+        "Robusta is a smaller but growing segment of the ICB catalogue as fine, specialty-processed Robusta gains traction with Indian roasters. It appears both as single-estate lots — C × R, Old Peradeniya, Congensis, and TR9 out of Chikmagalur and Kodagu — and as the base of espresso and filter blends. Community engagement on Robusta listings is increasing as more roasters offer it as a named single-origin rather than an anonymous blend component.",
     },
 
     filter: {
@@ -292,6 +307,20 @@ export const beanTypePages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Arabica vs robusta in India: what's actually different",
+        href: "/learn/arabica-vs-robusta-india",
+      },
+      {
+        label: "How to brew South Indian filter coffee",
+        href: "/learn/how-to-brew-south-indian-filter-coffee",
+      },
+      {
+        label: "Export vs domestic specialty: two quality ladders",
+        href: "/learn/indian-coffee-export-vs-domestic-specialty",
+      },
+    ],
     related: [
       "arabica",
       "blends",
@@ -307,7 +336,7 @@ export const beanTypePages: LandingPageConfig[] = [
     h1: "Best Liberica in India",
     entityLabel: "Liberica",
     intro:
-      "Discover Liberica — the rare third coffee species. Large, irregular, almond-shaped beans with a smoky, jackfruit-and-woody character unlike anything Arabica or Robusta produces. Prized in Southeast Asia and genuinely scarce in India.",
+      "Liberica is the rare third coffee species, and in India it is close to a single address: Salawara Estate in Sakleshpur. Large, irregular, almond-shaped beans with a smoky, jackfruit-and-woody character unlike anything Arabica or Robusta produces.",
     headerNudge:
       "Liberica is a curiosity, not an everyday cup — brew it darker, use immersion methods, and expect a bold, polarising, unconventional profile.",
     teaserTitle: "Liberica picks",
@@ -366,7 +395,7 @@ export const beanTypePages: LandingPageConfig[] = [
         },
       ],
       icbDataNote:
-        "Liberica is extremely rare in the ICB catalogue — Indian roasters seldom list it and availability is sporadic at best. Expect few or no results at any given time. This page exists for education and completeness so that drinkers who encounter Liberica elsewhere can understand the species in an Indian context.",
+        "Liberica is extremely rare in the ICB catalogue — Indian roasters seldom list it and availability is sporadic. What does appear comes mostly from Salawara Estate in Sakleshpur, with the occasional Mercara Gold lot out of Coorg. Expect very few results at any given time.",
     },
 
     filter: {
@@ -382,7 +411,7 @@ export const beanTypePages: LandingPageConfig[] = [
       {
         question: "Is Liberica grown in India?",
         answer:
-          "Barely. Indian coffee is overwhelmingly Arabica (~40% of production) and Robusta (~60%). Liberica has almost no commercial presence here and is found only in rare experimental or heritage plantings on a handful of Karnataka and Kerala estates — it's seldom if ever available from Indian roasters.",
+          "Barely. Indian coffee is overwhelmingly Arabica (~40% of production) and Robusta (~60%). Liberica has almost no commercial presence here and is found only in rare experimental or heritage plantings on a handful of Karnataka and Kerala estates — Salawara in Sakleshpur being the one that reaches ICB with any regularity.",
       },
       {
         question: "What does Liberica taste like compared to Arabica?",
@@ -408,6 +437,21 @@ export const beanTypePages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Arabica vs robusta in India: what's actually different",
+        href: "/learn/arabica-vs-robusta-india",
+      },
+      {
+        label:
+          "Indian coffee varieties explained: SLN 795, Chandragiri and more",
+        href: "/learn/indian-coffee-varieties-explained",
+      },
+      {
+        label: "The growth of single-origin coffee in India",
+        href: "/learn/growth-single-origin-coffee-india",
+      },
+    ],
     related: ["excelsa", "arabica", "robusta", "french-press"],
   },
 
@@ -417,7 +461,7 @@ export const beanTypePages: LandingPageConfig[] = [
     h1: "Best Excelsa in India",
     entityLabel: "Excelsa",
     intro:
-      "Explore Excelsa — a rare, tart-and-fruity member of the Liberica family. Prized for adding a dark, complex, almost wine-like layer to blends, and increasingly interesting to specialty producers in Southeast Asia. Very scarce in India.",
+      "Explore Excelsa — a rare, tart-and-fruity member of the Liberica family that adds a dark, almost wine-like layer to blends. Scarce in India, but Kodagu grows it: Mooleh Manay Estate in Coorg accounts for most of the Indian Excelsa that reaches the catalogue.",
     headerNudge:
       "Excelsa is tarter and fruitier than Liberica — try it on AeroPress at 90°C to tease out the wine-like notes.",
     teaserTitle: "Excelsa picks",
@@ -448,10 +492,10 @@ export const beanTypePages: LandingPageConfig[] = [
           "Complex",
         ],
         indianContext:
-          "Excelsa (classified as Coffea liberica var. dewevrei, though many trade catalogues list it as a separate species) is botanically part of the Liberica family but cups quite differently — tarter, fruitier, and more wine-like, with a dark complexity and bright acidity that Liberica lacks. In Southeast Asia, where most Excelsa is grown, it's valued as a blend component: 5–20% Excelsa in an Arabica or Robusta blend adds a tart, dark-fruit complexity that neither species can produce alone. Some Vietnamese producers use it as the 'secret ingredient' in their signature blends. In India, Excelsa barely registers in commercial production — it exists in scattered experimental plantings, if at all. Indian Excelsa is a genuine rarity, but the species is gaining attention globally as specialty roasters look beyond Arabica and Robusta.",
+          "Excelsa (classified as Coffea liberica var. dewevrei, though many trade catalogues list it as a separate species) is botanically part of the Liberica family but cups quite differently — tarter, fruitier, and more wine-like, with a dark complexity and bright acidity that Liberica lacks. In Southeast Asia, where most Excelsa is grown, it's valued as a blend component: 5–20% Excelsa in an Arabica or Robusta blend adds a tart, dark-fruit complexity that neither species can produce alone. Some Vietnamese producers use it as the 'secret ingredient' in their signature blends. In India, Excelsa barely registers in commercial production — Mooleh Manay Estate and Dimbada Estate in Kodagu are effectively the whole story. Indian Excelsa is a genuine rarity, but the species is gaining attention globally as specialty roasters look beyond Arabica and Robusta.",
       },
       indiaContext:
-        "Excelsa has a negligible commercial presence in India — the country's coffee is dominated by Arabica and Robusta, and Excelsa, like Liberica, is absent from Coffee Board production statistics. It exists only in scattered experimental plantings at research stations or adventurous estates. Treat any Indian Excelsa offering as a rare find and a chance to taste a species almost nobody in India has encountered. Globally, Excelsa is gaining interest: Southeast Asian producers in the Philippines and Vietnam are beginning to apply specialty processing to Excelsa, and it featured in international cupping competitions for the first time in the early 2020s.",
+        "Excelsa has a negligible commercial presence in India — the country's coffee is dominated by Arabica and Robusta, and Excelsa, like Liberica, is absent from Coffee Board production statistics. It exists only in scattered plantings at research stations and adventurous estates — Mooleh Manay and Dimbada in Kodagu are the ones that reach roasters. Treat any Indian Excelsa offering as a rare find and a chance to taste a species almost nobody in India has encountered. Globally, Excelsa is gaining interest: Southeast Asian producers in the Philippines and Vietnam are beginning to apply specialty processing to Excelsa, and it featured in international cupping competitions for the first time in the early 2020s.",
       brewGuidance: {
         recommended: ["aeropress", "french-press", "v60"],
         notes:
@@ -476,7 +520,7 @@ export const beanTypePages: LandingPageConfig[] = [
         },
       ],
       icbDataNote:
-        "Excelsa is among the rarest entries in the ICB catalogue — Indian roasters rarely if ever list it. Expect few or no results at any given time. This page is provided for education and completeness, recognising Excelsa's growing global interest even though Indian supply is essentially non-existent.",
+        "Excelsa is among the rarest entries in the ICB catalogue, and almost all of it traces to Kodagu — Mooleh Manay Estate above all, with a little from Dimbada. Expect only a handful of results at any given time, and treat each one as a chance to taste a species almost nobody in India has encountered.",
     },
 
     filter: {
@@ -518,6 +562,21 @@ export const beanTypePages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Arabica vs robusta in India: what's actually different",
+        href: "/learn/arabica-vs-robusta-india",
+      },
+      {
+        label:
+          "Indian coffee varieties explained: SLN 795, Chandragiri and more",
+        href: "/learn/indian-coffee-varieties-explained",
+      },
+      {
+        label: "How India's coffee processing mix is changing",
+        href: "/learn/how-coffee-process-mix-changing-india",
+      },
+    ],
     related: ["liberica", "blends", "arabica", "natural"],
   },
 
@@ -527,7 +586,7 @@ export const beanTypePages: LandingPageConfig[] = [
     h1: "Best Coffee Blends in India",
     entityLabel: "Coffee Blends",
     intro:
-      "Browse Indian coffee blends — Arabica–Robusta combinations and house blends built for balance, body, and consistency. From espresso blends engineered for crema and milk to the Robusta-forward mixes that define South Indian filter coffee, blends are how most Indians drink coffee.",
+      "Browse Indian coffee blends — Arabica–Robusta combinations and house blends built for balance, body, and consistency, drawn mostly from Chikmagalur, Coorg, and Baba Budangiri. From espresso blends engineered for crema and milk to the Robusta-forward mixes that define South Indian filter coffee, blends are how most Indians drink coffee.",
     headerNudge:
       "Dial espresso at 92°C with a 1:2 yield and adjust grind for bitterness — Robusta-heavy blends run hotter and more bitter than pure Arabica.",
     teaserTitle: "Top blend picks",
@@ -641,6 +700,20 @@ export const beanTypePages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Why the same estate tastes different from two roasters",
+        href: "/learn/roaster-effect-same-estate-different-taste",
+      },
+      {
+        label: "Arabica vs robusta in India: what's actually different",
+        href: "/learn/arabica-vs-robusta-india",
+      },
+      {
+        label: "A beginner's framework for choosing specialty coffee",
+        href: "/learn/how-to-choose-specialty-coffee-india-guide",
+      },
+    ],
     related: [
       "single-origin",
       "arabica",
@@ -656,7 +729,7 @@ export const beanTypePages: LandingPageConfig[] = [
     h1: "Best Chicory Coffee Mixes in India",
     entityLabel: "Chicory Coffee Mixes",
     intro:
-      "Explore Indian coffee–chicory blends — the heart of South Indian filter coffee. Roasted chicory root adds body, a gentle bittersweetness, and that distinctive, milk-friendly syrupy character that defines the tradition for millions of coffee drinkers across Tamil Nadu, Karnataka, Andhra Pradesh, and Kerala.",
+      "Indian coffee–chicory blends are the heart of South Indian filter coffee, and on ICB they come mostly out of Chikmagalur and Baba Budangiri. Roasted chicory root adds body, a gentle bittersweetness, and the milk-friendly syrupy character that defines the tradition — Thogarihunkal Estate and Hunkal Estate Coffee among the regulars.",
     headerNudge:
       "Use a fine grind, boiled water, and let the decoction drip slowly through the metal filter — 10–15 minutes for full extraction. Always serve with hot milk.",
     teaserTitle: "Top chicory mix picks",
@@ -715,7 +788,7 @@ export const beanTypePages: LandingPageConfig[] = [
         },
       ],
       icbDataNote:
-        "Coffee–chicory mixes occupy a distinct, tradition-driven niche in the ICB catalogue, listed mainly by roasters serving the South Indian filter coffee market. They sit apart from the third-wave single-origin segment and are concentrated in the budget and mid-range price brackets. Community ratings are consistently positive from drinkers who judge them in their intended context — as a milk-based filter coffee base, not a black pour-over.",
+        "Coffee–chicory mixes occupy a distinct, tradition-driven niche in the ICB catalogue, listed mainly by roasters serving the South Indian filter coffee market — Hunkal Estate Coffee, Gandhi's Coffee, Baarbara Coffee, and Seven Beans among them. They sit apart from the third-wave single-origin segment and are concentrated in the budget and mid-range price brackets. Community ratings are consistently positive from drinkers who judge them in their intended context — as a milk-based filter coffee base, not a black pour-over.",
     },
 
     filter: {
@@ -762,6 +835,20 @@ export const beanTypePages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "How to brew South Indian filter coffee",
+        href: "/learn/how-to-brew-south-indian-filter-coffee",
+      },
+      {
+        label: "Arabica vs robusta in India: what's actually different",
+        href: "/learn/arabica-vs-robusta-india",
+      },
+      {
+        label: "A timeline of Indian specialty coffee",
+        href: "/learn/indian-coffee-industry-timeline",
+      },
+    ],
     related: ["blends", "robusta", "arabica", "filter-coffee"],
   },
 
@@ -771,14 +858,14 @@ export const beanTypePages: LandingPageConfig[] = [
     h1: "Best Single Origin in India",
     entityLabel: "Single Origin",
     intro:
-      "Discover Indian single-origin coffees — lots traceable to one estate or region, unblended, so the terroir, variety, and processing speak for themselves. This is where Indian specialty coffee shows its character: the difference between Chikmagalur and Araku, washed and natural, SL-795 and Cauvery — all unmasked.",
+      "Indian single origins are traceable to one estate or region, unblended — Chikmagalur against Araku, washed against natural, SLN 795 against Cauvery, all unmasked. This is where Indian specialty coffee shows its character, and where the terroir, variety, and processing speak for themselves.",
     headerNudge:
       "Brew clean and precise — 15g to 250ml at 93°C on a V60 lets the estate character speak without interference.",
     teaserTitle: "Top single-origin picks",
     teaserDescription:
       "Traceable single-estate and single-region lots, by rating.",
     gridNudge:
-      "Check the variety and process before brewing — SL-795 washed and Cauvery natural want different temperatures and grind sizes.",
+      "Check the variety and process before brewing — SLN 795 washed and Cauvery natural want different temperatures and grind sizes.",
     heroBadge: "Sourcing",
     faqOverline: "Single origin",
     faqTitle: "About *single-origin* coffee",
@@ -802,10 +889,10 @@ export const beanTypePages: LandingPageConfig[] = [
           "Seasonal",
         ],
         indianContext:
-          "Single origin is where Indian specialty coffee makes its case internationally. A single-origin lot comes from one estate (or one tightly defined region) and isn't blended with anything else, so altitude, variety, soil, and processing show through unmasked. The flavour range across Indian single origins is wider than most people expect: washed SL-795 from Baba Budangiri at 1,400m tastes like jasmine and bergamot; natural Cauvery from a Coorg estate at 1,100m tastes like ripe plum and dark chocolate; anaerobic lots from progressive Karnataka estates taste like tropical fruit and red wine. Indian single origins change with the harvest — each crop year brings variation — so they're seasonal by nature, unlike the year-round consistency of a house blend. The best lots sell out within weeks of release.",
+          "Single origin is where Indian specialty coffee makes its case internationally. A single-origin lot comes from one estate (or one tightly defined region) and isn't blended with anything else, so altitude, variety, soil, and processing show through unmasked. The flavour range across Indian single origins is wider than most people expect: washed SLN 795 from Baba Budangiri at 1,400m tastes like jasmine and bergamot; natural Cauvery from a Coorg estate at 1,100m tastes like ripe plum and dark chocolate; anaerobic lots from Ratnagiri and Melkodige taste like tropical fruit and red wine. Indian single origins change with the harvest — each crop year brings variation — so they're seasonal by nature, unlike the year-round consistency of a house blend. The best lots sell out within weeks of release.",
       },
       indiaContext:
-        "The single-origin movement is what put Indian specialty coffee on the international map. By tracing a coffee to a specific estate and being transparent about variety, altitude, and processing, roasters let drinkers taste the difference between Chikmagalur and Araku, washed and natural, SL-795 and Cauvery — differences that blending deliberately smooths over. It's the opposite philosophy to blending: instead of balance and repeatability, single origins prize distinctiveness and a sense of place. Indian single origins are now appearing in international cupping competitions and speciality importers' portfolios alongside established origins like Ethiopia, Colombia, and Kenya — proof that Indian terroir can stand on its own.",
+        "The single-origin movement is what put Indian specialty coffee on the international map. By tracing a coffee to a specific estate and being transparent about variety, altitude, and processing, roasters let drinkers taste the difference between Chikmagalur and Araku, washed and natural, SLN 795 and Cauvery — differences that blending deliberately smooths over. It's the opposite philosophy to blending: instead of balance and repeatability, single origins prize distinctiveness and a sense of place. Indian single origins are now appearing in international cupping competitions and speciality importers' portfolios alongside established origins like Ethiopia, Colombia, and Kenya — proof that Indian terroir can stand on its own.",
       brewGuidance: {
         recommended: ["v60", "chemex", "aeropress", "kalita"],
         notes:
@@ -857,12 +944,12 @@ export const beanTypePages: LandingPageConfig[] = [
       {
         question: "Are Indian single origins always Arabica?",
         answer:
-          "Mostly, but not exclusively. The estate-traceable lots that define Indian specialty are overwhelmingly Arabica — particularly SL-795, Cauvery, and Chandragiri — but a growing number of roasters now offer fine single-estate Robusta processed with specialty care. Look for 'fine Robusta' or 'specialty Robusta' in the listing.",
+          "Mostly, but not exclusively. The estate-traceable lots that define Indian specialty are overwhelmingly Arabica — particularly SLN 795, Cauvery, and Chandragiri — but a growing number of roasters now offer fine single-estate Robusta processed with specialty care. Look for 'fine Robusta' or 'specialty Robusta' in the listing.",
       },
       {
         question: "Why do single origins sell out quickly?",
         answer:
-          "Because they're seasonal — each lot is produced from one harvest, and quantities are limited. A specific estate's washed SL-795 might yield only a few hundred kilograms of top-grade green coffee per year. Once roasted and sold, it's gone until the next harvest. Popular lots from well-known estates sell out within weeks of release.",
+          "Because they're seasonal — each lot is produced from one harvest, and quantities are limited. A specific estate's washed SLN 795 might yield only a few hundred kilograms of top-grade green coffee per year. Once roasted and sold, it's gone until the next harvest. Popular lots from well-known estates sell out within weeks of release.",
       },
       {
         question: "How should I brew a single origin?",
@@ -878,6 +965,20 @@ export const beanTypePages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "The growth of single-origin coffee in India",
+        href: "/learn/growth-single-origin-coffee-india",
+      },
+      {
+        label: "Understanding Indian coffee estates (and why they matter)",
+        href: "/learn/understanding-indian-coffee-estates",
+      },
+      {
+        label: "S795, Chandragiri, Catuai and Selection 9 compared",
+        href: "/learn/indian-coffee-varietals-s795-chandragiri-catuai-selection-9",
+      },
+    ],
     related: ["blends", "arabica", "chikmagalur", "washed", "araku"],
   },
 ];

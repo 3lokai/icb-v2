@@ -55,15 +55,26 @@ function AccordionTrigger({
 
 function AccordionContent({
   className,
+  contentClassName,
   children,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Content>) {
+}: React.ComponentProps<typeof AccordionPrimitive.Content> & {
+  /** Classes for the animating Content element itself, not the padded inner
+   *  wrapper. Only needed for `data-[state=…]` variants — Radix stamps
+   *  `data-state` on Content, so those classes cannot ride on `className`. */
+  contentClassName?: string;
+}) {
   return (
     <AccordionPrimitive.Content
-      className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      className={cn(
+        "overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+        contentClassName
+      )}
       data-slot="accordion-content"
       {...props}
     >
+      {/* Padding lives here, not on Content: Content's height animates, and
+          padding on it shows as a jump at the start of the transition. */}
       <div className={cn("pt-0 pb-4", className)}>{children}</div>
     </AccordionPrimitive.Content>
   );

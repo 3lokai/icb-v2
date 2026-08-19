@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const canonicalUrl = `${baseUrl}${canonicalPath}`;
 
   const baseMetadata = generateBaseMetadata({
-    title: "Expert Coffee Recipes | Championship Brewing Methods & Techniques",
+    title: "Championship Coffee Brewing Recipes",
     description:
       "Master championship coffee brewing with recipes from world champions like James Hoffmann, Tetsu Kasuya, and Scott Rao. Step-by-step guides for V60, AeroPress, French Press, and more.",
     keywords: [

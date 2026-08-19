@@ -18,6 +18,7 @@ import StructuredData from "@/components/seo/StructuredData";
 import { CoffeeGridTeaser } from "./CoffeeGridTeaser";
 import { UtilityCard } from "./UtilityCard";
 import { RelatedLinks } from "./RelatedLinks";
+import { LearnLinks } from "./LearnLinks";
 import { BrewParamsStrip } from "./BrewParamsStrip";
 import { RoastScale } from "./RoastScale";
 import { RoastProfileSection } from "./RoastProfileSection";
@@ -402,23 +403,7 @@ export async function DiscoveryLandingLayout({
 
         {/* Related reading - contextual in-body links to /learn articles */}
         {config.learnLinks && config.learnLinks.length > 0 && (
-          <div className="py-8 md:py-10 px-4 md:px-0 mx-auto max-w-6xl w-full">
-            <p className="text-micro text-muted-foreground/60 uppercase tracking-widest font-medium mb-3">
-              Related reading
-            </p>
-            <ul className="flex flex-col gap-2">
-              {config.learnLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    className="text-body text-accent underline-offset-4 hover:underline"
-                    href={link.href}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <LearnLinks links={config.learnLinks} />
         )}
 
         {/* 4. FAQ Section */}
