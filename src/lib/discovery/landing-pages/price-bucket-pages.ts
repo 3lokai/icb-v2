@@ -11,7 +11,7 @@ export const priceBucketPages: LandingPageConfig[] = [
     seoTitle: "Best Budget Coffee Under ₹500 India",
     ctaLabel: "Browse all coffees under ₹500",
     intro:
-      "Good Indian specialty coffee under ₹500 is more common than the price suggests — Coorg and Chikmagalur daily drinkers from Baarbara, Thogarihunkal, Mercara Gold, and Malakodu. Every one is community-rated and normalized to 250g, so you can compare honestly before you buy.",
+      "Good Indian specialty coffee under ₹500 is more common than the price suggests — Coorg and Chikmagalur daily drinkers from Baarbara, Thogarihunkal, Mercara Gold, and Malakodu. Every one is community-rated and normalized to 250g, so you can compare honestly before you buy. Everything here is specialty ground and whole-bean coffee, not instant.",
     headerNudge:
       "Under ₹500 buys honest daily-drinker coffee — clean blends and dependable single origins, not leftovers.",
     gridNudge:

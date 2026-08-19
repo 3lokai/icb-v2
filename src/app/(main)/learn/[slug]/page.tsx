@@ -228,7 +228,8 @@ export default async function ArticlePage({ params }: Props) {
                       </AccordionTrigger>
                       <AccordionContent
                         forceMount
-                        className="text-body text-muted-foreground leading-relaxed data-[state=closed]:hidden"
+                        contentClassName="data-[state=closed]:hidden"
+                        className="text-body text-muted-foreground leading-relaxed"
                       >
                         <div className="pt-2 pb-6 whitespace-pre-wrap">
                           {item.answer}
