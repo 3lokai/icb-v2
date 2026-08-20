@@ -1,7 +1,44 @@
 // lib/seo/schema.ts
 
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
+import type { CoffeeVariant } from "@/types/coffee-component-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
+
+/**
+ * Best Offer.price from raw variants, ignoring stock status.
+ *
+ * Mirrors coffee_directory_mv's best_normalized_250g (prefer a 240–260g pack,
+ * else cheapest derived per-250g) but without the `in_stock` filter — so
+ * out-of-stock SKUs that still carry a last-known price can emit a valid Offer
+ * with availability: OutOfStock instead of dropping the Product entity.
+ */
+export function bestVariantPrice(
+  variants: Pick<CoffeeVariant, "price_current" | "weight_g" | "pack_count">[]
+): number | undefined {
+  const priced = variants.filter(
+    (v) =>
+      v.price_current != null &&
+      v.price_current > 0 &&
+      v.weight_g != null &&
+      v.weight_g > 0
+  );
+  if (priced.length === 0) return undefined;
+
+  const normalized250g = (
+    v: Pick<CoffeeVariant, "price_current" | "weight_g" | "pack_count">
+  ) =>
+    Math.round(
+      ((v.price_current! / Math.max(v.pack_count || 1, 1)) *
+        (250 / v.weight_g)) *
+        100
+    ) / 100;
+
+  const near250 = priced.filter(
+    (v) => v.weight_g >= 240 && v.weight_g <= 260
+  );
+  const pool = near250.length > 0 ? near250 : priced;
+  return Math.min(...pool.map(normalized250g));
+}
 
 /**
  * ItemList entry for a coffee in a directory/discovery/curation ItemList.
