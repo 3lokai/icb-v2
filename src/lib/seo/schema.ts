@@ -508,6 +508,7 @@ export const organizationSchema = {
     "https://www.facebook.com/profile.php?id=61577147573879",
     "https://www.crunchbase.com/organization/indiancoffeebeans-com",
     "https://www.indiehackers.com/product/indiancoffeebeans-com",
+    "https://www.wikidata.org/wiki/Q141137574",
   ],
 };
 
