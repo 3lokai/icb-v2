@@ -6,6 +6,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { fetchRoasterBySlugCached } from "@/lib/data/fetch-roaster-by-slug";
+import { fetchCoffeesCached } from "@/lib/data/fetch-coffees";
 import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
 import { queryKeys } from "@/lib/query-keys";
 import {
@@ -22,15 +23,32 @@ import StructuredData from "@/components/seo/StructuredData";
 import { RoasterDetailPage } from "@/components/roasters/RoasterDetailPage";
 import { roasterImagePresets } from "@/lib/imagekit";
 
+/** Matches the 3-col coffee grid on the profile page. */
+const ROASTER_COFFEES_PAGE_SIZE = 12;
+
 type Props = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
+
+function parsePageParam(
+  searchParams: { [key: string]: string | string[] | undefined }
+): number {
+  const raw = searchParams.page;
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  const page = value ? Number.parseInt(value, 10) : 1;
+  return Number.isNaN(page) || page < 1 ? 1 : page;
+}
 
 /**
  * Generate metadata for roaster detail page
  */
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
   const { slug } = await params;
+  const page = parsePageParam(await searchParams);
   const roaster = await fetchRoasterBySlugCached(slug);
 
   if (!roaster) {
@@ -45,7 +63,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
-  const canonical = `${baseUrl}/roasters/${slug}`;
+  // Page 1 keeps the bare canonical; page 2+ self-canonicalizes so crawlers
+  // can still follow the chain without treating every page as a duplicate of p1.
+  const canonical =
+    page === 1
+      ? `${baseUrl}/roasters/${slug}`
+      : `${baseUrl}/roasters/${slug}?page=${page}`;
 
   const ratingCount = stats?.rating_count ?? 0;
   const coffeeCount = roaster.coffee_count ?? 0;
@@ -68,7 +91,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : ratingCount > 0
       ? `${roaster.name} — ${ratingCount} Ratings`
       : `${roaster.name} — Specialty Roastery`;
-  const title = truncateTitle(titleRaw);
+  const title = truncateTitle(
+    page > 1 ? `${titleRaw} — Page ${page}` : titleRaw
+  );
 
   const differentiator =
     ratingCount > 0
@@ -111,20 +136,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Note: Structured data is rendered via <StructuredData> component in the page
   // to avoid duplication and reduce HTML size
-  return generateSEOMetadata({
+  const metadata = generateSEOMetadata({
     title,
     description,
     image: ogImage,
     type: "website",
     canonical,
   });
+
+  // Page 1 stays indexable. Page 2+ is crawlable (follow) but noindex so the
+  // repeated hero/about/reviews/FAQ content doesn't cannibalize page 1.
+  return {
+    ...metadata,
+    robots: { index: page === 1, follow: true },
+  };
 }
 
 /**
  * Roaster Detail Page (Server Component)
  */
-export default async function RoasterDetailPageServer({ params }: Props) {
+export default async function RoasterDetailPageServer({
+  params,
+  searchParams,
+}: Props) {
   const { slug } = await params;
+  const page = parsePageParam(await searchParams);
   const roaster = await fetchRoasterBySlugCached(slug);
 
   if (!roaster) {
@@ -133,12 +169,18 @@ export default async function RoasterDetailPageServer({ params }: Props) {
 
   const queryClient = new QueryClient();
 
-  // Fetch reviews/stats server-side and pass as props so the detail page renders
-  // them in the SSR HTML (no client-hook reflow → no CLS). Also seed the query
-  // cache via HydrationBoundary so QuickRating's useReviews has the data client-side.
-  const [stats, reviews] = await Promise.all([
+  // Fetch reviews/stats + paginated catalog in parallel. Catalog uses
+  // coffee_directory_mv (same PUBLIC_COFFEE_STATUSES as get_roaster_detail)
+  // so every active/seasonal SKU is reachable via real ?page=N links.
+  const [stats, reviews, coffeeList] = await Promise.all([
     fetchReviewStats("roaster", roaster.id).catch(() => null),
     fetchReviews("roaster", roaster.id, 10).catch(() => []),
+    fetchCoffeesCached(
+      { roaster_slugs: [slug] },
+      page,
+      ROASTER_COFFEES_PAGE_SIZE,
+      "name_asc"
+    ),
   ]);
   queryClient.setQueryData(
     queryKeys.reviews.stats("roaster", roaster.id),
@@ -220,6 +262,9 @@ export default async function RoasterDetailPageServer({ params }: Props) {
           stats={stats}
           reviews={reviews}
           faqItems={faqItems}
+          coffees={coffeeList.items}
+          coffeesPage={coffeeList.page}
+          coffeesTotalPages={coffeeList.totalPages}
         />
       </>
     </HydrationBoundary>

@@ -207,7 +207,10 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
       name: coffee.roaster?.name ?? "Roaster",
       url: `${baseUrl}/roasters/${roasterSlug}`,
     },
-    { name: "Coffees", url: `${baseUrl}/roasters/${roasterSlug}/coffees` },
+    {
+      name: "Coffees",
+      url: `${baseUrl}/roasters/${roasterSlug}#coffees`,
+    },
     { name: getCoffeeDisplayName(coffee) || "Coffee", url: canonical },
   ]);
 
