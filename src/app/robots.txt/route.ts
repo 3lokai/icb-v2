@@ -5,13 +5,7 @@ export const dynamic = "force-static";
 const CONTENT_SIGNAL = "ai-train=yes, search=yes, ai-input=yes";
 
 /** Read-only endpoints documented in public/llms.txt. Keep the two in sync. */
-const DISCOVERY_API_PATHS = [
-  "/api/coffees",
-  "/api/roasters",
-  "/api/geo/",
-  "/api/v1/coffees",
-  "/api/v1/roasters",
-];
+const DISCOVERY_API_PATHS = ["/api/coffees", "/api/roasters"];
 
 const APP_URL = (
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com"
