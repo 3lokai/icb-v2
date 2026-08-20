@@ -99,7 +99,10 @@ type HomePageProps = {
 export default function Home({ searchParams }: HomePageProps) {
   return (
     <div className="surface-0 flex min-h-screen flex-col">
-      <main className="flex-1 bg-background">
+      {/* Not <main>: the (main) layout already provides the document's single
+          <main> landmark — nesting a second one is invalid HTML and breaks
+          main-tag content extraction. */}
+      <div className="flex-1 bg-background">
         <div className="relative">
           {/* Contentful fallback: discovery h1 streams immediately so FCP isn't gated on hero data */}
           <Suspense fallback={<HeroSuspenseFallback />}>
@@ -150,7 +153,7 @@ export default function Home({ searchParams }: HomePageProps) {
         <TestimonialsSection />
         <HomepageFAQ />
         <CtaSection />
-      </main>
+      </div>
     </div>
   );
 }

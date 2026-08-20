@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { getGlossaryTermsServer } from "@/lib/glossary/server";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
+import { generateBreadcrumbSchema } from "@/lib/seo/schema";
+import StructuredData from "@/components/seo/StructuredData";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { slugifyHeading } from "@/lib/utils";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -57,8 +60,38 @@ export default function GlossaryPage() {
     {} as Record<string, typeof terms>
   );
 
+  // A glossary is prime AI-citation surface but was emitting no page-level
+  // JSON-LD at all. DefinedTermSet is the exact schema.org fit; each h3 carries
+  // a matching anchor id so a term can be cited by URL.
+  const definedTermSetSchema = {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "@id": `${baseUrl}/learn/glossary`,
+    name: "Specialty Coffee Glossary",
+    description:
+      "Indian specialty coffee terminology — processing, roast, brewing, and tasting terms defined.",
+    url: `${baseUrl}/learn/glossary`,
+    inLanguage: "en",
+    hasDefinedTerm: terms.map((term) => ({
+      "@type": "DefinedTerm",
+      "@id": `${baseUrl}/learn/glossary#${slugifyHeading(term.term)}`,
+      name: term.term,
+      description: term.definition,
+      ...(term.aliases?.length ? { alternateName: term.aliases } : {}),
+      ...(term.category ? { termCode: term.category } : {}),
+      inDefinedTermSet: `${baseUrl}/learn/glossary`,
+    })),
+  };
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: baseUrl },
+    { name: "Learn", url: `${baseUrl}/learn` },
+    { name: "Glossary", url: `${baseUrl}/learn/glossary` },
+  ]);
+
   return (
     <>
+      <StructuredData schema={[definedTermSetSchema, breadcrumbSchema]} />
       <PageHeader
         title="Coffee Glossary"
         overline="Learn"
@@ -79,7 +112,12 @@ export default function GlossaryPage() {
                 className="card-base card-padding card-hover"
                 key={term.term}
               >
-                <h3 className="mb-2 text-heading">{term.term}</h3>
+                <h3
+                  className="mb-2 scroll-mt-24 text-heading"
+                  id={slugifyHeading(term.term)}
+                >
+                  {term.term}
+                </h3>
                 <p className="text-body text-muted-foreground">
                   {term.definition}
                 </p>

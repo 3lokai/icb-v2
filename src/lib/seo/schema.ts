@@ -493,6 +493,14 @@ export const organizationSchema = {
     "@type": "Country",
     name: "India",
   },
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer support",
+    email: "support@indiancoffeebeans.com",
+    url: "https://www.indiancoffeebeans.com/contact",
+    areaServed: "IN",
+    availableLanguage: "English",
+  },
   sameAs: [
     "https://x.com/indiacoffeebean",
     "https://instagram.com/indiancoffeebeans",

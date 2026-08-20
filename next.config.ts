@@ -154,6 +154,28 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
+    // Clickjacking / MIME-sniffing / referrer-leak defenses. No CSP here: the app
+    // loads inline GA-consent + PostHog bootstrap scripts, so a meaningful policy
+    // needs a nonce pass through the layout — tracked separately.
+    // ponytail: header list, not a CSP; add the nonce plumbing if CSP is required.
+    const securityHeaders = [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+          },
+        ],
+      },
+    ];
+
     // Lottie animation JSON and hero video files are content-stable and
     // versioned with the deploy — cache them aggressively so they paint
     // instantly after the first visit.
@@ -184,11 +206,12 @@ const nextConfig: NextConfig = {
           source: "/:path*",
           headers: [{ key: "X-Robots-Tag", value: "noindex" }],
         },
+        ...securityHeaders,
         ...immutableAssets,
       ];
     }
 
-    return immutableAssets;
+    return [...securityHeaders, ...immutableAssets];
   },
   // Webpack config for bundle-analyzer builds (npm run analyze uses --webpack).
   // The catch-all vendor group has been intentionally removed — it was bundling

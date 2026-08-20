@@ -37,6 +37,13 @@ const ROW_GAP = 6;
 const AXIS_GAP = 26;
 const TICK_H = 30;
 
+// Round increments for the grinder setting axis, smallest that fits first.
+const NICE_STEPS = [1, 2, 5, 10, 20, 25, 30, 50, 100, 250, 500];
+// Plot units. Below this two tick labels overlap; likewise the out-of-range
+// caption needs this much clear axis before it is worth drawing.
+const MIN_TICK_GAP = 30;
+const MIN_CAPTION_W = 95;
+
 /** Map a micron value to an SVG x-coordinate on the chart plot area. */
 const x = (micron: number) =>
   PLOT_X0 +
@@ -49,20 +56,35 @@ export function GrindChart({ selectedMethodKey, grinder }: GrindChartProps) {
   const axisY = rowsTop + methodsHeight + AXIS_GAP;
   const H = axisY + TICK_H + 28;
 
-  // Grinder setting ticks (only spans the grinder's reachable micron range).
+  // Grinder setting ticks (only span the grinder's reachable micron range).
+  // Ticks step by a round number rather than span/6, so a 1-9 scale reads
+  // 1,3,5,7,9 instead of 1,2,4,5,6,8,9.
   const grinderTicks: { setting: number; micron: number; label: string }[] = [];
   if (grinder) {
-    const steps = 6;
-    for (let i = 0; i <= steps; i++) {
-      const setting =
-        grinder.settingMin +
-        (i / steps) * (grinder.settingMax - grinder.settingMin);
-      const micron =
-        grinder.micronMin +
-        (i / steps) * (grinder.micronMax - grinder.micronMin);
+    const span = grinder.settingMax - grinder.settingMin;
+    const step = NICE_STEPS.find((n) => n >= span / 6) ?? span;
+    const settings: number[] = [];
+    for (let s = grinder.settingMin; s < grinder.settingMax; s += step) {
+      settings.push(s);
+    }
+    // Drop a last tick only if its label would actually collide with the end
+    // one — measured in plot units, since equal setting gaps are not equal
+    // pixel gaps once the grinder's micron span is narrower than the axis.
+    const last = settings[settings.length - 1];
+    if (
+      settings.length > 1 &&
+      x(micronForSetting(grinder, grinder.settingMax)) -
+        x(micronForSetting(grinder, last)) <
+        MIN_TICK_GAP
+    ) {
+      settings.pop();
+    }
+    settings.push(grinder.settingMax);
+
+    for (const setting of settings) {
       grinderTicks.push({
         setting,
-        micron,
+        micron: micronForSetting(grinder, setting),
         label: formatSetting(grinder, setting),
       });
     }
@@ -173,6 +195,46 @@ export function GrindChart({ selectedMethodKey, grinder }: GrindChartProps) {
         {/* Grinder setting axis */}
         {grinder && (
           <g>
+            {/* Micron span the grinder cannot reach — dashed so the solid axis
+                stopping short reads as a limit, not a truncated drawing. */}
+            {grinder.micronMin > MICRON_AXIS_MIN && (
+              <line
+                x1={PLOT_X0}
+                x2={x(grinder.micronMin)}
+                y1={axisY}
+                y2={axisY}
+                stroke="var(--border)"
+                strokeWidth={1.5}
+                strokeOpacity={0.45}
+                strokeDasharray="3 4"
+              />
+            )}
+            {grinder.micronMax < MICRON_AXIS_MAX && (
+              <>
+                <line
+                  x1={x(grinder.micronMax)}
+                  x2={PLOT_X1}
+                  y1={axisY}
+                  y2={axisY}
+                  stroke="var(--border)"
+                  strokeWidth={1.5}
+                  strokeOpacity={0.45}
+                  strokeDasharray="3 4"
+                />
+                {PLOT_X1 - x(grinder.micronMax) >= MIN_CAPTION_W && (
+                  <text
+                    x={(x(grinder.micronMax) + PLOT_X1) / 2}
+                    y={axisY + 18}
+                    textAnchor="middle"
+                    fontSize={9}
+                    fill="var(--muted-foreground)"
+                    fillOpacity={0.7}
+                  >
+                    out of range
+                  </text>
+                )}
+              </>
+            )}
             <line
               x1={x(grinder.micronMin)}
               x2={x(grinder.micronMax)}
