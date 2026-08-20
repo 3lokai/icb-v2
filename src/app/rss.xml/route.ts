@@ -22,13 +22,25 @@ function escapeXml(value: string): string {
     .replace(/'/g, "&apos;");
 }
 
+/** RFC 822 UTC date for RSS, or null when the input is missing/unparseable. */
+function toRssDate(value: string | null | undefined): string | null {
+  if (value == null || value === "") return null;
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toUTCString();
+}
+
 /** Resolve the public article URL, matching /learn/[slug] canonical logic. */
 function articleUrl(article: Article, baseUrl: string): string {
   return article.metadata?.canonicalUrl || `${baseUrl}/learn/${article.slug}`;
 }
 
-/** Build a single RSS <item> for an article. */
-function buildItem(article: Article, baseUrl: string): string {
+/** Build a single RSS <item> for an article with a valid pubDate. */
+function buildItem(
+  article: Article,
+  baseUrl: string,
+  pubDate: string
+): string {
   const link = articleUrl(article, baseUrl);
   const description =
     article.metadata?.metaDescription ||
@@ -42,7 +54,7 @@ function buildItem(article: Article, baseUrl: string): string {
     `      <title>${escapeXml(article.title)}</title>`,
     `      <link>${escapeXml(link)}</link>`,
     `      <guid isPermaLink="true">${escapeXml(link)}</guid>`,
-    `      <pubDate>${new Date(article.date).toUTCString()}</pubDate>`,
+    `      <pubDate>${pubDate}</pubDate>`,
     description
       ? `      <description>${escapeXml(description)}</description>`
       : null,
@@ -59,12 +71,19 @@ function buildItem(article: Article, baseUrl: string): string {
 function buildRssXml(articles: Article[], baseUrl: string): string {
   const feedUrl = `${baseUrl}/rss.xml`;
   const learnUrl = `${baseUrl}/learn`;
-  const lastBuildDate =
-    articles[0]?.date != null
-      ? new Date(articles[0].date).toUTCString()
-      : new Date().toUTCString();
 
-  const items = articles.map((article) => buildItem(article, baseUrl)).join("\n");
+  const datedItems = articles.flatMap((article) => {
+    const pubDate = toRssDate(article.date);
+    if (!pubDate) return [];
+    return [{ article, pubDate }];
+  });
+
+  const lastBuildDate =
+    datedItems[0]?.pubDate ?? new Date().toUTCString();
+
+  const items = datedItems
+    .map(({ article, pubDate }) => buildItem(article, baseUrl, pubDate))
+    .join("\n");
 
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
@@ -86,15 +105,24 @@ function buildRssXml(articles: Article[], baseUrl: string): string {
 /** Serve the Field Guide RSS 2.0 feed from published Sanity articles. */
 export async function GET() {
   const baseUrl = getSeoBaseUrl().replace(/\/$/, "");
-  let articles: Article[] = [];
 
+  let articles: Article[];
   try {
     const fetched = await client.fetch<Article[]>(ALL_ARTICLES_QUERY);
     articles = (fetched ?? [])
       .filter((article) => article?.slug && !article.draft)
       .slice(0, FEED_LIMIT);
   } catch (error) {
+    // Do not return a cacheable empty 200 — CDNs/subscribers would retain a
+    // feed with every entry removed until the shared TTL expires.
     console.error("Failed to fetch articles for RSS feed:", error);
+    return new NextResponse("RSS feed temporarily unavailable", {
+      status: 503,
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-store",
+      },
+    });
   }
 
   const xml = buildRssXml(articles, baseUrl);
