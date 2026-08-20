@@ -272,11 +272,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
       ) ?? [];
 
-    // NOTE: The `/roasters/{slug}/coffees` lineup listing pages are intentionally
-    // omitted from the sitemap — they are noindexed (see that route's metadata)
-    // to resolve cannibalization with the parent roaster page and the indexed
-    // coffee SKU pages. Advertising a noindex URL in the sitemap sends a mixed
-    // signal, so they are excluded here.
+    // NOTE: The legacy `/roasters/{slug}/coffees` lineup URL now 301s to the
+    // parent roaster profile (which paginates the full catalog via ?page=N).
+    // Do not advertise the old path in the sitemap.
 
     // Generate dynamic curation (curator) routes
     const curationRoutes: MetadataRoute.Sitemap =

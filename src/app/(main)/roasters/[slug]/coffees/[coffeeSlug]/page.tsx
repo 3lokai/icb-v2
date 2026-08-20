@@ -16,6 +16,7 @@ import {
   clampDescription,
 } from "@/lib/seo/metadata";
 import {
+  bestVariantPrice,
   generateSchemaOrg,
   generateBreadcrumbSchema,
   generateFAQSchema,
@@ -180,10 +181,13 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
     image: ogImage,
     url: canonical,
     brand: coffee.roaster?.name,
+    // MV price fields are stock-gated (null when in_stock_count = 0). Fall back
+    // to last-known variant price so out-of-stock SKUs still emit Product+Offer
+    // with availability: OutOfStock instead of dropping the entity.
     price:
-      coffee.summary.best_normalized_250g ||
-      coffee.summary.min_price_in_stock ||
-      undefined,
+      coffee.summary.best_normalized_250g ??
+      coffee.summary.min_price_in_stock ??
+      bestVariantPrice(coffee.variants),
     currency: "INR",
     availability:
       (coffee.summary.in_stock_count ?? 0) > 0 ? "InStock" : "OutOfStock",
@@ -203,7 +207,10 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
       name: coffee.roaster?.name ?? "Roaster",
       url: `${baseUrl}/roasters/${roasterSlug}`,
     },
-    { name: "Coffees", url: `${baseUrl}/roasters/${roasterSlug}/coffees` },
+    {
+      name: "Coffees",
+      url: `${baseUrl}/roasters/${roasterSlug}#coffees`,
+    },
     { name: getCoffeeDisplayName(coffee) || "Coffee", url: canonical },
   ]);
 

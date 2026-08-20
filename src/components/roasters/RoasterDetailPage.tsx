@@ -1,19 +1,18 @@
 import { Accent } from "@/components/primitives/accent";
 import Link from "next/link";
 import type { RoasterDetail } from "@/types/roaster-types";
+import type { CoffeeSummary } from "@/types/coffee-types";
 import type { EntityReviewStats } from "@/types/review-types";
 import type { ReviewWithProfile } from "@/lib/data/fetch-reviews";
-import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
-import { Icon } from "@/components/common/Icon";
 import { Band } from "@/components/primitives/band";
 import { Stack } from "@/components/primitives/stack";
 import { Prose } from "@/components/primitives/prose";
-import { Button } from "@/components/ui/button";
 import { ReviewList, ReviewStats } from "@/components/reviews";
 import { RatingPanel } from "@/components/reviews/RatingPanel";
 import { ExitIntentRating } from "@/components/reviews/ExitIntentRating";
 import CoffeeCard from "@/components/cards/CoffeeCard";
 import { RoasterCoffeeBreakdown } from "@/components/roasters/RoasterCoffeeBreakdown";
+import { RoasterCoffeePagination } from "@/components/roasters/RoasterCoffeePagination";
 import { RoasterHero } from "@/components/roasters/RoasterHero";
 import { SimilarRoasters } from "@/components/roasters/SimilarRoasters";
 import {
@@ -33,6 +32,10 @@ type RoasterDetailPageProps = {
   reviews: ReviewWithProfile[];
   /** Data-templated FAQs; JSON-LD is emitted by the parent route. */
   faqItems?: FaqItem[];
+  /** Paginated catalog page (server-fetched; real <a> links via pagination). */
+  coffees: CoffeeSummary[];
+  coffeesPage: number;
+  coffeesTotalPages: number;
   className?: string;
 };
 
@@ -50,6 +53,9 @@ export function RoasterDetailPage({
   stats,
   reviews,
   faqItems,
+  coffees,
+  coffeesPage,
+  coffeesTotalPages,
   className,
 }: RoasterDetailPageProps) {
   return (
@@ -73,8 +79,8 @@ export function RoasterDetailPage({
         </Band>
       )}
 
-      {/* SECTION 3: COFFEES SELECTION (cream band) */}
-      {roaster.coffees && roaster.coffees.length > 0 && (
+      {/* SECTION 3: FULL CATALOG (paginated; real <a> links for crawlers) */}
+      {coffees.length > 0 && (
         <Band id="coffees">
           <Stack gap="8">
             <h2 className="text-title text-balance leading-[1.1] italic">
@@ -88,32 +94,18 @@ export function RoasterDetailPage({
               processDistribution={roaster.process_distribution}
             />
 
-            {/* Surface up to 12 direct SKU links from this indexed roaster page
-                (data already loads up to 15) so coffee pages stay well-linked
-                without depending on the noindexed lineup listing page. */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {roaster.coffees.slice(0, 12).map((coffee) => (
+              {coffees.map((coffee) => (
                 <CoffeeCard key={coffee.coffee_id} coffee={coffee} />
               ))}
             </div>
 
-            {roaster.coffees.length > 12 && (
-              <div className="flex justify-center pt-4">
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="rounded-full px-8 hover-lift"
-                >
-                  <Link
-                    href={`/roasters/${roaster.slug}/coffees`}
-                    className="inline-flex items-center gap-2"
-                  >
-                    Explore All Coffees
-                    <Icon icon={ArrowRightIcon} size={16} />
-                  </Link>
-                </Button>
-              </div>
+            {roaster.slug && coffeesTotalPages > 1 && (
+              <RoasterCoffeePagination
+                slug={roaster.slug}
+                page={coffeesPage}
+                totalPages={coffeesTotalPages}
+              />
             )}
           </Stack>
         </Band>
