@@ -43,8 +43,16 @@ export default function MainLayout({
       >
         <AnnouncementBanner />
       </Suspense>
+      <a
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:ring-2 focus:ring-ring"
+        href="#main-content"
+      >
+        Skip to content
+      </a>
       <Header />
-      <main className="flex-1 overflow-x-clip">{children}</main>
+      <main className="flex-1 overflow-x-clip" id="main-content">
+        {children}
+      </main>
       <Footer />
       <SearchCommand />
       <CookieNotice />
