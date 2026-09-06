@@ -28,14 +28,12 @@ export function bestVariantPrice(
     v: Pick<CoffeeVariant, "price_current" | "weight_g" | "pack_count">
   ) =>
     Math.round(
-      ((v.price_current! / Math.max(v.pack_count || 1, 1)) *
-        (250 / v.weight_g)) *
+      (v.price_current! / Math.max(v.pack_count || 1, 1)) *
+        (250 / v.weight_g) *
         100
     ) / 100;
 
-  const near250 = priced.filter(
-    (v) => v.weight_g >= 240 && v.weight_g <= 260
-  );
+  const near250 = priced.filter((v) => v.weight_g >= 240 && v.weight_g <= 260);
   const pool = near250.length > 0 ? near250 : priced;
   return Math.min(...pool.map(normalized250g));
 }

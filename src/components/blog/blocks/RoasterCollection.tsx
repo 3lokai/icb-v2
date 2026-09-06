@@ -2,7 +2,10 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
-import { buildRoasterCollectionParams, hasCollectionFilter } from "@/lib/blog/collection-params";
+import {
+  buildRoasterCollectionParams,
+  hasCollectionFilter,
+} from "@/lib/blog/collection-params";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";

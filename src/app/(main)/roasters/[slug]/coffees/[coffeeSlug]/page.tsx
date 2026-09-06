@@ -14,6 +14,7 @@ import {
   generateMetadata as generateSEOMetadata,
   truncateTitle,
   clampDescription,
+  formatAltitudeLabel,
 } from "@/lib/seo/metadata";
 import {
   bestVariantPrice,
@@ -88,13 +89,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = truncateTitle(titleRaw);
 
   const originLabel = coffeeOriginLabel(coffee);
-  const attrParts = [processPart, originLabel, roastPart].filter(Boolean);
+  // Altitude is an estate attribute, so it rides along with the estate origin.
+  const estate = coffee.estates?.[0];
+  const altitudeLabel = formatAltitudeLabel(
+    estate?.altitude_min_m,
+    estate?.altitude_max_m
+  );
+  const attrParts = [processPart, originLabel, altitudeLabel, roastPart].filter(
+    Boolean
+  );
   const attrLine = attrParts.join(" · ");
 
+  // Rating is surfaced from the first rating up, matching the aggregateRating
+  // threshold in the Product schema (rating_count > 0) — the two disagreed, so
+  // 1–4 rating coffees emitted a star snippet with no rating text in the meta.
   const avgRating = stats?.avg_rating ?? null;
   const ratingBlurb =
-    reviewCount >= 5 && avgRating != null
-      ? `Community-rated ${avgRating.toFixed(1)}/5 from ${reviewCount} reviews. `
+    reviewCount > 0 && avgRating != null
+      ? `Community-rated ${avgRating.toFixed(1)}/5 from ${reviewCount} ${reviewCount === 1 ? "rating" : "ratings"}. `
       : "";
 
   const descriptionFooter =

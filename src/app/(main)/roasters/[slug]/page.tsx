@@ -31,9 +31,9 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-function parsePageParam(
-  searchParams: { [key: string]: string | string[] | undefined }
-): number {
+function parsePageParam(searchParams: {
+  [key: string]: string | string[] | undefined;
+}): number {
   const raw = searchParams.page;
   const value = Array.isArray(raw) ? raw[0] : raw;
   const page = value ? Number.parseInt(value, 10) : 1;

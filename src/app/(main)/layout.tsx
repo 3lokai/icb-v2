@@ -55,7 +55,7 @@ export default function MainLayout({
       </main>
       <Footer />
       <SearchCommand />
-      <CookieNotice />
+      {false && <CookieNotice />}
     </div>
   );
 }

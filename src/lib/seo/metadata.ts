@@ -50,6 +50,28 @@ export function clampDescription(
   return desc;
 }
 
+/**
+ * Estate altitude as a meta-description fragment: "950–1,000 m", or "1,500 m"
+ * when only one bound is known (or both are equal). Returns null when the
+ * estate carries no altitude, so callers can filter it out of an attribute
+ * line rather than emitting an empty separator.
+ */
+export function formatAltitudeLabel(
+  minM?: number | null,
+  maxM?: number | null
+): string | null {
+  const min = minM ?? null;
+  const max = maxM ?? null;
+  if (min == null && max == null) return null;
+
+  const fmt = (n: number) => n.toLocaleString("en-IN");
+  if (min != null && max != null && min !== max) {
+    // en dash for the range, matching the numeric-range convention in copy
+    return `${fmt(Math.min(min, max))}–${fmt(Math.max(min, max))} m`;
+  }
+  return `${fmt((min ?? max) as number)} m`;
+}
+
 // Define structures for detailed Open Graph types
 type OGProductDetails = {
   price?: string;

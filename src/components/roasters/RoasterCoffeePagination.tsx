@@ -108,10 +108,7 @@ export function RoasterCoffeePagination({
   );
 }
 
-function getPageNumbers(
-  page: number,
-  totalPages: number
-): (number | string)[] {
+function getPageNumbers(page: number, totalPages: number): (number | string)[] {
   const pages: (number | string)[] = [];
   const maxVisible = 7;
 

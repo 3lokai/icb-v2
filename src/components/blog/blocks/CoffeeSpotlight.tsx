@@ -5,7 +5,8 @@ import { queryKeys } from "@/lib/query-keys";
 import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { urlFor } from "@/lib/sanity/image";
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import { motion } from "motion/react";
@@ -22,6 +23,14 @@ interface CoffeeSpotlightProps {
     tags?: string[];
     link?: string;
   };
+}
+
+// Sanity drafts carry authoring placeholders like "[DATA: Populate with a
+// Karnataka washed lot]" in the legacy name/description fields. Rendering those
+// produces a card that looks interactive but points nowhere, which is where the
+// article dead-clicks came from — treat a placeholder as no data at all.
+function isPlaceholder(text?: string): boolean {
+  return /^\s*\[DATA[:\]]/i.test(text ?? "");
 }
 
 function SpotlightCard({
@@ -47,6 +56,13 @@ function SpotlightCard({
     data.flavor_notes?.map((n: { label: string }) => n.label) ??
     [];
 
+  // The card lifts and zooms on hover, so readers click the body, not just the
+  // CTA. Make the whole card the link (matching CoffeeCard) and render the CTA
+  // as a visual affordance, so there is no nested anchor.
+  const href = isLegacy
+    ? data.link || "#"
+    : `/roasters/${roasterSlug}/coffees/${data.slug}`;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -55,7 +71,11 @@ function SpotlightCard({
       transition={{ duration: 0.6 }}
       className="not-prose group my-12 overflow-hidden rounded-2xl border border-border/40 bg-card shadow-lg transition-all hover:shadow-2xl hover:border-border/80"
     >
-      <div className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-10">
+      <Link
+        href={href}
+        aria-label={`${displayName}${roasterName && !isLegacy ? ` by ${roasterName}` : ""} — view details`}
+        className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-10"
+      >
         <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl bg-muted/50 md:w-48 lg:w-56 shadow-inner">
           {(isLegacy ? data.image : imageUrl) && (
             <Image
@@ -111,31 +131,23 @@ function SpotlightCard({
           </div>
 
           <div className="pt-4">
-            <Button
-              asChild
-              variant="default"
-              size="lg"
-              className="rounded-xl shadow-md transition-all hover:translate-y-[-2px] hover:shadow-lg active:translate-y-0"
+            <span
+              className={cn(
+                buttonVariants({ variant: "default", size: "lg" }),
+                "rounded-xl shadow-md transition-all group-hover:translate-y-[-2px] group-hover:shadow-lg"
+              )}
             >
-              <Link
-                href={
-                  isLegacy
-                    ? data.link || "#"
-                    : `/roasters/${roasterSlug}/coffees/${data.slug}`
-                }
-              >
-                View Beans{" "}
-                <Icon
-                  icon={CoffeeIcon}
-                  size={18}
-                  className="ml-2"
-                  data-icon="inline-end"
-                />
-              </Link>
-            </Button>
+              View Beans{" "}
+              <Icon
+                icon={CoffeeIcon}
+                size={18}
+                className="ml-2"
+                data-icon="inline-end"
+              />
+            </span>
           </div>
         </div>
-      </div>
+      </Link>
     </motion.div>
   );
 }
@@ -152,11 +164,10 @@ export function CoffeeSpotlight({ value }: CoffeeSpotlightProps) {
     enabled: !!value.coffeeId,
   });
 
-  const items = coffee
-    ? [coffee]
-    : value.name && !value.coffeeId
-      ? [value]
-      : [];
+  const hasLegacyContent =
+    !!value.name &&
+    !isPlaceholder(value.name) &&
+    !isPlaceholder(value.description);
 
   if (value.coffeeId && isLoading) {
     return (
@@ -164,29 +175,16 @@ export function CoffeeSpotlight({ value }: CoffeeSpotlightProps) {
     );
   }
 
-  if (!isLoading && items.length === 0) {
-    return (
-      <div
-        className="rounded-2xl border border-border/20 bg-muted/30 px-6 py-12 text-center"
-        role="status"
-      >
-        <p className="text-body text-muted-foreground">
-          No coffees found in this spotlight.
-        </p>
-        <Button asChild variant="outline" size="sm" className="mt-4">
-          <Link href="/coffees">Browse coffees</Link>
-        </Button>
-      </div>
-    );
-  }
-
   if (value.coffeeId && coffee) {
     return <SpotlightCard data={coffee} />;
   }
 
-  if (!value.coffeeId && value.name) {
+  if (!value.coffeeId && hasLegacyContent) {
     return <SpotlightCard data={value} isLegacy />;
   }
 
+  // Unresolved id, or a placeholder/empty legacy block: render nothing rather
+  // than an empty card. An "in-article nothing found" box is reader-facing
+  // noise and was itself a dead-click surface.
   return null;
 }

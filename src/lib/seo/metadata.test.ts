@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   TITLE_MAX_LENGTH,
   TITLE_TEMPLATE_SUFFIX,
+  formatAltitudeLabel,
   truncateTitle,
 } from "./metadata";
 
@@ -54,4 +55,25 @@ test("falls back to a hard cut rather than gutting the title", () => {
   const out = truncateTitle("Supercalifragilisticexpialidocious".repeat(2));
   assert.ok(out.length + TITLE_TEMPLATE_SUFFIX.length <= TITLE_MAX_LENGTH, out);
   assert.ok(out.length > 1, out);
+});
+
+test("altitude: an estate with no altitude yields null, not an empty string", () => {
+  // Must be null so `.filter(Boolean)` drops it and the meta line has no
+  // dangling " · " separator — the reason the helper does not return "".
+  assert.equal(formatAltitudeLabel(null, null), null);
+  assert.equal(formatAltitudeLabel(undefined, undefined), null);
+});
+
+test("altitude: renders a range when the bounds differ", () => {
+  assert.equal(formatAltitudeLabel(950, 1000), "950–1,000 m");
+});
+
+test("altitude: collapses to a single value when only one bound is known", () => {
+  assert.equal(formatAltitudeLabel(1500, null), "1,500 m");
+  assert.equal(formatAltitudeLabel(null, 1400), "1,400 m");
+  assert.equal(formatAltitudeLabel(1200, 1200), "1,200 m");
+});
+
+test("altitude: normalizes inverted bounds rather than emitting a backwards range", () => {
+  assert.equal(formatAltitudeLabel(1000, 950), "950–1,000 m");
 });

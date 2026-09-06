@@ -19,7 +19,10 @@ export function BroadcastCard({ issue }: BroadcastCardProps) {
     >
       <div className="mb-3 flex items-center gap-3">
         <span className="h-px w-6 bg-accent/60" />
-        <time className="text-caption text-muted-foreground" dateTime={issue.date}>
+        <time
+          className="text-caption text-muted-foreground"
+          dateTime={issue.date}
+        >
           {format(issueDate(issue), "MMM d, yyyy")}
         </time>
       </div>
