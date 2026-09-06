@@ -118,22 +118,22 @@ export function hasCollectionFilter(
   }
   return Boolean(
     value.roastLevel?.length ||
-      value.beanType?.length ||
-      value.processingMethod?.length ||
-      value.regions?.length ||
-      value.roasters?.length ||
-      value.tags?.length ||
-      value.states?.length ||
-      value.cities?.length ||
-      value.brewMethod?.length ||
-      value.estates?.length ||
-      value.sourcingModel?.length ||
-      value.specialtyFocus?.length ||
-      value.isSingleOrigin ||
-      value.isFeatured ||
-      value.isSeasonal ||
-      value.isVerified ||
-      value.hasSubscription ||
-      value.hasPhysicalStore
+    value.beanType?.length ||
+    value.processingMethod?.length ||
+    value.regions?.length ||
+    value.roasters?.length ||
+    value.tags?.length ||
+    value.states?.length ||
+    value.cities?.length ||
+    value.brewMethod?.length ||
+    value.estates?.length ||
+    value.sourcingModel?.length ||
+    value.specialtyFocus?.length ||
+    value.isSingleOrigin ||
+    value.isFeatured ||
+    value.isSeasonal ||
+    value.isVerified ||
+    value.hasSubscription ||
+    value.hasPhysicalStore
   );
 }

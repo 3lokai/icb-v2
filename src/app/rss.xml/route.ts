@@ -36,11 +36,7 @@ function articleUrl(article: Article, baseUrl: string): string {
 }
 
 /** Build a single RSS <item> for an article with a valid pubDate. */
-function buildItem(
-  article: Article,
-  baseUrl: string,
-  pubDate: string
-): string {
+function buildItem(article: Article, baseUrl: string, pubDate: string): string {
   const link = articleUrl(article, baseUrl);
   const description =
     article.metadata?.metaDescription ||
@@ -78,8 +74,7 @@ function buildRssXml(articles: Article[], baseUrl: string): string {
     return [{ article, pubDate }];
   });
 
-  const lastBuildDate =
-    datedItems[0]?.pubDate ?? new Date().toUTCString();
+  const lastBuildDate = datedItems[0]?.pubDate ?? new Date().toUTCString();
 
   const items = datedItems
     .map(({ article, pubDate }) => buildItem(article, baseUrl, pubDate))

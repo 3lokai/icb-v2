@@ -182,13 +182,13 @@ second one** — a warm walk from primary (h60.55) through accent (h40) to clay 
 (h85). It replaced the stock shadcn defaults, which were teal, blue, violet and pink at up to 0.265
 chroma and read as a foreign palette dropped onto the page.
 
-| Token | Light | Dark | Reads as |
-| --- | --- | --- | --- |
+| Token       | Light                    | Dark                     | Reads as                 |
+| ----------- | ------------------------ | ------------------------ | ------------------------ |
 | `--chart-1` | `oklch(0.52 0.12 60.55)` | `oklch(0.68 0.11 60.55)` | Roasted bean (= primary) |
-| `--chart-2` | `oklch(0.64 0.135 38)` | `oklch(0.76 0.125 38)` | Terracotta |
-| `--chart-3` | `oklch(0.42 0.075 52)` | `oklch(0.6 0.07 52)` | Dark cocoa |
-| `--chart-4` | `oklch(0.66 0.105 85)` | `oklch(0.84 0.1 85)` | Amber wheat |
-| `--chart-5` | `oklch(0.55 0.14 25)` | `oklch(0.7 0.13 25)` | Clay red |
+| `--chart-2` | `oklch(0.64 0.135 38)`   | `oklch(0.76 0.125 38)`   | Terracotta               |
+| `--chart-3` | `oklch(0.42 0.075 52)`   | `oklch(0.6 0.07 52)`     | Dark cocoa               |
+| `--chart-4` | `oklch(0.66 0.105 85)`   | `oklch(0.84 0.1 85)`     | Amber wheat              |
+| `--chart-5` | `oklch(0.55 0.14 25)`    | `oklch(0.7 0.13 25)`     | Clay red                 |
 
 Three constraints govern any future edit to this ramp:
 

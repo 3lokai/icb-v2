@@ -344,7 +344,11 @@ export async function fetchChartData(
       return aggregateArrayField(coffees, "canon_region_names", safeLimit);
 
     case "top_flavors":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
+      return aggregateArrayField(
+        coffees,
+        "canon_flavor_descriptors",
+        safeLimit
+      );
 
     case "estate_roaster_count":
       return aggregateEstateRoasterCounts(coffees, safeLimit);
@@ -368,7 +372,11 @@ export async function fetchChartData(
       );
 
     case "top_flavors_washed_espresso":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
+      return aggregateArrayField(
+        coffees,
+        "canon_flavor_descriptors",
+        safeLimit
+      );
 
     case "roaster_concentration":
       return aggregateSimpleDistribution(coffees, "roaster_name", limit || 10);
@@ -377,10 +385,18 @@ export async function fetchChartData(
       return aggregatePriceDistribution(coffees);
 
     case "arabica_top_flavor_notes":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
+      return aggregateArrayField(
+        coffees,
+        "canon_flavor_descriptors",
+        safeLimit
+      );
 
     case "robusta_top_flavor_notes":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", safeLimit);
+      return aggregateArrayField(
+        coffees,
+        "canon_flavor_descriptors",
+        safeLimit
+      );
 
     case "robusta_process_distribution":
       return aggregateSimpleDistribution(coffees, "process").map((item) => ({
