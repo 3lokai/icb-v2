@@ -10,6 +10,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { NewsletterForm } from "@/components/common/NewsletterForm";
+import { BrewIconsRow } from "@/components/layout/BrewIconsRow";
 import { Logo } from "@/components/layout/logo";
 import { CookieSettingsButton } from "../common/CookieSettings";
 import { Stack } from "@/components/primitives/stack";
@@ -290,7 +291,11 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="mt-16 border-t border-border/60 pt-8">
+          <div className="mt-12 flex justify-center">
+            <BrewIconsRow />
+          </div>
+
+          <div className="mt-8 border-t border-border/60 pt-8">
             <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
               <div className="flex flex-col items-center gap-2 md:items-start">
                 <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
