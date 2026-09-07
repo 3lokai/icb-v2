@@ -261,7 +261,17 @@ export function generateMetadata({
     metadataBase: new URL(baseUrl),
     robots: noIndex
       ? { index: false, follow: false }
-      : { index: true, follow: true },
+      : {
+          index: true,
+          follow: true,
+          // Without max-image-preview:large Google caps the preview at a
+          // thumbnail, which makes /learn articles Discover-ineligible however
+          // correct their og:image is. Set on the shared builder rather than the
+          // article route so every surface (SKU, roaster, discovery) gets it.
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+        },
     alternates: {
       canonical: resolvedCanonical || undefined,
       ...(resolvedCanonical && {

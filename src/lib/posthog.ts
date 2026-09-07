@@ -56,8 +56,22 @@ export function loadPostHog(): Promise<PostHog> {
           "Load failed",
           "Failed to fetch",
           "NetworkError",
+          // `blob.includes` is case-sensitive, so the lowercase-with-a-space
+          // variant needs its own entry — "NetworkError" never caught it.
+          "network error",
+          "AbortError: signal is aborted",
+          "Access is denied for this document",
           "Connection closed",
           "play method is not allowed",
+          // Host-app and extension runtimes, not page code: an Android WebView
+          // torn down mid-postMessage (in-app browsers), and a Safari App
+          // Extension messaging its native host.
+          "Error invoking postMessage",
+          "runtime.sendNativeMessage",
+          // NOT filtered on purpose: "NotFoundError". It is the largest single
+          // match, but removeChild detach may be a React portal/unmount race
+          // rather than an extension — see [posthog-source-maps]. Filtering it
+          // would delete the evidence that review needs.
         ];
         if (NOISE.some((m) => blob.includes(m))) return null;
         return event;
