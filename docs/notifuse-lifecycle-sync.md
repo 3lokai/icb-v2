@@ -69,9 +69,17 @@ talks to the Notifuse list API directly from the app:
 | `unsubscribeFromNewsletterList(email)` | `POST /api/contactLists.updateStatus` — `{workspace_id, email, list_id, status:"unsubscribed"}` | `actions/profile.ts` (notification prefs, newsletter true→false) |
 
 Everyone — anonymous and logged-in — goes on the single list
-`NOTIFUSE_NEWSLETTER_ONLY_LIST_ID`. The lifecycle list
-(`NOTIFUSE_LIFECYCLE_LIST_ID`, subscribed by the edge function) stays
-product-lifecycle only. Both calls are fire-and-forget and no-op with a warn when
+`NOTIFUSE_NEWSLETTER_LIST_ID` (value `newsletter` — the list broadcasts target
+via `audience.list`). The lifecycle list (`NOTIFUSE_LIFECYCLE_LIST_ID`,
+subscribed by the edge function) stays product-lifecycle only.
+
+> **Renamed 2026-09-07, was `NOTIFUSE_NEWSLETTER_ONLY_LIST_ID=newsletteronly`.**
+> That pointed at the frozen pre-migration cohort, not the list broadcasts go to,
+> so for ~6 weeks every signup joined a list nothing sends to (6 of 23 stranded)
+> and every profile opt-out no-opped with `found:false` while the real membership
+> stayed active. The variable was renamed rather than re-valued so a stale copy in
+> any environment trips the `config()` warn instead of silently resuming.
+> Diagnosis and backfill: `icb-claude/notifuse/signals/newsletter-list-mismatch.md`. Both calls are fire-and-forget and no-op with a warn when
 the `NOTIFUSE_*` env vars are unset.
 
 > `lists.unsubscribe` is the *public* one-click endpoint (`wid`/`email`/`lids` +
