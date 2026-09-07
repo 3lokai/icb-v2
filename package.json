@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack && npm run sourcemaps",
-    "sourcemaps": "posthog-cli --host https://eu.posthog.com --no-fail sourcemap process -d .next/static --release-version \"$VERCEL_GIT_COMMIT_SHA\"; find .next/static -name '*.js.map' -delete",
+    "sourcemaps": "node scripts/upload-sourcemaps.mjs",
     "start": "next start",
     "analyze": "cross-env ANALYZE=true next build --webpack",
     "type-check": "tsc --noEmit",
