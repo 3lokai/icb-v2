@@ -13,8 +13,16 @@ if (process.env.ANALYZE === "true") {
 }
 
 const nextConfig: NextConfig = {
-  // ponytail: temporary — de-minify React #418 hydration errors in PostHog; remove
-  // once the offending component is identified (ships readable source publicly).
+  // Generates the .map files that `npm run sourcemaps` injects with chunk IDs and
+  // uploads to PostHog. That script then deletes them from .next/static, so maps
+  // reach PostHog for symbolication but are never served publicly — do not assume
+  // this flag alone is safe to leave on without that build step.
+  //
+  // Build-time only: no runtime cost, and the deployed output is strictly smaller
+  // than before (23MB of .map files stop shipping). Scoped to .next/static because
+  // nothing sends server-side stacks to PostHog — error.tsx and global-error.tsx
+  // are client components using the client captureException, so the 65MB of maps
+  // under .next/server would symbolicate errors that never arrive.
   productionBrowserSourceMaps: true,
 
   // Server Actions configuration
