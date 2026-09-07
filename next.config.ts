@@ -13,8 +13,10 @@ if (process.env.ANALYZE === "true") {
 }
 
 const nextConfig: NextConfig = {
-  // ponytail: temporary — de-minify React #418 hydration errors in PostHog; remove
-  // once the offending component is identified (ships readable source publicly).
+  // Generates the .map files that `npm run sourcemaps` injects with chunk IDs and
+  // uploads to PostHog. That script then deletes them from .next/static, so maps
+  // reach PostHog for symbolication but are never served publicly — do not assume
+  // this flag alone is safe to leave on without that build step.
   productionBrowserSourceMaps: true,
 
   // Server Actions configuration
