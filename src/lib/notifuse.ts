@@ -1,5 +1,7 @@
 import "server-only";
 
+import { getPostHogClient } from "@/lib/posthog-server";
+
 /**
  * Notifuse newsletter list membership.
  *
@@ -20,7 +22,11 @@ function config() {
   const apiUrl = process.env.NOTIFUSE_API_URL?.replace(/\/+$/, "");
   const apiKey = process.env.NOTIFUSE_API_KEY;
   const workspaceId = process.env.NOTIFUSE_WORKSPACE_ID;
-  const listId = process.env.NOTIFUSE_NEWSLETTER_ONLY_LIST_ID;
+  // The list broadcasts actually target (`audience.list` on every send). NOT
+  // `newsletteronly`, which is the frozen pre-migration cohort: subscribing there
+  // sends to nobody, and `contactLists.updateStatus` against it no-ops with
+  // `found:false` while the real membership stays active.
+  const listId = process.env.NOTIFUSE_NEWSLETTER_LIST_ID;
 
   if (!apiUrl || !apiKey || !workspaceId || !listId) {
     console.warn("[Notifuse] not configured, skipping newsletter list call");
@@ -52,9 +58,29 @@ async function post(
         res.status,
         await res.text()
       );
+      capture(action, String(res.status));
     }
   } catch (err) {
     console.error(`[Notifuse] ${LIST_ENDPOINTS[action]} unreachable`, err);
+    capture(action, "unreachable");
+  }
+}
+
+/**
+ * Every caller `void`s these calls so a Notifuse outage can't fail a form
+ * submission — which also means a failure reaches nobody. Three signups were
+ * lost that way before anyone noticed, so failures land in PostHog next to
+ * `newsletter_subscribed`. No email in the payload: this is an ops signal.
+ */
+function capture(action: keyof typeof LIST_ENDPOINTS, reason: string) {
+  try {
+    getPostHogClient().capture({
+      distinctId: "system",
+      event: "notifuse_list_call_failed",
+      properties: { action: LIST_ENDPOINTS[action], reason },
+    });
+  } catch {
+    // never let telemetry break the caller
   }
 }
 
