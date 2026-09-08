@@ -1,3 +1,4 @@
+import { withPostHogConfig } from "@posthog/nextjs-config";
 import type { NextConfig } from "next";
 import newsletterIssues from "./src/content/newsletters/index.json";
 
@@ -13,18 +14,6 @@ if (process.env.ANALYZE === "true") {
 }
 
 const nextConfig: NextConfig = {
-  // Generates the .map files that `npm run sourcemaps` injects with chunk IDs and
-  // uploads to PostHog. That script then deletes them from .next/static, so maps
-  // reach PostHog for symbolication but are never served publicly — do not assume
-  // this flag alone is safe to leave on without that build step.
-  //
-  // Build-time only: no runtime cost, and the deployed output is strictly smaller
-  // than before (23MB of .map files stop shipping). Scoped to .next/static because
-  // nothing sends server-side stacks to PostHog — error.tsx and global-error.tsx
-  // are client components using the client captureException, so the 65MB of maps
-  // under .next/server would symbolicate errors that never arrive.
-  productionBrowserSourceMaps: true,
-
   // Server Actions configuration
   // Allow 3MB body size to support 2MB image uploads (base64 encoding adds ~33% overhead)
   experimental: {
@@ -279,4 +268,36 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withBundleAnalyzer(nextConfig);
+const configuredNextConfig = withBundleAnalyzer(nextConfig);
+
+// The POSTHOG_CLI_* spellings are what is set in Vercel; the unprefixed ones are the
+// wizard's convention and are what .env.local uses. Accept either so a build is not
+// silently unsymbolicated just because the two disagree.
+const postHogApiKey =
+  process.env.POSTHOG_API_KEY ?? process.env.POSTHOG_CLI_API_KEY;
+const postHogProjectId =
+  process.env.POSTHOG_PROJECT_ID ?? process.env.POSTHOG_CLI_PROJECT_ID;
+// API host, not the ingestion host in NEXT_PUBLIC_POSTHOG_HOST — the two differ on EU.
+const postHogHost = process.env.POSTHOG_HOST ?? "https://eu.posthog.com";
+
+const canUploadSourcemaps = Boolean(postHogApiKey && postHogProjectId);
+
+// Missing credentials degrade to a build with no source maps at all: safe, but it means
+// every PostHog stack stays minified. That is invisible unless the build says so.
+if (!canUploadSourcemaps && process.env.VERCEL_ENV === "production") {
+  console.warn(
+    "posthog: no POSTHOG_API_KEY/POSTHOG_PROJECT_ID — shipping without source maps, stacks will be minified"
+  );
+}
+
+export default postHogApiKey && postHogProjectId
+  ? withPostHogConfig(configuredNextConfig, {
+      personalApiKey: postHogApiKey,
+      projectId: postHogProjectId,
+      host: postHogHost,
+      sourcemaps: {
+        enabled: true,
+        deleteAfterUpload: true,
+      },
+    })
+  : configuredNextConfig;
