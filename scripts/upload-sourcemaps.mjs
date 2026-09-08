@@ -6,20 +6,39 @@
  * deployable output *inside* `next build` (the "Running onBuildComplete from Vercel"
  * step), so anything chained after `next build &&` mutates `.next/static` a second too
  * late — the injected chunk IDs and the map deletion both miss the deployment. The
- * artifacts that actually ship are under `.vercel/output/static`, so prefer that when
- * it exists. Locally `vercel build` copies output *after* the build command instead,
- * where `.next/static` is still the right target, hence the fallback.
+ * artifacts that actually ship live under the Build Output API dir, which is an
+ * absolute /vercel/output on the build container (the repo is checked out at
+ * /vercel/path0), and <repo>/.vercel/output for a local `vercel build`.
  */
 import { execFileSync } from "child_process";
-import { existsSync, rmSync } from "fs";
-import { globSync } from "fs";
+import { existsSync, globSync, readdirSync, rmSync } from "fs";
 
-const VERCEL_OUT = ".vercel/output/static/_next/static";
-const dir = existsSync(VERCEL_OUT) ? VERCEL_OUT : ".next/static";
-console.log(
-  `sourcemaps: target ${dir}${dir === VERCEL_OUT ? "" : " (no .vercel/output — local build)"}`
-);
+// Ordered by specificity: the deployable output first, the build dir last. The last
+// entry is the only one a plain `next build` produces.
+const CANDIDATES = [
+  "/vercel/output/static/_next/static",
+  ".vercel/output/static/_next/static",
+  ".next/static",
+];
 
+const found = CANDIDATES.filter((d) => existsSync(d));
+console.log(`sourcemaps: candidates present -> ${found.join(", ") || "none"}`);
+
+if (!found.some((d) => d.includes("/output/"))) {
+  // No deployable-output tree. Injecting into .next/static alone is known not to reach
+  // the deployment, so surface where the output actually is instead of failing mutely.
+  for (const root of ["/vercel", "."]) {
+    try {
+      console.log(`sourcemaps: ls ${root} -> ${readdirSync(root).join(" ")}`);
+    } catch {
+      // Root does not exist off-Vercel; nothing to report.
+    }
+  }
+}
+
+// Inject+upload against the most specific tree available; that is what ships.
+const target = found[0] ?? ".next/static";
+console.log(`sourcemaps: target ${target}`);
 try {
   execFileSync(
     "posthog-cli",
@@ -30,7 +49,7 @@ try {
       "sourcemap",
       "process",
       "-d",
-      dir,
+      target,
       "--release-version",
       process.env.VERCEL_GIT_COMMIT_SHA ?? "local",
     ],
@@ -42,11 +61,9 @@ try {
   console.warn(`sourcemaps: upload skipped (${err.message})`);
 }
 
-// Sweep both trees: whichever one we injected, the other may still hold copies, and a
-// map left in either is a map that can ship.
+// Sweep every tree: a map left in any of them is a map that can ship.
 let deleted = 0;
-for (const root of [VERCEL_OUT, ".next/static"]) {
-  if (!existsSync(root)) continue;
+for (const root of found) {
   for (const f of globSync(`${root}/**/*.js.map`)) {
     rmSync(f);
     deleted++;
