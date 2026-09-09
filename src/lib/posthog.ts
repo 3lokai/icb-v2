@@ -68,10 +68,12 @@ export function loadPostHog(): Promise<PostHog> {
           // Extension messaging its native host.
           "Error invoking postMessage",
           "runtime.sendNativeMessage",
-          // NOT filtered on purpose: "NotFoundError". It is the largest single
-          // match, but removeChild detach may be a React portal/unmount race
-          // rather than an extension — see [posthog-source-maps]. Filtering it
-          // would delete the evidence that review needs.
+          // NOT filtered on purpose: "NotFoundError". Root cause is still open.
+          // The old CookieNotice portal-race theory is dead: that component
+          // never renders — (main)/layout.tsx gates it behind `{false && ...}`.
+          // The live candidates are Clarity mutating the DOM under React 19's
+          // commit phase, or the browser translate feature. Filtering it would
+          // delete the evidence that review needs.
         ];
         if (NOISE.some((m) => blob.includes(m))) return null;
         return event;
@@ -157,6 +159,11 @@ export const resetPostHog = (): void => {
 };
 
 /** Report an exception to PostHog Error Tracking. */
-export const captureException = (error: unknown): void => {
-  void loadPostHog().then((posthog) => posthog.captureException(error));
+export const captureException = (
+  error: unknown,
+  additionalProperties?: Record<string, unknown>
+): void => {
+  void loadPostHog().then((posthog) =>
+    posthog.captureException(error, additionalProperties)
+  );
 };

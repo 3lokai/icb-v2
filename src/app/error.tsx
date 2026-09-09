@@ -14,7 +14,11 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error(error);
-    captureException(error);
+    captureException(error, {
+      error_boundary: "app/error",
+      error_digest: error.digest,
+      pathname: window.location.pathname,
+    });
   }, [error]);
 
   // Inline retry control (in addition to ErrorPageContent) so static
