@@ -56,16 +56,81 @@ export function loadPostHog(): Promise<PostHog> {
           "Load failed",
           "Failed to fetch",
           "NetworkError",
+          // `blob.includes` is case-sensitive, so the lowercase-with-a-space
+          // variant needs its own entry — "NetworkError" never caught it.
+          "network error",
+          "AbortError: signal is aborted",
+          "Access is denied for this document",
           "Connection closed",
           "play method is not allowed",
+          // Host-app and extension runtimes, not page code: an Android WebView
+          // torn down mid-postMessage (in-app browsers), and a Safari App
+          // Extension messaging its native host.
+          "Error invoking postMessage",
+          "runtime.sendNativeMessage",
+          // NOT filtered on purpose: "NotFoundError". It is the largest single
+          // match, but removeChild detach may be a React portal/unmount race
+          // rather than an extension — see [posthog-source-maps]. Filtering it
+          // would delete the evidence that review needs.
         ];
         if (NOISE.some((m) => blob.includes(m))) return null;
         return event;
       },
     });
+    captureTtfb(posthog);
     return posthog;
   });
   return instance;
+}
+
+/**
+ * TTFB, which posthog-js does not capture.
+ *
+ * Its web-vitals integration is hard-limited to LCP/CLS/FCP/INP
+ * (`SupportedWebVitalsMetrics`), so TTFB cannot be switched on through
+ * `capture_performance.web_vitals_allowed_metrics` — it has to be read from the
+ * Navigation Timing API directly. Without it there is no way to tell a slow
+ * server response apart from slow hydration when an LCP regression shows up;
+ * PERFORMANCE-FIXES.md had to establish that split by hand.
+ *
+ * Fires once per full document load. Client-side App Router navigations do not
+ * create a new navigation entry, which is correct — TTFB only describes the
+ * initial document.
+ */
+function captureTtfb(posthog: PostHog): void {
+  try {
+    const [nav] = performance.getEntriesByType(
+      "navigation"
+    ) as PerformanceNavigationTiming[];
+    if (!nav) return;
+
+    // Prerendered pages start the clock at activation, per the web-vitals spec.
+    // activationStart is not in this TS lib's DOM types yet, so read it narrowly
+    // rather than widening `nav` and losing the rest of the timing types.
+    const activationStart =
+      (nav as PerformanceNavigationTiming & { activationStart?: number })
+        .activationStart ?? 0;
+    const ttfb = nav.responseStart - activationStart;
+    // Guard the same outlier band posthog-js uses for its own vitals (15 min).
+    if (!Number.isFinite(ttfb) || ttfb <= 0 || ttfb > 15 * 60 * 1000) return;
+
+    // Read the path off the navigation entry, not window.location: init is
+    // deferred to idle, by which point the user may already have navigated on.
+    let pathname: string | undefined;
+    try {
+      pathname = new URL(nav.name).pathname;
+    } catch {
+      /* non-URL entry name; leave undefined rather than guess */
+    }
+
+    posthog.capture("web_vitals_ttfb", {
+      value: Math.round(ttfb),
+      pathname,
+      env: process.env.NODE_ENV,
+    });
+  } catch {
+    /* Navigation Timing unavailable — telemetry must never break the page. */
+  }
 }
 
 /** Fire-and-forget event capture; loads + inits posthog on first use. */

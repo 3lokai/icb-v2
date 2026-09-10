@@ -2,7 +2,8 @@ import type { MetadataRoute } from "next";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { getAllLandingPageSlugs } from "@/lib/discovery/landing-pages";
 import { client } from "@/lib/sanity/client";
-import { fetchBroadcasts } from "@/lib/data/fetch-broadcasts";
+import { listNewsletters } from "@/lib/data/fetch-newsletters";
+import { issueDate } from "@/types/newsletter-types";
 import {
   SITEMAP_ARTICLES_QUERY,
   SITEMAP_CATEGORIES_QUERY,
@@ -147,23 +148,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ];
 
-  // Newsletter issues from Kit (empty when KIT_API_KEY is not configured)
-  let newsletterRoutes: MetadataRoute.Sitemap = [];
-  try {
-    const broadcasts = await fetchBroadcasts();
-    newsletterRoutes = broadcasts.map((broadcast) =>
+  // Newsletter issues from the static archive manifest
+  const newsletterRoutes: MetadataRoute.Sitemap = listNewsletters().map(
+    (issue) =>
       withHreflang({
-        url: `${baseUrl}/newsletter/${broadcast.id}`,
-        lastModified: broadcast.send_at
-          ? new Date(broadcast.send_at)
-          : new Date(),
+        url: `${baseUrl}/newsletter/${issue.date}`,
+        lastModified: issueDate(issue),
         changeFrequency: "yearly" as const,
         priority: 0.5,
       })
-    );
-  } catch (kitError) {
-    console.error("Failed to fetch newsletter routes for sitemap:", kitError);
-  }
+  );
 
   // Discovery landing pages (brew method, roast, price, process, region, bean type)
   const discoveryRoutes: MetadataRoute.Sitemap = getAllLandingPageSlugs().map(
@@ -278,11 +272,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
       ) ?? [];
 
-    // NOTE: The `/roasters/{slug}/coffees` lineup listing pages are intentionally
-    // omitted from the sitemap — they are noindexed (see that route's metadata)
-    // to resolve cannibalization with the parent roaster page and the indexed
-    // coffee SKU pages. Advertising a noindex URL in the sitemap sends a mixed
-    // signal, so they are excluded here.
+    // NOTE: The legacy `/roasters/{slug}/coffees` lineup URL now 301s to the
+    // parent roaster profile (which paginates the full catalog via ?page=N).
+    // Do not advertise the old path in the sitemap.
 
     // Generate dynamic curation (curator) routes
     const curationRoutes: MetadataRoute.Sitemap =

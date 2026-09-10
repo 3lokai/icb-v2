@@ -15,7 +15,11 @@ import {
 } from "@/lib/seo/schema";
 import PartnerPageClient from "./PartnerPageClient";
 
-const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+const TOTALS_FALLBACK: PublicDirectoryTotals = {
+  coffees: 0,
+  roasters: 0,
+  asOf: null,
+};
 
 // Define metadata for SEO
 export const metadata: Metadata = generateMetadata({

@@ -1,7 +1,42 @@
 // lib/seo/schema.ts
 
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
+import type { CoffeeVariant } from "@/types/coffee-component-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
+
+/**
+ * Best Offer.price from raw variants, ignoring stock status.
+ *
+ * Mirrors coffee_directory_mv's best_normalized_250g (prefer a 240–260g pack,
+ * else cheapest derived per-250g) but without the `in_stock` filter — so
+ * out-of-stock SKUs that still carry a last-known price can emit a valid Offer
+ * with availability: OutOfStock instead of dropping the Product entity.
+ */
+export function bestVariantPrice(
+  variants: Pick<CoffeeVariant, "price_current" | "weight_g" | "pack_count">[]
+): number | undefined {
+  const priced = variants.filter(
+    (v) =>
+      v.price_current != null &&
+      v.price_current > 0 &&
+      v.weight_g != null &&
+      v.weight_g > 0
+  );
+  if (priced.length === 0) return undefined;
+
+  const normalized250g = (
+    v: Pick<CoffeeVariant, "price_current" | "weight_g" | "pack_count">
+  ) =>
+    Math.round(
+      (v.price_current! / Math.max(v.pack_count || 1, 1)) *
+        (250 / v.weight_g) *
+        100
+    ) / 100;
+
+  const near250 = priced.filter((v) => v.weight_g >= 240 && v.weight_g <= 260);
+  const pool = near250.length > 0 ? near250 : priced;
+  return Math.min(...pool.map(normalized250g));
+}
 
 /**
  * ItemList entry for a coffee in a directory/discovery/curation ItemList.
@@ -354,6 +389,45 @@ export const partnerPageSchema = {
   },
 };
 
+/** Site founder — shared by /about UI, footer credit, and Person JSON-LD. */
+export const FOUNDER = {
+  name: "Thrilok Abhishek",
+  jobTitle: "Founder",
+  aboutHref: "/about#founder",
+  linkedInHref: "https://www.linkedin.com/in/gtabhishek",
+  githubHref: "https://github.com/3lokai",
+  instagramHref: "https://www.instagram.com/gt3lok/",
+  imageSrc: "/images/about/founder.jpg",
+  imageAlt: "Thrilok Abhishek, founder of IndianCoffeeBeans, brewing coffee",
+} as const;
+
+export const founderPersonSchema = {
+  "@type": "Person",
+  "@id": "https://www.indiancoffeebeans.com/about#founder",
+  name: FOUNDER.name,
+  url: "https://www.indiancoffeebeans.com/about#founder",
+  image: "https://www.indiancoffeebeans.com/images/about/founder.jpg",
+  jobTitle: FOUNDER.jobTitle,
+  worksFor: {
+    "@type": "Organization",
+    name: "IndianCoffeeBeans.com",
+    url: "https://www.indiancoffeebeans.com",
+  },
+  sameAs: [FOUNDER.linkedInHref, FOUNDER.githubHref, FOUNDER.instagramHref],
+  knowsAbout: [
+    "Indian specialty coffee",
+    "Coffee roasting",
+    "Specialty coffee",
+  ],
+};
+
+/** About page subject is the site/org; founder lives on organizationSchema.founder. */
+const aboutPageOrganization = {
+  "@type": "Organization",
+  name: "IndianCoffeeBeans.com",
+  url: "https://www.indiancoffeebeans.com",
+};
+
 export const aboutPageSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
@@ -361,6 +435,8 @@ export const aboutPageSchema = {
   description:
     "Learn what IndianCoffeeBeans is, who it's for, and how our independent directory helps you discover Indian specialty coffee — with answers to common questions.",
   url: "https://www.indiancoffeebeans.com/about",
+  mainEntity: aboutPageOrganization,
+  about: aboutPageOrganization,
 };
 
 export const howICBWorksPageSchema = {
@@ -447,13 +523,27 @@ export const organizationSchema = {
   description:
     "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
   foundingDate: "2024",
+  founder: founderPersonSchema,
   areaServed: {
     "@type": "Country",
     name: "India",
   },
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer support",
+    email: "support@indiancoffeebeans.com",
+    url: "https://www.indiancoffeebeans.com/contact",
+    areaServed: "IN",
+    availableLanguage: "English",
+  },
   sameAs: [
-    "https://twitter.com/indcoffeebeans",
-    // Add more social links as you create them
+    "https://x.com/indiacoffeebean",
+    "https://instagram.com/indiancoffeebeans",
+    "https://www.linkedin.com/company/indiancoffeebeans",
+    "https://www.facebook.com/profile.php?id=61577147573879",
+    "https://www.crunchbase.com/organization/indiancoffeebeans-com",
+    "https://www.indiehackers.com/product/indiancoffeebeans-com",
+    "https://www.wikidata.org/wiki/Q141137574",
   ],
 };
 

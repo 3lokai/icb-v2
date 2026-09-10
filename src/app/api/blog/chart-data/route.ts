@@ -12,6 +12,8 @@ export async function GET(request: Request) {
     const dataKey = searchParams.get("dataKey");
     const limit = parseInt(searchParams.get("limit") || "10", 10);
     const region = searchParams.get("region");
+    const brewMethod = searchParams.get("brewMethod");
+    const process = searchParams.get("process");
 
     if (!dataKey) {
       return NextResponse.json(
@@ -20,7 +22,13 @@ export async function GET(request: Request) {
       );
     }
 
-    const data = await fetchChartData(dataKey, limit, region || undefined);
+    const data = await fetchChartData(
+      dataKey,
+      limit,
+      region || undefined,
+      brewMethod || undefined,
+      process || undefined
+    );
 
     return NextResponse.json(data);
   } catch (error) {

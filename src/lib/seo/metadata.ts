@@ -12,18 +12,24 @@ export const META_DESCRIPTION_MIN = 120;
 export const META_DESCRIPTION_MAX = 160;
 
 /**
- * Clamp a page title so `title + TITLE_TEMPLATE_SUFFIX` stays within TITLE_MAX_LENGTH.
- * Truncates with ellipsis when needed; preserves suffix budget.
+ * Clamp a page title so `title + suffix` stays within maxTotalLength.
+ * Cuts back to a word boundary before the ellipsis — a raw index slice produced
+ * "Naivo Coffee — Bangalore Specialty Ro…" in the SERP.
+ * Pass suffix "" for routes that opt out of the root template via `title.absolute`.
  */
 export function truncateTitle(
   title: string,
-  maxTotalLength: number = TITLE_MAX_LENGTH
+  maxTotalLength: number = TITLE_MAX_LENGTH,
+  suffix: string = TITLE_TEMPLATE_SUFFIX
 ): string {
-  const suffixBudget = TITLE_TEMPLATE_SUFFIX.length;
-  const maxPageTitle = maxTotalLength - suffixBudget;
+  const maxPageTitle = maxTotalLength - suffix.length;
   if (title.length <= maxPageTitle) return title;
   if (maxPageTitle <= 1) return title.slice(0, maxTotalLength);
-  return `${title.slice(0, maxPageTitle - 1).trimEnd()}…`;
+  const cut = title.slice(0, maxPageTitle - 1).trimEnd();
+  const lastSpace = cut.lastIndexOf(" ");
+  // Only fall back to the hard cut if trimming to the word boundary would gut the title.
+  const body = lastSpace > maxPageTitle / 2 ? cut.slice(0, lastSpace) : cut;
+  return `${body.replace(/[\s\u2013\u2014:,|-]+$/, "")}…`;
 }
 
 /**
@@ -42,6 +48,28 @@ export function clampDescription(
     return `${desc.slice(0, META_DESCRIPTION_MAX - 1).trimEnd()}…`;
   }
   return desc;
+}
+
+/**
+ * Estate altitude as a meta-description fragment: "950–1,000 m", or "1,500 m"
+ * when only one bound is known (or both are equal). Returns null when the
+ * estate carries no altitude, so callers can filter it out of an attribute
+ * line rather than emitting an empty separator.
+ */
+export function formatAltitudeLabel(
+  minM?: number | null,
+  maxM?: number | null
+): string | null {
+  const min = minM ?? null;
+  const max = maxM ?? null;
+  if (min == null && max == null) return null;
+
+  const fmt = (n: number) => n.toLocaleString("en-IN");
+  if (min != null && max != null && min !== max) {
+    // en dash for the range, matching the numeric-range convention in copy
+    return `${fmt(Math.min(min, max))}–${fmt(Math.max(min, max))} m`;
+  }
+  return `${fmt((min ?? max) as number)} m`;
 }
 
 // Define structures for detailed Open Graph types
@@ -66,6 +94,8 @@ type MetadataProps = {
   type?: "website" | "article" | "product";
   canonical?: string;
   noIndex?: boolean;
+  /** Opt out of the root layout's " | Indian Coffee Beans" template (see src/app/layout.tsx). */
+  absoluteTitle?: boolean;
   productDetails?: OGProductDetails;
   articleDetails?: OGArticleDetails;
   other?: Record<string, string | string[] | undefined>;
@@ -175,6 +205,7 @@ export function generateMetadata({
   type = "website",
   canonical,
   noIndex = false,
+  absoluteTitle = false,
   productDetails,
   articleDetails,
   other,
@@ -196,9 +227,20 @@ export function generateMetadata({
     : undefined;
 
   const mergedKeywords = mergeKeywords(keywords);
-  const ogImageUrl = buildOGImageUrl(baseUrl, title, image, type);
+
+  // Clamp once, here, so no caller can ship an over-length title. Callers that
+  // already sized their title correctly pass through untouched.
+  const clampedTitle = title
+    ? truncateTitle(
+        title,
+        TITLE_MAX_LENGTH,
+        absoluteTitle ? "" : TITLE_TEMPLATE_SUFFIX
+      )
+    : title;
+
+  const ogImageUrl = buildOGImageUrl(baseUrl, clampedTitle, image, type);
   const openGraph = buildBaseOpenGraph({
-    title,
+    title: clampedTitle,
     description: normalizedDescription,
     ogImageUrl,
     canonical: resolvedCanonical,
@@ -212,13 +254,24 @@ export function generateMetadata({
   }
 
   const metadata: Metadata = {
-    title,
+    title:
+      absoluteTitle && clampedTitle ? { absolute: clampedTitle } : clampedTitle,
     description: normalizedDescription,
     keywords: mergedKeywords,
     metadataBase: new URL(baseUrl),
     robots: noIndex
       ? { index: false, follow: false }
-      : { index: true, follow: true },
+      : {
+          index: true,
+          follow: true,
+          // Without max-image-preview:large Google caps the preview at a
+          // thumbnail, which makes /learn articles Discover-ineligible however
+          // correct their og:image is. Set on the shared builder rather than the
+          // article route so every surface (SKU, roaster, discovery) gets it.
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+        },
     alternates: {
       canonical: resolvedCanonical || undefined,
       ...(resolvedCanonical && {
@@ -231,7 +284,7 @@ export function generateMetadata({
     openGraph,
     twitter: {
       card: "summary_large_image",
-      title,
+      title: clampedTitle,
       description: normalizedDescription,
       images: [ogImageUrl],
     },

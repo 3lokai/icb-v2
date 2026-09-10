@@ -9,14 +9,105 @@ export type ChartDataItem = {
   light?: number;
 };
 
+const PAGE_SIZE = 1000;
+
+/**
+ * Reads every row a chart query matches, not just the first page.
+ *
+ * PostgREST caps an unbounded select at 1000 rows. Because these aggregations run
+ * client-side over the returned rows, that cap silently truncated every chart on
+ * the site: `roast_distribution` over a 1684-row catalogue returned exactly 1000
+ * rows and reported *zero* dark and medium-dark coffees, on an article about dark
+ * roast. Ordering is required for stable paging — without it Postgres may repeat
+ * or skip rows across pages.
+ *
+ * ponytail: paging, not SQL aggregation — it is the contained fix and needs no
+ * migration. Upgrade path when the catalogue grows: aggregate server-side like
+ * the single_origin_* keys already do via their RPCs, which also drops the
+ * full-table transfer done to count a handful of values.
+ */
+async function fetchAllRows(
+  buildQuery: () => any,
+  dataKey: string
+): Promise<any[]> {
+  const rows: any[] = [];
+
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await buildQuery()
+      .order("coffee_id", { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) {
+      console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
+      throw new Error(`Failed to fetch chart data for ${dataKey}`);
+    }
+
+    if (!data?.length) break;
+    rows.push(...data);
+    if (data.length < PAGE_SIZE) break;
+  }
+
+  return rows;
+}
+
+/**
+ * Every dataKey this function knows how to serve. A Sanity `dataChart` block
+ * carrying anything else is a typo (a published article shipped
+ * "processing_distribution" for "process_distribution"), and DataChart renders
+ * nothing at all for an empty result — so the block silently vanished, title and
+ * all, with no signal anywhere. Reject unknown keys up front: it makes the
+ * mistake visible in logs and skips the table scan that would return nothing.
+ */
+const VALID_DATA_KEYS = new Set([
+  "arabica_top_flavor_notes",
+  "brew_method_distribution",
+  "brew_method_distribution_light_roast",
+  "espresso_process_distribution",
+  "estate_region_distribution",
+  "estate_roaster_count",
+  "flavor_by_roast",
+  "price_distribution_250g",
+  "process_distribution",
+  "roast_distribution",
+  "roaster_concentration",
+  "roaster_founding_cohorts",
+  "roaster_region_distribution",
+  "roaster_sourcing_model",
+  "robusta_process_distribution",
+  "robusta_top_flavor_notes",
+  "single_origin_by_region",
+  "single_origin_vs_blend",
+  "species_distribution",
+  "top_flavors",
+  "top_flavors_washed_espresso",
+  "top_regions",
+  "top_roasters",
+]);
+
 /**
  * Fetches and aggregates data for blog charts from Supabase.
  */
 export async function fetchChartData(
   dataKey: string,
   limit: number = 10,
-  region?: string
+  region?: string,
+  brewMethod?: string,
+  process?: string
 ): Promise<ChartDataItem[]> {
+  if (!VALID_DATA_KEYS.has(dataKey)) {
+    console.error(
+      `[fetchChartData] Unknown dataKey "${dataKey}" — no chart will render. ` +
+        `Fix the dataChart block in Sanity; valid keys: ${[...VALID_DATA_KEYS].join(", ")}`
+    );
+    return [];
+  }
+
+  // `limit` reaches here from a query string via parseInt, so it can be NaN, 0 or
+  // negative. Every branch below does `.slice(0, safeLimit)`: NaN yields an
+  // EMPTY chart and a negative value silently trims from the end. Normalise once.
+  const safeLimit =
+    Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 10;
+
   const supabase = await createClient();
 
   // ── Single-origin charts: served by dedicated SQL aggregation RPCs ──
@@ -36,7 +127,7 @@ export async function fetchChartData(
   }
   if (dataKey === "single_origin_by_region") {
     const { data, error } = await supabase.rpc("get_single_origin_by_region", {
-      p_limit: limit || 10,
+      p_limit: safeLimit,
     });
     if (error) {
       console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
@@ -46,6 +137,72 @@ export async function fetchChartData(
       label: r.label,
       value: Number(r.value),
     }));
+  }
+
+  // ── Roaster-shaped charts: these aggregate the roasters table, not the coffee MV ──
+  // Added 2026-08-19: drafts had invented dataKeys (roaster_founding_cohorts,
+  // region_distribution) for facts that live on `roasters`, and rendered nothing.
+  if (
+    dataKey === "roaster_founding_cohorts" ||
+    dataKey === "roaster_region_distribution" ||
+    dataKey === "roaster_sourcing_model"
+  ) {
+    const column =
+      dataKey === "roaster_founding_cohorts"
+        ? "founded_year"
+        : dataKey === "roaster_sourcing_model"
+          ? "sourcing_model"
+          : "regions_tags";
+
+    const { data, error } = await supabase
+      .from("roasters")
+      .select(column)
+      .eq("is_active", true);
+
+    if (error) {
+      console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
+      throw new Error(`Failed to fetch chart data for ${dataKey}`);
+    }
+
+    const counts: Record<string, number> = {};
+    const bump = (label: string) => {
+      counts[label] = (counts[label] || 0) + 1;
+    };
+
+    for (const row of (data ?? []) as any[]) {
+      if (dataKey === "roaster_founding_cohorts") {
+        const y = row.founded_year as number | null;
+        // Guard junk years — the table holds a few 0/near-zero values, and a
+        // "0s" bucket beside "2010s" reads as a real cohort rather than bad data.
+        if (!y || y < 1800 || y > new Date().getFullYear()) continue;
+        bump(`${Math.floor(y / 10) * 10}s`);
+      } else if (dataKey === "roaster_sourcing_model") {
+        for (const v of (row.sourcing_model as string[] | null) ?? [])
+          bump(formatEnumLabel(v));
+      } else {
+        // regions_tags is jsonb — an array of tags, or an object keyed by region.
+        // Values are slugs ("kodagu-coorg"), so title-case them for the axis.
+        const titleCase = (v: string) =>
+          v
+            .split("-")
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join("-");
+        const tags = row.regions_tags;
+        if (Array.isArray(tags))
+          tags.forEach((t) => t && bump(titleCase(String(t))));
+        else if (tags && typeof tags === "object")
+          Object.keys(tags).forEach((k) => k && bump(titleCase(k)));
+      }
+    }
+
+    const items = Object.entries(counts).map(([label, value]) => ({
+      label,
+      value,
+    }));
+    // Cohorts read chronologically; the others rank by size.
+    return dataKey === "roaster_founding_cohorts"
+      ? items.sort((a, b) => a.label.localeCompare(b.label))
+      : items.sort((a, b) => b.value - a.value).slice(0, safeLimit);
   }
 
   // Optimization: only select columns we need for the specific dataKey
@@ -81,8 +238,7 @@ export async function fetchChartData(
     selectFields = "best_normalized_250g, in_stock_count";
   if (dataKey === "roaster_concentration") selectFields = "roaster_name";
 
-  let query = supabase.from("coffee_directory_mv").select(selectFields);
-
+  let regionNames: string[] | null = null;
   if (region) {
     // The MV exposes canon region display names (GIN-indexed), not slugs. `region`
     // may be a single slug or a comma-separated set covering a district and its
@@ -100,47 +256,61 @@ export async function fetchChartData(
       .map((r) => r.display_name)
       .filter((n): n is string => Boolean(n));
     if (names.length === 0) return [];
-    query = query.overlaps("canon_region_names", names);
+    regionNames = names;
   }
 
-  // Species-filtered charts — filter at DB level
-  if (dataKey === "arabica_top_flavor_notes") {
-    query = query.eq("bean_species", "arabica");
-  }
-  if (
-    dataKey === "robusta_top_flavor_notes" ||
-    dataKey === "robusta_process_distribution"
-  ) {
-    query = query.eq("bean_species", "robusta");
-  }
+  // Rebuilt per page — a PostgREST query builder is single-use, and paging needs
+  // a fresh one each time.
+  const buildQuery = () => {
+    let q = supabase.from("coffee_directory_mv").select(selectFields);
 
-  if (dataKey === "price_distribution_250g") {
-    query = query
-      .gt("best_normalized_250g", 0)
-      .gt("in_stock_count", 0)
-      .lt("best_normalized_250g", 5000);
-  }
+    if (regionNames) q = q.overlaps("canon_region_names", regionNames);
 
-  // Espresso-tagged charts — array containment on brew method keys, scoped to
-  // in-stock (matches the espresso guide's "in-stock espresso-tagged" framing).
-  if (
-    dataKey === "espresso_process_distribution" ||
-    dataKey === "top_flavors_washed_espresso"
-  ) {
-    query = query
-      .contains("brew_method_canonical_keys", ["espresso"])
-      .gt("in_stock_count", 0);
-  }
-  if (dataKey === "top_flavors_washed_espresso") {
-    query = query.eq("process", "washed");
-  }
+    // Generic subset scoping. Previously only `region` could narrow a chart, so
+    // brew-method / process subsets were either faked with a bespoke dataKey
+    // (espresso_process_distribution, top_flavors_washed_espresso) or — far more
+    // often — not applied at all, leaving a sitewide chart under a subset title.
+    if (brewMethod) {
+      q = q.contains("brew_method_canonical_keys", [brewMethod]);
+    }
+    if (process) q = q.eq("process", process);
 
-  const { data: coffees, error } = await query;
+    // Species-filtered charts — filter at DB level
+    if (dataKey === "arabica_top_flavor_notes") {
+      q = q.eq("bean_species", "arabica");
+    }
+    if (
+      dataKey === "robusta_top_flavor_notes" ||
+      dataKey === "robusta_process_distribution"
+    ) {
+      q = q.eq("bean_species", "robusta");
+    }
 
-  if (error) {
-    console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
-    throw new Error(`Failed to fetch chart data for ${dataKey}`);
-  }
+    if (dataKey === "price_distribution_250g") {
+      q = q
+        .gt("best_normalized_250g", 0)
+        .gt("in_stock_count", 0)
+        .lt("best_normalized_250g", 5000);
+    }
+
+    // Espresso-tagged charts — array containment on brew method keys, scoped to
+    // in-stock (matches the espresso guide's "in-stock espresso-tagged" framing).
+    if (
+      dataKey === "espresso_process_distribution" ||
+      dataKey === "top_flavors_washed_espresso"
+    ) {
+      q = q
+        .contains("brew_method_canonical_keys", ["espresso"])
+        .gt("in_stock_count", 0);
+    }
+    if (dataKey === "top_flavors_washed_espresso") {
+      q = q.eq("process", "washed");
+    }
+
+    return q;
+  };
+
+  const coffees = await fetchAllRows(buildQuery, dataKey);
 
   if (!coffees) return [];
 
@@ -168,22 +338,26 @@ export async function fetchChartData(
       );
 
     case "top_roasters":
-      return aggregateSimpleDistribution(coffees, "roaster_name", limit);
+      return aggregateSimpleDistribution(coffees, "roaster_name", safeLimit);
 
     case "top_regions":
-      return aggregateArrayField(coffees, "canon_region_names", limit);
+      return aggregateArrayField(coffees, "canon_region_names", safeLimit);
 
     case "top_flavors":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(
+        coffees,
+        "canon_flavor_descriptors",
+        safeLimit
+      );
 
     case "estate_roaster_count":
-      return aggregateEstateRoasterCounts(coffees, limit);
+      return aggregateEstateRoasterCounts(coffees, safeLimit);
 
     case "estate_region_distribution":
       return aggregateEstateRegionDistribution(coffees);
 
     case "brew_method_distribution_light_roast":
-      return aggregateLightRoastBrewMethods(coffees, limit);
+      return aggregateLightRoastBrewMethods(coffees, safeLimit);
 
     case "brew_method_distribution":
       return aggregateArrayField(
@@ -193,12 +367,16 @@ export async function fetchChartData(
       ).map((item) => ({ ...item, label: formatEnumLabel(item.label) }));
 
     case "espresso_process_distribution":
-      return aggregateSimpleDistribution(coffees, "process", limit).map(
+      return aggregateSimpleDistribution(coffees, "process", safeLimit).map(
         (item) => ({ ...item, label: formatEnumLabel(item.label) })
       );
 
     case "top_flavors_washed_espresso":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(
+        coffees,
+        "canon_flavor_descriptors",
+        safeLimit
+      );
 
     case "roaster_concentration":
       return aggregateSimpleDistribution(coffees, "roaster_name", limit || 10);
@@ -207,10 +385,18 @@ export async function fetchChartData(
       return aggregatePriceDistribution(coffees);
 
     case "arabica_top_flavor_notes":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(
+        coffees,
+        "canon_flavor_descriptors",
+        safeLimit
+      );
 
     case "robusta_top_flavor_notes":
-      return aggregateArrayField(coffees, "canon_flavor_descriptors", limit);
+      return aggregateArrayField(
+        coffees,
+        "canon_flavor_descriptors",
+        safeLimit
+      );
 
     case "robusta_process_distribution":
       return aggregateSimpleDistribution(coffees, "process").map((item) => ({
@@ -219,7 +405,7 @@ export async function fetchChartData(
       }));
 
     case "flavor_by_roast":
-      return aggregateFlavorByRoast(coffees, limit);
+      return aggregateFlavorByRoast(coffees, safeLimit);
 
     default:
       return [];
@@ -260,7 +446,7 @@ function aggregateEstateRoasterCounts(
   return Object.entries(estateRoasters)
     .map(([label, roasters]) => ({ label, value: roasters.size }))
     .sort((a, b) => b.value - a.value)
-    .slice(0, limit);
+    .slice(0, limit || undefined);
 }
 
 /**

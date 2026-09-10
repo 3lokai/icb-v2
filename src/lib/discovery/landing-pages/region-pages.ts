@@ -25,7 +25,7 @@ export const regionPages: LandingPageConfig[] = [
       snapshot: {
         state: "Karnataka",
         elevation: "900–1,700m",
-        knownFor: "SL-795 washed arabica, heritage estates",
+        knownFor: "SLN 795 washed arabica, heritage estates",
       },
       overview:
         "Chikmagalur is where Indian specialty coffee begins. The district sits in the Western Ghats at elevations between 900 and 1,700 metres — high enough for slow cherry maturation and complex flavour development. Coffee arrived here in the 17th century, brought by Baba Budan from Yemen, and the region has been producing arabica continuously since. Today it's home to some of India's most celebrated estates — Yele Attikan, Hoysala, Kelachandra, and others — and the primary source of competition-grade Indian coffee.",
@@ -36,7 +36,7 @@ export const regionPages: LandingPageConfig[] = [
         altitude:
           "Lower estates (900–1,100m) produce bolder, fuller-bodied coffees. High-altitude lots (1,400m+) develop slower, with more acidity and floral character.",
         varieties:
-          "SL-795 dominates the specialty segment — developed at Scott Laboratories and prized for its cup quality at altitude. Chandragiri, Cauvery, and Selection 9 are also grown. Older estates have mixed plantings of heritage varieties.",
+          "SLN 795 dominates the specialty segment — developed at Scott Laboratories and prized for its cup quality at altitude. Chandragiri, Cauvery, and Selection 9 are also grown. Older estates have mixed plantings of heritage varieties.",
       },
       flavourProfile: {
         typical: [
@@ -48,7 +48,7 @@ export const regionPages: LandingPageConfig[] = [
           "Mild chocolate",
         ],
         indianContext:
-          "Washed Chikmagalur SL-795 is India's benchmark specialty coffee — jasmine, peach, and clean citrus when roasted light, brown sugar and mild chocolate at light-medium. The region's high-altitude estates consistently produce India's most competition-worthy lots. Natural and honey lots from the same estates are more fruit-forward and heavier in body — the same terroir expressed differently through processing.",
+          "Washed Chikmagalur SLN 795 is India's benchmark specialty coffee — jasmine, peach, and clean citrus when roasted light, brown sugar and mild chocolate at light-medium. The region's high-altitude estates consistently produce India's most competition-worthy lots. Natural and honey lots from the same estates are more fruit-forward and heavier in body — the same terroir expressed differently through processing.",
         processVariation:
           "Washed lots show maximum terroir clarity — origin and varietal character come through cleanly. Natural lots from the same estates produce richer, fruit-heavy cups. Honey and anaerobic lots are increasingly common as producers experiment — these command premium pricing and produce some of ICB's highest-rated coffees.",
       },
@@ -67,7 +67,7 @@ export const regionPages: LandingPageConfig[] = [
     regionSnapshot: {
       state: "Karnataka",
       elevation: "900–1,700m",
-      knownFor: "SL-795 washed arabica, heritage estates",
+      knownFor: "SLN 795 washed arabica, heritage estates",
     },
     faqOverline: "Chikmagalur",
     faqTitle: "About *Chikmagalur* coffee",
@@ -82,12 +82,12 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "Why is Chikmagalur famous for coffee?",
         answer:
-          "It's one of India's oldest continuous coffee-growing areas — arabica has been grown here since the 17th century. The combination of high altitude (up to 1,700m), Western Ghats climate, and SL-795 variety produces India's most competition-grade lots consistently.",
+          "It's one of India's oldest continuous coffee-growing areas — arabica has been grown here since the 17th century. The combination of high altitude (up to 1,700m), Western Ghats climate, and SLN 795 variety produces India's most competition-grade lots consistently.",
       },
       {
-        question: "What is SL-795 and why does it matter?",
+        question: "What is SLN 795 and why does it matter?",
         answer:
-          "SL-795 is India's most prized arabica variety, developed at the Scott Laboratories in the 1940s. At high altitude in Chikmagalur, it produces jasmine, stone fruit, and bright acidity — the flavour profile that's made Indian specialty coffee internationally credible.",
+          "SLN 795 — also written S.795 — is India's most prized arabica variety, developed at the Scott Laboratories in the 1940s. At high altitude in Chikmagalur, it produces jasmine, stone fruit, and bright acidity — the flavour profile that's made Indian specialty coffee internationally credible.",
       },
       {
         question: "What flavours should I expect?",
@@ -108,6 +108,20 @@ export const regionPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Understanding Chikmagalur coffee: regional flavour patterns",
+        href: "/learn/understanding-chikmagalur-coffee",
+      },
+      {
+        label: "Coorg vs Chikmagalur vs Araku: flavour differences",
+        href: "/learn/coorg-vs-chikmagalur-vs-araku-flavor-differences",
+      },
+      {
+        label: "A complete guide to India's coffee regions",
+        href: "/learn/coffee-regions-of-india-complete-guide",
+      },
+    ],
     related: ["coorg", "wayanad", "light-roast", "washed"],
   },
 
@@ -144,7 +158,7 @@ export const regionPages: LandingPageConfig[] = [
         altitude:
           "1,200 to 1,800 metres — the upper end of this range produces India's most altitude-driven lots. The steep terrain means hand-picking is the only viable harvest method, which self-selects for careful, selective picking.",
         varieties:
-          "SL-795 is predominant in specialty lots. The elevation expresses the variety's character at its most complex — jasmine, stone fruit, and bright acidity develop more intensely than at lower Karnataka elevations.",
+          "SLN 795 is predominant in specialty lots. The elevation expresses the variety's character at its most complex — jasmine, stone fruit, and bright acidity develop more intensely than at lower Karnataka elevations.",
       },
       flavourProfile: {
         typical: [
@@ -156,12 +170,12 @@ export const regionPages: LandingPageConfig[] = [
           "Clean finish",
         ],
         indianContext:
-          "Baba Budangiri natural lots at light roast are among the most complex Indian coffees available — the altitude drives intense aromatic development that you don't find in lower-elevation Karnataka naturals. The community average rating of 4.88 across ICB reviews is the highest of any Indian region with meaningful rating data. Light natural lots dominate the top-rated coffees from this sub-region: blueberry, jasmine, and stone fruit at an intensity that rivals East African naturals. Washed lots at light-medium roast show jasmine and clean citrus — the altitude clarity is obvious.",
+          "Baba Budangiri natural lots at light roast are among the most complex Indian coffees available — the altitude drives intense aromatic development that you don't find in lower-elevation Karnataka naturals. Its community average rating across ICB reviews is the highest of any Indian region with meaningful rating data. Light natural lots dominate the top-rated coffees from this sub-region: blueberry, jasmine, and stone fruit at an intensity that rivals East African naturals. Washed lots at light-medium roast show jasmine and clean citrus — the altitude clarity is obvious.",
         processVariation:
           "Natural and experimental lots dominate the specialty-grade production — the cool, dry conditions during harvest season (November–February) make natural processing viable and produce exceptional results. Washed and honey lots are also well-represented. The DB shows 5 light natural lots, 5 medium-dark 'other' category lots (likely traditional blends), and a meaningful number of experimental and anaerobic lots — this is a region where producers are experimenting.",
       },
       roasterContext:
-        "Baba Budangiri is sourced by 16 roasters in the ICB catalogue — more than Coorg, Araku, and Wayanad. Several of India's most respected specialty roasters specifically source Baba Budangiri as a distinct sub-origin rather than folding it into generic Chikmagalur listings. When you see it named explicitly on a roaster's bag, it signals a producer who understands altitude differentiation — worth paying attention to.",
+        "Baba Budangiri is sourced by more roasters in the ICB catalogue than Araku or Wayanad. Several of India's most respected specialty roasters specifically source Baba Budangiri as a distinct sub-origin rather than folding it into generic Chikmagalur listings. When you see it named explicitly on a roaster's bag, it signals a producer who understands altitude differentiation — worth paying attention to.",
       brewGuidance: {
         recommended: ["v60", "aeropress", "chemex"],
         notes:
@@ -169,7 +183,7 @@ export const regionPages: LandingPageConfig[] = [
       },
       nearbyRegions: ["chikmagalur", "sakleshpur"],
       icbDataNote:
-        "Baba Budangiri has the highest average community rating of any Indian region in the ICB catalogue — 4.88 across 8 ratings, from 40 coffees across 16 roasters. Small sample size caveat applies, but the consistency is notable. Light natural lots are driving the high scores. If you want to try India's ceiling for specialty quality, this is the sub-region to explore.",
+        "Baba Budangiri has the highest average community rating of any Indian region in the ICB catalogue, and it is one of the larger sub-regions by listing count. The rated sample is small, so the usual caveat applies — but the consistency is notable. Light natural lots are driving the high scores. If you want to try India's ceiling for specialty quality, this is the sub-region to explore.",
     },
 
     regionSnapshot: {
@@ -201,7 +215,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "Why are ratings so high for Baba Budangiri coffees?",
         answer:
-          "The community average of 4.88 on ICB (8 ratings) is the highest of any Indian region. The altitude drives intense jasmine, stone fruit, and berry character in natural lots that's genuinely world-competitive. Small sample size caveat — but the pattern is consistent.",
+          "Baba Budangiri holds the highest community average of any Indian region on ICB. The altitude drives intense jasmine, stone fruit, and berry character in natural lots that's genuinely world-competitive. Small sample size caveat — but the pattern is consistent.",
       },
       {
         question: "What process works best here?",
@@ -216,6 +230,20 @@ export const regionPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Baba Budangiri coffee: what the label tells you",
+        href: "/learn/baba-budangiri-coffee",
+      },
+      {
+        label: "Understanding Chikmagalur coffee: regional flavour patterns",
+        href: "/learn/understanding-chikmagalur-coffee",
+      },
+      {
+        label: "How altitude shapes flavour on Indian estates",
+        href: "/learn/altitude-affects-flavor-indian-coffee",
+      },
+    ],
     related: ["chikmagalur", "light-roast", "natural", "v60"],
   },
 
@@ -250,7 +278,7 @@ export const regionPages: LandingPageConfig[] = [
         altitude:
           "Lower-altitude Coorg (800–1,100m) produces heavier, more robust cups. Higher-altitude lots (1,400m+) develop more acidity and floral notes, closer in character to Chikmagalur.",
         varieties:
-          "SL-795, Cauvery, and Chandragiri are the primary arabica varieties. Robusta is also grown at lower elevations — Coorg robusta is used in traditional South Indian filter blends.",
+          "SLN 795, Cauvery, and Chandragiri are the primary arabica varieties. Robusta is also grown at lower elevations — Coorg robusta is used in traditional South Indian filter blends.",
       },
       flavourProfile: {
         typical: [
@@ -321,6 +349,20 @@ export const regionPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Coorg vs Chikmagalur vs Araku: flavour differences",
+        href: "/learn/coorg-vs-chikmagalur-vs-araku-flavor-differences",
+      },
+      {
+        label: "A complete guide to India's coffee regions",
+        href: "/learn/coffee-regions-of-india-complete-guide",
+      },
+      {
+        label: "Understanding Indian coffee estates (and why they matter)",
+        href: "/learn/understanding-indian-coffee-estates",
+      },
+    ],
     related: ["chikmagalur", "wayanad", "medium-roast", "natural"],
   },
 
@@ -356,7 +398,7 @@ export const regionPages: LandingPageConfig[] = [
         altitude:
           "The plateau's consistent elevation (900–1,300m) produces a relatively uniform growing environment compared to Karnataka's wider altitude range.",
         varieties:
-          "Primarily Chandragiri and SL-795 arabica. The GI specification covers arabica grown in the designated geographic area. Varietal specificity is less commonly communicated by roasters compared to Karnataka origins.",
+          "Primarily Chandragiri and SLN 795 arabica. The GI specification covers arabica grown in the designated geographic area. Varietal specificity is less commonly communicated by roasters compared to Karnataka origins.",
       },
       flavourProfile: {
         typical: [
@@ -427,6 +469,20 @@ export const regionPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "What makes Araku Valley coffee different",
+        href: "/learn/araku-valley-coffee",
+      },
+      {
+        label: "Coorg vs Chikmagalur vs Araku: flavour differences",
+        href: "/learn/coorg-vs-chikmagalur-vs-araku-flavor-differences",
+      },
+      {
+        label: "How geography shapes Indian coffee flavour",
+        href: "/learn/indian-coffee-regions-geography-shapes-flavor",
+      },
+    ],
     related: ["nilgiris", "chikmagalur", "light-roast", "washed"],
   },
 
@@ -462,7 +518,7 @@ export const regionPages: LandingPageConfig[] = [
         altitude:
           "Among India's highest coffee-growing elevations — 1,200 to 2,000 metres. The higher elevations produce the most nuanced, specialty-grade lots.",
         varieties:
-          "SL-795 and Chandragiri are grown alongside older heritage varieties. The cool climate expresses variety character differently than Karnataka — often more delicate and tea-like.",
+          "SLN 795 and Chandragiri are grown alongside older heritage varieties. The cool climate expresses variety character differently than Karnataka — often more delicate and tea-like.",
       },
       flavourProfile: {
         typical: [
@@ -487,7 +543,7 @@ export const regionPages: LandingPageConfig[] = [
       },
       nearbyRegions: ["wayanad", "coorg"],
       icbDataNote:
-        "Nilgiris is currently one of the thinnest region categories in the ICB catalogue — 4 coffees across 4 roasters. It's worth tracking as a region with genuine specialty potential, but community rating data is very limited at this stage. Medium roasts dominate the available listings.",
+        "Nilgiris is currently one of the thinnest region categories in the ICB catalogue — a handful of coffees from a handful of roasters. It's worth tracking as a region with genuine specialty potential, but community rating data is very limited at this stage. Medium roasts dominate the available listings.",
     },
 
     regionSnapshot: {
@@ -533,6 +589,20 @@ export const regionPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Nilgiris coffee: regional characteristics",
+        href: "/learn/nilgiris-coffee-region",
+      },
+      {
+        label: "How altitude shapes flavour on Indian estates",
+        href: "/learn/altitude-affects-flavor-indian-coffee",
+      },
+      {
+        label: "A complete guide to India's coffee regions",
+        href: "/learn/coffee-regions-of-india-complete-guide",
+      },
+    ],
     related: ["wayanad", "chikmagalur", "light-roast", "v60"],
   },
 
@@ -561,7 +631,7 @@ export const regionPages: LandingPageConfig[] = [
           "Tamil Nadu's primary coffee origin, diverse processing, experimental lots",
       },
       overview:
-        "The Shevaroy Hills — also known as Shervarayan Hills — rise to 1,600 metres in Tamil Nadu's Salem district, forming one of South India's significant coffee-growing areas outside Karnataka. With 46 coffees across 15 roasters in the ICB catalogue, it's actually better represented than several Karnataka sub-regions. The area is part of the Eastern Ghats range and has a distinct growing environment from the Western Ghats origins: different rainfall patterns, different soil composition, and a growing cluster of producers experimenting with processing. Despite its size, Shevaroy Hills remains relatively unknown in specialty circles — partially because many coffees are blended into generic Tamil Nadu lots rather than origin-labelled.",
+        "The Shevaroy Hills — also known as Shervarayan Hills — rise to 1,600 metres in Tamil Nadu's Salem district, forming one of South India's significant coffee-growing areas outside Karnataka. It is better represented in the ICB catalogue than several Karnataka sub-regions. The area is part of the Eastern Ghats range and has a distinct growing environment from the Western Ghats origins: different rainfall patterns, different soil composition, and a growing cluster of producers experimenting with processing. Despite its size, Shevaroy Hills remains relatively unknown in specialty circles — partially because many coffees are blended into generic Tamil Nadu lots rather than origin-labelled.",
       terroir: {
         climate:
           "Eastern Ghats climate with distinct wet and dry seasons — different from the Western Ghats' heavier monsoon. Lower annual rainfall than Wayanad or Coorg makes natural processing more viable. The hills' elevation moderates temperature and extends the growing season.",
@@ -569,7 +639,7 @@ export const regionPages: LandingPageConfig[] = [
         altitude:
           "1,000 to 1,600 metres — the upper Shevaroy range approaches Nilgiris in elevation. Higher-altitude lots from the region tend toward cleaner, more delicate profiles.",
         varieties:
-          "Arabica varieties dominate the specialty lots. SL-795 is present but the region also has older heritage plantings. Varietal specificity is less consistently communicated than in Karnataka.",
+          "Arabica varieties dominate the specialty lots. SLN 795 is present but the region also has older heritage plantings. Varietal specificity is less consistently communicated than in Karnataka.",
       },
       flavourProfile: {
         typical: [
@@ -586,7 +656,7 @@ export const regionPages: LandingPageConfig[] = [
           "Medium washed lots are the backbone of Shevaroy Hills production in the specialty catalogue. But the experimental processing presence is disproportionately high for the region's size — 5 experimental lots, 2 carbonic maceration, 2 anaerobic, and 2 double-fermented lots appear in the ICB data. For a Tamil Nadu origin, this signals a progressive producer cluster worth watching.",
       },
       roasterContext:
-        "Shevaroy Hills is sourced by 15 roasters — comparable to Karnataka sub-regions like Sakleshpur. Some roasters label it explicitly; others fold it into Tamil Nadu or Nilgiris region descriptions. On ICB, explicitly labelled Shevaroy Hills lots are identifiable and worth comparing: the region's character is distinct from Karnataka, and the experimental processing lots in particular are interesting outliers in the Tamil Nadu specialty story.",
+        "Shevaroy Hills is sourced by about as many roasters as Karnataka sub-regions like Sakleshpur. Some roasters label it explicitly; others fold it into Tamil Nadu or Nilgiris region descriptions. On ICB, explicitly labelled Shevaroy Hills lots are identifiable and worth comparing: the region's character is distinct from Karnataka, and the experimental processing lots in particular are interesting outliers in the Tamil Nadu specialty story.",
       brewGuidance: {
         recommended: ["v60", "aeropress", "french-press"],
         notes:
@@ -594,7 +664,7 @@ export const regionPages: LandingPageConfig[] = [
       },
       nearbyRegions: ["nilgiris", "coorg"],
       icbDataNote:
-        "Shevaroy Hills is the largest Tamil Nadu region in the ICB catalogue — 46 coffees across 15 roasters, bigger than Araku Valley, Wayanad, Nilgiris, and Koraput combined. Community average rating is 3.71 across 8 ratings — lower than Karnataka origins, which reflects the range of quality across a large and diverse producer base. The experimental lots that are appearing are the most interesting development to watch.",
+        "Shevaroy Hills is the largest Tamil Nadu region in the ICB catalogue — bigger than Araku Valley, Wayanad, and Nilgiris. Its community average sits below the Karnataka origins, which reflects the range of quality across a large and diverse producer base. The experimental lots that are appearing are the most interesting development to watch.",
     },
 
     regionSnapshot: {
@@ -642,6 +712,20 @@ export const regionPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "A complete guide to India's coffee regions",
+        href: "/learn/coffee-regions-of-india-complete-guide",
+      },
+      {
+        label: "How altitude shapes flavour on Indian estates",
+        href: "/learn/altitude-affects-flavor-indian-coffee",
+      },
+      {
+        label: "Coffee GI tags in India: what they certify",
+        href: "/learn/coffee-gi-tags-india",
+      },
+    ],
     related: ["nilgiris", "chikmagalur", "medium-roast", "washed"],
   },
 
@@ -676,7 +760,7 @@ export const regionPages: LandingPageConfig[] = [
         altitude:
           "700 to 1,200 metres — lower than Chikmagalur or Nilgiris. The lower altitude produces a fuller-bodied, less acidic cup than Karnataka's high-altitude origins.",
         varieties:
-          "Robusta is grown extensively at lower elevations — Wayanad is a significant robusta producer for traditional South Indian blends. Arabica (SL-795, Cauvery) grows at the higher elevations and is the basis for specialty lots.",
+          "Robusta is grown extensively at lower elevations — Wayanad is a significant robusta producer for traditional South Indian blends. Arabica (SLN 795, Cauvery) grows at the higher elevations and is the basis for specialty lots.",
       },
       flavourProfile: {
         typical: [
@@ -701,7 +785,7 @@ export const regionPages: LandingPageConfig[] = [
       },
       nearbyRegions: ["coorg", "nilgiris"],
       icbDataNote:
-        "Wayanad is a small but growing category — currently 6 coffees across 4 roasters in the ICB catalogue. Representation is thin compared to Karnataka origins but increasing. Medium and medium-dark roasts dominate the available listings.",
+        "Wayanad is a small but growing category in the ICB catalogue — a handful of coffees from a handful of roasters. Representation is thin compared to Karnataka origins but increasing. Medium and medium-dark roasts dominate the available listings.",
     },
 
     regionSnapshot: {
@@ -747,6 +831,20 @@ export const regionPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Wayanad coffee: regional characteristics",
+        href: "/learn/wayanad-coffee-region",
+      },
+      {
+        label: "A complete guide to India's coffee regions",
+        href: "/learn/coffee-regions-of-india-complete-guide",
+      },
+      {
+        label: "Arabica vs robusta in India: what's actually different",
+        href: "/learn/arabica-vs-robusta-india",
+      },
+    ],
     related: ["coorg", "nilgiris", "medium-roast", "french-press"],
   },
 
@@ -852,6 +950,20 @@ export const regionPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Koraput: the Odisha highland coffee region",
+        href: "/learn/koraput-coffee-region",
+      },
+      {
+        label: "Coffee from Northeast India: an emerging map",
+        href: "/learn/northeast-india-coffee-regions",
+      },
+      {
+        label: "How geography shapes Indian coffee flavour",
+        href: "/learn/indian-coffee-regions-geography-shapes-flavor",
+      },
+    ],
     related: ["araku", "northeast-india", "light-roast", "natural"],
   },
 
@@ -959,6 +1071,20 @@ export const regionPages: LandingPageConfig[] = [
       href: "/learn",
       ctaText: "Learn",
     },
+    learnLinks: [
+      {
+        label: "Coffee from Northeast India: an emerging map",
+        href: "/learn/northeast-india-coffee-regions",
+      },
+      {
+        label: "A complete guide to India's coffee regions",
+        href: "/learn/coffee-regions-of-india-complete-guide",
+      },
+      {
+        label: "The growth of single-origin coffee in India",
+        href: "/learn/growth-single-origin-coffee-india",
+      },
+    ],
     related: ["koraput", "araku", "light-roast", "washed"],
   },
 ];

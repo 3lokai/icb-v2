@@ -1,9 +1,11 @@
 "use client";
 
+import type { MouseEvent } from "react";
 import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { useCoffeeFilters } from "@/hooks/use-coffee-filters";
+import { buildCoffeeQueryString } from "@/lib/filters/coffee-url";
 
 interface CoffeePaginationProps {
   totalPages: number;
@@ -13,9 +15,12 @@ interface CoffeePaginationProps {
  * Coffee Pagination Component
  * Pagination controls with Previous/Next and page numbers
  * URL sync is handled automatically by CoffeeDirectory component
+ *
+ * Controls render as real <a href> (not just onClick) so Googlebot can crawl
+ * the full page chain — it never runs click handlers, only reads hrefs.
  */
 export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
-  const { page, setPage } = useCoffeeFilters();
+  const { filters, page, sort, limit, setPage } = useCoffeeFilters();
 
   if (totalPages <= 1) {
     return null;
@@ -26,6 +31,21 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
       setPage(newPage);
     }
   };
+
+  const hrefFor = (targetPage: number) =>
+    `/coffees?${buildCoffeeQueryString(filters, targetPage, sort, limit)}`;
+
+  const linkProps = (targetPage: number) => ({
+    href: hrefFor(targetPage),
+    onClick: (e: MouseEvent) => {
+      // Let modified / non-primary clicks open a new tab natively
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
+        return;
+      }
+      e.preventDefault();
+      handlePageChange(targetPage);
+    },
+  });
 
   // Generate page numbers to show (max 7 pages)
   const getPageNumbers = () => {
@@ -83,13 +103,22 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
     <div className="flex items-center justify-center gap-2 py-6">
       <Button
         aria-label="Previous page"
+        asChild={page !== 1}
         disabled={page === 1}
-        onClick={() => handlePageChange(page - 1)}
         size="sm"
         variant="outline"
       >
-        <Icon icon={CaretLeftIcon} size={16} data-icon="inline-start" />
-        <span className="sr-only md:not-sr-only md:ml-1">Previous</span>
+        {page === 1 ? (
+          <>
+            <Icon icon={CaretLeftIcon} size={16} data-icon="inline-start" />
+            <span className="sr-only md:not-sr-only md:ml-1">Previous</span>
+          </>
+        ) : (
+          <a {...linkProps(page - 1)}>
+            <Icon icon={CaretLeftIcon} size={16} data-icon="inline-start" />
+            <span className="sr-only md:not-sr-only md:ml-1">Previous</span>
+          </a>
+        )}
       </Button>
 
       <div className="flex items-center gap-1">
@@ -106,16 +135,17 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
           }
 
           const pageNumber = pageNum as number;
+          const isCurrent = page === pageNumber;
           return (
             <Button
-              aria-current={page === pageNumber ? "page" : undefined}
+              aria-current={isCurrent ? "page" : undefined}
               aria-label={`Go to page ${pageNumber}`}
+              asChild
               key={pageNumber}
-              onClick={() => handlePageChange(pageNumber)}
               size="sm"
-              variant={page === pageNumber ? "default" : "outline"}
+              variant={isCurrent ? "default" : "outline"}
             >
-              {pageNumber}
+              <a {...linkProps(pageNumber)}>{pageNumber}</a>
             </Button>
           );
         })}
@@ -123,13 +153,22 @@ export function CoffeePagination({ totalPages }: CoffeePaginationProps) {
 
       <Button
         aria-label="Next page"
+        asChild={page !== totalPages}
         disabled={page === totalPages}
-        onClick={() => handlePageChange(page + 1)}
         size="sm"
         variant="outline"
       >
-        <span className="sr-only md:not-sr-only md:mr-1">Next</span>
-        <Icon icon={CaretRightIcon} size={16} data-icon="inline-end" />
+        {page === totalPages ? (
+          <>
+            <span className="sr-only md:not-sr-only md:mr-1">Next</span>
+            <Icon icon={CaretRightIcon} size={16} data-icon="inline-end" />
+          </>
+        ) : (
+          <a {...linkProps(page + 1)}>
+            <span className="sr-only md:not-sr-only md:mr-1">Next</span>
+            <Icon icon={CaretRightIcon} size={16} data-icon="inline-end" />
+          </a>
+        )}
       </Button>
 
       <div className="ml-4 text-muted-foreground text-caption">

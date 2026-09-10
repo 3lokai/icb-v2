@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/layout/password-input";
 import { useAuth } from "@/components/providers/auth-provider";
 import { sendWelcomeEmailAction } from "@/app/actions/welcome-email";
-import { syncUserToConvertKit } from "@/app/actions/newsletter";
+import { syncUserToNewsletterList } from "@/app/actions/newsletter";
 
 type AuthFormProps = {
   className?: string;
@@ -154,7 +154,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
       });
       capture("user_signed_up", { method: "email" });
 
-      // Success - send welcome email and sync to ConvertKit (fire and forget)
+      // Success - send welcome email and add to newsletter list (fire and forget)
       if (signUpData?.user) {
         const userName =
           signUpData.user.user_metadata?.full_name ||
@@ -167,10 +167,10 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
           console.error("Failed to send welcome email:", err);
         });
 
-        // Sync to ConvertKit if user has ID
+        // Add to the newsletter list if user has ID
         if (signUpData.user.id) {
-          syncUserToConvertKit(signUpData.user.id).catch((err) => {
-            console.error("Failed to sync user to ConvertKit:", err);
+          syncUserToNewsletterList(signUpData.user.id).catch((err) => {
+            console.error("Failed to sync user to newsletter list:", err);
           });
         }
       }

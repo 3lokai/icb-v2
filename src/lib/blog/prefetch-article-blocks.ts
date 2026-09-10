@@ -50,10 +50,18 @@ export async function prefetchArticleBlocks(
           queryKey: queryKeys.blog.dataChart(
             block.dataKey,
             block.limit,
-            block.region
+            block.region,
+            block.brewMethod,
+            block.process
           ),
           queryFn: () =>
-            fetchChartData(block.dataKey, block.limit || 10, block.region),
+            fetchChartData(
+              block.dataKey,
+              block.limit || 10,
+              block.region,
+              block.brewMethod,
+              block.process
+            ),
         });
 
       case "coffeeCollection":

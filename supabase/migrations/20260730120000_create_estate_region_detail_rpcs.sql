@@ -8,7 +8,7 @@
 -- ============================================================================
 -- FUNCTION: get_region_detail(p_slug, p_limit)
 -- ============================================================================
-DROP FUNCTION IF EXISTS public.get_region_detail(text, int) CASCADE;
+DROP FUNCTION IF EXISTS public.get_region_detail(text, int);
 
 CREATE OR REPLACE FUNCTION public.get_region_detail(
   p_slug  text,
@@ -109,7 +109,7 @@ COMMENT ON FUNCTION public.get_region_detail(text, int) IS
 -- ============================================================================
 -- FUNCTION: get_estate_detail(p_slug, p_limit)
 -- ============================================================================
-DROP FUNCTION IF EXISTS public.get_estate_detail(text, int) CASCADE;
+DROP FUNCTION IF EXISTS public.get_estate_detail(text, int);
 
 CREATE OR REPLACE FUNCTION public.get_estate_detail(
   p_slug  text,

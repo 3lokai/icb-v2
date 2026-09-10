@@ -89,8 +89,22 @@ export const queryKeys = {
       ["blog", "roaster-spotlight", roasterId] as const,
     coffeeSpotlight: (coffeeId: string | undefined) =>
       ["blog", "coffee-spotlight", coffeeId] as const,
-    dataChart: (dataKey: string, limit?: number, region?: string) =>
-      ["blog", "data-chart", dataKey, limit, region] as const,
+    dataChart: (
+      dataKey: string,
+      limit?: number,
+      region?: string,
+      brewMethod?: string,
+      process?: string
+    ) =>
+      [
+        "blog",
+        "data-chart",
+        dataKey,
+        limit,
+        region,
+        brewMethod,
+        process,
+      ] as const,
   },
 
   // Roaster-related queries

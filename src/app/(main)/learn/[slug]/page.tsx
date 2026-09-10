@@ -49,6 +49,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return generateSEOMetadata({
     title: article.metadata?.metaTitle || article.title,
+    // Editorial titles need the full 60 chars; the brand suffix would leave 38
+    // and force a mid-word ellipsis on nearly every article.
+    absoluteTitle: true,
     description:
       article.metadata?.metaDescription ||
       article.description ||
@@ -223,8 +226,14 @@ export default async function ArticlePage({ params }: Props) {
                       <AccordionTrigger className="text-left text-body font-bold text-foreground py-4 hover:no-underline">
                         {item.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-body text-muted-foreground leading-relaxed pt-2 pb-6 whitespace-pre-wrap">
-                        {item.answer}
+                      <AccordionContent
+                        forceMount
+                        contentClassName="data-[state=closed]:hidden"
+                        className="text-body text-muted-foreground leading-relaxed"
+                      >
+                        <div className="pt-2 pb-6 whitespace-pre-wrap">
+                          {item.answer}
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
                   ))}

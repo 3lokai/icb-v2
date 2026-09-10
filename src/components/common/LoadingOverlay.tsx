@@ -13,7 +13,11 @@ type LoadingOverlayProps = {
 export function LoadingOverlay({ text = "Loading..." }: LoadingOverlayProps) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background p-6">
-      <div className="mx-auto text-center">
+      {/* Declared width, not content-derived: with only `mx-auto` this column
+          sized to its widest child, and measured a 251px→1333px horizontal jump
+          on /roasters at desktop widths (CLS 0.26 — the desktop-only residual;
+          mobile never hit it because the column is viewport-wide there). */}
+      <div className="mx-auto w-full max-w-md text-center">
         <Stack gap="12" className="items-center">
           <LoadingSpinner size="xl" text={text} />
 

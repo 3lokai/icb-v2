@@ -15,7 +15,11 @@ import { createAnonServerClient } from "@/lib/supabase/server";
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
-const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+const TOTALS_FALLBACK: PublicDirectoryTotals = {
+  coffees: 0,
+  roasters: 0,
+  asOf: null,
+};
 
 async function getDirectoryTotals(): Promise<PublicDirectoryTotals> {
   try {
@@ -27,7 +31,7 @@ async function getDirectoryTotals(): Promise<PublicDirectoryTotals> {
 }
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: "Indian Specialty Coffee — by the Numbers",
+  title: "Indian Coffee by the Numbers",
   description:
     "Live data from 85+ active roasters and 1,100+ specialty SKUs indexed on IndianCoffeeBeans.com. Process breakdowns, origin regions, pricing benchmarks, variety distribution, and roaster geography. Updated monthly.",
   keywords: [

@@ -10,12 +10,14 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { NewsletterForm } from "@/components/common/NewsletterForm";
+import { BrewIconsRow } from "@/components/layout/BrewIconsRow";
 import { Logo } from "@/components/layout/logo";
 import { CookieSettingsButton } from "../common/CookieSettings";
 import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Decor } from "@/components/primitives/decor";
+import { FOUNDER } from "@/lib/seo/schema";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -289,14 +291,38 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="mt-16 border-t border-border/60 pt-8">
+          <div className="mt-12 flex justify-center">
+            <BrewIconsRow />
+          </div>
+
+          <div className="mt-8 border-t border-border/60 pt-8">
             <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-              <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
-                <span suppressHydrationWarning>
-                  © {currentYear} Indian Coffee Beans
-                </span>
-                <span className="h-1 w-1 rounded-full bg-accent/40" />
-                <span>Made in India</span>
+              <div className="flex flex-col items-center gap-2 md:items-start">
+                <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
+                  <span suppressHydrationWarning>
+                    © {currentYear} Indian Coffee Beans
+                  </span>
+                  <span className="h-1 w-1 rounded-full bg-accent/40" />
+                  <span>Made in India</span>
+                </div>
+                <p className="text-micro text-muted-foreground/60 tracking-wide">
+                  Founded by{" "}
+                  <Link
+                    className="transition-colors hover:text-accent"
+                    href={FOUNDER.aboutHref}
+                  >
+                    {FOUNDER.name}
+                  </Link>
+                  {" · "}
+                  <Link
+                    className="transition-colors hover:text-accent"
+                    href={FOUNDER.linkedInHref}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    LinkedIn
+                  </Link>
+                </p>
               </div>
 
               <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">

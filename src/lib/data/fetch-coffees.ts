@@ -112,6 +112,13 @@ async function resolveInternationalRegionIds(supabase: any): Promise<string[]> {
 /**
  * Helper to resolve estate keys to IDs
  */
+/**
+ * Sentinel estate id used when none of the requested estate_keys exist. Overlapping
+ * against it matches no row, so an unknown estate returns an empty page instead of
+ * the unfiltered catalogue.
+ */
+const NO_ESTATE_MATCH = "00000000-0000-0000-0000-000000000000";
+
 async function resolveEstateKeysToIds(
   supabase: any,
   keys: string[]
@@ -123,7 +130,17 @@ async function resolveEstateKeysToIds(
     .from("estates")
     .select("id")
     .in("estate_key", keys);
-  return (data || []).map((e: any) => e.id);
+  const ids = (data || []).map((e: any) => e.id);
+  // estate_key uses underscores ("ratnagiri_estate"), easy to get wrong from a
+  // canon slug ("ratnagiri-estate"). Callers MUST NOT treat "nothing resolved" as
+  // "no filter" — that returns the whole catalogue for a request that asked for
+  // one estate. See the NO_ESTATE_MATCH sentinel at the call site.
+  if (ids.length === 0) {
+    console.warn(
+      `[fetchCoffees] No estate matched estate_key(s) ${keys.join(", ")} — returning no results rather than an unfiltered list.`
+    );
+  }
+  return ids;
 }
 
 /**
@@ -586,9 +603,10 @@ export async function fetchCoffees(
       supabase,
       filters.estate_keys
     );
-    if (estateIds.length > 0) {
-      resolvedFilters.estate_ids = estateIds;
-    }
+    // Fail closed: if no key resolved, keep an explicit no-match rather than
+    // dropping the filter, which would widen the request to the whole catalogue.
+    resolvedFilters.estate_ids =
+      estateIds.length > 0 ? estateIds : [NO_ESTATE_MATCH];
   }
 
   // Resolve canonical flavor slugs to IDs (if provided, for backward compatibility)

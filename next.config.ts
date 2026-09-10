@@ -1,4 +1,6 @@
+import { withPostHogConfig } from "@posthog/nextjs-config";
 import type { NextConfig } from "next";
+import newsletterIssues from "./src/content/newsletters/index.json";
 
 // Bundle analyzer - only load when ANALYZE env var is set
 let withBundleAnalyzer = (config: NextConfig) => config;
@@ -12,10 +14,6 @@ if (process.env.ANALYZE === "true") {
 }
 
 const nextConfig: NextConfig = {
-  // ponytail: temporary — de-minify React #418 hydration errors in PostHog; remove
-  // once the offending component is identified (ships readable source publicly).
-  productionBrowserSourceMaps: true,
-
   // Server Actions configuration
   // Allow 3MB body size to support 2MB image uploads (base64 encoding adds ~33% overhead)
   experimental: {
@@ -86,6 +84,15 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Newsletter issues used to be keyed by Kit broadcast id; the archive is
+      // now file-backed and keyed by send date (src/content/newsletters).
+      ...newsletterIssues
+        .filter((issue) => issue.kitId)
+        .map((issue) => ({
+          source: `/newsletter/${issue.kitId}`,
+          destination: `/newsletter/${issue.date}`,
+          permanent: true,
+        })),
       {
         source: "/under-500",
         destination: "/coffees/budget",
@@ -144,6 +151,29 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
+    // Clickjacking / MIME-sniffing / referrer-leak defenses. No CSP here: the app
+    // loads inline GA-consent + PostHog bootstrap scripts, so a meaningful policy
+    // needs a nonce pass through the layout — tracked separately.
+    // ponytail: header list, not a CSP; add the nonce plumbing if CSP is required.
+    const securityHeaders = [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value:
+              "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+          },
+        ],
+      },
+    ];
+
     // Lottie animation JSON and hero video files are content-stable and
     // versioned with the deploy — cache them aggressively so they paint
     // instantly after the first visit.
@@ -174,11 +204,12 @@ const nextConfig: NextConfig = {
           source: "/:path*",
           headers: [{ key: "X-Robots-Tag", value: "noindex" }],
         },
+        ...securityHeaders,
         ...immutableAssets,
       ];
     }
 
-    return immutableAssets;
+    return [...securityHeaders, ...immutableAssets];
   },
   // Webpack config for bundle-analyzer builds (npm run analyze uses --webpack).
   // The catch-all vendor group has been intentionally removed — it was bundling
@@ -237,4 +268,36 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withBundleAnalyzer(nextConfig);
+const configuredNextConfig = withBundleAnalyzer(nextConfig);
+
+// The POSTHOG_CLI_* spellings are what is set in Vercel; the unprefixed ones are the
+// wizard's convention and are what .env.local uses. Accept either so a build is not
+// silently unsymbolicated just because the two disagree.
+const postHogApiKey =
+  process.env.POSTHOG_API_KEY ?? process.env.POSTHOG_CLI_API_KEY;
+const postHogProjectId =
+  process.env.POSTHOG_PROJECT_ID ?? process.env.POSTHOG_CLI_PROJECT_ID;
+// API host, not the ingestion host in NEXT_PUBLIC_POSTHOG_HOST — the two differ on EU.
+const postHogHost = process.env.POSTHOG_HOST ?? "https://eu.posthog.com";
+
+const canUploadSourcemaps = Boolean(postHogApiKey && postHogProjectId);
+
+// Missing credentials degrade to a build with no source maps at all: safe, but it means
+// every PostHog stack stays minified. That is invisible unless the build says so.
+if (!canUploadSourcemaps && process.env.VERCEL_ENV === "production") {
+  console.warn(
+    "posthog: no POSTHOG_API_KEY/POSTHOG_PROJECT_ID — shipping without source maps, stacks will be minified"
+  );
+}
+
+export default postHogApiKey && postHogProjectId
+  ? withPostHogConfig(configuredNextConfig, {
+      personalApiKey: postHogApiKey,
+      projectId: postHogProjectId,
+      host: postHogHost,
+      sourcemaps: {
+        enabled: true,
+        deleteAfterUpload: true,
+      },
+    })
+  : configuredNextConfig;

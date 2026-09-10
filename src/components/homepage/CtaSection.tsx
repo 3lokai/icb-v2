@@ -18,7 +18,11 @@ import {
   type PublicDirectoryTotals,
 } from "@/lib/data/fetch-public-directory-totals";
 
-const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+const TOTALS_FALLBACK: PublicDirectoryTotals = {
+  coffees: 0,
+  roasters: 0,
+  asOf: null,
+};
 
 export default async function CtaSection() {
   let totals = TOTALS_FALLBACK;

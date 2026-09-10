@@ -41,8 +41,7 @@ function themeNeutralizeStyle(style: string): string {
  * Email-only housekeeping that makes no sense on the web: the footer row
  * with the unsubscribe link, mailing address, and copyright block. The
  * unsubscribe anchor marks the row; removing its enclosing table row drops
- * the whole block. Un-rendered Liquid tags ({{ address }}, {% if %}) that
- * Kit substitutes at send time are scrubbed as a fallback.
+ * the whole block.
  */
 function trimEmailFooter(root: HTMLElement): void {
   for (const anchor of root.querySelectorAll('a[href*="unsubscribe"]')) {
@@ -50,7 +49,22 @@ function trimEmailFooter(root: HTMLElement): void {
   }
 }
 
-const LIQUID_TAG = /\{\{[^{}]*\}\}|\{%[^%]*%\}/g;
+/**
+ * The archive files are the emails as they went out, so they still contain
+ * Kit/Notifuse Liquid. There is no subscriber on the public web, so:
+ * `{% if %}A{% else %}B{% endif %}` keeps B (the generic greeting),
+ * `{% if %}A{% endif %}` drops A (address, etc.), and leftover `{{ }}` /
+ * `{% %}` tags are stripped. Nested conditionals are not used in these files.
+ */
+function resolveLiquidForArchive(html: string): string {
+  return html
+    .replace(
+      /\{%\s*if\s+[^%]+%\}([\s\S]*?)\{%\s*else\s*%\}([\s\S]*?)\{%\s*endif\s*%\}/g,
+      (_match, _ifBranch: string, elseBranch: string) => elseBranch
+    )
+    .replace(/\{%\s*if\s+[^%]+%\}[\s\S]*?\{%\s*endif\s*%\}/g, "")
+    .replace(/\{\{[^{}]*\}\}|\{%[^%]*%\}/g, "");
+}
 
 function sanitizeBroadcastHtml(html: string): string {
   DOMPurify.addHook("afterSanitizeAttributes", (node) => {
@@ -77,7 +91,7 @@ function sanitizeBroadcastHtml(html: string): string {
       RETURN_DOM: true,
     }) as HTMLElement;
     trimEmailFooter(root);
-    return root.innerHTML.replace(LIQUID_TAG, "");
+    return resolveLiquidForArchive(root.innerHTML);
   } finally {
     DOMPurify.removeHook("afterSanitizeAttributes");
   }

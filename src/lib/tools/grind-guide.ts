@@ -835,8 +835,10 @@ export function formatSetting(g: Grinder, position: number): string {
       const rem = total % per;
       return `${Math.floor(total / per)}.${Math.floor(rem / perNum)}.${rem % perNum}`;
     }
-    case "clicks":
-      return `${Math.round(position)} clicks`;
+    case "clicks": {
+      const n = Math.round(position);
+      return `${n} click${n === 1 ? "" : "s"}`;
+    }
     default:
       // Numbered dials are continuous — half steps are actionable, so keep them.
       return `${Math.round(position * 2) / 2}`;

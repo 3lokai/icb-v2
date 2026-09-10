@@ -70,22 +70,22 @@ export function buildDiscoveryTitle(config: LandingPageConfig): string {
     return config.seoTitle;
   }
   if (config.type === "roast_level") {
-    return `${config.entityLabel} Coffee in India – Discover & Compare`;
+    return `${config.entityLabel} Coffee in India`;
   }
   if (config.type === "brew_method") {
-    return `Best Coffees for ${config.entityLabel} in India – Discover & Compare`;
+    return `Best Coffees for ${config.entityLabel} in India`;
   }
   if (config.type === "price_bucket") {
-    return `Best Coffees ${config.entityLabel} in India – Discover & Compare`;
+    return `Best Coffees ${config.entityLabel} in India`;
   }
   if (config.type === "process") {
-    return `${withCoffeeSuffix(config.entityLabel)} in India – Discover & Compare`;
+    return `${withCoffeeSuffix(config.entityLabel)} in India`;
   }
   if (config.type === "region") {
-    return `${withCoffeeSuffix(config.entityLabel)} in India – Discover & Compare`;
+    return `${withCoffeeSuffix(config.entityLabel)} in India`;
   }
   if (config.type === "bean_type") {
-    return `${withCoffeeSuffix(config.entityLabel)} in India – Discover & Compare`;
+    return `${withCoffeeSuffix(config.entityLabel)} in India`;
   }
   return config.h1;
 }

@@ -1,29 +1,19 @@
 /**
- * Kit (ConvertKit) v4 broadcast — a sent newsletter.
+ * A sent newsletter issue, as recorded in src/content/newsletters/index.json.
  *
- * Slim listing responses omit `content`, `public_url`, `email_address`,
- * `email_template`, and `subscriber_filter`; those fields are only present
- * when fetching a single broadcast by ID.
+ * The archive is file-backed: `date` is both the slug (`/newsletter/<date>`)
+ * and the display date, and `<date>.html` next to the manifest holds the email
+ * HTML exactly as it went out.
  */
-export interface KitBroadcast {
-  id: number;
-  created_at: string;
+export interface NewsletterIssue {
+  date: string;
   subject: string;
-  preview_text: string | null;
-  description: string | null;
-  public: boolean;
-  published_at: string | null;
-  send_at: string | null;
-  thumbnail_url: string | null;
-  status: string;
-  content?: string | null;
-  public_url?: string | null;
+  preview: string;
+  /** Kit broadcast id — only on issues sent before the move to Notifuse. */
+  kitId?: number;
 }
 
-/** Display date for a broadcast: send date, falling back to publish date. */
-export function broadcastDate(broadcast: KitBroadcast): Date | null {
-  const raw = broadcast.send_at ?? broadcast.published_at;
-  if (!raw) return null;
-  const parsed = new Date(raw);
-  return Number.isNaN(parsed.getTime()) ? null : parsed;
+/** Display date for an issue. */
+export function issueDate(issue: NewsletterIssue): Date {
+  return new Date(`${issue.date}T00:00:00Z`);
 }

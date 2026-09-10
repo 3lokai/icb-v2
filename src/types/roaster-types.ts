@@ -20,6 +20,20 @@ export type RoasterLocation = {
   google_maps_url: string | null;
 };
 
+/**
+ * A roaster with a comparable profile, from the `roaster_similar` materialized view.
+ * `shared_tags` are prefixed (`focus:`, `roast:`, `process:`, `species:`, `variety:`,
+ * `sourcing:`, `cert:`) and already filtered to the discriminating ones — render them
+ * as the reason for the match. Empty when the pair shares nothing rare.
+ */
+export type SimilarRoaster = {
+  slug: string;
+  name: string;
+  /** roasters.logo_is_light — picks the plate behind the logo. */
+  logo_is_light: boolean | null;
+  shared_tags: string[];
+};
+
 export type RoasterDetail = {
   // From roasters table
   id: string;
@@ -27,6 +41,8 @@ export type RoasterDetail = {
   name: string;
   description: string | null;
   logo_url: string | null;
+  /** roasters.logo_is_light — picks the plate behind the logo. */
+  logo_is_light: boolean | null;
   website: string | null;
   is_active: boolean;
   hq_city: string | null;
@@ -76,6 +92,9 @@ export type RoasterDetail = {
   // Aggregated server-side over the full catalog, not just the embedded coffees[].
   roast_distribution?: Array<{ value: string; count: number }>;
   process_distribution?: Array<{ value: string; count: number }>;
+
+  /** Up to 4 roasters with the closest profile. Non-geographic — see `roaster_similar`. */
+  similar?: SimilarRoaster[];
 };
 
 // ----------------------------------------------------------------------------
@@ -88,6 +107,10 @@ export type RoasterFilters = {
   states?: string[];
   countries?: string[];
   active_only?: boolean;
+  /** roasters.sourcing_model values, e.g. "direct-trade", "estate-owned". */
+  sourcing_model?: string[];
+  /** roasters.specialty_focus values, e.g. "single-origin", "robusta". */
+  specialty_focus?: string[];
   roaster_slugs?: string[]; // Slugs from roasters table (human-readable URLs)
   roaster_ids?: string[]; // Internal use, resolved from slugs
 };
@@ -116,6 +139,8 @@ export type RoasterSummary = {
   hq_country: string | null;
   is_active: boolean;
   instagram_handle: string | null;
+  /** roasters.logo_is_light — picks the plate behind the logo. */
+  logo_is_light: boolean | null;
 
   // Badge fields
   is_featured: boolean | null;

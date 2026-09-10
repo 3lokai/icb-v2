@@ -30,9 +30,10 @@ type CardRatingFooterProps = {
  * CardRatingFooter — shared, accessible rating-submission affordance for cards.
  *
  * Opening flow: activating a star (pointer/keyboard) opens the QuickRating modal
- * pre-filled with that value. StarRating is the sole interactive control (a
- * radiogroup), so the footer shell stays a non-interactive layout container —
- * no nested interactive elements, fully operable by keyboard and pointer.
+ * pre-filled with that value; activating the microcopy opens the same modal with
+ * no rating pre-filled. Those two are the footer's only interactive elements and
+ * they sit side by side — the shell stays a non-interactive layout container, so
+ * nothing nests and the whole strip is operable by keyboard and pointer.
  */
 export function CardRatingFooter({
   entityType,
@@ -78,6 +79,28 @@ export function CardRatingFooter({
     });
   };
 
+  // The microcopy is a second way into the same modal — same target as the
+  // stars, only without a pre-filled value, so the words people actually read
+  // ("Be the first to rate.") are a control rather than decoration. Falls back
+  // to plain text when there is nothing to rate, so it never renders dead.
+  const renderMicrocopy = (className: string) =>
+    entityId ? (
+      <button
+        type="button"
+        onClick={() => openRatingModal()}
+        className={cn(
+          className,
+          "cursor-pointer rounded-sm underline-offset-2 transition-colors",
+          "hover:text-foreground hover:underline",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+        )}
+      >
+        {microcopy}
+      </button>
+    ) : (
+      <span className={className}>{microcopy}</span>
+    );
+
   // Minimal: compact interactive stars + microcopy, no number block.
   if (variant === "minimal") {
     return (
@@ -102,15 +125,14 @@ export function CardRatingFooter({
             onRate={(rating) => openRatingModal(rating)}
           />
         </div>
-        <span className="text-caption min-w-0 truncate text-right">
-          {microcopy}
-        </span>
+        {renderMicrocopy("text-caption min-w-0 truncate text-right")}
       </div>
     );
   }
 
   // Full: opinion-first footer (number block left, stars + microcopy right).
-  // Outer shell is a non-interactive layout container; StarRating owns all input.
+  // Outer shell is a non-interactive layout container; the stars and the
+  // microcopy are the only controls.
   return (
     <div
       className={cn(
@@ -151,7 +173,7 @@ export function CardRatingFooter({
             ariaLabel={rateLabel}
             onRate={(rating) => openRatingModal(rating)}
           />
-          <div className="text-caption">{microcopy}</div>
+          {renderMicrocopy("text-caption")}
         </div>
       </div>
     </div>

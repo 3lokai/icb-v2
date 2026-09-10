@@ -14,8 +14,10 @@ import {
   generateMetadata as generateSEOMetadata,
   truncateTitle,
   clampDescription,
+  formatAltitudeLabel,
 } from "@/lib/seo/metadata";
 import {
+  bestVariantPrice,
   generateSchemaOrg,
   generateBreadcrumbSchema,
   generateFAQSchema,
@@ -87,13 +89,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = truncateTitle(titleRaw);
 
   const originLabel = coffeeOriginLabel(coffee);
-  const attrParts = [processPart, originLabel, roastPart].filter(Boolean);
+  // Altitude is an estate attribute, so it rides along with the estate origin.
+  const estate = coffee.estates?.[0];
+  const altitudeLabel = formatAltitudeLabel(
+    estate?.altitude_min_m,
+    estate?.altitude_max_m
+  );
+  const attrParts = [processPart, originLabel, altitudeLabel, roastPart].filter(
+    Boolean
+  );
   const attrLine = attrParts.join(" · ");
 
+  // Rating is surfaced from the first rating up, matching the aggregateRating
+  // threshold in the Product schema (rating_count > 0) — the two disagreed, so
+  // 1–4 rating coffees emitted a star snippet with no rating text in the meta.
   const avgRating = stats?.avg_rating ?? null;
   const ratingBlurb =
-    reviewCount >= 5 && avgRating != null
-      ? `Community-rated ${avgRating.toFixed(1)}/5 from ${reviewCount} reviews. `
+    reviewCount > 0 && avgRating != null
+      ? `Community-rated ${avgRating.toFixed(1)}/5 from ${reviewCount} ${reviewCount === 1 ? "rating" : "ratings"}. `
       : "";
 
   const descriptionFooter =
@@ -180,10 +193,13 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
     image: ogImage,
     url: canonical,
     brand: coffee.roaster?.name,
+    // MV price fields are stock-gated (null when in_stock_count = 0). Fall back
+    // to last-known variant price so out-of-stock SKUs still emit Product+Offer
+    // with availability: OutOfStock instead of dropping the entity.
     price:
-      coffee.summary.best_normalized_250g ||
-      coffee.summary.min_price_in_stock ||
-      undefined,
+      coffee.summary.best_normalized_250g ??
+      coffee.summary.min_price_in_stock ??
+      bestVariantPrice(coffee.variants),
     currency: "INR",
     availability:
       (coffee.summary.in_stock_count ?? 0) > 0 ? "InStock" : "OutOfStock",
@@ -203,7 +219,10 @@ export default async function RoasterCoffeeDetailPageServer({ params }: Props) {
       name: coffee.roaster?.name ?? "Roaster",
       url: `${baseUrl}/roasters/${roasterSlug}`,
     },
-    { name: "Coffees", url: `${baseUrl}/roasters/${roasterSlug}/coffees` },
+    {
+      name: "Coffees",
+      url: `${baseUrl}/roasters/${roasterSlug}#coffees`,
+    },
     { name: getCoffeeDisplayName(coffee) || "Coffee", url: canonical },
   ]);
 

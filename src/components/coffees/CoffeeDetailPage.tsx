@@ -110,6 +110,10 @@ export function CoffeeDetailPage({
   faqItems,
   className,
 }: CoffeeDetailPageProps) {
+  // A null element here throws in getVarietyDescription during SSR and 500s the
+  // whole page, so drop the blanks once rather than guarding each use.
+  const varieties = coffee.varieties?.filter(Boolean) ?? [];
+
   return (
     <div className={cn("w-full bg-background min-h-screen", className)}>
       {/* ─── Scrollspy Tab Bar (client island) ─── */}
@@ -125,7 +129,7 @@ export function CoffeeDetailPage({
           coffee.process ||
           coffee.regions.length > 0 ||
           coffee.estates.length > 0 ||
-          (coffee.varieties && coffee.varieties.length > 0) ||
+          varieties.length > 0 ||
           coffee.bean_species ||
           coffee.crop_year ||
           coffee.harvest_window ||
@@ -257,7 +261,7 @@ export function CoffeeDetailPage({
                             </span>
                           </Stack>
                         )}
-                        {coffee.varieties && coffee.varieties.length > 0 && (
+                        {varieties.length > 0 && (
                           <Stack gap="1">
                             <span className="flex items-center gap-1.5 text-label">
                               <Icon
@@ -268,7 +272,7 @@ export function CoffeeDetailPage({
                               Variety
                             </span>
                             <span className="text-body font-medium">
-                              {coffee.varieties.map((v, i) => {
+                              {varieties.map((v, i) => {
                                 const desc = getVarietyDescription(v);
                                 return (
                                   <Fragment key={v}>

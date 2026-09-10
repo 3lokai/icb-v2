@@ -70,4 +70,3 @@ create policy canon_estate_trade_write_admin on canon_estate_trade
   for all to authenticated using (
     exists (select 1 from user_roles where user_id = auth.uid() and role in ('admin', 'operator'))
   );
-

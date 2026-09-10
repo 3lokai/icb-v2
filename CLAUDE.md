@@ -53,7 +53,6 @@ src/app/
   api/             # Internal + public REST API
     v1/            # Versioned public API (coffees, roasters, reviews, users, usage)
     og/            # Dynamic OG image generation
-    search-index/  # Returns Fuse.js search index payload
 ```
 
 ### Data Layer

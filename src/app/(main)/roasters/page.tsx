@@ -20,7 +20,11 @@ import { PageShell } from "@/components/primitives/page-shell";
 import { Section } from "@/components/primitives/section";
 import type { RoasterFilters, RoasterSummary } from "@/types/roaster-types";
 
-const TOTALS_FALLBACK: PublicDirectoryTotals = { coffees: 0, roasters: 0 };
+const TOTALS_FALLBACK: PublicDirectoryTotals = {
+  coffees: 0,
+  roasters: 0,
+  asOf: null,
+};
 
 async function getDirectoryTotals(): Promise<PublicDirectoryTotals> {
   try {

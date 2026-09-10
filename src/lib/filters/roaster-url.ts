@@ -52,6 +52,24 @@ export function parseRoasterSearchParams(searchParams: URLSearchParams): {
     }
   }
 
+  // roasters.sourcing_model / specialty_focus are text[] — comma-separated here,
+  // matched with an array overlap in fetch-roasters.
+  for (const [param, field] of [
+    ["sourcingModel", "sourcing_model"],
+    ["specialtyFocus", "specialty_focus"],
+  ] as const) {
+    const raw = searchParams.get(param);
+    if (raw) {
+      const values = raw
+        .split(",")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+      if (values.length > 0) {
+        filters[field] = values;
+      }
+    }
+  }
+
   const statesParam = searchParams.get("states");
   if (statesParam) {
     const states = statesParam
@@ -147,6 +165,14 @@ export function buildRoasterQueryString(
   // Array filters (comma-separated)
   if (filters.cities && filters.cities.length > 0) {
     params.set("cities", filters.cities.join(","));
+  }
+
+  if (filters.sourcing_model && filters.sourcing_model.length > 0) {
+    params.set("sourcingModel", filters.sourcing_model.join(","));
+  }
+
+  if (filters.specialty_focus && filters.specialty_focus.length > 0) {
+    params.set("specialtyFocus", filters.specialty_focus.join(","));
   }
 
   if (filters.states && filters.states.length > 0) {

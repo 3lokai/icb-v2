@@ -183,29 +183,14 @@ Directory of Indian specialty coffee roasters (paginated).
 - `coffee_count`: Number of beans listed in the directory.
 - `avg_coffee_rating`: Performance across catalog.
 
-### 3. Unified Search (`/api/search-index`)
-Returns the complete client-side search index for **coffees and roasters** (no articles), optimized for fuzzy search. Requires `SUPABASE_SECRET_KEY` in the environment; returns 503 if not set.
-
-**Response:** Array of `SearchableItem`:
-- `id`: string.
-- `type`: `"coffee"` | `"roaster"`.
-- `title`: string.
-- `description`: string.
-- `url`: string.
-- `imageUrl` (optional): string.
-- `searchableText`: Flattened text for search.
-- `flavorNotes` (optional): string[].
-- `tags`: string[].
-- `metadata`: `metadata.coffee` (roasterName, region, price, bestNormalized250g, rating, roastLevel, process) and/or `metadata.roaster` (region, coffeeCount).
-
-### 4. Single Coffee (`/api/coffees/[slug]`)
+### 3. Single Coffee (`/api/coffees/[slug]`)
 Returns full coffee detail by slug (variants, images, sensory, regions, estates, flavor notes, brew methods).
 
-### 5. Single Roaster (`/api/roasters/[slug]`)
+### 4. Single Roaster (`/api/roasters/[slug]`)
 Returns full roaster profile by slug.
 
-### 6. Coffee Filter Meta (`/api/coffees/filter-meta`)
+### 5. Coffee Filter Meta (`/api/coffees/filter-meta`)
 Filter options and counts for the coffee directory. Accepts the same query parameters as `/api/coffees` (including `worksWithMilk`, etc.) and returns counts per filter bucket (e.g. roast levels, processes, regions). Use for “what can I filter by and how many results?”.
 
-### 7. Roaster Filter Meta (`/api/roasters/filter-meta`)
+### 6. Roaster Filter Meta (`/api/roasters/filter-meta`)
 Filter options and counts for the roaster directory. Same query params as `/api/roasters`.

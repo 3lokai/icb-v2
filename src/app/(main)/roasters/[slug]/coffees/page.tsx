@@ -1,98 +1,14 @@
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { fetchRoasterBySlug } from "@/lib/data/fetch-roaster-by-slug";
-import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
-import {
-  generateBreadcrumbSchema,
-  generateCollectionPageSchema,
-} from "@/lib/seo/schema";
-import StructuredData from "@/components/seo/StructuredData";
-import { RoasterCoffeesSelectionPage } from "@/components/roasters/RoasterCoffeesSelectionPage";
+import { permanentRedirect } from "next/navigation";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
-
 /**
- * Generate metadata for the roaster coffees collection page
+ * Legacy lineup URL — permanently redirects to the paginated catalog on the
+ * parent roaster profile (`/roasters/[slug]?page=N`).
  */
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export default async function RoasterCoffeesPageRedirect({ params }: Props) {
   const { slug } = await params;
-  const roaster = await fetchRoasterBySlug(slug, { limit: 50 }); // Fetch up to 50 coffees for metadata
-
-  if (!roaster) {
-    return {
-      title: "Roaster Not Found",
-      description: "The roaster you're looking for doesn't exist.",
-    };
-  }
-
-  const canonical = `${baseUrl}/roasters/${slug}/coffees`;
-  const title = `${roaster.name} Coffees`;
-  const description = `Explore the complete specialty coffee collection from ${roaster.name}. Grouped by roast level, from light to dark. Discover your next favorite Indian coffee beans.`;
-
-  const metadata = generateSEOMetadata({
-    title,
-    description,
-    canonical,
-    type: "website",
-    keywords: [
-      roaster.name,
-      `${roaster.name} coffee`,
-      `${roaster.name} beans`,
-      "Indian specialty coffee",
-      "roast level collection",
-    ],
-  });
-
-  // This thin grouped-grid lineup page duplicates the parent roaster page and
-  // the indexed coffee SKU pages. noindex it to resolve cannibalization, but
-  // keep `follow` so it still passes link equity to the SKU pages.
-  return {
-    ...metadata,
-    robots: { index: false, follow: true },
-  };
-}
-
-/**
- * Roaster Coffees Collection Page (Server Component)
- */
-export default async function RoasterCoffeesPageServer({ params }: Props) {
-  const { slug } = await params;
-  // Fetch more coffees than the default 15 for the dedicated catalog page
-  const roaster = await fetchRoasterBySlug(slug, { limit: 100 });
-
-  if (!roaster) {
-    notFound();
-  }
-
-  const lineupUrl = `${baseUrl}/roasters/${slug}/coffees`;
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: baseUrl },
-    { name: "Roasters", url: `${baseUrl}/roasters` },
-    { name: roaster.name, url: `${baseUrl}/roasters/${slug}` },
-    { name: "Coffees", url: lineupUrl },
-  ]);
-
-  const collectionPageSchema = generateCollectionPageSchema(
-    `${roaster.name} Coffees`,
-    `Specialty coffee lineup from ${roaster.name}, grouped by roast level.`,
-    lineupUrl,
-    (roaster.coffees ?? []).slice(0, 20).map((coffee, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      url: `${baseUrl}/roasters/${slug}/coffees/${coffee.slug}`,
-      name: coffee.name,
-    }))
-  );
-
-  return (
-    <>
-      <StructuredData schema={[collectionPageSchema, breadcrumbSchema]} />
-      <RoasterCoffeesSelectionPage roaster={roaster} />
-    </>
-  );
+  permanentRedirect(`/roasters/${slug}`);
 }

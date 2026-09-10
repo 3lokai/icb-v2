@@ -353,9 +353,19 @@ async function getSupabase(): Promise<SupabaseClient> {
     : createAnonServerClient();
 }
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 /**
  * Fetch a single coffee by slug with all related data (legacy: slug only, may be ambiguous).
  * Returns null if coffee not found.
+ *
+ * Also accepts a raw coffee UUID. Sanity's `coffeeSpotlight.coffeeId` stores the
+ * Supabase id (the studio field is documented that way), but both consumers —
+ * CoffeeSpotlight.tsx and prefetch-article-blocks.ts — resolve it through here,
+ * so a UUID matched no slug and every spotlight on the site rendered the
+ * "No coffees found in this spotlight" empty state. Branching on the id shape
+ * fixes both callers at once.
  */
 export async function fetchCoffeeBySlug(
   slug: string,
@@ -365,7 +375,7 @@ export async function fetchCoffeeBySlug(
   const { data: coffeeData, error: coffeeError } = await supabase
     .from("coffees")
     .select("*")
-    .eq("slug", slug)
+    .eq(UUID_RE.test(slug) ? "id" : "slug", slug)
     .single();
 
   if (coffeeError || !coffeeData) {
