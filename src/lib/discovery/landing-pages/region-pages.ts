@@ -1182,6 +1182,114 @@ export const regionPages: LandingPageConfig[] = [
     ],
     related: ["nilgiris", "shevaroy-hills", "washed", "light-roast"],
   },
+  {
+    slug: "biligiriranga-hills",
+    type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
+    h1: "Best BR Hills (Biligiriranga) Coffee in India",
+    entityLabel: "Biligiriranga Hills",
+    intro:
+      "Discover specialty coffees from the Biligiriranga Hills — BR Hills, the forest corridor where the Western and Eastern Ghats meet, and the smallest mapped coffee area in India with a real specialty catalogue behind it.",
+    headerNudge:
+      "Forest-transition origin inside a tiger reserve — shade-grown, mostly washed, and unusually concentrated in two sources.",
+    teaserTitle: "BR Hills coffees",
+    teaserDescription:
+      "Shade-grown lots from the Karnataka–Tamil Nadu forest corridor.",
+    gridNudge:
+      "Twelve of these lots are one estate through eleven different roasters — filter by roaster to taste the roasting and fermentation choices with the green held almost constant.",
+    heroBadge: "Origin",
+
+    regionProfile: {
+      snapshot: {
+        knownFor:
+          "Forest-grown shade coffee, one historic estate, biodiversity-led sourcing",
+      },
+      overview:
+        "The Biligiriranga Hills — BR Hills — straddle Karnataka's border with Tamil Nadu in Chamarajanagar district, forming the corridor where the Western and Eastern Ghats meet. Most of the range is the Biligiri Rangaswamy Temple Tiger Reserve and the homeland of the Soliga, and coffee grows in pockets under dense, biodiverse canopy rather than as a contiguous plantation belt. The ISRO and Coffee Board plantation atlas maps just 635 hectares under coffee here — well under one percent of Chikmagalur's area, and the smallest figure of any region with its own page on ICB. That a range this small carries a couple of dozen specialty lots is a fact about concentration, not scale: one historic estate and one biodiversity-led roaster's smallholder network account for nearly all of it.",
+      flavourProfile: {
+        typical: [
+          "Milk chocolate",
+          "Dark chocolate",
+          "Jaggery",
+          "Molasses",
+          "Hazelnut",
+          "Plum",
+        ],
+        indianContext:
+          "BR Hills reads chocolate-and-nut sweet far more often than fruit-forward — milk chocolate, dark chocolate, jaggery, molasses and hazelnut are the notes that repeat across the catalogue, with stone fruit and dark grape showing up on the fermented lots. It is an Arabica origin in practice: 25 of the 29 lots here are straight Arabica and the remainder are blends. Worth knowing that the altitudes don't sit still. The canon figure for the range is roughly 900 to 1,500 metres, but Sangameshwar Coffee Estates describes its own Attikan farm — the source of most single-estate lots on this page — as the highest coffee ground cultivated in South India at around 1,650 metres. Read the range band as the range, and the estate claim as the estate's.",
+        processVariation:
+          "Washed is the baseline and the largest single group, twelve of twenty-nine lots, and it is the clearest window on what the forest shade actually tastes like. The rest fan out unusually wide for a region this small: double-fermented, barrel-aged and culture-washed experiments, anaerobics, honeys and a pulped natural. The split is instructive — most of the experiments are different roasters fermenting the same Attikan green in different directions, while the smallholder lots skew towards anaerobic and honey processing.",
+      },
+      roasterContext:
+        'Two sources dominate. Black Baza Coffee, a Bangalore roaster built around biodiversity-friendly, producer-led sourcing, lists fifteen of the twenty-nine lots, named after the forest species that share the ground — Loris, Otter, Tiger Beetle, Potter Wasp, Jumping Ant, Wanderoo, Ficus. Five of those are blends pairing BR Hills with Wayanad, Chikmagalur, Sakleshpur or the Nilgiris, so they appear on more than one region page. Separately, Attikan Estate accounts for twelve lots spread across eleven roasters — Blue Tokai, Beachville, Kruti, El Bueno, Rossette, Quick Brown Fox, Naivo, Coffee Plus, Caarabi, Coffeeverse and Bean By Nation. Attikan is one of four farms in Sangameshwar Coffee Estates, founded in 1888 and bordered by the tiger reserve. The upshot is that "BR Hills" here means two very different things: a single historic estate seen through eleven roasting styles, and a network of small forest holdings sold under one roaster\'s label.',
+      brewGuidance: {
+        recommended: ["v60", "aeropress", "french-press"],
+        notes:
+          "Roast levels split almost evenly across this catalogue — eleven light or light-medium lots, ten medium, eight medium-dark or dark — so pick the brewer to the roast rather than to the region. The washed lights and light-mediums suit V60 and AeroPress; the medium-dark and dark lots, several of them built for espresso or cold brew, take French Press and moka pot well. The double-fermented and barrel lots reward brewing a little coarser and cooler than a straight washed coffee.",
+      },
+      nearbyRegions: ["nilgiris", "coorg"],
+      icbDataNote:
+        "A small category with thin community data: only seven of these lots carry any rating at all, and none has more than six, so individual tasting notes are worth more than aggregate scores. Note also that the catalogue count sits high against 635 mapped hectares — that reflects two concentrated sources being well represented on ICB, not a large growing belt.",
+    },
+
+    regionSnapshot: {
+      knownFor:
+        "Forest-grown shade coffee, one historic estate, biodiversity-led sourcing",
+    },
+    faqOverline: "BR Hills",
+    faqTitle: "About *BR Hills* coffee",
+    faqDescription:
+      "The forest corridor between the Western and Eastern Ghats, and the estates inside it.",
+    faqBadge: "Regions",
+    filter: {
+      region_slugs: ["biligiriranga-hills"],
+    },
+    sortOrder: "rating_desc",
+    faqs: [
+      {
+        question: "Where are the Biligiriranga Hills?",
+        answer:
+          "The Biligiriranga Hills are in Chamarajanagar district in southern Karnataka, on the Tamil Nadu border, where the Western and Eastern Ghats meet. Coffee grows roughly between 900 and 1,500 metres under dense forest shade. Most of the range is the Biligiri Rangaswamy Temple Tiger Reserve and the homeland of the Soliga community, and the plantation atlas maps only 635 hectares under coffee — pockets inside forest, not a plantation belt.",
+      },
+      {
+        question: "Are BR Hills and Biligiriranga the same place?",
+        answer:
+          "Yes. BR Hills is the everyday short form, and you will also see Biligiri Rangan, Biligirirangan and Biligiri Hills on bags and estate labels. They all refer to the same range, and this page covers all of them.",
+      },
+      {
+        question: "Why do so many BR Hills coffees say Attikan Estate?",
+        answer:
+          "Because twelve of the twenty-nine lots listed here come from it. Attikan, founded in 1888 and now one of four farms in Sangameshwar Coffee Estates, sells green to a lot of Indian roasters, so the same estate turns up under eleven different labels and several different ferments. That makes it one of the best natural experiments in the catalogue for tasting what the roaster contributes as against the farm.",
+      },
+      {
+        question: "What does BR Hills coffee taste like?",
+        answer:
+          "Sweet and chocolate-leaning rather than bright — milk and dark chocolate, jaggery, molasses, nuts, with plum and dark grape on the fermented lots. Body is medium to full, acidity moderate. Start with a washed lot for the cleanest read on the terroir, then compare an anaerobic or double-fermented one from the same estate to see how much of a cup comes from processing.",
+      },
+    ],
+    utilityCard: {
+      type: "tips",
+      title: "Explore Indian coffee regions",
+      description: "Region guides and brewing tips on the learn hub.",
+      href: "/learn",
+      ctaText: "Learn",
+    },
+    learnLinks: [
+      {
+        label: "Same estate, different taste: the roaster effect",
+        href: "/learn/roaster-effect-same-estate-different-taste",
+      },
+      {
+        label: "Understanding Indian coffee estates",
+        href: "/learn/understanding-indian-coffee-estates",
+      },
+      {
+        label: "A complete guide to India's coffee regions",
+        href: "/learn/coffee-regions-of-india-complete-guide",
+      },
+    ],
+    related: ["nilgiris", "coorg", "washed", "anaerobic"],
+  },
 ];
 
 /**

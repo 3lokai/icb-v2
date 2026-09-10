@@ -234,13 +234,13 @@ intended.
 | Fallback `/regions/${regionId}` emits 404s from published articles — repoint to `/coffees/<page-slug>` via the landing config | [`src/components/blog/blocks/RegionSpotlight.tsx:90`](../src/components/blog/blocks/RegionSpotlight.tsx#L90) |
 | Header nav `disabled: true` on Regions and Estates — flip per hub as each ships | `src/components/layout/header.tsx:85-96` |
 
-### ~~4d. Four new region configs~~ — TWO SHIPPED, ONE BLOCKED, ONE DROPPED 2026-09-11
+### ~~4d. Four new region configs~~ — THREE SHIPPED, ONE DROPPED 2026-09-11
 
 | planned | shipped as | public coffees |
 |---|---|---|
 | Manjarabad | `/coffees/sakleshpur` — "Sakleshpur & Manjarabad" | 71 |
 | Pulneys | `/coffees/palani-hills` — "Palani Hills (Pulneys)" | 30 |
-| Biligiris | — blocked | 29 |
+| Biligiris | `/coffees/biligiriranga-hills` — "BR Hills (Biligiriranga)" | 29 |
 | Anamalais | — dropped | **0** |
 
 **Page slugs match canon slugs for both new pages.** The "page slugs ≠ canon slugs" rule is about not
@@ -255,10 +255,41 @@ Sakleshpur's anaerobic/honey/experimental lots (33 of 71) outnumbering its washe
 its Liberica and Excelsa lots, Classic Coffees' 22-lot depth; and the Palani Hills tension where the
 highest elevations in Indian coffee are mostly roasted medium-or-darker into caramel and chocolate.
 
-⚠️ **Biligiris is still blocked on the data audit** — 29 public ICB coffees against 635 measured
-hectares (5.7% of Chikmagalur's coffee count from 0.6% of its area). Either a real premium micro-lot
-concentration or mis-mapped coffees. Don't ship a page asserting an area figure that looks wrong next
-to the catalogue. `/coffees?regions=biligiriranga-hills` works meanwhile.
+**Biligiris shipped after the audit ran, and the audit answered the question.** The 29 lots against
+635 mapped hectares are not mis-mapped — the concentration is two sources, both verifiable in the
+catalogue:
+
+- **Attikan Estate, 12 lots across 11 different roasters** (Blue Tokai, Beachville, Kruti, El Bueno,
+  Rossette, Quick Brown Fox, Naivo, Coffee Plus, Caarabi, Coffeeverse, Bean By Nation). One 1888
+  Sangameshwar farm selling green widely, so one farm shows up eleven times.
+- **Black Baza Coffee, 15 lots** — a single biodiversity-led roaster's Soliga/smallholder network,
+  five of them blends that also carry Wayanad, Chikmagalur, Sakleshpur or the Nilgiris.
+
+That leaves 2 of 29 from anywhere else. 635 ha is also the correct atlas Chamarajanagar figure
+(§4h), so nothing was asserted that the source doesn't support — the page says the count is
+concentration, not scale, in as many words.
+
+⚠️ **One conflict the page has to hold open:** `canon_regions` gives the range 900–1,500m, while
+Sangameshwar describes Attikan as the highest coffee ground cultivated in South India at ~1,650m —
+above the range band, and in tension with §4d's finding that the Nilgiris are India's highest
+traditional coffee district. Both are attributed in the copy rather than reconciled. Don't "fix"
+the canon altitude to match an estate's marketing; this is one for the ops-side altitude sweep
+(§4g).
+
+`canon_estates` for `attikan-estate` still carries a stale note saying its region "is currently
+linked to Chikmagalur". Its `canon_region_id` is `biligiriranga-hills`; the note is wrong and should
+be dropped in the next enrichment pass.
+
+**Three more regions were considered and deliberately have no page:**
+
+| canon slug | public coffees | why not |
+|---|---|---|
+| `hassan` | 75 rolled / 4 own | 71 of the 75 are Sakleshpur, which already has a page. A `/coffees/hassan` page is a near-duplicate of `/coffees/sakleshpur` — self-cannibalization for one extra query. |
+| `mudigere` | 8 | Below anything shipped (palani-hills, the smallest, has 30). Four estates, one roaster deep. Revisit past ~20. |
+| `valparai` | 0 | Still zero in a public status. Unchanged from the original drop. |
+
+Everything else without a page is a locality or taluk with 1–16 coffees. The hub chips link
+`?regions=<canon>` for all of them, which is the right surface at that size and never 404s.
 
 **Copy is sourced, not invented.** Both configs were written against the catalogue, then checked
 against the NRSC atlas PDF and the Specialty Coffee Association of India's region pages. Two claims
