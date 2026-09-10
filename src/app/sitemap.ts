@@ -38,6 +38,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 0.9,
     }),
+    // The /regions hub. Deliberately NOT in discovery-pages.json, whose contract is
+    // "one filter dimension, one value" — this is a directory of origins.
+    withHreflang({
+      url: `${baseUrl}/regions`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.85,
+    }),
     withHreflang({
       url: `${baseUrl}/curations`,
       lastModified: new Date(),

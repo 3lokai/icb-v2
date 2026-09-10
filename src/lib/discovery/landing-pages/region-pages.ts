@@ -23,21 +23,10 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        state: "Karnataka",
-        elevation: "900–1,700m",
         knownFor: "SLN 795 washed arabica, heritage estates",
       },
       overview:
         "Chikmagalur is where Indian specialty coffee begins. The district sits in the Western Ghats at elevations between 900 and 1,700 metres — high enough for slow cherry maturation and complex flavour development. Coffee arrived here in the 17th century, brought by Baba Budan from Yemen, and the region has been producing arabica continuously since. Today it's home to some of India's most celebrated estates — Yele Attikan, Hoysala, Kelachandra, and others — and the primary source of competition-grade Indian coffee.",
-      terroir: {
-        climate:
-          "Tropical highland with distinct dry and wet seasons. Monsoon rains June–September, dry harvest season November–February. Dense shade from silver oak and indigenous trees moderates temperature.",
-        soil: "Red laterite and loamy soils with good drainage. Iron-rich composition contributes to the mineral quality in the cup.",
-        altitude:
-          "Lower estates (900–1,100m) produce bolder, fuller-bodied coffees. High-altitude lots (1,400m+) develop slower, with more acidity and floral character.",
-        varieties:
-          "SLN 795 dominates the specialty segment — developed at Scott Laboratories and prized for its cup quality at altitude. Chandragiri, Cauvery, and Selection 9 are also grown. Older estates have mixed plantings of heritage varieties.",
-      },
       flavourProfile: {
         typical: [
           "Jasmine",
@@ -65,8 +54,6 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Karnataka",
-      elevation: "900–1,700m",
       knownFor: "SLN 795 washed arabica, heritage estates",
     },
     faqOverline: "Chikmagalur",
@@ -144,22 +131,11 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        state: "Karnataka (Chikmagalur district)",
-        elevation: "1,200–1,800m",
         knownFor:
           "India's coffee origin site, high-altitude naturals, exceptional community ratings",
       },
       overview:
         "Baba Budangiri is where Indian coffee began. The range — named after the Sufi saint Baba Budan who is said to have brought seven coffee beans from Yemen in the 17th century — sits within Chikmagalur district at elevations reaching 1,800 metres. It's one of India's highest coffee-growing areas and a protected forest zone. Coffee here is grown on steep slopes under dense native shade, with the altitude and microclimate producing some of the most complex lots in the Indian catalogue. Despite being within Chikmagalur district, Baba Budangiri is distinct enough in character to warrant its own attention — the elevation difference alone produces noticeably different cups from lower-altitude Chikmagalur estates.",
-      terroir: {
-        climate:
-          "Cool and misty — among India's coolest coffee-growing microclimates. Elevations above 1,500m experience near-constant cloud cover during monsoon and cooler temperatures year-round than the broader Chikmagalur district. The cold slows cherry development significantly.",
-        soil: "Rich forest soil under dense Shola forest and shade trees. Protected forest status means minimal chemical input — most production is effectively low-intervention by default.",
-        altitude:
-          "1,200 to 1,800 metres — the upper end of this range produces India's most altitude-driven lots. The steep terrain means hand-picking is the only viable harvest method, which self-selects for careful, selective picking.",
-        varieties:
-          "SLN 795 is predominant in specialty lots. The elevation expresses the variety's character at its most complex — jasmine, stone fruit, and bright acidity develop more intensely than at lower Karnataka elevations.",
-      },
       flavourProfile: {
         typical: [
           "Jasmine",
@@ -187,8 +163,6 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Karnataka (Chikmagalur district)",
-      elevation: "1,200–1,800m",
       knownFor:
         "India's coffee origin site, high-altitude naturals, exceptional community ratings",
     },
@@ -265,21 +239,10 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        state: "Karnataka (Kodagu district)",
-        elevation: "800–1,600m",
         knownFor: "Full-bodied arabica, espresso and milk drink suitability",
       },
       overview:
         "Coorg — officially Kodagu district — is Karnataka's other major coffee heartland, adjacent to Chikmagalur but with distinct character. The district is densely forested, with coffee grown under native shade at elevations ranging from 800 to 1,600 metres. It's the largest coffee-producing district in Karnataka by volume, with a mix of large estates, medium-sized family farms, and a growing number of specialty-focused producers. Coorg is also known for its spice cultivation alongside coffee — cardamom, pepper, and ginger grow alongside coffee plants, which some producers argue influences flavour.",
-      terroir: {
-        climate:
-          "Heavy monsoon rainfall — one of India's wettest regions. Dense forest cover moderates temperature. The high rainfall means naturals are more challenging to produce here than in drier parts of Karnataka.",
-        soil: "Rich red laterite soil with high organic content from the dense forest floor. Good drainage on slopes prevents waterlogging despite heavy rainfall.",
-        altitude:
-          "Lower-altitude Coorg (800–1,100m) produces heavier, more robust cups. Higher-altitude lots (1,400m+) develop more acidity and floral notes, closer in character to Chikmagalur.",
-        varieties:
-          "SLN 795, Cauvery, and Chandragiri are the primary arabica varieties. Robusta is also grown at lower elevations — Coorg robusta is used in traditional South Indian filter blends.",
-      },
       flavourProfile: {
         typical: [
           "Dark chocolate",
@@ -307,8 +270,6 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Karnataka (Kodagu district)",
-      elevation: "800–1,600m",
       knownFor: "Full-bodied arabica, espresso and milk drink suitability",
     },
     faqOverline: "Coorg",
@@ -385,21 +346,10 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        state: "Andhra Pradesh (Visakhapatnam district)",
-        elevation: "900–1,300m",
         knownFor: "Floral, citrus-forward arabica from tribal cooperatives",
       },
       overview:
         "Araku Valley sits in the Araku plateau of the Eastern Ghats at elevations between 900 and 1,300 metres — significantly different terrain from Karnataka's Western Ghats origins. Coffee here is primarily grown by tribal communities organised into cooperatives, with the Girijan Cooperative Corporation playing a significant role in production and marketing. Araku coffee gained international recognition in 2017 when it received a GI (Geographical Indication) tag — India's first coffee GI. It's also found a notable presence in European markets, particularly Paris, where it's served in high-end cafés.",
-      terroir: {
-        climate:
-          "Eastern Ghats climate — drier than Karnataka's Western Ghats, with distinct seasons. Lower humidity during harvest makes natural processing more viable. The plateau's altitude moderates temperature despite the lower latitude.",
-        soil: "Rich forest soil with high organic matter from dense tribal forest land. Much of the growing area is within reserve forests — low chemical input and high biodiversity are defining characteristics.",
-        altitude:
-          "The plateau's consistent elevation (900–1,300m) produces a relatively uniform growing environment compared to Karnataka's wider altitude range.",
-        varieties:
-          "Primarily Chandragiri and SLN 795 arabica. The GI specification covers arabica grown in the designated geographic area. Varietal specificity is less commonly communicated by roasters compared to Karnataka origins.",
-      },
       flavourProfile: {
         typical: [
           "Citrus",
@@ -427,8 +377,6 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Andhra Pradesh (Visakhapatnam district)",
-      elevation: "900–1,300m",
       knownFor: "Floral, citrus-forward arabica, GI-tagged origin",
     },
     faqOverline: "Araku",
@@ -504,22 +452,11 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        state: "Tamil Nadu",
-        elevation: "1,200–2,000m",
         knownFor:
           "Cool-climate arabica with clarity and elegance in light roasts",
       },
       overview:
         "The Nilgiris — meaning Blue Mountains — straddle the borders of Tamil Nadu, Kerala, and Karnataka at elevations reaching 2,000 metres. Coffee grows primarily on the Tamil Nadu side, in the Nilgiri district around Ooty and the surrounding slopes. The Nilgiris have historically been associated with tea — the famous Nilgiri tea is from this region — but arabica coffee has been grown here for well over a century. The cool temperatures, distinct seasons, and high altitude create growing conditions that produce slower-maturing cherries and more nuanced cup profiles than lower-altitude origins.",
-      terroir: {
-        climate:
-          "Cool and misty — one of India's cooler growing climates for coffee. Temperatures rarely exceed 25°C even in summer. The cool climate slows cherry development significantly, allowing more complex sugars to develop.",
-        soil: "Rich loamy soil with high humus content from the dense Shola forest ecosystem. Good moisture retention without waterlogging on the slopes.",
-        altitude:
-          "Among India's highest coffee-growing elevations — 1,200 to 2,000 metres. The higher elevations produce the most nuanced, specialty-grade lots.",
-        varieties:
-          "SLN 795 and Chandragiri are grown alongside older heritage varieties. The cool climate expresses variety character differently than Karnataka — often more delicate and tea-like.",
-      },
       flavourProfile: {
         typical: [
           "Delicate acidity",
@@ -547,8 +484,6 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Tamil Nadu",
-      elevation: "1,200–2,000m",
       knownFor:
         "Cool-climate arabica with clarity and elegance in light roasts",
     },
@@ -625,22 +560,11 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        state: "Tamil Nadu (Salem district)",
-        elevation: "1,000–1,600m",
         knownFor:
           "Tamil Nadu's primary coffee origin, diverse processing, experimental lots",
       },
       overview:
         "The Shevaroy Hills — also known as Shervarayan Hills — rise to 1,600 metres in Tamil Nadu's Salem district, forming one of South India's significant coffee-growing areas outside Karnataka. It is better represented in the ICB catalogue than several Karnataka sub-regions. The area is part of the Eastern Ghats range and has a distinct growing environment from the Western Ghats origins: different rainfall patterns, different soil composition, and a growing cluster of producers experimenting with processing. Despite its size, Shevaroy Hills remains relatively unknown in specialty circles — partially because many coffees are blended into generic Tamil Nadu lots rather than origin-labelled.",
-      terroir: {
-        climate:
-          "Eastern Ghats climate with distinct wet and dry seasons — different from the Western Ghats' heavier monsoon. Lower annual rainfall than Wayanad or Coorg makes natural processing more viable. The hills' elevation moderates temperature and extends the growing season.",
-        soil: "Red laterite with good drainage on slopes. The Eastern Ghats geology differs from Western Ghats origins — different mineral composition contributes to a distinct terroir character.",
-        altitude:
-          "1,000 to 1,600 metres — the upper Shevaroy range approaches Nilgiris in elevation. Higher-altitude lots from the region tend toward cleaner, more delicate profiles.",
-        varieties:
-          "Arabica varieties dominate the specialty lots. SLN 795 is present but the region also has older heritage plantings. Varietal specificity is less consistently communicated than in Karnataka.",
-      },
       flavourProfile: {
         typical: [
           "Mild chocolate",
@@ -668,8 +592,6 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Tamil Nadu (Salem district)",
-      elevation: "1,000–1,600m",
       knownFor:
         "Tamil Nadu's primary coffee origin, diverse processing, experimental lots",
     },
@@ -747,21 +669,10 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        state: "Kerala",
-        elevation: "700–1,200m",
         knownFor: "Chocolate and spice tones, approachable everyday cups",
       },
       overview:
         "Wayanad district sits in the northeastern corner of Kerala, bordering Karnataka's Mysuru and Kodagu districts. It's Kerala's primary coffee-growing region and one of South India's significant producers by volume. The landscape is a mix of hills, forests, and tribal land — coffee grows alongside cardamom, pepper, vanilla, and ginger. Wayanad has a different character from Karnataka's high-altitude estates: lower elevation, denser spice-farm integration, and a more full-bodied, approachable cup profile. It's increasingly represented in specialty roaster catalogues as demand for origin diversity grows.",
-      terroir: {
-        climate:
-          "Tropical monsoon with heavy rainfall — among Kerala's wettest districts. Dense forest cover and high humidity create a lush growing environment. The heavy rainfall makes natural processing challenging — washed and honey lots dominate.",
-        soil: "Rich red laterite with high organic content from forest floor. The spice cultivation alongside coffee contributes significant organic matter to the soil.",
-        altitude:
-          "700 to 1,200 metres — lower than Chikmagalur or Nilgiris. The lower altitude produces a fuller-bodied, less acidic cup than Karnataka's high-altitude origins.",
-        varieties:
-          "Robusta is grown extensively at lower elevations — Wayanad is a significant robusta producer for traditional South Indian blends. Arabica (SLN 795, Cauvery) grows at the higher elevations and is the basis for specialty lots.",
-      },
       flavourProfile: {
         typical: [
           "Milk chocolate",
@@ -789,8 +700,6 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Kerala",
-      elevation: "700–1,200m",
       knownFor: "Chocolate and spice tones, approachable everyday cups",
     },
     faqOverline: "Wayanad",
@@ -867,22 +776,11 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        state: "Odisha (Koraput district)",
-        elevation: "800–1,500m",
         knownFor:
           "Emerging tribal smallholder specialty, Eastern Ghats terroir",
       },
       overview:
         "Koraput is a hilly district in southern Odisha, where the Eastern Ghats rise to 1,500 metres. Coffee cultivation here is primarily by tribal communities on smallholder farms — part of a broader tribal agriculture system that includes millet, turmeric, and forest produce. Koraput coffee is genuinely emerging — awareness in specialty circles is recent, and the number of roasters sourcing from the region is small but growing. The Eastern Ghats terroir — drier than the Western Ghats, distinct forest ecosystem — produces a different flavour profile from Karnataka's mainstream origins.",
-      terroir: {
-        climate:
-          "Eastern Ghats climate — distinct wet and dry seasons, less rainfall than Western Ghats origins. The drier climate makes natural processing more viable than in Wayanad or Coorg.",
-        soil: "Red laterite and forest soil from the Eastern Ghats ecosystem. Low chemical input — most production is naturally low-intervention due to the smallholder tribal farming context.",
-        altitude:
-          "800 to 1,500 metres across the growing areas — significant elevation variation that influences cup profile.",
-        varieties:
-          "Arabica varieties predominate in the specialty-grade lots. Varietal specificity is less commonly communicated by roasters compared to Karnataka origins — this is an area where traceability is still developing.",
-      },
       flavourProfile: {
         typical: [
           "Mild fruit",
@@ -909,8 +807,6 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Odisha (Koraput district)",
-      elevation: "800–1,500m",
       knownFor: "Emerging tribal smallholder specialty, Eastern Ghats terroir",
     },
     faqOverline: "Koraput",
@@ -986,22 +882,11 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        state: "Meghalaya (Garo, Khasi & West Khasi Hills)",
-        elevation: "800–1,700m",
         knownFor:
           "Frontier specialty origin, distinct hill terroir beyond the Western Ghats",
       },
       overview:
         "India's Northeast is coffee's newest frontier in specialty circles. The ICB catalogue currently captures lots from Meghalaya's Garo Hills, Khasi Hills, and West Khasi Hills — where arabica is grown by tribal communities at elevations between 800 and 1,700 metres. Meghalaya is one of India's wettest states, with Cherrapunji (in the Khasi Hills) holding world records for rainfall. This extreme moisture shapes the growing conditions dramatically — dense forest, rich soil, and challenging processing conditions. Coffee from the Northeast is genuinely rare in specialty roaster catalogues — roasters who carry it are making a deliberate origin diversity statement.",
-      terroir: {
-        climate:
-          "Extremely high rainfall — among the world's wettest growing regions. Dense forest cover, cool temperatures at altitude, and distinct seasonal patterns create a unique growing environment. The high moisture makes natural processing very challenging — washed lots dominate.",
-        soil: "Forest soil of extraordinary richness — the Meghalaya forest ecosystem is one of India's most biodiverse. Minimal agricultural chemical use in tribal farming contexts.",
-        altitude:
-          "800 to 1,700 metres across the hill areas — significant variation between the lower Garo Hills and higher Khasi plateau.",
-        varieties:
-          "Arabica varieties, but varietal specificity is rarely communicated — traceability is still developing in this region. The growing conditions (high altitude, cool temperatures, very high rainfall) are theoretically favourable for quality arabica.",
-      },
       flavourProfile: {
         typical: [
           "Mild fruit",
@@ -1028,8 +913,6 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      state: "Meghalaya (Garo, Khasi & West Khasi Hills)",
-      elevation: "800–1,700m",
       knownFor:
         "Frontier specialty origin, distinct hill terroir beyond the Western Ghats",
     },
@@ -1087,4 +970,252 @@ export const regionPages: LandingPageConfig[] = [
     ],
     related: ["koraput", "araku", "light-roast", "washed"],
   },
+  {
+    slug: "sakleshpur",
+    type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
+    h1: "Best Sakleshpur & Manjarabad Coffee in India",
+    entityLabel: "Sakleshpur",
+    intro:
+      "Discover specialty coffees from Sakleshpur — the Manjarabad belt of Hassan district, one of Karnataka's wettest coffee tracts and, on the evidence of the catalogue, its most experimental.",
+    headerNudge:
+      "Wet-zone Western Ghats origin — full-bodied, and unusually deep in anaerobic and experimental lots.",
+    teaserTitle: "Sakleshpur & Manjarabad coffees",
+    teaserDescription:
+      "Family-estate lots from the Hassan escarpment, heavy on fermentation experiments.",
+    gridNudge:
+      "Nearly half these lots are anaerobic, honey or experimental — filter by process to see how one wet-zone terroir reads across fermentation styles.",
+    heroBadge: "Origin",
+
+    regionProfile: {
+      snapshot: {
+        knownFor:
+          "Wet-zone full body, family estates, experimental fermentation",
+      },
+      overview:
+        "Sakleshpur is a taluk on the Western Ghats escarpment in Hassan district, and one of Karnataka's wettest coffee tracts — dense forest shade, heavy monsoon rainfall, red clay soils with high organic content. Manjarabad, named for the star-shaped fort Tipu Sultan built above it, is the coffee-growing tract within Sakleshpur that carries most of the district's better-known estate names. Smallholders and family-run estates predominate over large plantation companies, growing Arabica and Robusta under mixed canopy with pepper and areca nut. Hassan district as a whole is less internationally marketed than neighbouring Chikmagalur and Kodagu, which is exactly why its lots are worth attention.",
+      flavourProfile: {
+        typical: [
+          "Full body",
+          "Caramel",
+          "Raisin",
+          "Jaggery",
+          "Moderate acidity",
+          "Milk chocolate",
+        ],
+        indianContext:
+          "The wet-zone terroir gives Sakleshpur a fuller, heavier cup than the brighter high-altitude lots from Chikmagalur — moderate acidity, and a sweetness that reads as caramel, jaggery and dried fruit more often than as citrus. The catalogue also shows genuine species diversity here: alongside Arabica and Robusta there are Liberica and Excelsa lots, which almost no other Indian region surfaces in quantity.",
+        processVariation:
+          "This is the most process-forward region in the catalogue: anaerobic, honey and explicitly experimental lots together outnumber the washed and natural ones. Producers here treat fermentation as the variable, so two coffees from the same estate can taste nothing alike. Washed lots are the honest baseline for the terroir; the experimental lots are where the region is making its name.",
+      },
+      roasterContext:
+        "Classic Coffees carries by far the deepest Sakleshpur range in the catalogue, with KOHI Roasters, Hill Groove, Naivo, Half Light and Bloom each listing a handful. That concentration is useful: one roaster's spread across processes from a single belt makes it easy to isolate what fermentation is doing versus what the terroir is doing.",
+      brewGuidance: {
+        recommended: ["v60", "aeropress", "french-press"],
+        notes:
+          "Most of these lots are roasted light-medium, which suits V60 and AeroPress. The full-bodied washed and natural lots take well to French Press. Anaerobic and experimental lots are worth brewing slightly coarser and cooler than you would a washed coffee — the fermentation character can turn sharp when over-extracted.",
+      },
+      nearbyRegions: ["chikmagalur", "coorg"],
+      icbDataNote:
+        "Community ratings on Sakleshpur lots are still thin, so individual tasting notes are worth more than aggregate scores here. Coffee counts on this page include Manjarabad and the rest of the Sakleshpur belt.",
+    },
+
+    regionSnapshot: {
+      knownFor: "Wet-zone full body, family estates, experimental fermentation",
+    },
+    faqOverline: "Sakleshpur",
+    faqTitle: "About *Sakleshpur* coffee",
+    faqDescription:
+      "Hassan district's wet-zone belt, and the Manjarabad estates within it.",
+    faqBadge: "Regions",
+    filter: {
+      region_slugs: ["sakleshpur"],
+    },
+    sortOrder: "rating_desc",
+    faqs: [
+      {
+        question: "Where is Sakleshpur coffee grown?",
+        answer:
+          "Sakleshpur is a taluk of Hassan district in Karnataka, on the Western Ghats escarpment between Chikmagalur and the coast. Coffee grows between roughly 900 and 1,500 metres under mixed shade, in one of the wettest coffee tracts in the state.",
+      },
+      {
+        question: "What is the difference between Sakleshpur and Manjarabad?",
+        answer:
+          "Manjarabad is a coffee-growing tract inside Sakleshpur taluk, named after the Manjarabad Fort above it. The two names are often used interchangeably in estate branding — Manjarabad is the narrower, more historic label, Sakleshpur the administrative one. This page covers both.",
+      },
+      {
+        question: "How does Sakleshpur compare to Chikmagalur?",
+        answer:
+          "Sakleshpur is wetter and generally lower, so the cup tends fuller and less bright than a high-altitude Chikmagalur lot. Chikmagalur has far more catalogue depth and community data; Sakleshpur has proportionally more experimental fermentation.",
+      },
+      {
+        question: "Why are so many Sakleshpur lots anaerobic or experimental?",
+        answer:
+          "Producers in the belt have leaned into fermentation as a way to differentiate from the better-marketed neighbouring districts. Whether that reads as an advantage depends on what you want — for terroir clarity, start with a washed lot.",
+      },
+    ],
+    utilityCard: {
+      type: "tips",
+      title: "Explore Indian coffee regions",
+      description: "Region guides and brewing tips on the learn hub.",
+      href: "/learn",
+      ctaText: "Learn",
+    },
+    learnLinks: [
+      {
+        label: "A complete guide to India's coffee regions",
+        href: "/learn/coffee-regions-of-india-complete-guide",
+      },
+      {
+        label: "Understanding Indian coffee estates",
+        href: "/learn/understanding-indian-coffee-estates",
+      },
+      {
+        label: "How geography shapes Indian coffee flavour",
+        href: "/learn/indian-coffee-regions-geography-shapes-flavor",
+      },
+    ],
+    related: ["chikmagalur", "coorg", "anaerobic", "honey"],
+  },
+  {
+    slug: "palani-hills",
+    type: "region",
+    heroBackgroundImage: REGION_HERO_BACKGROUND,
+    h1: "Best Palani Hills (Pulneys) Coffee in India",
+    entityLabel: "Palani Hills",
+    intro:
+      "Discover specialty coffees from the Palani Hills — the Pulneys, Tamil Nadu's highest coffee country, rising above Kodaikanal to elevations no other Indian region reaches.",
+    headerNudge:
+      "Tamil Nadu's high-elevation origin — slow-ripened Arabica, mostly washed and mostly roasted for filter.",
+    teaserTitle: "Palani Hills coffees",
+    teaserDescription:
+      "High-elevation Tamil Nadu lots from the hills above Kodaikanal.",
+    gridNudge:
+      "Compare against Shevaroy Hills and the Nilgiris for a full read on Tamil Nadu terroir — three ranges, three different elevations.",
+    heroBadge: "Origin",
+
+    regionProfile: {
+      snapshot: {
+        knownFor: "India's highest coffee elevations, washed Arabica",
+      },
+      overview:
+        "The Palani Hills — the Pulneys — are a cool, high range in Tamil Nadu's Western Ghats, overlapping the hill station of Kodaikanal. Coffee here grows higher than in the Nilgiris or the Shevaroys, on forest loam under monsoon-influenced cloud cover, with a harvest that runs November to January. The range is better known in the wider market for spices, fruit and tea than for coffee, so its estates are smaller and less marketed than Karnataka's — which is most of the reason the lots are underrated.",
+      flavourProfile: {
+        typical: [
+          "Caramel",
+          "Dark chocolate",
+          "Roasted nuts",
+          "Brown sugar",
+          "Clean finish",
+        ],
+        indianContext:
+          "There's a productive tension in Palani Hills coffee. The terroir — the highest average elevation of any Indian coffee region — favours slow ripening and a floral, brighter cup. The catalogue mostly doesn't taste that way: two thirds of these lots are roasted medium or darker, and the dominant notes are caramel, dark chocolate and roasted nuts. That's a roasting decision, not a terroir one. The light-roast lots are where the range's floral side actually shows up.",
+        processVariation:
+          "Washed processing dominates here, with a strong showing of washed-natural lots and a handful of naturals and anaerobics. The washed lots are the clearest window on what the elevation is doing; the naturals lean heavier and sweeter.",
+      },
+      roasterContext:
+        "Nandan Coffee carries the deepest Palani Hills range in the catalogue by some distance, with Kat and Kin, Kapi Kottai, Blue Tokai and a few others listing single lots. Sourcing is thinner than for the Karnataka regions, so the range you can actually taste is narrower — but it also means less overlap, and less chance you're comparing two roasts of the same green.",
+      brewGuidance: {
+        recommended: ["v60", "filter-coffee", "aeropress"],
+        notes:
+          "The medium and medium-dark lots that dominate here are built for South Indian filter coffee and take milk well. If you want the high-elevation floral character instead, look for the light-roast washed lots and brew them on V60 — slightly hotter than you would a Chikmagalur lot, since the denser high-grown beans give up their sweetness more slowly.",
+      },
+      nearbyRegions: ["nilgiris", "shevaroy-hills"],
+      icbDataNote:
+        "A small category on ICB with very few community ratings so far — read individual tasting notes rather than aggregate scores, and expect the catalogue to shift as more Tamil Nadu lots are listed.",
+    },
+
+    regionSnapshot: {
+      knownFor: "India's highest coffee elevations, washed Arabica",
+    },
+    faqOverline: "Palani Hills",
+    faqTitle: "About *Palani Hills* coffee",
+    faqDescription: "Tamil Nadu's highest coffee country, above Kodaikanal.",
+    faqBadge: "Regions",
+    filter: {
+      region_slugs: ["palani-hills"],
+    },
+    sortOrder: "rating_desc",
+    faqs: [
+      {
+        question: "Where are the Palani Hills?",
+        answer:
+          "The Palani Hills are a range in Tamil Nadu's Western Ghats, in Dindigul district, overlapping the hill station of Kodaikanal. Coffee grows between roughly 1,200 and 2,200 metres — higher on average than any other Indian coffee region.",
+      },
+      {
+        question: "Are the Pulneys the same as the Palani Hills?",
+        answer:
+          "Yes. Pulneys is the older anglicised name still used in Coffee Board material and on estate labels; Palani Hills is the current name for the same range.",
+      },
+      {
+        question: "How does Palani Hills coffee compare to the Nilgiris?",
+        answer:
+          "Both are Tamil Nadu ranges, but the Palanis sit higher, which favours slower ripening and more floral character. The Nilgiris have more catalogue depth and a longer specialty track record. Shevaroy Hills, lower and drier, rounds out the comparison.",
+      },
+      {
+        question: "Why do these coffees taste chocolatey rather than floral?",
+        answer:
+          "Because most of them are roasted medium or darker. The elevation supports a brighter, more floral cup, but the roast profile drives the tasting notes you'll read. Filter by light roast to find the lots that show the terroir.",
+      },
+    ],
+    utilityCard: {
+      type: "tips",
+      title: "Explore Indian coffee regions",
+      description: "Region guides and brewing tips on the learn hub.",
+      href: "/learn",
+      ctaText: "Learn",
+    },
+    learnLinks: [
+      {
+        label: "How altitude affects flavour in Indian coffee",
+        href: "/learn/altitude-affects-flavor-indian-coffee",
+      },
+      {
+        label: "The Nilgiris coffee region",
+        href: "/learn/nilgiris-coffee-region",
+      },
+      {
+        label: "A complete guide to India's coffee regions",
+        href: "/learn/coffee-regions-of-india-complete-guide",
+      },
+    ],
+    related: ["nilgiris", "shevaroy-hills", "washed", "light-roast"],
+  },
 ];
+
+/**
+ * canon_regions.slug -> discovery page slug, derived from each config's
+ * `filter.region_slugs`. Page slugs are deliberately NOT canon slugs (`coorg` ->
+ * `kodagu-coorg`); this is the one-directional bridge, built from the configs so
+ * there is no second copy of the mapping to drift.
+ */
+const CANON_SLUG_TO_PAGE_SLUG: Map<string, string> = new Map(
+  regionPages.flatMap((page) =>
+    (page.filter.region_slugs ?? []).map(
+      (canonSlug) => [canonSlug, page.slug] as const
+    )
+  )
+);
+
+/**
+ * The discovery landing page slug for a canon region, or null when it has no page.
+ * Aggregates list their children, so an aggregate's own slug never appears in
+ * `region_slugs` — its page slug is matched directly instead.
+ */
+export function regionPageSlugForCanon(canonSlug: string): string | null {
+  if (regionPages.some((page) => page.slug === canonSlug)) {
+    return canonSlug;
+  }
+  return CANON_SLUG_TO_PAGE_SLUG.get(canonSlug) ?? null;
+}
+
+/**
+ * Where a canon region should link on browse surfaces: its discovery landing page
+ * when one exists, else the filtered directory. Used by the /regions hub.
+ */
+export function regionBrowseHref(canonSlug: string): string {
+  const pageSlug = regionPageSlugForCanon(canonSlug);
+  return pageSlug
+    ? `/coffees/${pageSlug}`
+    : `/coffees?regions=${encodeURIComponent(canonSlug)}`;
+}

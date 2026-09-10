@@ -3337,6 +3337,15 @@ export type Database = {
           price_updates: number;
         }[];
       };
+      get_region_coffee_counts: {
+        Args: never;
+        Returns: {
+          canon_region_id: string;
+          own_count: number;
+          rolled_count: number;
+          slug: string;
+        }[];
+      };
       get_region_detail: {
         Args: { p_limit?: number; p_slug: string };
         Returns: Json;

@@ -146,9 +146,12 @@ export function RegionDetailSection({
         {/* 2. Indian Context — Promoted hero block */}
         <div className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-accent/5 shadow-sm grid md:grid-cols-5">
           <div className="order-1 md:order-2 md:col-span-2 relative aspect-[4/3] md:aspect-auto h-full min-h-0 bg-muted/20">
+            {/* ponytail: one shared landscape — not a single `region-<slug>-landscape.png`
+                exists, so the per-slug path 404'd on every region page. Give the config an
+                image field when per-region art is actually commissioned. */}
             <Image
-              src={`/images/discovery/region-${slug}-landscape.png`}
-              alt={`${slug} region landscape`}
+              src="/images/discovery/region-landscape.png"
+              alt={`${regionSlugToLabel(slug)} coffee landscape`}
               fill
               sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover"

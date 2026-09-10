@@ -31,6 +31,7 @@ import { ValueTips } from "./ValueTips";
 import { BrewMethodProfileSection } from "./BrewMethodProfileSection";
 import { ProcessProfileSection } from "./ProcessProfileSection";
 import { PriceBucketProfileSection } from "./PriceBucketProfileSection";
+import { fetchRegionFacts } from "@/lib/discovery/region-facts";
 import { RegionOverviewSection } from "./RegionOverviewSection";
 import { RegionDetailSection } from "./RegionDetailSection";
 import { BeanTypeProfileSection } from "./BeanTypeProfileSection";
@@ -138,9 +139,11 @@ export async function DiscoveryLandingLayout({
   // visible grid and the JSON-LD via the shared filter below.
   const discoveryFilter = { ...config.filter, in_stock_only: true };
 
-  const [coffeeResult, catalogueAsOf] = await Promise.all([
+  const [coffeeResult, catalogueAsOf, regionFacts] = await Promise.all([
     fetchCoffeesCached(discoveryFilter, 1, 20, config.sortOrder),
     getCatalogueAsOf(),
+    // Terroir comes from canon_regions, not the config — one source of truth per fact.
+    config.type === "region" ? fetchRegionFacts(config) : null,
   ]);
   const coffeeItems = buildDiscoveryCoffeeListItems(
     coffeeResult.items,
@@ -291,17 +294,14 @@ export async function DiscoveryLandingLayout({
         {config.type === "region" && config.regionProfile && (
           <RegionOverviewSection
             profile={config.regionProfile}
-            slug={config.slug}
+            facts={regionFacts}
           />
         )}
 
         {config.type === "region" &&
           !config.regionProfile &&
           config.regionSnapshot && (
-            <RegionSnapshot
-              regionSlug={config.slug}
-              regionSnapshot={config.regionSnapshot}
-            />
+            <RegionSnapshot regionSnapshot={config.regionSnapshot} />
           )}
 
         {config.type === "bean_type" && config.beanTypeProfile && (

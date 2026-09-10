@@ -29,6 +29,10 @@ function applyFilters(query: any, filters: RegionFilters) {
     filteredQuery = filteredQuery.in("state", filters.states);
   }
 
+  if (filters.tiers && filters.tiers.length > 0) {
+    filteredQuery = filteredQuery.in("tier", filters.tiers);
+  }
+
   return filteredQuery;
 }
 
@@ -67,7 +71,8 @@ export async function fetchRegions(
   let query = supabase
     .from("canon_regions")
     .select(
-      "id, slug, display_name, country, state, subregion, hero_image_url, signature_profile",
+      "id, slug, display_name, country, state, subregion, hero_image_url, signature_profile, " +
+        "tier, parent_id, district, area_hectares, area_source, area_as_of",
       { count: "exact" }
     );
 
@@ -93,6 +98,12 @@ export async function fetchRegions(
     subregion: row.subregion ?? null,
     hero_image_url: row.hero_image_url ?? null,
     signature_profile: row.signature_profile ?? null,
+    tier: row.tier ?? null,
+    parent_id: row.parent_id ?? null,
+    district: row.district ?? null,
+    area_hectares: row.area_hectares ?? null,
+    area_source: row.area_source ?? null,
+    area_as_of: row.area_as_of ?? null,
   }));
 
   const total = count ?? 0;
