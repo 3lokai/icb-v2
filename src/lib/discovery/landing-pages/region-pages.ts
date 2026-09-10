@@ -993,7 +993,7 @@ export const regionPages: LandingPageConfig[] = [
           "Wet-zone full body, family estates, experimental fermentation",
       },
       overview:
-        "Sakleshpur is a taluk on the Western Ghats escarpment in Hassan district, and one of Karnataka's wettest coffee tracts — dense forest shade, heavy monsoon rainfall, red clay soils with high organic content. Manjarabad, named for the star-shaped fort Tipu Sultan built above it, is the coffee-growing tract within Sakleshpur that carries most of the district's better-known estate names. Smallholders and family-run estates predominate over large plantation companies, growing Arabica and Robusta under mixed canopy with pepper and areca nut. Hassan district as a whole is less internationally marketed than neighbouring Chikmagalur and Kodagu, which is exactly why its lots are worth attention.",
+        "Sakleshpur is a taluk on the Western Ghats escarpment in Hassan district, and one of Karnataka's wettest coffee tracts — dense forest shade, heavy monsoon rainfall, red clay soils with high organic content. The plantation atlas maps 35,620 hectares under coffee here, in large patches running north to south across the taluk's eastern half, interleaved with areca nut, cardamom and pepper. Manjarabad, named for the star-shaped fort Tipu Sultan built above it, is the tract within Sakleshpur that carries most of the district's better-known estate names. Smallholders and family-run estates predominate over large plantation companies. Hassan is less internationally marketed than neighbouring Chikmagalur and Kodagu, which is exactly why its lots are worth attention.",
       flavourProfile: {
         typical: [
           "Full body",
@@ -1004,12 +1004,12 @@ export const regionPages: LandingPageConfig[] = [
           "Milk chocolate",
         ],
         indianContext:
-          "The wet-zone terroir gives Sakleshpur a fuller, heavier cup than the brighter high-altitude lots from Chikmagalur — moderate acidity, and a sweetness that reads as caramel, jaggery and dried fruit more often than as citrus. The catalogue also shows genuine species diversity here: alongside Arabica and Robusta there are Liberica and Excelsa lots, which almost no other Indian region surfaces in quantity.",
+          "The wet-zone terroir gives Sakleshpur a fuller, heavier cup than the brighter high-altitude lots from Chikmagalur — moderate acidity, and a sweetness that reads as caramel, jaggery and dried fruit more often than as citrus. Worth knowing what you're drinking a slice of: the ISRO and Coffee Board plantation atlas maps Sakleshpur as a Robusta taluk, Robusta under mixed shade across most of its 35,620 hectares, while the specialty lots listed here run 53 Arabica to 4 Robusta. What gets roasted for specialty is not what the belt mostly grows. The catalogue also shows real species diversity: alongside the two mainstays there are Liberica and Excelsa lots, which almost no other Indian region surfaces at all.",
         processVariation:
-          "This is the most process-forward region in the catalogue: anaerobic, honey and explicitly experimental lots together outnumber the washed and natural ones. Producers here treat fermentation as the variable, so two coffees from the same estate can taste nothing alike. Washed lots are the honest baseline for the terroir; the experimental lots are where the region is making its name.",
+          "This is the most process-forward region in the catalogue: anaerobic, honey and explicitly experimental lots together outnumber the washed and natural ones. That's a specialty-market inversion — the district historically processed naturals, with washing added for specialty Arabica. Producers here now treat fermentation as the variable, so two coffees from the same estate can taste nothing alike. Washed lots are the honest baseline for the terroir; the experimental lots are where the region is making its name.",
       },
       roasterContext:
-        "Classic Coffees carries by far the deepest Sakleshpur range in the catalogue, with KOHI Roasters, Hill Groove, Naivo, Half Light and Bloom each listing a handful. That concentration is useful: one roaster's spread across processes from a single belt makes it easy to isolate what fermentation is doing versus what the terroir is doing.",
+        "One estate dominates: 35 of the 71 Sakleshpur lots on ICB come from Harley Estate in Manjarabad, a farm known internationally for washed Robusta and, more recently, for Arabica microlots. Classic Coffees carries by far the deepest range of them, with KOHI Roasters, Hill Groove, Naivo, Half Light and Bloom each listing a handful. That concentration is useful — a single estate's spread across processes makes it easy to isolate what fermentation is doing versus what the terroir is doing — but it does mean \"Sakleshpur\" in this catalogue is largely one farm's interpretation of it.",
       brewGuidance: {
         recommended: ["v60", "aeropress", "french-press"],
         notes:
@@ -1036,7 +1036,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "Where is Sakleshpur coffee grown?",
         answer:
-          "Sakleshpur is a taluk of Hassan district in Karnataka, on the Western Ghats escarpment between Chikmagalur and the coast. Coffee grows between roughly 900 and 1,500 metres under mixed shade, in one of the wettest coffee tracts in the state.",
+          "Sakleshpur is a taluk of Hassan district in Karnataka, on the Western Ghats escarpment between Chikmagalur and the coast. Coffee grows between roughly 900 and 1,500 metres under mixed shade across 35,620 mapped hectares, in one of the wettest tracts in the state — the Sakleshpur belt takes over 2,500mm of rain a year.",
       },
       {
         question: "What is the difference between Sakleshpur and Manjarabad?",
@@ -1084,9 +1084,9 @@ export const regionPages: LandingPageConfig[] = [
     h1: "Best Palani Hills (Pulneys) Coffee in India",
     entityLabel: "Palani Hills",
     intro:
-      "Discover specialty coffees from the Palani Hills — the Pulneys, Tamil Nadu's highest coffee country, rising above Kodaikanal to elevations no other Indian region reaches.",
+      "Discover specialty coffees from the Palani Hills — the Pulneys, the range above Kodaikanal where coffee grows in mixed gardens with pepper, orange and cardamom on a northeast-monsoon calendar all its own.",
     headerNudge:
-      "Tamil Nadu's high-elevation origin — slow-ripened Arabica, mostly washed and mostly roasted for filter.",
+      "Tamil Nadu's southern range — Arabica in mixed spice gardens, mostly washed and mostly roasted for filter.",
     teaserTitle: "Palani Hills coffees",
     teaserDescription:
       "High-elevation Tamil Nadu lots from the hills above Kodaikanal.",
@@ -1096,29 +1096,30 @@ export const regionPages: LandingPageConfig[] = [
 
     regionProfile: {
       snapshot: {
-        knownFor: "India's highest coffee elevations, washed Arabica",
+        knownFor: "Mixed spice-garden Arabica, northeast-monsoon harvest",
       },
       overview:
-        "The Palani Hills — the Pulneys — are a cool, high range in Tamil Nadu's Western Ghats, overlapping the hill station of Kodaikanal. Coffee here grows higher than in the Nilgiris or the Shevaroys, on forest loam under monsoon-influenced cloud cover, with a harvest that runs November to January. The range is better known in the wider market for spices, fruit and tea than for coffee, so its estates are smaller and less marketed than Karnataka's — which is most of the reason the lots are underrated.",
+        "The Palani Hills — the Pulneys — are a range in Tamil Nadu's southern Western Ghats, running west from Madurai toward Kerala and overlapping the hill station of Kodaikanal. The peaks climb past 2,000 metres, but the coffee sits lower, on the middle and lower slopes, in mixed gardens with pepper, orange, banana and cardamom rather than on dedicated plantations. The plantation atlas maps 8,358 hectares under coffee in Kodaikanal taluk alone — Arabica, under silver oak mono-shade, natural mixed shade and banana. What genuinely sets the region apart is its calendar: rainfall comes mostly from the northeast monsoon between October and December, so flowering and harvest run on a different clock from the Karnataka districts. Holdings are small and family-run, and the range is better known in the wider market for spices and tea than for coffee.",
       flavourProfile: {
         typical: [
           "Caramel",
           "Dark chocolate",
           "Roasted nuts",
           "Brown sugar",
-          "Clean finish",
+          "Medium body",
+          "Balanced",
         ],
         indianContext:
-          "There's a productive tension in Palani Hills coffee. The terroir — the highest average elevation of any Indian coffee region — favours slow ripening and a floral, brighter cup. The catalogue mostly doesn't taste that way: two thirds of these lots are roasted medium or darker, and the dominant notes are caramel, dark chocolate and roasted nuts. That's a roasting decision, not a terroir one. The light-roast lots are where the range's floral side actually shows up.",
+          "The Coffee Board's own description of Pulney coffee is unusually plain-spoken: some of the best S.795 Arabica in the country, medium body, slight flavour, little aroma. Read that as a coffee that doesn't shout — its appeal is balance and sweetness rather than a dramatic cup. The ICB catalogue matches: two thirds of these lots are roasted medium or darker, and the dominant notes are caramel, dark chocolate and roasted nuts. If you want more brightness from the region, the light-roast washed lots are where to look.",
         processVariation:
-          "Washed processing dominates here, with a strong showing of washed-natural lots and a handful of naturals and anaerobics. The washed lots are the clearest window on what the elevation is doing; the naturals lean heavier and sweeter.",
+          "Washed processing dominates the ICB catalogue here, with a strong showing of washed-natural lots and a handful of naturals and anaerobics — a specialty-skewed picture, since natural processing is still the norm on smaller holdings and washing is what the larger estates do for the specialty market. The washed lots are the clearest window on the terroir; the naturals lean heavier and sweeter.",
       },
       roasterContext:
         "Nandan Coffee carries the deepest Palani Hills range in the catalogue by some distance, with Kat and Kin, Kapi Kottai, Blue Tokai and a few others listing single lots. Sourcing is thinner than for the Karnataka regions, so the range you can actually taste is narrower — but it also means less overlap, and less chance you're comparing two roasts of the same green.",
       brewGuidance: {
         recommended: ["v60", "filter-coffee", "aeropress"],
         notes:
-          "The medium and medium-dark lots that dominate here are built for South Indian filter coffee and take milk well. If you want the high-elevation floral character instead, look for the light-roast washed lots and brew them on V60 — slightly hotter than you would a Chikmagalur lot, since the denser high-grown beans give up their sweetness more slowly.",
+          "The medium and medium-dark lots that dominate here are built for South Indian filter coffee and take milk well — a balanced, medium-bodied cup is what this origin does. For the brightest expression, look for the light-roast washed lots and brew them on V60.",
       },
       nearbyRegions: ["nilgiris", "shevaroy-hills"],
       icbDataNote:
@@ -1126,7 +1127,7 @@ export const regionPages: LandingPageConfig[] = [
     },
 
     regionSnapshot: {
-      knownFor: "India's highest coffee elevations, washed Arabica",
+      knownFor: "Mixed spice-garden Arabica, northeast-monsoon harvest",
     },
     faqOverline: "Palani Hills",
     faqTitle: "About *Palani Hills* coffee",
@@ -1140,7 +1141,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "Where are the Palani Hills?",
         answer:
-          "The Palani Hills are a range in Tamil Nadu's Western Ghats, in Dindigul district, overlapping the hill station of Kodaikanal. Coffee grows between roughly 1,200 and 2,200 metres — higher on average than any other Indian coffee region.",
+          "The Palani Hills are a range in Tamil Nadu's southern Western Ghats, in Dindigul district, overlapping the hill station of Kodaikanal. The peaks pass 2,000 metres, but coffee grows lower — roughly 800 to 1,500 metres on the middle and lower slopes, usually in mixed gardens with pepper, orange and cardamom.",
       },
       {
         question: "Are the Pulneys the same as the Palani Hills?",
@@ -1150,12 +1151,12 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "How does Palani Hills coffee compare to the Nilgiris?",
         answer:
-          "Both are Tamil Nadu ranges, but the Palanis sit higher, which favours slower ripening and more floral character. The Nilgiris have more catalogue depth and a longer specialty track record. Shevaroy Hills, lower and drier, rounds out the comparison.",
+          "The Nilgiris are India's highest traditional coffee district and have more catalogue depth and a longer specialty track record. The Palanis grow coffee in a similar band but on a northeast-monsoon calendar, harvesting November to January, and in mixed spice gardens rather than dedicated estates. Shevaroy Hills rounds out the Tamil Nadu comparison.",
       },
       {
         question: "Why do these coffees taste chocolatey rather than floral?",
         answer:
-          "Because most of them are roasted medium or darker. The elevation supports a brighter, more floral cup, but the roast profile drives the tasting notes you'll read. Filter by light roast to find the lots that show the terroir.",
+          "Partly the roast — two thirds of these lots are medium or darker — and partly the coffee. The Coffee Board describes Pulney Arabica as medium-bodied with a slight flavour and little aroma, so this was never a loud, fruit-forward origin. Filter by light roast for the brightest lots the region offers.",
       },
     ],
     utilityCard: {

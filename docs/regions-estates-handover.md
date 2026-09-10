@@ -260,6 +260,21 @@ hectares (5.7% of Chikmagalur's coffee count from 0.6% of its area). Either a re
 concentration or mis-mapped coffees. Don't ship a page asserting an area figure that looks wrong next
 to the catalogue. `/coffees?regions=biligiriranga-hills` works meanwhile.
 
+**Copy is sourced, not invented.** Both configs were written against the catalogue, then checked
+against the NRSC atlas PDF and the Specialty Coffee Association of India's region pages. Two claims
+died in that check and are worth remembering:
+
+- *"India's highest coffee elevations"* for the Palanis is **wrong**. The peaks pass 2,000m; the
+  coffee sits on the middle and lower slopes. The Nilgiris are India's highest traditional coffee
+  district. The atlas gives no per-region altitude, only a general Arabica band of 1,000–1,500m.
+- The Coffee Board's own line on Pulney coffee — "medium body, slight flavour with little aroma" —
+  is a better anchor than any floral-terroir claim, and it matches what the catalogue tastes like.
+
+**Sakleshpur is a Robusta taluk.** The atlas maps it as Robusta-dominant under mixed shade across
+35,620 ha, while ICB's specialty lots from it run 53 Arabica to 4 Robusta. The page says so — that
+gap between what a belt grows and what gets roasted for specialty is the most interesting fact about
+the region, and it generalises to other pages.
+
 **Anamalais was dropped: `valparai` has zero public coffees.** §3's table shows 3, counting all
 statuses; none are `active` or `seasonal`, so a page would render an empty grid. Revisit if lots
 appear.
@@ -283,6 +298,22 @@ shows only its sourced area and drops the State/Elevation snapshot cards entirel
 the `area_source` + `area_as_of` gate.
 
 Open decision 2 (bespoke vs templated copy) is untouched — this moved facts, not voice.
+
+### 4g. Three regions carried hill-range altitudes, not coffee altitudes
+
+Migration `20260911160000_fix_region_coffee_altitudes.sql` (applied). `altitude_min_m`/`max_m` on
+three rows recorded the elevation of the mountain range rather than the band coffee grows in — the
+Palanis' 2,200m is the massif above Kodaikanal, the Nilgiris' 2,500m is near Doddabetta, Wayanad's
+2,100m is Chembra Peak. Harmless while the figures sat unread; 4e put them on the page.
+
+Corrected to SICC's published coffee bands (`sicc.coffee/regions/{pulneys,nilgiris,wayanad}`, read
+2026-09-11): Palanis 800–1,500m, Nilgiris 900–1,800m, Wayanad 700–1,200m. **The NRSC atlas publishes
+no per-region altitudes** — only a general Arabica 1,000–1,500m / Robusta 500–1,000m table (p. ~12) —
+so it neither confirms nor contradicts these; it does make the old peak-height values clearly wrong.
+Rainfall left alone: SICC publishes ranges, and a midpoint would invent precision.
+
+⚠️ **Worth an ops-side sweep.** If three rows carried range summits, others may too. `malnad`
+(700–1,800), `wayanad` before the fix, and `nilgiri-hills` all came from the same enrichment pass.
 
 ### 4f. Estates — blocked on content, not code
 
