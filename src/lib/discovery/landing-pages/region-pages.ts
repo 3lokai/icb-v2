@@ -26,7 +26,7 @@ export const regionPages: LandingPageConfig[] = [
         knownFor: "SLN 795 washed arabica, heritage estates",
       },
       overview:
-        "Chikmagalur is where Indian specialty coffee begins. The district sits in the Western Ghats at elevations between 900 and 1,700 metres — high enough for slow cherry maturation and complex flavour development. Coffee arrived here in the 17th century, brought by Baba Budan from Yemen, and the region has been producing arabica continuously since. Today it's home to some of India's most celebrated estates — Yele Attikan, Hoysala, Kelachandra, and others — and the primary source of competition-grade Indian coffee.",
+        "Chikmagalur is where Indian specialty coffee begins. The district sits in the Western Ghats at elevations between 900 and 1,800 metres — high enough for slow cherry maturation and complex flavour development. Coffee arrived here in the 17th century, brought by Baba Budan from Yemen, and the region has been producing arabica continuously since. Today it's home to some of India's most celebrated estates — Yele Attikan, Hoysala, Kelachandra, and others — and the primary source of competition-grade Indian coffee.",
       flavourProfile: {
         typical: [
           "Jasmine",
@@ -69,7 +69,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "Why is Chikmagalur famous for coffee?",
         answer:
-          "It's one of India's oldest continuous coffee-growing areas — arabica has been grown here since the 17th century. The combination of high altitude (up to 1,700m), Western Ghats climate, and SLN 795 variety produces India's most competition-grade lots consistently.",
+          "It's one of India's oldest continuous coffee-growing areas — arabica has been grown here since the 17th century. The combination of high altitude (up to 1,800m), Western Ghats climate, and SLN 795 variety produces India's most competition-grade lots consistently.",
       },
       {
         question: "What is SLN 795 and why does it matter?",
@@ -184,7 +184,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "How is Baba Budangiri different from Chikmagalur?",
         answer:
-          "Baba Budangiri is a sub-range within Chikmagalur district, but the elevation difference is significant — up to 1,800m vs the broader district's 900–1,500m range. The extra altitude produces cooler temperatures, slower cherry development, and noticeably more complex aromatics. When a roaster labels a coffee specifically as Baba Budangiri rather than Chikmagalur, the altitude specificity is the point.",
+          "Baba Budangiri is a sub-range within Chikmagalur district, but the elevation difference is significant — the range sits at 1,500–1,800m where the district as a whole spans 900–1,800m, so its floor is where Chikmagalur's ceiling is. The extra altitude produces cooler temperatures, slower cherry development, and noticeably more complex aromatics. When a roaster labels a coffee specifically as Baba Budangiri rather than Chikmagalur, the altitude specificity is the point.",
       },
       {
         question: "Why are ratings so high for Baba Budangiri coffees?",
@@ -242,7 +242,7 @@ export const regionPages: LandingPageConfig[] = [
         knownFor: "Full-bodied arabica, espresso and milk drink suitability",
       },
       overview:
-        "Coorg — officially Kodagu district — is Karnataka's other major coffee heartland, adjacent to Chikmagalur but with distinct character. The district is densely forested, with coffee grown under native shade at elevations ranging from 800 to 1,600 metres. It's the largest coffee-producing district in Karnataka by volume, with a mix of large estates, medium-sized family farms, and a growing number of specialty-focused producers. Coorg is also known for its spice cultivation alongside coffee — cardamom, pepper, and ginger grow alongside coffee plants, which some producers argue influences flavour.",
+        "Coorg — officially Kodagu district — is Karnataka's other major coffee heartland, adjacent to Chikmagalur but with distinct character. The district is densely forested, with coffee grown under native shade at elevations ranging from 1,000 to 1,750 metres. It's the largest coffee-producing district in Karnataka by volume, with a mix of large estates, medium-sized family farms, and a growing number of specialty-focused producers. Coorg is also known for its spice cultivation alongside coffee — cardamom, pepper, and ginger grow alongside coffee plants, which some producers argue influences flavour.",
       flavourProfile: {
         typical: [
           "Dark chocolate",
@@ -456,7 +456,7 @@ export const regionPages: LandingPageConfig[] = [
           "Cool-climate arabica with clarity and elegance in light roasts",
       },
       overview:
-        "The Nilgiris — meaning Blue Mountains — straddle the borders of Tamil Nadu, Kerala, and Karnataka at elevations reaching 2,000 metres. Coffee grows primarily on the Tamil Nadu side, in the Nilgiri district around Ooty and the surrounding slopes. The Nilgiris have historically been associated with tea — the famous Nilgiri tea is from this region — but arabica coffee has been grown here for well over a century. The cool temperatures, distinct seasons, and high altitude create growing conditions that produce slower-maturing cherries and more nuanced cup profiles than lower-altitude origins.",
+        "The Nilgiris — meaning Blue Mountains — straddle the borders of Tamil Nadu, Kerala, and Karnataka, rising past 2,000 metres, with coffee grown between roughly 900 and 1,800 metres. Coffee grows primarily on the Tamil Nadu side, in the Nilgiri district around Ooty and the surrounding slopes. The Nilgiris have historically been associated with tea — the famous Nilgiri tea is from this region — but arabica coffee has been grown here for well over a century. The cool temperatures, distinct seasons, and high altitude create growing conditions that produce slower-maturing cherries and more nuanced cup profiles than lower-altitude origins.",
       flavourProfile: {
         typical: [
           "Delicate acidity",
@@ -499,7 +499,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "What defines Nilgiris coffee?",
         answer:
-          "Cool temperatures, high altitude (up to 2,000m), and a distinct Shola forest ecosystem produce slower-maturing cherries with tea-like elegance. It's India's most restrained specialty origin — less fruit-forward than Chikmagalur, more delicate than Coorg.",
+          "Cool temperatures, high altitude (coffee up to 1,800m), and a distinct Shola forest ecosystem produce slower-maturing cherries with tea-like elegance. It's India's most restrained specialty origin — less fruit-forward than Chikmagalur, more delicate than Coorg.",
       },
       {
         question: "Is Nilgiris coffee similar to Darjeeling tea?",
@@ -624,7 +624,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "Is it the same as Nilgiris coffee?",
         answer:
-          "No — the Shevaroy Hills and Nilgiris are separate ranges in Tamil Nadu with different terroir. Nilgiris is cooler and higher (up to 2,000m), producing more delicate cups. Shevaroy Hills is warmer and more diverse in processing. Both are worth exploring as distinct Tamil Nadu origins.",
+          "No — the Shevaroy Hills and Nilgiris are separate ranges in Tamil Nadu with different terroir. Nilgiris is cooler and higher — India's highest traditional coffee district, with coffee up to 1,800m — producing more delicate cups. Shevaroy Hills is warmer and more diverse in processing. Both are worth exploring as distinct Tamil Nadu origins.",
       },
     ],
     utilityCard: {

@@ -171,9 +171,10 @@ export default async function RegionsPage() {
       <Section spacing="default">
         <Stack gap="4">
           <p className="text-body-muted">
-            445,369 hectares mapped by ISRO across 57 taluks, September 2024.
-            Coffee counts include every sub-region, so a district total covers
-            the estates and hill belts inside it.
+            445,369 hectares of coffee mapped by ISRO and the Coffee Board
+            across 18 districts, September 2024. Coffee counts include every
+            sub-region, so a district total covers the estates and hill belts
+            inside it.
           </p>
           <Link
             className="inline-flex items-center gap-2 text-body font-medium text-accent hover:underline"

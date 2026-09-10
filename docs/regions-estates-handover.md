@@ -315,6 +315,41 @@ Rainfall left alone: SICC publishes ranges, and a midpoint would invent precisio
 ⚠️ **Worth an ops-side sweep.** If three rows carried range summits, others may too. `malnad`
 (700–1,800), `wayanad` before the fix, and `nilgiri-hills` all came from the same enrichment pass.
 
+### 4h. Atlas audit — what was checked and what it found
+
+Everything below was verified against the atlas PDF and its extracted `nrsc-atlas-2024.json`, not
+from memory.
+
+**Fixed in the copy:** stale elevations that survived 4e because they sit in prose rather than in the
+terroir grid — Chikmagalur read 900–1,700m against the canon 900–1,800m (in two places), Coorg read
+800–1,600m against 1,000–1,750m, and the Nilgiris read "up to 2,000m" in three places, which is the
+range's height, not the coffee's. Baba Budangiri's contrast with its parent district was rewritten:
+its 1,800m ceiling is the same as Chikmagalur's, so the distinction is its 1,500m *floor*.
+
+**Fixed on the hub:** the credibility line claimed "445,369 ha across **57 taluks**". The 445,369 ha
+is right — it's the atlas's own NATIONAL TOTAL — but the national table is **district-level, 18
+rows**; the atlas carries about 30 taluk detail pages and never claims 57 of anything. Now reads
+"across 18 districts".
+
+**Checked and correct, don't 'fix' these:**
+
+- `shevaroy-hills` = 8,485 ha where the atlas's Salem district row says 8,486. The Yercaud taluk page
+  says 8,485, and Salem's coffee is essentially all Yercaud. The atlas is internally inconsistent by
+  1 ha: its district rows sum to 445,370 against its own 445,369 national total.
+- Every other Indian `area_hectares` matches its atlas district or taluk figure exactly.
+
+**Left for the ops workspace:**
+
+- **The atlas publishes no altitudes**, only a general Arabica 1,000–1,500m / Robusta 500–1,000m
+  table. Every altitude in `canon_regions` therefore comes from enrichment, and three of them were
+  range summits (§4g). `malnad` (700–1,800) is from the same pass and unverified.
+- `araku-valley` carries 900–1,100m; the atlas highlight puts Araku Valley "at an elevation of about
+  1300m above MSL". Worth reconciling — it may be a valley-floor vs plateau distinction.
+- Five districts with atlas area have no `canon_regions` row: **Shivamogga** (153 ha), **Theni**
+  (3,997), **Namakkal & Rasipuram** (1,144), **Rayagada** (624), **Kalahandi** (355). None has
+  coffees today, so nothing renders wrong — but Phase 5 reconciliation should decide whether they
+  belong.
+
 ### 4f. Estates — blocked on content, not code
 
 `/estates/<canon_estates.slug>` (187/187 slugs filled, no bridge needed), rendered from
