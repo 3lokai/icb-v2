@@ -1,27 +1,16 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import {
+  NO_MATCH_ID,
+  resolveRegionSlugsToCanonIds,
+} from "@/lib/data/resolve-region-slugs";
 import type {
   EstateFilters,
   EstateListResponse,
   EstateSort,
   EstateSummary,
 } from "@/types/estate-types";
-
-/** Resolve `canon_regions.slug[]` -> `canon_regions.id[]`. */
-async function resolveRegionSlugsToIds(
-  supabase: any,
-  slugs: string[]
-): Promise<string[]> {
-  if (slugs.length === 0) {
-    return [];
-  }
-  const { data } = await supabase
-    .from("canon_regions")
-    .select("id")
-    .in("slug", slugs);
-  return (data ?? []).map((r: any) => r.id);
-}
 
 /**
  * Apply filters to the query
@@ -74,11 +63,15 @@ export async function fetchEstates(
 
   const resolvedFilters = { ...filters };
   if (filters.region_slugs && filters.region_slugs.length > 0) {
-    const regionIds = await resolveRegionSlugsToIds(
+    // Shared resolver: accepts page slugs as well as canon slugs, and includes
+    // descendants so a region covers the estates in its sub-units.
+    const regionIds = await resolveRegionSlugsToCanonIds(
       supabase,
       filters.region_slugs
     );
-    resolvedFilters.region_ids = [...(filters.region_ids ?? []), ...regionIds];
+    const combined = [...(filters.region_ids ?? []), ...regionIds];
+    // Fail closed: an unmatched slug must return no estates, not every estate.
+    resolvedFilters.region_ids = combined.length > 0 ? combined : [NO_MATCH_ID];
   }
 
   let query = supabase
