@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5";
+    PostgrestVersion: "14.5";
   };
   graphql_public: {
     Tables: {
@@ -338,18 +338,22 @@ export type Database = {
           altitude_max_m: number | null;
           altitude_min_m: number | null;
           annual_production_mt: number | null;
+          area_as_of: string | null;
           area_hectares: number | null;
+          area_source: string | null;
           climate: string | null;
           country: string;
           created_at: string;
           description: string | null;
           display_name: string;
+          district: string | null;
           harvest_season: string | null;
           hero_image_url: string | null;
           id: string;
           intercrop_species: string[] | null;
           logo_url: string | null;
           notes: string | null;
+          parent_id: string | null;
           primary_processing_methods: string[] | null;
           primary_varieties: string[] | null;
           rainfall_mm: number | null;
@@ -361,24 +365,29 @@ export type Database = {
           state: string | null;
           subregion: string | null;
           terroir_notes: string | null;
+          tier: string | null;
           updated_at: string;
         };
         Insert: {
           altitude_max_m?: number | null;
           altitude_min_m?: number | null;
           annual_production_mt?: number | null;
+          area_as_of?: string | null;
           area_hectares?: number | null;
+          area_source?: string | null;
           climate?: string | null;
           country: string;
           created_at?: string;
           description?: string | null;
           display_name: string;
+          district?: string | null;
           harvest_season?: string | null;
           hero_image_url?: string | null;
           id?: string;
           intercrop_species?: string[] | null;
           logo_url?: string | null;
           notes?: string | null;
+          parent_id?: string | null;
           primary_processing_methods?: string[] | null;
           primary_varieties?: string[] | null;
           rainfall_mm?: number | null;
@@ -390,24 +399,29 @@ export type Database = {
           state?: string | null;
           subregion?: string | null;
           terroir_notes?: string | null;
+          tier?: string | null;
           updated_at?: string;
         };
         Update: {
           altitude_max_m?: number | null;
           altitude_min_m?: number | null;
           annual_production_mt?: number | null;
+          area_as_of?: string | null;
           area_hectares?: number | null;
+          area_source?: string | null;
           climate?: string | null;
           country?: string;
           created_at?: string;
           description?: string | null;
           display_name?: string;
+          district?: string | null;
           harvest_season?: string | null;
           hero_image_url?: string | null;
           id?: string;
           intercrop_species?: string[] | null;
           logo_url?: string | null;
           notes?: string | null;
+          parent_id?: string | null;
           primary_processing_methods?: string[] | null;
           primary_varieties?: string[] | null;
           rainfall_mm?: number | null;
@@ -419,9 +433,18 @@ export type Database = {
           state?: string | null;
           subregion?: string | null;
           terroir_notes?: string | null;
+          tier?: string | null;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "canon_regions_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "canon_regions";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       canon_sensory_nodes: {
         Row: {
