@@ -125,17 +125,17 @@ export type PriceBucketProfileConfig = {
 /** Region landing pages — see `region-pages.ts` */
 export type RegionProfileConfig = {
   snapshot: {
-    state: string;
-    elevation: string;
+    /** Filled from `canon_regions` by `fetchRegionFacts`; config may override. */
+    state?: string;
+    elevation?: string;
     knownFor: string;
   };
   overview: string;
-  terroir: {
-    climate: string;
-    soil: string;
-    altitude: string;
-    varieties: string;
-  };
+  /**
+   * Terroir facts (climate, soil, altitude, varieties, rainfall, harvest, intercrops,
+   * area) are NOT here — they live in `canon_regions` and are read by
+   * `fetchRegionFacts`. Keep editorial voice in this config, facts in the database.
+   */
   flavourProfile: {
     typical: string[];
     indianContext: string;
@@ -245,8 +245,9 @@ export type LandingPageConfig = {
   };
   /** Region pages: snapshot stats for RegionSnapshot */
   regionSnapshot?: {
-    state: string;
-    elevation: string;
+    /** Filled from `canon_regions` by `fetchRegionFacts`; config may override. */
+    state?: string;
+    elevation?: string;
     knownFor: string;
   };
   /** Price bucket pages: three bullets for ValueTips */

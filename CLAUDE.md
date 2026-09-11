@@ -86,6 +86,14 @@ Filters derive from URL search params → parsed in `src/lib/filters/coffee-url.
 
 `src/lib/discovery/landing-pages/` defines static configs for SEO landing pages (brew method, roast level, process, price bucket, region). These generate `generateStaticParams` entries and reuse the main coffee directory UI with pre-applied filters.
 
+**Region page slugs are NOT canon slugs.** The bridge is `filter.region_slugs[]` (config → `canon_regions.slug`), one-directional: `coorg` → `kodagu-coorg`, `araku` → `araku-valley`, `nilgiris` → `nilgiri-hills`. Don't rename page slugs to match canon.
+
+### Regions & Estates (in progress)
+
+`canon_regions` has a precision `tier` + `parent_id` hierarchy and sourced area figures (ISRO/Coffee Board atlas). Coffee counts roll **up** `parent_id` — a region page that filters on its own slug alone undercounts (`/coffees/chikmagalur` omits 206 coffees today). Decided: regions get a `/regions` **hub only** (no `/regions/<slug>`, since `/coffees/<slug>` already carries the profile); estates get `/estates` **and** `/estates/<slug>`. Region/estate browse surfaces are India-only via `country = 'India'`.
+
+Read [`docs/regions-estates-handover.md`](docs/regions-estates-handover.md) before touching regions or estates — it has the live data table, what's built, what's next, and the traps.
+
 ### Content (Sanity)
 
 `/learn` routes are backed by Sanity CMS. GROQ queries live in `src/lib/sanity/queries.ts`. The Sanity client is in `src/lib/sanity/client.ts`. Blog/editorial images use `@sanity/image-url` via `src/lib/sanity/image.ts`.

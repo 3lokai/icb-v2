@@ -30,20 +30,6 @@
   @apply transition-colors duration-500 hover:border-border;
 }
 
-/* Region card variations */
-.region-card {
-  @apply relative overflow-hidden rounded-sm aspect-[5/6] border border-border/60;
-}
-
-.region-overlay {
-  /* Softened gradient: Less "Netflix poster" */
-  @apply absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent;
-}
-
-.region-content {
-  @apply absolute bottom-0 left-0 p-4 text-white;
-}
-
 /* Glossary Terms
  * Accent family: this dotted-accent underline is the quiet inline cousin of the
  * coffee brush-smear `.accent-smear` (effects.css / <Accent> primitive). Both are

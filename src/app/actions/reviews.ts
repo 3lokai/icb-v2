@@ -10,7 +10,7 @@ import type {
 } from "@/types/review-types";
 import { isValidRating, isValidComment } from "@/types/review-types";
 import { sendSlackNotification } from "@/lib/notifications/slack";
-import { getPostHogClient } from "@/lib/posthog-server";
+import { captureServerEvent } from "@/lib/posthog-server";
 
 type ActionResult<T = undefined> = {
   success: boolean;
@@ -333,17 +333,17 @@ export async function createReview(
     await revalidateEntityPaths(supabase, input.entity_type, input.entity_id);
 
     // Track review submission
-    getPostHogClient().capture({
-      distinctId: user_id || anon_id || "anonymous",
-      event: "review_submitted",
-      properties: {
+    void captureServerEvent(
+      user_id || anon_id || "anonymous",
+      "review_submitted",
+      {
         entity_type: input.entity_type,
         entity_id: input.entity_id,
         rating: input.rating ?? null,
         user_type: user_id ? "authenticated" : "anonymous",
         is_first_rating,
-      },
-    });
+      }
+    );
 
     // Send Slack notification (fire and forget)
     sendSlackNotification("review", {

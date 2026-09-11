@@ -91,7 +91,7 @@ export function ProcessProfileSection({
         className="mb-8"
         overline="Process profile"
         title="How this *process* works"
-        description="Step-by-step processing, flavour impact, Indian context, and brew guidance — all from the data behind our catalogue."
+        description="Step-by-step processing, flavour impact, Indian context, and brew guidance, all from the data behind our catalogue."
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />

@@ -3,7 +3,7 @@
 import { getCurrentUser } from "@/data/auth";
 import { createClient } from "@/lib/supabase/server";
 import { fetchWishlistCoffeeIds } from "@/lib/data/fetch-wishlist";
-import { getPostHogClient } from "@/lib/posthog-server";
+import { captureServerEvent } from "@/lib/posthog-server";
 import {
   toggleWishlistSchema,
   type ToggleWishlistFormData,
@@ -71,10 +71,8 @@ export async function toggleWishlist(
     }
 
     if (removed && removed.length > 0) {
-      getPostHogClient().capture({
-        distinctId: currentUser.id,
-        event: "wishlist_removed",
-        properties: { coffee_id: coffeeId },
+      void captureServerEvent(currentUser.id, "wishlist_removed", {
+        coffee_id: coffeeId,
       });
       return { success: true, data: { inWishlist: false } };
     }
@@ -95,10 +93,8 @@ export async function toggleWishlist(
       };
     }
 
-    getPostHogClient().capture({
-      distinctId: currentUser.id,
-      event: "wishlist_added",
-      properties: { coffee_id: coffeeId },
+    void captureServerEvent(currentUser.id, "wishlist_added", {
+      coffee_id: coffeeId,
     });
 
     return { success: true, data: { inWishlist: true } };

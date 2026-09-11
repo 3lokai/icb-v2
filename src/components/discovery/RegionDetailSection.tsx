@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import { RegionCard } from "@/components/cards/RegionCard";
+import { fetchNearbyRegionCards } from "@/lib/discovery/region-facts";
 import { DiscoverySectionIntro } from "@/components/discovery/DiscoverySectionIntro";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -42,7 +44,7 @@ function regionSlugToLabel(slug: string): string {
   return page.entityLabel;
 }
 
-export function RegionDetailSection({
+export async function RegionDetailSection({
   profile,
   slug,
   guideHref = "/learn",
@@ -56,14 +58,7 @@ export function RegionDetailSection({
     icbDataNote,
   } = profile;
 
-  // Resolve nearby region links
-  const nearbyRegionLinks = nearbyRegions
-    .map((s) => {
-      const cfg = getLandingPageConfig(s);
-      if (!cfg || cfg.type !== "region") return null;
-      return { slug: s, label: regionSlugToLabel(s) };
-    })
-    .filter((x): x is { slug: string; label: string } => x !== null);
+  const nearbyRegionCards = await fetchNearbyRegionCards(nearbyRegions);
 
   return (
     <Section spacing="default" contained={false} className={cn(className)}>
@@ -72,7 +67,7 @@ export function RegionDetailSection({
         className="mb-8"
         overline="Flavour & guidance"
         title="In the *Cup*"
-        description="Flavour profile, Indian specialty context, and brew guidance — deeper detail after you've browsed the coffees."
+        description="Flavour profile, Indian specialty context, and brew guidance: deeper detail after you've browsed the coffees."
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />
@@ -146,9 +141,12 @@ export function RegionDetailSection({
         {/* 2. Indian Context — Promoted hero block */}
         <div className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-accent/5 shadow-sm grid md:grid-cols-5">
           <div className="order-1 md:order-2 md:col-span-2 relative aspect-[4/3] md:aspect-auto h-full min-h-0 bg-muted/20">
+            {/* ponytail: one shared landscape — not a single `region-<slug>-landscape.png`
+                exists, so the per-slug path 404'd on every region page. Give the config an
+                image field when per-region art is actually commissioned. */}
             <Image
-              src={`/images/discovery/region-${slug}-landscape.png`}
-              alt={`${slug} region landscape`}
+              src="/images/discovery/region-landscape.png"
+              alt={`${regionSlugToLabel(slug)} coffee landscape`}
               fill
               sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover"
@@ -234,31 +232,24 @@ export function RegionDetailSection({
         <div className="h-px w-full bg-border/40 max-w-5xl mx-auto my-8" />
 
         {/* 4. Nearby regions */}
-        {nearbyRegionLinks.length > 0 && (
+        {nearbyRegionCards.length > 0 && (
           <div className="max-w-5xl mx-auto w-full space-y-6">
             <h3 className="text-heading mb-6 flex items-center gap-2">
               <Icon icon={MapTrifoldIcon} className="h-5 w-5 text-accent/70" />
               Explore Nearby Regions
             </h3>
 
-            <Stack gap="4">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                <div className="flex flex-wrap gap-2">
-                  {nearbyRegionLinks.map(({ slug: s, label }) => (
-                    <Link
-                      key={s}
-                      href={discoveryPagePath(s)}
-                      className={cn(
-                        brewMethodDiscoveryLinkClassName,
-                        "bg-muted/30 hover:bg-transparent border-transparent hover:border-accent/30 shadow-none transition-colors"
-                      )}
-                    >
-                      {label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </Stack>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {nearbyRegionCards.map((nearby) => (
+                <RegionCard
+                  coffeeCount={nearby.coffeeCount}
+                  href={nearby.href}
+                  key={nearby.slug}
+                  region={nearby.region}
+                  variant="compact"
+                />
+              ))}
+            </div>
           </div>
         )}
 

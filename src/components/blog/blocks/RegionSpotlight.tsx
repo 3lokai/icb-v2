@@ -87,7 +87,12 @@ export function RegionSpotlight({ value }: RegionSpotlightProps) {
                 size="lg"
                 className="rounded-xl shadow-md transition-all hover:translate-y-[-2px] hover:shadow-lg active:translate-y-0 bg-emerald-600 hover:bg-emerald-700"
               >
-                <Link href={value.link || `/regions/${regionId}`}>
+                <Link
+                  href={
+                    value.link ||
+                    `/coffees?regions=${encodeURIComponent(regionId ?? "")}`
+                  }
+                >
                   Explore Region{" "}
                   <Icon
                     icon={MapPinIcon}

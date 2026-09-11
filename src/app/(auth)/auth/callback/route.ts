@@ -4,7 +4,7 @@ import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { sendSlackNotification } from "@/lib/notifications/slack";
 import { sendWelcomeEmail } from "@/lib/emails/resend";
 import { subscribeToNewsletterList } from "@/lib/notifuse";
-import { getPostHogClient } from "@/lib/posthog-server";
+import { captureServerEvent } from "@/lib/posthog-server";
 import { trackLifecycleEvent } from "@/lib/lifecycle";
 
 export async function GET(request: NextRequest) {
@@ -217,10 +217,12 @@ export async function GET(request: NextRequest) {
       }
 
       // Track new user OAuth signup
-      getPostHogClient().capture({
-        distinctId: user.id,
-        event: "user_signed_up_oauth",
-        properties: { method, email: user.email },
+      // `$current_url` is passed explicitly: on an OAuth return the Referer is
+      // the identity provider, not an ICB page.
+      void captureServerEvent(user.id, "user_signed_up_oauth", {
+        method,
+        email: user.email,
+        $current_url: request.url,
       });
 
       // Fire and forget - don't await

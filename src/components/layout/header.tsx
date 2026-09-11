@@ -88,12 +88,7 @@ const baseNavItems = [
         disabled: true,
         badge: "Coming Soon",
       },
-      {
-        name: "Regions",
-        link: "/regions",
-        disabled: true,
-        badge: "Coming Soon",
-      },
+      { name: "Regions", link: "/regions" },
     ],
   },
   {

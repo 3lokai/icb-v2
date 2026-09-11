@@ -1,6 +1,10 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import {
+  NO_MATCH_ID,
+  resolveRegionSlugsToRegionIds,
+} from "@/lib/data/resolve-region-slugs";
 import type { CoffeeImage } from "@/types/coffee-component-types";
 import { PUBLIC_COFFEE_STATUSES } from "@/lib/utils/coffee-constants";
 import type {
@@ -9,16 +13,6 @@ import type {
   CoffeeSort,
   CoffeeSummary,
 } from "@/types/coffee-types";
-
-/**
- * Discovery landing pages and /coffees filters use short slugs; `canon_regions.slug` may differ.
- * Must match [supabase/migrations/20260106000001_seed_canon_regions.sql](supabase/migrations/20260106000001_seed_canon_regions.sql).
- */
-const LANDING_REGION_SLUG_TO_CANON: Record<string, string> = {
-  coorg: "kodagu-coorg",
-  araku: "araku-valley",
-  nilgiris: "nilgiri-hills",
-};
 
 /**
  * Server-side read client: service-role (bypasses RLS) when the secret key is
@@ -45,36 +39,6 @@ async function resolveRoasterSlugsToIds(
     .select("id")
     .in("slug", slugs);
   return (data || []).map((r: any) => r.id);
-}
-
-/**
- * Helper to resolve region slugs to IDs (via canon_regions)
- */
-async function resolveRegionSlugsToIds(
-  supabase: any,
-  slugs: string[]
-): Promise<string[]> {
-  if (slugs.length === 0) {
-    return [];
-  }
-  const canonSlugs = [
-    ...new Set(slugs.map((s) => LANDING_REGION_SLUG_TO_CANON[s] ?? s)),
-  ];
-  // Get canon_region IDs from slugs
-  const { data: canonRegions } = await supabase
-    .from("canon_regions")
-    .select("id")
-    .in("slug", canonSlugs);
-  if (!canonRegions || canonRegions.length === 0) {
-    return [];
-  }
-  const canonRegionIds = canonRegions.map((r: any) => r.id);
-  // Get region IDs that reference these canon_regions
-  const { data: regions } = await supabase
-    .from("regions")
-    .select("id")
-    .in("canon_region_id", canonRegionIds);
-  return (regions || []).map((r: any) => r.id);
 }
 
 /**
@@ -112,13 +76,6 @@ async function resolveInternationalRegionIds(supabase: any): Promise<string[]> {
 /**
  * Helper to resolve estate keys to IDs
  */
-/**
- * Sentinel estate id used when none of the requested estate_keys exist. Overlapping
- * against it matches no row, so an unknown estate returns an empty page instead of
- * the unfiltered catalogue.
- */
-const NO_ESTATE_MATCH = "00000000-0000-0000-0000-000000000000";
-
 async function resolveEstateKeysToIds(
   supabase: any,
   keys: string[]
@@ -134,7 +91,7 @@ async function resolveEstateKeysToIds(
   // estate_key uses underscores ("ratnagiri_estate"), easy to get wrong from a
   // canon slug ("ratnagiri-estate"). Callers MUST NOT treat "nothing resolved" as
   // "no filter" — that returns the whole catalogue for a request that asked for
-  // one estate. See the NO_ESTATE_MATCH sentinel at the call site.
+  // one estate. See the NO_MATCH_ID sentinel at the call site.
   if (ids.length === 0) {
     console.warn(
       `[fetchCoffees] No estate matched estate_key(s) ${keys.join(", ")} — returning no results rather than an unfiltered list.`
@@ -570,15 +527,17 @@ export async function fetchCoffees(
     }
   }
 
-  // Resolve region slugs to IDs (if provided)
+  // Resolve region slugs to IDs (if provided). Descendants are included, so a
+  // parent region covers the coffees tagged to its sub-units.
   if (filters.region_slugs?.length && !filters.region_ids?.length) {
-    const regionIds = await resolveRegionSlugsToIds(
+    const regionIds = await resolveRegionSlugsToRegionIds(
       supabase,
       filters.region_slugs
     );
-    if (regionIds.length > 0) {
-      resolvedFilters.region_ids = regionIds;
-    }
+    // Fail closed, as with estate_keys: an unknown or coffee-less region returns
+    // nothing, never the whole catalogue.
+    resolvedFilters.region_ids =
+      regionIds.length > 0 ? regionIds : [NO_MATCH_ID];
   }
 
   // Resolve international (non-India) region IDs when international_only is set
@@ -588,9 +547,13 @@ export async function fetchCoffees(
     if (resolvedFilters.region_ids?.length) {
       // User provided region filters: intersect with international regions only
       // Never broaden to all international regions; empty intersection is valid
-      resolvedFilters.region_ids = resolvedFilters.region_ids.filter((id) =>
+      const intersection = resolvedFilters.region_ids.filter((id) =>
         internationalRegionIds.includes(id)
       );
+      // An empty intersection is a valid answer (an Indian region + international_only),
+      // but it has to stay an explicit no-match or the filter drops off entirely.
+      resolvedFilters.region_ids =
+        intersection.length > 0 ? intersection : [NO_MATCH_ID];
     } else if (internationalRegionIds.length > 0) {
       // User did not provide region filters: use all international regions
       resolvedFilters.region_ids = internationalRegionIds;
@@ -606,7 +569,7 @@ export async function fetchCoffees(
     // Fail closed: if no key resolved, keep an explicit no-match rather than
     // dropping the filter, which would widen the request to the whole catalogue.
     resolvedFilters.estate_ids =
-      estateIds.length > 0 ? estateIds : [NO_ESTATE_MATCH];
+      estateIds.length > 0 ? estateIds : [NO_MATCH_ID];
   }
 
   // Resolve canonical flavor slugs to IDs (if provided, for backward compatibility)
@@ -686,7 +649,7 @@ export async function fetchRoastersForRegionSlugs(
 
   const supabase = await getReadClient();
 
-  const regionIds = await resolveRegionSlugsToIds(supabase, regionSlugs);
+  const regionIds = await resolveRegionSlugsToRegionIds(supabase, regionSlugs);
   if (regionIds.length === 0) {
     return [];
   }

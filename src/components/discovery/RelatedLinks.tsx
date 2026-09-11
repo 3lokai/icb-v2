@@ -1,4 +1,6 @@
 import { Accent } from "@/components/primitives/accent";
+import { RegionCard } from "@/components/cards/RegionCard";
+import { fetchNearbyRegionCards } from "@/lib/discovery/region-facts";
 import Link from "next/link";
 import { Section } from "@/components/primitives/section";
 import {
@@ -13,14 +15,35 @@ import { Icon } from "@/components/common/Icon";
 
 type RelatedLinksProps = {
   relatedSlugs: string[];
+  /**
+   * Region pages already carry their origin cross-links in RegionDetailSection's
+   * "Explore Nearby Regions", and `related` repeats `nearbyRegions` almost verbatim on
+   * every one of them. Set on region pages so the same origins don't appear twice.
+   */
+  excludeRegions?: boolean;
 };
 
 /**
  * RelatedLinks - Internal links to other discovery pages
  * Uses existing Button/Link patterns
  */
-export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
+export async function RelatedLinks({
+  relatedSlugs,
+  excludeRegions = false,
+}: RelatedLinksProps) {
+  // Origins get the plate treatment; everything else stays a text card. Split rather
+  // than mixed into one grid — a horizontal compact card wedged between tall text cards
+  // reads as a layout bug.
+  const regionSlugs = excludeRegions
+    ? []
+    : relatedSlugs.filter(
+        (slug) => getLandingPageConfig(slug)?.type === "region"
+      );
+  const regionCards = await fetchNearbyRegionCards(regionSlugs);
+  const regionSlugSet = new Set(regionSlugs);
+
   const relatedPages = relatedSlugs
+    .filter((slug) => !regionSlugSet.has(slug))
     .map((slug) => {
       const config = getLandingPageConfig(slug);
       if (!config) return null;
@@ -44,7 +67,7 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
       } => page !== null
     );
 
-  if (relatedPages.length === 0) {
+  if (relatedPages.length === 0 && regionCards.length === 0) {
     return null;
   }
 
@@ -66,6 +89,20 @@ export function RelatedLinks({ relatedSlugs }: RelatedLinksProps) {
           </p>
         </Stack>
       </div>
+      {regionCards.length > 0 && (
+        <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {regionCards.map((nearby) => (
+            <RegionCard
+              coffeeCount={nearby.coffeeCount}
+              href={nearby.href}
+              key={nearby.slug}
+              region={nearby.region}
+              variant="compact"
+            />
+          ))}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {relatedPages.map((page) => (
           <Link

@@ -8,12 +8,12 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for AeroPress in India",
     entityLabel: "AeroPress",
     intro:
-      "The AeroPress is the most forgiving brewer in specialty coffee — the quickest way to read a roaster's range, from a jammy Coorg natural to a bright washed Chikmagalur lot. Gentle pressure and a short steep pull a clean, concentrated cup with almost none of the bitterness longer methods drag out.",
+      "The AeroPress is the most forgiving brewer in specialty coffee, and the quickest way to read a roaster's range, from a jammy Coorg natural to a bright washed Chikmagalur lot. Gentle pressure and a short steep pull a clean, concentrated cup with almost none of the bitterness longer methods drag out.",
     headerNudge:
       "Great for clean, bright cups and experimenting with different origins.",
     teaserTitle: "What to brew on *AeroPress*",
     teaserDescription:
-      "Clean, concentrated, forgiving — the lots that reward a quick steep and a slow press.",
+      "Clean, concentrated, forgiving: the lots that reward a quick steep and a slow press.",
     gridNudge:
       "New to AeroPress? Start with medium or light roasts for balanced extraction.",
     heroBackgroundImage: "/images/discovery/aeropress-hero.avif",
@@ -27,11 +27,11 @@ export const brewMethodPages: LandingPageConfig[] = [
         howItWorks:
           "Coffee steeps in a chamber, then a plunger forces water through a paper or metal micro-filter under gentle pressure. The combination of immersion and pressure produces a clean, concentrated cup with more body than pour-over but less sediment than French Press.",
         keyAdvantage:
-          "Extremely forgiving and fast — a full brew takes under 3 minutes. The pressure variable lets you experiment: longer steep with inverted method, shorter steep for espresso-style concentrate.",
+          "Extremely forgiving and fast. A full brew takes under 3 minutes. The pressure variable lets you experiment: longer steep with inverted method, shorter steep for espresso-style concentrate.",
         filterType: "Paper micro-filter (included) or reusable metal disk",
       },
       indianCoffeeContext:
-        "AeroPress is arguably the best method for exploring Indian specialty coffees — its short brew time and pressure variable let you dial in wildly different profiles. Indian naturals from Karnataka produce jammy, concentrated cups on AeroPress that taste almost like a filter coffee-espresso hybrid. Washed Chikmagalur lots come out clean and bright. Araku naturals show tropical fruit with none of the funky edge you can get on longer pour-over brews. It's also forgiving enough for medium-dark roasts that would over-extract on V60.",
+        "AeroPress is arguably the best method for exploring Indian specialty coffees, since its short brew time and pressure variable let you dial in wildly different profiles. Indian naturals from Karnataka produce jammy, concentrated cups on AeroPress that taste almost like a filter coffee-espresso hybrid. Washed Chikmagalur lots come out clean and bright. Araku naturals show tropical fruit with none of the funky edge you can get on longer pour-over brews. It's also forgiving enough for medium-dark roasts that would over-extract on V60.",
       commonMistakes: [
         {
           mistake: "Plunging too fast",
@@ -43,18 +43,18 @@ export const brewMethodPages: LandingPageConfig[] = [
         },
         {
           mistake: "Skipping the bloom",
-          fix: "Add 2x coffee weight in water, stir, wait 30 seconds before filling. Indian naturals especially benefit — they off-gas significantly.",
+          fix: "Add 2x coffee weight in water, stir, wait 30 seconds before filling. Indian naturals especially benefit, because they off-gas significantly.",
         },
       ],
       roastPairing: {
         best: ["light-roast", "light-medium-roast", "medium-roast"],
         works: ["medium-dark-roast"],
         avoid:
-          "Very dark roasts can turn harsh under AeroPress pressure — French Press handles them better.",
+          "Very dark roasts can turn harsh under AeroPress pressure; French Press handles them better.",
       },
       siblingMethods: [],
       icbDataNote:
-        "AeroPress is listed as a recommended brew method across a significant share of light and light-medium roast coffees in the ICB catalogue. It's the most versatile brewer in our community's kit — referenced in more user reviews than any other single brewer.",
+        "AeroPress is listed as a recommended brew method across a significant share of light and light-medium roast coffees in the ICB catalogue. It's the most versatile brewer in our community's kit, referenced in more user reviews than any other single brewer.",
     },
 
     brewParams: {
@@ -75,7 +75,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "What makes a coffee good for AeroPress?",
         answer:
-          "AeroPress works well with most coffees, but medium to light roasts with balanced acidity and clear flavor notes tend to produce the best results. Indian naturals from Karnataka are particularly good — they produce jammy, concentrated cups.",
+          "AeroPress works well with most coffees, but medium to light roasts with balanced acidity and clear flavor notes tend to produce the best results. Indian naturals from Karnataka are particularly good, producing jammy, concentrated cups.",
       },
       {
         question: "What grind size should I use for AeroPress?",
@@ -90,7 +90,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "What is the inverted AeroPress method?",
         answer:
-          "Flip the AeroPress upside down during brewing so water doesn't drip through until you're ready to press. It gives you more control over steep time — useful for lighter roasts where you want a longer extraction.",
+          "Flip the AeroPress upside down during brewing so water doesn't drip through until you're ready to press. It gives you more control over steep time, which helps with lighter roasts where you want a longer extraction.",
       },
     ],
     utilityCard: {
@@ -124,14 +124,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for V60 in India",
     entityLabel: "V60",
     intro:
-      "No brewer shows you an Indian coffee's terroir as plainly as the V60 — washed Chikmagalur lots and Araku light roasts taste their clearest here. The cone and single large hole hand you control over every variable, and a thin paper filter strips away anything between you and the cup.",
+      "No brewer shows you an Indian coffee's terroir as plainly as the V60. Washed Chikmagalur lots and Araku light roasts taste their clearest here. The cone and single large hole hand you control over every variable, and a thin paper filter strips away anything between you and the cup.",
     headerNudge:
       "Perfect for highlighting delicate origin flavors and bright acidity.",
     teaserTitle: "Made for the *V60*",
     teaserDescription:
       "Clarity, brightness, and origin character with nowhere to hide.",
     gridNudge:
-      "Light roasts shine here — they reveal complexity that darker roasts can mask.",
+      "Light roasts shine here, revealing complexity that darker roasts can mask.",
     heroBackgroundImage: "/images/discovery/v60-hero.avif",
     heroBadge: "Light to Medium Roast",
     utilityNudge:
@@ -143,12 +143,12 @@ export const brewMethodPages: LandingPageConfig[] = [
         howItWorks:
           "Hot water is poured over grounds in a cone-shaped dripper with spiral ridges and a single large hole at the base. The ridges hold the paper filter away from the cone walls, allowing air to escape evenly and giving the brewer precise control over extraction through pour speed and technique.",
         keyAdvantage:
-          "Maximum clarity and flavour transparency — V60 reveals origin character more clearly than almost any other brew method. The single hole means flow rate is determined entirely by grind size and pour technique, giving you precise extraction control.",
+          "Maximum clarity and flavour transparency. V60 reveals origin character more clearly than almost any other brew method. The single hole means flow rate is determined entirely by grind size and pour technique, giving you precise extraction control.",
         filterType:
-          "Thin paper filter — removes oils and fines for a very clean cup",
+          "Thin paper filter, removing oils and fines for a very clean cup",
       },
       indianCoffeeContext:
-        "V60 is where Indian washed coffees from Chikmagalur and Coorg show their best. The clarity of the brew lets the terroir speak — SLN 795 washed lots from high-altitude estates come through with jasmine, stone fruit, and clean acidity that would be muddied in French Press. Indian naturals are excellent on V60 too but extract faster — a slightly coarser grind and shorter pour helps. Araku Valley light roasts are exceptional on V60: the citrus and bergamot notes that define the region's identity are cleanest through a thin paper filter.",
+        "V60 is where Indian washed coffees from Chikmagalur and Coorg show their best. The clarity of the brew lets the terroir speak: SLN 795 washed lots from high-altitude estates come through with jasmine, stone fruit, and clean acidity that would be muddied in French Press. Indian naturals are excellent on V60 too but extract faster, so a slightly coarser grind and shorter pour helps. Araku Valley light roasts are at their clearest on V60: the citrus and bergamot notes that define the region's identity are cleanest through a thin paper filter.",
       commonMistakes: [
         {
           mistake: "Pouring too fast",
@@ -156,7 +156,7 @@ export const brewMethodPages: LandingPageConfig[] = [
         },
         {
           mistake: "Skipping or rushing the bloom",
-          fix: "Pour 2–3x coffee weight in water, wait 30–45 seconds. Indian coffees, especially naturals, release significant CO2 — skipping bloom produces uneven extraction.",
+          fix: "Pour 2–3x coffee weight in water, wait 30–45 seconds. Indian coffees, especially naturals, release significant CO2, and skipping bloom produces uneven extraction.",
         },
         {
           mistake: "Grind too coarse for light roasts",
@@ -167,7 +167,7 @@ export const brewMethodPages: LandingPageConfig[] = [
         best: ["light-roast", "light-medium-roast"],
         works: ["medium-roast"],
         avoid:
-          "Dark roasts lose nuance on V60 and can taste flat — French Press or filter coffee brings them out better.",
+          "Dark roasts lose nuance on V60 and can taste flat; French Press or filter coffee brings them out better.",
       },
       siblingMethods: ["chemex", "kalita"],
       icbDataNote:
@@ -192,22 +192,22 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "Why is V60 popular for specialty coffee?",
         answer:
-          "V60's spiral ridges and large single hole allow for precise control over extraction, making it ideal for highlighting delicate flavor notes. It produces a cleaner, more transparent cup than immersion methods — origin character comes through clearly.",
+          "V60's spiral ridges and large single hole allow for precise control over extraction, making it ideal for highlighting delicate flavor notes. It produces a cleaner, more transparent cup than immersion methods, so origin character comes through clearly.",
       },
       {
         question: "What roast level works best with V60?",
         answer:
-          "Light to medium roasts work best. V60 excels at extracting bright, clean flavours — Indian washed coffees from Chikmagalur and Araku naturals are particularly good. Dark roasts tend to taste flat rather than bold on V60.",
+          "Light to medium roasts work best. V60 excels at extracting bright, clean flavours, and Indian washed coffees from Chikmagalur and Araku naturals are particularly good. Dark roasts tend to taste flat rather than bold on V60.",
       },
       {
         question: "How long should a V60 brew take?",
         answer:
-          "3–4 minutes total, including a 30–45 second bloom. If it finishes under 2.5 minutes, grind finer. If it takes over 5 minutes, grind coarser. Brew time is your main diagnostic tool.",
+          "3–4 minutes total, including a 30–45 second bloom. Outside that window, grind is the lever: coarser when it stalls, finer when it races. Time the drawdown before you change anything else.",
       },
       {
-        question: "V60 vs AeroPress — which should I start with?",
+        question: "V60 vs AeroPress: which should I start with?",
         answer:
-          "AeroPress is more forgiving and faster — better for beginners or those who want flexibility. V60 rewards technique and produces a cleaner cup — better if you want to explore origin flavours precisely. Both work well with Indian specialty coffees.",
+          "AeroPress is more forgiving and faster, better for beginners or those who want flexibility. V60 rewards technique and produces a cleaner cup, better if you want to explore origin flavours precisely. Both work well with Indian specialty coffees.",
       },
     ],
     utilityCard: {
@@ -243,7 +243,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     intro:
       "The Chemex's thick bonded filter leaves an Indian coffee at its cleanest and most tea-like: jasmine, peach, and bright citrus from washed Chikmagalur and Baba Budangiri light roasts. Oils, fines, and murk all stay behind, and none of the weight comes with it.",
     headerNudge:
-      "Chemex highlights sweetness and clarity — choose coffees with defined origin character.",
+      "Chemex highlights sweetness and clarity, so choose coffees with defined origin character.",
     teaserTitle: "Clean enough for *Chemex*",
     teaserDescription:
       "Sweet, defined lots that earn the thick filter's tea-like clarity.",
@@ -258,36 +258,36 @@ export const brewMethodPages: LandingPageConfig[] = [
       brewerCharacteristics: {
         mechanism: "Gravity-fed pour-over with thick bonded filter",
         howItWorks:
-          "Water pours through a thick bonded paper filter — 20–30% thicker than standard filters — into an elegant hourglass vessel. The thick filter removes almost all oils and fine particles, producing one of the cleanest cups possible. The slower drawdown gives more contact time than V60.",
+          "Water pours through a thick bonded paper filter, 20–30% thicker than standard filters, into an elegant hourglass vessel. The thick filter removes almost all oils and fine particles, producing one of the cleanest cups possible. The slower drawdown gives more contact time than V60.",
         keyAdvantage:
-          "Exceptionally clean, almost tea-like clarity. The thick filter removes oils that V60 and AeroPress let through — if you want to taste only the pure flavour of the coffee without any body or texture, Chemex is the answer.",
-        filterType: "Thick bonded paper filter — maximum oil and fine removal",
+          "Very clean, close to tea-like in clarity. The thick filter removes oils that V60 and AeroPress let through. If you want to taste only the pure flavour of the coffee without any body or texture, Chemex is the answer.",
+        filterType: "Thick bonded paper filter, maximum oil and fine removal",
       },
       indianCoffeeContext:
-        "Chemex rewards Indian coffees with inherent sweetness and defined fruit character — the filter strips out any murkiness and lets clean acidity and floral notes come forward. Washed light roasts from Chikmagalur estates are exceptional on Chemex: jasmine, peach, and clean citrus come through with none of the heaviness you'd get on French Press. Honey-processed light-mediums from Coorg are also worth trying — the sweetness translates beautifully. Avoid very heavy naturals on Chemex — the thick filter can mute the fruit intensity that makes them interesting.",
+        "Chemex rewards Indian coffees with inherent sweetness and defined fruit character. The filter strips out any murkiness and lets clean acidity and floral notes come forward. Washed light roasts from Chikmagalur estates are what Chemex is for: jasmine, peach, and clean citrus come through with none of the heaviness you'd get on French Press. Honey-processed light-mediums from Coorg are also worth trying, since the sweetness carries. Avoid very heavy naturals on Chemex, where the thick filter can mute the fruit intensity that makes them interesting.",
       commonMistakes: [
         {
           mistake: "Grinding too fine",
-          fix: "Chemex needs a medium-coarse grind — finer than French Press but coarser than V60. Too fine and the thick filter chokes, brew takes 8+ minutes and over-extracts.",
+          fix: "Chemex needs a medium-coarse grind, finer than French Press but coarser than V60. Too fine and the bed chokes: the brew runs past 8 minutes and over-extracts.",
         },
         {
           mistake: "Uneven pour",
-          fix: "Keep a steady spiral pour starting from the centre. The larger vessel makes channelling more likely — slow and controlled matters more here than on V60.",
+          fix: "Keep a steady spiral pour starting from the centre. The larger vessel makes channelling more likely, so slow and controlled matters more here than on V60.",
         },
         {
           mistake: "Too small a batch",
-          fix: "Chemex performs best at 400ml+ of water. Smaller batches don't fill the filter properly and extract unevenly. It's a batch brewer — use it as one.",
+          fix: "Chemex performs best at 400ml+ of water. Smaller batches don't fill the filter properly and extract unevenly. It's a batch brewer, so use it as one.",
         },
       ],
       roastPairing: {
         best: ["light-roast", "light-medium-roast"],
         works: ["medium-roast"],
         avoid:
-          "Heavy naturals and dark roasts — the thick filter mutes body and intensity that these coffees depend on.",
+          "Heavy naturals and dark roasts, which depend on body and intensity that the paper here strips out.",
       },
       siblingMethods: ["v60", "kalita"],
       icbDataNote:
-        "Chemex ownership is less common in India than V60 or AeroPress, but the coffees that suit it — washed light roasts from Chikmagalur and Baba Budangiri, out of estates like Balanoor, Kerehaklu, and Ratnagiri — are well represented in the ICB catalogue. The same pour-over filter on ICB surfaces these lots.",
+        "Chemex ownership is less common in India than V60 or AeroPress, but the coffees that suit it, washed light roasts from Chikmagalur and Baba Budangiri out of estates like Balanoor, Kerehaklu, and Ratnagiri, are well represented in the ICB catalogue. The same pour-over filter on ICB surfaces these lots.",
     },
 
     brewParams: {
@@ -308,17 +308,17 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "Why use Chemex instead of V60?",
         answer:
-          "The thick bonded filter removes more oils and fines than V60, giving an exceptionally clean, almost tea-like cup. If you want maximum clarity and don't mind a slower brew, Chemex is worth it.",
+          "The thick bonded filter removes more oils and fines than V60, giving a very clean, almost tea-like cup. If you want maximum clarity and don't mind a slower brew, Chemex is worth it.",
       },
       {
         question: "What Indian coffees work best on Chemex?",
         answer:
-          "Washed light roasts from Chikmagalur and honey-processed light-mediums from Coorg are excellent — the filter lets their clean acidity and sweetness come through clearly. Avoid very heavy naturals — the thick filter mutes the body.",
+          "Washed light roasts from Chikmagalur and honey-processed light-mediums from Coorg, where clean acidity and sweetness are the whole point. Avoid very heavy naturals, which come out hollow.",
       },
       {
         question: "Grind size for Chemex?",
         answer:
-          "Medium-coarse — coarser than V60, finer than French Press. If your brew takes over 6 minutes, grind coarser. Under 3 minutes, grind finer. Target 4–5 minutes total.",
+          "Medium-coarse: coarser than V60, finer than French Press. If your brew takes over 6 minutes, grind coarser. Under 3 minutes, grind finer. Target 4–5 minutes total.",
       },
     ],
     utilityCard: {
@@ -351,9 +351,9 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for Kalita Wave in India",
     entityLabel: "Kalita Wave",
     intro:
-      "The Kalita Wave is the pour-over for people who'd rather drink good coffee than fuss over it — washed Chikmagalur and Sakleshpur light-mediums land balanced cup after cup. Its flat bed and three small holes even out an imperfect pour: V60 quality without V60's demands.",
+      "The Kalita Wave is the pour-over for people who'd rather drink good coffee than fuss over it. Washed Chikmagalur and Sakleshpur light-mediums land balanced cup after cup. Its flat bed and three small holes even out an imperfect pour: V60 quality without V60's demands.",
     headerNudge:
-      "Kalita's flat bottom and wave filters encourage even extraction — great for daily pour overs.",
+      "Kalita's flat bottom and wave filters encourage even extraction, which suits daily pour overs.",
     teaserTitle: "Easy days on the *Kalita*",
     teaserDescription:
       "Balanced, dependable lots that suit a steady everyday pour.",
@@ -361,7 +361,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     heroBackgroundImage: "/images/discovery/kalita-hero.avif",
     heroBadge: "Pour Over",
     utilityNudge:
-      "Slightly finer grind than Chemex is common — tune to your drawdown time.",
+      "Slightly finer grind than Chemex is common; tune to your drawdown time.",
 
     brewMethodProfile: {
       brewerCharacteristics: {
@@ -369,35 +369,35 @@ export const brewMethodPages: LandingPageConfig[] = [
         howItWorks:
           "Unlike V60's cone, the Kalita Wave has a flat bottom with three small holes. The proprietary wave filter sits away from the dripper walls, creating an even bed of coffee rather than a cone. Water passes through more evenly, reducing the risk of channelling.",
         keyAdvantage:
-          "The most forgiving pour-over for beginners. The flat bed means pour technique matters less than on V60 — even an imperfect pour produces a consistent extraction. The wave filter also insulates the brew bed, keeping temperature stable throughout.",
+          "The most forgiving pour-over for beginners. The flat bed means pour technique matters less than on V60, so even an imperfect pour produces a consistent extraction. The wave filter also insulates the brew bed, keeping temperature stable throughout.",
         filterType:
-          "Proprietary wave paper filter — medium oil retention, even extraction",
+          "Proprietary wave paper filter, medium oil retention and even extraction",
       },
       indianCoffeeContext:
-        "Kalita Wave is a strong everyday brewer for Indian specialty coffees — its consistency makes it reliable across different origins and roast levels. Light-medium washed coffees from Ratnagiri and Harley, out of Chikmagalur and Sakleshpur, produce a balanced, clean cup that's slightly more forgiving than V60. Indian naturals work particularly well on Kalita — the flat bed slows extraction slightly compared to V60, which prevents the over-extraction that can turn heavy Indian naturals muddy. For daily drinkers who want pour-over quality without V60's precision demands, Kalita is the answer.",
+        "Kalita Wave is a strong everyday brewer for Indian specialty coffees, and its consistency makes it reliable across different origins and roast levels. Light-medium washed coffees from Ratnagiri and Harley, out of Chikmagalur and Sakleshpur, produce a balanced, clean cup that's slightly more forgiving than V60. Indian naturals work particularly well on Kalita, where the flat bed slows extraction slightly compared to V60, which prevents the over-extraction that can turn heavy Indian naturals muddy. For daily drinkers who want pour-over quality without V60's precision demands, Kalita is the answer.",
       commonMistakes: [
         {
           mistake: "Using V60 filters",
-          fix: "Kalita Wave requires its own wave-style filters — they're shaped to sit away from the dripper walls. Standard cone filters don't work and will choke the brew.",
+          fix: "Kalita Wave requires its own wave-style filters, shaped to sit away from the dripper walls. Standard cone filters don't work and will choke the brew.",
         },
         {
           mistake: "Single continuous pour",
-          fix: "Pulse pours — 3–4 additions of water rather than one continuous pour — keep the flat bed even and prevent the grounds from drying out between pours.",
+          fix: "Pulse pours, 3–4 additions of water rather than one continuous pour, keep the flat bed even and prevent the grounds from drying out between pours.",
         },
         {
           mistake: "Grinding too coarse",
-          fix: "Kalita's three small holes restrict flow less than V60's single large hole — grind medium-fine, not medium-coarse. Too coarse and the cup will taste weak.",
+          fix: "Kalita's three small holes restrict flow less than V60's single large hole, so grind medium-fine, not medium-coarse. Too coarse and the cup will taste weak.",
         },
       ],
       roastPairing: {
         best: ["light-medium-roast", "medium-roast"],
         works: ["light-roast", "medium-dark-roast"],
         avoid:
-          "Very dark roasts — the even extraction highlights bitterness rather than hiding it.",
+          "Very dark roasts. The even extraction highlights bitterness rather than hiding it.",
       },
       siblingMethods: ["v60", "chemex"],
       icbDataNote:
-        "Kalita Wave ownership is growing in the Indian specialty community but remains less common than V60 and AeroPress. The pour-over filter on ICB captures the same coffees — washed and honey-processed light-mediums from Karnataka are the sweet spot.",
+        "Kalita Wave ownership is growing in the Indian specialty community but remains less common than V60 and AeroPress. The pour-over filter on ICB captures the same coffees, and washed and honey-processed light-mediums from Karnataka are the sweet spot.",
     },
 
     brewParams: {
@@ -418,22 +418,22 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "Is Kalita easier than V60?",
         answer:
-          "Yes — the flat bed and three small holes are more forgiving of imperfect pour technique. You still get a clean pour-over cup, but consistency is easier to achieve. A good starting pour-over if V60 feels too demanding.",
+          "Yes. It asks the least of your technique of any pour-over, and the cup still comes out clean. Start here if V60 feels fussy, and you can always move across later.",
       },
       {
         question: "Same coffees as V60?",
         answer:
-          "Mostly yes — both suit washed and honey light roasts from Chikmagalur and Baba Budangiri estates. The difference is in the cup: Kalita produces a slightly rounder, more balanced result; V60 is more transparent and precise.",
+          "Mostly yes. Both suit washed and honey light roasts from Chikmagalur and Baba Budangiri estates. The difference is in the cup: Kalita produces a slightly rounder, more balanced result; V60 is more transparent and precise.",
       },
       {
         question: "Kalita Wave grind size?",
         answer:
-          "Medium-fine — between V60 (finer) and Chemex (coarser). Target a 3–4 minute brew time. Adjust grind if you're outside that window.",
+          "Medium-fine, between V60 (finer) and Chemex (coarser). Target a 3–4 minute brew time. Adjust grind if you're outside that window.",
       },
       {
         question: "Do I need specific Kalita filters?",
         answer:
-          "Yes — the wave filters are proprietary and the shape matters. They create an air gap between the filter and the dripper walls that's essential for even extraction. Standard cone filters won't work.",
+          "Yes. The wave filters are proprietary and the shape matters. They create an air gap between the filter and the dripper walls that's essential for even extraction. Standard cone filters won't work.",
       },
     ],
     utilityCard: {
@@ -466,14 +466,14 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for French Press in India",
     entityLabel: "French Press",
     intro:
-      "The French Press keeps the oils, the body, the full weight of the bean — a natural fit for medium-dark Chikmagalur, Baba Budangiri, and Coorg arabica and robusta blends, which come through deep, chocolatey, and low in acid. About as close as specialty gets to a traditional South Indian filter cup.",
+      "The French Press keeps the oils, the body, the full weight of the bean, a natural fit for medium-dark Chikmagalur, Baba Budangiri, and Coorg arabica and robusta blends, which come through deep, chocolatey, and low in acid. About as close as specialty gets to a traditional South Indian filter cup.",
     headerNudge:
       "Ideal for bold, full-bodied cups that showcase natural coffee oils.",
     teaserTitle: "Full-bodied for the *French Press*",
     teaserDescription:
       "Heavy-bodied, oily, low-acid lots built for a long immersion.",
     gridNudge:
-      "Medium to dark roasts work best — they develop rich body during the immersion steep.",
+      "Medium to dark roasts work best, developing rich body during the immersion steep.",
     heroBackgroundImage: "/images/discovery/french-press-hero.avif",
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
@@ -483,21 +483,21 @@ export const brewMethodPages: LandingPageConfig[] = [
       brewerCharacteristics: {
         mechanism: "Full immersion with metal mesh filter",
         howItWorks:
-          "Coffee grounds steep fully submerged in hot water for 4 minutes, then a metal mesh plunger is pressed down to separate grounds from liquid. Unlike paper-filtered methods, the metal mesh allows oils and fine particles through — producing a heavier, fuller-bodied cup with more texture.",
+          "Coffee grounds steep fully submerged in hot water for 4 minutes, then a metal mesh plunger is pressed down to separate grounds from liquid. Unlike paper-filtered methods, the metal mesh allows oils and fine particles through, producing a heavier, fuller-bodied cup with more texture.",
         keyAdvantage:
-          "The richest, most full-bodied brew method. Coffee oils that paper filters strip away stay in the cup — this is where Indian robusta blends and heavy natural-processed arabicas shine. Also the most forgiving grind method: coarse and consistent is all you need.",
-        filterType: "Metal mesh — oils and fines pass through for full body",
+          "The richest, most full-bodied brew method. Coffee oils that paper filters strip away stay in the cup, and this is where Indian robusta blends and heavy natural-processed arabicas shine. Also the most forgiving grind method: coarse and consistent is all you need.",
+        filterType: "Metal mesh, oils and fines pass through for full body",
       },
       indianCoffeeContext:
-        "French Press has a natural affinity with Indian coffee culture — the full body and low acidity profile mirrors what filter coffee drinkers are used to. Medium-dark arabica from Karnataka and robusta-arabica blends produce exceptional French Press cups: chocolate, nuts, low acid, heavy body. Indian naturals from Coorg at medium roast are a revelation on French Press — the fruit notes become jammy and rich rather than sharp. Traditional South Indian filter coffee blends, which are usually dark-roasted robusta, translate directly to French Press for anyone wanting filter coffee quality without the traditional apparatus.",
+        "French Press has a natural affinity with Indian coffee culture, since the full body and low acidity profile mirrors what filter coffee drinkers are used to. Medium-dark arabica from Karnataka and robusta-arabica blends give you what French Press is for: chocolate, nuts, low acid, heavy body. Indian naturals from Coorg at medium roast are a revelation on French Press, where the fruit notes become jammy and rich rather than sharp. Traditional South Indian filter coffee blends, which are usually dark-roasted robusta, translate directly to French Press for anyone wanting filter coffee quality without the traditional apparatus.",
       commonMistakes: [
         {
           mistake: "Grinding too fine",
-          fix: "Fine grounds slip through the metal mesh and make the cup gritty and over-extracted. Use a coarse grind — similar to sea salt or coarse breadcrumbs.",
+          fix: "Fine grounds slip through the metal mesh and make the cup gritty and over-extracted. Use a coarse grind, similar to sea salt or coarse breadcrumbs.",
         },
         {
           mistake: "Leaving it to steep too long",
-          fix: "Press at exactly 4 minutes and pour immediately — don't leave it sitting on the grounds. Every extra minute increases bitterness significantly.",
+          fix: "Press at exactly 4 minutes and pour immediately, and don't leave it sitting on the grounds. Every extra minute increases bitterness significantly.",
         },
         {
           mistake: "Plunging with force",
@@ -508,11 +508,11 @@ export const brewMethodPages: LandingPageConfig[] = [
         best: ["medium-roast", "medium-dark-roast", "dark-roast"],
         works: ["light-medium-roast"],
         avoid:
-          "Very light roasts — the immersion can over-extract their delicate acids into sourness. V60 or AeroPress handle them better.",
+          "Very light roasts. The immersion can over-extract their delicate acids into sourness. V60 or AeroPress handle them better.",
       },
       siblingMethods: ["cold-brew"],
       icbDataNote:
-        "French Press is the most recommended brew method for medium-dark and dark roast coffees in the ICB catalogue. It's also strongly represented in traditional South Indian filter coffee blends — if you're looking for specialty-grade filter coffee alternatives, this is the filter to use on ICB.",
+        "French Press is the most recommended brew method for medium-dark and dark roast coffees in the ICB catalogue. It's also strongly represented in traditional South Indian filter coffee blends, so if you're looking for specialty-grade filter coffee alternatives, this is the filter to use on ICB.",
     },
 
     brewParams: {
@@ -533,29 +533,28 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "What makes coffee good for French Press?",
         answer:
-          "Medium to dark roasts with bold, rich flavours work exceptionally well — the immersion extracts oils and body that complement these profiles. Indian naturals at medium roast and traditional South Indian filter blends are particularly good.",
+          "Medium to dark roasts with bold, rich flavours are the natural fit, since the immersion extracts oils and body that complement these profiles. Indian naturals at medium roast and traditional South Indian filter blends are particularly good.",
       },
       {
         question: "What grind size should I use?",
         answer:
-          "Coarse — similar to sea salt or coarse breadcrumbs. This prevents over-extraction and keeps sediment out of your cup while allowing full extraction during the 4-minute steep.",
+          "Coarse, similar to sea salt or coarse breadcrumbs. This prevents over-extraction and keeps sediment out of your cup while allowing full extraction during the 4-minute steep.",
       },
       {
         question: "How long should I steep French Press coffee?",
         answer:
-          "Exactly 4 minutes. Stir once after adding water, then leave undisturbed. Press slowly and pour immediately — don't leave the coffee sitting on the grounds or it keeps extracting and turns bitter.",
+          "Exactly 4 minutes. Stir once after adding water, then leave undisturbed. Press slowly and pour immediately. Don't leave the coffee sitting on the grounds or it keeps extracting and turns bitter.",
       },
       {
         question: "Is French Press similar to South Indian filter coffee?",
         answer:
-          "In spirit, yes — both are full-immersion methods that produce heavy-bodied, low-acid cups. French Press is cleaner (no chicory, no decoction step) but the body and boldness feel familiar. Medium-dark Indian robusta-arabica blends on French Press are the closest specialty equivalent.",
+          "In spirit, yes. Both are full-immersion methods that produce heavy-bodied, low-acid cups. French Press is cleaner (no chicory, no decoction step) but the body and boldness feel familiar. Medium-dark Indian robusta-arabica blends on French Press are the closest specialty equivalent.",
       },
     ],
     utilityCard: {
       type: "brew_guide",
       title: "French Press Brewing Guide",
-      description:
-        "Learn the perfect French Press technique for rich, full-bodied coffee.",
+      description: "French Press technique for a rich, full-bodied cup.",
       href: "/tools/expert-recipes?method=frenchpress",
       ctaText: "View Recipes",
     },
@@ -596,11 +595,11 @@ export const brewMethodPages: LandingPageConfig[] = [
     teaserDescription:
       "Crema, body, and balance that hold up under nine bars of pressure.",
     gridNudge:
-      "Look for medium-dark roasts from Chikmagalur and Baba Budangiri — Baarbara Estate above all — for rich, balanced shots with natural sweetness.",
+      "Look for medium-dark roasts from Chikmagalur and Baba Budangiri, Baarbara Estate above all, for rich, balanced shots with natural sweetness.",
     heroBackgroundImage: "/images/discovery/espresso-hero.avif",
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
-      "Dialling in grind size and dose is critical — small changes make a big difference in espresso.",
+      "Dialling in grind size and dose is critical, and small changes make a big difference in espresso.",
 
     brewMethodProfile: {
       brewerCharacteristics: {
@@ -608,16 +607,16 @@ export const brewMethodPages: LandingPageConfig[] = [
         howItWorks:
           "Hot water is forced through a tightly packed bed of finely ground coffee at approximately 9 bars of pressure. The combination of pressure, fine grind, and short contact time (25–30 seconds) extracts a concentrated shot with dissolved solids, oils, and CO2 that forms the characteristic crema layer on top.",
         keyAdvantage:
-          "Maximum intensity and concentration — espresso extracts more dissolved flavour per gram of coffee than any other method. The pressure creates emulsified oils and crema that no gravity-based brewer can produce. Serves as the base for milk drinks like cappuccinos and lattes.",
+          "Maximum intensity and concentration. Espresso extracts more dissolved flavour per gram of coffee than any other method. The pressure creates emulsified oils and crema that no gravity-based brewer can produce. Serves as the base for milk drinks like cappuccinos and lattes.",
         filterType:
-          "Metal portafilter basket — no paper, all oils and body pass through",
+          "Metal portafilter basket, no paper, all oils and body pass through",
       },
       indianCoffeeContext:
-        "India has a deep espresso culture — from the Italian-style café scene in metros to the espresso-based drinks at specialty roasters like Blue Tokai, Corridor Seven, and Third Wave. Indian coffees, particularly medium-dark arabica from Chikmagalur and Coorg, produce exceptional espresso: chocolate, caramel, and roasted nut notes with enough body to cut through milk. Robusta-arabica blends from Karnataka are classic espresso material — the robusta adds crema thickness and body while arabica contributes sweetness and complexity. Monsooned Malabar, with its low acidity and heavy body, is a legendary espresso component — Italian roasters have used it in blends for decades. For single-origin espresso, look for honey-processed or natural medium roasts — they deliver the sweetness and body that espresso demands.",
+        "India has a deep espresso culture, from the Italian-style café scene in metros to the espresso-based drinks at specialty roasters like Blue Tokai, Corridor Seven, and Third Wave. Indian coffees, particularly medium-dark arabica from Chikmagalur and Coorg, pull well as espresso: chocolate, caramel, and roasted nut notes with enough body to cut through milk. Robusta-arabica blends from Karnataka are classic espresso material, where the robusta adds crema thickness and body while arabica contributes sweetness and complexity. Monsooned Malabar, with its low acidity and heavy body, is a legendary espresso component that Italian roasters have used in blends for decades. For single-origin espresso, look for honey-processed or natural medium roasts, which deliver the sweetness and body that espresso demands.",
       commonMistakes: [
         {
           mistake: "Grind too coarse",
-          fix: "Espresso requires an extra-fine grind — if the shot runs in under 20 seconds, grind finer. The espresso should flow like warm honey, not water.",
+          fix: "Espresso requires an extra-fine grind. If the shot runs in under 20 seconds, grind finer. The espresso should flow like warm honey, not water.",
         },
         {
           mistake: "Not warming up the machine",
@@ -632,7 +631,7 @@ export const brewMethodPages: LandingPageConfig[] = [
         best: ["medium-roast", "medium-dark-roast", "dark-roast"],
         works: ["light-medium-roast"],
         avoid:
-          "Very light roasts — they tend to pull sour, thin shots without enough body for espresso. V60 or AeroPress will serve them better.",
+          "Very light roasts. They tend to pull sour, thin shots without enough body for espresso. V60 or AeroPress will serve them better.",
       },
       siblingMethods: ["moka-pot"],
       icbDataNote:
@@ -663,17 +662,17 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "Can I use single-origin Indian coffee for espresso?",
         answer:
-          "Yes — honey-processed and natural medium roasts from Chikmagalur and Coorg can produce outstanding single-origin espresso with fruity sweetness and thick body. Expect a different character from traditional espresso blends but often more interesting.",
+          "Yes, and it's worth doing at least once. A single estate under pressure tastes of that estate: more fruit, more acidity, and less of the familiar chocolate-and-crema profile a blend is engineered for. Dial it in as its own thing rather than expecting your blend recipe to work.",
       },
       {
         question: "Why is Monsooned Malabar popular in espresso?",
         answer:
-          "Monsooned Malabar's near-zero acidity, heavy body, and earthy-spicy profile make it a natural espresso component. Italian roasters have blended it into their espresso for decades — it adds base and body that rounds out brighter coffees.",
+          "Monsooned Malabar's near-zero acidity, heavy body, and earthy-spicy profile make it a natural espresso component. Italian roasters have blended it into their espresso for decades, and it adds base and body that rounds out brighter coffees.",
       },
       {
         question: "Do I need an expensive espresso machine?",
         answer:
-          "A good grinder matters more than the machine. Entry-level machines with proper 9-bar pressure (Flair, Cafelat Robot, Breville Bambino) can pull excellent shots with Indian specialty coffees. Invest in the grinder first — consistency is everything in espresso.",
+          "A good grinder matters more than the machine. Entry-level machines with proper 9-bar pressure (Flair, Cafelat Robot, Breville Bambino) can pull excellent shots with Indian specialty coffees. Invest in the grinder first, because consistency is everything in espresso.",
       },
     ],
     utilityCard: {
@@ -707,9 +706,9 @@ export const brewMethodPages: LandingPageConfig[] = [
     h1: "Best Coffees for Cold Brew in India",
     entityLabel: "Cold Brew",
     intro:
-      "Cold brew trades heat for time, and the result is about as smooth and sweet as coffee gets. The chocolate, nut, and spice notes that run through Chikmagalur and Coorg arabica translate beautifully over a long cold steep — and Monsooned Malabar turns mellow and lingering in a way no other origin quite manages.",
+      "Cold brew trades heat for time, and the result is about as smooth and sweet as coffee gets. The chocolate, nut, and spice notes that run through Chikmagalur and Coorg arabica translate beautifully over a long cold steep, and Monsooned Malabar turns mellow and lingering in a way no other origin quite manages.",
     headerNudge:
-      "Cold brew extracts smoothness and sweetness — choose coffees with chocolate, nut, and caramel notes.",
+      "Cold brew extracts smoothness and sweetness, so choose coffees with chocolate, nut, and caramel notes.",
     teaserTitle: "Slow and sweet on *cold brew*",
     teaserDescription:
       "Smooth, sweet, low-bitterness lots that reward a long cold steep.",
@@ -718,39 +717,39 @@ export const brewMethodPages: LandingPageConfig[] = [
     heroBackgroundImage: "/images/discovery/cold-brew-hero.avif",
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
-      "Patience pays off — 16–24 hours of steeping produces the smoothest, sweetest cold brew.",
+      "Patience pays off. 16–24 hours of steeping produces the smoothest, sweetest cold brew.",
 
     brewMethodProfile: {
       brewerCharacteristics: {
         mechanism: "Extended cold-water immersion (no heat)",
         howItWorks:
-          "Coarsely ground coffee steeps in cold or room-temperature water for 12–24 hours, slowly extracting flavour without heat. The lack of heat means fewer bitter compounds and acids are extracted — cold brew is naturally smooth and sweet. The resulting concentrate is typically diluted 1:1 with water, milk, or ice before drinking.",
+          "Coarsely ground coffee steeps in cold or room-temperature water for 12–24 hours, slowly extracting flavour without heat. The lack of heat means fewer bitter compounds and acids are extracted, so cold brew is naturally smooth and sweet. The resulting concentrate is typically diluted 1:1 with water, milk, or ice before drinking.",
         keyAdvantage:
-          "The smoothest, lowest-acid coffee possible. Cold extraction avoids the harsh, bitter compounds that hot water pulls out — making it ideal for people with acid-sensitive stomachs and for iced coffee that doesn't taste watered-down. Cold brew concentrate lasts up to two weeks refrigerated.",
+          "The smoothest, lowest-acid coffee possible. Cold extraction avoids the harsh, bitter compounds that hot water pulls out, making it ideal for people with acid-sensitive stomachs and for iced coffee that doesn't taste watered-down. Cold brew concentrate lasts up to two weeks refrigerated.",
         filterType:
-          "Fine mesh or paper filter — strain after steeping to remove all grounds",
+          "Fine mesh or paper filter; strain after steeping to remove all grounds",
       },
       indianCoffeeContext:
-        "Cold brew is booming in Indian metros — from Blue Tokai's bottled cold brews to local café menus, it's one of the fastest-growing segments. Indian coffees are naturally suited to cold brew: the chocolate, nut, and spice notes that define Karnataka arabica translate beautifully into cold extraction. Natural-processed medium roasts from Chikmagalur produce cold brew with chocolate and berry sweetness that's exceptional over ice. Robusta blends also work surprisingly well — the extra body and lower acidity that robusta brings are exactly what cold brew needs. For something unique, try Monsooned Malabar as cold brew — the earthy, spicy character becomes smooth and mellow with a lingering sweetness that's hard to get from any other origin.",
+        "Cold brew is booming in Indian metros, from Blue Tokai's bottled cold brews to local café menus, it's one of the fastest-growing segments. Indian coffees are naturally suited to cold brew: the chocolate, nut, and spice notes that define Karnataka arabica carry into cold extraction intact. Natural-processed medium roasts from Chikmagalur produce cold brew with chocolate and berry sweetness that's exceptional over ice. Robusta blends also work surprisingly well, since the extra body and lower acidity that robusta brings are exactly what cold brew needs. For something unique, try Monsooned Malabar as cold brew, where the earthy, spicy character becomes smooth and mellow with a lingering sweetness that's hard to get from any other origin.",
       commonMistakes: [
         {
           mistake: "Steeping too short",
-          fix: "Cold brew needs at least 12 hours, ideally 16–20 hours. Under-steeped cold brew tastes thin and watery — patience is the only technique that matters here.",
+          fix: "Cold brew needs at least 12 hours, ideally 16–20 hours. Under-steeped cold brew tastes thin and watery, and patience is the only technique that matters here.",
         },
         {
           mistake: "Grinding too fine",
-          fix: "Use an extra-coarse grind — like raw sugar or coarse breadcrumbs. Fine grounds make cold brew cloudy, gritty, and over-extracted. They also clog filters during straining.",
+          fix: "Use an extra-coarse grind, like raw sugar or coarse breadcrumbs. Fine grounds make cold brew cloudy, gritty, and over-extracted. They also clog filters during straining.",
         },
         {
           mistake: "Not diluting the concentrate",
-          fix: "Cold brew concentrate is intentionally strong — dilute 1:1 with water, ice, or milk. Drinking it straight is overwhelming and masks the nuanced flavours.",
+          fix: "Cold brew concentrate is intentionally strong, so dilute 1:1 with water, ice, or milk. Drinking it straight is overwhelming and masks the nuanced flavours.",
         },
       ],
       roastPairing: {
         best: ["medium-roast", "medium-dark-roast"],
         works: ["dark-roast", "light-medium-roast"],
         avoid:
-          "Very light roasts — cold extraction can't develop their delicate acidity, and the result often tastes flat and vegetal. Pour-over handles these better.",
+          "Very light roasts. Cold extraction can't develop their delicate acidity, and the result often tastes flat and vegetal. Pour-over handles these better.",
       },
       siblingMethods: ["french-press"],
       icbDataNote:
@@ -775,7 +774,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "What makes a coffee good for cold brew?",
         answer:
-          "Medium to dark roasts with chocolate, caramel, and nut profiles produce the smoothest, sweetest cold brew. Indian arabica from Karnataka is naturally suited — the low acidity and chocolaty character come through beautifully in cold extraction.",
+          "Medium to dark roasts with chocolate, caramel, and nut profiles produce the smoothest, sweetest cold brew. Indian arabica from Karnataka is naturally suited, since the low acidity and chocolaty character come through beautifully in cold extraction.",
       },
       {
         question: "How long should I steep cold brew?",
@@ -783,9 +782,9 @@ export const brewMethodPages: LandingPageConfig[] = [
           "16–20 hours at room temperature, or up to 24 hours in the refrigerator. Shorter steeps taste thin; longer than 24 hours can start extracting unpleasant bitter compounds. Find your sweet spot within this window.",
       },
       {
-        question: "Cold brew vs iced coffee — what's the difference?",
+        question: "Cold brew vs iced coffee: what's the difference?",
         answer:
-          "Iced coffee is regular hot-brewed coffee poured over ice. Cold brew is never heated — it steeps in cold water for hours. Cold brew is smoother, sweeter, less acidic, and has about 60% less acidity than hot-brewed coffee. They produce very different cups.",
+          "Iced coffee is regular hot-brewed coffee poured over ice. Cold brew is never heated; it steeps in cold water for hours. Cold brew is smoother, sweeter, less acidic, and has about 60% less acidity than hot-brewed coffee. They produce very different cups.",
       },
       {
         question: "How long does cold brew concentrate last?",
@@ -796,8 +795,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     utilityCard: {
       type: "brew_guide",
       title: "Cold Brew Guide",
-      description:
-        "Learn how to make perfect cold brew concentrate with Indian coffees.",
+      description: "How to make cold brew concentrate with Indian coffees.",
       href: "/tools/expert-recipes?method=coldbrew",
       ctaText: "View Recipes",
     },
@@ -826,12 +824,12 @@ export const brewMethodPages: LandingPageConfig[] = [
     intro:
       "The Moka Pot makes strong, espresso-adjacent coffee on a stovetop, which is why it sits on so many Indian kitchen shelves. Medium-dark Chikmagalur and Coorg roasts come through with chocolate, spice, and roasted nuts; robusta blends add the body that stands up to milk.",
     headerNudge:
-      "Moka Pot produces intense, espresso-like coffee — choose medium-dark roasts for the best balance.",
+      "Moka Pot produces intense, espresso-like coffee, so choose medium-dark roasts for the best balance.",
     teaserTitle: "Stovetop strength for the *Moka Pot*",
     teaserDescription:
       "Bold, concentrated lots that hold their nerve under steam pressure.",
     gridNudge:
-      "Medium-dark roasts from Karnataka work beautifully — they deliver bold flavour without bitterness.",
+      "Medium-dark roasts from Karnataka work beautifully, delivering bold flavour without bitterness.",
     heroBackgroundImage: "/images/discovery/moka-pot-hero.avif",
     heroBadge: "Medium to Dark Roast",
     utilityNudge:
@@ -841,14 +839,14 @@ export const brewMethodPages: LandingPageConfig[] = [
       brewerCharacteristics: {
         mechanism: "Stovetop steam-pressure extraction (~1.5 bars)",
         howItWorks:
-          "Water in the bottom chamber heats up and creates steam pressure, which forces water upward through a bed of fine coffee grounds and into the upper chamber. The pressure is lower than true espresso (~1.5 bars vs 9 bars) but higher than any gravity-based method — producing a strong, concentrated brew with more body than drip coffee but without the crema of espresso.",
+          "Water in the bottom chamber heats up and creates steam pressure, which forces water upward through a bed of fine coffee grounds and into the upper chamber. The pressure is lower than true espresso (~1.5 bars vs 9 bars) but higher than any gravity-based method, producing a strong, concentrated brew with more body than drip coffee but without the crema of espresso.",
         keyAdvantage:
-          "The most accessible way to make espresso-style coffee at home. No electricity, no expensive machines — just a stovetop and a Moka Pot. It produces strong, intense coffee that works well with milk, making it a natural bridge between South Indian filter coffee and Western espresso culture.",
+          "The most accessible way to make espresso-style coffee at home. No electricity, no expensive machines, just a stovetop and a Moka Pot. It produces strong, intense coffee that works well with milk, making it a natural bridge between South Indian filter coffee and Western espresso culture.",
         filterType:
-          "Built-in metal filter basket — oils pass through for full body",
+          "Built-in metal filter basket, oils pass through for full body",
       },
       indianCoffeeContext:
-        "Moka Pot has a growing following in India, especially among home brewers looking for an affordable way to make strong, concentrated coffee. Indian medium-dark roasts from Chikmagalur and Coorg produce excellent Moka Pot coffee — the chocolate, spice, and roasted nut notes come through intensely without the bitterness you get from lighter roasts under pressure. Robusta-arabica blends are particularly good on Moka Pot — the robusta adds body and intensity while arabica brings sweetness. For anyone transitioning from South Indian filter coffee, Moka Pot at home is the closest equivalent in terms of strength and body. Natural-processed medium roasts from Karnataka produce a surprisingly fruity, syrupy Moka Pot cup that converts pour-over sceptics.",
+        "Moka Pot has a growing following in India, especially among home brewers looking for an affordable way to make strong, concentrated coffee. Indian medium-dark roasts from Chikmagalur and Coorg produce excellent Moka Pot coffee, and the chocolate, spice, and roasted nut notes come through intensely without the bitterness you get from lighter roasts under pressure. Robusta-arabica blends are particularly good on Moka Pot, where the robusta adds body and intensity while arabica brings sweetness. For anyone transitioning from South Indian filter coffee, Moka Pot at home is the closest equivalent in terms of strength and body. Natural-processed medium roasts from Karnataka produce a surprisingly fruity, syrupy Moka Pot cup that converts pour-over sceptics.",
       commonMistakes: [
         {
           mistake: "Using high heat",
@@ -856,7 +854,7 @@ export const brewMethodPages: LandingPageConfig[] = [
         },
         {
           mistake: "Tamping the coffee grounds",
-          fix: "Never tamp or compress the grounds in a Moka Pot — fill the basket loosely and level with a finger. Tamping creates too much resistance and can cause pressure to build dangerously.",
+          fix: "Never tamp or compress the grounds in a Moka Pot. Fill the basket loosely and level with a finger. Tamping creates too much resistance and can cause pressure to build dangerously.",
         },
         {
           mistake: "Leaving it on heat too long",
@@ -867,7 +865,7 @@ export const brewMethodPages: LandingPageConfig[] = [
         best: ["medium-roast", "medium-dark-roast", "dark-roast"],
         works: ["light-medium-roast"],
         avoid:
-          "Very light roasts — the pressure and concentrated extraction amplifies sourness and thinness. French Press or AeroPress handle light roasts better.",
+          "Very light roasts. The pressure and concentrated extraction amplifies sourness and thinness. French Press or AeroPress handle light roasts better.",
       },
       siblingMethods: ["espresso"],
       icbDataNote:
@@ -892,20 +890,20 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "What makes a coffee good for Moka Pot?",
         answer:
-          "Medium to dark roasts with bold, chocolatey, and nutty profiles work best. The concentrated extraction amplifies whatever's in the coffee — so choose coffees with inherent sweetness and body. Indian medium-dark arabica from Karnataka is a natural fit.",
+          "Medium to dark roasts with bold, chocolatey, and nutty profiles work best. The concentrated extraction amplifies whatever's in the coffee, so choose coffees with inherent sweetness and body. Indian medium-dark arabica from Karnataka is a natural fit.",
       },
       {
         question: "What grind size should I use for Moka Pot?",
         answer:
-          "Fine — but not espresso-fine. Think slightly finer than drip coffee, like fine sand. Too fine and the pot chokes; too coarse and the coffee tastes weak and watery. The brew should flow out in a steady, gentle stream.",
+          "Fine, but not espresso-fine. Think slightly finer than drip coffee, like fine sand. Too fine and the pot chokes; too coarse and the coffee tastes weak and watery. The brew should flow out in a steady, gentle stream.",
       },
       {
         question: "Is Moka Pot coffee the same as espresso?",
         answer:
-          "No — Moka Pot brews at about 1.5 bars compared to espresso's 9 bars. The result is strong and concentrated, but lacks espresso's crema and has less emulsified oils. It's the closest you can get to espresso without a machine, though — especially with Indian medium-dark roasts.",
+          "No. Moka Pot brews at about 1.5 bars compared to espresso's 9 bars. The result is strong and concentrated, but lacks espresso's crema and has less emulsified oils. It's the closest you can get to espresso without a machine, though, especially with Indian medium-dark roasts.",
       },
       {
-        question: "Moka Pot vs South Indian filter — which is stronger?",
+        question: "Moka Pot vs South Indian filter: which is stronger?",
         answer:
           "Both produce strong, concentrated coffee but differently. South Indian filter uses gravity drip with a very fine grind and chicory; Moka Pot uses steam pressure. Moka Pot is faster (5–8 min vs 15–20 min) and produces a cleaner cup but without the chicory character. Try both with the same Indian coffee to compare.",
       },
@@ -945,7 +943,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     intro:
       "The South Indian filter runs on dark-roasted robusta and chicory blends, mostly out of Chikmagalur and Baba Budangiri: a slow drip through a metal filter into a thick decoction that meets hot milk and sugar. Specialty roasters are now building 100% arabica filter blends that keep the body without the harshness.",
     headerNudge:
-      "The quintessential Indian brewing method — rich, intense, and meant to be enjoyed with milk.",
+      "The quintessential Indian brewing method: rich, intense, and meant to be enjoyed with milk.",
     teaserTitle: "Decoction-ready *filter* blends",
     teaserDescription:
       "Robusta-arabica blends and traditional dark roasts for a proper decoction.",
@@ -954,7 +952,7 @@ export const brewMethodPages: LandingPageConfig[] = [
     heroBackgroundImage: "/images/discovery/filter-coffee-hero.avif",
     heroBadge: "Traditional Brew",
     utilityNudge:
-      "A very fine grind and patience are required for the perfect thick decoction.",
+      "A very fine grind and patience are what the thick decoction needs.",
 
     brewMethodProfile: {
       brewerCharacteristics: {
@@ -964,10 +962,10 @@ export const brewMethodPages: LandingPageConfig[] = [
         keyAdvantage:
           "Produces incredibly heavy-bodied, low-acid coffee with a strong punch that cuts seamlessly through milk and sugar. It is the traditional and authentic way coffee has been consumed in South India for generations.",
         filterType:
-          "Metal perforated disc with an umbrella plunger — allows full oils and fine sediment through",
+          "Metal perforated disc with an umbrella plunger, allowing full oils and fine sediment through",
       },
       indianCoffeeContext:
-        "The South Indian filter is deeply rooted in local culture. While traditionally dominated by dark-roasted robusta and chicory blends (like 80/20 or 70/30), modern Indian specialty roasters are now offering 100% specialty arabica blends tailored for the filter. High-quality washed arabica from Karnataka mixed with premium robusta creates an elevated, exceptionally smooth filter coffee without the harsh bitterness of commercial blends. For absolute traditionalists, Monsooned Malabar adds the heavy body and low acidity needed to create the classic, syrupy decoction.",
+        "The South Indian filter is deeply rooted in local culture. While traditionally dominated by dark-roasted robusta and chicory blends (like 80/20 or 70/30), modern Indian specialty roasters are now offering 100% specialty arabica blends tailored for the filter. High-quality washed arabica from Karnataka mixed with premium robusta makes a smoother filter coffee without the harsh bitterness of commercial blends. For absolute traditionalists, Monsooned Malabar adds the heavy body and low acidity needed to create the classic, syrupy decoction.",
       commonMistakes: [
         {
           mistake: "Tamping the grounds too hard",
@@ -979,14 +977,14 @@ export const brewMethodPages: LandingPageConfig[] = [
         },
         {
           mistake: "Grind size is too coarse",
-          fix: "The grind must be finer than espresso but not quite Turkish — almost like powdered sugar. If it's too coarse, the water runs through instantly and you get weak, watery coffee.",
+          fix: "The grind must be finer than espresso but not quite Turkish, almost like powdered sugar. If it's too coarse, the water runs through instantly and you get weak, watery coffee.",
         },
       ],
       roastPairing: {
         best: ["dark-roast", "medium-dark-roast"],
         works: ["medium-roast"],
         avoid:
-          "Light roasts — the slow extraction and traditional milk pairing will completely mask any delicate fruity or floral notes, resulting in a thin and flat cup.",
+          "Light roasts. The slow extraction and traditional milk pairing will completely mask any delicate fruity or floral notes, resulting in a thin and flat cup.",
       },
       siblingMethods: ["moka-pot", "french-press"],
       icbDataNote:
@@ -1029,7 +1027,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       type: "brew_guide",
       title: "Filter Coffee Guide",
       description:
-        "Learn the traditional method to brew the perfect thick decoction.",
+        "The traditional method for a thick, slow-dripped decoction.",
       href: "/tools/expert-recipes?method=filtercoffee",
       ctaText: "View Recipes",
     },

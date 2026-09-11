@@ -5,7 +5,7 @@ import { z } from "zod";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { sendNewsletterWelcomeEmail } from "@/lib/emails/resend";
 import { subscribeToNewsletterList } from "@/lib/notifuse";
-import { getPostHogClient } from "@/lib/posthog-server";
+import { captureServerEvent } from "@/lib/posthog-server";
 
 const newsletterSchema = z.object({
   email: z
@@ -118,10 +118,9 @@ export async function subscribeToNewsletter(formData: FormData) {
     });
 
     // Track newsletter subscription
-    getPostHogClient().capture({
-      distinctId: user?.id || email,
-      event: "newsletter_subscribed",
-      properties: { email, authenticated: !!user?.id },
+    void captureServerEvent(user?.id || email, "newsletter_subscribed", {
+      email,
+      authenticated: !!user?.id,
     });
 
     // Send newsletter welcome email (fire and forget)
