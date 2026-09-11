@@ -118,7 +118,7 @@ export async function subscribeToNewsletter(formData: FormData) {
     });
 
     // Track newsletter subscription
-    void captureServerEvent(user?.id || email, "newsletter_subscribed", {
+    captureServerEvent(user?.id || email, "newsletter_subscribed", {
       email,
       authenticated: !!user?.id,
     });

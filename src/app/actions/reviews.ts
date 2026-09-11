@@ -333,17 +333,13 @@ export async function createReview(
     await revalidateEntityPaths(supabase, input.entity_type, input.entity_id);
 
     // Track review submission
-    void captureServerEvent(
-      user_id || anon_id || "anonymous",
-      "review_submitted",
-      {
-        entity_type: input.entity_type,
-        entity_id: input.entity_id,
-        rating: input.rating ?? null,
-        user_type: user_id ? "authenticated" : "anonymous",
-        is_first_rating,
-      }
-    );
+    captureServerEvent(user_id || anon_id || "anonymous", "review_submitted", {
+      entity_type: input.entity_type,
+      entity_id: input.entity_id,
+      rating: input.rating ?? null,
+      user_type: user_id ? "authenticated" : "anonymous",
+      is_first_rating,
+    });
 
     // Send Slack notification (fire and forget)
     sendSlackNotification("review", {
