@@ -72,7 +72,7 @@ export function RegionDetailSection({
         className="mb-8"
         overline="Flavour & guidance"
         title="In the *Cup*"
-        description="Flavour profile, Indian specialty context, and brew guidance — deeper detail after you've browsed the coffees."
+        description="Flavour profile, Indian specialty context, and brew guidance: deeper detail after you've browsed the coffees."
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />

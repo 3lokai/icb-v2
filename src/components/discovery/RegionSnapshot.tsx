@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 const SNAPSHOT_TITLE = "In the cup & on the *map*";
 const SNAPSHOT_DESCRIPTION =
-  "Quick facts to anchor flavour expectations—pair with the coffees below.";
+  "Quick facts to anchor flavour expectations, paired with the coffees below.";
 
 type RegionSnapshotProps = {
   regionSnapshot: NonNullable<LandingPageConfig["regionSnapshot"]>;

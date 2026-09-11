@@ -150,7 +150,7 @@ export function BeanTypeProfileSection({
         className="mb-8"
         overline="Bean type profile"
         title="What this *bean type* is"
-        description="Characteristics, flavour, Indian context, and brew guidance — the practical picture behind the catalogue."
+        description="Characteristics, flavour, Indian context, and brew guidance: the practical picture behind the catalogue."
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />

@@ -58,7 +58,7 @@ export function RegionOverviewSection({
         className="mb-8"
         overline="Region profile"
         title="Explore the *Terroir*"
-        description="Terroir, flavour profile, and Indian specialty context — all from the data behind our catalogue."
+        description="Terroir, flavour profile, and Indian specialty context, all from the data behind our catalogue."
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />

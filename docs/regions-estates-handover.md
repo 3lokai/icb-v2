@@ -34,6 +34,15 @@ araku      →  araku-valley, paderu-valley
 nilgiris   →  nilgiri-hills, coonoor, gudalur, …
 ```
 
+**Popular name wins the URL; the Coffee Board name is secondary.** Decided 2026-09-11 on ICB's own
+Search Console data — Chikmagalur beats Chikkamagaluru 681:9 impressions, Coorg beats Kodagu 349:0,
+and the Coffee Board's Manjarabad / Pulneys / Brahmaputra have **zero** measured demand. So the
+searched name is the slug and primary H1; the Coffee Board name lives in the H1 as a secondary
+(`"Best Sakleshpur & Manjarabad Coffee in India"`), in the intro prose, and as a 301 alias in
+`next.config.ts` (14 of them). Every region config must mention its official alternate at least
+once. Two Coffee Board regions have **no page on purpose** — Anamalais (`valparai`) and Travancore
+(`idukki`) have zero active coffees. Full rationale in the frontend plan §3.
+
 **The UI is India-only, by filter — not by deleting data.** 46 international `canon_regions` rows
 exist so a foreign coffee maps somewhere instead of orphaning, and are retained for a possible later
 expansion. Every hub query and `generateStaticParams` must carry `country = 'India'`. Foreign

@@ -100,16 +100,32 @@ export default async function RegionsPage() {
     }
   }
 
+  const regionById = new Map(items.map((region) => [region.id, region]));
+  const hasPage = (slug: string) =>
+    regionBrowseHref(slug).startsWith("/coffees/");
+  /** Does any ancestor already have a page (and therefore a card of its own)? */
+  const ancestorHasPage = (region: RegionSummary): boolean => {
+    let parent = region.parent_id
+      ? regionById.get(region.parent_id)
+      : undefined;
+    while (parent) {
+      if (hasPage(parent.slug)) {
+        return true;
+      }
+      parent = parent.parent_id ? regionById.get(parent.parent_id) : undefined;
+    }
+    return false;
+  };
+
   const cards: RegionCard[] = items
-    // `tier` is precision, not page-worthiness: named regions are the consumer-facing
-    // unit, and an aggregate earns a card only when it already has a landing page
-    // (North-East India does, `malnad` doesn't).
-    .filter(
-      (region) =>
-        region.tier === "region" ||
-        (region.tier === "aggregate" &&
-          regionBrowseHref(region.slug).startsWith("/coffees/"))
-    )
+    // A card is a region that HAS a discovery page and whose ancestors have none.
+    // The page decides, not `tier` — tier is precision, not page-worthiness
+    // (`baba-budangiri` is a `locality` with 183 coffees and its own page, while
+    // `hassan` is a named region with no page because the Coffee Board's region for
+    // that belt is Manjarabad, which maps to the Sakleshpur taluk).
+    // The ancestor check stops a sub-region appearing twice: once as its own card
+    // and again as a chip under its parent.
+    .filter((region) => hasPage(region.slug) && !ancestorHasPage(region))
     .map((region) => ({
       region,
       coffeeCount: rolledBySlug.get(region.slug) ?? 0,
