@@ -366,7 +366,11 @@ mount it.
     region card is a poster, not an index entry). Plate at 440px wide, then `card-padding-compact`: name (h3, Fraunces), tally ·
     district, signature profile, up to four sub-region chips, and the sourced-area line as a
     footnote under a hairline rule.
-  - `compact` — cross-links on discovery pages ("Explore Nearby Regions"). A 44px-wide plate stamp
+  - `compact` — every cross-link from a discovery page to a region page: the "Explore Nearby
+    Regions" strip on region pages, and the origin entries in "Further Exploration" everywhere
+    else. One owner per page — a region page's `related` repeats its `nearbyRegions` almost
+    verbatim, so `RelatedLinks` takes `excludeRegions` there and the nearby strip keeps them.
+    A 44px-wide plate stamp
     (`regionCard(url, "stamp")`, 132px — never the card asset, a 12× payload difference), name,
     tally.
 - **Numerals are tabular.** Coffee tallies and chip counts use `tabular-nums` so a column of cards

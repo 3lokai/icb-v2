@@ -426,7 +426,10 @@ export async function DiscoveryLandingLayout({
 
         {/* 5. Related Links */}
         {config.related.length > 0 && (
-          <RelatedLinks relatedSlugs={config.related} />
+          <RelatedLinks
+            excludeRegions={config.type === "region"}
+            relatedSlugs={config.related}
+          />
         )}
       </div>
     </PageShell>
