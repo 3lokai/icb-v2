@@ -18,7 +18,11 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     console.error(error);
-    captureException(error);
+    captureException(error, {
+      error_boundary: "app/global-error",
+      error_digest: error.digest,
+      pathname: window.location.pathname,
+    });
   }, [error]);
 
   return (
