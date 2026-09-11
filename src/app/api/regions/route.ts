@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { safeErrorMessage } from "@/lib/api/error-response";
 import { fetchRegions } from "@/lib/data/fetch-regions";
 import { parseRegionSearchParams } from "@/lib/filters/region-url";
 
@@ -13,10 +14,10 @@ export async function GET(request: Request) {
     return NextResponse.json(regionListResponse, {
       headers: { "Cache-Control": "s-maxage=60, stale-while-revalidate=300" },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching regions:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to fetch regions" },
+      { error: safeErrorMessage(error, "Failed to fetch regions") },
       { status: 500 }
     );
   }
