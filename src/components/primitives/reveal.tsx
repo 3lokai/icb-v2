@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type RevealProps = {
@@ -19,17 +19,29 @@ const HIDDEN: Record<NonNullable<RevealProps["from"]>, string> = {
   fade: "",
 };
 
+/** useLayoutEffect on the client, useEffect on the server (where it is a no-op). */
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 /**
  * Fires once when the element scrolls into view (20% visible), then
  * disconnects. For custom reveal markup that can't use <Reveal>.
+ *
+ * **Fails open.** The initial state is `shown`, and the content is hidden again
+ * in a layout effect — before first paint, so there is no flash. If JS never
+ * runs, or an error anywhere upstream stops effects from running, the content
+ * stays readable instead of sitting at `opacity-0` forever. Readable content
+ * must never depend on an IntersectionObserver firing.
  */
 export function useInViewOnce<T extends HTMLElement>() {
   const ref = useRef<T>(null);
-  const [shown, setShown] = useState(false);
+  const [shown, setShown] = useState(true);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    setShown(false);
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

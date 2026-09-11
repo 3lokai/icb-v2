@@ -12,7 +12,7 @@ const IMPACT: Record<
     tags: ["Jammy fruit", "Wine-like", "Heavy body"],
     compareLabel: "Compared to washed",
     compareBody:
-      "Naturals usually trade some of washed clarity for deeper fruit and fermentation-forward sweetness—great when you want intensity and body.",
+      "Naturals usually trade some of washed clarity for deeper fruit and fermentation-forward sweetness, which suits you when you want intensity and body.",
   },
   washed: {
     tags: ["Clean cup", "Bright acidity", "Defined origin"],
@@ -30,13 +30,13 @@ const IMPACT: Record<
     tags: ["Intense aromatics", "Tropical & winey", "Complex finish"],
     compareLabel: "Compared to classic washed",
     compareBody:
-      "Anaerobic lots can push fruit and spice further than everyday washed profiles—use familiar brew ratios first, then adjust for intensity.",
+      "Anaerobic lots can push fruit and spice further than everyday washed profiles, so use familiar brew ratios first, then adjust for intensity.",
   },
   "monsooned-malabar": {
     tags: ["Low acidity", "Earthy spice", "Mellow body"],
     compareLabel: "Compared to washed arabica",
     compareBody:
-      "Monsooning is a different goal than brightness-forward washing—expect a smooth, heritage cup rather than crisp acidity.",
+      "Monsooning is a different goal than brightness-forward washing, so expect a smooth, heritage cup rather than crisp acidity.",
   },
 };
 

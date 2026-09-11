@@ -9,7 +9,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Light Roast Coffee in India",
     entityLabel: "Light Roast",
     intro:
-      "Light roast is where a coffee tells you most about where it grew — SLN 9 and Chandragiri out of Chikmagalur and Baba Budangiri keep their florals and stone fruit here. Stopped not long after first crack, it is the least developed roast and the most expressive of its terroir.",
+      "Light roast is where a coffee tells you most about where it grew. SLN 9 and Chandragiri out of Chikmagalur and Baba Budangiri keep their florals and stone fruit here. Stopped not long after first crack, it is the least developed roast and the most expressive of its terroir.",
     headerNudge:
       "Best for those who love bright, tea-like coffees with complex origin notes.",
     teaserTitle: "The *light* end of the spectrum",
@@ -30,16 +30,16 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     roastProfile: {
       // Visual characteristics
       visual: {
-        color: "Pale to medium brown — no surface oil",
-        density: "Denser bean — retains more moisture",
+        color: "Pale to medium brown, no surface oil",
+        density: "Denser bean, retains more moisture",
         grindNote: "Grinds lighter in colour; fines can appear almost sandy",
         agtronRange: "Agtron 60–75 (light end of the specialty range)",
       },
       // What happens during roasting
       roastingProcess: {
         stage: "Stopped at or just after first crack",
-        firstCrack: "Reached — the defining boundary for light roast",
-        secondCrack: "Not reached — no caramelisation of sugars",
+        firstCrack: "Reached, the defining boundary for light roast",
+        secondCrack: "Not reached, no caramelisation of sugars",
         developmentNote:
           "Short development time preserves volatile aromatics and fruit-forward acids. Roasters targeting specialty profiles often stop within 30–60 seconds of first crack.",
       },
@@ -66,8 +66,8 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       brewMethods: ["v60", "aeropress", "chemex", "kalita", "espresso"],
       // Who it's for
       whoIsItFor:
-        "If you're switching from dark roast or instant coffee, light roast will taste unfamiliar at first — less bitter, more acidic, almost fruity. Give it 2–3 brews before judging. If you love tea, wine, or fresh fruit juice, this is likely your roast level.",
-      // ICB data callout — directional only. Never hardcode counts or rating
+        "If you're switching from dark roast or instant coffee, light roast will taste unfamiliar at first: less bitter, more acidic, almost fruity. Give it 2–3 brews before judging. If you love tea, wine, or fresh fruit juice, this is likely your roast level.",
+      // ICB data callout, directional only. Never hardcode counts or rating
       // averages here; they go stale and the live in-stock count already renders
       // under the intro (DiscoveryLandingLayout).
       icbDataNote:
@@ -87,17 +87,17 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       {
         question: "What brewing methods work best with light roasts?",
         answer:
-          "Pour-over methods like V60, Chemex, and AeroPress excel with light roasts — they highlight clarity and delicate flavors. Use higher water temperatures (95–100°C) for full extraction. Espresso is possible but requires careful dialling in.",
+          "Pour-over methods like V60, Chemex, and AeroPress excel with light roasts, highlighting clarity and delicate flavors. Use higher water temperatures (95–100°C) for full extraction. Espresso is possible but requires careful dialling in.",
       },
       {
         question: "Are light roasts more acidic?",
         answer:
-          "Yes — light roasts retain more of the bean's natural acids, which express as brightness rather than sourness when properly extracted. If a light roast tastes sour, it's under-extracted: try a finer grind or higher temperature.",
+          "Yes. Light roasts retain more of the bean's natural acids, which express as brightness rather than sourness when properly extracted. If a light roast tastes sour, it's under-extracted: try a finer grind or higher temperature.",
       },
       {
         question: "Do light roasts have more caffeine?",
         answer:
-          "Marginally — caffeine degrades slightly with heat, so lighter roasts retain fractionally more. In practice the difference is negligible. What matters more is your dose and brew ratio.",
+          "Marginally. Caffeine degrades slightly with heat, so lighter roasts retain fractionally more. In practice the difference is negligible. What matters more is your dose and brew ratio.",
       },
       {
         question: "Can I use light roast for espresso?",
@@ -141,7 +141,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Light-Medium Roast Coffee in India",
     entityLabel: "Light-Medium Roast",
     intro:
-      "Light-medium splits the difference: enough development for approachable sweetness, not so much that origin clarity disappears. Ratnagiri and Harley lots from Chikmagalur, Baba Budangiri, and Sakleshpur define the level — bright enough to stay interesting, round enough to stay easy.",
+      "Light-medium splits the difference: enough development for approachable sweetness, not so much that origin clarity disappears. Ratnagiri and Harley lots from Chikmagalur, Baba Budangiri, and Sakleshpur define the level: bright enough to stay interesting, round enough to stay easy.",
     headerNudge:
       "Great bridge roast if light feels too bright and medium feels too heavy.",
     teaserTitle: "The everyday *sweet spot*",
@@ -160,7 +160,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
 
     roastProfile: {
       visual: {
-        color: "Medium brown — uniform, dry surface with no visible oil",
+        color: "Medium brown, uniform and dry with no visible oil",
         density: "Slightly less dense than light; still firm to grind",
         grindNote:
           "Grinds evenly; medium-brown powder with good aromatic release",
@@ -172,7 +172,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         firstCrack: "Reached and developed past",
         secondCrack: "Not reached",
         developmentNote:
-          "A longer development window than light roast adds body and sweetness while still preserving most origin character. Common in Indian specialty roasting — many roasters target this range for their flagship offerings.",
+          "A longer development window than light roast adds body and sweetness while still preserving most origin character. Common in Indian specialty roasting, and many roasters target this range for their flagship offerings.",
       },
       flavourProfile: {
         typical: [
@@ -189,7 +189,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         waterTemp: "92–96°C",
         ratio: "1:15–1:16",
         brewTime: "3–4 min (pour over), 2–2.5 min (AeroPress)",
-        note: "The most forgiving roast level to brew — tolerant of minor temperature and grind variations. A good starting point if you're new to specialty coffee.",
+        note: "The most forgiving roast level to brew, tolerant of minor temperature and grind variations. A good starting point if you're new to specialty coffee.",
       },
       brewMethods: [
         "v60",
@@ -213,7 +213,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       {
         question: "What is a light-medium roast?",
         answer:
-          "Stopped just after first crack with slightly more development time than a light roast. It preserves origin detail while adding body and sweetness — the most common roast level in Indian specialty coffee.",
+          "Stopped just after first crack with slightly more development time than a light roast. It preserves origin detail while adding body and sweetness, the most common roast level in Indian specialty coffee.",
       },
       {
         question: "Who should choose light-medium?",
@@ -268,14 +268,14 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Medium Roast Coffee in India",
     entityLabel: "Medium Roast",
     intro:
-      "Medium roast is the great all-rounder — chocolate and caramel sweetness with a little brightness still showing. SLN 795 and SLN 9 from Chikmagalur and Coorg dominate the level, and it holds up across espresso, pour-over, and French Press alike. The safe first pick that is rarely the wrong one.",
+      "Medium roast is the great all-rounder: chocolate and caramel sweetness with a little brightness still showing. SLN 795 and SLN 9 from Chikmagalur and Coorg dominate the level, and it holds up across espresso, pour-over, and French Press alike. The safe first pick that is rarely the wrong one.",
     headerNudge:
-      "The most versatile roast — works beautifully with any brewing method.",
+      "The most versatile roast, working beautifully with any brewing method.",
     teaserTitle: "The reliable *all-rounder*",
     teaserDescription:
-      "Balanced chocolate, caramel, and mild acidity — the everyday sweet spot for most brew methods.",
+      "Balanced chocolate, caramel, and mild acidity: the everyday sweet spot for most brew methods.",
     gridNudge:
-      "Perfect for beginners and experts alike — forgiving and consistently delicious.",
+      "Suits beginners and experts alike: forgiving and consistently delicious.",
     heroBackgroundImage: "/images/discovery/medium-roast-hero.avif",
     heroBadge: "Versatile All-Rounder",
     utilityNudge:
@@ -288,7 +288,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
 
     roastProfile: {
       visual: {
-        color: "Medium to rich brown — dry surface, no oil",
+        color: "Medium to rich brown, dry surface, no oil",
         density: "Noticeably lighter than green bean; expanded cell structure",
         grindNote: "Grinds to a warm brown powder; aromatic on grind",
         agtronRange: "Agtron 40–50",
@@ -297,7 +297,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         stage:
           "Well past first crack, approaching but not reaching second crack",
         firstCrack: "Well past",
-        secondCrack: "Not reached — this distinguishes medium from dark",
+        secondCrack: "Not reached, which distinguishes medium from dark",
         developmentNote:
           "Sugars are more developed than lighter roasts, producing caramel and chocolate notes. Most origin acidity is still present but softened. Indian roasters often use this level for espresso blends and approachable single-origins.",
       },
@@ -311,13 +311,13 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
           "Nuts",
         ],
         indianContext:
-          "Medium-roasted Indian arabicas from Karnataka often show milk chocolate, hazelnut, and gentle orange. Robusta blends at medium roast produce a heavier body and earthy sweetness — common in traditional South Indian filter coffee blends.",
+          "Medium-roasted Indian arabicas from Karnataka often show milk chocolate, hazelnut, and gentle orange. Robusta blends at medium roast produce a heavier body and earthy sweetness, common in traditional South Indian filter coffee blends.",
       },
       brewParams: {
         waterTemp: "90–95°C",
         ratio: "1:14–1:16 (filter), 1:2–1:2.5 (espresso)",
         brewTime: "3–4 min (pour over), 25–30 sec (espresso)",
-        note: "Medium roast is the most versatile for brew parameters — it's tolerant of a wide range of temperatures and ratios. A good default if you're not sure where to start.",
+        note: "Medium roast is the most versatile for brew parameters, tolerant of a wide range of temperatures and ratios. A good default if you're not sure where to start.",
       },
       brewMethods: [
         "french-press",
@@ -329,7 +329,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         "cold-brew",
       ],
       whoIsItFor:
-        "The default roast for most coffee drinkers. If you enjoy coffee with milk, this is your level — it holds up to milk without disappearing. If you drink black coffee and want something familiar but better than commercial brands, medium roast Indian specialty is the place to start.",
+        "The default roast for most coffee drinkers. If you enjoy coffee with milk, this is your level, since it holds up to milk without disappearing. If you drink black coffee and want something familiar but better than commercial brands, medium roast Indian specialty is the place to start.",
       icbDataNote:
         "Medium roast is the largest roast level in the ICB catalogue and the highest rated, and it carries more community ratings than any other. SLN 795 and SLN 9 from Chikmagalur and Coorg dominate it. If you want the most community comparison data before buying, medium roast is where to start.",
     },
@@ -347,12 +347,12 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       {
         question: "Can I use medium roast for espresso?",
         answer:
-          "Yes — medium roasts are excellent for espresso. They produce good crema, balanced extraction, and work well in milk drinks while retaining some origin character. Most Indian specialty espresso blends are medium roasted.",
+          "Yes. Medium roasts are excellent for espresso. They produce good crema, balanced extraction, and work well in milk drinks while retaining some origin character. Most Indian specialty espresso blends are medium roasted.",
       },
       {
         question: "What brewing methods suit medium roasts?",
         answer:
-          "All of them. Medium roast is genuinely versatile — pour-over, French Press, espresso, moka pot, and South Indian filter all work well. Adjust grind size to the method rather than changing temperature significantly.",
+          "All of them. Medium roast is genuinely versatile: pour-over, French Press, espresso, moka pot, and South Indian filter all work well. Adjust grind size to the method rather than changing temperature significantly.",
       },
       {
         question: "Is medium roast stronger than dark roast?",
@@ -401,7 +401,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Medium-Dark Roast Coffee in India",
     entityLabel: "Medium-Dark Roast",
     intro:
-      "Medium-dark trades a little origin nuance for richer body and deeper, rounder sweetness — the roast for espresso and milk drinks. Baarbara Estate leads it, out of Chikmagalur and Baba Budangiri: bold and full without tipping into the smoky bitterness of a true dark roast.",
+      "Medium-dark trades a little origin nuance for richer body and deeper, rounder sweetness, the roast for espresso and milk drinks. Baarbara Estate leads it, out of Chikmagalur and Baba Budangiri: bold and full without tipping into the smoky bitterness of a true dark roast.",
     headerNudge:
       "A great choice for fuller cups and lower perceived acidity without going fully dark.",
     teaserTitle: "Bold without the *char*",
@@ -421,18 +421,17 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
 
     roastProfile: {
       visual: {
-        color: "Deep brown — light oil sheen beginning to appear on surface",
+        color: "Deep brown, with a light oil sheen beginning to appear",
         density: "Noticeably lighter and more porous than medium",
         grindNote: "Darker brown powder; oils release quickly on grind",
         agtronRange: "Agtron 30–40",
       },
       roastingProcess: {
-        stage:
-          "Approaching second crack — some beans may just begin second crack",
+        stage: "Approaching second crack, and some beans may just begin it",
         firstCrack: "Long past",
         secondCrack: "Beginning or just at threshold",
         developmentNote:
-          "Sugars are heavily caramelised, producing dark chocolate and bittersweet notes. Origin character is receding but not fully masked — a skilled roaster can still preserve estate or regional character at this level.",
+          "Sugars are heavily caramelised, producing dark chocolate and bittersweet notes. Origin character is receding but not fully masked, and a skilled roaster can still preserve estate or regional character at this level.",
       },
       flavourProfile: {
         typical: [
@@ -444,7 +443,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
           "Mild smokiness",
         ],
         indianContext:
-          "Indian robusta at medium-dark is where traditional filter coffee blends live — bold, heavy body, low acid, designed to cut through hot milk. Arabica at this level from Chikmagalur and Baba Budangiri — Baarbara Estate above all — often shows bittersweet chocolate and dried fruit without the smokiness of a full dark roast.",
+          "Indian robusta at medium-dark is where traditional filter coffee blends live: bold, heavy body, low acid, designed to cut through hot milk. Arabica at this level from Chikmagalur and Baba Budangiri, Baarbara Estate above all, often shows bittersweet chocolate and dried fruit without the smokiness of a full dark roast.",
       },
       brewParams: {
         waterTemp: "89–93°C",
@@ -461,9 +460,9 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         "cold-brew",
       ],
       whoIsItFor:
-        "Traditional South Indian filter coffee drinkers stepping into specialty will feel at home here — the body and boldness are familiar, but the quality of the bean is higher. Also suits espresso drinkers who find light-to-medium roast espresso too sour or thin.",
+        "Traditional South Indian filter coffee drinkers stepping into specialty will feel at home here, since the body and boldness are familiar, but the quality of the bean is higher. Also suits espresso drinkers who find light-to-medium roast espresso too sour or thin.",
       icbDataNote:
-        "Medium-dark is the dominant roast level for robusta and robusta-arabica blends in the ICB catalogue, and Baarbara Estate accounts for more of it than any other estate — mostly out of Chikmagalur and Baba Budangiri. Many traditional Indian roasters moving into specialty start here: it bridges the gap between commodity dark roast and full specialty.",
+        "Medium-dark is the dominant roast level for robusta and robusta-arabica blends in the ICB catalogue, and Baarbara Estate accounts for more of it than any other estate, mostly out of Chikmagalur and Baba Budangiri. Many traditional Indian roasters moving into specialty start here: it bridges the gap between commodity dark roast and full specialty.",
     },
 
     filter: {
@@ -479,17 +478,17 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       {
         question: "How is it different from dark roast?",
         answer:
-          "Medium-dark stops before or at the very beginning of second crack — it avoids the smoky, bitter notes that define a full dark roast. It's bolder than medium but more nuanced than dark.",
+          "Medium-dark stops before or at the very beginning of second crack, so it avoids the smoky, bitter notes that define a full dark roast. It's bolder than medium but more nuanced than dark.",
       },
       {
         question: "What are the best brewing methods for medium-dark roast?",
         answer:
-          "Espresso, moka pot, French Press, and South Indian filter. It also works for milk-based drinks — the body holds up well to milk without becoming bitter or lost in the cup.",
+          "Espresso, moka pot, French Press, and South Indian filter. It also works for milk-based drinks, where the body holds up well without becoming bitter or lost in the cup.",
       },
       {
         question: "Is medium-dark roast good for cold brew?",
         answer:
-          "Yes! Medium-dark roasts are excellent for cold brew. Their heavier body, chocolatey sweetness, and lower natural acidity translate perfectly to the smooth, rich profile that cold brew drinkers love.",
+          "Yes, and it's one of the better uses for them. Their heavier body, chocolatey sweetness, and lower natural acidity translate perfectly to the smooth, rich profile that cold brew drinkers love.",
       },
       {
         question: "Does medium-dark roast coffee have a lot of acid?",
@@ -528,12 +527,12 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
     h1: "Top Dark Roast Coffee in India",
     entityLabel: "Dark Roast",
     intro:
-      "Dark roast — mostly robusta and blends out of Chikmagalur and Baba Budangiri — is bold, low in acid, and heavy in body, the roast most bound up with traditional Indian coffee culture. Specialty roasters are reimagining it now: bittersweet and intense, with the smoke kept in check rather than charred.",
+      "Dark roast, mostly robusta and blends out of Chikmagalur and Baba Budangiri, is bold, low in acid, and heavy in body, the roast most bound up with traditional Indian coffee culture. Specialty roasters are reimagining it now: bittersweet and intense, with the smoke kept in check rather than charred.",
     headerNudge:
       "Bold, full-bodied coffees with rich oils and intense flavors.",
     teaserTitle: "Deep, dark, and *low-acid*",
     teaserDescription:
-      "Low-acid, heavy-bodied cups — from specialty bittersweet to traditional South Indian boldness.",
+      "Low-acid, heavy-bodied cups, from specialty bittersweet to traditional South Indian boldness.",
     gridNudge:
       "French Press and espresso methods really bring out the best in dark roasts.",
     heroBackgroundImage: "/images/discovery/dark-roast-hero.avif",
@@ -548,7 +547,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
 
     roastProfile: {
       visual: {
-        color: "Deep brown to near-black — visible oil coating on the surface",
+        color: "Deep brown to near-black, with visible oil coating the surface",
         density: "Significantly lighter and more porous than green bean",
         grindNote:
           "Very dark powder, oily to touch; clumps more than lighter roasts",
@@ -557,7 +556,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       roastingProcess: {
         stage: "Well into or past second crack",
         firstCrack: "Long past",
-        secondCrack: "Reached and developed past — this defines dark roast",
+        secondCrack: "Reached and developed past, which defines dark roast",
         developmentNote:
           "At this stage, roast character dominates over origin character. Sugars are fully caramelised or beginning to carbonise. Oils migrate to the surface. Specialty dark roasts aim to stop just past second crack to preserve body and sweetness without going to char.",
       },
@@ -572,13 +571,13 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
           "Molasses",
         ],
         indianContext:
-          "Dark roast is deeply embedded in Indian coffee culture — the traditional South Indian filter blend is typically a dark-roasted robusta or robusta-arabica mix, sometimes with chicory added. Specialty dark roasts from Indian arabica estates are rarer but exist — they tend to show bittersweet chocolate and dried fruit rather than smoke when the roaster stops at second crack rather than past it.",
+          "Dark roast is deeply embedded in Indian coffee culture. The traditional South Indian filter blend is typically a dark-roasted robusta or robusta-arabica mix, sometimes with chicory added. Specialty dark roasts from Indian arabica estates are rarer but exist, and they tend to show bittersweet chocolate and dried fruit rather than smoke when the roaster stops at second crack rather than past it.",
       },
       brewParams: {
         waterTemp: "87–90°C",
         ratio: "1:12–1:14 (filter), 1:2 (espresso)",
         brewTime: "4 min (French Press), 25–27 sec (espresso)",
-        note: "Lower water temperatures are essential with dark roast — high temperatures extract more bitter compounds from already-developed sugars. Coarser grinds also help. If your dark roast tastes ashy, try cooler water first.",
+        note: "Lower water temperatures are essential with dark roast, because high temperatures extract more bitter compounds from already-developed sugars. Coarser grinds also help. If your dark roast tastes ashy, try cooler water first.",
       },
       brewMethods: [
         "french-press",
@@ -589,7 +588,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
         "cold-brew",
       ],
       whoIsItFor:
-        "Traditional Indian filter coffee drinkers, those who take coffee with a lot of milk and sugar, and anyone who finds lighter roasts too acidic or thin. Dark roast is also where cold brew shines — the low acidity and heavy body translate exceptionally well to cold extraction.",
+        "Traditional Indian filter coffee drinkers, those who take coffee with a lot of milk and sugar, and anyone who finds lighter roasts too acidic or thin. Dark roast is also where cold brew shines, since the low acidity and heavy body carry straight over into cold extraction.",
       icbDataNote:
         "Dark roast has the lowest average community rating of any roast level in the ICB catalogue, which reflects a segment that mixes commodity blends with genuine specialty lots. Traditional South Indian filter blends dominate the listings, mostly from Chikmagalur and Baba Budangiri.",
     },
@@ -602,17 +601,17 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       {
         question: "What defines a dark roast coffee?",
         answer:
-          "Dark roasts are taken well into or past second crack, producing bold, smoky flavours with low acidity and full body. Oils are visible on the bean surface. Roast character dominates over origin character at this level.",
+          "Dark roasts are taken well into or past second crack. The beans come out oily on the surface, and the cup is bold and smoky, with low acidity and full body. What you're tasting at this point is mostly the roaster's work rather than the farm's.",
       },
       {
         question: "Is dark roast bitter by definition?",
         answer:
-          "Not necessarily — bitterness comes from over-extraction or taking the roast too far. A well-roasted dark stopped just past second crack can be smooth, rich, and bittersweet rather than harsh. Lower water temperatures and coarser grinds help significantly.",
+          "Not necessarily. Bitterness comes from over-extraction or taking the roast too far. A well-roasted dark stopped just past second crack can be smooth, rich, and bittersweet rather than harsh. Lower water temperatures and coarser grinds help significantly.",
       },
       {
         question: "Do dark roasts have less caffeine?",
         answer:
-          "Marginally — caffeine degrades slightly with longer roasting. But the difference is minimal and less significant than your dose and brew ratio. The stronger flavour often makes people assume more caffeine.",
+          "Marginally. Caffeine degrades slightly with longer roasting. But the difference is minimal and less significant than your dose and brew ratio. The stronger flavour often makes people assume more caffeine.",
       },
       {
         question: "What brewing methods work best with dark roasts?",
@@ -627,7 +626,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
       {
         question: "Is dark roast coffee good for cold brew?",
         answer:
-          "Dark roast is a classic and highly popular choice for cold brew. The extended extraction process of cold water perfectly complements the smoky, chocolatey, and low-acid profile of dark roasted beans, resulting in a bold and smooth beverage.",
+          "Dark roast is a classic and highly popular choice for cold brew. The long, cold extraction suits the smoky, chocolatey, low-acid profile of dark roasted beans, resulting in a bold and smooth beverage.",
       },
     ],
     utilityCard: {

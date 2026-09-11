@@ -1,9 +1,7 @@
 import { Accent } from "@/components/primitives/accent";
-import Link from "next/link";
 import { splitEmphasisPair } from "@/lib/discovery/accent-emphasis";
 import type { LandingPageConfig } from "@/lib/discovery/landing-pages";
 import {
-  ArrowRightIcon,
   MapPinIcon,
   MountainsIcon,
   SparkleIcon,
@@ -14,15 +12,11 @@ import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { cn } from "@/lib/utils";
 
-/** Flip when dedicated `/regions/[slug]` pages are published */
-const REGION_GUIDES_LIVE = false;
-
 const SNAPSHOT_TITLE = "In the cup & on the *map*";
 const SNAPSHOT_DESCRIPTION =
-  "Quick facts to anchor flavour expectations—pair with the coffees below.";
+  "Quick facts to anchor flavour expectations, paired with the coffees below.";
 
 type RegionSnapshotProps = {
-  regionSlug: string;
   regionSnapshot: NonNullable<LandingPageConfig["regionSnapshot"]>;
   className?: string;
   /**
@@ -55,20 +49,21 @@ function SnapshotHeadingTitle({ children }: { children: React.ReactNode }) {
 }
 
 function SnapshotContent({
-  regionSlug,
   regionSnapshot,
   embedded,
 }: {
-  regionSlug: string;
   regionSnapshot: NonNullable<LandingPageConfig["regionSnapshot"]>;
   embedded: boolean;
 }) {
-  const guideHref = `/regions/${regionSlug}`;
+  // state/elevation come from canon_regions and can be absent (aggregates have no
+  // terroir of their own) — drop the card rather than render an empty one.
   const cards = [
     { label: "State / area", value: regionSnapshot.state },
     { label: "Elevation", value: regionSnapshot.elevation },
     { label: "Known for", value: regionSnapshot.knownFor },
-  ];
+  ].filter((card): card is { label: string; value: string } =>
+    Boolean(card.value)
+  );
 
   const cardShell = embedded
     ? "relative overflow-hidden rounded-xl border border-border/40 bg-card/40 p-4 shadow-sm transition-all duration-300 hover:border-border/60 md:p-5"
@@ -146,34 +141,12 @@ function SnapshotContent({
             );
           })}
         </div>
-        <div className={cn("mt-6", embedded && "mt-5 md:mt-6")}>
-          {REGION_GUIDES_LIVE ? (
-            <Link
-              href={guideHref}
-              className="inline-flex items-center gap-2 text-body font-medium text-accent hover:underline"
-            >
-              Full region guide
-              <Icon icon={ArrowRightIcon} className="h-4 w-4" />
-            </Link>
-          ) : (
-            <span
-              className="inline-flex flex-wrap items-center gap-2 text-body text-muted-foreground"
-              title="Full region guide coming soon"
-            >
-              Full region guide
-              <span className="text-micro uppercase tracking-wider border border-border/60 rounded-full px-2.5 py-0.5 bg-muted/20 text-muted-foreground">
-                Coming soon
-              </span>
-            </span>
-          )}
-        </div>
       </div>
     </>
   );
 }
 
 export function RegionSnapshot({
-  regionSlug,
   regionSnapshot,
   className,
   variant = "standalone",
@@ -185,11 +158,7 @@ export function RegionSnapshot({
       <div
         className={cn("w-full px-4 py-5 sm:px-5 md:px-6 md:py-6", className)}
       >
-        <SnapshotContent
-          regionSlug={regionSlug}
-          regionSnapshot={regionSnapshot}
-          embedded
-        />
+        <SnapshotContent regionSnapshot={regionSnapshot} embedded />
       </div>
     );
   }
@@ -210,11 +179,7 @@ export function RegionSnapshot({
           </div>
         }
       />
-      <SnapshotContent
-        regionSlug={regionSlug}
-        regionSnapshot={regionSnapshot}
-        embedded={false}
-      />
+      <SnapshotContent regionSnapshot={regionSnapshot} embedded={false} />
     </Section>
   );
 }

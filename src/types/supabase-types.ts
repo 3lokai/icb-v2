@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5";
+    PostgrestVersion: "14.5";
   };
   graphql_public: {
     Tables: {
@@ -338,18 +338,23 @@ export type Database = {
           altitude_max_m: number | null;
           altitude_min_m: number | null;
           annual_production_mt: number | null;
+          area_as_of: string | null;
           area_hectares: number | null;
+          area_source: string | null;
           climate: string | null;
+          context_image_url: string | null;
           country: string;
           created_at: string;
           description: string | null;
           display_name: string;
+          district: string | null;
           harvest_season: string | null;
           hero_image_url: string | null;
           id: string;
           intercrop_species: string[] | null;
           logo_url: string | null;
           notes: string | null;
+          parent_id: string | null;
           primary_processing_methods: string[] | null;
           primary_varieties: string[] | null;
           rainfall_mm: number | null;
@@ -360,25 +365,32 @@ export type Database = {
           soil: string | null;
           state: string | null;
           subregion: string | null;
+          terroir_image_url: string | null;
           terroir_notes: string | null;
+          tier: string | null;
           updated_at: string;
         };
         Insert: {
           altitude_max_m?: number | null;
           altitude_min_m?: number | null;
           annual_production_mt?: number | null;
+          area_as_of?: string | null;
           area_hectares?: number | null;
+          area_source?: string | null;
           climate?: string | null;
+          context_image_url?: string | null;
           country: string;
           created_at?: string;
           description?: string | null;
           display_name: string;
+          district?: string | null;
           harvest_season?: string | null;
           hero_image_url?: string | null;
           id?: string;
           intercrop_species?: string[] | null;
           logo_url?: string | null;
           notes?: string | null;
+          parent_id?: string | null;
           primary_processing_methods?: string[] | null;
           primary_varieties?: string[] | null;
           rainfall_mm?: number | null;
@@ -389,25 +401,32 @@ export type Database = {
           soil?: string | null;
           state?: string | null;
           subregion?: string | null;
+          terroir_image_url?: string | null;
           terroir_notes?: string | null;
+          tier?: string | null;
           updated_at?: string;
         };
         Update: {
           altitude_max_m?: number | null;
           altitude_min_m?: number | null;
           annual_production_mt?: number | null;
+          area_as_of?: string | null;
           area_hectares?: number | null;
+          area_source?: string | null;
           climate?: string | null;
+          context_image_url?: string | null;
           country?: string;
           created_at?: string;
           description?: string | null;
           display_name?: string;
+          district?: string | null;
           harvest_season?: string | null;
           hero_image_url?: string | null;
           id?: string;
           intercrop_species?: string[] | null;
           logo_url?: string | null;
           notes?: string | null;
+          parent_id?: string | null;
           primary_processing_methods?: string[] | null;
           primary_varieties?: string[] | null;
           rainfall_mm?: number | null;
@@ -418,10 +437,20 @@ export type Database = {
           soil?: string | null;
           state?: string | null;
           subregion?: string | null;
+          terroir_image_url?: string | null;
           terroir_notes?: string | null;
+          tier?: string | null;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "canon_regions_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "canon_regions";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       canon_sensory_nodes: {
         Row: {
@@ -3312,6 +3341,15 @@ export type Database = {
           avg_price: number;
           date: string;
           price_updates: number;
+        }[];
+      };
+      get_region_coffee_counts: {
+        Args: never;
+        Returns: {
+          canon_region_id: string;
+          own_count: number;
+          rolled_count: number;
+          slug: string;
         }[];
       };
       get_region_detail: {

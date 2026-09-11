@@ -17,7 +17,7 @@ const PROCESS_STEPS: Record<string, Step[]> = {
   natural: [
     {
       title: "Harvest",
-      body: "Ripe cherries are picked and sorted—quality here sets the ceiling for sweetness and clarity.",
+      body: "Ripe cherries are picked and sorted, and quality here sets the ceiling for sweetness and clarity.",
     },
     {
       title: "Dry & ferment in the cherry",
@@ -35,7 +35,7 @@ const PROCESS_STEPS: Record<string, Step[]> = {
     },
     {
       title: "Ferment & wash",
-      body: "Mucilage is broken down and washed off—this is what delivers the classic clean cup.",
+      body: "Mucilage is broken down and washed off, which is what delivers the classic clean cup.",
     },
     {
       title: "Dry & mill",
@@ -77,7 +77,7 @@ const PROCESS_STEPS: Record<string, Step[]> = {
     },
     {
       title: "Monsoon exposure",
-      body: "Beans take on moisture from coastal winds—swelling and mellowing acidity.",
+      body: "Beans take on moisture from coastal winds, swelling and mellowing acidity.",
     },
     {
       title: "Rest & sort",
@@ -111,7 +111,7 @@ export function ProcessExplainer({
         className="mb-8"
         overline="How it works"
         title="From cherry to *cup*"
-        description="A simplified walkthrough of what happens before roasting—helpful context when you read tasting notes."
+        description="A simplified walkthrough of what happens before roasting, and useful context when you read tasting notes."
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />

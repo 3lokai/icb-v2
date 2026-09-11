@@ -119,6 +119,12 @@ export function getPlaceholderImage(
 }
 
 /**
+ * Shown when a region has no card plate uploaded yet. A shipped asset, not an
+ * ImageKit path, so it renders before any image work lands for a new region.
+ */
+export const REGION_CARD_FALLBACK = "/images/discovery/region-landscape.png";
+
+/**
  * Component-specific image presets
  */
 export const coffeeImagePresets = {
@@ -165,22 +171,29 @@ export const coffeeImagePresets = {
   },
 
   /**
-   * RegionCard preset
-   * Size: 600x450px (aspect-[4/3], optimized for grid layouts)
-   * Crop: Force (cropped to fill container, used with object-cover)
-   * Quality: 82
-   * Focus: Center (ensures important content is centered)
+   * Region card badge preset (`canon_regions.logo_url`)
+   * Width 600, quality 82, no crop — the source plates are 1122x1402 (4:5) and carry
+   * their own painted frame, so a forced crop would cut it.
+   *
+   * Width only — height follows the 4:5 source, and the card takes its ratio from the
+   * plate rather than the other way round. That is what removes the need to pad or crop
+   * to a square: nothing is added and nothing is lost.
+   * No explicit `format`: ImageKit content-negotiates (WebP/AVIF by Accept header),
+   * which is why the PNG masters are uploaded unconverted.
    */
-  regionCard: (imagePath: string | null | undefined): string => {
+  regionCard: (
+    imagePath: string | null | undefined,
+    /** `stamp` is the 44px thumbnail on RegionCard's compact variant. */
+    size: "card" | "stamp" = "card"
+  ): string => {
     if (!imagePath) {
-      return getPlaceholderImage("coffee");
+      return REGION_CARD_FALLBACK;
     }
+    // 440 covers the ~290px card at 4-up with room for a 1.5x display; the plates are
+    // flat illustration, so they hold up far better than a photo would at that ratio.
     return getImageKitUrl(imagePath, {
-      width: 600,
-      height: 450,
-      crop: "force",
+      width: size === "stamp" ? 132 : 440,
       quality: 82,
-      focus: "center",
     });
   },
 

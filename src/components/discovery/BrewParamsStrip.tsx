@@ -63,7 +63,7 @@ export function BrewParamsStrip({
         className="mb-6"
         overline="Dial-in"
         title="Starting *parameters*"
-        description="Ballpark numbers to get in range—adjust to taste and your grinder."
+        description="Ballpark numbers to get in range; adjust to taste and your grinder."
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />

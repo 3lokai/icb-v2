@@ -22,6 +22,7 @@ export type {
   UtilityCardType,
 } from "./types";
 export { discoveryPagePath } from "./paths";
+export { regionBrowseHref, regionPageSlugForCanon } from "./region-pages";
 
 /**
  * Landing page configurations (order preserved for sitemap / static params)

@@ -148,6 +148,36 @@ const nextConfig: NextConfig = {
         destination: "/coffees/mid-range",
         permanent: true,
       },
+      // Region aliases. The Coffee Board of India names the 13 growing regions
+      // (coffeeboard.gov.in/coffee-regions-india.html) with spellings that differ from
+      // our page slugs, and the NRSC/ISRO atlas uses the official district spellings
+      // again. Those names appear on roaster bags, in press and in search, so send
+      // them to the one canonical page instead of 404ing.
+      // Also covers canon_regions slugs that differ from the page slug (`kodagu-coorg`
+      // vs `coorg`), since our own data and content links use the canon form.
+      ...Object.entries({
+        // Coffee Board spelling -> page slug
+        pulneys: "palani-hills",
+        manjarabad: "sakleshpur",
+        bababudangiris: "baba-budangiri",
+        bababudangiri: "baba-budangiri",
+        sheveroys: "shevaroy-hills",
+        shevaroys: "shevaroy-hills",
+        biligiris: "biligiriranga-hills",
+        brahmaputra: "northeast-india",
+        kodagu: "coorg",
+        // Official / NRSC district spellings
+        chikkamagaluru: "chikmagalur",
+        chikmagaluru: "chikmagalur",
+        // canon_regions slug -> page slug
+        "kodagu-coorg": "coorg",
+        "nilgiri-hills": "nilgiris",
+        "araku-valley": "araku",
+      }).map(([alias, page]) => ({
+        source: `/coffees/${alias}`,
+        destination: `/coffees/${page}`,
+        permanent: true,
+      })),
     ];
   },
   async headers() {
