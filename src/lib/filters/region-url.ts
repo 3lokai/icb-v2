@@ -17,7 +17,9 @@ export function parseRegionSearchParams(searchParams: URLSearchParams): {
   const filters: RegionFilters = {};
 
   const pageParam = searchParams.get("page");
-  const validPage = pageParam ? Number.parseInt(pageParam, 10) : DEFAULT_PAGE;
+  const parsedPage = pageParam ? Number.parseInt(pageParam, 10) : DEFAULT_PAGE;
+  const validPage =
+    Number.isNaN(parsedPage) || parsedPage < 1 ? DEFAULT_PAGE : parsedPage;
   const limitParam = searchParams.get("limit");
   const parsedLimit = limitParam
     ? Number.parseInt(limitParam, 10)

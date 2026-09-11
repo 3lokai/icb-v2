@@ -1,4 +1,5 @@
 import { cookies, headers } from "next/headers";
+import { after } from "next/server";
 import { PostHog } from "posthog-node";
 import {
   posthogCookieName,
@@ -65,14 +66,28 @@ async function browserSessionContext(): Promise<Record<string, string>> {
  * handler that runs inside a request — otherwise the event is unattributable
  * (see `browserSessionContext`).
  */
-export async function captureServerEvent(
+export function captureServerEvent(
   distinctId: string,
   event: string,
   properties: Record<string, unknown> = {}
-): Promise<void> {
-  getPostHogClient().capture({
-    distinctId,
-    event,
-    properties: { ...(await browserSessionContext()), ...properties },
+): void {
+  // Scheduled with `after`, not fire-and-forget: reading the cookie is async, so
+  // an un-awaited call can still be suspended at that await when the action
+  // returns — and the runtime is free to freeze the function there, dropping the
+  // event. `after` keeps the work alive past the response instead.
+  // `capture()` only enqueues, so flush() is what actually puts it on the wire.
+  after(async () => {
+    try {
+      const client = getPostHogClient();
+      client.capture({
+        distinctId,
+        event,
+        properties: { ...(await browserSessionContext()), ...properties },
+      });
+      await client.flush();
+    } catch (error) {
+      // Telemetry never breaks the request it belongs to.
+      console.error("PostHog capture failed:", error);
+    }
   });
 }

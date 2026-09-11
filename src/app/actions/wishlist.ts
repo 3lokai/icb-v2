@@ -71,7 +71,7 @@ export async function toggleWishlist(
     }
 
     if (removed && removed.length > 0) {
-      void captureServerEvent(currentUser.id, "wishlist_removed", {
+      captureServerEvent(currentUser.id, "wishlist_removed", {
         coffee_id: coffeeId,
       });
       return { success: true, data: { inWishlist: false } };
@@ -93,7 +93,7 @@ export async function toggleWishlist(
       };
     }
 
-    void captureServerEvent(currentUser.id, "wishlist_added", {
+    captureServerEvent(currentUser.id, "wishlist_added", {
       coffee_id: coffeeId,
     });
 

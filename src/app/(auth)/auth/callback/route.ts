@@ -222,7 +222,7 @@ export async function GET(request: NextRequest) {
       // callback URL still carries the OAuth `code`/`state`, which has no
       // business in a third-party analytics payload.
       const callbackUrl = new URL(request.url);
-      void captureServerEvent(user.id, "user_signed_up_oauth", {
+      captureServerEvent(user.id, "user_signed_up_oauth", {
         method,
         email: user.email,
         $current_url: `${callbackUrl.origin}${callbackUrl.pathname}`,
