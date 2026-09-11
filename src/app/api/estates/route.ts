@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { safeErrorMessage } from "@/lib/api/error-response";
 import { fetchEstates } from "@/lib/data/fetch-estates";
 import { parseEstateSearchParams } from "@/lib/filters/estate-url";
 
@@ -13,10 +14,10 @@ export async function GET(request: Request) {
     return NextResponse.json(estateListResponse, {
       headers: { "Cache-Control": "s-maxage=60, stale-while-revalidate=300" },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching estates:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to fetch estates" },
+      { error: safeErrorMessage(error, "Failed to fetch estates") },
       { status: 500 }
     );
   }

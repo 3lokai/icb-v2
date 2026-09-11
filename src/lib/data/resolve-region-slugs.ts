@@ -100,10 +100,16 @@ export async function resolveRegionSlugsToRegionIds(
     return [];
   }
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("regions")
     .select("id")
     .in("canon_region_id", canonRegionIds);
+
+  // Must throw, not return []: callers turn an empty list into NO_MATCH_ID, so a
+  // failed query would cache as "this region has no coffees".
+  if (error) {
+    throw new Error(`Failed to resolve region ids: ${error.message}`);
+  }
 
   return (data ?? []).map((row: { id: string }) => row.id);
 }
