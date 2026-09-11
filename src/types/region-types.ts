@@ -84,7 +84,16 @@ export type RegionDetail = {
   /** As-of date for `area_hectares`. The NRSC atlas is 2024-09. */
   area_as_of: string | null;
   annual_production_mt: number | null;
+
+  // Fixed image slots, all ImageKit (migration 20260911180000). One image per role,
+  // uploaded by icb-claude/canon/upload_media.py from canon/media/regions/<slug>/.
+  // canon_media stays for variable-length galleries; these four are named slots.
+  /** Card badge, Coffee Board logo style. Slot: `card`. */
   logo_url: string | null;
+  /** Terroir / growing-conditions block. Slot: `terroir`. */
+  terroir_image_url: string | null;
+  /** Indian specialty context block. Slot: `context`. */
+  context_image_url: string | null;
 
   // Embedded
   media: CanonMediaItem[];
@@ -117,6 +126,8 @@ export type RegionSummary = {
   state: string | null;
   subregion: string | null;
   hero_image_url: string | null;
+  /** Card badge for the /regions hub. Slot: `card`. */
+  logo_url: string | null;
   signature_profile: string | null;
 
   // Structure + sourced figures, for the /regions hub: group by `state`, nest by

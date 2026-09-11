@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
+import { RegionCard } from "@/components/cards/RegionCard";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -34,6 +35,17 @@ const HUB_COUNTRY = "India";
 const STATELESS_GROUP = "North-East India";
 
 /**
+ * Page-bearing regions the Coffee Board of India names in their own right, so they earn a
+ * card even though an ancestor has a page too. Baba Budangiri sits inside Chikmagalur
+ * district by NRSC geography, but the Coffee Board lists Bababudangiris as one of its 13
+ * regions, a peer of Chikmagalur — and it carries 142 coffees, more than Coorg, so a chip
+ * under-sells it. Its card renders `district: "Chikkamagaluru"`, which keeps the
+ * containment legible, and Chikmagalur's own count still includes it because that is what
+ * `/coffees/chikmagalur` actually returns.
+ */
+const PEER_REGIONS = new Set(["baba-budangiri"]);
+
+/**
  * States in Coffee Board order (traditional growing areas first), then anything
  * new falls in alphabetically behind them.
  */
@@ -46,10 +58,7 @@ const STATE_ORDER = [
   STATELESS_GROUP,
 ];
 
-/** Sub-region chips per card; the rest collapse into a "+N more" link. */
-const CHILD_CHIP_LIMIT = 6;
-
-type RegionCard = {
+type RegionCardData = {
   region: RegionSummary;
   coffeeCount: number;
   /** Sub-units with coffees of their own, most-stocked first. */
@@ -66,20 +75,6 @@ function descendantsOf(
     child,
     ...descendantsOf(child.id, childrenByParent),
   ]);
-}
-
-function formatArea(region: RegionSummary): string | null {
-  // Never render a figure without its provenance: the Coffee Board's older web
-  // figures disagree with NRSC 2024 by up to 65%, so an unattributed number is
-  // worse than none. Enforced in the DB by canon_regions_area_needs_source.
-  if (!region.area_hectares || !region.area_source || !region.area_as_of) {
-    return null;
-  }
-  const asOf = new Date(region.area_as_of).toLocaleDateString("en-IN", {
-    month: "short",
-    year: "numeric",
-  });
-  return `${region.area_hectares.toLocaleString("en-IN")} ha under coffee · ${region.area_source}, ${asOf}`;
 }
 
 export default async function RegionsPage() {
@@ -117,19 +112,24 @@ export default async function RegionsPage() {
     return false;
   };
 
-  const cards: RegionCard[] = items
-    // A card is a region that HAS a discovery page and whose ancestors have none.
-    // The page decides, not `tier` — tier is precision, not page-worthiness
-    // (`baba-budangiri` is a `locality` with 183 coffees and its own page, while
-    // `hassan` is a named region with no page because the Coffee Board's region for
-    // that belt is Manjarabad, which maps to the Sakleshpur taluk).
-    // The ancestor check stops a sub-region appearing twice: once as its own card
-    // and again as a chip under its parent.
-    .filter((region) => hasPage(region.slug) && !ancestorHasPage(region))
+  // A card is a region that HAS a discovery page and whose ancestors have none, plus the
+  // Coffee Board peers above. The page decides, not `tier` — tier is precision, not
+  // page-worthiness (`hassan` is a named region with no page, because the Coffee Board's
+  // region for that belt is Manjarabad, which maps to the Sakleshpur taluk).
+  const cardRegions = items.filter(
+    (region) =>
+      hasPage(region.slug) &&
+      (!ancestorHasPage(region) || PEER_REGIONS.has(region.slug))
+  );
+  // Chips are derived from the card set, so a region can never render as both.
+  const cardIds = new Set(cardRegions.map((region) => region.id));
+
+  const cards: RegionCardData[] = cardRegions
     .map((region) => ({
       region,
       coffeeCount: rolledBySlug.get(region.slug) ?? 0,
       children: descendantsOf(region.id, childrenByParent)
+        .filter((child) => !cardIds.has(child.id))
         .map((child) => ({
           region: child,
           coffeeCount: rolledBySlug.get(child.slug) ?? 0,
@@ -142,7 +142,7 @@ export default async function RegionsPage() {
 
   // Group from the data, not from STATE_ORDER, so a region in a state nobody has
   // listed yet (Meghalaya, Maharashtra) still gets a card instead of vanishing.
-  const cardsByState = new Map<string, RegionCard[]>();
+  const cardsByState = new Map<string, RegionCardData[]>();
   for (const card of cards) {
     const state = card.region.state ?? STATELESS_GROUP;
     cardsByState.set(state, [...(cardsByState.get(state) ?? []), card]);
@@ -211,60 +211,15 @@ export default async function RegionsPage() {
         <Section key={group.state} spacing="tight">
           <Stack gap="6">
             <h2 className="text-title">{group.state}</h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {group.cards.map(({ region, coffeeCount, children }) => {
-                const area = formatArea(region);
-                return (
-                  <div
-                    className="surface-1 card-padding rounded-2xl flex flex-col gap-3"
-                    key={region.id}
-                  >
-                    <Stack gap="1">
-                      <Link
-                        className="text-heading transition-colors hover:text-accent"
-                        href={regionBrowseHref(region.slug)}
-                      >
-                        {region.display_name}
-                      </Link>
-                      <span className="text-caption">
-                        {coffeeCount.toLocaleString("en-IN")}{" "}
-                        {coffeeCount === 1 ? "coffee" : "coffees"}
-                        {region.district ? ` · ${region.district}` : ""}
-                      </span>
-                    </Stack>
-
-                    {region.signature_profile ? (
-                      <p className="text-caption line-clamp-2">
-                        {region.signature_profile}
-                      </p>
-                    ) : null}
-
-                    {area ? <p className="text-micro">{area}</p> : null}
-
-                    {children.length > 0 ? (
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        {children.slice(0, CHILD_CHIP_LIMIT).map((child) => (
-                          <Link
-                            className="text-micro rounded-full border border-border/60 px-3 py-1 transition-colors hover:border-accent/60 hover:text-accent"
-                            href={regionBrowseHref(child.region.slug)}
-                            key={child.region.id}
-                          >
-                            {child.region.display_name} ({child.coffeeCount})
-                          </Link>
-                        ))}
-                        {children.length > CHILD_CHIP_LIMIT ? (
-                          <Link
-                            className="text-micro rounded-full border border-dashed border-border/60 px-3 py-1 transition-colors hover:border-accent/60 hover:text-accent"
-                            href={regionBrowseHref(region.slug)}
-                          >
-                            +{children.length - CHILD_CHIP_LIMIT} more
-                          </Link>
-                        ) : null}
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              })}
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+              {group.cards.map(({ region, coffeeCount, children }) => (
+                <RegionCard
+                  coffeeCount={coffeeCount}
+                  key={region.id}
+                  region={region}
+                  subRegions={children}
+                />
+              ))}
             </div>
           </Stack>
         </Section>

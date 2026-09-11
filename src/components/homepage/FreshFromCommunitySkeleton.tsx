@@ -1,6 +1,21 @@
 import { Accent } from "@/components/primitives/accent";
 import { Section } from "@/components/primitives/section";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+
+// Skeleton renders a <div>, which is invalid inside <p> and breaks hydration.
+// Same look, inline element.
+function InlineSkeleton({ className }: { className?: string }) {
+  return (
+    <span
+      className={cn(
+        "inline-block h-[1em] animate-pulse rounded-md bg-accent align-[-0.15em]",
+        className
+      )}
+      data-slot="skeleton"
+    />
+  );
+}
 
 /**
  * Suspense fallback for FreshFromCommunitySection. The section's chrome (eyebrow,
@@ -31,7 +46,7 @@ export function FreshFromCommunitySkeleton() {
             Fresh from the <Accent>community.</Accent>
           </h2>
           <p className="text-body-large text-muted-foreground mt-3 max-w-2xl text-pretty">
-            <Skeleton className="inline-block h-[1em] w-10 align-[-0.15em]" />
+            <InlineSkeleton className="w-10" />
             {
               " new ratings in the last 30 days — here's what people are brewing and saying."
             }
@@ -74,8 +89,8 @@ export function FreshFromCommunitySkeleton() {
       </div>
 
       <p className="text-body text-muted-foreground mt-10 text-center">
-        <Skeleton className="inline-block h-[1em] w-16 align-[-0.15em]" />{" "}
-        ratings and counting across the directory — add yours.
+        <InlineSkeleton className="w-16" /> ratings and counting across the
+        directory — add yours.
       </p>
     </Section>
   );

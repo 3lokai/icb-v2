@@ -337,12 +337,47 @@ lg:grid-cols-3 gap-8`); adopt it instead of re-typing a three-column grid. Image
   `surface-2` (popover/modal). Use these for layering, not shadow.
 - **Nesting:** Nested cards are forbidden. Use `surface` steps for inner depth.
 
-### Region / Origin Cards
+### Region / Origin Cards — `<RegionCard>`
 
-- **Style:** `.region-card` — a portrait image tile (`aspect-[5/6]`, `rounded-sm`, hairline border)
-  with a _softened_ top gradient overlay (`.region-overlay`, `from-black/60`, deliberately "less
-  Netflix poster") and white text bottom-left (`.region-content`). Used for origin/region landing
-  entry points.
+Regions ship with commissioned **field-guide plates** (`canon_regions.logo_url`, the `card` image
+slot): 4:5 naturalist illustrations — a peacock over the Chikmagalur ghats, a bee on Coorg cherry —
+each painted _with its own frame_, a dark roasted-brown band and a cream keyline, sometimes with a
+notched ogee top corner. The plate's palette is already the system's: cream ground, brown ink,
+terracotta cherries. This is the North Star rendered as an image, and the card's only job is to
+mount it.
+
+- **The frame is content.** The plate is never cropped, never zoomed on hover, and never clipped to
+  a radius of its own. A `rounded-xl` on the image or an `image-hover-zoom` eats the painted border
+  and the notch. The **card** clips; the plate does not.
+- **The card takes the plate's ratio, not the reverse.** The tile is `aspect-[4/5]`, the masters'
+  own ratio, and `regionCard` transforms width only. This is the reason there is no pad, no
+  letterbox, and no fill colour anywhere in the card: at 4:5 there is nothing left over to fill.
+  Forcing these into a square costs either a fifth of the artwork (crop) or two bands of invented
+  background (pad) — take neither; size the card to the image.
+- **No overlay type.** Text over the plate covers the artwork and fights its own cream highlights.
+  The caption block sits _below_ the plate on warm paper, the way a specimen is captioned in the
+  guide this system is modelled on. (This replaces the former `.region-card` /`.region-overlay` /
+  `.region-content` gradient-tile rules, which were never implemented and are incompatible with
+  framed plates. Removed from `components.css`.)
+- **Full bleed, not inset.** The plate runs to the card's edges so its own border becomes the card's
+  top edge — a framed plate inset inside a bordered card double-frames it.
+- **Two variants, one component** (`src/components/cards/RegionCard.tsx`):
+  - `default` — the `/regions` hub, 4-up at `xl` (~290px wide, so a ~362px tall plate; a 3-up
+    region card is a poster, not an index entry). Plate at 440px wide, then `card-padding-compact`: name (h3, Fraunces), tally ·
+    district, signature profile, up to four sub-region chips, and the sourced-area line as a
+    footnote under a hairline rule.
+  - `compact` — cross-links on discovery pages ("Explore Nearby Regions"). A 44px-wide plate stamp
+    (`regionCard(url, "stamp")`, 132px — never the card asset, a 12× payload difference), name,
+    tally.
+- **Numerals are tabular.** Coffee tallies and chip counts use `tabular-nums` so a column of cards
+  aligns on the figure.
+- **Hover** is the mount reacting, not the plate: border warms to `accent/40`, title to `accent`, a
+  0.5px lift with a coffee-tinted `shadow-md`. Collapses under `prefers-reduced-motion`.
+- **One link per card.** The title carries a stretched link (`after:absolute after:inset-0`) so the
+  card has a single accessible name; sub-region chips stay independently clickable above it.
+- **Provenance is never optional.** An area figure renders only with its `area_source` _and_
+  `area_as_of` — the Coffee Board's older web figures disagree with NRSC 2024 by up to 65%, and the
+  DB enforces the same rule (`canon_regions_area_needs_source`).
 
 ### Decoration — the `<Decor>` primitive (`texture` / `wash` / `stripe`)
 

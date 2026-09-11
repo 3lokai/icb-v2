@@ -390,6 +390,36 @@ rows**; the atlas carries about 30 taluk detail pages and never claims 57 of any
   coffees today, so nothing renders wrong — but Phase 5 reconciliation should decide whether they
   belong.
 
+### ~~4i. Region card images~~ — SHIPPED 2026-09-12
+
+All 12 page-bearing regions have a commissioned illustrated plate in ImageKit at
+`/regions/<canon-slug>/card-1`, with `canon_regions.logo_url` set. The hub card renders it
+above the title, linked to the same destination as the title.
+
+- Rendered via `coffeeImagePresets.regionCard` in `src/lib/imagekit/index.ts`. The preset
+  already existed, unused, at `600x450 c-force`; it is now **width-only at q-82**, because the
+  plates are `1122x1402` (4:5) and carry their own painted frame that a forced crop would cut.
+  The card container is `aspect-[4/5]`, so the delivered `600x750` fills it exactly.
+- **Fallback:** `REGION_CARD_FALLBACK` (`/images/discovery/region-landscape.png`), exported
+  from the same file. A region with no plate renders the shared landscape, never a broken
+  image — which is what every non-card region would hit if one were ever promoted.
+- `unoptimized` on `next/image`, matching `CoffeeCard`: ImageKit is the optimizer, Next is not.
+- **Do not pre-convert masters to AVIF.** ImageKit content-negotiates with no `f-` param — the
+  2.5 MB PNG delivers as a 91 KB WebP through the card transform. An AVIF master saves nothing
+  and forces a lossy-on-lossy re-encode for browsers served WebP. (This is the reverse of
+  `public/images/discovery/*.avif`, which are pre-converted because they ship with no CDN in
+  front.) ImageKit currently returns WebP even when AVIF is accepted — that is an account-level
+  toggle worth enabling.
+- **Cache trap:** `fetchRegionsCached` is `unstable_cache(..., { revalidate: 86400, tags:
+  ["regions"] })`. After an upload the hub keeps the old image for up to 24 h. There is no
+  revalidate endpoint in this repo; `/api/regions` is uncached and is how you confirm an upload
+  landed. If image swaps become frequent, a route calling `revalidateTag("regions")` is the fix.
+
+**Still unrendered:** `hero_image_url`, `terroir_image_url`, `context_image_url`. The columns
+exist and are selected, but no images have been generated yet, so nothing displays them. Do
+those together with the images, not before — the aspect ratio has to be decided against a real
+crop.
+
 ### 4f. Estates — blocked on content, not code
 
 `/estates/<canon_estates.slug>` (187/187 slugs filled, no bridge needed), rendered from

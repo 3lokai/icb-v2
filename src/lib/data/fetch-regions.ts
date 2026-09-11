@@ -71,7 +71,7 @@ export async function fetchRegions(
   let query = supabase
     .from("canon_regions")
     .select(
-      "id, slug, display_name, country, state, subregion, hero_image_url, signature_profile, " +
+      "id, slug, display_name, country, state, subregion, hero_image_url, logo_url, signature_profile, " +
         "tier, parent_id, district, area_hectares, area_source, area_as_of",
       { count: "exact" }
     );
@@ -97,6 +97,7 @@ export async function fetchRegions(
     state: row.state ?? null,
     subregion: row.subregion ?? null,
     hero_image_url: row.hero_image_url ?? null,
+    logo_url: row.logo_url ?? null,
     signature_profile: row.signature_profile ?? null,
     tier: row.tier ?? null,
     parent_id: row.parent_id ?? null,

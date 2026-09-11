@@ -1,5 +1,12 @@
+import type { RegionCardRegion } from "@/components/cards/RegionCard";
 import { fetchRegionBySlugCached } from "@/lib/data/fetch-region-by-slug";
-import type { LandingPageConfig } from "@/lib/discovery/landing-pages";
+import { fetchRegionCoffeeCountsCached } from "@/lib/data/fetch-region-coffee-counts";
+import { fetchRegionsCached } from "@/lib/data/fetch-regions";
+import {
+  discoveryPagePath,
+  getLandingPageConfig,
+  type LandingPageConfig,
+} from "@/lib/discovery/landing-pages";
 import type { RegionDetail } from "@/types/region-types";
 
 /** One terroir card on a region landing page. `label` picks the icon at render. */
@@ -104,4 +111,65 @@ export async function fetchRegionFacts(
     elevation: formatAltitude(region),
     cards: cards.filter((card): card is RegionFactCard => card !== null),
   };
+}
+
+/** A nearby-region cross-link, ready for `<RegionCard variant="compact">`. */
+export type NearbyRegionCard = {
+  /** The discovery page slug, e.g. `coorg` — not the canon slug. */
+  slug: string;
+  href: string;
+  region: RegionCardRegion;
+  coffeeCount: number;
+};
+
+/**
+ * Resolve `regionProfile.nearbyRegions` (page slugs) into cards with their plate and
+ * tally. Page slugs are not canon slugs, so each one is matched by page slug first and
+ * then by the slug the page filters on — the same bridge `fetchCanonRegion` walks, but
+ * over one cached list instead of a detail fetch per region.
+ *
+ * A slug with no canon row still returns a card: `regionCard()` falls back to the
+ * generic plate, so a nearby link never silently disappears.
+ */
+export async function fetchNearbyRegionCards(
+  slugs: string[]
+): Promise<NearbyRegionCard[]> {
+  const configs = slugs
+    .map((slug) => getLandingPageConfig(slug))
+    .filter(
+      (config): config is LandingPageConfig =>
+        config != null && config.type === "region"
+    );
+  if (configs.length === 0) {
+    return [];
+  }
+
+  const [{ items }, counts] = await Promise.all([
+    fetchRegionsCached({ countries: ["India"] }, 1, 200, "name_asc"),
+    fetchRegionCoffeeCountsCached(),
+  ]);
+  const bySlug = new Map(items.map((region) => [region.slug, region]));
+  const rolledBySlug = new Map(
+    counts.map((count) => [count.slug, count.rolled_count])
+  );
+
+  return configs.map((config) => {
+    const canonSlug =
+      (bySlug.has(config.slug) ? config.slug : null) ??
+      config.filter.region_slugs?.find((slug) => bySlug.has(slug)) ??
+      config.slug;
+    const canon = bySlug.get(canonSlug);
+    return {
+      slug: config.slug,
+      href: discoveryPagePath(config.slug),
+      region: {
+        slug: config.slug,
+        // The page's own label, not the canon name: a cross-link should read the
+        // same as the page it lands on (`Coorg`, not `Kodagu (Coorg)`).
+        display_name: config.entityLabel,
+        logo_url: canon?.logo_url ?? null,
+      },
+      coffeeCount: rolledBySlug.get(canonSlug) ?? 0,
+    };
+  });
 }

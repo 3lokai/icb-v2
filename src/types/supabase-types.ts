@@ -342,6 +342,7 @@ export type Database = {
           area_hectares: number | null;
           area_source: string | null;
           climate: string | null;
+          context_image_url: string | null;
           country: string;
           created_at: string;
           description: string | null;
@@ -364,6 +365,7 @@ export type Database = {
           soil: string | null;
           state: string | null;
           subregion: string | null;
+          terroir_image_url: string | null;
           terroir_notes: string | null;
           tier: string | null;
           updated_at: string;
@@ -376,6 +378,7 @@ export type Database = {
           area_hectares?: number | null;
           area_source?: string | null;
           climate?: string | null;
+          context_image_url?: string | null;
           country: string;
           created_at?: string;
           description?: string | null;
@@ -398,6 +401,7 @@ export type Database = {
           soil?: string | null;
           state?: string | null;
           subregion?: string | null;
+          terroir_image_url?: string | null;
           terroir_notes?: string | null;
           tier?: string | null;
           updated_at?: string;
@@ -410,6 +414,7 @@ export type Database = {
           area_hectares?: number | null;
           area_source?: string | null;
           climate?: string | null;
+          context_image_url?: string | null;
           country?: string;
           created_at?: string;
           description?: string | null;
@@ -432,6 +437,7 @@ export type Database = {
           soil?: string | null;
           state?: string | null;
           subregion?: string | null;
+          terroir_image_url?: string | null;
           terroir_notes?: string | null;
           tier?: string | null;
           updated_at?: string;
