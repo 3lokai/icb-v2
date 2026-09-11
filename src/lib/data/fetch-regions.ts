@@ -72,6 +72,7 @@ export async function fetchRegions(
     .from("canon_regions")
     .select(
       "id, slug, display_name, country, state, subregion, hero_image_url, logo_url, signature_profile, " +
+        "altitude_min_m, altitude_max_m, " +
         "tier, parent_id, district, area_hectares, area_source, area_as_of",
       { count: "exact" }
     );
@@ -99,6 +100,8 @@ export async function fetchRegions(
     hero_image_url: row.hero_image_url ?? null,
     logo_url: row.logo_url ?? null,
     signature_profile: row.signature_profile ?? null,
+    altitude_min_m: row.altitude_min_m ?? null,
+    altitude_max_m: row.altitude_max_m ?? null,
     tier: row.tier ?? null,
     parent_id: row.parent_id ?? null,
     district: row.district ?? null,

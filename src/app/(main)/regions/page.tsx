@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
@@ -44,6 +45,19 @@ const STATELESS_GROUP = "North-East India";
  * `/coffees/chikmagalur` actually returns.
  */
 const PEER_REGIONS = new Set(["baba-budangiri"]);
+
+/** Shorter labels for the jump nav, where the full state name would crowd the row. */
+const NAV_LABELS: Record<string, string> = {
+  [STATELESS_GROUP]: "North-East",
+};
+
+/** Anchor id for a state heading, e.g. `North-East India` -> `north-east-india`. */
+function stateAnchor(state: string): string {
+  return state
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
 
 /**
  * States in Coffee Board order (traditional growing areas first), then anything
@@ -149,7 +163,19 @@ export default async function RegionsPage() {
   }
 
   const groups = [...cardsByState.entries()]
-    .map(([state, stateCards]) => ({ state, cards: stateCards }))
+    .map(([state, stateCards]) => ({
+      state,
+      cards: stateCards,
+      // Hoisted off the cards so each card can be a single link. Deduped because a
+      // descendant can roll up into more than one card in the same state.
+      subRegions: [
+        ...new Map(
+          stateCards
+            .flatMap((card) => card.children)
+            .map((child) => [child.region.id, child])
+        ).values(),
+      ].sort((a, b) => b.coffeeCount - a.coffeeCount),
+    }))
     .sort((a, b) => {
       const rankA = STATE_ORDER.indexOf(a.state);
       const rankB = STATE_ORDER.indexOf(b.state);
@@ -204,26 +230,88 @@ export default async function RegionsPage() {
               weight="bold"
             />
           </Link>
+
+          {/* Jump nav — built from the rendered groups, so a state with no cards never
+              gets a link that scrolls nowhere. */}
+          <nav
+            aria-label="Jump to a state"
+            className="flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-border/60 pt-4"
+          >
+            {groups.map((group, index) => (
+              <Fragment key={group.state}>
+                {index > 0 ? (
+                  <span aria-hidden="true" className="text-micro opacity-40">
+                    ·
+                  </span>
+                ) : null}
+                <Link
+                  className="text-label text-muted-foreground transition-colors hover:text-accent"
+                  href={`#${stateAnchor(group.state)}`}
+                >
+                  {NAV_LABELS[group.state] ?? group.state}
+                </Link>
+              </Fragment>
+            ))}
+          </nav>
         </Stack>
       </Section>
 
-      {groups.map((group) => (
-        <Section key={group.state} spacing="tight">
-          <Stack gap="6">
-            <h2 className="text-title">{group.state}</h2>
-            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-              {group.cards.map(({ region, coffeeCount, children }) => (
+      {/*
+        One continuous grid for the whole page, not a Section per state: state headers
+        are `col-span-full` dividers inside it, so the columns stay on a single track and
+        a one-region state costs one row instead of a screenful. `auto-fill` +
+        `minmax(15rem, 1fr)` is what lets Karnataka's five sit on one row wherever five
+        fit, and fall back to four or three without a breakpoint per case.
+      */}
+      <Section spacing="tight">
+        <div
+          className="grid gap-x-4 gap-y-6"
+          style={{
+            gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 1fr))",
+          }}
+        >
+          {groups.map((group) => (
+            <Fragment key={group.state}>
+              <div
+                className="col-span-full flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-border/60 pt-5 first:border-t-0 first:pt-0"
+                id={stateAnchor(group.state)}
+                style={{ scrollMarginTop: "6rem" }}
+              >
+                <h2 className="text-title">{group.state}</h2>
+                {/*
+                  Sub-regions that carry coffees but no card of their own. They used to be
+                  chips inside each card, which made the card a nested click target; here
+                  they read as the state's index line and every internal link survives.
+                */}
+                {group.subRegions.length > 0 ? (
+                  <p className="text-micro flex flex-wrap gap-x-3 gap-y-1 font-normal">
+                    {group.subRegions.map((child) => (
+                      <Link
+                        className="transition-colors hover:text-accent hover:underline"
+                        href={regionBrowseHref(child.region.slug)}
+                        key={child.region.id}
+                      >
+                        {child.region.display_name}{" "}
+                        <span className="tabular-nums opacity-70">
+                          ({child.coffeeCount})
+                        </span>
+                      </Link>
+                    ))}
+                  </p>
+                ) : null}
+              </div>
+
+              {group.cards.map(({ region, coffeeCount }) => (
                 <RegionCard
                   coffeeCount={coffeeCount}
                   key={region.id}
                   region={region}
-                  subRegions={children}
                 />
               ))}
-            </div>
-          </Stack>
-        </Section>
-      ))}
+            </Fragment>
+          ))}
+        </div>
+      </Section>
     </div>
   );
 }

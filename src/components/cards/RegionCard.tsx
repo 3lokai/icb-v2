@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Cluster } from "@/components/primitives/cluster";
 import { Stack } from "@/components/primitives/stack";
 import { regionBrowseHref } from "@/lib/discovery/landing-pages";
 import { coffeeImagePresets } from "@/lib/imagekit";
@@ -12,62 +11,47 @@ import { cn } from "@/lib/utils";
 
 /**
  * Structural, not `RegionSummary`: the compact variant is fed from landing-page
- * configs and from `EstateRegionSummary`, neither of which carries the hub's
- * sourced-area columns. Everything past `logo_url` is optional and drops silently.
+ * configs and from `EstateRegionSummary`, neither of which carries the hub's terroir
+ * columns. Everything past `logo_url` is optional and drops silently.
  */
 export type RegionCardRegion = {
   slug: string;
   display_name: string;
   /** The `card` image slot — a framed Coffee-Board-style plate, 4:5, ImageKit. */
   logo_url: string | null;
+  altitude_min_m?: number | null;
+  altitude_max_m?: number | null;
   district?: string | null;
   signature_profile?: string | null;
-  area_hectares?: number | null;
-  area_source?: string | null;
-  area_as_of?: string | null;
-};
-
-export type RegionCardChild = {
-  region: Pick<RegionCardRegion, "slug" | "display_name"> & { id?: string };
-  coffeeCount: number;
 };
 
 type RegionCardProps = {
   region: RegionCardRegion;
   coffeeCount: number;
   /**
-   * `default` — the /regions hub: full plate, profile, provenance, sub-region chips.
+   * `default` — the /regions hub: plate, then name, elevation, signature profile.
    * `compact` — a cross-link on a discovery page: plate stamp, name, tally.
    */
   variant?: "default" | "compact";
-  /** Sub-units with coffees of their own. Ignored by `compact`. */
-  subRegions?: RegionCardChild[];
   /** Defaults to the region's browse page. Discovery pages pass their own page path. */
   href?: string;
   className?: string;
 };
 
-/** Sub-region chips per card, sized to the 4-up card width; the rest collapse into "+N more". */
-const CHILD_CHIP_LIMIT = 4;
-
 // ============================================================================
 // HELPERS
 // ============================================================================
 
-/**
- * Never render a figure without its provenance: the Coffee Board's older web figures
- * disagree with NRSC 2024 by up to 65%, so an unattributed number is worse than none.
- * Enforced in the DB by `canon_regions_area_needs_source`.
- */
-function formatArea(region: RegionCardRegion): string | null {
-  if (!region.area_hectares || !region.area_source || !region.area_as_of) {
-    return null;
+/** `900–1,800 m`, or an open-ended band when only one bound is known. */
+function formatElevation(region: RegionCardRegion): string | null {
+  const { altitude_min_m: min, altitude_max_m: max } = region;
+  if (min && max) {
+    return `${min.toLocaleString("en-IN")}–${max.toLocaleString("en-IN")} m`;
   }
-  const asOf = new Date(region.area_as_of).toLocaleDateString("en-IN", {
-    month: "short",
-    year: "numeric",
-  });
-  return `${region.area_hectares.toLocaleString("en-IN")} ha under coffee · ${region.area_source}, ${asOf}`;
+  if (min) {
+    return `From ${min.toLocaleString("en-IN")} m`;
+  }
+  return max ? `Up to ${max.toLocaleString("en-IN")} m` : null;
 }
 
 function formatTally(count: number): string {
@@ -114,16 +98,20 @@ function Plate({
 /**
  * RegionCard — a mounted field-guide plate.
  *
- * The plate bleeds to the card's edges so its own painted border becomes the card's
- * top edge (a plate inset inside a bordered card double-frames it), and the caption
- * block sits below on warm paper, the way a specimen is captioned in the guide this
- * whole system is modelled on.
+ * The plate bleeds to the card's edges so its own painted border becomes the card's top
+ * edge (a plate inset inside a bordered card double-frames it), and the caption block
+ * sits below on warm paper, the way a specimen is captioned in the guide this whole
+ * system is modelled on.
+ *
+ * The caption carries three facts and no more — name, elevation, signature profile —
+ * with the tally and district demoted to a footnote. Sub-region links deliberately live
+ * outside the card (see the `/regions` state headers): a chip inside it would be a
+ * nested click target, and the whole card is one link.
  */
 export function RegionCard({
   region,
   coffeeCount,
   variant = "default",
-  subRegions = [],
   href,
   className,
 }: RegionCardProps) {
@@ -157,42 +145,33 @@ export function RegionCard({
     );
   }
 
-  const area = formatArea(region);
-  const visibleChildren = subRegions.slice(0, CHILD_CHIP_LIMIT);
-  const hiddenChildCount = subRegions.length - visibleChildren.length;
+  const elevation = formatElevation(region);
 
   return (
-    <div
+    <Link
       className={cn(
-        "group surface-1 card-hover relative flex flex-col overflow-hidden rounded-xl",
+        "group surface-1 card-hover flex flex-col overflow-hidden rounded-xl",
         "transition-[border-color,box-shadow,transform] duration-300",
         "hover:border-accent/40 hover:shadow-md hover:-translate-y-0.5",
         "motion-reduce:transition-none motion-reduce:hover:translate-y-0",
-        "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className
       )}
+      href={target}
     >
       <Plate
         region={region}
-        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 260px"
       />
 
-      <div className="card-padding-compact flex flex-1 flex-col gap-2.5">
+      <div className="flex flex-1 flex-col gap-2 p-4">
         <Stack gap="1">
-          {/* Stretched link: the whole card is one target with one accessible name,
-              while the sub-region chips below stay independently clickable. */}
-          <h3 className="text-heading text-balance">
-            <Link
-              className="outline-none after:absolute after:inset-0 after:content-[''] transition-colors group-hover:text-accent"
-              href={target}
-            >
-              {region.display_name}
-            </Link>
+          <h3 className="text-heading text-balance transition-colors group-hover:text-accent">
+            {region.display_name}
           </h3>
-          <p className="text-caption">
-            <span className="tabular-nums">{tally}</span>
-            {region.district ? ` · ${region.district}` : ""}
-          </p>
+          {elevation ? (
+            <p className="text-caption tabular-nums">{elevation}</p>
+          ) : null}
         </Stack>
 
         {region.signature_profile ? (
@@ -201,36 +180,11 @@ export function RegionCard({
           </p>
         ) : null}
 
-        {subRegions.length > 0 ? (
-          <Cluster className="relative" gap="2">
-            {visibleChildren.map((child) => (
-              <Link
-                className="text-micro rounded-full border border-border/60 px-2.5 py-0.5 transition-colors hover:border-accent/60 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                href={regionBrowseHref(child.region.slug)}
-                key={child.region.id ?? child.region.slug}
-              >
-                {child.region.display_name}{" "}
-                <span className="tabular-nums">({child.coffeeCount})</span>
-              </Link>
-            ))}
-            {hiddenChildCount > 0 ? (
-              <Link
-                className="text-micro rounded-full border border-dashed border-border/60 px-2.5 py-0.5 transition-colors hover:border-accent/60 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                href={target}
-              >
-                +{hiddenChildCount} more
-              </Link>
-            ) : null}
-          </Cluster>
-        ) : null}
-
-        {/* Provenance footnote, pinned to the bottom so the rule lines up across a row. */}
-        {area ? (
-          <p className="text-micro mt-auto border-t border-border/60 pt-2.5 font-normal leading-snug">
-            {area}
-          </p>
-        ) : null}
+        <p className="text-micro mt-auto pt-2 font-normal opacity-70">
+          <span className="tabular-nums">{tally}</span>
+          {region.district ? ` · ${region.district}` : ""}
+        </p>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -362,10 +362,11 @@ mount it.
 - **Full bleed, not inset.** The plate runs to the card's edges so its own border becomes the card's
   top edge — a framed plate inset inside a bordered card double-frames it.
 - **Two variants, one component** (`src/components/cards/RegionCard.tsx`):
-  - `default` — the `/regions` hub, 4-up at `xl` (~290px wide, so a ~362px tall plate; a 3-up
-    region card is a poster, not an index entry). Plate at 440px wide, then `card-padding-compact`: name (h3, Fraunces), tally ·
-    district, signature profile, up to four sub-region chips, and the sourced-area line as a
-    footnote under a hairline rule.
+  - `default` — the `/regions` hub. Plate at 440px wide, then exactly three facts, in order of
+    weight: **name** (h3, Fraunces), **elevation**, **signature profile**. Tally and district drop
+    to a 70%-opacity footnote; the sourced-area line is not on the card at all (the page intro
+    carries the 445,369 ha figure with its provenance). Three facts is the ceiling — at index
+    density a fourth turns the caption into noise and the plate stops leading.
   - `compact` — every cross-link from a discovery page to a region page: the "Explore Nearby
     Regions" strip on region pages, and the origin entries in "Further Exploration" everywhere
     else. One owner per page — a region page's `related` repeats its `nearbyRegions` almost
@@ -377,11 +378,18 @@ mount it.
   aligns on the figure.
 - **Hover** is the mount reacting, not the plate: border warms to `accent/40`, title to `accent`, a
   0.5px lift with a coffee-tinted `shadow-md`. Collapses under `prefers-reduced-motion`.
-- **One link per card.** The title carries a stretched link (`after:absolute after:inset-0`) so the
-  card has a single accessible name; sub-region chips stay independently clickable above it.
+- **The card is one `<a>`.** Not a stretched link over a div — the whole element is the link, which
+  is only possible because nothing clickable lives inside it. Sub-region links used to be chips in
+  the caption; they now sit on the `/regions` state divider, so no card contains a nested target.
+- **The hub is one grid, not a grid per state.** `repeat(auto-fill, minmax(15rem, 1fr))` with state
+  headings as `col-span-full` dividers inside it. Cards flow continuously on one column track, so a
+  five-region state lands on one row wherever five columns fit, and a one-region state costs one
+  row rather than a screenful — neither of which a Section-per-state can do. Dividers are a
+  hairline + `text-title` at `pt-5`, and a compact jump nav under the intro anchors to each.
 - **Provenance is never optional.** An area figure renders only with its `area_source` _and_
   `area_as_of` — the Coffee Board's older web figures disagree with NRSC 2024 by up to 65%, and the
-  DB enforces the same rule (`canon_regions_area_needs_source`).
+  DB enforces the same rule (`canon_regions_area_needs_source`). This is why the figure left the
+  card rather than being trimmed to fit it.
 
 ### Decoration — the `<Decor>` primitive (`texture` / `wash` / `stripe`)
 

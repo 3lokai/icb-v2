@@ -129,6 +129,9 @@ export type RegionSummary = {
   /** Card badge for the /regions hub. Slot: `card`. */
   logo_url: string | null;
   signature_profile: string | null;
+  /** Elevation band, rendered on the hub card directly under the name. */
+  altitude_min_m: number | null;
+  altitude_max_m: number | null;
 
   // Structure + sourced figures, for the /regions hub: group by `state`, nest by
   // `parent_id`, and show `area_hectares` with its `area_source` attribution.
