@@ -420,6 +420,106 @@ exist and are selected, but no images have been generated yet, so nothing displa
 those together with the images, not before — the aspect ratio has to be decided against a real
 crop.
 
+### ~~4j. India map on `/regions`~~ — SHIPPED 2026-09-12
+
+Closes `[regions-guide-map-asset]`, open since 2026-06-11 in the icb-claude backlog. Repo asset
+on the hub, not a Sanity image in the guide article.
+
+**Files.** `scripts/build-region-map.mjs` (run by hand), `src/lib/discovery/region-map-geometry.ts`
+(generated, committed), `src/components/discovery/RegionMap.tsx`, plus ~60 lines in
+`src/app/(main)/regions/page.tsx`. `d3-geo` is a **devDependency** — geometry is projected once
+at author time into path strings, so nothing geographic ships or runs in the browser.
+
+**Boundaries** come from `udit-001/india-maps-data` (post-2022 districts — which is why
+`Alluri Sitharama Raju` resolves directly instead of needing a pre-split Visakhapatnam stand-in).
+Downloaded into `scripts/data/`, gitignored; only the generated TS is committed. One alias is
+needed, `Chamarajanagar` → `Chamarajanagara`, and the script exits non-zero if any of the 18
+districts fails to resolve.
+
+**Traps the build already worked around, so don't re-derive them:**
+
+- **Full-India frame does not work.** Fitted to the country, every coffee district lands in the
+  bottom-left eighth and Kodagu is a ~25px hover target. The frame is the five southern states;
+  Telangana and Goa are loaded as *context-only* geometry because without Telangana there is a
+  state-shaped hole in the middle that reads as a rendering bug.
+- **Stroking does not dissolve.** A state or multi-district shape is many polygons concatenated;
+  any contrasting stroke redraws every internal border and it reads as a mesh. They are stroked
+  in their own fill colour instead, which is also what closes the hairline cracks independent
+  simplification opens. Consequence: hover on those shapes must be a fill change, not an
+  outline, because there is no dissolved perimeter to outline.
+- **Full-fidelity paths are 868 KB.** Douglas–Peucker at 0.6px (2.5px for context shapes) brings
+  the generated file to ~60 KB. The RDP is iterative, not recursive — some rings are 20k points
+  and the recursive form blows the stack.
+- **`log(a)/log(max)` is not a normalised scale.** `log(153)/log(135796)` is already 0.43, so the
+  naive form spends none of the ramp below its midpoint. Normalise across the observed range.
+- The script prettier-formats its own output, so this does not become a second instance of the
+  `supabase-types` "remember to run prettier" trap below.
+
+**The map deliberately carries two sources on two scales.** Main map: NRSC/ISRO atlas, mapped
+canopy, 445,369 ha over 18 districts. Inset: Coffee Board, *registered planted area*, 6,092 ha
+over seven states. Each has its own legend line, and the inset's says outright that the two are
+not comparable. See 4k.
+
+### 4k. North-East figures — two sources that disagree 9x
+
+The NRSC atlas treats the North-East as **one unit**: `NORTH-EASTERN COFFEE GROWING REGION —
+Assam, Arunachal Pradesh, Mizoram, Meghalaya, Nagaland, Tripura … 674`. No per-state breakdown
+exists in it, so there is nothing to shade a choropleth with.
+
+The **Coffee Board does publish per-state figures**, and they are the only per-state numbers that
+exist. Crop year 2023-24, provisional, planted area in hectares — Annual Report 2023-24 §3.1 and
+`Database on Coffee` July 2024 Table 1.5 (`coffeeboard.gov.in/Database/DATABASE3_JULY2024.pdf`,
+the newest edition; later URLs 404):
+
+| State | Planted | Bearing | Holdings |
+|---|---|---|---|
+| Nagaland | 1,505 | 541 | 2,517 |
+| Mizoram | 1,503 | 388 | 2,412 |
+| Meghalaya | 1,320 | 433 | 2,712 |
+| Assam | 578 | 239 | 1,370 |
+| Arunachal Pradesh | 561 | 312 | 676 |
+| Tripura | 402 | 167 | 746 |
+| Manipur | 222 | 14 | 322 |
+| **Total** | **6,092** | **2,094** | **10,755** |
+
+**Never put these on the same colour scale as the atlas figures.** NRSC maps remotely sensed
+plantation canopy; the Coffee Board counts registered planted area including stock not yet
+bearing. For the same six states that is 674 ha against 6,092 ha. This is the `area_source` rule
+in §5, at 9x rather than the 65% it warns about. Note also that **Manipur is in the Coffee Board
+data and absent from the NRSC six**, which is a second reason the two sets cannot be merged.
+
+**Three more things worth knowing before touching NE data:**
+
+- **Sub-district granularity exists for two states**, as Coffee Board liaison *zones*, not
+  administrative districts: Assam → Haflong 383 / Bijni 147 / Karbi Anglong 48; Meghalaya →
+  Tura 915 / Shillong 405. Deliberately unused — zones have no boundary file to join against,
+  so using them means hand-mapping each to a district. `Tura` ≈ West Garo Hills and
+  `Shillong` ≈ East Khasi Hills are clean; `Bijni` (Chirang) is not.
+- **Production is NER-aggregate only** — 160 MT in 2023-24 (70 Arabica + 90 Robusta), 76 kg/ha.
+  There are no per-state production figures.
+- **State governments disagree with the Board.** Nagaland's Dept. of Land Resources claims
+  9,832 ha, and an adviser claimed 10,200 ha in October 2024 — ~6.5x the Board's 1,505 ha for the
+  same state. Meghalaya's MBDA claims ~300 ha against the Board's 1,320. If a third figure turns
+  up, it is probably one of these, not a correction.
+- **Do not use the 2021 vintage.** The per-state numbers circulating in journalism (Arunachal 479,
+  Assam 429, Meghalaya 1,100, Mizoram 1,300, Nagaland 932, Tripura 264) are the same Coffee Board
+  table as of 17 Nov 2021, not independent corroboration. Neither is indiancoffeebeans.com, which
+  several searches surface.
+
+**Roaster sourcing claims — for page copy, never for the map.** These are brands describing their
+own sourcing, not survey figures, and must stay out of anything shaded from a statistic. They are
+leads for `/coffees/northeast-india`, which currently names only Garo/Khasi/West Khasi Hills:
+
+- **Été Coffee Roasters** (Kohima, founded 2016; "Été" = "us/ours" in Lotha Naga) — press
+  coverage places its sourcing in four Nagaland districts, **Mon, Wokha, Mokokchung, Kohima**.
+  Its own site names no districts, elevations, varietals or processing.
+- **7000 Steps** (Uniquely Zizira, same company as Zizira) — **Mynriah village, East Khasi
+  Hills, stated at 1,300 m**, plus Siltham, Pynursla, Nongskhen, Marngar; and **N. Leikul** and
+  **Gunjung** in **Dima Hasao, Assam**. Its 2025 blog repeats large third-hand area stats with no
+  primary citation — ignore those.
+- **Smoky Falls Tribe Coffee** — per Meghalaya's MBDA: Syltham, Mawlatang, Umsning, Marngar,
+  with **Tyrna** (East Khasi Hills) primary.
+
 ### 4f. Estates — blocked on content, not code
 
 `/estates/<canon_estates.slug>` (187/187 slugs filled, no bridge needed), rendered from
