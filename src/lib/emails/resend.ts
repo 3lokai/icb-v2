@@ -1,7 +1,19 @@
 import { Resend } from "resend";
 
-// Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Constructed lazily, not at module scope. `new Resend(undefined)` throws, and Next
+// collects page data for routes that import this module (e.g. /auth/callback) during
+// `next build`. On Vercel every environment variable is present at build time so that
+// never surfaced; in a container RESEND_API_KEY is deliberately runtime-only, and
+// module-scope construction failed the build with "Missing API key".
+//
+// Nothing else changes: every send function below already returns early when
+// RESEND_API_KEY is unset, so the client is only ever built on a path that has a key.
+let resendClient: Resend | null = null;
+
+function resend(): Resend {
+  resendClient ??= new Resend(process.env.RESEND_API_KEY);
+  return resendClient;
+}
 
 export interface WelcomeEmailParams {
   email: string;
@@ -34,7 +46,7 @@ export async function sendWelcomeEmail({
     const userName = name || "Coffee Lover";
     const ccEmail = "gta3lok.ai@gmail.com";
 
-    await resend.emails.send({
+    await resend().emails.send({
       from: "thrilok.gt@indiancoffeebeans.com",
       to: email,
       cc: ccEmail,
@@ -99,7 +111,7 @@ export async function sendNewsletterWelcomeEmail({
   try {
     const userName = name || "Coffee Lover";
 
-    await resend.emails.send({
+    await resend().emails.send({
       from: "thrilok.gt@indiancoffeebeans.com",
       to: email,
       subject: "Welcome to ICB Fortnight",

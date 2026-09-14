@@ -91,6 +91,7 @@
     "react-leaflet": "^5.0.0",
     "recharts": "^3.7.0",
     "resend": "^6.6.0",
+    "sharp": "^0.34.5",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.2.1"
@@ -112,7 +113,6 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4",
     "prettier": "^3.4.2",
-    "sharp": "^0.34.5",
     "supabase": "^2.72.8",
     "tailwindcss": "^4",
     "tsx": "^4.19.2",
@@ -133,7 +133,7 @@
     "@types/react-dom": "19.2.2"
   },
   "_comment": {
-    "node-domexception-deprecation": "Deprecation warning from transitive dependency (supabase → node-fetch → fetch-blob → node-domexception). Safe to ignore - Node.js 18+ has native DOMException support. Will be resolved when upstream packages update."
+    "node-domexception-deprecation": "Deprecation warning from transitive dependency (supabase \u2192 node-fetch \u2192 fetch-blob \u2192 node-domexception). Safe to ignore - Node.js 18+ has native DOMException support. Will be resolved when upstream packages update."
   },
   "browserslist": {
     "production": [

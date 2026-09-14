@@ -1,6 +1,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
-import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import {
+  createAnonServerClient,
+  createServiceRoleClient,
+} from "@/lib/supabase/server";
 import {
   NO_MATCH_ID,
   resolveRegionSlugsToCanonIds,
@@ -59,7 +62,10 @@ export async function fetchEstates(
     supabaseClient ??
     (process.env.SUPABASE_SECRET_KEY
       ? await createServiceRoleClient()
-      : await createClient());
+      // Cookie-free anon client (not createClient) so this is safe inside
+      // `unstable_cache` — see fetch-coffee-by-slug.ts. A session-bearing client
+      // must never be used here: cached results are shared across all users.
+      : createAnonServerClient());
 
   const resolvedFilters = { ...filters };
   if (filters.region_slugs && filters.region_slugs.length > 0) {

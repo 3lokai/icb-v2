@@ -1,0 +1,71 @@
+# icb-v2 — Coolify deployment for IndianCoffeeBeans.com.
+#
+# Unlike icb-claude/docker-compose.yml this service is STATELESS: every datastore is an
+# external HTTPS service (Supabase, Sanity, Upstash, PostHog, ImageKit), so there are no
+# bind mounts and nothing on the box to back up.
+#
+# Domain and HTTPS are configured in the Coolify UI. Deliberately NO Traefik basic-auth
+# middleware: this is a public site, and on the staging hostname a 401 would be
+# uncacheable — which would block verifying `cf-cache-status: HIT`, the whole point of
+# staging. Staging is kept out of the index by APP_ENV instead (noindex header +
+# robots.txt Disallow), see icb-claude/docs/vercel-imagekit-to-vps-migration.md §A1.
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      secrets:
+        - supabase_secret_key
+      args:
+        # Everything Next.js needs at BUILD time. APP_ENV decides the production noindex
+        # header and the robots.txt body, both of which are baked during `next build` —
+        # set it to `staging` on the staging resource and `production` on the live one.
+        APP_ENV: ${APP_ENV:-production}
+        NODE_BUILD_MEMORY: ${NODE_BUILD_MEMORY:-3072}
+        POSTHOG_API_KEY: ${POSTHOG_API_KEY:-}
+        POSTHOG_PROJECT_ID: ${POSTHOG_PROJECT_ID:-}
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-}
+        NEXT_PUBLIC_CLARITY_PROJECT_ID: ${NEXT_PUBLIC_CLARITY_PROJECT_ID:-}
+        NEXT_PUBLIC_ENABLE_ANALYTICS: ${NEXT_PUBLIC_ENABLE_ANALYTICS:-}
+        NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
+        NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY: ${NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY:-}
+        NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT: ${NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT:-}
+        NEXT_PUBLIC_POSTHOG_HOST: ${NEXT_PUBLIC_POSTHOG_HOST:-}
+        NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN: ${NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN:-}
+        NEXT_PUBLIC_SANITY_DATASET: ${NEXT_PUBLIC_SANITY_DATASET:-}
+        NEXT_PUBLIC_SANITY_PROJECT_ID: ${NEXT_PUBLIC_SANITY_PROJECT_ID:-}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-}
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: "0.0.0.0"
+      # Also needed at runtime: server code reads it outside the build-time gates.
+      APP_ENV: ${APP_ENV:-production}
+      # Server-side secrets (Supabase service role, Sanity token, Upstash, CRON_SECRET,
+      # Resend, ImageKit private key) are injected by Coolify's environment UI.
+    healthcheck:
+      # node:24-slim ships no curl or wget; node's global fetch is always present.
+      # /api/v1/health is public and needs no API key.
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      # Next 16 standalone cold start can exceed 20s; 60s stops Coolify failing a deploy
+      # on a container that is still booting.
+      start_period: 60s
+    expose:
+      - "3000"
+    labels:
+      - "traefik.enable=true"
+      # Server Actions accept 3MB bodies (next.config.ts experimental.serverActions),
+      # so the proxy must not truncate a 2MB avatar upload first.
+      - "traefik.http.middlewares.icb-v2-body.buffering.maxRequestBodyBytes=4194304"
+
+secrets:
+  # Sourced from the environment so Coolify's env UI supplies it the same way it supplies
+  # every other secret. Never becomes an image layer — see the Dockerfile comment.
+  supabase_secret_key:
+    environment: SUPABASE_SECRET_KEY

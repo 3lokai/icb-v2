@@ -1,0 +1,35 @@
+# Git
+.git
+.gitignore
+.github
+
+# Node / build output — the image builds its own
+node_modules
+.next
+out
+
+# Secrets never enter the build context; Coolify injects env vars instead
+.env
+.env.*
+!.env.example
+
+# Local tooling and editor state
+.vercel
+.cursor
+.claude
+.agents
+.husky
+.vscode
+.idea
+
+# Tests, docs and analysis artefacts — not needed to build or run
+docs
+ai_docs
+coverage
+lighthouse-report.json
+*.md
+!README.md
+
+# Python / misc strays
+**/__pycache__
+**/.venv
