@@ -3,7 +3,6 @@ import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import { fetchUserProfileByUsername } from "@/lib/data/fetch-user-profile";
 
-export const runtime = "edge";
 
 export async function GET(
   req: NextRequest,

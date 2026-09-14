@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAnalytics as NextGoogleAnalytics } from "@next/third-parties/google";
 import { Analytics as GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
@@ -234,7 +233,6 @@ export default async function RootLayout({
             </AuthProvider>
           </QueryProvider>
         </ThemeProvider>
-        <SpeedInsights />
         {/* After app shell so it stacks above .surface-0; z-[1] keeps it under z-10+ UI (hero, nav). */}
         <div aria-hidden className="bg-noise z-[1]" />
       </body>

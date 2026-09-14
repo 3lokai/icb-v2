@@ -11,8 +11,18 @@ const APP_URL = (
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com"
 ).replace(/\/$/, "");
 
+// A staging copy of a 1,252-URL site is an index-pollution risk, not a secrecy one:
+// left crawlable it competes with production for the same queries. Belt to the
+// X-Robots-Tag: noindex brace in next.config.ts — this one does not depend on a
+// header gate being wired correctly. Deliberately NOT basic auth: a 401 is
+// uncacheable, and verifying `cf-cache-status: HIT` is the point of staging.
+const IS_PRODUCTION = (process.env.APP_ENV ?? process.env.VERCEL_ENV) === "production";
+
 /** Build robots.txt with crawl rules and the sitemap URL. */
 function buildRobotsTxt(): string {
+  if (!IS_PRODUCTION) {
+    return ["User-agent: *", "Disallow: /", ""].join("\n");
+  }
   return [
     "User-agent: CCBot",
     `Content-Signal: ${CONTENT_SIGNAL}`,

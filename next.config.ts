@@ -13,6 +13,15 @@ if (process.env.ANALYZE === "true") {
   });
 }
 
+// Deployment environment. Vercel sets VERCEL_ENV automatically; a self-hosted box
+// (Coolify) has no such variable, so APP_ENV is set explicitly there. Reading APP_ENV
+// first and falling back to VERCEL_ENV keeps both hosts behaving identically while
+// they run side by side during the migration.
+//
+// This gate decides the production `noindex` header: if it evaluates to anything but
+// "production" on the live site, EVERY page ships X-Robots-Tag: noindex.
+const appEnv = process.env.APP_ENV ?? process.env.VERCEL_ENV;
+
 const nextConfig: NextConfig = {
   // Server Actions configuration
   // Allow 3MB body size to support 2MB image uploads (base64 encoding adds ~33% overhead)
@@ -66,6 +75,9 @@ const nextConfig: NextConfig = {
     ],
     qualities: [75, 80, 85, 90],
   },
+  // Self-hosting: emit .next/standalone so the runtime image carries only the server
+  // plus its traced deps, instead of the whole node_modules tree.
+  output: "standalone",
   // Enable compression (Vercel handles this automatically, but explicit for clarity)
   compress: true,
   skipTrailingSlashRedirect: true,
@@ -228,7 +240,7 @@ const nextConfig: NextConfig = {
       },
     ];
 
-    if (process.env.VERCEL_ENV !== "production") {
+    if (appEnv !== "production") {
       return [
         {
           source: "/:path*",
@@ -314,7 +326,7 @@ const canUploadSourcemaps = Boolean(postHogApiKey && postHogProjectId);
 
 // Missing credentials degrade to a build with no source maps at all: safe, but it means
 // every PostHog stack stays minified. That is invisible unless the build says so.
-if (!canUploadSourcemaps && process.env.VERCEL_ENV === "production") {
+if (!canUploadSourcemaps && appEnv === "production") {
   console.warn(
     "posthog: no POSTHOG_API_KEY/POSTHOG_PROJECT_ID — shipping without source maps, stacks will be minified"
   );
