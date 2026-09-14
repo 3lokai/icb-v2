@@ -155,8 +155,20 @@ async function handleSubmit(request: Request) {
   // Without this the no-TTL listing caches stay stuck indefinitely — a new coffee
   // never appears and roaster cards keep a stale count. See fetch-roasters.ts /
   // fetch-coffees.ts (both tagged, and now revalidate: 86400 as a fallback).
-  revalidateTag("coffees", "max");
-  revalidateTag("roasters", "max");
+  //
+  // Gated on whether anything actually changed. These tags cover fetch-coffee-by-slug
+  // (~1,500 per-coffee keys), fetch-roaster-by-slug (~120), and every listing and
+  // filter-meta cache. Purging unconditionally meant a full re-population by crawler
+  // traffic across ~1,250 URLs EVERY day, while the scraper that changes this data
+  // only runs weekly — so ~6 days in 7 the purge invalidated caches that were still
+  // correct, and each repopulation is a billed ISR write. The `revalidate: 86400`
+  // fallback on those fetchers bounds the staleness a skipped purge can cause.
+  if (coffeeUrls.length > 0) {
+    revalidateTag("coffees", "max");
+  }
+  if (roasterUrls.length > 0) {
+    revalidateTag("roasters", "max");
+  }
 
   // Advance the high-water mark only after a successful run. Best-effort.
   if (redis) {
