@@ -129,10 +129,15 @@ Those pages are live and indexable — `get_coffee_detail` is SECURITY DEFINER a
 `/roasters/coffeeverse/coffees/blossom-washed` returns 200 with `robots: index, follow`. The
 curation is the only surface refusing to link to them.
 
-Fix when picked up: resolve the slugs through the service-role client instead of the embed —
-the same `process.env.SUPABASE_SECRET_KEY ? createServiceRoleClient() : supabase` escape hatch
-already sits 15 lines below at :266-268, added for exactly this (images for coffees the anon
-client cannot see).
+**Fixed 2026-09-18.** `src/data/curations.ts` now resolves coffee slugs by `coffee_id` through
+the existing `imageSupabase` client (`process.env.SUPABASE_SECRET_KEY ? createServiceRoleClient()
+: supabase`, :266-268 — already there for images of coffees the anon client cannot see). The
+embed stays as the fallback when no secret key is configured. Roaster slugs still come from the
+embed: all three curated roasters are active, so it resolves; the `ponytail:` note records that
+an inactive roaster (3 exist) would need the same treatment.
+
+Verified: `/curations/coffee-lab` went 2/8 → **8/8** on both the JSON-LD `url` and the card
+links, and all six newly-linked pages return 200.
 
 ## Step 3 — APPLIED — harden chart paging
 
