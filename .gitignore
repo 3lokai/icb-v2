@@ -52,3 +52,7 @@ next-env.d.ts
 /public/dotlottie-player.wasm
 .fallow/
 .impeccable/
+
+# Boundary GeoJSON downloaded by scripts/build-region-map.mjs (the generated
+# TS output is committed; these 9MB sources are not)
+/scripts/data/

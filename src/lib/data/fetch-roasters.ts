@@ -1,3 +1,4 @@
+import { fetchAllRows } from "@/lib/data/fetch-all-rows";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
@@ -257,10 +258,18 @@ export async function fetchRoasters(
 
   const roasterIds = roastersData.map((r: { id: string }) => r.id);
 
-  const { data: coffeeStats } = await supabase
-    .from("coffees")
-    .select("roaster_id, rating_avg, rating_count")
-    .in("roaster_id", roasterIds);
+  // Paged: an unbounded select is capped at 1000 rows by PostgREST, which used
+  // to zero the coffee_count of whichever roasters fell past that cut — and .in()
+  // has no stable order, so it was a different set of roasters each request.
+  const coffeeStats = await fetchAllRows(
+    () =>
+      supabase
+        .from("coffees")
+        .select("roaster_id, rating_avg, rating_count")
+        .in("roaster_id", roasterIds),
+    "roaster coffee stats",
+    "id"
+  );
 
   const statsMap = aggregateCoffeeStats(roasterIds, coffeeStats);
 

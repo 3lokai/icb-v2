@@ -25,8 +25,8 @@
 -- Score is cosine similarity over those weighted vectors, so a 300-SKU roaster
 -- and a 12-SKU roaster are comparable.
 --
--- ponytail: materialized view refreshed alongside coffee_directory_mv. 96 roasters
--- x ~1250 coffees builds in well under a second. Revisit only past ~5000 roasters.
+-- ponytail: materialized view refreshed alongside coffee_directory_mv. 114 roasters
+-- x ~1959 coffees builds in well under a second. Revisit only past ~5000 roasters.
 
 -- ── 1. The view ───────────────────────────────────────────────────────────────
 

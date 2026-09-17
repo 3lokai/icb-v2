@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { RegionCard } from "@/components/cards/RegionCard";
+import { RegionMap } from "@/components/discovery/RegionMap";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -10,8 +11,17 @@ import StructuredData from "@/components/seo/StructuredData";
 import { fetchRegionCoffeeCountsCached } from "@/lib/data/fetch-region-coffee-counts";
 import { fetchRegionsCached } from "@/lib/data/fetch-regions";
 import { regionBrowseHref } from "@/lib/discovery/landing-pages";
+import {
+  MAP_DISTRICTS,
+  MAP_MARKERS,
+} from "@/lib/discovery/region-map-geometry";
 import { generateMetadata } from "@/lib/seo/metadata";
 import { generateCollectionPageSchema, getSeoBaseUrl } from "@/lib/seo/schema";
+import type {
+  RegionMapLink,
+  RegionMapMarkerLink,
+} from "@/components/discovery/RegionMap";
+import type { ReactNode } from "react";
 import type { RegionSummary } from "@/types/region-types";
 
 const REGIONS_DESCRIPTION =
@@ -185,6 +195,75 @@ export default async function RegionsPage() {
       return a.state.localeCompare(b.state);
     });
 
+  // Map links, derived from `cards` rather than from a second hardcoded list, so promoting
+  // or dropping a region cannot leave the map pointing at a page that no longer exists.
+  const markerSlugs = new Set(MAP_MARKERS.map((marker) => marker.canonSlug));
+  const mapMarkerLinks: RegionMapMarkerLink[] = cards
+    .filter((card) => markerSlugs.has(card.region.slug))
+    .map((card) => ({
+      canonSlug: card.region.slug,
+      label: card.region.display_name,
+      href: regionBrowseHref(card.region.slug),
+      coffeeCount: card.coffeeCount,
+    }));
+
+  const mapDistricts = new Set(MAP_DISTRICTS.map((district) => district.name));
+  const mapLinks: RegionMapLink[] = [];
+  const claimedDistricts = new Set<string>();
+  for (const card of cards) {
+    const district = card.region.district;
+    // `cards` is already sorted by coffee count, so where two cards share a district
+    // (Chikkamagaluru holds both Chikmagalur and the Baba Budangiri peer) the bigger one
+    // takes the polygon and the other is a marker.
+    if (
+      !district ||
+      !mapDistricts.has(district) ||
+      claimedDistricts.has(district) ||
+      markerSlugs.has(card.region.slug)
+    ) {
+      continue;
+    }
+    claimedDistricts.add(district);
+    mapLinks.push({
+      district,
+      label: card.region.display_name,
+      href: regionBrowseHref(card.region.slug),
+      coffeeCount: card.coffeeCount,
+    });
+  }
+
+  // The North-East is an aggregate with no district, so it is the inset rather than a
+  // polygon. Undefined when it carries no coffees, which hides the inset entirely.
+  const northEastCard = cards.find(
+    (card) => card.region.slug === "northeast-india"
+  );
+  const northEast = northEastCard
+    ? {
+        label: northEastCard.region.display_name,
+        href: regionBrowseHref(northEastCard.region.slug),
+        coffeeCount: northEastCard.coffeeCount,
+      }
+    : undefined;
+
+  // Cards for the map, rendered here rather than inside `RegionMap`. `RegionCard` imports
+  // `regionBrowseHref`, so importing it into that client component would ship ~1,300 lines
+  // of landing-page config to the browser — the bundle trap `RegionSpotlight` documents.
+  // Server Components pass fine as props, so the card stays server-rendered.
+  const cardSlots: Record<string, ReactNode> = {};
+  // The `default` variant, so the slot shows the same plate the grid below shows — the
+  // image is therefore already in cache and switching regions costs no new request.
+  const slotFor = (card: RegionCardData) => (
+    <RegionCard coffeeCount={card.coffeeCount} region={card.region} />
+  );
+  for (const link of mapLinks) {
+    const card = cards.find((c) => c.region.district === link.district);
+    if (card) cardSlots[link.district] = slotFor(card);
+  }
+  for (const markerLink of mapMarkerLinks) {
+    const card = cards.find((c) => c.region.slug === markerLink.canonSlug);
+    if (card) cardSlots[markerLink.canonSlug] = slotFor(card);
+  }
+
   const baseUrl = getSeoBaseUrl();
   const schema = generateCollectionPageSchema(
     "Indian Coffee Regions",
@@ -213,7 +292,7 @@ export default async function RegionsPage() {
       <Section spacing="default">
         <Stack gap="4">
           <p className="text-body-muted">
-            445,369 hectares of coffee mapped by ISRO and the Coffee Board
+            444,696 hectares of coffee mapped by ISRO and the Coffee Board
             across 18 districts, September 2024. Coffee counts include every
             sub-region, so a district total covers the estates and hill belts
             inside it.
@@ -263,6 +342,16 @@ export default async function RegionsPage() {
         `minmax(15rem, 1fr)` is what lets Karnataka's five sit on one row wherever five
         fit, and fall back to four or three without a breakpoint per case.
       */}
+      <Section spacing="tight">
+        <RegionMap
+          cardSlots={cardSlots}
+          links={mapLinks}
+          markerLinks={mapMarkerLinks}
+          northEast={northEast}
+          northEastCard={northEastCard ? slotFor(northEastCard) : undefined}
+        />
+      </Section>
+
       <Section spacing="tight">
         <div
           className="grid gap-x-4 gap-y-6"

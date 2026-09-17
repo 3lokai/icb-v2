@@ -32,7 +32,8 @@ export function buildCoffeeFaqItems(coffee: CoffeeDetail): FaqItem[] {
 
   // 2. Single-origin vs blend.
   // ponytail: derived from estate/region count (get_coffee_detail RPC has no
-  // is_single_origin). Swap to that column if the RPC ever exposes it.
+  // is_single_origin). The column itself exists on both `coffees` and
+  // `coffee_directory_mv`, so the swap is one added jsonb key in the RPC.
   const originCount = Math.max(coffee.estates.length, coffee.regions.length);
   if (originCount >= 1) {
     const isBlend = originCount > 1;
