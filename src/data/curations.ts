@@ -278,10 +278,16 @@ export async function getCuratorBySlug(
   // if an inactive roaster (3 exist) ever shows up in a curation.
   const coffeeSlugById = new Map<string, string>();
   if (coffeeIds.length > 0) {
-    const { data: slugRows } = await imageSupabase
+    const { data: slugRows, error: slugError } = await imageSupabase
       .from("coffees")
       .select("id, slug")
       .in("id", coffeeIds);
+    // Degrade to the embed rather than failing the page — the embed still resolves
+    // every active coffee, so a failure here costs links on discontinued picks, not
+    // the curation. Logged because that loss is otherwise invisible.
+    if (slugError) {
+      console.error("[getCuratorBySlug] coffee slug lookup failed:", slugError);
+    }
     for (const row of slugRows ?? []) {
       if (row.slug) coffeeSlugById.set(row.id, row.slug);
     }

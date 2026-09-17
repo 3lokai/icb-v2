@@ -292,7 +292,7 @@ export default async function RegionsPage() {
       <Section spacing="default">
         <Stack gap="4">
           <p className="text-body-muted">
-            445,369 hectares of coffee mapped by ISRO and the Coffee Board
+            444,696 hectares of coffee mapped by ISRO and the Coffee Board
             across 18 districts, September 2024. Coffee counts include every
             sub-region, so a district total covers the estates and hill belts
             inside it.

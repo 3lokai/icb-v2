@@ -10,7 +10,6 @@ import {
   MAP_HEIGHT,
   MAP_MARKERS,
   MAP_WIDTH,
-  NATIONAL_TOTAL_HA,
   NE_AREA_AS_OF,
   NE_AREA_SOURCE,
   NE_HEIGHT,
@@ -86,6 +85,17 @@ const NE_INSET_Y = 14;
  * the observed range, not against log(max) alone: log(153)/log(135796) is already 0.43,
  * so the naive form would spend none of the scale below its midpoint.
  */
+/**
+ * The area this map actually draws. NATIONAL_TOTAL_HA (445,369) is the atlas's national
+ * figure and includes the 674 ha it records for the North-East, which the main map does
+ * not shade — the inset carries the Coffee Board's separate 6,092 ha instead. Quoting the
+ * national number beside "across 18 districts" claimed 673 ha the shapes never showed.
+ */
+const MAPPED_TOTAL_HA = MAP_DISTRICTS.reduce(
+  (total, district) => total + district.areaHa,
+  0
+);
+
 const MIN_LOG = Math.log(
   Math.min(...MAP_DISTRICTS.map((district) => district.areaHa))
 );
@@ -155,7 +165,19 @@ export function RegionMap({
 
   return (
     <figure className="m-0 flex flex-col gap-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-8">
+      {/*
+        active is cleared here, not on the shapes. The card is a link, and clearing it on
+        each shape's mouseleave meant the card vanished the instant you moved toward it —
+        it could be read but never clicked. Keyboard has the same trap: blur fires before
+        focus reaches the card. So shapes only ever set active; leaving the pair clears it.
+      */}
+      <div
+        className="flex flex-col gap-4 md:flex-row md:items-start md:gap-8"
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget)) setActive(null);
+        }}
+        onMouseLeave={() => setActive(null)}
+      >
         <div className="relative mx-auto w-full max-w-[26rem] md:mx-0 md:max-w-[30rem]">
           <svg
             aria-labelledby={titleId}
@@ -203,19 +225,18 @@ export function RegionMap({
                   className="cursor-pointer outline-none"
                   href={link.href}
                   key={district.name}
-                  onBlur={() => setActive(null)}
                   onFocus={() => setActive(district.name)}
                   onMouseEnter={() => setActive(district.name)}
-                  onMouseLeave={() => setActive(null)}
                 >
                   <title>{`${district.name} — ${numberFormat.format(district.areaHa)} ha, ${link.coffeeCount} coffees on ${link.label}`}</title>
                   {shape}
                 </Link>
               ) : (
                 <g
+                  aria-label={`${district.name} — ${numberFormat.format(district.areaHa)} ha, no coffees listed yet`}
                   key={district.name}
                   onMouseEnter={() => setActive(district.name)}
-                  onMouseLeave={() => setActive(null)}
+                  role="img"
                 >
                   <title>{`${district.name} — ${numberFormat.format(district.areaHa)} ha, no coffees listed yet`}</title>
                   {shape}
@@ -237,10 +258,8 @@ export function RegionMap({
                       className="cursor-pointer outline-none"
                       href={northEast.href}
                       key={state.name}
-                      onBlur={() => setActive(null)}
                       onFocus={() => setActive(neKey(state.name))}
                       onMouseEnter={() => setActive(neKey(state.name))}
-                      onMouseLeave={() => setActive(null)}
                     >
                       <title>{`${state.name} — ${numberFormat.format(state.areaHa)} ha planted`}</title>
                       {/*
@@ -295,10 +314,8 @@ export function RegionMap({
                   className="cursor-pointer outline-none"
                   href={link.href}
                   key={marker.canonSlug}
-                  onBlur={() => setActive(null)}
                   onFocus={() => setActive(marker.canonSlug)}
                   onMouseEnter={() => setActive(marker.canonSlug)}
-                  onMouseLeave={() => setActive(null)}
                 >
                   <title>{`${link.label} — ${link.coffeeCount} coffees`}</title>
                   <circle
@@ -341,7 +358,7 @@ export function RegionMap({
                 </>
               ) : (
                 <p className="text-body-muted">
-                  {numberFormat.format(NATIONAL_TOTAL_HA)} hectares across 18
+                  {numberFormat.format(MAPPED_TOTAL_HA)} hectares across 18
                   districts. Hover a region to see it.
                 </p>
               )}
