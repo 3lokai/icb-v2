@@ -15,7 +15,7 @@ type LearnLinksProps = {
  * Sibling of RelatedLinks (discovery -> discovery); this one is discovery -> editorial.
  *
  * ponytail: labels are curated in the landing-page configs, not fetched from Sanity.
- * Anchor text is the point; covers/excerpts would cost a Sanity round-trip on 39
+ * Anchor text is the point; covers/excerpts would cost a Sanity round-trip on 42
  * otherwise Supabase-only static pages, with no /coffees/* webhook invalidation.
  */
 export function LearnLinks({ links }: LearnLinksProps) {

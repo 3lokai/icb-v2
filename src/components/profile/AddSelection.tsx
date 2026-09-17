@@ -28,6 +28,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { DEFAULT_LIMIT as ROASTER_PAGE_LIMIT } from "@/lib/filters/roaster-url";
 import { cn } from "@/lib/utils";
 import { useRoasters } from "@/hooks/use-roasters";
 import { useCoffees } from "@/hooks/use-coffees";
@@ -50,7 +51,7 @@ export function AddSelection() {
   const { data: roasterData } = useRoasters({
     filters: {} as RoasterFilters,
     page: 1,
-    limit: 100,
+    limit: ROASTER_PAGE_LIMIT,
     sort: "name_asc",
   });
 

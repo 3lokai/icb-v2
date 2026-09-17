@@ -2,9 +2,11 @@ import type { RoasterFilters, RoasterSort } from "@/types/roaster-types";
 
 // Default values for filters
 const DEFAULT_PAGE = 1;
-// ponytail: 92 active roasters — one unpaginated page so every profile link
-// ships in server HTML (Googlebot never scrolls). Revisit past ~200 roasters.
-const DEFAULT_LIMIT = 100;
+// ponytail: 114 active roasters — one unpaginated page so every profile link
+// ships in server HTML (Googlebot never scrolls). Revisit past ~250 roasters:
+// wire pagination, or send the picker's search term as `filters.q` (fetchRoasters
+// already handles it). Outgrowing this cap drops the alphabetical tail silently.
+export const DEFAULT_LIMIT = 250;
 const DEFAULT_SORT: RoasterSort = "relevance";
 
 /**

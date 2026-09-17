@@ -1,3 +1,4 @@
+import { fetchAllRows } from "@/lib/data/fetch-all-rows";
 import { createClient } from "@/lib/supabase/server";
 
 export type ChartDataItem = {
@@ -8,47 +9,6 @@ export type ChartDataItem = {
   dark?: number;
   light?: number;
 };
-
-const PAGE_SIZE = 1000;
-
-/**
- * Reads every row a chart query matches, not just the first page.
- *
- * PostgREST caps an unbounded select at 1000 rows. Because these aggregations run
- * client-side over the returned rows, that cap silently truncated every chart on
- * the site: `roast_distribution` over a 1684-row catalogue returned exactly 1000
- * rows and reported *zero* dark and medium-dark coffees, on an article about dark
- * roast. Ordering is required for stable paging — without it Postgres may repeat
- * or skip rows across pages.
- *
- * ponytail: paging, not SQL aggregation — it is the contained fix and needs no
- * migration. Upgrade path when the catalogue grows: aggregate server-side like
- * the single_origin_* keys already do via their RPCs, which also drops the
- * full-table transfer done to count a handful of values.
- */
-async function fetchAllRows(
-  buildQuery: () => any,
-  dataKey: string
-): Promise<any[]> {
-  const rows: any[] = [];
-
-  for (let from = 0; ; from += PAGE_SIZE) {
-    const { data, error } = await buildQuery()
-      .order("coffee_id", { ascending: true })
-      .range(from, from + PAGE_SIZE - 1);
-
-    if (error) {
-      console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
-      throw new Error(`Failed to fetch chart data for ${dataKey}`);
-    }
-
-    if (!data?.length) break;
-    rows.push(...data);
-    if (data.length < PAGE_SIZE) break;
-  }
-
-  return rows;
-}
 
 /**
  * Every dataKey this function knows how to serve. A Sanity `dataChart` block
@@ -154,22 +114,18 @@ export async function fetchChartData(
           ? "sourcing_model"
           : "regions_tags";
 
-    const { data, error } = await supabase
-      .from("roasters")
-      .select(column)
-      .eq("is_active", true);
-
-    if (error) {
-      console.error(`[fetchChartData] Error fetching ${dataKey}:`, error);
-      throw new Error(`Failed to fetch chart data for ${dataKey}`);
-    }
+    const data = await fetchAllRows(
+      () => supabase.from("roasters").select(column).eq("is_active", true),
+      dataKey,
+      "id"
+    );
 
     const counts: Record<string, number> = {};
     const bump = (label: string) => {
       counts[label] = (counts[label] || 0) + 1;
     };
 
-    for (const row of (data ?? []) as any[]) {
+    for (const row of data as any[]) {
       if (dataKey === "roaster_founding_cohorts") {
         const y = row.founded_year as number | null;
         // Guard junk years — the table holds a few 0/near-zero values, and a
@@ -310,7 +266,7 @@ export async function fetchChartData(
     return q;
   };
 
-  const coffees = await fetchAllRows(buildQuery, dataKey);
+  const coffees = await fetchAllRows(buildQuery, dataKey, "coffee_id");
 
   if (!coffees) return [];
 

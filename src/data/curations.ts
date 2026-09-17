@@ -267,6 +267,26 @@ export async function getCuratorBySlug(
     ? await createServiceRoleClient()
     : supabase;
 
+  // The coffees(slug) embed above runs under the caller's RLS, which hides
+  // discontinued coffees — so six of this feature's eight picks lost their link
+  // the moment they sold out, even though /roasters/x/coffees/y still serves and
+  // indexes them (get_coffee_detail filters is_coffee, never status). Resolve the
+  // slugs through the same privileged client the images already use; the embed
+  // stays as the fallback for when no secret key is configured.
+  // ponytail: coffees only. All three curated roasters are active, and the
+  // roasters(slug) embed resolves for them — add the same lookup for roaster_id
+  // if an inactive roaster (3 exist) ever shows up in a curation.
+  const coffeeSlugById = new Map<string, string>();
+  if (coffeeIds.length > 0) {
+    const { data: slugRows } = await imageSupabase
+      .from("coffees")
+      .select("id, slug")
+      .in("id", coffeeIds);
+    for (const row of slugRows ?? []) {
+      if (row.slug) coffeeSlugById.set(row.id, row.slug);
+    }
+  }
+
   const coffeeImageMap = await fetchCoffeeListingImagesFromDirectoryMv(
     imageSupabase,
     coffeeIds
@@ -341,7 +361,9 @@ export async function getCuratorBySlug(
       roaster: row.roaster_name,
       note: row.curator_note ?? "",
       image: resolveSelectionImage(row),
-      coffeeSlug: embeddedSlug(row.coffees),
+      coffeeSlug:
+        (row.coffee_id ? coffeeSlugById.get(row.coffee_id) : undefined) ??
+        embeddedSlug(row.coffees),
       roasterSlug: embeddedSlug(row.roasters),
     }));
     return {

@@ -8,6 +8,7 @@ import {
   getSeoBaseUrl,
 } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
+import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import type { Metadata } from "next";
 
 type Props = {
@@ -44,10 +45,11 @@ export default async function Page({ params }: Props) {
   const curationUrl = `${baseUrl}/curations/${slug}`;
   const description = (data.curator.story ?? "").slice(0, 160);
 
-  // Curation selections carry no price/rating/slug data, so a Product can never
-  // be valid for Google (needs one of offers/review/aggregateRating). Emit plain
-  // ListItems (name only) instead — no Product validation obligation.
-  // ponytail: name-only ListItem; add url if selection slugs are ever exposed.
+  // Curation selections carry no price/rating data, so a Product can never be
+  // valid for Google (needs one of offers/review/aggregateRating). Emit plain
+  // ListItems instead — no Product validation obligation.
+  // Both slugs are optional on the DTO, so url is conditional: a selection
+  // missing either one still ships as a name-only ListItem.
   const coffeeItems = data.curations
     .flatMap((list) => list.selections)
     .slice(0, 20)
@@ -55,6 +57,11 @@ export default async function Page({ params }: Props) {
       "@type": "ListItem",
       position: index + 1,
       name: selection.name,
+      ...(selection.roasterSlug && selection.coffeeSlug
+        ? {
+            url: `${baseUrl}${coffeeDetailHref(selection.roasterSlug, selection.coffeeSlug)}`,
+          }
+        : {}),
     }));
 
   const breadcrumbSchema = generateBreadcrumbSchema([
