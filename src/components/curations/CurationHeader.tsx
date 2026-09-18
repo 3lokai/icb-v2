@@ -19,7 +19,7 @@ export function CurationHeader({ subtitle, curator }: CurationHeaderProps) {
       <div className="absolute inset-0 z-0 bg-black/80">
         <Image
           src="/curations/curation-header.avif"
-          alt="Curated Selections Background"
+          alt=""
           fill
           priority
           sizes="100vw"

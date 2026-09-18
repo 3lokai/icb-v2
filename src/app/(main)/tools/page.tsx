@@ -166,7 +166,6 @@ export default function ToolsPage() {
       {/* Page Header */}
       <PageHeader
         backgroundImage="/images/hero-recipes.avif"
-        backgroundImageAlt="Coffee tools background"
         description="A ratio calculator, a recipe library, and a brew compass for when the cup isn't right. Free to use, no account needed."
         overline="Coffee Tools"
         title="Tools for a Better Cup"

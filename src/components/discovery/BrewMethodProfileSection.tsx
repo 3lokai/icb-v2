@@ -147,7 +147,7 @@ export function BrewMethodProfileSection({
             <div className="md:col-span-2 relative aspect-[4/3] md:aspect-square rounded-2xl overflow-hidden shadow-sm border border-border/10">
               <Image
                 src={`/images/discovery/brew-methods/${brewMethodImageBase(slug)}-mechanism.avif`}
-                alt="Brewer Mechanism"
+                alt={`${brewSlugToLabel(slug)} brewer mechanism`}
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
                 className="object-cover"
@@ -183,7 +183,7 @@ export function BrewMethodProfileSection({
           <div className="order-1 md:order-2 md:col-span-2 relative aspect-video md:aspect-auto h-full min-h-0">
             <Image
               src={`/images/discovery/brew-methods/${brewMethodImageBase(slug)}-context.avif`}
-              alt="Indian Specialty Context"
+              alt={`${brewSlugToLabel(slug)} brewing in India`}
               fill
               sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover"

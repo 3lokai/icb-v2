@@ -22,7 +22,8 @@ export function CookieNotice() {
   const [isExiting, setIsExiting] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true,
-    analytics: true, // Default to enabled (opt-out model)
+    analytics: true, // Opt-out model
+    marketing: false, // Opt-in model
   });
 
   useEffect(() => {
@@ -77,7 +78,12 @@ export function CookieNotice() {
 
   const acceptAllCookies = () => {
     setIsExiting(true);
-    const allAccepted: CookiePreferences = { necessary: true, analytics: true };
+    // "Accept All" is genuine affirmative action, so it does grant marketing.
+    const allAccepted: CookiePreferences = {
+      necessary: true,
+      analytics: true,
+      marketing: true,
+    };
     setTimeout(() => {
       persistPreferences(allAccepted);
       setPreferences(allAccepted);
@@ -154,6 +160,25 @@ export function CookieNotice() {
               }
             />
           </div>
+          <div className="flex items-center justify-between rounded-md border border-border p-3">
+            <div>
+              <p className="font-medium">Marketing Cookies</p>
+              <p className="text-muted-foreground text-caption">
+                Used to measure and personalise advertising. Off unless you turn
+                it on.
+              </p>
+            </div>
+            <Switch
+              checked={preferences.marketing}
+              aria-label="Marketing Cookies"
+              onCheckedChange={() =>
+                setPreferences((p: CookiePreferences) => ({
+                  ...p,
+                  marketing: !p.marketing,
+                }))
+              }
+            />
+          </div>
         </div>
         <div className="flex justify-end gap-2">
           <button
@@ -189,8 +214,9 @@ export function CookieNotice() {
           <p className="max-w-3xl text-foreground text-caption">
             We use cookies to brew up a better experience. Essential cookies are
             always active. By clicking &quot;Accept All&quot;, you agree to the
-            storing of cookies on your device to enhance navigation and analyze
-            site usage. See our{" "}
+            storing of cookies on your device to enhance navigation, analyze
+            site usage, and measure marketing. Choose &quot;Manage Cookies&quot;
+            to decide for yourself. See our{" "}
             <Link className="text-primary hover:underline" href="/privacy">
               Privacy Policy
             </Link>{" "}

@@ -22,7 +22,7 @@ export function PageHeader({
   overline,
   rightSideContent,
   backgroundImage = "/images/hero-bg.avif",
-  backgroundImageAlt = "Coffee beans background",
+  backgroundImageAlt = "", // decorative hero backdrop behind the h1
 }: PageHeaderProps) {
   return (
     <section className="relative flex min-h-[55vh] w-screen max-w-none items-center justify-center overflow-hidden md:min-h-[45vh] ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">

@@ -32,6 +32,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { confirmPassword, deleteAccount } from "@/app/actions/account";
+import { CookieSettingsButton } from "@/components/common/CookieSettings";
 
 type PrivacyFormClientProps = {
   initialProfile: PrivateProfileDTO;
@@ -236,6 +237,19 @@ export function PrivacyFormClient({ initialProfile }: PrivacyFormClientProps) {
         <Stack gap="6">
           <h2 className="text-title">Account Actions</h2>
           <Stack gap="4">
+            <div className="rounded-md border border-border p-4">
+              <h3 className="font-medium text-body mb-2">Cookies & Tracking</h3>
+              <p className="text-muted-foreground text-caption mb-4">
+                Choose which analytics and marketing cookies we may use. Cookie
+                preferences are stored on this device, so they apply to this
+                browser only.
+              </p>
+              <CookieSettingsButton
+                className="btn-secondary px-4 py-2 text-caption"
+                label="Manage Cookie Preferences"
+              />
+            </div>
+
             <div className="rounded-md border border-border p-4">
               <h3 className="font-medium text-body mb-2">Export Data</h3>
               <p className="text-muted-foreground text-caption mb-4">

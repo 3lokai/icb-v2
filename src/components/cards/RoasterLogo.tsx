@@ -49,6 +49,7 @@ export function RoasterLogo({
   const logoUrl = roasterLogoUrl(slug);
   const plateClass = roasterPlateClass(logoIsLight);
   const initials = initialsFor(name);
+  const altText = name ? `${name} logo` : "Coffee roaster logo";
 
   // Compact - small square logo, no plate
   if (variant === "compact") {
@@ -56,7 +57,7 @@ export function RoasterLogo({
       <div className="relative w-10 h-10 shrink-0 overflow-hidden rounded">
         {!hasError && logoUrl ? (
           <Image
-            alt={name || "Coffee roaster logo"}
+            alt={altText}
             className="object-contain"
             fill
             itemProp="logo"
@@ -88,7 +89,7 @@ export function RoasterLogo({
         <div className="relative flex h-14 w-full max-w-[120px] items-center justify-center">
           {!hasError && logoUrl ? (
             <Image
-              alt={name}
+              alt={altText}
               className="object-contain"
               fill
               itemProp="logo"
@@ -137,7 +138,7 @@ export function RoasterLogo({
         <div className="relative flex h-20 w-full items-center justify-center max-w-[160px]">
           {!hasError && logoUrl ? (
             <Image
-              alt={name || "Coffee roaster logo"}
+              alt={altText}
               className="object-contain"
               fill
               itemProp="logo"

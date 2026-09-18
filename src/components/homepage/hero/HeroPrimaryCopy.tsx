@@ -55,15 +55,20 @@ export function HeroPrimaryEyebrow({ hero }: HeroPrimaryCopyProps) {
 /**
  * Server component: Composes eyebrow and headline for complete hero primary copy.
  */
-export function HeroPrimaryHeadline({ hero }: HeroPrimaryCopyProps) {
+export function HeroPrimaryHeadline({
+  hero,
+  as: Heading = "h1",
+}: HeroPrimaryCopyProps & { as?: "h1" | "p" }) {
   const { copy } = getPrimaryCopyParts(hero);
 
   return (
     <div className="min-w-0 lg:mt-6">
       <Stack gap="2" className="w-full max-w-[520px] text-left lg:max-w-none">
-        <h1 className="text-display text-white text-balance leading-[1.15] pb-[0.08em]">
+        {/* ponytail: streaming SSR flushes the fallback before the real hero, so the
+            fallback renders <p> to keep the raw HTML at a single h1 */}
+        <Heading className="text-display text-white text-balance leading-[1.15] pb-[0.08em]">
           {copy.headline}
-        </h1>
+        </Heading>
         <p className="text-body-large md:text-subheading text-white/90 leading-relaxed text-pretty font-sans">
           {copy.subheadline}
         </p>

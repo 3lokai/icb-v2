@@ -149,7 +149,7 @@ export function NewsletterSection({
 
         <div className="lg:col-span-12 xl:col-span-5 relative min-h-[400px] border-t xl:border-t-0 xl:border-l border-border/40">
           <Image
-            alt="Coffee community"
+            alt=""
             className="object-cover"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"

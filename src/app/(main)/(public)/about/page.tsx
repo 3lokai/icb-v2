@@ -149,7 +149,6 @@ export default function AboutPage() {
 
       <PageHeader
         backgroundImage="/images/hero-about.avif"
-        backgroundImageAlt="IndianCoffeeBeans About Page"
         description="India's first comprehensive, independent directory for specialty coffee roasters and their offerings."
         overline="The Mission"
         title={<>About IndianCoffeeBeans.com</>}

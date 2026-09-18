@@ -34,6 +34,8 @@ const eslintConfig = defineConfig([
       "react-hooks/exhaustive-deps": "warn",
       // Allow array index in keys when necessary
       "react/no-array-index-key": "off",
+      // Missing alt is a bug, not a warning
+      "jsx-a11y/alt-text": "error",
       // Custom rule: Prevent direct Tailwind text size classes
       "custom/no-direct-text-size-classes": "error",
     },

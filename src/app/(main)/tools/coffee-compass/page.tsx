@@ -126,7 +126,6 @@ export default async function CoffeeCompassPage({ searchParams }: PageProps) {
 
       <PageHeader
         backgroundImage="/images/hero-recipes.avif"
-        backgroundImageAlt="Coffee Compass"
         description="Tell us what you taste. We'll tell you what went wrong and exactly how to fix it."
         overline="Brew Diagnosis Tool"
         title="Coffee Compass"

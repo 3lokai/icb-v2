@@ -468,7 +468,7 @@ export function ProfileGearStation({
                 <div className="absolute inset-0 grayscale opacity-40 blur-[2px] transition-all hover:blur-0 hover:opacity-60 duration-700">
                   <Image
                     src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop"
-                    alt="Mock Station"
+                    alt=""
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover rounded-[2rem]"
@@ -539,7 +539,7 @@ export function ProfileGearStation({
                 <div className="absolute inset-0 grayscale opacity-40 blur-[2px] transition-all hover:blur-0 hover:opacity-60 duration-700">
                   <Image
                     src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop"
-                    alt="Mock Station"
+                    alt=""
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover rounded-[2rem]"

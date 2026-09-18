@@ -178,11 +178,14 @@ export default async function RootLayout({
                     window.gtag("js", new Date());
                   }
                   
-                  // Set default consent to granted (opt-out model)
+                  // Analytics is opt-out (granted by default); the ad_* family is
+                  // opt-IN and stays denied until the visitor actively grants it.
                   // This must be set BEFORE Next.js component runs its config
                   window.gtag("consent", "default", {
                     analytics_storage: "granted",
                     ad_storage: "denied",
+                    ad_user_data: "denied",
+                    ad_personalization: "denied",
                   });
                   
                   // Check localStorage for previous consent preference
@@ -198,6 +201,16 @@ export default async function RootLayout({
                         });
                       }
                       // If analytics is true or not set, default remains "granted" (opt-out model)
+                      // Marketing only counts from a v2 preference — an older stored
+                      // value carries no marketing consent. Mirrors CONSENT_VERSION
+                      // in use-cookie-consent.ts.
+                      if (parsed.v === 2 && parsed.marketing === true) {
+                        window.gtag("consent", "update", {
+                          ad_storage: "granted",
+                          ad_user_data: "granted",
+                          ad_personalization: "granted",
+                        });
+                      }
                     }
                     // If no consent stored, default remains "granted" (opt-out model)
                   } catch (e) {

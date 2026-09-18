@@ -6,6 +6,7 @@ import { sendWelcomeEmail } from "@/lib/emails/resend";
 import { subscribeToNewsletterList } from "@/lib/notifuse";
 import { captureServerEvent } from "@/lib/posthog-server";
 import { trackLifecycleEvent } from "@/lib/lifecycle";
+import { persistSignupAttribution } from "@/lib/analytics/persist-attribution";
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -227,6 +228,10 @@ export async function GET(request: NextRequest) {
         email: user.email,
         $current_url: `${callbackUrl.origin}${callbackUrl.pathname}`,
       });
+
+      // First-touch campaign attribution from the icb_attribution cookie.
+      // Never throws; a failure here must not fail the signup.
+      void persistSignupAttribution(user.id);
 
       // Fire and forget - don't await
       sendSlackNotification("signup", {
