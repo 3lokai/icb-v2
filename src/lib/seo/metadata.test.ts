@@ -5,6 +5,7 @@ import {
   TITLE_MAX_LENGTH,
   TITLE_TEMPLATE_SUFFIX,
   formatAltitudeLabel,
+  fitTitle,
   truncateTitle,
 } from "./metadata";
 
@@ -76,4 +77,36 @@ test("altitude: collapses to a single value when only one bound is known", () =>
 
 test("altitude: normalizes inverted bounds rather than emitting a backwards range", () => {
   assert.equal(formatAltitudeLabel(1000, 950), "950–1,000 m");
+});
+
+test("fitTitle keeps the richest candidate that fits", () => {
+  const out = fitTitle([
+    "Naivo Coffee — Bangalore Specialty Roastery",
+    "Naivo Coffee — Bangalore Roastery",
+    "Naivo Coffee — Bangalore",
+    "Naivo Coffee",
+  ]);
+  assert.equal(out, "Naivo Coffee — Bangalore Roastery");
+  assert.ok(out.length + TITLE_TEMPLATE_SUFFIX.length <= TITLE_MAX_LENGTH);
+});
+
+test("fitTitle never ellipses a brand name that fits on its own", () => {
+  // The live regression: "KCRoasters - By Koinonia — Mumbai… | Indian Coffee Beans".
+  const name = "KCRoasters - By Koinonia";
+  const out = fitTitle([
+    `${name} — Mumbai Specialty Roastery`,
+    `${name} — Mumbai Roastery`,
+    `${name} — Mumbai`,
+    name,
+  ]);
+  assert.ok(!out.includes("…"), out);
+  assert.ok(out.startsWith(name), out);
+  assert.ok(out.length + TITLE_TEMPLATE_SUFFIX.length <= TITLE_MAX_LENGTH);
+});
+
+test("fitTitle falls back to truncating when even the barest candidate is too long", () => {
+  const huge = "A".repeat(80);
+  const out = fitTitle([huge]);
+  assert.ok(out.endsWith("…"), out);
+  assert.ok(out.length + TITLE_TEMPLATE_SUFFIX.length <= TITLE_MAX_LENGTH);
 });

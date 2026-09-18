@@ -25,6 +25,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
     difficulty,
   } = article;
   const displayAuthor = authorRef || author;
+  const readingMinutes = metadata?.readingTime || 5;
   const parsedDate = date ? new Date(date) : null;
   const publishedDate =
     parsedDate && !Number.isNaN(parsedDate.getTime())
@@ -129,13 +130,21 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
               {/* Divider */}
               <div className="hidden h-8 w-px bg-white/10 sm:block" />
 
-              {/* Reading Time */}
+              {/* Reading Time — framed as document utility, not time cost.
+                  "Reading: 15 min" above the fold reads as a commitment ask on
+                  long field references and correlates with the 6.2% scroll
+                  depth measured on /learn/understanding-indian-coffee-estates.
+                  Only long pieces earn the "field guide" framing; a short post
+                  labelled that way just overpromises. readingTime is Sanity's
+                  wordCount/200, set by the Studio MetadataCalculator. */}
               <div className="text-left">
                 <div className="text-overline uppercase tracking-[0.15em] text-white/75 mb-0.5">
-                  Reading
+                  {readingMinutes >= 8 ? "Field guide" : "Reading"}
                 </div>
                 <div className="text-body text-white">
-                  {metadata?.readingTime || 5} min
+                  {readingMinutes >= 8
+                    ? `${readingMinutes}-min reference`
+                    : `${readingMinutes} min`}
                 </div>
               </div>
 

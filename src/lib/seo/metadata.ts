@@ -33,6 +33,26 @@ export function truncateTitle(
 }
 
 /**
+ * Pick the first title candidate that fits the budget, richest first.
+ * Prefer this over calling `truncateTitle` on a single long string: an entity
+ * whose own name exhausts the budget (e.g. "KCRoasters - By Koinonia") would
+ * otherwise ship a literal "…" inside the brand name in the SERP. Dropping a
+ * descriptive clause keeps the navigational keyword intact.
+ * Falls back to truncating the last (shortest) candidate if nothing fits.
+ */
+export function fitTitle(
+  candidates: string[],
+  maxTotalLength: number = TITLE_MAX_LENGTH,
+  suffix: string = TITLE_TEMPLATE_SUFFIX
+): string {
+  const maxPageTitle = maxTotalLength - suffix.length;
+  const usable = candidates.filter((c) => c.trim().length > 0);
+  const fits = usable.find((c) => c.length <= maxPageTitle);
+  if (fits) return fits;
+  return truncateTitle(usable[usable.length - 1] ?? "", maxTotalLength, suffix);
+}
+
+/**
  * Clamp meta description to SEO-friendly length (120–160 chars).
  * Pads short descriptions with fallback; trims long ones with ellipsis.
  */

@@ -11,7 +11,7 @@ import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
 import { queryKeys } from "@/lib/query-keys";
 import {
   generateMetadata as generateSEOMetadata,
-  truncateTitle,
+  fitTitle,
 } from "@/lib/seo/metadata";
 import {
   generateSchemaOrg,
@@ -74,26 +74,30 @@ export async function generateMetadata({
   const coffeeCount = roaster.coffee_count ?? 0;
   const city = roaster.hq_city?.trim() || null;
 
-  // Never promise "Reviews" on a 0-rating profile — use Ratings or city fallback.
-  const ratingText =
-    ratingCount > 0
-      ? `, ${ratingCount} Ratings`
-      : city
-        ? `, ${city} Specialty Roastery`
-        : "";
-
   // Title: {Roaster} — {City} Specialty Roastery{, [differentiator]}
   // NOTE: root layout applies "%s | Indian Coffee Beans"; do not include the suffix.
-  const titleRaw = city
-    ? `${roaster.name} — ${city} Specialty Roastery${
-        ratingCount > 0 ? ratingText : ""
-      }`
-    : ratingCount > 0
-      ? `${roaster.name} — ${ratingCount} Ratings`
-      : `${roaster.name} — Specialty Roastery`;
-  const title = truncateTitle(
-    page > 1 ? `${titleRaw} — Page ${page}` : titleRaw
-  );
+  // Candidates run richest → barest; `fitTitle` takes the first that fits, so a
+  // long brand name sheds the descriptive clause instead of being ellipsed
+  // mid-name (which is what shipped for "KCRoasters - By Koinonia").
+  const pageSuffix = page > 1 ? ` — Page ${page}` : "";
+  const titleCandidates = city
+    ? [
+        ratingCount > 0
+          ? `${roaster.name} — ${city} Specialty Roastery, ${ratingCount} Ratings`
+          : `${roaster.name} — ${city} Specialty Roastery`,
+        `${roaster.name} — ${city} Specialty Roastery`,
+        `${roaster.name} — ${city} Roastery`,
+        `${roaster.name} — ${city}`,
+        roaster.name,
+      ]
+    : [
+        ratingCount > 0
+          ? `${roaster.name} — ${ratingCount} Ratings`
+          : `${roaster.name} — Specialty Roastery`,
+        `${roaster.name} — Specialty Roastery`,
+        roaster.name,
+      ];
+  const title = fitTitle(titleCandidates.map((t) => `${t}${pageSuffix}`));
 
   const differentiator =
     ratingCount > 0

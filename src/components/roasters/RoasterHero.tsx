@@ -62,6 +62,13 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
   if (roaster.hq_country) locationParts.push(roaster.hq_country);
   const location = locationParts.length > 0 ? locationParts.join(", ") : null;
 
+  // A profile carrying 1–3 coffees can't satisfy a "browse their range" visit —
+  // send that intent to the roaster's own site rather than bouncing it. A 0 is
+  // excluded: the caption would read "ICB catalogues 0 coffees", which argues
+  // against the page itself.
+  const coffeeCount = roaster.coffee_count ?? 0;
+  const isThinCatalogue = coffeeCount > 0 && coffeeCount <= 3;
+
   // Social Links
   const socialLinks: Array<{ label: string; url: string; icon: PhosphorIcon }> =
     [];
@@ -237,12 +244,21 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
             </div>
           )}
 
-          {/* CTAs */}
+          {/* CTAs — on a thin catalogue (≤3 coffees) the visitor's likely intent
+              is the roaster's own shop, so the website becomes the primary CTA
+              and names the destination. Otherwise ICB's own catalogue leads. */}
           <Cluster gap="3" className="pt-2">
             <Button
               id="roaster-rate-hero"
               size="lg"
-              className="bg-primary shadow-sm hover:shadow-md transition-shadow min-w-[170px]"
+              variant={
+                isThinCatalogue && roaster.website ? "outline" : "default"
+              }
+              className={
+                isThinCatalogue && roaster.website
+                  ? "min-w-[170px]"
+                  : "bg-primary shadow-sm hover:shadow-md transition-shadow min-w-[170px]"
+              }
               onClick={handleScrollToRating}
             >
               <Icon
@@ -254,10 +270,14 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
             </Button>
             {roaster.website && (
               <Button
-                variant="outline"
+                variant={isThinCatalogue ? "default" : "outline"}
                 size="lg"
                 asChild
-                className="text-muted-foreground min-w-[170px]"
+                className={
+                  isThinCatalogue
+                    ? "bg-primary shadow-sm hover:shadow-md transition-shadow min-w-[170px]"
+                    : "text-muted-foreground min-w-[170px]"
+                }
               >
                 <a
                   href={roaster.website}
@@ -265,11 +285,18 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
                   rel="noopener noreferrer"
                 >
                   <Icon icon={GlobeIcon} size={18} className="mr-2" />
-                  Website
+                  {isThinCatalogue ? "Visit site" : "Website"}
                 </a>
               </Button>
             )}
           </Cluster>
+          {isThinCatalogue && roaster.website && (
+            <p className="text-caption text-muted-foreground/80">
+              ICB catalogues{" "}
+              {coffeeCount === 1 ? "1 coffee" : `${coffeeCount} coffees`} from{" "}
+              {roaster.name}. Their full range is on their own site.
+            </p>
+          )}
 
           {/* Socials */}
           {socialLinks.length > 0 && (
