@@ -59,7 +59,6 @@ const eslintConfig = defineConfig([
       ".impeccable/**",
       ".agents/**",
       ".github/skills/**",
-      "ai_docs/**",
       "docs/**",
     ],
   },

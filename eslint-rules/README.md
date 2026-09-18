@@ -62,5 +62,5 @@ npm run lint:fix
 ## Related Files
 
 - Typography definitions: `src/app/styles/typography.css`
-- Consistency report: `ai_docs/typography-consistency-report.md`
+- Consistency report: removed (was `ai_docs/typography-consistency-report.md`)
 - ESLint configuration: `eslint.config.mjs`

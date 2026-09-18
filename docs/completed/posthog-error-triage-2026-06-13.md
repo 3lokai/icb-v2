@@ -1,7 +1,7 @@
 # PostHog error triage — 2026-06-13
 
 Triage of `$exception` events from the live site (IndianCoffeeBeans.com), with each fix routed to a
-target file in the site repo `icb-v2`. Companion to [posthog-implementation.md](posthog-implementation.md).
+target file in the site repo `icb-v2`. Companion to [posthog-implementation.md](../posthog-implementation.md).
 
 **This repo is the AI-ops workspace, not the site source.** Every fix below is tagged `site-repo` —
 apply it in `/home/gt/Projects/ICB/icb-v2/`, then verify in PostHog. Nothing here edits `icb-v2`.
