@@ -8,8 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import {
   type CookiePreferences,
   getStoredPreferences,
+  hasStoredConsent,
   savePreferences as persistPreferences,
-  STORAGE_KEY,
 } from "@/hooks/use-cookie-consent";
 
 export function CookieSettings({
@@ -22,13 +22,14 @@ export function CookieSettings({
   const [isOpen, setIsOpen] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true,
-    analytics: true, // Default to enabled (opt-out model)
+    analytics: true, // Opt-out model
+    marketing: false, // Opt-in model
   });
 
   useEffect(() => {
     // Check if preferences have been saved before
     const stored = getStoredPreferences();
-    const hasConsent = localStorage.getItem(STORAGE_KEY) !== null;
+    const hasConsent = hasStoredConsent();
 
     // Only show if no consent has been given yet, or if forceOpen is true
     startTransition(() => {
@@ -116,6 +117,25 @@ export function CookieSettings({
                 }
               />
             </div>
+            <div className="flex items-center justify-between rounded-md border border-border p-3">
+              <div>
+                <p className="font-medium">Marketing Cookies</p>
+                <p className="text-muted-foreground text-caption">
+                  Used to measure and personalise advertising. Off unless you
+                  turn it on.
+                </p>
+              </div>
+              <Switch
+                checked={preferences.marketing}
+                aria-label="Marketing Cookies"
+                onCheckedChange={() =>
+                  setPreferences((p: CookiePreferences) => ({
+                    ...p,
+                    marketing: !p.marketing,
+                  }))
+                }
+              />
+            </div>
           </div>
 
           <div className="flex justify-end gap-2">
@@ -140,17 +160,25 @@ export function CookieSettings({
   );
 }
 
-export function CookieSettingsButton() {
+// className defaults to the footer's micro link treatment; the dashboard passes
+// button styling instead.
+export function CookieSettingsButton({
+  className = "text-micro text-muted-foreground/60 uppercase tracking-widest font-medium transition-colors hover:text-accent",
+  label = "Cookie Settings",
+}: {
+  className?: string;
+  label?: string;
+} = {}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
       <button
-        className="text-micro text-muted-foreground/60 uppercase tracking-widest font-medium transition-colors hover:text-accent"
+        className={className}
         onClick={() => setIsOpen(true)}
         type="button"
       >
-        Cookie Settings
+        {label}
       </button>
       {isOpen && (
         <CookieSettings forceOpen={true} onClose={() => setIsOpen(false)} />

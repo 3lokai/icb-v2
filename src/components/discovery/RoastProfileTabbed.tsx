@@ -129,7 +129,7 @@ export function RoastProfileTabbed({
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
               <Image
                 src="/images/discovery/bean-tab.avif"
-                alt="Coffee beans visual characteristics"
+                alt=""
                 fill
                 className={tabImageHoverClass}
                 sizes="(max-width: 768px) 100vw, 40vw"
@@ -175,7 +175,7 @@ export function RoastProfileTabbed({
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
               <Image
                 src="/images/discovery/roasting-tab.avif"
-                alt="Coffee roasting process"
+                alt=""
                 fill
                 className={tabImageHoverClass}
                 sizes="(max-width: 768px) 100vw, 40vw"
@@ -223,7 +223,7 @@ export function RoastProfileTabbed({
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
               <Image
                 src="/images/discovery/cup-tab.avif"
-                alt="Coffee in the cup tasting notes"
+                alt=""
                 fill
                 className={tabImageHoverClass}
                 sizes="(max-width: 768px) 100vw, 40vw"
@@ -287,7 +287,7 @@ export function RoastProfileTabbed({
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
               <Image
                 src="/images/discovery/brew-tab.avif"
-                alt="Brewing instructions"
+                alt=""
                 fill
                 className={tabImageHoverClass}
                 sizes="(max-width: 768px) 100vw, 40vw"

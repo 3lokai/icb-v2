@@ -45,8 +45,9 @@ function generateUUID(): string {
 
 /**
  * Set cookie (adds Secure automatically on HTTPS)
+ * Exported: also used by the UTM attribution cookie in @/lib/analytics.
  */
-function setCookie(name: string, value: string, maxAge: number): void {
+export function setCookie(name: string, value: string, maxAge: number): void {
   if (typeof document === "undefined") return;
 
   const secure =
@@ -59,8 +60,9 @@ function setCookie(name: string, value: string, maxAge: number): void {
 
 /**
  * Get cookie value by name
+ * Exported: also used by the UTM attribution cookie in @/lib/analytics.
  */
-function getCookie(name: string): string | null {
+export function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null;
 
   const nameEQ = name + "=";

@@ -134,7 +134,6 @@ export default function GrindSizeConverterPage() {
 
       <PageHeader
         backgroundImage="/images/hero-recipes.avif"
-        backgroundImageAlt="Coffee grind size converter background"
         description="Translate any brew method into a real grinder setting. Pick your method and grinder, get the clicks to dial in, and see the whole grind-size chart in microns."
         overline="Grind Size by Brew Method & Grinder"
         title="Grind Size Converter"

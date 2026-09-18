@@ -139,7 +139,6 @@ export default function CoffeeCalculatorPage() {
       {/* Page Header */}
       <PageHeader
         backgroundImage="/images/hero-recipes.avif"
-        backgroundImageAlt="Coffee calculator background"
         description="Master your brewing technique with our step-by-step guide and precision calculator. Get perfect ratios, timing, and expert tips for every method."
         overline="Perfect Coffee Ratios & Brewing Timer"
         title="Perfect Brew Calculator"

@@ -172,7 +172,6 @@ export default function ExpertRecipesPage() {
       {/* Page Header */}
       <PageHeader
         backgroundImage="/images/hero-experts.avif"
-        backgroundImageAlt="Coffee beans background"
         description="Learn from world champions and coffee experts. Master championship-winning techniques from James Hoffmann, Tetsu Kasuya, Scott Rao, and more."
         overline="Championship Brewing Techniques & Expert Recipes"
         title="Expert Coffee Recipes"

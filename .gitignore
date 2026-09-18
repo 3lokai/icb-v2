@@ -56,3 +56,8 @@ next-env.d.ts
 # Boundary GeoJSON downloaded by scripts/build-region-map.mjs (the generated
 # TS output is committed; these 9MB sources are not)
 /scripts/data/
+
+# Supabase CLI scratch state — version probes, pooler URL and the linked-project
+# pointer, all rewritten on any `supabase` invocation. A fresh clone gets them
+# back from `supabase link`.
+/supabase/.temp/

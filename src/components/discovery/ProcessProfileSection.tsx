@@ -160,7 +160,7 @@ export function ProcessProfileSection({
             <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted/20 md:col-span-2 md:aspect-square">
               <Image
                 src={`/images/discovery/process-${slug}.avif`}
-                alt={`${slug} process coffee`}
+                alt={`${processSlugToLabel(slug)} processed coffee beans`}
                 fill
                 className="object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 40vw"
@@ -235,7 +235,7 @@ export function ProcessProfileSection({
           <div className="order-1 md:order-2 md:col-span-2 relative aspect-video md:aspect-auto h-full min-h-0">
             <Image
               src={`/images/discovery/process-${slug}-context.avif`}
-              alt="Indian Specialty Context"
+              alt={`${processSlugToLabel(slug)} processed coffee in India`}
               fill
               sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover"

@@ -179,7 +179,7 @@ icb-v2/
 │   ├── animations/           # Lottie animations
 │   ├── images/              # Image assets
 │   └── videos/              # Video assets
-├── ai_docs/                  # Project documentation
+├── docs/                     # Project documentation (completed/ holds the archive)
 ├── scripts/                  # Utility scripts
 ├── env.ts                    # Environment validation
 ├── next.config.ts            # Next.js configuration

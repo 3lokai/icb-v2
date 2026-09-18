@@ -27,6 +27,7 @@ import {
   type UploadAvatarFormData,
 } from "@/lib/validations/station-photos";
 import { uploadToImageKit, deleteFromImageKit } from "@/lib/imagekit/upload";
+import { persistSignupAttribution } from "@/lib/analytics/persist-attribution";
 
 type OnboardingData = OnboardingFormData;
 
@@ -335,6 +336,12 @@ export async function saveOnboardingData(data: OnboardingData): Promise<{
       console.error("Profile save failed:", profileResult.error);
       return profileResult;
     }
+
+    // First-touch campaign attribution from the icb_attribution cookie. Lives
+    // here rather than only in /auth/callback because email+password signup goes
+    // straight from auth-form.tsx to /auth/onboarding and never hits that route.
+    // Write-once, so the OAuth path having already run makes this a no-op.
+    await persistSignupAttribution(currentUser.id);
 
     // Save coffee preferences if provided
     const coffeePrefs = prepareCoffeePreferences(validatedData);

@@ -267,7 +267,6 @@ export default async function RoastersPage({
     <>
       <PageHeader
         backgroundImage="/images/hero-roasters.avif"
-        backgroundImageAlt="Roastery background"
         description="Discover specialty coffee roasters from across India. Connect with the artisans dedicated to bringing out the best in every bean."
         overline="Artisan Roaster Directory"
         rightSideContent={

@@ -21,7 +21,7 @@ export function HeroSuspenseFallback() {
           </div>
 
           <div className="order-2 min-w-0 lg:col-start-1 lg:row-start-2">
-            <HeroPrimaryHeadline hero={hero} />
+            <HeroPrimaryHeadline hero={hero} as="p" />
           </div>
 
           <div className="order-4 min-h-[200px] min-w-0 rounded-2xl border border-white/10 bg-white/5 lg:order-none lg:col-start-2 lg:row-start-2 lg:self-start" />

@@ -283,7 +283,6 @@ export default async function RegionsPage() {
 
       <PageHeader
         backgroundImage="/images/discovery/regions-hero.avif"
-        backgroundImageAlt="Coffee plantations in the Western Ghats"
         description={REGIONS_DESCRIPTION}
         overline="Regions"
         title="India's Coffee Regions"

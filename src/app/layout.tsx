@@ -178,26 +178,46 @@ export default async function RootLayout({
                     window.gtag("js", new Date());
                   }
                   
-                  // Set default consent to granted (opt-out model)
+                  // Analytics is opt-out (granted by default); the ad_* family is
+                  // opt-IN and stays denied until the visitor actively grants it.
                   // This must be set BEFORE Next.js component runs its config
                   window.gtag("consent", "default", {
                     analytics_storage: "granted",
                     ad_storage: "denied",
+                    ad_user_data: "denied",
+                    ad_personalization: "denied",
                   });
                   
-                  // Check localStorage for previous consent preference
-                  // Matches STORAGE_KEY from use-cookie-consent.ts hook
+                  // Check localStorage for previous consent preference.
+                  // This is a stringified beforeInteractive script, so it cannot
+                  // import @/lib/consent — keep these conditions in step with
+                  // parsePreferences there by hand.
                   try {
                     var consent = localStorage.getItem("icb-cookie-consent");
                     if (consent) {
                       var parsed = JSON.parse(consent);
-                      // If analytics is explicitly false, deny consent
-                      if (parsed.analytics === false) {
+                      // Analytics is denied on an explicit false, or on a pre-v2
+                      // value whose only answer was the old "marketing" flag —
+                      // that refusal has to keep counting.
+                      var analytics = parsed.analytics !== undefined
+                        ? parsed.analytics
+                        : (parsed.marketing !== undefined ? parsed.marketing : true);
+                      if (analytics === false) {
                         window.gtag("consent", "update", {
                           analytics_storage: "denied",
                         });
                       }
                       // If analytics is true or not set, default remains "granted" (opt-out model)
+                      // Marketing only counts from a v2 preference — an older stored
+                      // value carries no marketing consent. Mirrors CONSENT_VERSION
+                      // in @/lib/consent.
+                      if (parsed.v === 2 && parsed.marketing === true) {
+                        window.gtag("consent", "update", {
+                          ad_storage: "granted",
+                          ad_user_data: "granted",
+                          ad_personalization: "granted",
+                        });
+                      }
                     }
                     // If no consent stored, default remains "granted" (opt-out model)
                   } catch (e) {

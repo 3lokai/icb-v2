@@ -4,6 +4,9 @@
 // Microsoft Clarity. This module only handles consent updates and storing the
 // visitor's original UTM attribution for later reference.
 
+import { getCookie, setCookie } from "@/lib/reviews/anon-id";
+import { getStoredPreferences } from "@/lib/consent";
+
 // Update consent status
 // Consent mode is initialized by the beforeInteractive script in layout.tsx;
 // this is called when the user changes preferences via the cookie-consent UI.
@@ -18,6 +21,38 @@ export const updateAnalyticsConsent = (granted: boolean) => {
   // called before that (e.g. consent rejected before Clarity ever loaded).
   if (typeof window !== "undefined") {
     window.clarity?.("consent", granted);
+  }
+  // PostHog, if it is already running. Imported dynamically to keep the module
+  // graph acyclic — @/lib/posthog imports the consent hook, which imports this
+  // module. The import itself is cheap; posthog-js only loads inside
+  // loadPostHog(), which this deliberately does not call.
+  if (typeof window !== "undefined") {
+    void import("@/lib/posthog").then(({ loadedPostHog }) =>
+      loadedPostHog()?.then((posthog) =>
+        granted ? posthog.opt_in_capturing() : posthog.opt_out_capturing()
+      )
+    );
+  }
+  // Revoking consent must also drop attribution already on disk. The cookie
+  // outlives the toggle by 90 days and is readable server-side at signup, so
+  // leaving it would make the UI assert a stop that never happened.
+  if (!granted) {
+    setCookie(ATTRIBUTION_COOKIE, "", 0);
+  }
+};
+
+// Marketing/advertising consent. Deliberately separate from analytics: this one
+// is opt-IN, and every ad tag or hashed-email export must gate on it rather than
+// on `analytics`. There is no ad tech on the site yet — this lands the lawful
+// basis before the first tag ships, not after.
+export const updateMarketingConsent = (granted: boolean) => {
+  if (typeof window !== "undefined" && window.gtag) {
+    const value = granted ? "granted" : "denied";
+    window.gtag("consent", "update", {
+      ad_storage: value,
+      ad_user_data: value,
+      ad_personalization: value,
+    });
   }
 };
 
@@ -94,37 +129,61 @@ const calculateSessionQuality = (): number => {
   return Math.min(qualityScore, 5); // Cap at 5
 };
 
+// Cookie rather than sessionStorage: the rating -> gate -> signup funnel is
+// cross-session by design, so per-tab storage recorded every delayed signup as
+// unattributed. A cookie also lets the server read it at signup (see
+// persist-attribution.ts) without any client plumbing.
+export const ATTRIBUTION_COOKIE = "icb_attribution";
+const ATTRIBUTION_MAX_AGE = 90 * 24 * 60 * 60; // 90 days in seconds
+
+const EMPTY_ATTRIBUTION: AttributionData = {
+  touchpoints: 0,
+  first_visit_time: 0,
+  last_visit_time: 0,
+  session_quality_score: 1,
+};
+
 // Get stored attribution data
 export const getStoredAttribution = (): AttributionData => {
   if (typeof window === "undefined") {
-    return {
-      touchpoints: 0,
-      first_visit_time: 0,
-      last_visit_time: 0,
-      session_quality_score: 1,
-    };
+    return { ...EMPTY_ATTRIBUTION };
   }
 
   try {
-    const stored = sessionStorage.getItem("icb_attribution");
+    const stored = getCookie(ATTRIBUTION_COOKIE);
     if (stored) {
-      return JSON.parse(stored);
+      return JSON.parse(decodeURIComponent(stored));
     }
   } catch (error) {
     console.error("Error reading attribution data:", error);
   }
 
-  return {
-    touchpoints: 0,
-    first_visit_time: 0,
-    last_visit_time: 0,
-    session_quality_score: 1,
-  };
+  return { ...EMPTY_ATTRIBUTION };
+};
+
+// URL-encoded: the value is JSON, and a raw comma or semicolon would truncate
+// the cookie. The server decodes with the same symmetry.
+const writeAttribution = (data: AttributionData): void => {
+  setCookie(
+    ATTRIBUTION_COOKIE,
+    encodeURIComponent(JSON.stringify(data)),
+    ATTRIBUTION_MAX_AGE
+  );
 };
 
 // Store attribution data with quality metrics
 export const storeAttributionData = (utmParams: UTMParams): void => {
   if (typeof window === "undefined") {
+    return;
+  }
+
+  // Gate at the source: with no attribution cookie there is nothing for the
+  // signup persist or the PostHog person write downstream to pick up, so this
+  // single check covers every consumer.
+  // Attribution is analytics-category data. Shares the parse in @/lib/consent
+  // rather than re-implementing it: the two copies previously disagreed about a
+  // legacy marketing opt-out, and this side wrote the cookie anyway.
+  if (!getStoredPreferences().analytics) {
     return;
   }
 
@@ -150,7 +209,7 @@ export const storeAttributionData = (utmParams: UTMParams): void => {
         session_quality_score: currentQuality,
       };
 
-      sessionStorage.setItem("icb_attribution", JSON.stringify(newAttribution));
+      writeAttribution(newAttribution);
     } else if (existingAttribution.original_source) {
       // Update existing attribution
       const updatedAttribution: AttributionData = {
@@ -163,10 +222,7 @@ export const storeAttributionData = (utmParams: UTMParams): void => {
         ),
       };
 
-      sessionStorage.setItem(
-        "icb_attribution",
-        JSON.stringify(updatedAttribution)
-      );
+      writeAttribution(updatedAttribution);
     }
   } catch (error) {
     console.error("Error storing attribution data:", error);

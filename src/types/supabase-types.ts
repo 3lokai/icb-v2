@@ -2508,6 +2508,7 @@ export type Database = {
       };
       user_profiles: {
         Row: {
+          attribution: Json | null;
           avatar_url: string | null;
           bio: string | null;
           city: string | null;
@@ -2531,6 +2532,7 @@ export type Database = {
           username: string | null;
         };
         Insert: {
+          attribution?: Json | null;
           avatar_url?: string | null;
           bio?: string | null;
           city?: string | null;
@@ -2554,6 +2556,7 @@ export type Database = {
           username?: string | null;
         };
         Update: {
+          attribution?: Json | null;
           avatar_url?: string | null;
           bio?: string | null;
           city?: string | null;
