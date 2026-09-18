@@ -1,7 +1,7 @@
 # `ponytail:` comment audit — findings + fixes
 
-**Date:** 2026-09-17 (applied 2026-09-18) · **Status:** steps 1, 2, 3, 6 and 7 applied;
-steps 4 and 5 (PostHog opt-out, cookie banner) deliberately deferred and untouched.
+**Date:** 2026-09-17 (applied 2026-09-18) · **Status:** all steps applied. Steps 4 and 5 were
+deferred in the first pass and picked up the same day.
 
 ## Context
 
@@ -152,7 +152,7 @@ Both in `src/lib/data/fetch-chart-data.ts`:
    original bug invisibly. The `ponytail:` line recording that `PAGE_SIZE` must stay ≤ the
    server's `db-max-rows` (currently 1000) now lives in `fetch-all-rows.ts`.
 
-## Step 4 — DEFERRED — P1: the analytics opt-out never reaches PostHog
+## Step 4 — APPLIED — P1: the analytics opt-out never reached PostHog
 
 **What exists and works:** `CookieSettingsButton` in the footer
 (`src/components/layout/Footer.tsx:342`) opens `CookieSettings.tsx`, which persists via
@@ -182,14 +182,21 @@ UI asserts something it doesn't do.
 
 **Not changing here:** the opt-out default, the banner, or `disable_session_recording`.
 
-> **Deferred on 2026-09-18.** Nothing under consent or analytics was touched in the applied
-> pass — `src/lib/analytics/index.ts` and `src/lib/posthog.ts` are untouched, so the defect
-> described above is still live. This section is the spec for whenever it is picked up.
+**As applied (2026-09-18):** `loadPostHog()` passes `opt_out_capturing_by_default` from
+`getStoredPreferences().analytics` at init, so a stored refusal is in force before the first
+event and survives reloads. `updateAnalyticsConsent` reaches a *running* instance through a new
+`loadedPostHog()` accessor, dynamically imported — pulling ~330KB in order to switch capture
+off would be the one case where loading is the wrong move, and a visitor who never fires an
+event is already covered by the init-time read. The dynamic import also keeps the module graph
+acyclic (`posthog.ts` → `use-cookie-consent` → `analytics`).
 
-## Step 5 — Cookie notice: deliberately NOT re-enabled
+Note there is no longer an idle bootstrap — `instrumentation-client.ts` is gone, so posthog-js
+loads only on the first `capture()` / `identifyUser()` / `captureException()`.
 
-The `{false && <CookieNotice />}` gate at `src/app/(main)/layout.tsx:58` stays for now, and
-`CookieNotice.tsx` is **not** deleted. Recorded so nobody has to re-derive it:
+## Step 5 — APPLIED — cookie notice re-enabled
+
+The `{false && <CookieNotice />}` gate at `src/app/(main)/layout.tsx:58` is gone; the banner
+renders again. Both preconditions below were met first. Recorded so nobody has to re-derive it:
 
 **The component already behaves as intended.** `CookieNotice.tsx:40-52`:
 
@@ -207,14 +214,20 @@ It was switched off in commit `76604ed` (2026-09-06), *"Removed the CookieNotice
 from the main layout to streamline the user interface"* — a performance/UI decision, left as
 `{false && …}` plus an unused import rather than deleted.
 
-**Two things must be true before it goes back:**
+**Both preconditions were met in the same change:**
 
-1. **Step 4 lands first.** With a banner up, unticking Analytics tells the user tracking
-   stopped — and PostHog keeps capturing until it's wired into `updateAnalyticsConsent`.
-2. **`src/lib/posthog.ts:72-73` gets reworded.** It rules out a still-open `NotFoundError`
-   root cause on the grounds that the component "never renders — (main)/layout.tsx gates it
-   behind `{false && ...}`". Re-enabling voids that reasoning and reopens the portal-race
-   theory as a live candidate.
+1. **Step 4 landed first.** A banner that says unticking Analytics stops tracking has to be
+   telling the truth; PostHog is now wired into `updateAnalyticsConsent`.
+2. **The `NotFoundError` note in `src/lib/posthog.ts` was reworded.** It had ruled out the
+   CookieNotice portal-race theory on the grounds that the component never renders. It renders
+   again, so the theory is back on the list of live candidates and the comment now says so.
+
+**Model unchanged:** still opt-out — analytics is pre-granted, the banner is a notice with a
+manage option, and `ad_storage` stays denied. Re-enabling restores the ask; it does not
+change what runs by default.
+
+**Still open:** the LCP question below is untested against the re-enabled banner. Worth a
+Vitals check on hero-less routes after this ships.
 
 **Open LCP question** — likely the real motive for `76604ed`. `CookieNotice.tsx:55-60` records
 that on hero-less pages the banner can become the LCP element and that the idle defer does not

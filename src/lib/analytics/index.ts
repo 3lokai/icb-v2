@@ -19,6 +19,17 @@ export const updateAnalyticsConsent = (granted: boolean) => {
   if (typeof window !== "undefined") {
     window.clarity?.("consent", granted);
   }
+  // PostHog, if it is already running. Imported dynamically to keep the module
+  // graph acyclic — @/lib/posthog reads getStoredPreferences, which lives in the
+  // hook that calls this function. The import itself is cheap; posthog-js only
+  // loads inside loadPostHog(), which this deliberately does not call.
+  if (typeof window !== "undefined") {
+    void import("@/lib/posthog").then(({ loadedPostHog }) =>
+      loadedPostHog()?.then((posthog) =>
+        granted ? posthog.opt_in_capturing() : posthog.opt_out_capturing()
+      )
+    );
+  }
 };
 
 // UTM Parameter Extraction and Attribution

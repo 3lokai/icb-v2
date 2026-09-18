@@ -1,6 +1,7 @@
 "use client";
 
 import type { PostHog } from "posthog-js";
+import { getStoredPreferences } from "@/hooks/use-cookie-consent";
 
 let instance: Promise<PostHog> | null = null;
 
@@ -16,6 +17,11 @@ export function loadPostHog(): Promise<PostHog> {
   if (instance) return instance;
   instance = import("posthog-js").then(({ default: posthog }) => {
     posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
+      // Opt-out model: analytics is granted unless the visitor turned it off in
+      // the cookie notice or the footer panel. Read at init rather than opted out
+      // afterwards, so a stored refusal survives reloads and nothing is captured
+      // in the window between init and the first consent call.
+      opt_out_capturing_by_default: !getStoredPreferences().analytics,
       api_host: "https://b.indiancoffeebeans.com",
       ui_host: "https://eu.posthog.com",
       // Include the defaults option as required by PostHog
@@ -69,11 +75,13 @@ export function loadPostHog(): Promise<PostHog> {
           "Error invoking postMessage",
           "runtime.sendNativeMessage",
           // NOT filtered on purpose: "NotFoundError". Root cause is still open.
-          // The old CookieNotice portal-race theory is dead: that component
-          // never renders — (main)/layout.tsx gates it behind `{false && ...}`.
-          // The live candidates are Clarity mutating the DOM under React 19's
-          // commit phase, or the browser translate feature. Filtering it would
-          // delete the evidence that review needs.
+          // The CookieNotice portal race is a live candidate again: the banner was
+          // dormant behind `{false && ...}` when this was last triaged, which is
+          // what ruled it out, and it renders again as of this change. It portals
+          // into a node it removes on unmount (CookieNotice.tsx:33-37). The other
+          // candidates are Clarity mutating the DOM under React 19's commit phase,
+          // and the browser translate feature. Filtering it would delete the
+          // evidence that review needs.
         ];
         if (NOISE.some((m) => blob.includes(m))) return null;
         return event;
@@ -134,6 +142,14 @@ function captureTtfb(posthog: PostHog): void {
     /* Navigation Timing unavailable — telemetry must never break the page. */
   }
 }
+
+/**
+ * The initialised instance, or null when nothing has loaded posthog-js yet.
+ * Consent changes go through this rather than loadPostHog(): pulling ~330KB in
+ * order to switch capture *off* is the one case where loading is the wrong move.
+ * A visitor who never triggers an event is covered by the init-time read above.
+ */
+export const loadedPostHog = (): Promise<PostHog> | null => instance;
 
 /** Fire-and-forget event capture; loads + inits posthog on first use. */
 export const capture = (
