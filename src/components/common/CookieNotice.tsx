@@ -10,8 +10,8 @@ import { Switch } from "@/components/ui/switch";
 import {
   type CookiePreferences,
   getStoredPreferences,
+  hasStoredConsent,
   savePreferences as persistPreferences,
-  STORAGE_KEY,
 } from "@/hooks/use-cookie-consent";
 import { PageShell } from "@/components/primitives/page-shell";
 
@@ -42,7 +42,7 @@ export function CookieNotice() {
     let cancelled = false;
     const showIfNeeded = () => {
       if (cancelled) return;
-      const hasConsent = localStorage.getItem(STORAGE_KEY) !== null;
+      const hasConsent = hasStoredConsent();
       if (hasConsent) {
         const stored = getStoredPreferences();
         setPreferences(stored);

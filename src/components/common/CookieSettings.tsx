@@ -8,8 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import {
   type CookiePreferences,
   getStoredPreferences,
+  hasStoredConsent,
   savePreferences as persistPreferences,
-  STORAGE_KEY,
 } from "@/hooks/use-cookie-consent";
 
 export function CookieSettings({
@@ -29,7 +29,7 @@ export function CookieSettings({
   useEffect(() => {
     // Check if preferences have been saved before
     const stored = getStoredPreferences();
-    const hasConsent = localStorage.getItem(STORAGE_KEY) !== null;
+    const hasConsent = hasStoredConsent();
 
     // Only show if no consent has been given yet, or if forceOpen is true
     startTransition(() => {

@@ -1,12 +1,17 @@
 # Attribution durability + marketing consent category — handover
 
-**Date:** 2026-09-18 · **Status:** both open, neither started · **Source:** `icb-claude`
+**Date:** 2026-09-18 · **Status:** both implemented on `dev` (see below) · **Source:** `icb-claude`
 `seo/site-recommendations/backlog.md` items `[paid-attribution-durable]` and
 `[consent-marketing-category]`, raised in the paid-ads Part 0 review 2026-09-12
 (`docs/paid-ads-playbook-icb.md` §0.2 B1/B2 in the icb-claude repo).
 
-Verified against this checkout on 2026-09-18: `dev`, clean tree — and against `main`,
-`origin/main`, `origin/dev`. Neither fix exists on any branch.
+Originally verified against this checkout on 2026-09-18 (`dev`, clean tree) and against
+`main`, `origin/main`, `origin/dev`: neither fix existed on any branch. **Both have since
+been implemented on `dev`** — attribution now persists to a 90-day cookie and onto
+`user_profiles.attribution` at signup, and consent carries a distinct opt-in `marketing`
+category. What shipped, and where it diverged from the sketch below, is recorded in
+"What shipped" at the end of this document. The diagnosis in §1 and §2 is kept as written
+for the record; read it as the problem statement, not as the current state of the code.
 
 Both live in this repo, which is why they're written up here rather than in the icb-claude
 backlog: that file diagnoses, this repo applies.
@@ -120,3 +125,53 @@ with a stored preference starts at `marketing: false` without being re-prompted 
 been rendering as `{false && <CookieNotice />}` since `76604ed` (2026-09-06) — and wired the
 analytics opt-out through to PostHog, which `updateAnalyticsConsent` had previously skipped.
 That closed the *analytics* consent gap. Neither item above was part of it.
+
+---
+
+## What shipped (2026-09-18, `dev`)
+
+Both items landed together, plus one surface the handover did not cover.
+
+**1. Attribution durability**
+- `icb_attribution` moved to a 90-day cookie, reusing `setCookie`/`getCookie` from
+  `src/lib/reviews/anon-id.ts` (now exported) rather than new helpers. The JSON value is
+  URL-encoded; a raw comma would truncate the cookie.
+- `src/lib/analytics/persist-attribution.ts` writes it onto `user_profiles.attribution`
+  (new `jsonb` column, migration `20260918120000`) guarded on `is null` so the first touch
+  is never overwritten, and sets PostHog person properties (`$set_once` first-touch,
+  `$set` last-touch) through the existing `captureServerEvent`.
+- Called from **two** signup paths, not one: `/auth/callback` *and* `saveOnboardingData`.
+  The handover assumed the OAuth callback was the natural hook; it is, but email+password
+  signup goes straight from `auth-form.tsx` to `/auth/onboarding` and never reaches that
+  route, so the callback alone would have attributed only OAuth users.
+- Consent is gated at the source: `storeAttributionData` writes nothing without analytics
+  consent, and `updateAnalyticsConsent(false)` **deletes** an existing cookie — otherwise
+  the 90-day cookie outlives the toggle and is still readable server-side at signup.
+
+**2. Marketing consent category**
+- `CookiePreferences` gains `marketing`, defaulting to `false`. A `v: 2` stamp is what
+  distinguishes a new stored value from a pre-v2 one, so an existing preference reads as
+  `marketing: false` while keeping its analytics answer and without a re-prompt.
+- A pre-v2 value whose only answer was the old `marketing` flag still counts as an
+  *analytics* refusal. That fallback now lives in exactly one place.
+- Third toggle in `CookieNotice` and `CookieSettings`; `ad_storage` / `ad_user_data` /
+  `ad_personalization` denied by default in the `layout.tsx` consent-init and granted only
+  on a v2 grant.
+
+**3. Dashboard consent controls** (not in the handover)
+- The only post-banner way to change consent was the footer button. `/dashboard/privacy`
+  now carries a "Cookies & Tracking" card, with copy noting the setting is per-browser —
+  consent lives in `localStorage`, not on the profile row.
+
+**Notes for whoever picks this up next**
+- `src/lib/consent.ts` is the single source of truth for parsing and storing consent. It is
+  deliberately dependency-free: the hook needs side-effects from `@/lib/analytics` and
+  `@/lib/analytics` needs to read consent, so the parse cannot live in either.
+- The one reader that cannot import it is the `beforeInteractive` script in
+  `app/layout.tsx`, which is a stringified inline script. Its conditions must be kept in
+  step with `parsePreferences` by hand.
+- `scripts/check-consent-attribution.mts` (`npx tsx`) covers the legal-consequence paths:
+  legacy refusals, v2 normalisation, first-touch retention, revoke-clears-cookie, and the
+  attribution schema.
+- Still unverified by hand: the `dataLayer` consent signals and the rendered toggles — no
+  browser was reachable in the session that built this.

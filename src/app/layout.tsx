@@ -188,14 +188,21 @@ export default async function RootLayout({
                     ad_personalization: "denied",
                   });
                   
-                  // Check localStorage for previous consent preference
-                  // Matches STORAGE_KEY from use-cookie-consent.ts hook
+                  // Check localStorage for previous consent preference.
+                  // This is a stringified beforeInteractive script, so it cannot
+                  // import @/lib/consent — keep these conditions in step with
+                  // parsePreferences there by hand.
                   try {
                     var consent = localStorage.getItem("icb-cookie-consent");
                     if (consent) {
                       var parsed = JSON.parse(consent);
-                      // If analytics is explicitly false, deny consent
-                      if (parsed.analytics === false) {
+                      // Analytics is denied on an explicit false, or on a pre-v2
+                      // value whose only answer was the old "marketing" flag —
+                      // that refusal has to keep counting.
+                      var analytics = parsed.analytics !== undefined
+                        ? parsed.analytics
+                        : (parsed.marketing !== undefined ? parsed.marketing : true);
+                      if (analytics === false) {
                         window.gtag("consent", "update", {
                           analytics_storage: "denied",
                         });
@@ -203,7 +210,7 @@ export default async function RootLayout({
                       // If analytics is true or not set, default remains "granted" (opt-out model)
                       // Marketing only counts from a v2 preference — an older stored
                       // value carries no marketing consent. Mirrors CONSENT_VERSION
-                      // in use-cookie-consent.ts.
+                      // in @/lib/consent.
                       if (parsed.v === 2 && parsed.marketing === true) {
                         window.gtag("consent", "update", {
                           ad_storage: "granted",

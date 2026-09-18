@@ -5,6 +5,7 @@
 // visitor's original UTM attribution for later reference.
 
 import { getCookie, setCookie } from "@/lib/reviews/anon-id";
+import { getStoredPreferences } from "@/lib/consent";
 
 // Update consent status
 // Consent mode is initialized by the beforeInteractive script in layout.tsx;
@@ -22,9 +23,9 @@ export const updateAnalyticsConsent = (granted: boolean) => {
     window.clarity?.("consent", granted);
   }
   // PostHog, if it is already running. Imported dynamically to keep the module
-  // graph acyclic — @/lib/posthog reads getStoredPreferences, which lives in the
-  // hook that calls this function. The import itself is cheap; posthog-js only
-  // loads inside loadPostHog(), which this deliberately does not call.
+  // graph acyclic — @/lib/posthog imports the consent hook, which imports this
+  // module. The import itself is cheap; posthog-js only loads inside
+  // loadPostHog(), which this deliberately does not call.
   if (typeof window !== "undefined") {
     void import("@/lib/posthog").then(({ loadedPostHog }) =>
       loadedPostHog()?.then((posthog) =>
@@ -142,21 +143,6 @@ const EMPTY_ATTRIBUTION: AttributionData = {
   session_quality_score: 1,
 };
 
-// Attribution is analytics-category data. Read the consent value directly rather
-// than importing the hook, which imports this module (same acyclic dodge as the
-// PostHog import above). Absent/unparseable consent means opt-out default: true.
-const hasAnalyticsConsent = (): boolean => {
-  try {
-    const stored = localStorage.getItem("icb-cookie-consent");
-    if (!stored) {
-      return true;
-    }
-    return JSON.parse(stored).analytics !== false;
-  } catch {
-    return true;
-  }
-};
-
 // Get stored attribution data
 export const getStoredAttribution = (): AttributionData => {
   if (typeof window === "undefined") {
@@ -194,7 +180,10 @@ export const storeAttributionData = (utmParams: UTMParams): void => {
   // Gate at the source: with no attribution cookie there is nothing for the
   // signup persist or the PostHog person write downstream to pick up, so this
   // single check covers every consumer.
-  if (!hasAnalyticsConsent()) {
+  // Attribution is analytics-category data. Shares the parse in @/lib/consent
+  // rather than re-implementing it: the two copies previously disagreed about a
+  // legacy marketing opt-out, and this side wrote the cookie anyway.
+  if (!getStoredPreferences().analytics) {
     return;
   }
 

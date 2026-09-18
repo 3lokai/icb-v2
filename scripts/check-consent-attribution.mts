@@ -44,6 +44,8 @@ const { getStoredPreferences, savePreferences, STORAGE_KEY } =
   await import("../src/hooks/use-cookie-consent.ts");
 const { storeAttributionData, getStoredAttribution } =
   await import("../src/lib/analytics/index.ts");
+const { attributionSchema } =
+  await import("../src/lib/validations/attribution.ts");
 
 // --- consent: defaults ---
 assert.deepEqual(getStoredPreferences(), {
@@ -63,6 +65,23 @@ assert.equal(
   getStoredPreferences().analytics,
   true,
   "pre-v2 marketing still answers analytics"
+);
+
+// A pre-v2 refusal expressed only through the old `marketing` flag is still a
+// refusal. analytics/index.ts used to re-implement this check and got it wrong,
+// writing an attribution cookie for a visitor who had declined.
+store.set(STORAGE_KEY, JSON.stringify({ necessary: true, marketing: false }));
+assert.equal(
+  getStoredPreferences().analytics,
+  false,
+  "legacy marketing:false must read as an analytics refusal"
+);
+jar.clear();
+storeAttributionData({ utm_source: "legacy-optout", utm_campaign: "nope" });
+assert.equal(
+  jar.get("icb_attribution"),
+  undefined,
+  "a legacy refusal must block the attribution cookie"
 );
 
 store.set(
@@ -136,6 +155,39 @@ assert.equal(
   jar.get("icb_attribution"),
   undefined,
   "no cookie without analytics consent"
+);
+
+// --- attribution schema rejects a hand-edited cookie ---
+savePreferences({ necessary: true, analytics: true, marketing: false });
+storeAttributionData({ utm_source: "real", utm_campaign: "c" });
+const good = JSON.parse(decodeURIComponent(jar.get("icb_attribution")!));
+assert.equal(
+  attributionSchema.safeParse(good).success,
+  true,
+  "real cookie validates"
+);
+
+for (const bad of [
+  { ...good, touchpoints: -1 },
+  { ...good, touchpoints: "many" },
+  { ...good, original_source: "x".repeat(300) },
+  { ...good, original_source: "" },
+  { ...good, session_quality_score: 99 },
+  { original_source: "only-a-source" },
+  "not-an-object",
+  null,
+]) {
+  assert.equal(
+    attributionSchema.safeParse(bad).success,
+    false,
+    `expected rejection for ${JSON.stringify(bad)?.slice(0, 60)}`
+  );
+}
+// Unknown keys are stripped, not persisted into the jsonb column.
+assert.equal(
+  "injected" in attributionSchema.parse({ ...good, injected: "payload" }),
+  false,
+  "unknown keys must be stripped"
 );
 
 console.log("consent + attribution: ok");

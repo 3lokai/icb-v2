@@ -230,8 +230,11 @@ export async function GET(request: NextRequest) {
       });
 
       // First-touch campaign attribution from the icb_attribution cookie.
-      // Never throws; a failure here must not fail the signup.
-      void persistSignupAttribution(user.id);
+      // Awaited, unlike the notifications below: the route returns a redirect
+      // immediately after, and un-awaited work can be cut off before the write
+      // lands. The helper swallows its own errors, so a failure here still
+      // cannot fail the login.
+      await persistSignupAttribution(user.id);
 
       // Fire and forget - don't await
       sendSlackNotification("signup", {

@@ -11,17 +11,25 @@
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { captureServerEvent } from "@/lib/posthog-server";
-import { ATTRIBUTION_COOKIE, type AttributionData } from "@/lib/analytics";
+import { ATTRIBUTION_COOKIE } from "@/lib/analytics";
+import {
+  type Attribution,
+  attributionSchema,
+} from "@/lib/validations/attribution";
 
-const readAttributionCookie = async (): Promise<AttributionData | null> => {
+const readAttributionCookie = async (): Promise<Attribution | null> => {
   const raw = (await cookies()).get(ATTRIBUTION_COOKIE)?.value;
   if (!raw) {
     return null;
   }
-  // Client-writable input: anything unparseable is dropped, not trusted.
+  // Client-writable input, persisted verbatim into a jsonb column: validate the
+  // whole value and keep only the schema's output. Anything malformed is
+  // dropped rather than cast.
   try {
-    const parsed = JSON.parse(decodeURIComponent(raw));
-    return typeof parsed?.original_source === "string" ? parsed : null;
+    const result = attributionSchema.safeParse(
+      JSON.parse(decodeURIComponent(raw))
+    );
+    return result.success ? result.data : null;
   } catch {
     return null;
   }
