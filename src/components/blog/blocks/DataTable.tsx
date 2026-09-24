@@ -46,7 +46,10 @@ export function DataTable({ value }: DataTableProps) {
           </thead>
           <tbody className="divide-y divide-border/30">
             {value.rows?.map((row, ri) => (
-              <tr key={ri} className="transition-colors hover:bg-primary/5">
+              // ponytail: no row hover highlight — these rows are inert, and the
+              // affordance was drawing dead clicks. Add it back only alongside a
+              // real per-row link.
+              <tr key={ri}>
                 {(row.cells ?? []).map((cell, ci) => (
                   <td
                     key={ci}

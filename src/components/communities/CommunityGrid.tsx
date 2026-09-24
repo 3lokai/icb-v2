@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -51,7 +51,6 @@ const PLATFORM_ORDER: CommunityPlatform[] = [
 export function CommunityGrid({ communities }: CommunityGridProps) {
   const reduceMotion = useReducedMotion();
   const searchParams = useSearchParams();
-  const router = useRouter();
   const pathname = usePathname();
 
   // Only offer filter chips for platforms that actually have communities.
@@ -82,9 +81,14 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
     }
     const query = params.toString();
     // Shareable filtered views without polluting history or jumping scroll.
-    router.replace(query ? `${pathname}?${query}` : pathname, {
-      scroll: false,
-    });
+    // The grid filters `communities` out of local state and never reads this
+    // back, so write the URL with the native History API — `router.replace`
+    // re-rendered the server component for a result nothing consumes.
+    window.history.replaceState(
+      null,
+      "",
+      query ? `${pathname}?${query}` : pathname
+    );
   };
 
   const filteredCommunities = useMemo(() => {

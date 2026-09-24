@@ -204,7 +204,9 @@ export function DataChart({ value }: DataChartProps) {
 
       <motion.div
         variants={itemVariants}
-        className="relative h-[450px] w-full rounded-2xl border border-border/40 bg-card p-8 shadow-lg overflow-visible transition-all hover:shadow-xl hover:border-border/60"
+        // ponytail: no panel hover lift — the chart itself has hover tooltips
+        // but the panel is not clickable, so the lift only drew dead clicks.
+        className="relative h-[450px] w-full rounded-2xl border border-border/40 bg-card p-8 shadow-lg overflow-visible"
       >
         <ResponsiveContainer width="100%" height="100%">
           {value.chartType === "bar" ? (

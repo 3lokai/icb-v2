@@ -4,6 +4,7 @@ import { Accent } from "@/components/primitives/accent";
 import { ArrowClockwiseIcon, FunnelIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { useMemo, useState } from "react";
+import { queryKeys } from "@/lib/query-keys";
 import { RoasterDirectoryFAQ } from "@/components/faqs/RoasterDirectoryFAQs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -53,10 +54,18 @@ export function RoasterDirectory({
     );
   }, [filters]);
 
+  // Seed the server's render only into the key it actually describes — see the
+  // same guard in CoffeeDirectory for why a wider seed shows stale rows.
+  const queryKey = JSON.stringify(
+    queryKeys.roasters.list(filters, page, limit, sort)
+  );
+  const [serverQueryKey] = useState(() => queryKey);
+  const isServerRenderedView = queryKey === serverQueryKey;
+
   // Fetch data using TanStack Query
   const { data, isFetching, isError, refetch } = useRoasters(
     { filters, page, limit, sort },
-    { initialData }
+    isServerRenderedView ? { initialData } : {}
   );
 
   if (isError) {

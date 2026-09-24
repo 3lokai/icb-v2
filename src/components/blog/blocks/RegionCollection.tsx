@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { ArrowRightIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 
 interface RegionCollectionProps {
@@ -35,13 +36,13 @@ export function RegionCollection({ value }: RegionCollectionProps) {
     moreText = "Explore All Regions",
   } = value;
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="not-prose group my-16 overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 via-emerald-500/[0.02] to-transparent p-8 lg:p-12 text-center transition-all hover:shadow-xl hover:border-emerald-500/40"
-    >
+  // The whole panel lifts and scales on hover, so readers click it, not just the
+  // CTA. Make the panel the link and render the CTA as a visual affordance. With
+  // the CTA hidden there is no click target, so drop the hover affordance too.
+  const href = showMoreButton ? moreUrl || "/regions" : null;
+
+  const body = (
+    <>
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
@@ -61,20 +62,40 @@ export function RegionCollection({ value }: RegionCollectionProps) {
           "Explore the unique terroirs and flavors from across India's coffee-growing states, from Baba Budangiri to Araku Valley."}
       </p>
 
-      {showMoreButton && (
-        <Button
-          asChild
-          variant="default"
-          size="lg"
-          className="rounded-xl bg-emerald-600 hover:bg-emerald-700 shadow-md transition-all hover:translate-y-[-2px] px-10"
+      {href && (
+        <span
+          className={cn(
+            buttonVariants({ variant: "default", size: "lg" }),
+            "rounded-xl bg-emerald-600 shadow-md transition-all group-hover:translate-y-[-2px] px-10 font-bold"
+          )}
         >
-          <Link href={moreUrl || "/regions"} className="font-bold">
-            {moreText} <Icon icon={ArrowRightIcon} size={18} className="ml-2" />
-          </Link>
-        </Button>
+          {moreText} <Icon icon={ArrowRightIcon} size={18} className="ml-2" />
+        </span>
       )}
 
       <div className="absolute top-0 left-0 -ml-16 -mt-16 size-64 rounded-full bg-emerald-500/5 blur-3xl" />
+    </>
+  );
+
+  const className = cn(
+    "not-prose my-16 block overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 via-emerald-500/[0.02] to-transparent p-8 lg:p-12 text-center",
+    href && "group transition-all hover:shadow-xl hover:border-emerald-500/40"
+  );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="not-prose"
+    >
+      {href ? (
+        <Link href={href} aria-label={moreText} className={className}>
+          {body}
+        </Link>
+      ) : (
+        <div className={className}>{body}</div>
+      )}
     </motion.div>
   );
 }

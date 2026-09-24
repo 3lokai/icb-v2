@@ -10,6 +10,11 @@ import { useRoasterFilters } from "@/hooks/use-roaster-filters";
 import { useRoasterFilterMeta } from "@/hooks/use-roaster-filter-meta";
 import type { RoasterFilterMeta } from "@/types/roaster-types";
 
+// Long enough that ordinary typing hesitation does not commit a half-typed term:
+// Clarity showed one search for "Liberica" committing L, Li, Lib, Liber, Liberi,
+// Liberic as six separate URL states and API queries.
+const SEARCH_DEBOUNCE_MS = 500;
+
 type RoasterFilterContentProps = {
   filterMeta: RoasterFilterMeta;
   showHeader?: boolean;
@@ -70,7 +75,7 @@ export function RoasterFilterContent({
       debounceTimerRef.current = setTimeout(() => {
         isUserTypingRef.current = false;
         updateFiltersRef.current({ q: value.trim() || undefined });
-      }, 300);
+      }, SEARCH_DEBOUNCE_MS);
     },
     []
   );
