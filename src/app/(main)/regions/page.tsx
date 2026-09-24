@@ -4,6 +4,7 @@ import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { RegionCard } from "@/components/cards/RegionCard";
 import { RegionMap } from "@/components/discovery/RegionMap";
+import { StateJumpNav } from "@/components/discovery/StateJumpNav";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -27,9 +28,16 @@ import type { RegionSummary } from "@/types/region-types";
 const REGIONS_DESCRIPTION =
   "Every Indian coffee region in the directory, with how many coffees each one has and how much of it is under coffee. Grouped by state, sourced from the ISRO/NRSC plantation atlas.";
 
+/**
+ * Separate from the visible copy: `generateMetadata` clips at META_DESCRIPTION_MAX (160),
+ * which cut REGIONS_DESCRIPTION mid-source-name ("...the ISRO/NRS…").
+ */
+const REGIONS_META_DESCRIPTION =
+  "Explore Indian coffee regions by state, compare growing areas and flavour profiles, and find coffees from Chikmagalur, Coorg, Araku and beyond.";
+
 export const metadata = generateMetadata({
   title: "Indian Coffee Regions",
-  description: REGIONS_DESCRIPTION,
+  description: REGIONS_META_DESCRIPTION,
   keywords: [
     "Indian coffee regions",
     "coffee growing regions India",
@@ -42,7 +50,7 @@ export const metadata = generateMetadata({
 /** The hub is a directory of Indian origins; foreign canon regions never browse. */
 const HUB_COUNTRY = "India";
 
-/** `northeast-india` is an aggregate across six states, so it carries no `state`. */
+/** `northeast-india` is an aggregate across seven states, so it carries no `state`. */
 const STATELESS_GROUP = "North-East India";
 
 /**
@@ -60,6 +68,17 @@ const PEER_REGIONS = new Set(["baba-budangiri"]);
 const NAV_LABELS: Record<string, string> = {
   [STATELESS_GROUP]: "North-East",
 };
+
+/**
+ * Derived, not typed out: the intro used to hardcode 444,696 while `RegionMap` computed
+ * the same sum, so a regenerated atlas would have left the two disagreeing. Not imported
+ * from `RegionMap` because that is a `"use client"` module — a Server Component importing
+ * a non-function export from one gets a client-reference proxy, not the number.
+ */
+const MAPPED_TOTAL_HA = MAP_DISTRICTS.reduce(
+  (total, district) => total + district.areaHa,
+  0
+);
 
 /** Anchor id for a state heading, e.g. `North-East India` -> `north-east-india`. */
 function stateAnchor(state: string): string {
@@ -89,16 +108,22 @@ type RegionCardData = {
   children: Array<{ region: RegionSummary; coffeeCount: number }>;
 };
 
-/** Every descendant of `id` down the `parent_id` edge (the tree is acyclic). */
+/**
+ * Every descendant of `id` down the `parent_id` edge. `seen` guards against a cycle:
+ * the database only forbids direct self-parenting, so an A->B->A edit would otherwise
+ * hang the render — the same risk the count RPC already handles with UNION.
+ */
 function descendantsOf(
   id: string,
-  childrenByParent: Map<string, RegionSummary[]>
+  childrenByParent: Map<string, RegionSummary[]>,
+  seen: Set<string> = new Set([id])
 ): RegionSummary[] {
   const direct = childrenByParent.get(id) ?? [];
-  return direct.flatMap((child) => [
-    child,
-    ...descendantsOf(child.id, childrenByParent),
-  ]);
+  return direct.flatMap((child) => {
+    if (seen.has(child.id)) return [];
+    seen.add(child.id);
+    return [child, ...descendantsOf(child.id, childrenByParent, seen)];
+  });
 }
 
 export default async function RegionsPage() {
@@ -124,13 +149,15 @@ export default async function RegionsPage() {
     regionBrowseHref(slug).startsWith("/coffees/");
   /** Does any ancestor already have a page (and therefore a card of its own)? */
   const ancestorHasPage = (region: RegionSummary): boolean => {
+    const seen = new Set([region.id]);
     let parent = region.parent_id
       ? regionById.get(region.parent_id)
       : undefined;
-    while (parent) {
+    while (parent && !seen.has(parent.id)) {
       if (hasPage(parent.slug)) {
         return true;
       }
+      seen.add(parent.id);
       parent = parent.parent_id ? regionById.get(parent.parent_id) : undefined;
     }
     return false;
@@ -208,28 +235,63 @@ export default async function RegionsPage() {
     }));
 
   const mapDistricts = new Set(MAP_DISTRICTS.map((district) => district.name));
+  // Two passes, because "no coffees listed yet" has to mean an empty directory and not
+  // merely a missing landing page. Cards claim their polygon first, since they bring a
+  // preview plate with them; then page-less regions that still carry coffees claim what
+  // is left, linking into the filtered directory (Valparai, Nelliyampathy). Only the
+  // districts nobody claims are inert, and for those the empty label is true.
+  const districtClaimants: Array<{
+    region: RegionSummary;
+    coffeeCount: number;
+    card?: RegionCardData;
+  }> = [
+    ...cards.map((card) => ({
+      region: card.region,
+      coffeeCount: card.coffeeCount,
+      card,
+    })),
+    ...items
+      .filter(
+        (region) =>
+          !cardIds.has(region.id) && (rolledBySlug.get(region.slug) ?? 0) > 0
+      )
+      .map((region) => ({
+        region,
+        coffeeCount: rolledBySlug.get(region.slug) ?? 0,
+      }))
+      .sort((a, b) => b.coffeeCount - a.coffeeCount),
+  ];
+
   const mapLinks: RegionMapLink[] = [];
   const claimedDistricts = new Set<string>();
-  for (const card of cards) {
-    const district = card.region.district;
-    // `cards` is already sorted by coffee count, so where two cards share a district
+  // Cards carry their own preview plate; keyed off the claim so the panel can never show
+  // a different region from the one the polygon links to.
+  const cardSlots: Record<string, ReactNode> = {};
+  const slotFor = (card: RegionCardData) => (
+    <RegionCard coffeeCount={card.coffeeCount} region={card.region} />
+  );
+
+  for (const claim of districtClaimants) {
+    const district = claim.region.district;
+    // Each pass is sorted by coffee count, so where two claimants share a district
     // (Chikkamagaluru holds both Chikmagalur and the Baba Budangiri peer) the bigger one
     // takes the polygon and the other is a marker.
     if (
       !district ||
       !mapDistricts.has(district) ||
       claimedDistricts.has(district) ||
-      markerSlugs.has(card.region.slug)
+      markerSlugs.has(claim.region.slug)
     ) {
       continue;
     }
     claimedDistricts.add(district);
     mapLinks.push({
       district,
-      label: card.region.display_name,
-      href: regionBrowseHref(card.region.slug),
-      coffeeCount: card.coffeeCount,
+      label: claim.region.display_name,
+      href: regionBrowseHref(claim.region.slug),
+      coffeeCount: claim.coffeeCount,
     });
+    if (claim.card) cardSlots[district] = slotFor(claim.card);
   }
 
   // The North-East is an aggregate with no district, so it is the inset rather than a
@@ -245,20 +307,10 @@ export default async function RegionsPage() {
       }
     : undefined;
 
-  // Cards for the map, rendered here rather than inside `RegionMap`. `RegionCard` imports
-  // `regionBrowseHref`, so importing it into that client component would ship ~1,300 lines
-  // of landing-page config to the browser — the bundle trap `RegionSpotlight` documents.
-  // Server Components pass fine as props, so the card stays server-rendered.
-  const cardSlots: Record<string, ReactNode> = {};
-  // The `default` variant, so the slot shows the same plate the grid below shows — the
-  // image is therefore already in cache and switching regions costs no new request.
-  const slotFor = (card: RegionCardData) => (
-    <RegionCard coffeeCount={card.coffeeCount} region={card.region} />
-  );
-  for (const link of mapLinks) {
-    const card = cards.find((c) => c.region.district === link.district);
-    if (card) cardSlots[link.district] = slotFor(card);
-  }
+  // Marker plates, same rule as the polygons above. Rendered here rather than inside
+  // `RegionMap`: `RegionCard` imports `regionBrowseHref`, so importing it into that client
+  // component would ship ~1,300 lines of landing-page config to the browser — the bundle
+  // trap `RegionSpotlight` documents. Server Components pass fine as props.
   for (const markerLink of mapMarkerLinks) {
     const card = cards.find((c) => c.region.slug === markerLink.canonSlug);
     if (card) cardSlots[markerLink.canonSlug] = slotFor(card);
@@ -269,12 +321,15 @@ export default async function RegionsPage() {
     "Indian Coffee Regions",
     REGIONS_DESCRIPTION,
     `${baseUrl}/regions`,
-    cards.map((card, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: card.region.display_name,
-      url: `${baseUrl}${regionBrowseHref(card.region.slug)}`,
-    }))
+    // Flattened in the grid's own order, so `position` matches what a reader sees.
+    groups
+      .flatMap((group) => group.cards)
+      .map((card, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: card.region.display_name,
+        url: `${baseUrl}${regionBrowseHref(card.region.slug)}`,
+      }))
   );
 
   return (
@@ -291,10 +346,11 @@ export default async function RegionsPage() {
       <Section spacing="default">
         <Stack gap="4">
           <p className="text-body-muted">
-            444,696 hectares of coffee mapped by ISRO and the Coffee Board
-            across 18 districts, September 2024. Coffee counts include every
-            sub-region, so a district total covers the estates and hill belts
-            inside it.
+            {/* One fact, not three. The sub-region and overlap caveats moved into the
+                map's figcaption, beside the sources they qualify. */}
+            {MAPPED_TOTAL_HA.toLocaleString("en-US")} hectares of coffee mapped
+            by ISRO and the Coffee Board across {MAP_DISTRICTS.length}{" "}
+            districts, September 2024.
           </p>
           <Link
             className="inline-flex items-center gap-2 text-body font-medium text-accent hover:underline"
@@ -310,27 +366,14 @@ export default async function RegionsPage() {
           </Link>
 
           {/* Jump nav — built from the rendered groups, so a state with no cards never
-              gets a link that scrolls nowhere. */}
-          <nav
-            aria-label="Jump to a state"
-            className="flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-border/60 pt-4"
-          >
-            {groups.map((group, index) => (
-              <Fragment key={group.state}>
-                {index > 0 ? (
-                  <span aria-hidden="true" className="text-micro opacity-40">
-                    ·
-                  </span>
-                ) : null}
-                <Link
-                  className="text-label text-muted-foreground transition-colors hover:text-accent"
-                  href={`#${stateAnchor(group.state)}`}
-                >
-                  {NAV_LABELS[group.state] ?? group.state}
-                </Link>
-              </Fragment>
-            ))}
-          </nav>
+              gets a link that scrolls nowhere. Client-side only for the scroll-spy; the
+              anchors themselves work without JS. */}
+          <StateJumpNav
+            groups={groups.map((group) => ({
+              anchor: stateAnchor(group.state),
+              label: NAV_LABELS[group.state] ?? group.state,
+            }))}
+          />
         </Stack>
       </Section>
 
@@ -375,7 +418,7 @@ export default async function RegionsPage() {
                   <p className="text-micro flex flex-wrap gap-x-3 gap-y-1 font-normal">
                     {group.subRegions.map((child) => (
                       <Link
-                        className="transition-colors hover:text-accent hover:underline"
+                        className="transition-colors motion-reduce:transition-none hover:text-accent hover:underline"
                         href={regionBrowseHref(child.region.slug)}
                         key={child.region.id}
                       >
