@@ -11,7 +11,22 @@ import type {
  */
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 15;
-const DEFAULT_SORT: CoffeeSort = "relevance";
+/**
+ * Newest-first, not alphabetical (2026-09-25).
+ *
+ * `relevance` never meant relevance — `applySortingToQuery` maps it to plain
+ * `display_name` ascending, so the catalogue's front door was a fixed A–Z list
+ * that looked identical on every visit. A directory ingesting coffees weekly
+ * gets crawl freshness and internal-link rotation from leading with `created_at`.
+ *
+ * Because `buildCoffeeQueryString` omits the default, bare `/coffees` carries no
+ * `sort` param and stays indexable; choosing A–Z now emits `?sort=relevance`.
+ *
+ * Keep the expectation honest: this is crawl freshness and link rotation, not a
+ * discovery unlock — SKU discovery is already solved structurally by
+ * `[sku-orphan-links]`. Do not read an indexation step change into it.
+ */
+const DEFAULT_SORT: CoffeeSort = "newest";
 
 /**
  * Helper to parse comma-separated string array
