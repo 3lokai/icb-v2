@@ -235,6 +235,17 @@ export function cleanCoffeeName(
   name = name.replace(/^[–—\-|:,]+\s*/, "").replace(/\s*[–—\-|:,]+$/, "");
   name = name.replace(/\s+/g, " ").trim();
 
+  // Storefronts that quote the lead word: '"Eka" Medium Dark Roast',
+  // "'Man On Mars' Blend". Beyond reading as scraped, a leading quote collates
+  // BEFORE every letter, so these 9 rows monopolised page 1 of the
+  // alphabetically-sorted /coffees default view.
+  //
+  // Any quote char may close any other — real data has “Agumbe" (curly open,
+  // straight close). Requiring a closer is what protects a name that merely
+  // OPENS with an apostrophe ("'Tis the Season") from losing it.
+  name = name.replace(/^["'‘’“”]\s*([^"'‘’“”]+?)\s*["'‘’“”]/, "$1");
+  name = name.replace(/\s+/g, " ").trim();
+
   // Runs after the separator trim so "Vienna Roast (250 gm) - By Fraction 9"
   // has already lost its weight and is a clean "... - By Fraction 9".
   name = stripTrailingRoaster(name, roasterName);
