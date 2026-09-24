@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import HeroSection from "@/components/homepage/hero/HeroSection";
 import { HeroSuspenseFallback } from "@/components/homepage/hero/HeroSuspenseFallback";
 import NewAdditionsStrip from "@/components/homepage/NewAdditionsStrip";
+import NewArrivalsSection from "@/components/homepage/NewArrivalsSection";
+import { NewArrivalsSectionSkeleton } from "@/components/homepage/NewArrivalsSectionSkeleton";
 import { HomeCollectionGridLazy } from "@/components/homepage/HomeCollectionGridLazy";
 import { Section } from "@/components/primitives/section";
 import { FAQSectionSkeleton } from "@/components/common/FAQSectionSkeleton";
@@ -131,6 +133,14 @@ export default function Home({ searchParams }: HomePageProps) {
             (an earlier 0-height one expanded into a tall section and shifted everything below). */}
         <Suspense fallback={<FreshFromCommunitySkeleton />}>
           <FreshFromCommunitySection />
+        </Suspense>
+        {/* Recency, deliberately not adjacent to the hero's NewAdditionsStrip —
+            the strip tickers every recent name above the fold, this is the
+            scannable card surface for anyone who scrolls. Warm ground restores
+            the alternating band rhythm (Fresh and HomeCollectionGrid are both
+            cream, so this sits between them rather than beside another warm). */}
+        <Suspense fallback={<NewArrivalsSectionSkeleton />}>
+          <NewArrivalsSection />
         </Suspense>
         <HomeCollectionGridLazy tier="core" />
         <Section spacing="default" ground="warm" decor={{ texture: "grain" }}>
