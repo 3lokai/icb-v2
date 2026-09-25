@@ -278,8 +278,14 @@
     }
   }
 
-  html {
-    scroll-behavior: smooth;
+  /*
+   * Gated, not unconditional. The /regions jump nav and every other in-page anchor ride
+   * on this, so an unguarded smooth scroll is the one long vestibular trigger on the site.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   /*

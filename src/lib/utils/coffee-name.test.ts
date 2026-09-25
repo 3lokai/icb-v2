@@ -237,7 +237,12 @@ test("strips the 'Price in India' SEO tail", () => {
 });
 
 test("capitalises through word-initial quotes and non-ASCII letters", () => {
-  assert.equal(cleanCoffeeName("'Man On Mars' Blend"), "'Man on Mars' Blend");
+  // Superseded 2026-09-19: this asserted "'Man on Mars' Blend", i.e. that
+  // wrapping quotes survive. They are now unwrapped — a leading quote collates
+  // before every letter, and those rows filled page 1 of the alphabetical
+  // /coffees default view. Title-casing (this test's actual subject) still runs
+  // through the quote before it is stripped, which is what the "on" proves.
+  assert.equal(cleanCoffeeName("'Man On Mars' Blend"), "Man on Mars Blend");
   assert.equal(cleanCoffeeName("Ārabhi"), "Ārabhi");
   assert.equal(cleanCoffeeName("CAFÉ NOIR"), "Café Noir");
   // possessives must still not capitalise mid-word
@@ -341,4 +346,30 @@ test("keeps unit/lot codes attached to numbers upper-case", () => {
     cleanCoffeeName("BEWILD Permaculture 180H Anoxic Naturals"),
     "BEWILD Permaculture 180H Anoxic Naturals"
   );
+});
+
+test("unwraps a quoted lead word so it does not collate before every letter", () => {
+  // The nine rows that monopolised page 1 of the alphabetical /coffees default.
+  assert.equal(
+    cleanCoffeeName('"Eka" Medium Dark Roast'),
+    "Eka Medium Dark Roast"
+  );
+  assert.equal(
+    cleanCoffeeName('"100% Arabica" Single Origin'),
+    "100% Arabica Single Origin"
+  );
+  // Curly open, straight close — real data from the Agumbe row.
+  assert.equal(
+    cleanCoffeeName('“Agumbe" South Indian Filter'),
+    "Agumbe South Indian Filter"
+  );
+});
+
+test("leaves an unpaired leading apostrophe alone", () => {
+  // No closing quote, so the opener is part of the word, not a wrapper.
+  assert.equal(cleanCoffeeName("'Tis the Season"), "'Tis the Season");
+});
+
+test("does not touch a mid-word apostrophe", () => {
+  assert.equal(cleanCoffeeName("Devil's Own Roast"), "Devil's Own Roast");
 });

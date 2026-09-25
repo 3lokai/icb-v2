@@ -3323,6 +3323,7 @@ export type Database = {
         Returns: Json;
       };
       get_featured_reviews: { Args: { p_limit?: number }; Returns: Json };
+      get_insights_stats: { Args: never; Returns: Json };
       get_last_scrape_completed_at: { Args: never; Returns: string };
       get_or_create_estate: {
         Args: {

@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, startTransition, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { CookieIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
@@ -16,7 +16,15 @@ import {
 import { PageShell } from "@/components/primitives/page-shell";
 
 export function CookieNotice() {
-  const [mounted, setMounted] = useState(false);
+  // Created detached, so this is not a DOM mutation during render — it only
+  // becomes a document change in the effect below, which is what appends it.
+  const [container] = useState<HTMLElement | null>(() => {
+    if (typeof document === "undefined") return null;
+    const el = document.createElement("div");
+    el.id = "cookie-notice-root";
+    el.className = "ph-no-capture";
+    return el;
+  });
   const [visible, setVisible] = useState(false);
   const [showManage, setShowManage] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
@@ -26,17 +34,28 @@ export function CookieNotice() {
     marketing: false, // Opt-in model
   });
 
+  // Own the portal container outright: this instance appends the exact node it
+  // created above and removes that same node on unmount. It used to be created
+  // and appended *during render* (document.body.appendChild in the render body)
+  // after a lookup by id — a render-phase DOM mutation, illegal under React 19's
+  // concurrent rendering, where a render can be interrupted or discarded.
+  // The failure that shape produces is precisely the `NotFoundError` detach this
+  // component was already the named suspect for: if the by-id node is removed and
+  // a later render recreates a *different* node under the same id, the committed
+  // portal fiber still points at the old one, and React's deletion pass calls
+  // removeChild on a node that no longer holds the children. With no id lookup
+  // and no shared node, that swap is unrepresentable.
+  // The server/client gate is `container === null` on the server plus `visible`,
+  // which stays false until the idle callback below — so the hydration render
+  // still returns null, exactly as the old `mounted` flag arranged.
   useEffect(() => {
-    startTransition(() => {
-      setMounted(true);
-    });
+    if (!container) return;
+    document.body.appendChild(container);
 
     return () => {
-      // Cleanup container on unmount
-      const container = document.getElementById("cookie-notice-root");
-      container?.parentNode?.removeChild(container);
+      container.remove();
     };
-  }, []);
+  }, [container]);
 
   useEffect(() => {
     let cancelled = false;
@@ -99,7 +118,7 @@ export function CookieNotice() {
     }, 400);
   };
 
-  if (!(mounted && visible)) {
+  if (!(container && visible)) {
     return null;
   }
 
@@ -243,21 +262,7 @@ export function CookieNotice() {
     </div>
   );
 
-  if (!mounted || typeof document === "undefined") {
-    return null;
-  }
-
   // Portal to body so fixed positioning works and PostHog autocapture stays in the
   // normal element tree (portals on documentElement walk up to Document and crash).
-  const containerId = "cookie-notice-root";
-  let container = document.getElementById(containerId);
-
-  if (!container) {
-    container = document.createElement("div");
-    container.id = containerId;
-    container.className = "ph-no-capture";
-    document.body.appendChild(container);
-  }
-
   return createPortal(content, container);
 }

@@ -1,6 +1,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
-import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import {
+  createAnonServerClient,
+  createServiceRoleClient,
+} from "@/lib/supabase/server";
 import type {
   RegionFilters,
   RegionListResponse,
@@ -62,11 +65,13 @@ export async function fetchRegions(
   sort: RegionSort,
   supabaseClient?: SupabaseClient
 ): Promise<RegionListResponse> {
+  // Cookie-free anon client (not createClient) so this is safe inside unstable_cache,
+  // which forbids cookies(). Region rows are public reads.
   const supabase =
     supabaseClient ??
     (process.env.SUPABASE_SECRET_KEY
       ? await createServiceRoleClient()
-      : await createClient());
+      : createAnonServerClient());
 
   let query = supabase
     .from("canon_regions")

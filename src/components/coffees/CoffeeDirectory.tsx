@@ -4,6 +4,7 @@ import { Accent } from "@/components/primitives/accent";
 import { ArrowClockwiseIcon, FunnelIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { useMemo, useState, memo } from "react";
+import { queryKeys } from "@/lib/query-keys";
 import { CoffeeDirectoryFAQ } from "@/components/faqs/CoffeeDirectoryFAQs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -68,10 +69,22 @@ function CoffeeDirectoryComponent({
     );
   }, [filters]);
 
+  // `initialData` is the server's render for the URL we booted on, and it only
+  // ever describes that one filter combination. Seeding it into *any* other
+  // query key would show the previous filter's rows under the new filters —
+  // and because `useCoffees` sets `staleTime` without `initialDataUpdatedAt`,
+  // that seed counts as fresh and suppresses the refetch that would correct it.
+  // So hand it over only while the view still matches what the server rendered.
+  const queryKey = JSON.stringify(
+    queryKeys.coffees.list(filters, page, limit, sort)
+  );
+  const [serverQueryKey] = useState(() => queryKey);
+  const isServerRenderedView = queryKey === serverQueryKey;
+
   // Fetch data using TanStack Query
   const { data, isFetching, isError, refetch } = useCoffees(
     { filters, page, limit, sort },
-    { initialData }
+    isServerRenderedView ? { initialData } : {}
   );
 
   // Memoize items to prevent unnecessary re-renders

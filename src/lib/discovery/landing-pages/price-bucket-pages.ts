@@ -53,7 +53,7 @@ export const priceBucketPages: LandingPageConfig[] = [
       },
       // Normalized price disclosure
       priceNormalizationNote:
-        "All prices are normalized to 250g equivalent across all pack sizes. A 100g bag at ₹200 and a 500g bag at ₹1,000 both appear as ₹400/250g. The price you pay on the roaster's site depends on the pack size you choose.",
+        "All prices are normalized to 250g equivalent across all pack sizes. A 100g bag at ₹200 and a 500g bag at ₹1,000 both appear as ₹400/250g. The price you pay on the roaster's site depends on the pack size you choose. To read that as cost per cup, divide the 250g price by 16 — a 250g bag brews roughly 15–18 pour-overs. A ₹440 bag works out to about ₹27 a cup; a ₹270 bag is about ₹17.",
       // ICB data note
       icbDataNote:
         "Under ₹500 is the value entry point to the catalogue. Fewer coffees land here than in the ₹500–₹1000 range, and they're rated less often, so lean on the roast date and clear origin as much as the score. Coorg and Chikmagalur estate lots from Baarbara, Thogarihunkal, and Mercara Gold consistently show up well in this range.",
@@ -82,6 +82,11 @@ export const priceBucketPages: LandingPageConfig[] = [
         question: "What processing methods are most common under ₹500?",
         answer:
           "Washed and natural cover almost everything listed here. Washed lots at this price tend to be clean and mild; naturals carry more fruit and body for the same money. Honey and anaerobic lots surface occasionally, usually as a roaster's overrun rather than a planned release.",
+      },
+      {
+        question: "Arabica or Robusta under ₹500?",
+        answer:
+          "At this price point most listings are Arabica or Arabica-Robusta blends. Pure Arabica under ₹500 usually gives a clean, origin-forward cup, most often washed. Robusta and blends — the backbone of South Indian filter coffee — give a stronger, bolder, more bitter cup with more caffeine and a lower per-gram cost, and they hold up better to milk and jaggery. Neither is the better bean; they answer different brews.",
       },
       {
         question: "What should I look for in budget specialty coffee?",
@@ -138,12 +143,17 @@ export const priceBucketPages: LandingPageConfig[] = [
   {
     slug: "mid-range",
     type: "price_bucket",
-    h1: "Best Coffees Between ₹500–₹1000 in India",
+    h1: "Best Coffee Beans Between ₹500–₹1000 in India",
     entityLabel: "₹500–₹1000",
     displayRange: "₹500–₹1000",
+    // Tier-specific framing, deliberately not "under ₹1000" — /coffees/under-1000
+    // owns that broader query; this page owns the ₹500–₹1000 processing tier.
+    seoTitle: "Best Coffee Beans ₹500–₹1000 India",
+    metaDescription:
+      "Compare specialty coffee beans from ₹500–₹1000 per 250g: SLN 795 and Chandragiri lots, honey and anaerobic processing, ranked on community ratings.",
     ctaLabel: "Browse all mid-range coffees",
     intro:
-      "The ₹500–₹1000 range is where Indian specialty coffee gets interesting: Chikmagalur and Baba Budangiri estates, SLN 795 and SLN 9 lots, and processing that turns experimental. Most of the catalogue's standout single origins live in this band.",
+      "The ₹500–₹1000 tier is where Indian specialty coffee beans get interesting: Chikmagalur and Baba Budangiri estates, SLN 795 and SLN 9 lots, and processing that turns experimental. Most of the catalogue's standout single origins live in this band.",
     headerNudge:
       "The range where naturals, honeys, and experimental ferments start showing up in force.",
     gridNudge:
@@ -178,7 +188,7 @@ export const priceBucketPages: LandingPageConfig[] = [
         roastNote:
           "Roasts span the whole spectrum here, with medium the most common, followed by medium-dark and light. Roasters producing high-quality lots often roast lighter to preserve the processing and terroir investment.",
         processNote:
-          "Washed lots lead by count, followed by natural, but this is also where experimental processing concentrates: anaerobic, honey, and double-fermented lots are far more common here than under ₹500. These processes add cost and complexity, and producers price accordingly.",
+          "Washed lots lead by count, followed by natural, but this is also where experimental processing concentrates: anaerobic, honey, and double-fermented lots are far more common here than under ₹500. These processes add cost and complexity, and producers price accordingly. What each one tastes like: washed gives a clean cup — citrus, floral notes, clarity; natural runs fruit-forward — mango, berry, heavy sweetness; honey lands between them — caramel, rounded mouthfeel, balanced acidity; anaerobic goes wine-like — intense fruit and exotic aromatics.",
       },
       priceNormalizationNote:
         "All prices are normalized to 250g equivalent across all pack sizes. A 100g bag at ₹300 and a 500g bag at ₹1,500 both appear as ₹600/250g. The price you pay on the roaster's site depends on which pack size you choose.",
@@ -237,17 +247,24 @@ export const priceBucketPages: LandingPageConfig[] = [
       ctaText: "Try Calculator",
     },
     learnLinks: [
+      // Matched to the claims this page actually makes (varietals, regions,
+      // processing) rather than the generic pricing/beginner guides.
       {
-        label: "Understanding specialty coffee pricing in India",
-        href: "/learn/specialty-coffee-pricing-india",
+        label:
+          "Indian coffee varietals: SLN 795, Chandragiri, Catuai and Selection 9",
+        href: "/learn/indian-coffee-varietals-s795-chandragiri-catuai-selection-9",
       },
       {
-        label: "A beginner's framework for choosing specialty coffee",
-        href: "/learn/how-to-choose-specialty-coffee-india-guide",
+        label: "Coorg vs Chikmagalur vs Araku: how the flavours differ",
+        href: "/learn/coorg-vs-chikmagalur-vs-araku-flavor-differences",
       },
       {
         label: "How processing methods shape Indian coffee flavour",
         href: "/learn/processing-methods-flavor-indian-coffee",
+      },
+      {
+        label: "Understanding specialty coffee pricing in India",
+        href: "/learn/specialty-coffee-pricing-india",
       },
     ],
     related: [

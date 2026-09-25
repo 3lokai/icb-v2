@@ -47,6 +47,15 @@ export function buildRoasterFaqItems(roaster: RoasterDetail): FaqItem[] {
       question: `What does ${name} specialize in?`,
       answer,
     });
+  } else if (certs.length) {
+    // Certifications alone still deserve a crawlable Q&A pair — without this
+    // branch a roaster with certs but no focus/sourcing tags emits nothing.
+    faqs.push({
+      question: `Is ${name} certified?`,
+      answer: `${name} holds ${joinList(certs)} certification${
+        certs.length > 1 ? "s" : ""
+      }.`,
+    });
   }
 
   // 3. Where / how to buy (online store, subscription, physical presence).

@@ -248,9 +248,18 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
 }
 
 /**
- * Helper to apply sorting to query
+ * Alphabetical orders sort on `display_name`, NOT `name`. The cards render
+ * `display_name` (see `getCoffeeDisplayName`), so ordering on the raw scraped
+ * `name` sorted the list by a string the visitor never sees — "Kaapi | Buy
+ * Online" filed under K while the card read "Kaapi". `display_name` is
+ * non-null across the MV; `nullsFirst: false` covers a future gap.
  */
 function applySortingToQuery(query: any, sort: CoffeeSort): any {
+  const byDisplayName = () =>
+    query
+      .order("display_name", { ascending: true, nullsFirst: false })
+      .order("coffee_id", { ascending: true });
+
   switch (sort) {
     case "price_asc":
       return query
@@ -268,9 +277,7 @@ function applySortingToQuery(query: any, sort: CoffeeSort): any {
         .order("created_at", { ascending: false, nullsFirst: false })
         .order("coffee_id", { ascending: true });
     case "relevance":
-      return query
-        .order("name", { ascending: true })
-        .order("coffee_id", { ascending: true });
+      return byDisplayName();
     case "rating_desc":
       return query
         .order("rating_avg", { ascending: false, nullsFirst: false })
@@ -285,13 +292,9 @@ function applySortingToQuery(query: any, sort: CoffeeSort): any {
         })
         .order("coffee_id", { ascending: true });
     case "name_asc":
-      return query
-        .order("name", { ascending: true })
-        .order("coffee_id", { ascending: true });
+      return byDisplayName();
     default:
-      return query
-        .order("name", { ascending: true })
-        .order("coffee_id", { ascending: true });
+      return byDisplayName();
   }
 }
 

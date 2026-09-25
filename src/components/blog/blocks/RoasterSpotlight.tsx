@@ -5,7 +5,8 @@ import { queryKeys } from "@/lib/query-keys";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { urlFor } from "@/lib/sanity/image";
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -29,6 +30,11 @@ function SpotlightCard({
   data: any;
   isLegacy?: boolean;
 }) {
+  // The card lifts and zooms on hover, so readers click the body, not just the
+  // CTA. Make the whole card the link (matching CoffeeSpotlight) and render the
+  // CTA as a visual affordance, so there is no nested anchor.
+  const href = isLegacy ? data.link || "#" : `/roasters/${data.slug}`;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -37,7 +43,11 @@ function SpotlightCard({
       transition={{ duration: 0.6 }}
       className="not-prose group my-12 overflow-hidden rounded-2xl border border-border/40 bg-card shadow-lg transition-all hover:shadow-2xl hover:border-border/80"
     >
-      <div className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-10">
+      <Link
+        href={href}
+        aria-label={`${data.name} — view roaster`}
+        className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-10"
+      >
         <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl bg-white p-6 md:w-48 lg:w-56 shadow-sm border border-border/10">
           <Image
             src={
@@ -75,27 +85,23 @@ function SpotlightCard({
           </p>
 
           <div className="pt-4">
-            <Button
-              asChild
-              variant="default"
-              size="lg"
-              className="rounded-xl shadow-md transition-all hover:translate-y-[-2px] hover:shadow-lg active:translate-y-0"
+            <span
+              className={cn(
+                buttonVariants({ variant: "default", size: "lg" }),
+                "rounded-xl shadow-md transition-all group-hover:translate-y-[-2px] group-hover:shadow-lg"
+              )}
             >
-              <Link
-                href={isLegacy ? data.link || "#" : `/roasters/${data.slug}`}
-              >
-                Visit Roaster{" "}
-                <Icon
-                  icon={ArrowRightIcon}
-                  size={18}
-                  className="ml-2"
-                  data-icon="inline-end"
-                />
-              </Link>
-            </Button>
+              Visit Roaster{" "}
+              <Icon
+                icon={ArrowRightIcon}
+                size={18}
+                className="ml-2"
+                data-icon="inline-end"
+              />
+            </span>
           </div>
         </div>
-      </div>
+      </Link>
     </motion.div>
   );
 }

@@ -57,7 +57,10 @@ export function ImageGallery({ value }: ImageGalleryProps) {
         <motion.figure
           key={i}
           variants={itemVariants}
-          className="group relative overflow-hidden rounded-2xl border border-border/40 bg-muted/30 shadow-sm transition-all hover:shadow-xl hover:border-border/80"
+          // ponytail: no lift/zoom on hover — gallery images are not clickable,
+          // and the affordance was drawing dead clicks. Restore it if these ever
+          // open a lightbox or link out.
+          className="relative overflow-hidden rounded-2xl border border-border/40 bg-muted/30 shadow-sm"
         >
           <div className="overflow-hidden">
             <Image
@@ -65,7 +68,7 @@ export function ImageGallery({ value }: ImageGalleryProps) {
               alt={img.alt || "Gallery image"}
               width={800}
               height={600}
-              className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-110"
+              className="h-64 w-full object-cover"
             />
           </div>
           {img.caption && (

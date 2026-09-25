@@ -1,6 +1,6 @@
 # Image alt text + heading hierarchy — plan
 
-**Date:** 2026-09-18 · **Status:** open, scoped · **Source:** `icb-claude`
+**Date:** 2026-09-18 · **Status:** steps 1–4 shipped (PR #164); only step 5, the re-crawl, remains · **Source:** `icb-claude`
 `seo/site-recommendations/backlog.md` items `[image-alt-shared]` (Medium) and
 `[heading-hierarchy]` (Low), originally raised 2026-06-15, partially verified 2026-07-18,
 re-crawled 2026-08-15.

@@ -110,7 +110,7 @@ function intensity(areaHa: number): number {
 /**
  * The inset gets its own scale, deliberately. Its figures come from the Coffee Board
  * (registered planted area) and the main map's from the NRSC atlas (mapped canopy); for
- * the same six states those are 6,092 ha and 674 ha. Putting them on one ramp would say
+ * the same seven states those are 6,092 ha and 674 ha. Putting them on one ramp would say
  * Nagaland grows half as much coffee as Koraput, which is not a claim either source makes.
  */
 const NE_MIN_LOG = Math.log(
@@ -128,8 +128,10 @@ function neFill(areaHa: number): string {
 /** Legend stops, chosen to sit on the real distribution rather than at even intervals. */
 const LEGEND_STOPS = [153, 3997, 35423, 135796];
 
-/** Western grouping, to match the "445,369 hectares" line the page already renders. */
+/** Western grouping, to match the hectares line the page already renders. */
 const numberFormat = new Intl.NumberFormat("en-US");
+
+const coffees = (n: number) => `${n} ${n === 1 ? "coffee" : "coffees"}`;
 
 function fill(areaHa: number): string {
   // Floor at 22% rather than 0: the lightest district still has to read against the land
@@ -146,7 +148,16 @@ export function RegionMap({
   northEastCard,
 }: Props) {
   const titleId = useId();
-  const [active, setActive] = useState<string | null>(null);
+  /*
+    Hover and focus are separate states, not one `active`. They used to share it, and hover
+    always won: leaving the map with the pointer wiped the panel of a shape the keyboard was
+    still focused on, and crossing shapes on the way to the card swapped it out from under
+    you. Pointer intent is explicit, so hover takes precedence while it exists — but when
+    the pointer leaves, the display falls back to whatever still holds focus.
+  */
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [focused, setFocused] = useState<string | null>(null);
+  const active = hovered ?? focused;
 
   const linkByDistrict = new Map(links.map((link) => [link.district, link]));
   const markerBySlug = new Map(
@@ -154,7 +165,42 @@ export function RegionMap({
   );
 
   const activeDistrict = MAP_DISTRICTS.find((d) => d.name === active);
+  const activeLink = active ? linkByDistrict.get(active) : undefined;
+  const activeMarker = active ? markerBySlug.get(active) : undefined;
   const activeNeState = NE_STATES.find((state) => neKey(state.name) === active);
+
+  /*
+    One text summary of the current selection, used by the compact mobile panel and by the
+    desktop slot whenever there is no plate to show. Mobile gets this instead of the full
+    `RegionCard`: the plate is ~440px tall stacked under the map, and swapping it in and out
+    shoved the grid down the page. A fixed-height text block says the same facts and holds
+    its position.
+  */
+  const summary = activeNeState
+    ? {
+        name: activeNeState.name,
+        facts: `${numberFormat.format(activeNeState.areaHa)} ha planted`,
+        destination: northEast,
+      }
+    : activeMarker
+      ? {
+          name: activeMarker.label,
+          facts: coffees(activeMarker.coffeeCount),
+          destination: activeMarker,
+        }
+      : activeDistrict
+        ? {
+            name: activeLink?.label ?? activeDistrict.name,
+            // A district with a link but no plate is a region the directory carries without
+            // a guide of its own — it has coffees, so it must not be described as empty.
+            facts: `${numberFormat.format(activeDistrict.areaHa)} ha under coffee · ${
+              activeLink
+                ? coffees(activeLink.coffeeCount)
+                : "no coffees listed yet"
+            }`,
+            destination: activeLink,
+          }
+        : undefined;
   // All seven inset states share the one `northeast-india` card; everything else keys on
   // its own district name or marker slug.
   const activeCard = activeNeState
@@ -164,19 +210,27 @@ export function RegionMap({
       : undefined;
 
   return (
-    <figure className="m-0 flex flex-col gap-6">
+    /*
+      Capped and centred rather than filling the 7xl shell. The map and its panel are only
+      ~784px of intrinsic content, so at full width they sat in the left two-thirds with a
+      dead column beside them, above a grid that does span edge to edge. Capping also pulls
+      the citation paragraphs back to a readable measure — at 1216px they ran to ~180
+      characters a line.
+    */
+    <figure className="mx-auto my-0 flex max-w-4xl flex-col gap-6">
+      <h2 className="sr-only">Coffee-growing districts of India</h2>
       {/*
-        active is cleared here, not on the shapes. The card is a link, and clearing it on
+        Both states are cleared here, not on the shapes. The card is a link, and clearing on
         each shape's mouseleave meant the card vanished the instant you moved toward it —
         it could be read but never clicked. Keyboard has the same trap: blur fires before
-        focus reaches the card. So shapes only ever set active; leaving the pair clears it.
+        focus reaches the card. So shapes only ever set; leaving the pair clears.
       */}
       <div
-        className="flex flex-col gap-4 md:flex-row md:items-start md:gap-8"
+        className="flex flex-col gap-4 md:flex-row md:items-start md:justify-center md:gap-8"
         onBlur={(e) => {
-          if (!e.currentTarget.contains(e.relatedTarget)) setActive(null);
+          if (!e.currentTarget.contains(e.relatedTarget)) setFocused(null);
         }}
-        onMouseLeave={() => setActive(null)}
+        onMouseLeave={() => setHovered(null)}
       >
         <div className="relative mx-auto w-full max-w-[26rem] md:mx-0 md:max-w-[30rem]">
           <svg
@@ -185,9 +239,14 @@ export function RegionMap({
             role="img"
             viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
           >
+            {/* One child, not two: React 19 renders nothing at all for a `<title>` given an
+                array of children, which silently strips the map's accessible name. */}
             <title id={titleId}>
-              Peninsular India, with the eighteen districts the plantation atlas
-              records coffee in shaded by area under coffee.
+              {`Peninsular India, with the ${MAP_DISTRICTS.length} districts the plantation atlas records coffee in shaded by area under coffee.${
+                northEast
+                  ? " A separate inset, on its own scale, shows the seven North-Eastern states."
+                  : ""
+              }`}
             </title>
 
             {/*
@@ -208,7 +267,7 @@ export function RegionMap({
               const isActive = active === district.name;
               const shape = (
                 <path
-                  className="transition-[fill-opacity] duration-150"
+                  className="transition-[fill-opacity] duration-150 motion-reduce:transition-none"
                   d={district.d}
                   fill={fill(district.areaHa)}
                   fillOpacity={active && !isActive ? 0.55 : 1}
@@ -218,25 +277,34 @@ export function RegionMap({
                 />
               );
 
-              // Districts with a page are real links: focusable, keyboard-reachable, and
-              // announced by name. Districts without one are inert but still shaded.
+              // A district with a destination is a real link, so the keyboard path is the
+              // shape itself: Tab to it, hear the title, press Enter. Nothing in the panel
+              // is unreachable, because the panel's link and the shape share an href.
+              //
+              // A district with no destination carries only facts, and those used to be
+              // pointer-only. It is focusable in its own right so the panel is reachable;
+              // `group` rather than `img` because it has no graphical meaning to convey,
+              // just a label and a description the panel expands on.
               return link ? (
                 <Link
                   className="cursor-pointer outline-none"
                   href={link.href}
                   key={district.name}
-                  onFocus={() => setActive(district.name)}
-                  onMouseEnter={() => setActive(district.name)}
+                  onFocus={() => setFocused(district.name)}
+                  onMouseEnter={() => setHovered(district.name)}
                 >
-                  <title>{`${district.name} — ${numberFormat.format(district.areaHa)} ha, ${link.coffeeCount} coffees on ${link.label}`}</title>
+                  <title>{`${district.name} — ${numberFormat.format(district.areaHa)} ha, ${coffees(link.coffeeCount)} on ${link.label}`}</title>
                   {shape}
                 </Link>
               ) : (
                 <g
                   aria-label={`${district.name} — ${numberFormat.format(district.areaHa)} ha, no coffees listed yet`}
+                  className="outline-none"
                   key={district.name}
-                  onMouseEnter={() => setActive(district.name)}
-                  role="img"
+                  onFocus={() => setFocused(district.name)}
+                  onMouseEnter={() => setHovered(district.name)}
+                  role="group"
+                  tabIndex={0}
                 >
                   <title>{`${district.name} — ${numberFormat.format(district.areaHa)} ha, no coffees listed yet`}</title>
                   {shape}
@@ -258,10 +326,13 @@ export function RegionMap({
                       className="cursor-pointer outline-none"
                       href={northEast.href}
                       key={state.name}
-                      onFocus={() => setActive(neKey(state.name))}
-                      onMouseEnter={() => setActive(neKey(state.name))}
+                      onFocus={() => setFocused(neKey(state.name))}
+                      onMouseEnter={() => setHovered(neKey(state.name))}
                     >
-                      <title>{`${state.name} — ${numberFormat.format(state.areaHa)} ha planted`}</title>
+                      {/* All seven open the same aggregate page, which the title has to
+                          say outright — otherwise seven differently-named links that go to
+                          one destination read as seven destinations. */}
+                      <title>{`${state.name} — ${numberFormat.format(state.areaHa)} ha planted, on ${northEast.label}`}</title>
                       {/*
                         Each state is all of its districts concatenated, so it is stroked in
                         its own fill colour: any contrasting stroke redraws every internal
@@ -295,13 +366,20 @@ export function RegionMap({
                   y1={NE_HEIGHT + 8}
                   y2={NE_HEIGHT + 8}
                 />
+                {/*
+                  SVG text scales with the map, so this is sized against the worst case:
+                  at a 390px viewport the map renders ~358px wide, a 0.58 scale, and the
+                  old 17 units landed at ~9.8px. 24 units lands at ~13.9px there and
+                  ~18.6px on desktop. "India" is dropped because 16 characters at this size
+                  overrun NE_WIDTH, and the map is already India.
+                */}
                 <text
                   fill="var(--muted-foreground)"
-                  fontSize={17}
+                  fontSize={24}
                   x={0}
-                  y={NE_HEIGHT + 26}
+                  y={NE_HEIGHT + 30}
                 >
-                  North-East India
+                  North-East
                 </text>
               </g>
             ) : null}
@@ -314,15 +392,29 @@ export function RegionMap({
                   className="cursor-pointer outline-none"
                   href={link.href}
                   key={marker.canonSlug}
-                  onFocus={() => setActive(marker.canonSlug)}
-                  onMouseEnter={() => setActive(marker.canonSlug)}
+                  onFocus={() => setFocused(marker.canonSlug)}
+                  onMouseEnter={() => setHovered(marker.canonSlug)}
                 >
-                  <title>{`${link.label} — ${link.coffeeCount} coffees`}</title>
+                  <title>{`${link.label} — ${coffees(link.coffeeCount)}`}</title>
+                  {/*
+                    Hit area first, drawn invisible and larger than the dot. The visible
+                    marker was a ~9px target on desktop and ~7px on mobile; 16 units of
+                    radius brings that to ~25px and ~18.5px. It does overlap the
+                    Chikkamagaluru polygon beneath — which is the right trade here, because
+                    that spot IS Baba Budangiri. Mobile still misses the 24px guideline; the
+                    real fix is a text alternative beside the map, not a bigger circle.
+                  */}
+                  <circle
+                    cx={marker.x}
+                    cy={marker.y}
+                    fill="transparent"
+                    r={16}
+                  />
                   <circle
                     cx={marker.x}
                     cy={marker.y}
                     fill="var(--accent)"
-                    r={active === marker.canonSlug ? 9 : 6}
+                    r={active === marker.canonSlug ? 10 : 7}
                     stroke="var(--background)"
                     strokeWidth={2}
                   />
@@ -333,37 +425,57 @@ export function RegionMap({
         </div>
 
         {/*
-        The card slot is width-capped and min-height-reserved so that moving across the map
-        never reflows the row — an empty slot and the widest card occupy the same box.
+        Width-capped and height-reserved so that moving across the map never reflows the
+        row — an empty slot and the widest card occupy the same box. Two reservations,
+        because the two panels are different heights: the desktop plate needs 22rem, the
+        mobile text block needs 6rem. Both are constant, so neither shifts the grid below.
       */}
-        <div className="mx-auto w-full max-w-[17rem] md:mx-0 md:min-h-[22rem]">
-          {activeCard ? (
-            activeCard
-          ) : (
-            <div className="flex h-full flex-col justify-center gap-1 py-4">
-              {activeNeState ? (
-                <>
-                  <p className="text-title">{activeNeState.name}</p>
+        <div className="mx-auto min-h-[6rem] w-full max-w-[17rem] md:mx-0 md:min-h-[22rem]">
+          {/*
+            Desktop: the full plate, the same one the grid below shows.
+            Mobile: never the plate. Tapping a linked shape navigates straight through (it
+            is a real anchor, and going direct is the right mobile behaviour), so this panel
+            is what makes the six destination-less districts worth touching at all.
+          */}
+          <div className="hidden md:block md:h-full">
+            {activeCard ?? (
+              <div className="flex h-full flex-col justify-center gap-1 py-4">
+                {summary ? (
+                  <>
+                    <p className="text-title">{summary.name}</p>
+                    <p className="text-body-muted">{summary.facts}</p>
+                  </>
+                ) : (
                   <p className="text-body-muted">
-                    {numberFormat.format(activeNeState.areaHa)} ha planted
+                    {numberFormat.format(MAPPED_TOTAL_HA)} hectares across{" "}
+                    {MAP_DISTRICTS.length} districts. Select a region to see it.
                   </p>
-                </>
-              ) : activeDistrict ? (
-                <>
-                  <p className="text-title">{activeDistrict.name}</p>
-                  <p className="text-body-muted">
-                    {numberFormat.format(activeDistrict.areaHa)} ha under coffee
-                    · no coffees listed yet
-                  </p>
-                </>
-              ) : (
-                <p className="text-body-muted">
-                  {numberFormat.format(MAPPED_TOTAL_HA)} hectares across 18
-                  districts. Hover a region to see it.
-                </p>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="flex h-[6rem] flex-col justify-center gap-0.5 md:hidden">
+            {summary ? (
+              <>
+                <p className="text-heading">{summary.name}</p>
+                <p className="text-caption">{summary.facts}</p>
+                {summary.destination ? (
+                  <Link
+                    className="text-label text-accent hover:underline"
+                    href={summary.destination.href}
+                  >
+                    {`Explore ${summary.destination.label} →`}
+                  </Link>
+                ) : null}
+              </>
+            ) : (
+              <p className="text-caption">
+                {numberFormat.format(MAPPED_TOTAL_HA)} hectares across{" "}
+                {MAP_DISTRICTS.length} districts. Select a region to see it.
+              </p>
+            )}
+          </div>
 
           {/*
           The card carries the coffee count; this line carries the sourced area figure,
@@ -371,7 +483,7 @@ export function RegionMap({
           actually is — the district for the main map, the state for the inset.
         */}
           {activeCard ? (
-            <p className="text-micro mt-2 tabular-nums opacity-70">
+            <p className="text-micro mt-2 hidden tabular-nums opacity-70 md:block">
               {activeNeState
                 ? `${activeNeState.name} — ${numberFormat.format(activeNeState.areaHa)} ha planted`
                 : activeDistrict
@@ -384,8 +496,17 @@ export function RegionMap({
 
       {/* Legend and citations run full width under both columns. */}
       <figcaption className="flex flex-col gap-3 border-t border-border/60 pt-4">
-        <div className="flex flex-col gap-1.5 sm:max-w-xs">
-          <div className="flex items-center gap-1">
+        {/*
+          The ramp used to label only its endpoints and never said what it measured — four
+          colour bands and two numbers, with "area under coffee" stranded in the paragraph
+          below. Every stop is labelled now, and the swatches are aria-hidden because the
+          numbers carry the scale for anyone who cannot see the colour.
+        */}
+        <div className="flex flex-col gap-1.5 sm:max-w-sm">
+          <p className="text-micro font-medium">
+            Area under coffee, per district
+          </p>
+          <div aria-hidden="true" className="flex items-center gap-1">
             {LEGEND_STOPS.map((stop) => (
               <span
                 className="h-3 flex-1 first:rounded-l-xs last:rounded-r-xs"
@@ -395,8 +516,12 @@ export function RegionMap({
             ))}
           </div>
           <div className="text-micro flex justify-between tabular-nums opacity-70">
-            <span>153 ha</span>
-            <span>135,796 ha</span>
+            {LEGEND_STOPS.map((stop, index) => (
+              <span key={stop}>
+                {numberFormat.format(stop)}
+                {index === LEGEND_STOPS.length - 1 ? " ha" : ""}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -406,18 +531,32 @@ export function RegionMap({
         </p>
 
         {/*
-          The inset's citation is separate and states the conflict outright, because the
-          two figures are not comparable and a reader who assumes one scale will misread
-          the map. This is the `area_source` rule in the handover doc, at 9x.
+          Moved down from the page intro, where it was the third caveat a reader met before
+          seeing anything. It belongs with the other provenance, not ahead of the map.
         */}
         <p className="text-micro opacity-70">
-          Inset: {numberFormat.format(NE_TOTAL_HA)} ha planted across seven
-          states, {NE_AREA_SOURCE}, {NE_AREA_AS_OF}, on its own scale. The atlas
-          maps only {numberFormat.format(NRSC_NE_AREA_HA)} ha of North-Eastern
-          canopy and publishes no breakdown by state — the Coffee Board counts
-          registered planted area, including stock not yet bearing, so the two
-          are not comparable.
+          Coffee counts include every sub-region, so a district total covers the
+          estates and hill belts inside it. Parent and sub-region totals overlap
+          and should not be added together.
         </p>
+
+        {/*
+          The inset's citation is separate and states the conflict outright, because the
+          two figures are not comparable and a reader who assumes one scale will misread
+          the map. This is the `area_source` rule in the handover doc, at 9x. Gated on the
+          same condition as the inset itself: describing a scale the reader cannot see is
+          worse than saying nothing.
+        */}
+        {northEast ? (
+          <p className="text-micro opacity-70">
+            Inset: {numberFormat.format(NE_TOTAL_HA)} ha planted across seven
+            states, {NE_AREA_SOURCE}, {NE_AREA_AS_OF}, on its own scale. The
+            atlas maps only {numberFormat.format(NRSC_NE_AREA_HA)} ha of
+            North-Eastern canopy and publishes no breakdown by state — the
+            Coffee Board counts registered planted area, including stock not yet
+            bearing, so the two are not comparable.
+          </p>
+        ) : null}
       </figcaption>
     </figure>
   );

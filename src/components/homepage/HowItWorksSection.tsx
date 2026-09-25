@@ -10,20 +10,24 @@ import { Reveal } from "@/components/primitives/reveal";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import { cn } from "@/lib/utils";
+import {
+  fetchPublicDirectoryTotals,
+  type PublicDirectoryTotals,
+} from "@/lib/data/fetch-public-directory-totals";
 
 type StepColor = "primary" | "accent";
 
 const steps: {
   icon: PhosphorIcon;
   title: string;
-  description: string;
+  description: string | ((totals: PublicDirectoryTotals) => string);
   color: StepColor;
 }[] = [
   {
     icon: MagnifyingGlassIcon,
     title: "Discover",
-    description:
-      "Browse 1000+ coffees. Filter by roast, flavour, how you brew, or budget.",
+    description: (totals) =>
+      `Browse ${totals.coffees > 0 ? `${totals.coffees.toLocaleString("en-IN")}+ coffees` : "Indian specialty coffees"}. Filter by roast, flavour, how you brew, or budget.`,
     color: "primary",
   },
   {
@@ -42,7 +46,20 @@ const steps: {
   },
 ];
 
-export default function HowItWorksSection() {
+const TOTALS_FALLBACK: PublicDirectoryTotals = {
+  coffees: 0,
+  roasters: 0,
+  asOf: null,
+};
+
+export default async function HowItWorksSection() {
+  let totals = TOTALS_FALLBACK;
+  try {
+    totals = await fetchPublicDirectoryTotals();
+  } catch (e) {
+    console.error("[HowItWorksSection] fetchPublicDirectoryTotals", e);
+  }
+
   return (
     <Section spacing="default">
       <div className="mx-auto max-w-6xl w-full">
@@ -64,9 +81,11 @@ export default function HowItWorksSection() {
                 </Reveal>
                 <Reveal delay={0.2}>
                   <p className="max-w-2xl text-pretty text-body-large text-muted-foreground leading-relaxed font-light">
-                    1000+ coffees across 90+ roasters. Find one you like, rate
-                    it, and slowly build a profile that actually reflects how
-                    you drink coffee.
+                    {totals.coffees > 0 && totals.roasters > 0
+                      ? `${totals.coffees.toLocaleString("en-IN")}+ coffees across ${totals.roasters.toLocaleString("en-IN")}+ roasters. `
+                      : ""}
+                    Find one you like, rate it, and slowly build a profile that
+                    actually reflects how you drink coffee.
                   </p>
                 </Reveal>
               </Stack>
@@ -154,7 +173,9 @@ export default function HowItWorksSection() {
                       {step.title}
                     </h3>
                     <p className="text-body text-muted-foreground leading-relaxed max-w-[280px]">
-                      {step.description}
+                      {typeof step.description === "function"
+                        ? step.description(totals)
+                        : step.description}
                     </p>
                   </div>
 

@@ -36,6 +36,7 @@ export const PROCESSING_METHODS: LookupOption[] = [
   { value: "carbonic_maceration", label: "Carbonic Maceration" },
   { value: "double_fermented", label: "Double Fermented" },
   { value: "experimental", label: "Experimental" },
+  { value: "washed_natural", label: "Washed Natural" },
   { value: "other", label: "Other" },
 ];
 

@@ -53,7 +53,7 @@ const CONTEXT_STATES = ["telangana", "goa"];
 /**
  * The North-East, shaded by a different source from the main map, on purpose.
  *
- * The NRSC atlas treats these six states as one unit -- "NORTH-EASTERN COFFEE GROWING
+ * The NRSC atlas treats these seven states as one unit -- "NORTH-EASTERN COFFEE GROWING
  * REGION ... 674" -- and publishes no per-state breakdown, so there is nothing to
  * shade with. The Coffee Board does publish per-state figures, and they are the only
  * per-state numbers that exist, so the inset uses those and carries its own citation.

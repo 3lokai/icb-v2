@@ -2,64 +2,20 @@
 
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-
-/* ─── Data ──────────────────────────────────────────────────────────── */
-const roasters = [
-  {
-    city: "Bangalore",
-    state: "Karnataka",
-    count: 18,
-    lat: 12.9716,
-    lng: 77.5946,
-  },
-  { city: "New Delhi", state: "Delhi", count: 10, lat: 28.6139, lng: 77.209 },
-  { city: "Mumbai", state: "Maharashtra", count: 9, lat: 19.076, lng: 72.8777 },
-  {
-    city: "Hyderabad",
-    state: "Telangana",
-    count: 4,
-    lat: 17.385,
-    lng: 78.4867,
-  },
-  { city: "Pune", state: "Maharashtra", count: 4, lat: 18.5204, lng: 73.8567 },
-  {
-    city: "Chennai",
-    state: "Tamil Nadu",
-    count: 3,
-    lat: 13.0827,
-    lng: 80.2707,
-  },
-  { city: "Coorg", state: "Karnataka", count: 3, lat: 12.3375, lng: 75.8069 },
-  { city: "Gurugram", state: "Haryana", count: 2, lat: 28.4595, lng: 77.0266 },
-  { city: "Jaipur", state: "Rajasthan", count: 2, lat: 26.9124, lng: 75.7873 },
-  {
-    city: "Chikmagalur",
-    state: "Karnataka",
-    count: 2,
-    lat: 13.3161,
-    lng: 75.772,
-  },
-  { city: "Kohima", state: "Nagaland", count: 1, lat: 25.6751, lng: 94.1086 },
-];
+import type { InsightsStats } from "@/lib/data/fetch-insights-stats";
 
 /* ─── Helpers ──────────────────────────────────────────────────────── */
-// Scale radius: smallest city = 8px, Bangalore = ~24px
+// Scale radius: 1 roaster = 12px, ~20 roasters = ~26px
 function markerRadius(count: number): number {
   return 8 + Math.sqrt(count) * 4;
 }
 
-/** Matches UI tokens so markers track light/dark theme */
-function markerColor(city: string): { fill: string; stroke: string } {
-  if (city === "Bangalore") {
+/** Matches UI tokens so markers track light/dark theme; top city highlighted */
+function markerColor(isTop: boolean): { fill: string; stroke: string } {
+  if (isTop) {
     return {
       fill: "var(--primary)",
       stroke: "color-mix(in oklch, var(--foreground) 42%, var(--primary))",
-    };
-  }
-  if (city === "Kohima") {
-    return {
-      fill: "var(--accent)",
-      stroke: "color-mix(in oklch, var(--foreground) 42%, var(--accent))",
     };
   }
   return {
@@ -70,7 +26,11 @@ function markerColor(city: string): { fill: string; stroke: string } {
 }
 
 /* ─── Map Component ────────────────────────────────────────────────── */
-export function RoasterMap() {
+export function RoasterMap({
+  cities,
+}: {
+  cities: InsightsStats["roaster_cities"];
+}) {
   return (
     <div
       className="relative overflow-hidden rounded-sm"
@@ -102,8 +62,9 @@ export function RoasterMap() {
           zIndex={600}
         />
 
-        {roasters.map((r) => {
-          const { fill, stroke } = markerColor(r.city);
+        {cities.map((r, i) => {
+          if (r.lat == null || r.lng == null) return null;
+          const { fill, stroke } = markerColor(i === 0);
           const radius = markerRadius(r.count);
           return (
             <CircleMarker

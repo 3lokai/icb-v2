@@ -10,6 +10,7 @@ being deleted.
 | --- | --- |
 | [`auth.md`](auth.md) | Auth and anonymous identity. Read before touching auth. |
 | [`regions-estates-handover.md`](regions-estates-handover.md) | Regions/estates data model, what is built, and the traps. Only 4f remains. |
+| [`regions-hub-audit.md`](regions-hub-audit.md) | Regions hub audit, triaged: 10 fixed, 3 rejected with evidence, 3 open (map geometry polish and provenance). |
 | [`ponytail-audit-handover.md`](ponytail-audit-handover.md) | The `ponytail:` comment audit, the PostgREST 1000-row cap, and the consent wiring. All steps applied. |
 | [`posthog-implementation.md`](posthog-implementation.md) | How PostHog is wired and what each event means. |
 | [`posthog-source-maps-setup.md`](posthog-source-maps-setup.md) | Source-map upload in the production build. |

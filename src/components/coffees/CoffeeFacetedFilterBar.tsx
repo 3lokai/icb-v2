@@ -36,6 +36,11 @@ import type {
   SpeciesEnum,
 } from "@/types/db-enums";
 
+// Long enough that ordinary typing hesitation does not commit a half-typed term:
+// Clarity showed one search for "Liberica" committing L, Li, Lib, Liber, Liberi,
+// Liberic as six separate URL states and API queries.
+const SEARCH_DEBOUNCE_MS = 500;
+
 type CoffeeFacetedFilterBarProps = {
   filterMeta: CoffeeFilterMeta;
   isVisible?: boolean;
@@ -96,7 +101,7 @@ export function CoffeeFacetedFilterBar({
       debounceTimerRef.current = setTimeout(() => {
         isUserTypingRef.current = false;
         updateFiltersRef.current({ q: value.trim() || undefined });
-      }, 300);
+      }, SEARCH_DEBOUNCE_MS);
     },
     []
   );

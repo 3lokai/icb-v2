@@ -3,6 +3,11 @@ import { Resend } from "resend";
 // Initialize Resend client
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// ponytail: static round numbers, not a live lookup — the sends are
+// fire-and-forget, so any await ahead of Resend risks the request ending first.
+// Bump by hand as the directory grows.
+const DIRECTORY_STATS = "110+ roasters, 1,500+ coffees";
+
 export interface WelcomeEmailParams {
   email: string;
   name: string | null;
@@ -49,7 +54,7 @@ Over my own two-year journey into specialty coffee, my biggest pain-point was si
 
 Today it's India's largest independent specialty coffee platform:
 
-  • 90+ roasters, 1200+ coffees
+  • ${DIRECTORY_STATS}
   • Community ratings and reviews
   • No sponsors, no paid placements — just data and community
 
@@ -109,7 +114,7 @@ GT here, founder of IndianCoffeeBeans.com. ☕
 
 Thanks for subscribing! ICB is India's largest independent specialty coffee platform:
 
-  • 90+ roasters, 1200+ coffees
+  • ${DIRECTORY_STATS}
   • Community ratings and reviews
   • No sponsors, no paid placements — just data and community
 

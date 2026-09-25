@@ -54,7 +54,8 @@ export function BrewingTable({ value }: BrewingTableProps) {
           </thead>
           <tbody className="divide-y divide-border/30">
             {value.rows?.map((row, i) => (
-              <tr key={i} className="transition-colors hover:bg-primary/5">
+              // ponytail: inert rows, so no hover highlight (see DataTable).
+              <tr key={i}>
                 <td className="px-6 py-5 text-body font-bold text-foreground">
                   {row.method}
                 </td>
