@@ -1,7 +1,21 @@
 import { Resend } from "resend";
+import { fetchPublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 
 // Initialize Resend client
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+/** Live directory size for the welcome copy; drops the numbers if the fetch fails. */
+async function directoryStatsLine(): Promise<string> {
+  try {
+    const { roasters, coffees } = await fetchPublicDirectoryTotals();
+    if (roasters > 0 && coffees > 0) {
+      return `${roasters.toLocaleString("en-IN")}+ roasters, ${coffees.toLocaleString("en-IN")}+ coffees`;
+    }
+  } catch (e) {
+    console.error("[Resend] fetchPublicDirectoryTotals", e);
+  }
+  return "Indian specialty roasters and their coffees, in one place";
+}
 
 export interface WelcomeEmailParams {
   email: string;
@@ -32,6 +46,7 @@ export async function sendWelcomeEmail({
 
   try {
     const userName = name || "Coffee Lover";
+    const stats = await directoryStatsLine();
     const ccEmail = "gta3lok.ai@gmail.com";
 
     await resend.emails.send({
@@ -49,7 +64,7 @@ Over my own two-year journey into specialty coffee, my biggest pain-point was si
 
 Today it's India's largest independent specialty coffee platform:
 
-  • 90+ roasters, 1200+ coffees
+  • ${stats}
   • Community ratings and reviews
   • No sponsors, no paid placements — just data and community
 
@@ -98,6 +113,7 @@ export async function sendNewsletterWelcomeEmail({
 
   try {
     const userName = name || "Coffee Lover";
+    const stats = await directoryStatsLine();
 
     await resend.emails.send({
       from: "thrilok.gt@indiancoffeebeans.com",
@@ -109,7 +125,7 @@ GT here, founder of IndianCoffeeBeans.com. ☕
 
 Thanks for subscribing! ICB is India's largest independent specialty coffee platform:
 
-  • 90+ roasters, 1200+ coffees
+  • ${stats}
   • Community ratings and reviews
   • No sponsors, no paid placements — just data and community
 

@@ -7,11 +7,11 @@ import {
   fetchPublicDirectoryTotals,
   type PublicDirectoryTotals,
 } from "@/lib/data/fetch-public-directory-totals";
-import { generateMetadata } from "@/lib/seo/metadata";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo/metadata";
 import {
   generateBreadcrumbSchema,
   getSeoBaseUrl,
-  partnerPageSchema,
+  buildPartnerPageSchema,
 } from "@/lib/seo/schema";
 import PartnerPageClient from "./PartnerPageClient";
 
@@ -21,34 +21,39 @@ const TOTALS_FALLBACK: PublicDirectoryTotals = {
   asOf: null,
 };
 
-// Define metadata for SEO
-export const metadata: Metadata = generateMetadata({
-  title: "Partner With Us — List Your Roastery",
-  description:
-    "Join 100+ roasters on India's premier coffee platform. Get discovered by coffee enthusiasts. Founding roaster pricing: ₹2,500/year (limited spots).",
-  keywords: [
-    "list your coffee roastery India",
-    "coffee roaster listing India",
-    "verified coffee roaster",
-  ],
-  canonical: "/roasters/partner",
-  type: "website",
-});
+async function getDirectoryTotals(): Promise<PublicDirectoryTotals> {
+  try {
+    return await fetchPublicDirectoryTotals();
+  } catch (e) {
+    console.error("[PartnerPage] fetchPublicDirectoryTotals", e);
+    return TOTALS_FALLBACK;
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const totals = await getDirectoryTotals();
+  return generateSEOMetadata({
+    title: "Partner With Us — List Your Roastery",
+    description: `${totals.roasters > 0 ? `Join ${totals.roasters.toLocaleString("en-IN")}+ roasters on` : "Join"} India's premier coffee platform. Get discovered by coffee enthusiasts. Founding roaster pricing: ₹2,500/year (limited spots).`,
+    keywords: [
+      "list your coffee roastery India",
+      "coffee roaster listing India",
+      "verified coffee roaster",
+    ],
+    canonical: "/roasters/partner",
+    type: "website",
+  });
+}
 
 // Server component that passes server actions to the client component
 export default async function PartnerPage() {
-  let totals = TOTALS_FALLBACK;
-  try {
-    totals = await fetchPublicDirectoryTotals();
-  } catch (e) {
-    console.error("[PartnerPage] fetchPublicDirectoryTotals", e);
-  }
+  const totals = await getDirectoryTotals();
 
   return (
     <>
       <StructuredData
         schema={[
-          partnerPageSchema,
+          buildPartnerPageSchema(totals.roasters),
           generateBreadcrumbSchema([
             { name: "Home", url: getSeoBaseUrl() },
             { name: "Roasters", url: `${getSeoBaseUrl()}/roasters` },

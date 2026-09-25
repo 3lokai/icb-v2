@@ -375,19 +375,19 @@ export const contactPageSchema = {
   },
 };
 
-export const partnerPageSchema = {
+/** `roasterCount` from fetchPublicDirectoryTotals; 0 (fetch failed) drops the number. */
+export const buildPartnerPageSchema = (roasterCount: number) => ({
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "Partner With Us - IndianCoffeeBeans.com",
-  description:
-    "Join 60+ roasters on India's premier coffee platform. Get discovered by coffee enthusiasts.",
+  description: `${roasterCount > 0 ? `Join ${roasterCount.toLocaleString("en-IN")}+ roasters on` : "Join"} India's premier coffee platform. Get discovered by coffee enthusiasts.`,
   url: "https://www.indiancoffeebeans.com/roasters/partner",
   publisher: {
     "@type": "Organization",
     name: "IndianCoffeeBeans.com",
     url: "https://www.indiancoffeebeans.com",
   },
-};
+});
 
 /** Site founder — shared by /about UI, footer credit, and Person JSON-LD. */
 export const FOUNDER = {
