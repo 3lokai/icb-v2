@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // ponytail: static round numbers, not a live lookup — the sends are
 // fire-and-forget, so any await ahead of Resend risks the request ending first.
 // Bump by hand as the directory grows.
-const DIRECTORY_STATS = "120+ roasters, 2,500+ coffees";
+const DIRECTORY_STATS = "110+ roasters, 1,500+ coffees";
 
 export interface WelcomeEmailParams {
   email: string;
