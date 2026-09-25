@@ -57,15 +57,19 @@ export const parsePreferences = (raw: string | null): CookiePreferences => {
   }
 };
 
+// In-memory copy of the last answer, for when storage is blocked: without it a
+// refusal made before PostHog loads is lost, and init reads the opt-out default.
+let sessionValue: string | null = null;
+
 const read = (): string | null => {
   if (typeof window === "undefined") {
     return null;
   }
   try {
-    return localStorage.getItem(STORAGE_KEY);
+    return localStorage.getItem(STORAGE_KEY) ?? sessionValue;
   } catch {
     // Private browsing / blocked storage.
-    return null;
+    return sessionValue;
   }
 };
 
@@ -83,12 +87,10 @@ export const writeStoredPreferences = (prefs: CookiePreferences): void => {
   if (typeof window === "undefined") {
     return;
   }
+  sessionValue = JSON.stringify({ ...prefs, v: CONSENT_VERSION });
   try {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ ...prefs, v: CONSENT_VERSION })
-    );
+    localStorage.setItem(STORAGE_KEY, sessionValue);
   } catch {
-    // Nothing useful to do if storage is blocked; the session keeps its choice.
+    // Storage blocked; sessionValue keeps the choice for this page session.
   }
 };

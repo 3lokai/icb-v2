@@ -52,14 +52,20 @@ export async function persistSignupAttribution(userId: string): Promise<void> {
     }
 
     const supabase = await createClient();
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("user_profiles")
       .update({ attribution })
       .eq("id", userId)
-      .is("attribution", null);
+      .is("attribution", null)
+      .select("id");
 
     if (error) {
       console.error("[persist-attribution] profile update:", error);
+    }
+    // Only the call that actually wrote the row emits, so the second
+    // signup-path call can't record a divergent capture.
+    if (!data?.length) {
+      return;
     }
 
     // Person properties, not event properties, so PostHog cohorts can filter by

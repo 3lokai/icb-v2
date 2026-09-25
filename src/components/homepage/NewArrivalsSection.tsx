@@ -46,7 +46,10 @@ export default async function NewArrivalsSection() {
   // the card renders `display_name`, which `getCoffeeDisplayName` has already
   // cleaned upstream.
   const coffees = items
-    .filter((coffee) => coffee.image_url && coffee.slug)
+    .filter(
+      (coffee) =>
+        coffee.image_url && coffee.slug && coffee.name && coffee.roaster_slug
+    )
     .slice(0, CARD_COUNT);
 
   if (coffees.length < MIN_CARDS) return null;

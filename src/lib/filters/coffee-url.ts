@@ -79,6 +79,7 @@ function parseLimit(searchParams: URLSearchParams): number {
 function parseSort(searchParams: URLSearchParams): CoffeeSort {
   const sortParam = searchParams.get("sort");
   const validSorts: CoffeeSort[] = [
+    "relevance",
     "price_asc",
     "price_desc",
     "newest",

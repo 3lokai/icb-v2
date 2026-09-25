@@ -9,6 +9,19 @@ const DEFAULT_PAGE = 1;
 export const DEFAULT_LIMIT = 250;
 const DEFAULT_SORT: RoasterSort = "relevance";
 
+// Spellings folded by migration 20260925110000_normalize_roaster_hq_city; keeps
+// old shared/indexed `?cities=` links matching the renamed rows.
+const LEGACY_CITY_NAMES: Record<string, string> = {
+  Bangalore: "Bengaluru",
+  Mysore: "Mysuru",
+  Delhi: "New Delhi",
+  Gurgaon: "Gurugram",
+  Bhubaneshwar: "Bhubaneswar",
+  Chikmagalur: "Chikkamagaluru",
+  Chikamagaluru: "Chikkamagaluru",
+  Chikamagluru: "Chikkamagaluru",
+};
+
 /**
  * Parse URL query params into typed filter objects
  * Provides defaults (page=1, limit=15, sort="relevance")
@@ -48,7 +61,8 @@ export function parseRoasterSearchParams(searchParams: URLSearchParams): {
     const cities = citiesParam
       .split(",")
       .map((s) => s.trim())
-      .filter((s) => s.length > 0);
+      .filter((s) => s.length > 0)
+      .map((s) => LEGACY_CITY_NAMES[s] ?? s);
     if (cities.length > 0) {
       filters.cities = cities;
     }

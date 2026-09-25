@@ -1,5 +1,8 @@
 import { ImageResponse } from "next/og";
-import { fetchInsightsStats } from "@/lib/data/fetch-insights-stats";
+import {
+  EMPTY_INSIGHTS_STATS,
+  fetchInsightsStats,
+} from "@/lib/data/fetch-insights-stats";
 import { fetchPublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 
 // Same cached fetches (and cache tags) as the page, so the card regenerates with
@@ -18,9 +21,15 @@ const TERRACOTTA = "#d06b4c"; // chart-2
 const BAR_COLORS = ["#6d4024", "#995503", "#d06b4c", "#b08d3f", "#6a5b44"]; // chart-3, primary, chart-2, chart-4, muted-foreground
 
 export default async function Image() {
+  // Same fallbacks as the page: a transient data failure renders a sparse card
+  // rather than failing the share image.
   const [stats, totals] = await Promise.all([
-    fetchInsightsStats(),
-    fetchPublicDirectoryTotals(),
+    fetchInsightsStats().catch(() => EMPTY_INSIGHTS_STATS),
+    fetchPublicDirectoryTotals().catch(() => ({
+      coffees: 0,
+      roasters: 0,
+      asOf: null,
+    })),
   ]);
 
   const total = stats.process.reduce((sum, p) => sum + p.skus, 0);
