@@ -10,7 +10,11 @@ import {
   fetchPublicDirectoryTotals,
   type PublicDirectoryTotals,
 } from "@/lib/data/fetch-public-directory-totals";
-import { createAnonServerClient } from "@/lib/supabase/server";
+import {
+  EMPTY_INSIGHTS_STATS,
+  fetchInsightsStats,
+  type InsightsStats,
+} from "@/lib/data/fetch-insights-stats";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
@@ -30,57 +34,56 @@ async function getDirectoryTotals(): Promise<PublicDirectoryTotals> {
   }
 }
 
-export const metadata: Metadata = generateSEOMetadata({
-  title: "Indian Coffee by the Numbers",
-  description:
-    "Live data from 85+ active roasters and 1,100+ specialty SKUs indexed on IndianCoffeeBeans.com. Process breakdowns, origin regions, pricing benchmarks, variety distribution, and roaster geography. Updated monthly.",
-  keywords: [
-    "Indian specialty coffee data",
-    "coffee market India",
-    "specialty coffee statistics",
-    "Indian coffee regions",
-    "coffee processing methods India",
-  ],
-  canonical: "/learn/insights",
-  image: `${baseUrl}/og/insights.png`,
-  type: "website",
-});
+async function getInsightsStats(): Promise<InsightsStats> {
+  try {
+    return await fetchInsightsStats();
+  } catch (e) {
+    console.error("[InsightsPage] fetchInsightsStats", e);
+    return EMPTY_INSIGHTS_STATS;
+  }
+}
 
-async function getLastUpdated(): Promise<{
-  display: string;
-  iso: string;
-}> {
-  const supabase = createAnonServerClient();
-  const { data } = await supabase
-    .from("coffees")
-    .select("updated_at")
-    .order("updated_at", { ascending: false })
-    .limit(1)
-    .single();
+function countLabel(n: number): string {
+  return `${n.toLocaleString("en-IN")}+`;
+}
 
-  if (data?.updated_at) {
-    return {
-      display: new Date(data.updated_at).toLocaleDateString("en-GB", {
+// OG/Twitter images come from the sibling opengraph-image.tsx / twitter-image.tsx.
+// The helper always sets images (default /api/og card), and explicit images beat
+// the file convention, so strip them here.
+export async function generateMetadata(): Promise<Metadata> {
+  const totals = await getDirectoryTotals();
+  const { openGraph, twitter, ...meta } = generateSEOMetadata({
+    title: "Indian Coffee by the Numbers",
+    description: `Live data from ${countLabel(totals.roasters)} active roasters and ${countLabel(totals.coffees)} specialty SKUs indexed on IndianCoffeeBeans.com. Process breakdowns, origin regions, pricing benchmarks, variety distribution, and roaster geography. Updated weekly.`,
+    keywords: [
+      "Indian specialty coffee data",
+      "coffee market India",
+      "specialty coffee statistics",
+      "Indian coffee regions",
+      "coffee processing methods India",
+    ],
+    canonical: "/learn/insights",
+    type: "website",
+  });
+  const { images: _ogImages, ...og } = openGraph ?? {};
+  const { images: _twImages, ...tw } = twitter ?? {};
+  return { ...meta, openGraph: og, twitter: tw };
+}
+
+/** Last completed scraper run — when the numbers on this page last changed. */
+function lastUpdatedLabel(asOf: string | null): string | null {
+  return asOf
+    ? new Date(asOf).toLocaleDateString("en-GB", {
         day: "numeric",
         month: "long",
         year: "numeric",
-      }),
-      iso: data.updated_at,
-    };
-  }
-
-  return {
-    display: "May 2026",
-    iso: "2026-05-01",
-  };
+      })
+    : null;
 }
 
-function buildInsightsDatasetSchema(
-  dateModified: string,
-  totals: PublicDirectoryTotals
-) {
-  const roasterCountLabel = `${totals.roasters.toLocaleString("en-IN")}+`;
-  const coffeeCountLabel = `${totals.coffees.toLocaleString("en-IN")}+`;
+function buildInsightsDatasetSchema(totals: PublicDirectoryTotals) {
+  const roasterCountLabel = countLabel(totals.roasters);
+  const coffeeCountLabel = countLabel(totals.coffees);
 
   return {
     "@context": "https://schema.org",
@@ -94,7 +97,7 @@ function buildInsightsDatasetSchema(
       url: baseUrl,
     },
     datePublished: "2024-01-01",
-    dateModified,
+    ...(totals.asOf ? { dateModified: totals.asOf } : {}),
     keywords: [
       "Indian specialty coffee",
       "coffee processing",
@@ -116,17 +119,18 @@ function buildInsightsDatasetSchema(
 }
 
 export default async function InsightsPage() {
-  const [{ display: lastUpdated, iso: lastUpdatedIso }, totals] =
-    await Promise.all([getLastUpdated(), getDirectoryTotals()]);
+  const [totals, stats] = await Promise.all([
+    getDirectoryTotals(),
+    getInsightsStats(),
+  ]);
 
-  const roasterCountLabel = `${totals.roasters.toLocaleString("en-IN")}+`;
-  const coffeeCountLabel = `${totals.coffees.toLocaleString("en-IN")}+`;
+  const roasterCountLabel = countLabel(totals.roasters);
+  const coffeeCountLabel = countLabel(totals.coffees);
+  const lastUpdated = lastUpdatedLabel(totals.asOf);
 
   return (
     <>
-      <StructuredData
-        schema={buildInsightsDatasetSchema(lastUpdatedIso, totals)}
-      />
+      <StructuredData schema={buildInsightsDatasetSchema(totals)} />
       <PageHeader
         title={
           <>
@@ -136,7 +140,7 @@ export default async function InsightsPage() {
           </>
         }
         overline="Market Insights"
-        description={`Live data from ${roasterCountLabel} active roasters and ${coffeeCountLabel} specialty SKUs indexed on IndianCoffeeBeans.com. Updated monthly.`}
+        description={`Live data from ${roasterCountLabel} active roasters and ${coffeeCountLabel} specialty SKUs indexed on IndianCoffeeBeans.com. Updated weekly.`}
         backgroundImage="/images/hero-learn.avif"
       />
 
@@ -147,13 +151,23 @@ export default async function InsightsPage() {
             <div className="flex flex-wrap gap-6">
               <Stat label="Active Roasters" value={roasterCountLabel} />
               <Stat label="Specialty SKUs" value={coffeeCountLabel} />
-              <Stat label="States Covered" value="8" />
-              <Stat label="Origin Regions" value="60+" />
+              <Stat
+                label="States Covered"
+                value={String(stats.states.length)}
+              />
+              <Stat
+                label="Origin Regions"
+                value={String(stats.origin_regions)}
+              />
             </div>
-            <p className="text-caption">
-              Last updated:{" "}
-              <span className="font-medium text-foreground">{lastUpdated}</span>
-            </p>
+            {lastUpdated && (
+              <p className="text-caption">
+                Last updated:{" "}
+                <span className="font-medium text-foreground">
+                  {lastUpdated}
+                </span>
+              </p>
+            )}
           </div>
 
           {/* Jump links */}
@@ -181,7 +195,10 @@ export default async function InsightsPage() {
 
           {/* Charts grid */}
           <div className="py-10 md:py-14 lg:py-16">
-            <InsightsChartsGridLoader />
+            <InsightsChartsGridLoader
+              stats={stats}
+              catalogTotal={totals.coffees}
+            />
           </div>
 
           {/* Citation footer */}
@@ -207,7 +224,7 @@ export default async function InsightsPage() {
                   pages and normalized against a controlled vocabulary.
                   Duplicate labels (e.g. &ldquo;Selection 795&rdquo; →
                   &ldquo;SLN 795&rdquo;) are reconciled manually. Data is
-                  refreshed monthly.
+                  refreshed weekly, after each catalog crawl.
                 </p>
                 <p className="text-caption leading-relaxed">
                   All data on this page is free to use with attribution to{" "}
@@ -239,22 +256,22 @@ export default async function InsightsPage() {
                   </FootnoteLine>
                   <FootnoteLine>
                     Region-tagged coffees:{" "}
-                    <strong className="text-foreground">605 SKUs</strong> —
-                    state and origin percentages are shares of this subset, not
-                    the full catalog
-                  </FootnoteLine>
-                  <FootnoteLine>
-                    Wet Hulled (₹1,200 median) has only 3 SKUs — treat as
-                    directional only
+                    <strong className="text-foreground">
+                      {stats.region_tagged_total.toLocaleString("en-IN")} SKUs
+                    </strong>{" "}
+                    — state and origin percentages are shares of this subset,
+                    not the full catalog
                   </FootnoteLine>
                   <FootnoteLine>
                     Prices normalized to 250g equivalent across all packaging
                     variants
                   </FootnoteLine>
-                  <FootnoteLine>
-                    Last updated:{" "}
-                    <strong className="text-foreground">{lastUpdated}</strong>
-                  </FootnoteLine>
+                  {lastUpdated && (
+                    <FootnoteLine>
+                      Last updated:{" "}
+                      <strong className="text-foreground">{lastUpdated}</strong>
+                    </FootnoteLine>
+                  )}
                 </ul>
               </div>
             </div>

@@ -18,6 +18,8 @@ import {
 } from "recharts";
 import { cn } from "@/lib/utils";
 import { Stack } from "@/components/primitives/stack";
+import type { InsightsStats } from "@/lib/data/fetch-insights-stats";
+import type { ProcessEnum } from "@/types/db-enums";
 import { ChartCard } from "./ChartCard";
 
 /* Leaflet map — SSR-disabled (window / document required) */
@@ -107,6 +109,21 @@ function radialSkuLabelContent(props: {
   );
 }
 
+/** Share as a one-decimal percentage; 0 when the denominator is empty. */
+function pct(n: number, total: number): number {
+  return total > 0 ? Math.round((n / total) * 1000) / 10 : 0;
+}
+
+const FERMENTATION_PROCESSES: ProcessEnum[] = [
+  "anaerobic",
+  "carbonic_maceration",
+  "double_fermented",
+  "experimental",
+];
+
+/** Below this many SKUs a process median is flagged as directional only. */
+const LOW_SAMPLE_SKUS = 5;
+
 /* Custom tooltip */
 function ChartTooltip({
   active,
@@ -137,27 +154,38 @@ function ChartTooltip({
 }
 
 /* ─── Chart 1: Process Breakdown ─────────────────────────────────── */
-const processData = [
-  { process: "Washed", skus: 238, pct: 34.0 },
-  { process: "Natural", skus: 134, pct: 19.1 },
-  { process: "Anaerobic", skus: 76, pct: 10.8 },
-  { process: "Honey", skus: 66, pct: 9.4 },
-  { process: "Experimental", skus: 60, pct: 8.6 },
-  { process: "Washed Natural", skus: 38, pct: 5.4 },
-  { process: "Monsooned", skus: 30, pct: 4.3 },
-  { process: "Carbonic Mac.", skus: 25, pct: 3.6 },
-  { process: "Double Fermented", skus: 24, pct: 3.4 },
-  { process: "Pulped Natural", skus: 7, pct: 1.0 },
-  { process: "Wet Hulled", skus: 3, pct: 0.4 },
-];
+export function ProcessBreakdownChart({
+  data,
+}: {
+  data: InsightsStats["process"];
+}) {
+  const total = data.reduce((sum, d) => sum + d.skus, 0);
+  const processData = data.map((d) => ({
+    process: d.label,
+    skus: d.skus,
+    pct: pct(d.skus, total),
+  }));
+  const fermentPct = pct(
+    data
+      .filter((d) => FERMENTATION_PROCESSES.includes(d.key))
+      .reduce((sum, d) => sum + d.skus, 0),
+    total
+  );
+  const naturalPct = pct(
+    data.find((d) => d.key === "natural")?.skus ?? 0,
+    total
+  );
 
-export function ProcessBreakdownChart() {
   return (
     <ChartCard
       id="process"
       title="How India Processes Its Specialty Coffee"
-      subtitle="Share of active SKUs by processing method"
-      callout="Fermentation-forward methods (anaerobic + carbonic + double-fermented + experimental) now make up 26.4% of active SKUs — bigger than natural alone."
+      subtitle="Share of active SKUs with a known processing method"
+      callout={`Fermentation-forward methods (anaerobic + carbonic + double-fermented + experimental) now make up ${fermentPct}% of these SKUs — ${
+        fermentPct > naturalPct
+          ? "bigger than natural alone"
+          : `against ${naturalPct}% for natural`
+      }.`}
       fileName="icb-process-breakdown"
     >
       <ResponsiveContainer width="100%" height={360}>
@@ -177,7 +205,7 @@ export function ProcessBreakdownChart() {
           <YAxis
             type="category"
             dataKey="process"
-            width={110}
+            width={140}
             tick={{ fontSize: 12, fill: TICK }}
             axisLine={false}
             tickLine={false}
@@ -215,16 +243,16 @@ export function ProcessBreakdownChart() {
 }
 
 /* ─── Chart 2: State Concentration (Treemap) ─────────────────────── */
-const stateData = [
-  { name: "Karnataka", skus: 462, pct: 76.3 },
-  { name: "Tamil Nadu", skus: 59, pct: 9.8 },
-  { name: "Odisha", skus: 27, pct: 4.5 },
-  { name: "Andhra Pradesh", skus: 17, pct: 2.8 },
-  { name: "Kerala", skus: 12, pct: 2.0 },
-  { name: "Meghalaya", skus: 6, pct: 1.0 },
-  { name: "Tripura", skus: 2, pct: 0.3 },
-  { name: "Nagaland", skus: 1, pct: 0.2 },
-];
+const NORTHEAST_STATES = new Set([
+  "Arunachal Pradesh",
+  "Assam",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Sikkim",
+  "Tripura",
+]);
 
 interface TreemapContentProps {
   x?: number;
@@ -291,14 +319,39 @@ function StateTreemapContent(props: TreemapContentProps) {
   );
 }
 
-export function StateConcentrationChart() {
+export function StateConcentrationChart({
+  data,
+  regionTaggedTotal,
+  catalogTotal,
+}: {
+  data: InsightsStats["states"];
+  regionTaggedTotal: number;
+  catalogTotal: number;
+}) {
+  const stateData = data.map((d) => ({
+    ...d,
+    pct: pct(d.skus, regionTaggedTotal),
+  }));
+  const top = stateData[0];
+  const northeast = stateData
+    .filter((d) => NORTHEAST_STATES.has(d.name))
+    .map((d) => d.name);
+  const callout = [
+    top &&
+      `${top.name} accounts for ${top.pct}% of region-identified Indian specialty SKUs.`,
+    northeast.length > 0 &&
+      `The Northeast — ${northeast.join(", ")} — is small but present.`,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <ChartCard
       id="states"
       title="Where India's Specialty Coffee Comes From"
       subtitle="Active SKUs by Indian state of origin (region-tagged coffees only)"
-      callout="Karnataka accounts for over three-quarters of region-identified Indian specialty SKUs. The Northeast — Meghalaya, Tripura, Nagaland — is small but newly present."
-      footnote="Percentages reflect share of region-tagged SKUs (605 total), not the full catalog of 1,108 SKUs."
+      callout={callout || undefined}
+      footnote={`Percentages reflect share of region-tagged SKUs (${regionTaggedTotal.toLocaleString("en-IN")} total), not the full catalog of ${catalogTotal.toLocaleString("en-IN")} SKUs.`}
       fileName="icb-state-concentration"
     >
       <ResponsiveContainer width="100%" height={300}>
@@ -314,26 +367,30 @@ export function StateConcentrationChart() {
 }
 
 /* ─── Chart 3: Top Growing Regions ─────────────────────────────────── */
-const regionData = [
-  { region: "Chikmagalur", state: "Karnataka", skus: 256 },
-  { region: "Baba Budangiri", state: "Karnataka", skus: 76 },
-  { region: "Kodagu (Coorg)", state: "Karnataka", skus: 56 },
-  { region: "Shevaroy Hills", state: "Tamil Nadu", skus: 39 },
-  { region: "Sakleshpur", state: "Karnataka", skus: 37 },
-  { region: "Koraput", state: "Odisha", skus: 27 },
-  { region: "Biligiriranga Hills", state: "Karnataka", skus: 22 },
-  { region: "Araku Valley", state: "Andhra Pradesh", skus: 16 },
-  { region: "Palani Hills", state: "Tamil Nadu", skus: 15 },
-  { region: "Wayanad", state: "Kerala", skus: 10 },
-];
+export function TopRegionsChart({
+  data,
+  regionTaggedTotal,
+}: {
+  data: InsightsStats["regions"];
+  regionTaggedTotal: number;
+}) {
+  const regionData = data.map((d) => ({
+    region: d.name,
+    state: d.state ?? "",
+    skus: d.skus,
+  }));
+  const top = regionData[0];
 
-export function TopRegionsChart() {
   return (
     <ChartCard
       id="regions"
       title="India's Specialty Coffee Map"
-      subtitle="Top 10 origin regions by active SKU count"
-      callout="Chikmagalur alone accounts for 23% of all active Indian specialty SKUs."
+      subtitle={`Top ${regionData.length} origin regions by active SKU count (sub-regions roll up into their parent)`}
+      callout={
+        top
+          ? `${top.region} alone accounts for ${pct(top.skus, regionTaggedTotal)}% of region-identified Indian specialty SKUs.`
+          : undefined
+      }
       fileName="icb-top-regions"
     >
       <ResponsiveContainer width="100%" height={340}>
@@ -399,28 +456,53 @@ export function TopRegionsChart() {
 }
 
 /* ─── Chart 4: Price by Process (bar + reference line) ─────────────── */
-const priceData = [
-  { process: "Wet Hulled", price: 1200, vs: "+82%" },
-  { process: "Carbonic Mac.", price: 986, vs: "+49%" },
-  { process: "Anaerobic", price: 875, vs: "+33%" },
-  { process: "Experimental", price: 855, vs: "+30%" },
-  { process: "Honey", price: 800, vs: "+21%" },
-  { process: "Natural", price: 793, vs: "+20%" },
-  { process: "Double Fermented", price: 700, vs: "+6%" },
-  { process: "Pulped Natural", price: 700, vs: "+6%" },
-  { process: "Washed", price: 660, vs: "baseline" },
-  { process: "Monsooned", price: 650, vs: "-2%" },
-  { process: "Washed Natural", price: 606, vs: "-8%" },
-];
+export function PriceByProcessChart({
+  data,
+}: {
+  data: InsightsStats["price"];
+}) {
+  const priceData = data.map((d) => ({ process: d.label, price: d.median }));
+  const baseline = data.find((d) => d.key === "washed")?.median;
+  const prices = priceData.map((d) => d.price);
+  const domain: [number, number] | undefined = prices.length
+    ? [
+        Math.max(0, Math.floor((Math.min(...prices) - 150) / 100) * 100),
+        Math.ceil((Math.max(...prices) + 100) / 100) * 100,
+      ]
+    : undefined;
 
-export function PriceByProcessChart() {
+  // Headline premium ignores thin samples so one outlier can't lead the story.
+  const topPremium = baseline
+    ? data.find(
+        (d) =>
+          d.key !== "washed" && d.skus >= LOW_SAMPLE_SKUS && d.median > baseline
+      )
+    : undefined;
+  const callout = topPremium
+    ? `${topPremium.label} commands a ~${Math.round(((topPremium.median - baseline!) / baseline!) * 100)}% premium over washed-process coffees.${
+        FERMENTATION_PROCESSES.includes(topPremium.key)
+          ? " Fermentation isn't just experimental — it's monetized."
+          : ""
+      }`
+    : undefined;
+
+  const lowSample = data.filter((d) => d.skus < LOW_SAMPLE_SKUS);
+  const footnote =
+    lowSample.length > 0
+      ? `${lowSample
+          .map((d) => `${d.label} (${d.skus} SKU${d.skus === 1 ? "" : "s"})`)
+          .join(
+            ", "
+          )} ${lowSample.length === 1 ? "has" : "have"} a thin sample — treat as directional, not a market benchmark.`
+      : undefined;
+
   return (
     <ChartCard
       id="pricing"
       title="What You Pay for Process"
       subtitle="Median price per 250g by processing method (₹, normalized across all variants)"
-      callout="Carbonic maceration commands a ~50% premium over washed-process coffees. Fermentation isn't just experimental — it's monetized."
-      footnote="Wet hulled's sample is only 3 SKUs — treat as directional, not a market benchmark."
+      callout={callout}
+      footnote={footnote}
       fileName="icb-price-by-process"
     >
       <ResponsiveContainer width="100%" height={360}>
@@ -433,7 +515,7 @@ export function PriceByProcessChart() {
           <XAxis
             type="number"
             dataKey="price"
-            domain={[500, 1300]}
+            domain={domain}
             tick={{ fontSize: 11, fill: TICK }}
             tickFormatter={(v) => `₹${v}`}
             axisLine={false}
@@ -442,7 +524,7 @@ export function PriceByProcessChart() {
           <YAxis
             type="category"
             dataKey="process"
-            width={110}
+            width={140}
             tick={{ fontSize: 12, fill: TICK }}
             axisLine={false}
             tickLine={false}
@@ -460,25 +542,27 @@ export function PriceByProcessChart() {
               />
             )}
           />
-          <ReferenceLine
-            x={660}
-            stroke="var(--accent)"
-            strokeDasharray="4 3"
-            strokeWidth={1.5}
-            label={{
-              value: "Washed baseline ₹660",
-              position: "insideTopRight",
-              fill: "var(--accent)",
-              fontSize: 10,
-              dy: -4,
-            }}
-          />
+          {baseline && (
+            <ReferenceLine
+              x={baseline}
+              stroke="var(--accent)"
+              strokeDasharray="4 3"
+              strokeWidth={1.5}
+              label={{
+                value: `Washed baseline ₹${baseline}`,
+                position: "insideTopRight",
+                fill: "var(--accent)",
+                fontSize: 10,
+                dy: -4,
+              }}
+            />
+          )}
           <Bar dataKey="price" radius={[0, 3, 3, 0]} maxBarSize={18}>
             {priceData.map((entry) => (
               <Cell
                 key={entry.process}
                 fill={
-                  entry.price > 660
+                  baseline && entry.price > baseline
                     ? "var(--primary)"
                     : "var(--muted-foreground)"
                 }
@@ -492,33 +576,45 @@ export function PriceByProcessChart() {
 }
 
 /* ─── Chart 5: Variety Distribution (Radial Bar) ─────────────────── */
-const varietyData = [
-  { name: "SLN 795", skus: 111, origin: "India" },
-  { name: "SLN 9", skus: 81, origin: "India" },
-  { name: "Chandragiri", skus: 62, origin: "India" },
-  { name: "Catuai", skus: 27, origin: "Global" },
-  { name: "Cauvery", skus: 13, origin: "India" },
-  { name: "Catimor", skus: 13, origin: "Global" },
-  { name: "SLN 5B", skus: 12, origin: "India" },
-  { name: "Kent", skus: 10, origin: "India" },
-  { name: "Caturra", skus: 10, origin: "Global" },
-  { name: "Bourbon", skus: 6, origin: "Global" },
-  { name: "Geisha", skus: 6, origin: "Global" },
-  { name: "Hemavathi", skus: 6, origin: "India" },
-];
+// Not in the DB (no canon varieties table): CCRI "Selection" lines + named
+// Indian releases. Anything else is treated as a global/imported cultivar.
+const INDIAN_BRED = new Set(["chandragiri", "cauvery", "kent", "hemavathi"]);
+function isIndianBred(name: string): boolean {
+  return (
+    /^(sln|s\.?\s?\d|selection)/i.test(name) ||
+    INDIAN_BRED.has(name.toLowerCase())
+  );
+}
 
-const radialData = [...varietyData].reverse().map((v) => ({
-  ...v,
-  fill: v.origin === "India" ? INDIAN_VARIETY_FILL : GLOBAL_VARIETY_FILL,
-}));
+export function VarietyDistributionChart({
+  data,
+}: {
+  data: InsightsStats["varieties"];
+}) {
+  const varietyData = data.map((d) => ({
+    ...d,
+    origin: isIndianBred(d.name) ? "India" : "Global",
+  }));
+  const radialData = [...varietyData].reverse().map((v) => ({
+    ...v,
+    fill: v.origin === "India" ? INDIAN_VARIETY_FILL : GLOBAL_VARIETY_FILL,
+  }));
+  const top3 = varietyData.slice(0, 3);
+  const top = varietyData[0];
+  const callout = top
+    ? `${
+        top3.length === 3 && top3.every((v) => v.origin === "India")
+          ? `Indian-bred varieties — ${top3.map((v) => v.name).join(", ")} — dominate. `
+          : ""
+      }${top.name} alone appears in ${top.skus} SKUs.`
+    : undefined;
 
-export function VarietyDistributionChart() {
   return (
     <ChartCard
       id="varieties"
       title="What's Actually Growing on Indian Estates"
       subtitle="Top coffee varieties by active SKU count"
-      callout="Indian-bred varieties — SLN 795, SLN 9, Chandragiri — dominate. SLN 795 alone appears in 111 SKUs. Imports like Geisha and Bourbon remain rare in Indian production."
+      callout={callout}
       fileName="icb-variety-distribution"
     >
       {/* Legend */}
@@ -582,44 +678,45 @@ export function VarietyDistributionChart() {
 }
 
 /* ─── Chart 6: Roaster City (Leaflet Map) ─────────────────────────── */
-const roasterLegend = [
-  { city: "Bangalore", state: "Karnataka", count: 18 },
-  { city: "New Delhi", state: "Delhi", count: 10 },
-  { city: "Mumbai", state: "Maharashtra", count: 9 },
-  { city: "Hyderabad", state: "Telangana", count: 4 },
-  { city: "Pune", state: "Maharashtra", count: 4 },
-  { city: "Chennai", state: "Tamil Nadu", count: 3 },
-  { city: "Coorg", state: "Karnataka", count: 3 },
-  { city: "Gurugram", state: "Haryana", count: 2 },
-  { city: "Jaipur", state: "Rajasthan", count: 2 },
-  { city: "Chikmagalur", state: "Karnataka", count: 2 },
-  { city: "Kohima", state: "Nagaland", count: 1 },
-];
+export function RoasterCityChart({
+  data,
+}: {
+  data: InsightsStats["roaster_cities"];
+}) {
+  const total = data.reduce((sum, d) => sum + d.count, 0);
+  const top3 = data.slice(0, 3);
+  const roasterLegend = data.slice(0, 12);
 
-export function RoasterCityChart() {
   return (
     <ChartCard
       id="roasters"
       title="Where India Roasts"
       subtitle="Active specialty roasters by city of operation"
-      callout="Bangalore, Delhi and Mumbai host nearly half of India's active specialty roasters — but Kohima's emergence signals something quietly bigger."
+      callout={
+        top3.length === 3
+          ? `${top3[0].city}, ${top3[1].city} and ${top3[2].city} host ${Math.round(
+              pct(
+                top3.reduce((sum, d) => sum + d.count, 0),
+                total
+              )
+            )}% of India's active specialty roasters, spread across ${data.length} cities.`
+          : undefined
+      }
       fileName="icb-roaster-cities"
     >
       {/* The map itself */}
-      <RoasterMap />
+      <RoasterMap cities={data} />
 
       {/* City legend below */}
       <div className="mt-4 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
-        {roasterLegend.map((d) => (
+        {roasterLegend.map((d, i) => (
           <div key={d.city} className="flex items-center gap-2">
             <span
               className={cn(
                 "text-micro inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full font-bold tracking-tighter tabular-nums",
-                d.city === "Bangalore" && "bg-primary text-primary-foreground",
-                d.city === "Kohima" && "bg-accent text-accent-foreground",
-                d.city !== "Bangalore" &&
-                  d.city !== "Kohima" &&
-                  "bg-muted-foreground text-background"
+                i === 0
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted-foreground text-background"
               )}
             >
               {d.count}
@@ -636,25 +733,38 @@ export function RoasterCityChart() {
  * Single client boundary for the whole insights grid so InsightsChartsGridLoader
  * can dynamic-import it once, keeping recharts (~283 KB) out of first-load JS.
  */
-export function InsightsChartsGrid() {
+export function InsightsChartsGrid({
+  stats,
+  catalogTotal,
+}: {
+  stats: InsightsStats;
+  catalogTotal: number;
+}) {
   return (
     <Stack gap="12">
       {/* Row 1: full-width lead chart */}
-      <ProcessBreakdownChart />
+      <ProcessBreakdownChart data={stats.process} />
 
       {/* Row 2: 2-col — State treemap + Top regions bar */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <StateConcentrationChart />
-        <TopRegionsChart />
+        <StateConcentrationChart
+          data={stats.states}
+          regionTaggedTotal={stats.region_tagged_total}
+          catalogTotal={catalogTotal}
+        />
+        <TopRegionsChart
+          data={stats.regions}
+          regionTaggedTotal={stats.region_tagged_total}
+        />
       </div>
 
       {/* Row 3: full-width pricing */}
-      <PriceByProcessChart />
+      <PriceByProcessChart data={stats.price} />
 
       {/* Row 4: 2-col — Variety radial + Roaster bubbles */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <VarietyDistributionChart />
-        <RoasterCityChart />
+        <VarietyDistributionChart data={stats.varieties} />
+        <RoasterCityChart data={stats.roaster_cities} />
       </div>
     </Stack>
   );
