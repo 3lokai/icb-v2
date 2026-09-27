@@ -4,12 +4,21 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { createApiRouteClient } from "@/lib/supabase/api-route";
 import { incrementUsage } from "@/lib/api/usage";
+import { getEffectivePlan, type EffectivePlan } from "@/lib/api/plan";
 
 const API_KEY_PREFIX = "icb_live_";
+const QUOTA_TTL_SECONDS = 40 * 24 * 60 * 60; // outlives any monthly period
+const UPGRADE_URL = `${process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com"}/dashboard/developer`;
 
 export type ValidateApiKeyResult =
   | { error: NextResponse }
-  | { keyId: string; userId: string };
+  | {
+      keyId: string;
+      userId: string;
+      plan: EffectivePlan;
+      /** Pass to the route's response: NextResponse.json(data, { headers }). */
+      headers: Record<string, string>;
+    };
 
 /**
  * Extract API key from request (Authorization: Bearer <key> or X-API-Key: <key>).
@@ -40,7 +49,10 @@ function unauthorizedResponse(
   return NextResponse.json({ error: message }, { status: 401 });
 }
 
-function rateLimitResponse(retryAfterSeconds: number): NextResponse {
+function rateLimitResponse(
+  retryAfterSeconds: number,
+  headers: Record<string, string>
+): NextResponse {
   return NextResponse.json(
     {
       error: "Rate limit exceeded",
@@ -48,10 +60,18 @@ function rateLimitResponse(retryAfterSeconds: number): NextResponse {
     },
     {
       status: 429,
-      headers: {
-        "Retry-After": String(retryAfterSeconds),
-      },
+      headers: { ...headers, "Retry-After": String(retryAfterSeconds) },
     }
+  );
+}
+
+function quotaExceededResponse(headers: Record<string, string>): NextResponse {
+  return NextResponse.json(
+    {
+      error: "Monthly quota exceeded",
+      upgrade_url: UPGRADE_URL,
+    },
+    { status: 429, headers }
   );
 }
 
@@ -59,9 +79,10 @@ function rateLimitResponse(retryAfterSeconds: number): NextResponse {
  * Validate API key for /api/v1/* routes.
  * 1. Extract key from header, hash it, look up in api_keys.
  * 2. Check is_active and expires_at.
- * 3. Apply Upstash rate limit (per key, sliding window).
- * 4. Fire-and-forget: increment usage in Redis, update last_used_at in Supabase.
- * Returns either { error: NextResponse } (401 or 429) or { keyId, userId }.
+ * 3. Resolve the owner's plan. Limits are per user: keys are only credentials.
+ * 4. RPM (sliding window) then monthly quota (counter keyed on billing period).
+ * 5. Fire-and-forget: increment usage in Redis, update last_used_at in Supabase.
+ * Returns either { error: NextResponse } (401 or 429) or { keyId, userId, plan, headers }.
  */
 export async function validateApiKey(
   request: Request
@@ -76,7 +97,7 @@ export async function validateApiKey(
 
   const { data: keyRow, error: keyError } = await supabase
     .from("api_keys")
-    .select("id, user_id, is_active, rate_limit_rpm, expires_at")
+    .select("id, user_id, is_active, expires_at")
     .eq("key_hash", keyHash)
     .single();
 
@@ -96,10 +117,8 @@ export async function validateApiKey(
   }
 
   const keyId = keyRow.id as string;
-  const rateLimitRpm = Math.max(
-    1,
-    Math.min(1000, Number(keyRow.rate_limit_rpm) || 60)
-  );
+  const userId = keyRow.user_id as string;
+  const plan = await getEffectivePlan(userId);
 
   const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
   const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -115,18 +134,34 @@ export async function validateApiKey(
   const redis = new Redis({ url: redisUrl, token: redisToken });
   const ratelimit = new Ratelimit({
     redis,
-    limiter: Ratelimit.slidingWindow(rateLimitRpm, "1 m"),
-    prefix: "icb-api-rl",
+    limiter: Ratelimit.slidingWindow(plan.rpm, "1 m"),
+    prefix: "icb-api-rl-user",
   });
 
-  const { success, reset } = await ratelimit.limit(keyId);
+  const { success, remaining, reset } = await ratelimit.limit(userId);
+  const headers: Record<string, string> = {
+    "X-RateLimit-Limit": String(plan.rpm),
+    "X-RateLimit-Remaining": String(remaining),
+    "X-RateLimit-Reset": String(Math.ceil(reset / 1000)),
+  };
 
   if (!success) {
     const retryAfterSeconds = Math.max(
       1,
       Math.ceil((reset - Date.now()) / 1000)
     );
-    return { error: rateLimitResponse(retryAfterSeconds) };
+    return { error: rateLimitResponse(retryAfterSeconds, headers) };
+  }
+
+  // Not Ratelimit.fixedWindow: the bucket must line up with the invoice period.
+  const quotaKey = `quota:${userId}:${plan.period}`;
+  const used = await redis.incr(quotaKey);
+  if (used === 1) await redis.expire(quotaKey, QUOTA_TTL_SECONDS);
+  headers["X-Quota-Limit"] = String(plan.monthlyQuota);
+  headers["X-Quota-Remaining"] = String(Math.max(0, plan.monthlyQuota - used));
+
+  if (used > plan.monthlyQuota) {
+    return { error: quotaExceededResponse(headers) };
   }
 
   // Fire-and-forget: update last_used_at and increment usage counters (non-blocking)
@@ -140,8 +175,5 @@ export async function validateApiKey(
     console.error("[validateApiKey] usage/update error:", err);
   });
 
-  return {
-    keyId,
-    userId: keyRow.user_id as string,
-  };
+  return { keyId, userId, plan, headers };
 }

@@ -32,7 +32,7 @@ export async function GET(
       return NextResponse.json({ error: "Coffee not found" }, { status: 404 });
     }
 
-    return NextResponse.json(coffee);
+    return NextResponse.json(coffee, { headers: auth.headers });
   } catch (error) {
     console.error("[API v1 /coffees/[slug]] Unhandled error:", error);
     return NextResponse.json(

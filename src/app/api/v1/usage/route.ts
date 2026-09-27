@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     if ("error" in auth) return auth.error;
 
     const usage = await getUsageForKey(auth.keyId);
-    return NextResponse.json(usage);
+    return NextResponse.json(usage, { headers: auth.headers });
   } catch (error) {
     console.error("[API v1 /usage] Unhandled error:", error);
     return NextResponse.json(

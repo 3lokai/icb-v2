@@ -21,6 +21,7 @@ import {
 import { Icon } from "@/components/common/Icon";
 import { Stack } from "@/components/primitives/stack";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { MarketingConsentPrompt } from "@/components/dashboard/MarketingConsentPrompt";
 import Link from "next/link";
 import type { PrivateProfileDTO } from "@/data/user-dto";
 import { queryKeys } from "@/lib/query-keys";
@@ -326,6 +327,8 @@ export function DashboardClient({
         title={`Welcome back, ${profile.full_name || profile.email}!`}
         description="Manage your profile, preferences, and account settings from your personal dashboard."
       />
+
+      <MarketingConsentPrompt />
 
       <div className="grid gap-6 md:grid-cols-2">{cards}</div>
     </Stack>

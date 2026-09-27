@@ -19,7 +19,7 @@ export async function GET(request: Request) {
       parseRoasterSearchParams(searchParams);
     // The shared parser defaults to 100 so the /roasters hub ships every profile
     // link in server HTML. Public API consumers keep the 15 they were built on.
-    const apiLimit = searchParams.get("limit") ? limit : 15;
+    const apiLimit = searchParams.get("limit") ? Math.min(limit, 100) : 15;
 
     const roasterListResponse = await fetchRoasters(
       filters,
@@ -28,7 +28,7 @@ export async function GET(request: Request) {
       sort,
       supabase
     );
-    return NextResponse.json(roasterListResponse);
+    return NextResponse.json(roasterListResponse, { headers: auth.headers });
   } catch (error) {
     console.error(
       "[API v1 /roasters] Unhandled error:",

@@ -49,7 +49,7 @@ export default function PrivacyPage() {
                 Indian coffee landscape.
               </p>
               <div className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60">
-                Last Updated: May 22, 2025
+                Last Updated: September 26, 2026
               </div>
             </Stack>
           </Section>
@@ -154,7 +154,7 @@ export default function PrivacyPage() {
                       2. Information We Do Not Collect
                     </h2>
                     <div className="h-px w-16 bg-accent/60" />
-                    <div className="rounded-xl border border-accent/20 border-l-4 border-l-accent bg-accent/5 p-6">
+                    <div className="rounded-xl border border-accent/20 bg-accent/5 p-6">
                       <p className="text-accent-foreground">
                         We do not collect or store payment information. When you
                         purchase products through our affiliate links, you will
@@ -341,11 +341,14 @@ export default function PrivacyPage() {
                         ))}
                       </div>
                       <p>
-                        We also display advertisements from third parties that
-                        may use cookies to track your browsing behavior for ad
-                        targeting. You can manage these cookies through our
-                        cookie management interface. We do not sell your
-                        personal data to advertisers but may provide aggregated,
+                        With your consent to marketing cookies, our advertising
+                        partners, Google (Google Ads) and Meta (Facebook and
+                        Instagram), may set cookies and similar technologies to
+                        show you relevant ads on other sites and measure how our
+                        campaigns perform. Marketing cookies are off unless you
+                        turn them on, and you can withdraw consent at any time
+                        through Cookie Settings. We do not sell your personal
+                        data to advertisers but may provide aggregated,
                         anonymized data about our users.
                       </p>
                     </Stack>
@@ -383,7 +386,7 @@ export default function PrivacyPage() {
                           </div>
                         ))}
                       </div>
-                      <div className="flex items-start gap-4 p-6 rounded-2xl border border-accent/20 border-l-4 border-l-accent bg-accent/5">
+                      <div className="flex items-start gap-4 p-6 rounded-2xl border border-accent/20 bg-accent/5">
                         <Icon
                           icon={InfoIcon}
                           className="text-accent shrink-0"

@@ -4,8 +4,8 @@ Single reference for how PostHog is wired in IndianCoffeeBeans (Next.js App Rout
 
 **Related docs**
 
-- [posthog-setup-report.md](../posthog-setup-report.md) — original setup notes, EU dashboard links, dependencies.
-- [posthog_review.md](../posthog_review.md) — audit, identity lifecycle, residual risks, improvement backlog.
+- [posthog-setup-report.md](../../posthog-setup-report.md) — original setup notes, EU dashboard links, dependencies.
+- [posthog_review.md](../../posthog_review.md) — audit, identity lifecycle, residual risks, improvement backlog.
 
 ---
 
@@ -59,7 +59,7 @@ Single reference for how PostHog is wired in IndianCoffeeBeans (Next.js App Rout
 | `posthog.identify(...)` before auth events | `auth-form.tsx` | Email sign-in / sign-up; redundant with provider but runs immediately before `user_signed_in` / `user_signed_up`. |
 | `posthog.reset()` | `auth-provider.tsx` `signOut()` | After successful `auth.signOut()`. |
 
-**Residual risks** (see [posthog_review.md](../posthog_review.md)): `SIGNED_OUT` in `onAuthStateChange` does not call `reset`; Zustand [`auth-store.ts`](../src/store/zustand/auth-store.ts) `signOut` has no PostHog reset if used instead of the provider.
+**Residual risks** (see [posthog_review.md](../../posthog_review.md)): `SIGNED_OUT` in `onAuthStateChange` does not call `reset`; Zustand [`auth-store.ts`](../src/store/zustand/auth-store.ts) `signOut` has no PostHog reset if used instead of the provider.
 
 ---
 
@@ -155,12 +155,12 @@ All **client** events go through `capture()` unless noted. **Server** events use
 
 ## PostHog app links
 
-EU project dashboard and saved insights are listed in [posthog-setup-report.md](../posthog-setup-report.md) (project `122076`).
+EU project dashboard and saved insights are listed in [posthog-setup-report.md](../../posthog-setup-report.md) (project `122076`).
 
 ---
 
 ## Maintenance
 
-When adding an event: prefer `capture()` from `@/lib/posthog` on the client so `env` stays consistent; on the server, use `getPostHogClient()` and set `distinctId` deliberately. Update **this file** and the tables in [posthog_review.md](../posthog_review.md) so counts stay aligned.
+When adding an event: prefer `capture()` from `@/lib/posthog` on the client so `env` stays consistent; on the server, use `getPostHogClient()` and set `distinctId` deliberately. Update **this file** and the tables in [posthog_review.md](../../posthog_review.md) so counts stay aligned.
 
-Known follow-ups: serverless flush reliability and richer person properties — see [posthog_review.md](../posthog_review.md).
+Known follow-ups: serverless flush reliability and richer person properties — see [posthog_review.md](../../posthog_review.md).

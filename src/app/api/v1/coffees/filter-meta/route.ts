@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const { filters } = parseCoffeeSearchParams(searchParams);
     const meta = await fetchCoffeeFilterMetaWithFilters(filters, supabase);
-    return NextResponse.json(meta);
+    return NextResponse.json(meta, { headers: auth.headers });
   } catch (error) {
     console.error("[API v1 /coffees/filter-meta] Unhandled error:", error);
     return NextResponse.json(

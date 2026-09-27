@@ -4,6 +4,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/data/auth";
 import { createClient } from "@/lib/supabase/server";
+import { getEffectivePlan } from "@/lib/api/plan";
 
 const API_KEY_PREFIX = "icb_live_";
 const KEY_PREFIX_DISPLAY_LENGTH = 16;
@@ -43,11 +44,26 @@ export async function createApiKey(
     return { success: false, error: "Please enter a name for the key." };
   }
 
+  const supabase = await createClient();
+
+  const [plan, { count: activeKeys }] = await Promise.all([
+    getEffectivePlan(user.id),
+    supabase
+      .from("api_keys")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .eq("is_active", true),
+  ]);
+  if ((activeKeys ?? 0) >= plan.maxKeys) {
+    return {
+      success: false,
+      error: `Your ${plan.tier} plan allows ${plan.maxKeys} active keys. Revoke one to create another.`,
+    };
+  }
+
   const rawKey = `${API_KEY_PREFIX}${randomBytes(32).toString("hex")}`;
   const keyHash = createHash("sha256").update(rawKey, "utf8").digest("hex");
   const keyPrefix = rawKey.slice(0, KEY_PREFIX_DISPLAY_LENGTH);
-
-  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("api_keys")
@@ -176,4 +192,39 @@ export async function getUsageForMyKeys(): Promise<
   }
 
   return { success: true, data: out };
+}
+
+export type MyApiPlan = {
+  tier: string;
+  rpm: number;
+  monthlyQuota: number;
+  quotaUsed: number;
+  maxKeys: number;
+  commercialUse: boolean;
+};
+
+/**
+ * Current user's API plan and quota usage this period (developer portal).
+ */
+export async function getMyApiPlan(): Promise<ActionResult<MyApiPlan>> {
+  const user = await getCurrentUser();
+  if (!user) {
+    return { success: false, error: "You must be signed in." };
+  }
+
+  const { getQuotaUsed } = await import("@/lib/api/usage");
+  const plan = await getEffectivePlan(user.id);
+  const quotaUsed = await getQuotaUsed(user.id, plan.period);
+
+  return {
+    success: true,
+    data: {
+      tier: plan.tier,
+      rpm: plan.rpm,
+      monthlyQuota: plan.monthlyQuota,
+      quotaUsed,
+      maxKeys: plan.maxKeys,
+      commercialUse: plan.commercialUse,
+    },
+  };
 }

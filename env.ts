@@ -35,6 +35,12 @@ const envSchema = z.object({
   // Microsoft Clarity project ID (from clarity.microsoft.com setup snippet)
   NEXT_PUBLIC_CLARITY_PROJECT_ID: z.string().optional(),
 
+  // Ad tags — both fire only with marketing (opt-in) consent.
+  // Google Ads tag ID (AW-XXXX), configured on the gtag already loaded for GA4.
+  NEXT_PUBLIC_GOOGLE_ADS_ID: z.string().optional(),
+  // Meta Pixel ID (numeric), from Events Manager → Data sources.
+  NEXT_PUBLIC_META_PIXEL_ID: z.string().optional(),
+
   // Resend email service
   RESEND_API_KEY: z.string().optional(),
 
