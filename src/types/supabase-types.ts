@@ -3363,6 +3363,14 @@ export type Database = {
         };
         Returns: string;
       };
+      create_api_key: {
+        Args: {
+          p_key_hash: string;
+          p_key_prefix: string;
+          p_name: string;
+        };
+        Returns: string;
+      };
       ensure_external_identity: {
         Args: { p_external_user_id: string; p_key_id: string };
         Returns: string;

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createApiRouteClient } from "@/lib/supabase/api-route";
+import { freeQuotaPeriod, paidQuotaPeriod } from "@/lib/api/quota-period";
 
 export type EffectivePlan = {
   tier: string;
@@ -11,6 +12,8 @@ export type EffectivePlan = {
   features: string[];
   /** Quota bucket id: subscription period_start (paid) or YYYY-MM (free). */
   period: string;
+  /** Absolute Redis expiry for the current quota bucket, in Unix seconds. */
+  quotaExpiresAt: number;
 };
 
 type PlanRow = {
@@ -58,6 +61,9 @@ export async function getEffectivePlan(userId: string): Promise<EffectivePlan> {
     .maybeSingle();
 
   const plan = (planRow as PlanRow | null) ?? FREE_FALLBACK;
+  const quotaPeriod = sub
+    ? paidQuotaPeriod(sub.period_start as string, sub.period_end as string)
+    : freeQuotaPeriod();
 
   return {
     tier: plan.tier,
@@ -67,6 +73,7 @@ export async function getEffectivePlan(userId: string): Promise<EffectivePlan> {
     commercialUse: plan.commercial_use,
     features:
       (sub?.features_override as string[] | null) ?? plan.features ?? [],
-    period: (sub?.period_start as string | undefined) ?? today.slice(0, 7),
+    period: quotaPeriod.period,
+    quotaExpiresAt: quotaPeriod.expiresAt,
   };
 }

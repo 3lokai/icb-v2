@@ -7,7 +7,6 @@ import { incrementUsage } from "@/lib/api/usage";
 import { getEffectivePlan, type EffectivePlan } from "@/lib/api/plan";
 
 const API_KEY_PREFIX = "icb_live_";
-const QUOTA_TTL_SECONDS = 40 * 24 * 60 * 60; // outlives any monthly period
 const UPGRADE_URL = `${process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com"}/dashboard/developer`;
 
 export type ValidateApiKeyResult =
@@ -156,7 +155,9 @@ export async function validateApiKey(
   // Not Ratelimit.fixedWindow: the bucket must line up with the invoice period.
   const quotaKey = `quota:${userId}:${plan.period}`;
   const used = await redis.incr(quotaKey);
-  if (used === 1) await redis.expire(quotaKey, QUOTA_TTL_SECONDS);
+  // Reapply the same absolute boundary on every request. This also repairs a
+  // counter whose initial expiry write was interrupted without extending it.
+  await redis.expireat(quotaKey, plan.quotaExpiresAt);
   headers["X-Quota-Limit"] = String(plan.monthlyQuota);
   headers["X-Quota-Remaining"] = String(Math.max(0, plan.monthlyQuota - used));
 
