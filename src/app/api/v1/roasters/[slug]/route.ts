@@ -33,7 +33,7 @@ export async function GET(
       return NextResponse.json({ error: "Roaster not found" }, { status: 404 });
     }
 
-    return NextResponse.json(roaster);
+    return NextResponse.json(roaster, { headers: auth.headers });
   } catch (error) {
     console.error(
       "[API v1 /roasters/[slug]] Unhandled error:",

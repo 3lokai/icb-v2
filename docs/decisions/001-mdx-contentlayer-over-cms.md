@@ -1,7 +1,7 @@
 ## ADR-001: MDX + Contentlayer over Headless CMS
 
 **Date:** 2025-05-22  
-**Status:** Accepted  
+**Status:** Superseded by [ADR-010](010-sanity-cms-for-learn.md) (2026-02-21)  
 **Participants:** CTO, Lead Developer
 
 ### Context

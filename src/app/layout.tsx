@@ -5,6 +5,7 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAnalytics as NextGoogleAnalytics } from "@next/third-parties/google";
 import { Analytics as GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { MetaPixel } from "@/components/analytics/MetaPixel";
 import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
 import { env } from "../../env";
 import { AuthProvider } from "@/components/providers/auth-provider";
@@ -224,7 +225,12 @@ export default async function RootLayout({
                     // Silently fail if consent check fails, default remains "granted"
                   }
                   
-                  // NO config call here - Next.js GoogleAnalytics component handles config
+                  // Google Ads rides the same gtag.js as GA4. The ad_* consent
+                  // above gates it: until marketing is granted it sends only
+                  // cookieless pings, so no remarketing audience is built.
+                  ${env.NEXT_PUBLIC_GOOGLE_ADS_ID ? `window.gtag("config", ${JSON.stringify(env.NEXT_PUBLIC_GOOGLE_ADS_ID)});` : ""}
+
+                  // NO GA config call here - Next.js GoogleAnalytics component handles config
                 })();
               `,
             }}
@@ -235,6 +241,7 @@ export default async function RootLayout({
           <NextGoogleAnalytics gaId={env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
         {env.NEXT_PUBLIC_CLARITY_PROJECT_ID && <MicrosoftClarity />}
+        {env.NEXT_PUBLIC_META_PIXEL_ID && <MetaPixel />}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

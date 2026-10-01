@@ -4,6 +4,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/data/auth";
 import { createClient } from "@/lib/supabase/server";
+import { getEffectivePlan } from "@/lib/api/plan";
 
 const API_KEY_PREFIX = "icb_live_";
 const KEY_PREFIX_DISPLAY_LENGTH = 16;
@@ -43,37 +44,35 @@ export async function createApiKey(
     return { success: false, error: "Please enter a name for the key." };
   }
 
+  const supabase = await createClient();
+
   const rawKey = `${API_KEY_PREFIX}${randomBytes(32).toString("hex")}`;
   const keyHash = createHash("sha256").update(rawKey, "utf8").digest("hex");
   const keyPrefix = rawKey.slice(0, KEY_PREFIX_DISPLAY_LENGTH);
 
-  const supabase = await createClient();
+  // The database RPC serializes creation per user and enforces the current
+  // plan cap atomically. Direct authenticated INSERT access is revoked.
+  const { data: keyId, error } = await supabase.rpc("create_api_key", {
+    p_name: trimmedName,
+    p_key_prefix: keyPrefix,
+    p_key_hash: keyHash,
+  });
 
-  const { data, error } = await supabase
-    .from("api_keys")
-    .insert({
-      user_id: user.id,
-      name: trimmedName,
-      key_prefix: keyPrefix,
-      key_hash: keyHash,
-      is_active: true,
-      rate_limit_rpm: 60,
-    })
-    .select("id")
-    .single();
-
-  if (error) {
+  if (error || !keyId) {
     console.error("[createApiKey] insert error:", error);
     return {
       success: false,
-      error: error.message || "Failed to create API key.",
+      error:
+        error?.message === "API key limit reached"
+          ? "Your plan's active API key limit has been reached. Revoke one to create another."
+          : error?.message || "Failed to create API key.",
     };
   }
 
   revalidatePath("/dashboard/developer");
   return {
     success: true,
-    data: { rawKey, keyId: data.id },
+    data: { rawKey, keyId },
   };
 }
 
@@ -176,4 +175,39 @@ export async function getUsageForMyKeys(): Promise<
   }
 
   return { success: true, data: out };
+}
+
+export type MyApiPlan = {
+  tier: string;
+  rpm: number;
+  monthlyQuota: number;
+  quotaUsed: number;
+  maxKeys: number;
+  commercialUse: boolean;
+};
+
+/**
+ * Current user's API plan and quota usage this period (developer portal).
+ */
+export async function getMyApiPlan(): Promise<ActionResult<MyApiPlan>> {
+  const user = await getCurrentUser();
+  if (!user) {
+    return { success: false, error: "You must be signed in." };
+  }
+
+  const { getQuotaUsed } = await import("@/lib/api/usage");
+  const plan = await getEffectivePlan(user.id);
+  const quotaUsed = await getQuotaUsed(user.id, plan.period);
+
+  return {
+    success: true,
+    data: {
+      tier: plan.tier,
+      rpm: plan.rpm,
+      monthlyQuota: plan.monthlyQuota,
+      quotaUsed,
+      maxKeys: plan.maxKeys,
+      commercialUse: plan.commercialUse,
+    },
+  };
 }

@@ -1,7 +1,7 @@
-# ADR-001: ImageKit for Learn Section Image Management
+# ADR-009: ImageKit for Learn Section Image Management
 
 **Date:** 2025-05-24  
-**Status:** Accepted  
+**Status:** Superseded by [ADR-010](010-sanity-cms-for-learn.md) (2026-02-21)  
 **Participants:** CTO, Full Stack Developer
 
 ## Context

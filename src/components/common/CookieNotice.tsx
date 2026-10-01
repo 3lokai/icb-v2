@@ -61,14 +61,10 @@ export function CookieNotice() {
     let cancelled = false;
     const showIfNeeded = () => {
       if (cancelled) return;
-      const hasConsent = hasStoredConsent();
-      if (hasConsent) {
-        const stored = getStoredPreferences();
-        setPreferences(stored);
-        setVisible(false);
-      } else {
-        setVisible(true);
-      }
+      // Pre-fill from storage either way: a pre-v2 visitor being re-asked
+      // about marketing keeps their earlier analytics answer in "Manage".
+      setPreferences(getStoredPreferences());
+      setVisible(!hasStoredConsent());
     };
 
     // Defer non-critical consent UI until browser is idle so its mount work stays
@@ -183,8 +179,9 @@ export function CookieNotice() {
             <div>
               <p className="font-medium">Marketing Cookies</p>
               <p className="text-muted-foreground text-caption">
-                Used to measure and personalise advertising. Off unless you turn
-                it on.
+                Set by our advertising partners to show you relevant ads on
+                other sites and measure how our campaigns perform. Off unless
+                you turn it on.
               </p>
             </div>
             <Switch
@@ -234,8 +231,8 @@ export function CookieNotice() {
             We use cookies to brew up a better experience. Essential cookies are
             always active. By clicking &quot;Accept All&quot;, you agree to the
             storing of cookies on your device to enhance navigation, analyze
-            site usage, and measure marketing. Choose &quot;Manage Cookies&quot;
-            to decide for yourself. See our{" "}
+            site usage, and assist in our marketing efforts. Choose &quot;Manage
+            Cookies&quot; to decide for yourself. See our{" "}
             <Link className="text-primary hover:underline" href="/privacy">
               Privacy Policy
             </Link>{" "}

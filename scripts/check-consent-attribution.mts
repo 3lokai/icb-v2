@@ -40,7 +40,7 @@ const jar = new Map<string, string>();
 (globalThis as any).dispatchEvent = () => true;
 (globalThis as any).Event = class {};
 
-const { getStoredPreferences, savePreferences, STORAGE_KEY } =
+const { getStoredPreferences, hasStoredConsent, savePreferences, STORAGE_KEY } =
   await import("../src/hooks/use-cookie-consent.ts");
 const { storeAttributionData, getStoredAttribution } =
   await import("../src/lib/analytics/index.ts");
@@ -107,6 +107,35 @@ assert.equal(
   2,
   "savePreferences stamps the version"
 );
+
+// --- consent: only a v2 answer suppresses the banner ---
+// A pre-v2 visitor was never asked about marketing, so they must be re-asked.
+assert.equal(hasStoredConsent(), true, "a v2 answer counts as answered");
+store.set(STORAGE_KEY, JSON.stringify({ necessary: true, analytics: true }));
+assert.equal(
+  hasStoredConsent(),
+  false,
+  "pre-v2 answer must re-show the banner"
+);
+store.set(STORAGE_KEY, "not json");
+assert.equal(
+  hasStoredConsent(),
+  false,
+  "unparseable value re-shows the banner"
+);
+
+// --- consent: marketing reaches the Meta Pixel, which ignores Consent Mode ---
+const fbqCalls: unknown[][] = [];
+(globalThis as any).fbq = (...args: unknown[]) => fbqCalls.push(args);
+savePreferences({ necessary: true, analytics: true, marketing: false });
+assert.deepEqual(
+  fbqCalls.at(-1),
+  ["consent", "revoke"],
+  "decline revokes pixel"
+);
+savePreferences({ necessary: true, analytics: true, marketing: true });
+assert.deepEqual(fbqCalls.at(-1), ["consent", "grant"], "grant reaches pixel");
+delete (globalThis as any).fbq;
 
 // --- attribution: first touch wins, later touches only append ---
 storeAttributionData({ utm_source: "newsletter", utm_campaign: "launch" });

@@ -131,6 +131,80 @@ export type Database = {
         };
         Relationships: [];
       };
+      api_plans: {
+        Row: {
+          commercial_use: boolean;
+          features: string[];
+          max_keys: number;
+          monthly_quota: number;
+          rpm: number;
+          tier: string;
+        };
+        Insert: {
+          commercial_use?: boolean;
+          features?: string[];
+          max_keys: number;
+          monthly_quota: number;
+          rpm: number;
+          tier: string;
+        };
+        Update: {
+          commercial_use?: boolean;
+          features?: string[];
+          max_keys?: number;
+          monthly_quota?: number;
+          rpm?: number;
+          tier?: string;
+        };
+        Relationships: [];
+      };
+      api_subscriptions: {
+        Row: {
+          created_at: string;
+          features_override: string[] | null;
+          notes: string | null;
+          period_end: string;
+          period_start: string;
+          quota_override: number | null;
+          rpm_override: number | null;
+          tier: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          features_override?: string[] | null;
+          notes?: string | null;
+          period_end: string;
+          period_start: string;
+          quota_override?: number | null;
+          rpm_override?: number | null;
+          tier: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          features_override?: string[] | null;
+          notes?: string | null;
+          period_end?: string;
+          period_start?: string;
+          quota_override?: number | null;
+          rpm_override?: number | null;
+          tier?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "api_subscriptions_tier_fkey";
+            columns: ["tier"];
+            isOneToOne: false;
+            referencedRelation: "api_plans";
+            referencedColumns: ["tier"];
+          },
+        ];
+      };
       brew_methods: {
         Row: {
           canonical_key: Database["public"]["Enums"]["grind_enum"] | null;
@@ -2905,6 +2979,14 @@ export type Database = {
       };
     };
     Views: {
+      api_user_daily_usage: {
+        Row: {
+          date: string | null;
+          request_count: number | null;
+          user_id: string | null;
+        };
+        Relationships: [];
+      };
       coffee_directory_mv: {
         Row: {
           bean_species: Database["public"]["Enums"]["species_enum"] | null;
@@ -3277,6 +3359,14 @@ export type Database = {
           p_category: string;
           p_created_by?: string;
           p_model?: string;
+          p_name: string;
+        };
+        Returns: string;
+      };
+      create_api_key: {
+        Args: {
+          p_key_hash: string;
+          p_key_prefix: string;
           p_name: string;
         };
         Returns: string;

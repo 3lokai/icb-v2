@@ -43,10 +43,13 @@ export const updateAnalyticsConsent = (granted: boolean) => {
 
 // Marketing/advertising consent. Deliberately separate from analytics: this one
 // is opt-IN, and every ad tag or hashed-email export must gate on it rather than
-// on `analytics`. There is no ad tech on the site yet — this lands the lawful
-// basis before the first tag ships, not after.
+// on `analytics`. Google Ads reads the gtag ad_* signals; the Meta Pixel has no
+// equivalent, so MetaPixel only loads with consent and is revoked here.
 export const updateMarketingConsent = (granted: boolean) => {
-  if (typeof window !== "undefined" && window.gtag) {
+  if (typeof window === "undefined") {
+    return;
+  }
+  if (window.gtag) {
     const value = granted ? "granted" : "denied";
     window.gtag("consent", "update", {
       ad_storage: value,
@@ -54,6 +57,9 @@ export const updateMarketingConsent = (granted: boolean) => {
       ad_personalization: value,
     });
   }
+  // A late grant loads the pixel via MetaPixel's storage listener; this covers
+  // a pixel already running.
+  window.fbq?.("consent", granted ? "grant" : "revoke");
 };
 
 // UTM Parameter Extraction and Attribution
@@ -241,5 +247,7 @@ declare global {
     // Microsoft Clarity queue function, defined once @microsoft/clarity's
     // Clarity.init() injects the tag script
     clarity?: (...args: unknown[]) => void;
+    // Meta Pixel queue function, defined once MetaPixel injects fbevents.js
+    fbq?: (...args: unknown[]) => void;
   }
 }

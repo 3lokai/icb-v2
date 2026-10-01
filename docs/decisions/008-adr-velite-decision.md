@@ -1,7 +1,7 @@
-# ADR-001: Choose Velite over Contentlayer for Learn Section
+# ADR-008: Choose Velite over Contentlayer for Learn Section
 
 **Date:** 2025-05-24  
-**Status:** Accepted  
+**Status:** Superseded by [ADR-010](010-sanity-cms-for-learn.md) (2026-02-21)  
 **Participants:** CTO, Development Team
 
 ## Context

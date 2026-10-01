@@ -33,8 +33,8 @@ export function CookieSettings({
 
     // Only show if no consent has been given yet, or if forceOpen is true
     startTransition(() => {
+      setPreferences(stored);
       if (hasConsent) {
-        setPreferences(stored);
         if (forceOpen) {
           setIsOpen(true);
         }
@@ -121,8 +121,9 @@ export function CookieSettings({
               <div>
                 <p className="font-medium">Marketing Cookies</p>
                 <p className="text-muted-foreground text-caption">
-                  Used to measure and personalise advertising. Off unless you
-                  turn it on.
+                  Set by our advertising partners to show you relevant ads on
+                  other sites and measure how our campaigns perform. Off unless
+                  you turn it on.
                 </p>
               </div>
               <Switch

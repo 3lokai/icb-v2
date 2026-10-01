@@ -4,17 +4,19 @@ import { Redis } from "@upstash/redis";
 
 const USAGE_PREFIX = "usage";
 
-function dateKey(): string {
-  const now = new Date();
-  const y = now.getUTCFullYear();
-  const m = String(now.getUTCMonth() + 1).padStart(2, "0");
-  const d = String(now.getUTCDate()).padStart(2, "0");
-  return `${y}${m}${d}`;
+// Cron fires at 00:10 UTC, so roll up the day that just ended.
+function yesterdayKey(): string {
+  const d = new Date();
+  d.setUTCDate(d.getUTCDate() - 1);
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  return `${y}${m}${day}`;
 }
 
 /**
- * POST /api/cron/usage-rollup
- * Reads today's Redis usage counters and upserts into api_key_daily_usage.
+ * GET|POST /api/cron/usage-rollup (Vercel cron sends GET)
+ * Reads yesterday's Redis usage counters and upserts into api_key_daily_usage.
  * Secure with CRON_SECRET or Vercel cron auth.
  */
 export async function POST(request: Request) {
@@ -47,11 +49,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const today = dateKey();
+  const day = yesterdayKey();
 
   for (const { id: keyId } of keys) {
-    const dailyKey = `${USAGE_PREFIX}:${keyId}:${today}`;
-    const errorKey = `${USAGE_PREFIX}:${keyId}:${today}:errors`;
+    const dailyKey = `${USAGE_PREFIX}:${keyId}:${day}`;
+    const errorKey = `${USAGE_PREFIX}:${keyId}:${day}:errors`;
     const [count, errCount] = await Promise.all([
       redis.get<number>(dailyKey),
       redis.get<number>(errorKey),
@@ -62,7 +64,7 @@ export async function POST(request: Request) {
       await supabase.from("api_key_daily_usage").upsert(
         {
           key_id: keyId,
-          date: `${today.slice(0, 4)}-${today.slice(4, 6)}-${today.slice(6, 8)}`,
+          date: `${day.slice(0, 4)}-${day.slice(4, 6)}-${day.slice(6, 8)}`,
           request_count,
           error_count,
         },
@@ -73,3 +75,5 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ ok: true });
 }
+
+export const GET = POST;

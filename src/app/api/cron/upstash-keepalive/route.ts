@@ -41,3 +41,6 @@ export async function POST(request: Request) {
     );
   }
 }
+
+// Vercel cron sends GET.
+export const GET = POST;

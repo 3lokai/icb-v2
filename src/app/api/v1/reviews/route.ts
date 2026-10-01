@@ -149,7 +149,7 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ id: row.id });
+    return NextResponse.json({ id: row.id }, { headers: auth.headers });
   } catch (error) {
     console.error("[API v1 /reviews] Unhandled error:", error);
     return NextResponse.json(

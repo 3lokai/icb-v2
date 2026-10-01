@@ -50,7 +50,10 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ anon_id: ensured.anonId });
+    return NextResponse.json(
+      { anon_id: ensured.anonId },
+      { headers: auth.headers }
+    );
   } catch (error) {
     console.error("[API v1 /users] Unhandled error:", error);
     return NextResponse.json(

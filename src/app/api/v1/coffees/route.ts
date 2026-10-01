@@ -20,8 +20,14 @@ export async function GET(request: Request) {
     const { filters, page, limit, sort } =
       parseCoffeeSearchParams(searchParams);
 
-    const data = await fetchCoffees(filters, page, limit, sort, supabase);
-    return NextResponse.json(data);
+    const data = await fetchCoffees(
+      filters,
+      page,
+      Math.min(limit, 100),
+      sort,
+      supabase
+    );
+    return NextResponse.json(data, { headers: auth.headers });
   } catch (error) {
     console.error("[API v1 /coffees] Unhandled error:", error);
     return NextResponse.json(

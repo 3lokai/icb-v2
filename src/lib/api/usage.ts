@@ -104,3 +104,21 @@ export async function getUsageForKey(keyId: string): Promise<{
 
   return result;
 }
+
+/**
+ * Requests used in the current quota period (see validateApiKey quota counter).
+ */
+export async function getQuotaUsed(
+  userId: string,
+  period: string
+): Promise<number> {
+  const redis = getRedis();
+  if (!redis) return 0;
+  try {
+    const used = await redis.get<number>(`quota:${userId}:${period}`);
+    return typeof used === "number" ? used : 0;
+  } catch (err) {
+    console.error("[usage] getQuotaUsed error:", err);
+    return 0;
+  }
+}

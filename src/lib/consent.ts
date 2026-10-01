@@ -80,8 +80,22 @@ export const getStoredPreferences = (): CookiePreferences =>
  * Has the visitor answered at all? Distinct from `getStoredPreferences`, which
  * cannot say — it returns defaults for an absent value. This is what decides
  * whether the consent banner is shown.
+ *
+ * Only a current-version answer counts: a pre-v2 visitor was never asked about
+ * marketing, so they get the banner again. Their analytics answer still applies
+ * meanwhile (`parsePreferences` honours it) and pre-fills the banner.
  */
-export const hasStoredConsent = (): boolean => read() !== null;
+export const hasStoredConsent = (): boolean => {
+  const raw = read();
+  if (raw === null) {
+    return false;
+  }
+  try {
+    return JSON.parse(raw).v === CONSENT_VERSION;
+  } catch {
+    return false;
+  }
+};
 
 export const writeStoredPreferences = (prefs: CookiePreferences): void => {
   if (typeof window === "undefined") {

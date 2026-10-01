@@ -136,7 +136,7 @@ X-API-Key: icb_live_<your-key>`}
                 </li>
                 <li>
                   <code className="rounded bg-muted px-1">limit</code> (number)
-                  — Items per page, default 15
+                  — Items per page, default 15, max 100
                 </li>
                 <li>
                   <code className="rounded bg-muted px-1">sort</code> — One of:{" "}
@@ -349,7 +349,7 @@ X-API-Key: icb_live_<your-key>`}
                 <li>
                   <code className="rounded bg-muted px-1">page</code>,{" "}
                   <code className="rounded bg-muted px-1">limit</code> —
-                  Pagination (default 1, 15)
+                  Pagination (default 1, 15; limit max 100)
                 </li>
                 <li>
                   <code className="rounded bg-muted px-1">sort</code> — One of:{" "}
@@ -674,14 +674,40 @@ X-API-Key: icb_live_<your-key>`}
         <section className="space-y-4">
           <h2 className="text-subheading font-bold">Rate limits</h2>
           <p className="text-body text-muted-foreground">
-            Default: 60 requests per minute per key (sliding window). When
-            exceeded you receive <strong>429 Too Many Requests</strong> with a{" "}
+            Limits apply per account, shared across all your keys. The free plan
+            allows 30 requests per minute (sliding window) and 5,000 requests
+            per calendar month (UTC). Every response includes{" "}
+            <code className="rounded bg-muted px-1">X-RateLimit-Limit</code>,{" "}
+            <code className="rounded bg-muted px-1">X-RateLimit-Remaining</code>
+            , <code className="rounded bg-muted px-1">X-RateLimit-Reset</code>,{" "}
+            <code className="rounded bg-muted px-1">X-Quota-Limit</code> and{" "}
+            <code className="rounded bg-muted px-1">X-Quota-Remaining</code>{" "}
+            headers.
+          </p>
+          <p className="text-body text-muted-foreground">
+            Over the per-minute limit you receive{" "}
+            <strong>429 Too Many Requests</strong> with a{" "}
             <code className="rounded bg-muted px-1">Retry-After</code> header
             (seconds until reset):
           </p>
           <pre className="overflow-x-auto rounded-lg border border-border/60 bg-muted/50 p-4 font-mono text-caption">
             {`{ "error": "Rate limit exceeded", "retry_after": 45 }`}
           </pre>
+          <p className="text-body text-muted-foreground">
+            Over the monthly quota you receive <strong>429</strong> until the
+            next period:
+          </p>
+          <pre className="overflow-x-auto rounded-lg border border-border/60 bg-muted/50 p-4 font-mono text-caption">
+            {`{ "error": "Monthly quota exceeded", "upgrade_url": "…/dashboard/developer" }`}
+          </pre>
+          <p className="text-body text-muted-foreground">
+            The free and Pro plans are for development and internal tools. Using
+            ICB data in a customer-facing product needs a Commercial licence;{" "}
+            <Link href="/contact" className="text-accent underline">
+              get in touch
+            </Link>
+            .
+          </p>
         </section>
 
         <section className="space-y-4">
@@ -703,7 +729,7 @@ X-API-Key: icb_live_<your-key>`}
               slug)
             </li>
             <li>
-              <strong>429</strong> — Rate limit exceeded; check{" "}
+              <strong>429</strong> — Rate limit or monthly quota exceeded; check{" "}
               <code className="rounded bg-muted px-1">Retry-After</code> header
             </li>
             <li>

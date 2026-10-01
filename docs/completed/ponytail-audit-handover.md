@@ -233,7 +233,7 @@ Vitals check on hero-less routes after this ships.
 that on hero-less pages the banner can become the LCP element and that the idle defer does not
 fix it: *"the real fix… is giving those pages real above-fold content"*. Identify which routes
 are hero-less before re-enabling, so a regression is distinguishable from a pre-existing
-problem. See also `docs/cwv-lcp-unused-js-plan.md`.
+problem. See also `docs/completed/cwv-lcp-unused-js-plan.md`.
 
 ### DB consent: checked — it exists, but not for cookies
 
