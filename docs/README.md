@@ -11,6 +11,7 @@ being deleted.
 | [`auth.md`](auth.md) | Auth and anonymous identity. Read before touching auth. |
 | [`regions-estates-handover.md`](regions-estates-handover.md) | Regions/estates data model, what is built, and the traps. Only 4f remains. |
 | [`regions-hub-audit.md`](regions-hub-audit.md) | Regions hub audit, triaged: 10 fixed, 3 rejected with evidence, 3 open (map geometry polish and provenance). |
+| [`api-plans-ops.md`](api-plans-ops.md) | Ops guide for paid API plans: turning a deal into access, renewals, cut-off, what goes wrong, SQL. |
 | [`gear-directory-plan.md`](gear-directory-plan.md) | Plan for `/gear` from `raw_products`. Not built. |
 
 ## Decisions worth knowing before you start
