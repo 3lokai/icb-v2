@@ -111,6 +111,7 @@ export const ARTICLE_PROJECTION = `
     "slug": slug.current,
     description
   },
+  seriesPart,
   _createdAt,
   _updatedAt
 `;
@@ -204,6 +205,7 @@ export const ARTICLE_CARD_PROJECTION = `
     "slug": slug.current,
     description
   },
+  seriesPart,
   _createdAt,
   _updatedAt
 `;
@@ -295,6 +297,18 @@ export const SERIES_BY_SLUG_PROJECTION = `
   name,
   "slug": slug.current,
   description,
+  audience,
+  level,
+  outcomes,
+  whyFinish,
+  nextAction{ label, href },
+  nextSeries->{
+    _id,
+    name,
+    "slug": slug.current,
+    description,
+    cover{ asset->{ _id, url, metadata { dimensions { width, height } } }, hotspot, crop, alt }
+  },
   metadata{
     metaTitle,
     metaDescription,
@@ -318,13 +332,20 @@ export const SERIES_BY_SLUG_PROJECTION = `
       metadata { dimensions { width, height } }
     },
     hotspot,
-    crop
+    crop,
+    alt
   }
 `;
 
 export const ALL_SERIES_QUERY = `
   *[_type == "series" && defined(slug.current)] {
-    ${SERIES_BY_SLUG_PROJECTION}
+    ${SERIES_BY_SLUG_PROJECTION},
+    "parts": *[_type == "article" && !(_id in path("drafts.**"))
+      && (seriesRef._ref == ^._id || series.slug.current == ^.slug.current)]
+      | order(coalesce(seriesPart, series.part, 999) asc, date asc) {
+        title,
+        "slug": slug.current
+      }
   } | order(name asc)
 `;
 
@@ -341,8 +362,18 @@ export const ARTICLES_BY_SERIES_QUERY = `
       || seriesRef->slug.current == $seriesSlug
     )
   ]
-  | order(series.part asc, date desc) {
+  | order(coalesce(seriesPart, series.part) asc, date asc) {
     ${ARTICLE_CARD_PROJECTION}
+  }
+`;
+
+// Published siblings of one series in reading order, for the article-page series strip.
+export const SERIES_SIBLINGS_QUERY = `
+  *[_type == "article" && seriesRef._ref == $seriesId && !(_id in path("drafts.**"))]
+  | order(coalesce(seriesPart, 999) asc, date asc) {
+    title,
+    "slug": slug.current,
+    seriesPart
   }
 `;
 

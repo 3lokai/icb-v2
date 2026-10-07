@@ -24,6 +24,7 @@ import {
 import { urlFor } from "@/lib/sanity/image";
 import { extractStepsFromBody } from "@/lib/sanity/portable-text-utils";
 import ArticleContent from "@/components/blog/ArticleContent";
+import { SeriesStrip } from "@/components/blog/SeriesStrip";
 import { LearnArticleTracker } from "@/components/blog/LearnArticleTracker";
 import StructuredData from "@/components/seo/StructuredData";
 import {
@@ -205,6 +206,13 @@ export default async function ArticlePage({ params }: Props) {
             <HydrationBoundary state={dehydrate(queryClient)}>
               <ArticleContent body={article.body} faqItems={article.faqItems} />
             </HydrationBoundary>
+
+            {article.seriesRef && (
+              <SeriesStrip
+                series={article.seriesRef}
+                currentSlug={article.slug}
+              />
+            )}
 
             {/* Top-level FAQ Section (if field is populated) */}
             {article.faqItems && article.faqItems.length > 0 && (
