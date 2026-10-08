@@ -19,6 +19,19 @@ function toTarget(roasterSlug: string, coffeeSlug?: string): BadgeTarget {
     : { entity: "roaster", roasterSlug };
 }
 
+/**
+ * Badge data, or null. A DB failure keeps the graceful fallback (plain badge,
+ * redirect to /roasters) but is logged so it isn't mistaken for a missing roaster.
+ */
+async function loadRoaster(slug: string) {
+  try {
+    return await fetchBadgeRoasterCached(slug);
+  } catch (error) {
+    console.error(`Badge data fetch failed for roaster "${slug}":`, error);
+    return null;
+  }
+}
+
 /** GET /badges/… — the hosted SVG behind every embed. */
 export async function serveBadgeSvg(
   req: NextRequest,
@@ -37,7 +50,7 @@ export async function serveBadgeSvg(
     req.nextUrl.searchParams
   );
 
-  const roaster = await fetchBadgeRoasterCached(roasterSlug).catch(() => null);
+  const roaster = await loadRoaster(roasterSlug);
   const coffee = coffeeSlug
     ? roaster?.coffees.find((c) => c.slug === coffeeSlug)
     : undefined;
@@ -98,7 +111,7 @@ export async function serveBadgeRedirect(
   const { type, placement } = parseBadgeParams(target.entity, params);
   const source = params.get("source") === "qr" ? "qr" : "badge";
 
-  const roaster = await fetchBadgeRoasterCached(roasterSlug).catch(() => null);
+  const roaster = await loadRoaster(roasterSlug);
   if (!roaster) return redirect("/roasters");
   const coffee = coffeeSlug
     ? roaster.coffees.find((c) => c.slug === coffeeSlug)

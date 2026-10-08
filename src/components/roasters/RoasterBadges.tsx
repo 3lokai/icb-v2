@@ -19,6 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
 import { capture } from "@/lib/posthog";
 import {
   BADGE_DIMENSIONS,
@@ -151,13 +152,17 @@ function BadgeControls({
       size: look.size,
       placement,
     });
+  // Clipboard can be denied (permissions, insecure context): fall back to a
+  // pre-selected text box so the roaster can still copy by hand.
+  const [manualText, setManualText] = useState<string | null>(null);
   const copy = async (text: string, action: string) => {
     try {
       await navigator.clipboard.writeText(text);
       track(action);
       return true;
     } catch {
-      toast.error("Couldn't copy — select the text and copy it manually");
+      setManualText(text);
+      track(`${action}_manual`);
       return false;
     }
   };
@@ -227,6 +232,28 @@ function BadgeControls({
           </div>
         </PopoverContent>
       </Popover>
+      <Dialog
+        open={manualText !== null}
+        onOpenChange={(open) => !open && setManualText(null)}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Copy it manually</DialogTitle>
+            <DialogDescription>
+              Your browser blocked automatic copying. The text below is
+              selected. Press Ctrl+C (⌘C on Mac) to copy it.
+            </DialogDescription>
+          </DialogHeader>
+          <Textarea
+            readOnly
+            autoFocus
+            rows={5}
+            value={manualText ?? ""}
+            onFocus={(e) => e.currentTarget.select()}
+            className="font-mono text-caption"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
