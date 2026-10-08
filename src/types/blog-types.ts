@@ -22,6 +22,7 @@ export type SanityImage = {
     left: number;
     right: number;
   };
+  alt?: string;
 };
 
 export type Author = {
@@ -71,6 +72,14 @@ export type Series = {
   description?: string;
   metadata?: SeriesMetadata;
   cover?: SanityImage;
+  /** Published articles in reading order — only on ALL_SERIES_QUERY. */
+  parts?: { title: string; slug: string }[];
+  audience?: string;
+  level?: "beginner" | "intermediate" | "advanced";
+  outcomes?: string[];
+  whyFinish?: string;
+  nextAction?: { label?: string; href?: string };
+  nextSeries?: Pick<Series, "_id" | "name" | "slug" | "description" | "cover">;
 };
 
 export type FAQItem = {
@@ -135,6 +144,7 @@ export type Article = {
     part: number;
   };
   seriesRef?: Series;
+  seriesPart?: number;
   _createdAt: string;
   _updatedAt: string;
 };

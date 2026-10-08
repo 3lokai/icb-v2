@@ -38,9 +38,13 @@ const bodySchema = z.object({
  * Provide either anon_id (from POST /users) or external_user_id (will be resolved or created).
  */
 export async function POST(request: Request) {
+  // Hoisted so every response after the key is accepted, errors included,
+  // carries the rate-limit and quota headers.
+  let headers: Record<string, string> | undefined;
   try {
     const auth = await validateApiKey(request);
     if ("error" in auth) return auth.error;
+    headers = auth.headers;
 
     let body: z.infer<typeof bodySchema>;
     try {
@@ -51,7 +55,7 @@ export async function POST(request: Request) {
         err instanceof z.ZodError
           ? err.issues.map((e: { message: string }) => e.message).join("; ")
           : "Invalid request body";
-      return NextResponse.json({ error: message }, { status: 400 });
+      return NextResponse.json({ error: message }, { status: 400, headers });
     }
 
     const autoRecommend = body.rating != null && body.rating >= 4 ? true : null;
@@ -70,20 +74,20 @@ export async function POST(request: Request) {
           error:
             "Provide at least one of: rating, recommend, value_for_money, works_with_milk, or comment.",
         },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
 
     if (!isValidRating(body.rating ?? null)) {
       return NextResponse.json(
         { error: "Rating must be between 1 and 5." },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
     if (!isValidComment(body.comment ?? null)) {
       return NextResponse.json(
         { error: "Comment must be 5000 characters or less." },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
 
@@ -109,7 +113,7 @@ export async function POST(request: Request) {
         );
         return NextResponse.json(
           { error: "Internal server error" },
-          { status: 500 }
+          { status: 500, headers }
         );
       }
       anonId = ensured.anonId;
@@ -118,7 +122,7 @@ export async function POST(request: Request) {
         {
           error: "Provide either anon_id or external_user_id.",
         },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
 
@@ -145,16 +149,16 @@ export async function POST(request: Request) {
       console.error("[API v1 /reviews] insert error:", error);
       return NextResponse.json(
         { error: "Internal server error" },
-        { status: 500 }
+        { status: 500, headers }
       );
     }
 
-    return NextResponse.json({ id: row.id }, { headers: auth.headers });
+    return NextResponse.json({ id: row.id }, { headers });
   } catch (error) {
     console.error("[API v1 /reviews] Unhandled error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500, headers }
     );
   }
 }

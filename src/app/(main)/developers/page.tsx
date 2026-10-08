@@ -676,13 +676,13 @@ X-API-Key: icb_live_<your-key>`}
           <p className="text-body text-muted-foreground">
             Limits apply per account, shared across all your keys. The free plan
             allows 30 requests per minute (sliding window) and 5,000 requests
-            per calendar month (UTC). Every response includes{" "}
+            per calendar month (UTC). Every response to a valid key includes{" "}
             <code className="rounded bg-muted px-1">X-RateLimit-Limit</code>,{" "}
             <code className="rounded bg-muted px-1">X-RateLimit-Remaining</code>
             , <code className="rounded bg-muted px-1">X-RateLimit-Reset</code>,{" "}
             <code className="rounded bg-muted px-1">X-Quota-Limit</code> and{" "}
             <code className="rounded bg-muted px-1">X-Quota-Remaining</code>{" "}
-            headers.
+            headers (a per-minute 429 carries only the X-RateLimit ones).
           </p>
           <p className="text-body text-muted-foreground">
             Over the per-minute limit you receive{" "}

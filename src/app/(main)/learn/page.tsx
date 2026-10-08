@@ -11,6 +11,10 @@ import { SeriesCard } from "@/components/blog/SeriesCard";
 import { FieldGuidePillars } from "@/components/blog/FieldGuidePillars";
 import { PostCard } from "@/components/blog/PostCard";
 import { ArticleGrid } from "@/components/blog/ArticleParallaxGrid";
+import {
+  ArticlePagination,
+  LEARN_PAGE_SIZE,
+} from "@/components/blog/ArticlePagination";
 import { Stack } from "@/components/primitives/stack";
 import { Section } from "@/components/primitives/section";
 import { Accent } from "@/components/primitives/accent";
@@ -19,6 +23,9 @@ import { generateCollectionPageSchema, getSeoBaseUrl } from "@/lib/seo/schema";
 import StructuredData from "@/components/seo/StructuredData";
 
 export const revalidate = 3600;
+
+/** Series cards visible before "See all". */
+const SERIES_PREVIEW = 3;
 
 const LEARN_DESCRIPTION =
   "Master the art of Indian specialty coffee. From origin stories to brewing guides, explore our curated field guide — articles, series, and research across five knowledge layers.";
@@ -39,7 +46,7 @@ function buildArticleListItems(
   articles: Article[],
   baseUrl: string
 ): Array<Record<string, unknown>> {
-  return articles.slice(0, 20).map((article, index) => ({
+  return articles.map((article, index) => ({
     "@type": "ListItem",
     position: index + 1,
     item: {
@@ -59,20 +66,25 @@ export default async function LearnPage() {
     client.fetch<Category[]>(PILLAR_CATEGORIES_QUERY),
   ]);
 
+  const featuredArticles = articles.filter((a) => a.featured);
+  const regularArticles = articles
+    .filter((a) => !a.featured)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const pageArticles = regularArticles.slice(0, LEARN_PAGE_SIZE);
+  const totalPages = Math.ceil(regularArticles.length / LEARN_PAGE_SIZE);
+
   const baseUrl = getSeoBaseUrl();
   const learnUrl = `${baseUrl}/learn`;
-  const articleItems = buildArticleListItems(articles, baseUrl);
+  const articleItems = buildArticleListItems(
+    [...featuredArticles, ...pageArticles],
+    baseUrl
+  );
   const collectionSchema = generateCollectionPageSchema(
     "The Indian Coffee Field Guide",
     LEARN_DESCRIPTION,
     learnUrl,
     articleItems
   );
-
-  const featuredArticles = articles.filter((a) => a.featured);
-  const regularArticles = articles
-    .filter((a) => !a.featured)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <>
@@ -118,8 +130,11 @@ export default async function LearnPage() {
               ))}
             </Stack>
           )}
-          {regularArticles.length > 0 && (
-            <ArticleGrid articles={regularArticles} />
+          {pageArticles.length > 0 && (
+            <div>
+              <ArticleGrid articles={pageArticles} />
+              <ArticlePagination page={1} totalPages={totalPages} />
+            </div>
           )}
           {articles.length === 0 && (
             <p className="text-body text-muted-foreground">
@@ -134,18 +149,33 @@ export default async function LearnPage() {
       {series.length > 0 && (
         <Section
           contained={false}
-          spacing="loose"
-          align="center"
+          spacing="default"
+          eyebrow="Series"
           title="Structured"
           accentWord="learning"
-          description="Follow these curated series to master complex coffee topics, one step at a time."
+          description="Reading paths through one topic, part by part, in the order the ideas build."
           className="border-t border-border/60"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {series.map((s) => (
+            {series.slice(0, SERIES_PREVIEW).map((s) => (
               <SeriesCard key={s._id} series={s} />
             ))}
           </div>
+          {/* Native <details>: the rest stay in the HTML (crawlable), no JS.
+              The toggle hides itself once open — expand is one-way. */}
+          {series.length > SERIES_PREVIEW && (
+            <details className="group mt-8">
+              <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-2 rounded-lg border border-border/60 px-5 py-2.5 text-caption text-primary transition-colors hover:border-border hover:bg-muted group-open:hidden [&::-webkit-details-marker]:hidden">
+                See all {series.length} series
+                <span aria-hidden>↓</span>
+              </summary>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {series.slice(SERIES_PREVIEW).map((s) => (
+                  <SeriesCard key={s._id} series={s} />
+                ))}
+              </div>
+            </details>
+          )}
         </Section>
       )}
     </>

@@ -86,6 +86,7 @@ export async function POST(request: Request) {
   revalidatePath(path);
   if (payload._type === "article") {
     revalidatePath("/learn");
+    revalidatePath("/learn/page/[page]", "page");
   }
 
   await submitToIndexNow([`${baseUrl().replace(/\/$/, "")}${path}`]);

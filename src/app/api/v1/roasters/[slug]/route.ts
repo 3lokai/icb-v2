@@ -11,16 +11,20 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  // Hoisted so every response after the key is accepted, errors included,
+  // carries the rate-limit and quota headers.
+  let headers: Record<string, string> | undefined;
   try {
     const auth = await validateApiKey(request);
     if ("error" in auth) return auth.error;
+    headers = auth.headers;
 
     const { slug } = await params;
 
     if (!slug) {
       return NextResponse.json(
         { error: "Slug parameter is required" },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
 
@@ -30,10 +34,13 @@ export async function GET(
     });
 
     if (!roaster) {
-      return NextResponse.json({ error: "Roaster not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Roaster not found" },
+        { status: 404, headers }
+      );
     }
 
-    return NextResponse.json(roaster, { headers: auth.headers });
+    return NextResponse.json(roaster, { headers });
   } catch (error) {
     console.error(
       "[API v1 /roasters/[slug]] Unhandled error:",
@@ -42,7 +49,7 @@ export async function GET(
     );
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500, headers }
     );
   }
 }

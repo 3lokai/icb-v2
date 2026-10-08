@@ -9,9 +9,13 @@ import { createApiRouteClient } from "@/lib/supabase/api-route";
  * Returns paginated list of roasters. Requires API key.
  */
 export async function GET(request: Request) {
+  // Hoisted so every response after the key is accepted, errors included,
+  // carries the rate-limit and quota headers.
+  let headers: Record<string, string> | undefined;
   try {
     const auth = await validateApiKey(request);
     if ("error" in auth) return auth.error;
+    headers = auth.headers;
 
     const supabase = createApiRouteClient();
     const { searchParams } = new URL(request.url);
@@ -28,7 +32,7 @@ export async function GET(request: Request) {
       sort,
       supabase
     );
-    return NextResponse.json(roasterListResponse, { headers: auth.headers });
+    return NextResponse.json(roasterListResponse, { headers });
   } catch (error) {
     console.error(
       "[API v1 /roasters] Unhandled error:",
@@ -37,7 +41,7 @@ export async function GET(request: Request) {
     );
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500, headers }
     );
   }
 }

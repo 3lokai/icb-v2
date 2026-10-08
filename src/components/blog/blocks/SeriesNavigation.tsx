@@ -44,8 +44,7 @@ export function SeriesNavigation({ value }: SeriesNavigationProps) {
               </h2>
             </div>
             <p className="text-body-large text-muted-foreground/90 leading-relaxed font-serif italic">
-              Part of our curated deep-dive series. Explore more articles in
-              this collection to master your coffee knowledge.
+              Part of a field-guide series. See every part, in reading order.
             </p>
           </div>
 
