@@ -341,8 +341,8 @@ export const ALL_SERIES_QUERY = `
   *[_type == "series" && defined(slug.current)] {
     ${SERIES_BY_SLUG_PROJECTION},
     "parts": *[_type == "article" && !(_id in path("drafts.**"))
-      && (seriesRef._ref == ^._id || series.slug.current == ^.slug.current)]
-      | order(coalesce(seriesPart, series.part, 999) asc, date asc) {
+      && seriesRef._ref == ^._id]
+      | order(coalesce(seriesPart, 999) asc, date asc) {
         title,
         "slug": slug.current
       }
@@ -356,13 +356,8 @@ export const SERIES_BY_SLUG_QUERY = `
 `;
 
 export const ARTICLES_BY_SERIES_QUERY = `
-  *[_type == "article" 
-    && (
-      series.slug.current == $seriesSlug 
-      || seriesRef->slug.current == $seriesSlug
-    )
-  ]
-  | order(coalesce(seriesPart, series.part) asc, date asc) {
+  *[_type == "article" && seriesRef->slug.current == $seriesSlug]
+  | order(coalesce(seriesPart, 999) asc, date asc) {
     ${ARTICLE_CARD_PROJECTION}
   }
 `;

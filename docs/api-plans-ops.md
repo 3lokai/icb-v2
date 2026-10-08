@@ -65,8 +65,8 @@ today**, because the row no longer covers today. So renewal is two steps:
 Renewing on the first day itself or later? Do C2 with both dates in one go.
 
 > ⚠️ If you do step 1 and forget step 2, their usage keeps counting from the *old* start.
-> A "monthly" quota then covers two periods, and they'll run out early. SQL H2 shows
-> who's overdue for step 2.
+> A "monthly" quota then covers two periods, and they'll run out early. SQL H2 lists
+> rows worth checking; confirm the agreed renewal date (in `notes`) before running C2.
 
 **They run out mid-period.** They get `429 Monthly quota exceeded` until the period ends.
 To help them out, raise `quota_override` (SQL D). It takes effect on their next request, and
@@ -204,8 +204,9 @@ where s.period_end between current_date and current_date + 14
 order by s.period_end;
 ```
 
-**H2. Who's overdue for renewal step 2** (period stretched past ~a month, so one
-counter is covering more than one paid period)
+**H2. Rows to check for renewal step 2** (period running past ~a month). Not all are
+overdue: a single long period like the six-week pilot shows up here too. Check the agreed
+renewal date in `notes` and only run C2 if that date has passed.
 ```sql
 select s.user_id, u.email, s.tier, s.period_start, s.period_end, s.notes
 from public.api_subscriptions s
