@@ -11,9 +11,13 @@ import { safeErrorMessage } from "@/lib/api/error-response";
  * Requires API key (Authorization: Bearer icb_live_xxx or X-API-Key).
  */
 export async function GET(request: Request) {
+  // Hoisted so every response after the key is accepted, errors included,
+  // carries the rate-limit and quota headers.
+  let headers: Record<string, string> | undefined;
   try {
     const auth = await validateApiKey(request);
     if ("error" in auth) return auth.error;
+    headers = auth.headers;
 
     const supabase = createApiRouteClient();
     const { searchParams } = new URL(request.url);
@@ -27,12 +31,12 @@ export async function GET(request: Request) {
       sort,
       supabase
     );
-    return NextResponse.json(data, { headers: auth.headers });
+    return NextResponse.json(data, { headers });
   } catch (error) {
     console.error("[API v1 /coffees] Unhandled error:", error);
     return NextResponse.json(
       { error: safeErrorMessage(error, "Internal server error") },
-      { status: 500 }
+      { status: 500, headers }
     );
   }
 }

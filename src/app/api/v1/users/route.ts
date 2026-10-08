@@ -16,9 +16,13 @@ const bodySchema = z.object({
  * Requires API key.
  */
 export async function POST(request: Request) {
+  // Hoisted so every response after the key is accepted, errors included,
+  // carries the rate-limit and quota headers.
+  let headers: Record<string, string> | undefined;
   try {
     const auth = await validateApiKey(request);
     if ("error" in auth) return auth.error;
+    headers = auth.headers;
 
     let body: z.infer<typeof bodySchema>;
     try {
@@ -29,7 +33,7 @@ export async function POST(request: Request) {
         err instanceof z.ZodError
           ? err.issues.map((e: { message: string }) => e.message).join("; ")
           : "Invalid request body";
-      return NextResponse.json({ error: message }, { status: 400 });
+      return NextResponse.json({ error: message }, { status: 400, headers });
     }
 
     const hashed = getExternalUserIdHash(auth.keyId, body.external_user_id);
@@ -46,19 +50,16 @@ export async function POST(request: Request) {
       console.error("[API v1 /users] ensure_external_identity error:", ensured);
       return NextResponse.json(
         { error: "Internal server error" },
-        { status: 500 }
+        { status: 500, headers }
       );
     }
 
-    return NextResponse.json(
-      { anon_id: ensured.anonId },
-      { headers: auth.headers }
-    );
+    return NextResponse.json({ anon_id: ensured.anonId }, { headers });
   } catch (error) {
     console.error("[API v1 /users] Unhandled error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500, headers }
     );
   }
 }

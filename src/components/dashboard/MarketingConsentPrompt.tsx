@@ -20,16 +20,22 @@ export function MarketingConsentPrompt() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    let show = false;
-    try {
-      show =
-        hasStoredConsent() &&
-        !getStoredPreferences().marketing &&
-        localStorage.getItem(DISMISSED_KEY) === null;
-    } catch {
-      // Storage blocked: nowhere to remember a dismissal, so don't ask.
-    }
-    startTransition(() => setVisible(show));
+    const sync = () => {
+      let show = false;
+      try {
+        show =
+          hasStoredConsent() &&
+          !getStoredPreferences().marketing &&
+          localStorage.getItem(DISMISSED_KEY) === null;
+      } catch {
+        // Storage blocked: nowhere to remember a dismissal, so don't ask.
+      }
+      startTransition(() => setVisible(show));
+    };
+    sync();
+    // Re-check after Cookie Settings (or another tab) saves a choice.
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
   }, []);
 
   if (!visible) return null;

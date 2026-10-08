@@ -48,7 +48,7 @@ Say you agree a 6-week paid pilot with a company, 500,000 requests total, starti
    - Their dashboard (`/dashboard/developer`) shows the new plan and their usage against it.
    - Their usage counter starts at **zero** for this period. Whatever they used on Free
      doesn't carry over.
-5. **Tell them** it's live. Every API response carries `X-Quota-Remaining`, so they can
+5. **Tell them** it's live. Every response to their key carries `X-Quota-Remaining`, so they can
    watch their own usage.
 
 ## Keeping it running
