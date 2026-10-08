@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { getStoredPreferences } from "@/lib/consent";
+import { updateMarketingConsent } from "@/lib/analytics";
+import { getStoredPreferences, STORAGE_KEY } from "@/lib/consent";
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
@@ -42,15 +43,24 @@ function loadPixel(id: string) {
  * Meta Pixel for retargeting. Meta ignores Google Consent Mode, so the script is
  * not requested at all without marketing (opt-in) consent. A grant made later
  * arrives as the `storage` event savePreferences dispatches; a revoke is handled
- * by updateMarketingConsent (fbq "consent", "revoke").
+ * by updateMarketingConsent (fbq "consent", "revoke"), which also runs here for
+ * changes saved in other tabs.
  */
 export function MetaPixel() {
   const pathname = usePathname();
   const [granted, setGranted] = useState(false);
 
   useEffect(() => {
-    if (!PIXEL_ID || !shouldInit()) return;
-    const sync = () => setGranted(getStoredPreferences().marketing);
+    const pixelEnabled = Boolean(PIXEL_ID) && shouldInit();
+    const sync = (e?: Event) => {
+      const { marketing } = getStoredPreferences();
+      // A native StorageEvent means another tab saved; savePreferences only
+      // updated the ad tags in that tab, so apply the choice here too.
+      if (e instanceof StorageEvent && e.key === STORAGE_KEY) {
+        updateMarketingConsent(marketing);
+      }
+      if (pixelEnabled) setGranted(marketing);
+    };
     sync();
     window.addEventListener("storage", sync);
     return () => window.removeEventListener("storage", sync);

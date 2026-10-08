@@ -43,7 +43,7 @@ export async function getEffectivePlan(userId: string): Promise<EffectivePlan> {
   const supabase = createApiRouteClient();
   const today = new Date().toISOString().slice(0, 10);
 
-  const { data: sub } = await supabase
+  const { data: sub, error: subError } = await supabase
     .from("api_subscriptions")
     .select(
       "tier, period_start, period_end, rpm_override, quota_override, features_override"
@@ -52,13 +52,19 @@ export async function getEffectivePlan(userId: string): Promise<EffectivePlan> {
     .gte("period_end", today)
     .lte("period_start", today)
     .maybeSingle();
+  if (subError) {
+    console.error("[getEffectivePlan] subscription lookup failed:", subError);
+  }
 
   const tier = (sub?.tier as string | undefined) ?? "free";
-  const { data: planRow } = await supabase
+  const { data: planRow, error: planError } = await supabase
     .from("api_plans")
     .select("tier, rpm, monthly_quota, max_keys, commercial_use, features")
     .eq("tier", tier)
     .maybeSingle();
+  if (planError) {
+    console.error("[getEffectivePlan] plan lookup failed:", planError);
+  }
 
   const plan = (planRow as PlanRow | null) ?? FREE_FALLBACK;
   const quotaPeriod = sub

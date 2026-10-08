@@ -241,7 +241,8 @@ export default async function RootLayout({
           <NextGoogleAnalytics gaId={env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
         {env.NEXT_PUBLIC_CLARITY_PROJECT_ID && <MicrosoftClarity />}
-        {env.NEXT_PUBLIC_META_PIXEL_ID && <MetaPixel />}
+        {/* Always mounted: it also syncs ad consent across tabs for Google Ads */}
+        <MetaPixel />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

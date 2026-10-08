@@ -162,6 +162,8 @@ export async function validateApiKey(
   headers["X-Quota-Remaining"] = String(Math.max(0, plan.monthlyQuota - used));
 
   if (used > plan.monthlyQuota) {
+    // Rejected calls don't count, so a later quota_override takes effect at once.
+    await redis.decr(quotaKey);
     return { error: quotaExceededResponse(headers) };
   }
 
