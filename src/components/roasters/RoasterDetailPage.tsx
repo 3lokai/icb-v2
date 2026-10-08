@@ -167,6 +167,15 @@ export function RoasterDetailPage({
             </Link>{" "}
             to get a verified badge and manage your coffees.
           </p>
+          <p className="mt-2 text-caption text-muted-foreground">
+            Are you the roaster?{" "}
+            <Link
+              href={`/roasters/${roaster.slug}/badges`}
+              className="hover:text-foreground underline underline-offset-4"
+            >
+              Get badges for your store
+            </Link>
+          </p>
         </div>
       </Band>
 
