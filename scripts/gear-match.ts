@@ -14,7 +14,8 @@
 
 /**
  * A listing containing any of these words is never auto-matched, unless the alias itself
- * uses the word. Bundles, merch, and clone brands that name the product they copy.
+ * uses the word. Bundles, merch, spare parts, and clone brands that name the product
+ * they copy.
  */
 const STOP_WORDS = new Set([
   "set",
@@ -33,6 +34,13 @@ const STOP_WORDS = new Set([
   "stand",
   "cloth",
   "sample",
+  // replacement parts name the product they fit
+  "replacement",
+  "spare",
+  "part",
+  "gasket",
+  "seal",
+  "cap",
   "bincoo",
   "espressa",
   "ikape",

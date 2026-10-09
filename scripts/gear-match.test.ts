@@ -87,6 +87,12 @@ test("bundles, merch, third-party and clones are not matched", () => {
   assert.equal(slugOf("Bincoo V60 Ceramic Coffee Dripper"), "stopword");
 });
 
+test("replacement parts are not matched to the product they fit", () => {
+  assert.equal(slugOf("AeroPress Go Replacement Cap"), "stopword");
+  assert.equal(slugOf("AeroPress Plunger Seal"), "stopword");
+  assert.equal(slugOf("AeroPress Spare Gasket"), "stopword");
+});
+
 test("listings without enough detail are left for review", () => {
   assert.equal(slugOf("Hario V60 Dripper"), "none"); // material unknown
   assert.equal(slugOf("Chemex Coffee Maker"), "none"); // size unknown

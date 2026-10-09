@@ -16,6 +16,9 @@ dotenv.config({ path: ".env.local" });
  *
  * Folding keeps user_gear intact: the first dirty row for a slug becomes the canonical row
  * in place (same id); user_gear on the other dirty rows is repointed, then they're deleted.
+ *
+ * ponytail: no transaction (supabase-js can't span one). Every step is idempotent, so a
+ * failed --write is fixed by re-running; move into an RPC if partial runs ever bite.
  */
 
 const WRITE = process.argv.includes("--write");
@@ -42,13 +45,25 @@ async function main() {
   const catalog = rows as CatalogRow[];
 
   // ── Folds ──────────────────────────────────────────────────────────────────
+  // gear_catalog.name is CITEXT UNIQUE: a user-created, slug-less row that shares a seed
+  // product's name would make the slug upsert fail, so adopt it like an explicit fold.
+  const folds: [string, string][] = [
+    ...Object.entries(GEAR_FOLDS),
+    ...GEAR_SEED.filter((g) =>
+      catalog.some(
+        (r) => r.slug === null && r.name.toLowerCase() === g.name.toLowerCase()
+      )
+    ).map((g): [string, string] => [g.name, g.slug]),
+  ];
   const sourcesBySlug = new Map<string, CatalogRow[]>();
-  for (const [dirtyName, slug] of Object.entries(GEAR_FOLDS)) {
+  for (const [dirtyName, slug] of folds) {
     const row = catalog.find(
       (r) => r.name.toLowerCase() === dirtyName.toLowerCase() && r.slug !== slug
     );
     if (!row) continue; // already folded, or never existed
-    sourcesBySlug.set(slug, [...(sourcesBySlug.get(slug) ?? []), row]);
+    const sources = sourcesBySlug.get(slug) ?? [];
+    if (!sources.some((r) => r.id === row.id))
+      sourcesBySlug.set(slug, [...sources, row]);
   }
 
   const recount = new Set<string>();
@@ -132,23 +147,39 @@ async function repointUserGear(
 ) {
   const { data, error } = await supabase
     .from("user_gear")
-    .select("id, user_id")
+    .select("id, user_id, notes")
     .eq("gear_id", fromId);
   if (error) throw error;
   for (const ug of data ?? []) {
-    const { data: dupe } = await supabase
+    const { data: dupe, error: dupeError } = await supabase
       .from("user_gear")
-      .select("id")
+      .select("id, notes")
       .eq("user_id", ug.user_id)
       .eq("gear_id", toId)
       .maybeSingle();
-    // user already owns the canonical item: drop the duplicate, else move it over
-    const { error: e } = dupe
-      ? await supabase.from("user_gear").delete().eq("id", ug.id)
-      : await supabase
-          .from("user_gear")
-          .update({ gear_id: toId })
-          .eq("id", ug.id);
+    if (dupeError) throw dupeError;
+    if (!dupe) {
+      const { error: e } = await supabase
+        .from("user_gear")
+        .update({ gear_id: toId })
+        .eq("id", ug.id);
+      if (e) throw e;
+      continue;
+    }
+    // User already owns the canonical item: keep their notes from the duplicate, then drop it.
+    if (ug.notes && ug.notes !== dupe.notes) {
+      const { error: e } = await supabase
+        .from("user_gear")
+        .update({
+          notes: [dupe.notes, ug.notes].filter(Boolean).join("\n\n"),
+        })
+        .eq("id", dupe.id);
+      if (e) throw e;
+    }
+    const { error: e } = await supabase
+      .from("user_gear")
+      .delete()
+      .eq("id", ug.id);
     if (e) throw e;
   }
 }
