@@ -18,6 +18,7 @@ type IconColor =
   | "muted"
   | "accent"
   | "destructive"
+  | "rating"
   | "glass"
   | "white";
 
@@ -50,6 +51,7 @@ export const Icon = ({
     muted: "var(--muted-foreground)",
     accent: "var(--accent)",
     destructive: "var(--destructive)",
+    rating: "var(--rating)",
     glass: "var(--foreground)",
     white: "#fff",
   };

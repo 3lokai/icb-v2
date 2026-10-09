@@ -36,7 +36,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: message }, { status: 400, headers });
     }
 
-    const hashed = getExternalUserIdHash(auth.keyId, body.external_user_id);
+    const hashed = getExternalUserIdHash(
+      auth.keyId,
+      body.external_user_id,
+      headers
+    );
     if (!hashed.ok) return hashed.response;
 
     const supabase = createApiRouteClient();

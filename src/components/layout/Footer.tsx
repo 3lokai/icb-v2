@@ -222,6 +222,15 @@ export function Footer() {
                     <li>
                       <Link
                         className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
+                        href="/press"
+                      >
+                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                        Press &amp; Media
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
                         href="/how-icb-works"
                       >
                         <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />

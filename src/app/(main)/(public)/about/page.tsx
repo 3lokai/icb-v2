@@ -126,7 +126,7 @@ const AUDIENCES: {
 ];
 
 const QUICK_FACTS: { label: string; value: string }[] = [
-  { label: "Favorite Brew Method", value: "AeroPress" },
+  { label: "Favorite Brew Method", value: "Pour Over" },
   { label: "Preferred Roast", value: "Light, Medium" },
   { label: "Coffee Epiphany", value: "Italy, 2012" },
 ];
@@ -454,6 +454,10 @@ export default function AboutPage() {
                   community.
                 </p>
               </blockquote>
+              <p className="text-caption">
+                Writing about ICB? Founder photos, bios and brand assets are in
+                the <Link href="/press">press &amp; media kit</Link>.
+              </p>
             </Prose>
           </div>
         </div>

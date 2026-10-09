@@ -21,9 +21,10 @@ import {
 import { CaretUpDownIcon, PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { Badge } from "@/components/ui/badge";
+import { GEAR_CATEGORIES, type GearCategory } from "@/lib/validations/gear";
 
 interface GearSelectorProps {
-  category?: "grinder" | "brewer" | "accessory";
+  category?: GearCategory;
   onSelect: (gearId: string, gearName: string) => void;
   onCreateNew: () => void;
 }
@@ -44,11 +45,9 @@ export function GearSelector({
 
   // Group gear by category
   const groupedGear = useMemo(() => {
-    const groups: Record<string, typeof gearItems> = {
-      grinder: [],
-      brewer: [],
-      accessory: [],
-    };
+    const groups = Object.fromEntries(
+      GEAR_CATEGORIES.map((cat) => [cat, [] as typeof gearItems])
+    ) as Record<string, typeof gearItems>;
 
     gearItems.forEach((item) => {
       if (groups[item.category]) {
@@ -65,9 +64,13 @@ export function GearSelector({
     setSearchQuery("");
   };
 
-  const categoryLabels: Record<string, string> = {
+  const categoryLabels: Record<GearCategory, string> = {
     grinder: "Grinders",
     brewer: "Brewers",
+    espresso_machine: "Espresso machines",
+    kettle: "Kettles",
+    scale: "Scales",
+    filter: "Filters",
     accessory: "Accessories",
   };
 
@@ -117,7 +120,7 @@ export function GearSelector({
               )}
             {!isLoading && gearItems.length > 0 && (
               <>
-                {(["grinder", "brewer", "accessory"] as const).map((cat) => {
+                {GEAR_CATEGORIES.map((cat) => {
                   const items = groupedGear[cat];
                   if (items.length === 0) return null;
 

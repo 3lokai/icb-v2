@@ -5,11 +5,13 @@ const MIN_SECRET_LENGTH = 32;
 
 /**
  * HMAC-SHA256 of `${keyId}:${externalUserId}` for storing in external_user_identities.
- * Requires EXTERNAL_ID_HASH_SECRET (≥32 chars).
+ * Requires EXTERNAL_ID_HASH_SECRET (≥32 chars). `headers` (rate-limit/quota) are
+ * attached to the 503 so accepted-key errors still report usage.
  */
 export function getExternalUserIdHash(
   keyId: string,
-  externalUserId: string
+  externalUserId: string,
+  headers?: Record<string, string>
 ): { ok: true; hash: string } | { ok: false; response: NextResponse } {
   const secret = process.env.EXTERNAL_ID_HASH_SECRET;
   if (!secret || secret.length < MIN_SECRET_LENGTH) {
@@ -20,7 +22,7 @@ export function getExternalUserIdHash(
       ok: false,
       response: NextResponse.json(
         { error: "Service unavailable" },
-        { status: 503 }
+        { status: 503, headers }
       ),
     };
   }

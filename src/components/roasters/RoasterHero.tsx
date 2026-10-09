@@ -185,7 +185,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
               </div>
             ) : (
               <span className="text-body-muted italic text-caption">
-                Be the first to rate
+                Unrated
               </span>
             )}
           </div>

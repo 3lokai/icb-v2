@@ -24,7 +24,7 @@ export function RoasterCardSkeleton() {
       </div>
 
       {/* Rating zone skeleton - matches CardRatingFooter (no CLS) */}
-      <div className="mt-auto border-t border-border/40 bg-muted/20">
+      <div className="mt-auto border-t border-border/40">
         <div className="flex flex-row items-center justify-between px-3 py-2 md:px-4 md:py-2.5">
           {/* Left: Rating inline block */}
           <Skeleton className="h-6 w-20" />
