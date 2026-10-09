@@ -48,7 +48,11 @@ import {
 } from "@/app/actions/gear";
 import { useStationPhotos } from "@/hooks/use-station-photos";
 import type { ProfileGear, StationPhoto } from "@/types/profile-types";
-import type { CreateNewGearFormData } from "@/lib/validations/gear";
+import {
+  GEAR_CATEGORIES,
+  GEAR_CATEGORY_LABELS,
+  type CreateNewGearFormData,
+} from "@/lib/validations/gear";
 
 type ProfileGearStationProps = {
   gear: ProfileGear[];
@@ -203,63 +207,59 @@ export function ProfileGearStation({
             {hasGear ? (
               <Accordion
                 type="multiple"
-                defaultValue={["grinder", "brewer", "accessory"]}
+                defaultValue={[...GEAR_CATEGORIES]}
                 className="w-full"
               >
-                {(["grinder", "brewer", "accessory"] as const).map(
-                  (category) => {
-                    const items = gear.filter((g) => g.category === category);
-                    if (items.length === 0) return null;
+                {GEAR_CATEGORIES.map((category) => {
+                  const items = gear.filter((g) => g.category === category);
+                  if (items.length === 0) return null;
 
-                    const categoryLabel =
-                      category === "grinder"
-                        ? "Grinder"
-                        : category === "brewer"
-                          ? "Brewer"
-                          : "Accessories";
+                  const categoryLabel =
+                    category === "accessory"
+                      ? "Accessories"
+                      : GEAR_CATEGORY_LABELS[category];
 
-                    return (
-                      <AccordionItem
-                        key={category}
-                        value={category}
-                        className="border-border/20"
-                      >
-                        <AccordionTrigger className="text-label text-muted-foreground uppercase tracking-widest font-medium hover:no-underline py-3">
-                          {categoryLabel} ({items.length})
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <ul className="space-y-3 pt-2">
-                            {items.map((item) => {
-                              const displayName = item.brand
-                                ? `${item.brand} ${item.model || item.name}`
-                                : item.name;
+                  return (
+                    <AccordionItem
+                      key={category}
+                      value={category}
+                      className="border-border/20"
+                    >
+                      <AccordionTrigger className="text-label text-muted-foreground uppercase tracking-widest font-medium hover:no-underline py-3">
+                        {categoryLabel} ({items.length})
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <ul className="space-y-3 pt-2">
+                          {items.map((item) => {
+                            const displayName = item.brand
+                              ? `${item.brand} ${item.model || item.name}`
+                              : item.name;
 
-                              return (
-                                <li
-                                  key={item.id}
-                                  className="flex items-center justify-between group cursor-pointer py-2 border-b border-border/10"
-                                >
-                                  <span className="text-body text-muted-foreground group-hover:text-foreground transition-colors">
-                                    {displayName}
-                                  </span>
-                                  {isOwner && (
-                                    <button
-                                      onClick={() => setRemoveGearItem(item)}
-                                      className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive/80 p-1"
-                                      aria-label="Remove gear"
-                                    >
-                                      <Icon icon={TrashIcon} size={12} />
-                                    </button>
-                                  )}
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </AccordionContent>
-                      </AccordionItem>
-                    );
-                  }
-                )}
+                            return (
+                              <li
+                                key={item.id}
+                                className="flex items-center justify-between group cursor-pointer py-2 border-b border-border/10"
+                              >
+                                <span className="text-body text-muted-foreground group-hover:text-foreground transition-colors">
+                                  {displayName}
+                                </span>
+                                {isOwner && (
+                                  <button
+                                    onClick={() => setRemoveGearItem(item)}
+                                    className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive/80 p-1"
+                                    aria-label="Remove gear"
+                                  >
+                                    <Icon icon={TrashIcon} size={12} />
+                                  </button>
+                                )}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                  );
+                })}
               </Accordion>
             ) : (
               <p className="text-body text-muted-foreground italic">

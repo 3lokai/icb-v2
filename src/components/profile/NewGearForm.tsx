@@ -14,10 +14,15 @@ import { FieldError, FieldLabel } from "@/components/ui/field";
 import { Stack } from "@/components/primitives/stack";
 import { PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
-import type { CreateNewGearFormData } from "@/lib/validations/gear";
+import {
+  GEAR_CATEGORIES,
+  GEAR_CATEGORY_LABELS,
+  type CreateNewGearFormData,
+  type GearCategory,
+} from "@/lib/validations/gear";
 
 interface NewGearFormProps {
-  initialCategory?: "grinder" | "brewer" | "accessory";
+  initialCategory?: GearCategory;
   onSubmit: (data: CreateNewGearFormData) => Promise<void>;
   onCancel: () => void;
 }
@@ -113,7 +118,7 @@ export function NewGearForm({
           <div className="flex flex-col gap-1">
             <Select
               value={formData.category}
-              onValueChange={(value: "grinder" | "brewer" | "accessory") =>
+              onValueChange={(value: GearCategory) =>
                 setFormData((prev) => ({ ...prev, category: value }))
               }
             >
@@ -127,9 +132,11 @@ export function NewGearForm({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="grinder">Grinder</SelectItem>
-                <SelectItem value="brewer">Brewer</SelectItem>
-                <SelectItem value="accessory">Accessory</SelectItem>
+                {GEAR_CATEGORIES.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {GEAR_CATEGORY_LABELS[cat]}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             {errors.category && (
