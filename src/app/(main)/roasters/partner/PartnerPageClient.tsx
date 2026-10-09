@@ -801,6 +801,31 @@ export default function PartnerPageClient({
             </Stack>
           </Section>
 
+          {/* Free badges — deliberately outside the paid tiers (roaster-assets §7) */}
+          <Section spacing="default">
+            <div className="rounded-xl border border-border/60 p-6 md:p-8">
+              <Stack gap="3">
+                <span className="text-overline text-muted-foreground tracking-[0.15em]">
+                  Free for every listed roaster
+                </span>
+                <h2 className="text-heading">Badges for your store</h2>
+                <p className="max-w-2xl text-body text-muted-foreground">
+                  Every listed roaster gets free, copy-paste badges for your
+                  store and each coffee, showing your ICB listing or rating and
+                  collecting independent ratings. No plan, app or plugin needed.
+                  Open your profile from the{" "}
+                  <Link
+                    href="/roasters"
+                    className="text-accent hover:underline font-medium"
+                  >
+                    roaster directory
+                  </Link>{" "}
+                  and follow &ldquo;Get badges for your store&rdquo;.
+                </p>
+              </Stack>
+            </div>
+          </Section>
+
           {/* Pricing Tiers */}
           <div id="pricing" className="scroll-mt-20">
             <Section spacing="default">
