@@ -397,7 +397,7 @@ export const FOUNDER = {
   linkedInHref: "https://www.linkedin.com/in/gtabhishek",
   githubHref: "https://github.com/3lokai",
   instagramHref: "https://www.instagram.com/gt3lok/",
-  imageSrc: "/images/about/founder.jpg",
+  imageSrc: "/images/about/founder.avif",
   imageAlt: "Thrilok Abhishek, founder of IndianCoffeeBeans, brewing coffee",
 } as const;
 
@@ -406,7 +406,7 @@ export const founderPersonSchema = {
   "@id": "https://www.indiancoffeebeans.com/about#founder",
   name: FOUNDER.name,
   url: "https://www.indiancoffeebeans.com/about#founder",
-  image: "https://www.indiancoffeebeans.com/images/about/founder.jpg",
+  image: "https://www.indiancoffeebeans.com/images/about/founder.avif",
   jobTitle: FOUNDER.jobTitle,
   worksFor: {
     "@type": "Organization",
@@ -436,6 +436,16 @@ export const aboutPageSchema = {
     "Learn what IndianCoffeeBeans is, who it's for, and how our independent directory helps you discover Indian specialty coffee — with answers to common questions.",
   url: "https://www.indiancoffeebeans.com/about",
   mainEntity: aboutPageOrganization,
+  about: aboutPageOrganization,
+};
+
+export const pressPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Press & Media Kit | IndianCoffeeBeans",
+  description:
+    "Access IndianCoffeeBeans brand assets, founder information, media resources, specialty coffee industry insights, editorial research, and press coverage.",
+  url: "https://www.indiancoffeebeans.com/press",
   about: aboutPageOrganization,
 };
 
@@ -519,9 +529,9 @@ export const organizationSchema = {
   name: "IndianCoffeeBeans.com",
   alternateName: "Indian Coffee Beans Directory",
   url: "https://www.indiancoffeebeans.com",
-  logo: "https://www.indiancoffeebeans.com/images/logo.png",
+  logo: "https://www.indiancoffeebeans.com/press/icb-icon.png",
   description:
-    "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
+    "An independent directory for discovering Indian specialty coffee: roasters, beans, community ratings, industry data, and brewing guides.",
   foundingDate: "2024",
   founder: founderPersonSchema,
   areaServed: {
@@ -554,7 +564,7 @@ export const websiteSchema = {
   name: "IndianCoffeeBeans.com",
   url: "https://www.indiancoffeebeans.com",
   description:
-    "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
+    "An independent directory for discovering Indian specialty coffee: roasters, beans, community ratings, industry data, and brewing guides.",
   publisher: {
     "@type": "Organization",
     name: "IndianCoffeeBeans.com",
