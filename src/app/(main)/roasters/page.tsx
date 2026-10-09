@@ -93,15 +93,21 @@ export async function generateMetadata({
   });
   const fullUrl = currentUrl.toString();
 
-  // Canonical always points to the clean base path (no query params)
-  const canonicalUrl = `${baseUrl}/roasters`;
+  // Mirrors /coffees: only `page` is allowed through for indexation — any other
+  // param (filters, search, sort, limit) is a filtered view, which stays noindex
+  // and canonicalizes to the bare path. Bare pagination (?page=N) is real,
+  // unique content and gets its own canonical.
+  const nonPageParams = [...urlSearchParams.keys()].filter((k) => k !== "page");
+  const hasFilterParams = nonPageParams.length > 0;
+  const shouldIndex = !hasFilterParams;
+  const canonicalUrl =
+    hasFilterParams || page === 1
+      ? `${baseUrl}/roasters`
+      : `${baseUrl}/roasters?page=${page}`;
 
-  // Determine if page should be indexed (index page 1, noindex pages > 1)
-  const hasComplexFilters =
-    (filters.cities?.length ?? 0) > 0 ||
-    (filters.states?.length ?? 0) > 0 ||
-    (filters.countries?.length ?? 0) > 0;
-  const shouldIndex = page === 1 && !hasComplexFilters;
+  if (page > 1) {
+    title = `${title} — Page ${page}`;
+  }
 
   return {
     title,
