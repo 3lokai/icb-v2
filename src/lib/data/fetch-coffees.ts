@@ -612,6 +612,11 @@ export async function fetchCoffees(
   // Execute query
   const { data, error, count } = await query;
 
+  // PGRST103 = offset past the last row (e.g. a guessed ?page=99). It's an empty
+  // page, not a failure — callers decide whether that's a 404.
+  if (error?.code === "PGRST103") {
+    return { items: [], page, limit, total: 0, totalPages: 0 };
+  }
   if (error) {
     throw new Error(`Failed to fetch coffees: ${error.message}`);
   }

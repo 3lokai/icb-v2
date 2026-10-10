@@ -373,3 +373,14 @@ test("leaves an unpaired leading apostrophe alone", () => {
 test("does not touch a mid-word apostrophe", () => {
   assert.equal(cleanCoffeeName("Devil's Own Roast"), "Devil's Own Roast");
 });
+
+test("strips a parenthesised previous-name note", () => {
+  assert.equal(
+    cleanCoffeeName("Aranya Gold - Pure Ground Coffee (Prev. All Day Brew)"),
+    "Aranya Gold - Pure Ground Coffee"
+  );
+  assert.equal(
+    cleanCoffeeName("Tiger Reserve (formerly Morning Brew) 250g"),
+    "Tiger Reserve"
+  );
+});
