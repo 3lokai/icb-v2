@@ -167,7 +167,8 @@ async function repointUserGear(
       continue;
     }
     // User already owns the canonical item: keep their notes from the duplicate, then drop it.
-    if (ug.notes && ug.notes !== dupe.notes) {
+    // Containment check keeps a retry (notes saved, delete failed) from appending twice.
+    if (ug.notes && !(dupe.notes ?? "").includes(ug.notes)) {
       const { error: e } = await supabase
         .from("user_gear")
         .update({
