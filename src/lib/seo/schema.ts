@@ -327,6 +327,15 @@ export function generateSchemaOrg({
  */
 const ORG_AUTHOR_SLUG = "icb";
 
+/** One node id for the site Organization, so bylines and publisher resolve to it (and its sameAs). */
+const ORGANIZATION_ID = "https://www.indiancoffeebeans.com/#organization";
+const organizationRef = {
+  "@type": "Organization",
+  "@id": ORGANIZATION_ID,
+  name: "IndianCoffeeBeans.com",
+  url: "https://www.indiancoffeebeans.com",
+};
+
 type SchemaAuthor = {
   name: string;
   slug?: string;
@@ -343,11 +352,7 @@ export function authorEntitySchema(
 ): Record<string, unknown> {
   const baseUrl = getSeoBaseUrl();
   if (author.slug === ORG_AUTHOR_SLUG) {
-    return {
-      "@type": "Organization",
-      name: "IndianCoffeeBeans.com",
-      url: baseUrl,
-    };
+    return organizationRef;
   }
   const sameAs = [
     author.linkedin,
@@ -403,11 +408,7 @@ export function blogArticleSchema(props: {
     url,
     author: authorEntitySchema(props.author),
     datePublished: props.datePublished,
-    publisher: {
-      "@type": "Organization",
-      name: "Indian Coffee Beans",
-      url: baseUrl,
-    },
+    publisher: organizationRef,
   };
   if (image) schema.image = image;
   if (props.dateModified) schema.dateModified = props.dateModified;
@@ -579,6 +580,7 @@ export const roastersTermsPageSchema = {
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": ORGANIZATION_ID,
   name: "IndianCoffeeBeans.com",
   alternateName: "Indian Coffee Beans Directory",
   url: "https://www.indiancoffeebeans.com",

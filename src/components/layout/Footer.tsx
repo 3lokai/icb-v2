@@ -6,6 +6,7 @@ import {
   EnvelopeSimpleIcon,
   FacebookLogoIcon,
   InstagramLogoIcon,
+  LinkedinLogoIcon,
   XLogoIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
@@ -78,6 +79,11 @@ export function Footer() {
                       label: "X (Twitter)",
                       href: "https://x.com/indiacoffeebean",
                       icon: XLogoIcon,
+                    },
+                    {
+                      label: "LinkedIn",
+                      href: "https://www.linkedin.com/company/indiancoffeebeans",
+                      icon: LinkedinLogoIcon,
                     },
                     {
                       label: "Facebook",
