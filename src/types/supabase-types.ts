@@ -1510,45 +1510,197 @@ export type Database = {
       };
       gear_catalog: {
         Row: {
+          aliases: string[];
           brand: string | null;
+          brew_methods: string[];
           category: string;
           created_at: string | null;
           created_by: string | null;
+          description: string | null;
+          experience_levels: string[];
+          gtin: string | null;
           id: string;
           image_url: string | null;
           is_verified: boolean | null;
+          manufacturer_url: string | null;
           model: string | null;
+          model_number: string | null;
           name: string;
+          slug: string | null;
+          subcategory: string | null;
           updated_at: string | null;
           usage_count: number | null;
         };
         Insert: {
+          aliases?: string[];
           brand?: string | null;
+          brew_methods?: string[];
           category: string;
           created_at?: string | null;
           created_by?: string | null;
+          description?: string | null;
+          experience_levels?: string[];
+          gtin?: string | null;
           id?: string;
           image_url?: string | null;
           is_verified?: boolean | null;
+          manufacturer_url?: string | null;
           model?: string | null;
+          model_number?: string | null;
           name: string;
+          slug?: string | null;
+          subcategory?: string | null;
           updated_at?: string | null;
           usage_count?: number | null;
         };
         Update: {
+          aliases?: string[];
           brand?: string | null;
+          brew_methods?: string[];
           category?: string;
           created_at?: string | null;
           created_by?: string | null;
+          description?: string | null;
+          experience_levels?: string[];
+          gtin?: string | null;
           id?: string;
           image_url?: string | null;
           is_verified?: boolean | null;
+          manufacturer_url?: string | null;
           model?: string | null;
+          model_number?: string | null;
           name?: string;
+          slug?: string | null;
+          subcategory?: string | null;
           updated_at?: string | null;
           usage_count?: number | null;
         };
         Relationships: [];
+      };
+      gear_merchants: {
+        Row: {
+          created_at: string;
+          domain: string | null;
+          id: string;
+          is_active: boolean;
+          is_affiliate: boolean;
+          kind: string;
+          logo_url: string | null;
+          name: string;
+          roaster_id: string | null;
+          slug: string;
+        };
+        Insert: {
+          created_at?: string;
+          domain?: string | null;
+          id?: string;
+          is_active?: boolean;
+          is_affiliate?: boolean;
+          kind: string;
+          logo_url?: string | null;
+          name: string;
+          roaster_id?: string | null;
+          slug: string;
+        };
+        Update: {
+          created_at?: string;
+          domain?: string | null;
+          id?: string;
+          is_active?: boolean;
+          is_affiliate?: boolean;
+          kind?: string;
+          logo_url?: string | null;
+          name?: string;
+          roaster_id?: string | null;
+          slug?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "gear_merchants_roaster_id_fkey";
+            columns: ["roaster_id"];
+            isOneToOne: true;
+            referencedRelation: "roasters";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      gear_offers: {
+        Row: {
+          affiliate_url: string | null;
+          compare_at_price: number | null;
+          created_at: string;
+          currency: string;
+          gear_id: string;
+          id: string;
+          image_url: string | null;
+          in_stock: boolean | null;
+          last_seen_at: string;
+          merchant_id: string;
+          price_current: number | null;
+          price_last_checked_at: string | null;
+          source_product_id: string;
+          source_raw: Json | null;
+          source_variant_id: string;
+          status: string;
+          stock_last_checked_at: string | null;
+          url: string;
+        };
+        Insert: {
+          affiliate_url?: string | null;
+          compare_at_price?: number | null;
+          created_at?: string;
+          currency?: string;
+          gear_id: string;
+          id?: string;
+          image_url?: string | null;
+          in_stock?: boolean | null;
+          last_seen_at?: string;
+          merchant_id: string;
+          price_current?: number | null;
+          price_last_checked_at?: string | null;
+          source_product_id: string;
+          source_raw?: Json | null;
+          source_variant_id?: string;
+          status?: string;
+          stock_last_checked_at?: string | null;
+          url: string;
+        };
+        Update: {
+          affiliate_url?: string | null;
+          compare_at_price?: number | null;
+          created_at?: string;
+          currency?: string;
+          gear_id?: string;
+          id?: string;
+          image_url?: string | null;
+          in_stock?: boolean | null;
+          last_seen_at?: string;
+          merchant_id?: string;
+          price_current?: number | null;
+          price_last_checked_at?: string | null;
+          source_product_id?: string;
+          source_raw?: Json | null;
+          source_variant_id?: string;
+          status?: string;
+          stock_last_checked_at?: string | null;
+          url?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "gear_offers_gear_id_fkey";
+            columns: ["gear_id"];
+            isOneToOne: false;
+            referencedRelation: "gear_catalog";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "gear_offers_merchant_id_fkey";
+            columns: ["merchant_id"];
+            isOneToOne: false;
+            referencedRelation: "gear_merchants";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       ig_carousel_posts: {
         Row: {
@@ -1785,6 +1937,7 @@ export type Database = {
       raw_products: {
         Row: {
           first_seen_at: string;
+          gear_id: string | null;
           id: string;
           is_coffee: boolean | null;
           last_seen_at: string;
@@ -1800,6 +1953,7 @@ export type Database = {
         };
         Insert: {
           first_seen_at?: string;
+          gear_id?: string | null;
           id?: string;
           is_coffee?: boolean | null;
           last_seen_at?: string;
@@ -1815,6 +1969,7 @@ export type Database = {
         };
         Update: {
           first_seen_at?: string;
+          gear_id?: string | null;
           id?: string;
           is_coffee?: boolean | null;
           last_seen_at?: string;
@@ -1829,6 +1984,13 @@ export type Database = {
           to_add?: boolean | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "raw_products_gear_id_fkey";
+            columns: ["gear_id"];
+            isOneToOne: false;
+            referencedRelation: "gear_catalog";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "raw_products_roaster_id_fkey";
             columns: ["roaster_id"];
@@ -3353,20 +3515,16 @@ export type Database = {
         };
         Returns: undefined;
       };
+      create_api_key: {
+        Args: { p_key_hash: string; p_key_prefix: string; p_name: string };
+        Returns: string;
+      };
       create_gear_item: {
         Args: {
           p_brand?: string;
           p_category: string;
           p_created_by?: string;
           p_model?: string;
-          p_name: string;
-        };
-        Returns: string;
-      };
-      create_api_key: {
-        Args: {
-          p_key_hash: string;
-          p_key_prefix: string;
           p_name: string;
         };
         Returns: string;

@@ -61,3 +61,6 @@ next-env.d.ts
 # pointer, all rewritten on any `supabase` invocation. A fresh clone gets them
 # back from `supabase link`.
 /supabase/.temp/
+
+# Gear matcher review CSVs (scripts/match-raw-products-to-gear.ts)
+/.gear-match/

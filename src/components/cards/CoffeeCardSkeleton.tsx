@@ -36,7 +36,7 @@ export function CoffeeCardSkeleton({
         </div>
 
         {/* Bottom rating zone skeleton - horizontal layout */}
-        <div className="mt-auto border-t border-border/40 bg-muted/20">
+        <div className="mt-auto border-t border-border/40">
           <div className="flex flex-row items-center justify-between px-3 py-2 md:px-4 md:py-2.5">
             {/* Left: Rating inline block */}
             <Skeleton className="h-6 w-20" />
@@ -71,7 +71,7 @@ export function CoffeeCardSkeleton({
         </div>
 
         {/* Minimal rating row reserve */}
-        <div className="mt-auto border-t border-border/40 bg-muted/20">
+        <div className="mt-auto border-t border-border/40">
           <div className="flex flex-row items-center justify-between px-3 py-2 md:px-4 md:py-2.5">
             <Skeleton className="h-3 w-20" />
             <Skeleton className="h-3 w-24" />
@@ -126,7 +126,7 @@ export function CoffeeCardSkeleton({
       </div>
 
       {/* Rating zone skeleton - horizontal layout */}
-      <div className="mt-auto border-t border-border/40 bg-muted/20">
+      <div className="mt-auto border-t border-border/40">
         <div className="flex flex-row items-center justify-between px-3 py-2 md:px-4 md:py-2.5">
           {/* Left: Rating inline block */}
           <Skeleton className="h-6 w-20" />

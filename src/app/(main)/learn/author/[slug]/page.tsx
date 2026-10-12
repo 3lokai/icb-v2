@@ -22,6 +22,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity/image";
 import type { Metadata } from "next";
+import StructuredData from "@/components/seo/StructuredData";
+import { authorProfilePageSchema } from "@/lib/seo/schema";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -70,6 +72,13 @@ export default async function AuthorPage({ params }: Props) {
 
   return (
     <>
+      <StructuredData
+        schema={authorProfilePageSchema({
+          ...author,
+          // Slug-less authors are routed by _id; keep the schema URL on the same path.
+          slug: author.slug ?? author._id,
+        })}
+      />
       <PageHeader
         title={author.name}
         overline="Field Guide Author"

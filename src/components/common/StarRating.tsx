@@ -24,7 +24,7 @@ const sizeValues = {
 
 /**
  * StarRating - Display or interactive star rating component
- * Opinion-first design: calm, uses accent color through the Icon component
+ * Filled stars use the `rating` token; empty stars are muted outlines.
  *
  * Read-only mode renders fractional (half-star) fill. Interactive mode renders a
  * keyboard-operable `radiogroup` of star buttons (arrow keys move + select, Home/End
@@ -137,7 +137,8 @@ export function StarRating({
                 <Icon
                   icon={isHalf ? StarHalfIcon : StarIcon}
                   size={sizeValues[size]}
-                  color={isEmpty ? "muted" : "accent"}
+                  color={isEmpty ? "muted" : "rating"}
+                  weight={isEmpty ? "regular" : "fill"}
                   aria-hidden
                   className="transition-colors duration-300"
                 />
@@ -168,7 +169,8 @@ export function StarRating({
               <Icon
                 icon={isHalf ? StarHalfIcon : StarIcon}
                 size={sizeValues[size]}
-                color={isEmpty ? "muted" : "accent"}
+                color={isEmpty ? "muted" : "rating"}
+                weight={isEmpty ? "regular" : "fill"}
                 className="transition-colors duration-300"
               />
             </div>

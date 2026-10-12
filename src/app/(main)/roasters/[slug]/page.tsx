@@ -186,6 +186,9 @@ export default async function RoasterDetailPageServer({
       "name_asc"
     ),
   ]);
+  if (page > 1 && coffeeList.items.length === 0) {
+    notFound();
+  }
   queryClient.setQueryData(
     queryKeys.reviews.stats("roaster", roaster.id),
     stats

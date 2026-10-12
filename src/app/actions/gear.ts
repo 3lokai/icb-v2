@@ -9,6 +9,7 @@ import {
   removeGearSchema,
   type AddExistingGearFormData,
   type CreateNewGearFormData,
+  type GearCategory,
   type RemoveGearFormData,
 } from "@/lib/validations/gear";
 
@@ -33,7 +34,7 @@ type ActionResult<T = void> = {
  */
 export async function searchGearCatalog(
   query?: string,
-  category?: "grinder" | "brewer" | "accessory"
+  category?: GearCategory
 ): Promise<ActionResult<GearCatalogItem[]>> {
   try {
     const supabase = await createClient();

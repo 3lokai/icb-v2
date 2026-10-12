@@ -54,13 +54,17 @@ export function CardRatingFooter({
   // Stars show the viewer's rating when present, else the community average.
   const starRating = hasUserRating ? userRating! : ratingAvg || 0;
 
+  // Unrated: no stars at all — one quiet "Unrated · Rate it" line, so a grid of
+  // new entries isn't a wall of hollow stars.
+  const isUnrated = !hasOverallRating && !hasUserRating;
+
   let microcopy: string;
   if (hasUserRating) {
     microcopy = `Your rating: ${userRating}`;
   } else if (hasOverallRating) {
     microcopy = "Tried this? Rate it.";
   } else {
-    microcopy = "Be the first to rate.";
+    microcopy = "Rate it";
   }
 
   const rateLabel = `Rate ${entityName}`;
@@ -81,7 +85,7 @@ export function CardRatingFooter({
 
   // The microcopy is a second way into the same modal — same target as the
   // stars, only without a pre-filled value, so the words people actually read
-  // ("Be the first to rate.") are a control rather than decoration. Falls back
+  // ("Rate it") are a control rather than decoration. Falls back
   // to plain text when there is nothing to rate, so it never renders dead.
   const renderMicrocopy = (className: string) =>
     entityId ? (
@@ -101,31 +105,44 @@ export function CardRatingFooter({
       <span className={className}>{microcopy}</span>
     );
 
+  const shellClass =
+    "mt-auto border-t border-border/40 px-3 py-2 md:px-4 md:py-2.5";
+
+  const unratedRow = (
+    <p className="text-caption text-muted-foreground">
+      Unrated <span aria-hidden>·</span> {renderMicrocopy("text-caption")}
+    </p>
+  );
+
+  const stars = (
+    <StarRating
+      rating={starRating}
+      size={size}
+      interactive
+      showEmpty
+      ariaLabel={rateLabel}
+      onRate={(rating) => openRatingModal(rating)}
+    />
+  );
+
   // Minimal: compact interactive stars + microcopy, no number block.
   if (variant === "minimal") {
     return (
       <div
-        className={cn(
-          "mt-auto flex items-center justify-between gap-2 border-t border-border/40 bg-muted/20",
-          "px-3 py-2 md:px-4 md:py-2.5",
-          "transition-colors duration-200 group-hover:bg-muted/30"
-        )}
+        className={cn(shellClass, "flex items-center justify-between gap-2")}
         onPointerDown={(e) => {
           // Keep card navigation isolated from the rating zone.
           e.stopPropagation();
         }}
       >
-        <div className="shrink-0">
-          <StarRating
-            rating={starRating}
-            size={size}
-            interactive
-            showEmpty
-            ariaLabel={rateLabel}
-            onRate={(rating) => openRatingModal(rating)}
-          />
-        </div>
-        {renderMicrocopy("text-caption min-w-0 truncate text-right")}
+        {isUnrated ? (
+          unratedRow
+        ) : (
+          <>
+            <div className="shrink-0">{stars}</div>
+            {renderMicrocopy("text-caption min-w-0 truncate text-right")}
+          </>
+        )}
       </div>
     );
   }
@@ -133,48 +150,28 @@ export function CardRatingFooter({
   // Full: opinion-first footer (number block left, stars + microcopy right).
   // Outer shell is a non-interactive layout container; the stars and the
   // microcopy are the only controls.
+  if (isUnrated) {
+    return <div className={shellClass}>{unratedRow}</div>;
+  }
+
   return (
     <div
-      className={cn(
-        "mt-auto border-t border-border/40 bg-muted/20",
-        "transition-transform duration-200 ease-out origin-bottom",
-        "group-hover:scale-[1.02] group-hover:bg-muted/30",
-        "motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-      )}
+      className={cn(shellClass, "flex flex-row items-center justify-between")}
     >
-      <div
-        className={cn(
-          "flex flex-row items-center justify-between",
-          "px-3 py-2 md:px-4 md:py-2.5"
-        )}
-      >
-        {/* Left: Rating number block (empty until the entity has a rating) */}
-        {hasOverallRating ? (
-          <div className="flex flex-row items-baseline gap-1.5">
-            <span className="text-heading font-medium">
-              {ratingAvg!.toFixed(1)}
-            </span>
-            <span className="text-label">Rating</span>
-            {safeCount > 0 && (
-              <span className="text-caption">({safeCount})</span>
-            )}
-          </div>
-        ) : (
-          <div aria-hidden />
-        )}
+      {/* Left: average and count at equal weight — "4.5 · 1 rating" */}
+      {hasOverallRating ? (
+        <p className="text-label font-medium">
+          {ratingAvg!.toFixed(1)} <span aria-hidden>·</span> {safeCount}{" "}
+          {safeCount === 1 ? "rating" : "ratings"}
+        </p>
+      ) : (
+        <div aria-hidden />
+      )}
 
-        {/* Right: Action block — stars are the sole interactive control */}
-        <div className="flex flex-col items-end gap-0.5">
-          <StarRating
-            rating={starRating}
-            size={size}
-            interactive
-            showEmpty
-            ariaLabel={rateLabel}
-            onRate={(rating) => openRatingModal(rating)}
-          />
-          {renderMicrocopy("text-caption")}
-        </div>
+      {/* Right: stars + microcopy are the only interactive controls */}
+      <div className="flex flex-col items-end gap-0.5">
+        {stars}
+        {renderMicrocopy("text-caption")}
       </div>
     </div>
   );

@@ -321,12 +321,73 @@ export function generateSchemaOrg({
 }
 
 /** BlogPosting JSON-LD for learn article pages */
+/**
+ * Sanity author slug used for house-written pieces. It is the publication, not a
+ * person, so it must be marked up as the Organization.
+ */
+const ORG_AUTHOR_SLUG = "icb";
+
+/** One node id for the site Organization, so bylines and publisher resolve to it (and its sameAs). */
+const ORGANIZATION_ID = "https://www.indiancoffeebeans.com/#organization";
+const organizationRef = {
+  "@type": "Organization",
+  "@id": ORGANIZATION_ID,
+  name: "IndianCoffeeBeans.com",
+  url: "https://www.indiancoffeebeans.com",
+};
+
+type SchemaAuthor = {
+  name: string;
+  slug?: string;
+  jobTitle?: string;
+  linkedin?: string;
+  github?: string;
+  website?: string;
+  instagram?: string;
+};
+
+/** Byline entity: the Organization for the house author, otherwise a Person with sameAs. */
+export function authorEntitySchema(
+  author: SchemaAuthor
+): Record<string, unknown> {
+  const baseUrl = getSeoBaseUrl();
+  if (author.slug === ORG_AUTHOR_SLUG) {
+    return organizationRef;
+  }
+  const sameAs = [
+    author.linkedin,
+    author.github,
+    author.website,
+    author.instagram &&
+      `https://www.instagram.com/${author.instagram.replace(/^@/, "")}/`,
+  ].filter(Boolean);
+  return {
+    "@type": "Person",
+    name: author.name,
+    ...(author.slug && { url: `${baseUrl}/learn/author/${author.slug}` }),
+    ...(author.jobTitle && { jobTitle: author.jobTitle }),
+    ...(sameAs.length > 0 && { sameAs }),
+  };
+}
+
+/** Author page: ProfilePage whose subject is the byline entity. */
+export function authorProfilePageSchema(
+  author: SchemaAuthor
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    url: `${getSeoBaseUrl()}/learn/author/${author.slug}`,
+    mainEntity: authorEntitySchema(author),
+  };
+}
+
 export function blogArticleSchema(props: {
   title: string;
   description?: string;
   image?: string;
   url: string;
-  authorName: string;
+  author: SchemaAuthor;
   datePublished: string;
   dateModified?: string;
 }): Record<string, unknown> {
@@ -345,16 +406,9 @@ export function blogArticleSchema(props: {
     headline: props.title,
     description: props.description ?? undefined,
     url,
-    author: {
-      "@type": "Person",
-      name: props.authorName,
-    },
+    author: authorEntitySchema(props.author),
     datePublished: props.datePublished,
-    publisher: {
-      "@type": "Organization",
-      name: "Indian Coffee Beans",
-      url: baseUrl,
-    },
+    publisher: organizationRef,
   };
   if (image) schema.image = image;
   if (props.dateModified) schema.dateModified = props.dateModified;
@@ -397,7 +451,7 @@ export const FOUNDER = {
   linkedInHref: "https://www.linkedin.com/in/gtabhishek",
   githubHref: "https://github.com/3lokai",
   instagramHref: "https://www.instagram.com/gt3lok/",
-  imageSrc: "/images/about/founder.jpg",
+  imageSrc: "/images/about/founder.avif",
   imageAlt: "Thrilok Abhishek, founder of IndianCoffeeBeans, brewing coffee",
 } as const;
 
@@ -406,7 +460,7 @@ export const founderPersonSchema = {
   "@id": "https://www.indiancoffeebeans.com/about#founder",
   name: FOUNDER.name,
   url: "https://www.indiancoffeebeans.com/about#founder",
-  image: "https://www.indiancoffeebeans.com/images/about/founder.jpg",
+  image: "https://www.indiancoffeebeans.com/images/about/founder.avif",
   jobTitle: FOUNDER.jobTitle,
   worksFor: {
     "@type": "Organization",
@@ -436,6 +490,16 @@ export const aboutPageSchema = {
     "Learn what IndianCoffeeBeans is, who it's for, and how our independent directory helps you discover Indian specialty coffee — with answers to common questions.",
   url: "https://www.indiancoffeebeans.com/about",
   mainEntity: aboutPageOrganization,
+  about: aboutPageOrganization,
+};
+
+export const pressPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Press & Media Kit | IndianCoffeeBeans",
+  description:
+    "Access IndianCoffeeBeans brand assets, founder information, media resources, specialty coffee industry insights, editorial research, and press coverage.",
+  url: "https://www.indiancoffeebeans.com/press",
   about: aboutPageOrganization,
 };
 
@@ -516,12 +580,13 @@ export const roastersTermsPageSchema = {
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": ORGANIZATION_ID,
   name: "IndianCoffeeBeans.com",
   alternateName: "Indian Coffee Beans Directory",
   url: "https://www.indiancoffeebeans.com",
-  logo: "https://www.indiancoffeebeans.com/images/logo.png",
+  logo: "https://www.indiancoffeebeans.com/press/icb-icon.png",
   description:
-    "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
+    "An independent directory for discovering Indian specialty coffee: roasters, beans, community ratings, industry data, and brewing guides.",
   foundingDate: "2024",
   founder: founderPersonSchema,
   areaServed: {
@@ -554,7 +619,7 @@ export const websiteSchema = {
   name: "IndianCoffeeBeans.com",
   url: "https://www.indiancoffeebeans.com",
   description:
-    "India's first specialty coffee directory – discover roasters, beans, and brewing tips.",
+    "An independent directory for discovering Indian specialty coffee: roasters, beans, community ratings, industry data, and brewing guides.",
   publisher: {
     "@type": "Organization",
     name: "IndianCoffeeBeans.com",

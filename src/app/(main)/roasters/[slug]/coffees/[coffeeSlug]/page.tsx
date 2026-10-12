@@ -12,8 +12,11 @@ import { fetchReviewStats, fetchReviews } from "@/lib/data/fetch-reviews";
 import { queryKeys } from "@/lib/query-keys";
 import {
   generateMetadata as generateSEOMetadata,
+  fitTitle,
   truncateTitle,
   clampDescription,
+  TITLE_MAX_LENGTH,
+  TITLE_TEMPLATE_SUFFIX,
   formatAltitudeLabel,
 } from "@/lib/seo/metadata";
 import {
@@ -71,13 +74,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const reviewCount = stats?.review_count ?? 0;
   const roasterName = coffee.roaster.name;
 
-  const processStr = (coffee.process_raw || coffee.process || "").trim();
+  // "other" is an unmapped-process placeholder, not a process — it led the SERP
+  // snippet as "Other · …". Omit it rather than advertise missing data.
+  const processRaw = (coffee.process_raw || coffee.process || "").trim();
+  const processStr = processRaw.toLowerCase() === "other" ? "" : processRaw;
   const processPart = processStr ? capitalizeFirstLetter(processStr) : "";
   const roastStr = (coffee.roast_level_raw || coffee.roast_level || "").trim();
   const roastPart = roastStr ? capitalizeFirstLetter(roastStr) : "";
 
   // Root layout appends "| Indian Coffee Beans" via title template
-  const titleBase = `${getCoffeeDisplayName(coffee)} by ${roasterName}`;
+  const coffeeName = getCoffeeDisplayName(coffee);
+  const titleBase = `${coffeeName} by ${roasterName}`;
   const titleRaw =
     reviewCount >= 5
       ? `${titleBase} — Reviews & Tasting Notes`
@@ -86,7 +93,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : processPart || roastPart
           ? `${titleBase} — ${processPart || roastPart}`
           : titleBase;
-  const title = truncateTitle(titleRaw);
+  // The roaster name must survive: branded queries ("hunkal aranya gold") need it,
+  // and a single truncateTitle cut it to "by…". Shed the descriptor clause, then
+  // the name's " - Pure Ground Coffee"-style tail, then ellipse the coffee name only.
+  const byRoaster = ` by ${roasterName}`;
+  const shortName = coffeeName.split(/\s+[-–—]\s+/)[0];
+  const title = fitTitle([
+    titleRaw,
+    titleBase,
+    `${shortName}${byRoaster}`,
+    `${truncateTitle(shortName, TITLE_MAX_LENGTH, `${byRoaster}${TITLE_TEMPLATE_SUFFIX}`)}${byRoaster}`,
+  ]);
 
   const originLabel = coffeeOriginLabel(coffee);
   // Altitude is an estate attribute, so it rides along with the estate origin.

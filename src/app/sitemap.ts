@@ -89,6 +89,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }),
     withHreflang({
+      url: `${baseUrl}/press`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    }),
+    withHreflang({
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: "monthly",

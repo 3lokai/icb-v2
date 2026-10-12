@@ -1,15 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { searchGearCatalog, type GearCatalogItem } from "@/app/actions/gear";
 import { queryKeys } from "@/lib/query-keys";
+import type { GearCategory } from "@/lib/validations/gear";
 
 /**
  * Hook for searching gear catalog
  * Only searches after 2+ characters entered
  */
-export function useGearSearch(
-  query: string,
-  category?: "grinder" | "brewer" | "accessory"
-) {
+export function useGearSearch(query: string, category?: GearCategory) {
   return useQuery<GearCatalogItem[]>({
     queryKey: queryKeys.gear.search(query, category),
     queryFn: async () => {

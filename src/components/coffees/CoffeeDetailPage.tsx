@@ -460,6 +460,7 @@ export function CoffeeDetailPage({
               variants={coffee.variants}
               directBuyUrl={coffee.direct_buy_url}
               roasterName={coffee.roaster?.name}
+              discontinued={coffee.status === "discontinued"}
             />
           ) : (
             <p className="text-body-muted italic">

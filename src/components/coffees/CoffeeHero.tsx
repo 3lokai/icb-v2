@@ -168,7 +168,7 @@ export function CoffeeHero({ coffee, stats }: CoffeeHeroProps) {
               </div>
             ) : (
               <span className="text-body-muted italic text-caption">
-                Be the first to rate
+                Unrated
               </span>
             )}
 

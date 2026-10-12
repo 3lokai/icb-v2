@@ -98,7 +98,11 @@ export async function POST(request: Request) {
     if (body.anon_id) {
       anonId = body.anon_id;
     } else if (body.external_user_id) {
-      const hashed = getExternalUserIdHash(auth.keyId, body.external_user_id);
+      const hashed = getExternalUserIdHash(
+        auth.keyId,
+        body.external_user_id,
+        headers
+      );
       if (!hashed.ok) return hashed.response;
 
       const ensured = await rpcEnsureExternalIdentity(

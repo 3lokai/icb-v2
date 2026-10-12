@@ -6,6 +6,7 @@ import {
   EnvelopeSimpleIcon,
   FacebookLogoIcon,
   InstagramLogoIcon,
+  LinkedinLogoIcon,
   XLogoIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
@@ -78,6 +79,11 @@ export function Footer() {
                       label: "X (Twitter)",
                       href: "https://x.com/indiacoffeebean",
                       icon: XLogoIcon,
+                    },
+                    {
+                      label: "LinkedIn",
+                      href: "https://www.linkedin.com/company/indiancoffeebeans",
+                      icon: LinkedinLogoIcon,
                     },
                     {
                       label: "Facebook",
@@ -217,6 +223,15 @@ export function Footer() {
                       >
                         <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
                         Contact Us
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
+                        href="/press"
+                      >
+                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                        Press &amp; Media
                       </Link>
                     </li>
                     <li>

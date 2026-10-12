@@ -3,6 +3,8 @@
  * Used for profile page components and data fetching
  */
 
+import type { GearCategory } from "@/lib/validations/gear";
+
 // User coffee status (tried/tasted list)
 export type UserCoffeeStatus = "logged" | "brewing" | "finished" | "rated";
 
@@ -117,7 +119,7 @@ export interface ProfileGear {
   id: string;
   gear_id: string;
   name: string;
-  category: "grinder" | "brewer" | "accessory";
+  category: GearCategory;
   brand: string | null;
   model: string | null;
   image_url: string | null;

@@ -219,6 +219,10 @@ export function cleanCoffeeName(
   // consume "250g)" and strand the opening bracket ("A1 Naturals (").
   name = name.replace(/\s*\(\s*\d+\s?(?:g|gm|gms|kg|grams)\s*\)/gi, "");
 
+  // Rename note: "Aranya Gold - Pure Ground Coffee (Prev. All Day Brew)". The old
+  // name is history, not identity — it bloats the H1/title. Raw `name` keeps it.
+  name = name.replace(/\s*\(\s*(?:prev\.?|previously|formerly)\s[^)]*\)/gi, "");
+
   // Trailing weight, incl. an optional "Pack of" / "Net wt" lead-in:
   //   "- Pack of 250g", "– 500g", "250g", "- 1kg", "200 gm"
   name = name.replace(

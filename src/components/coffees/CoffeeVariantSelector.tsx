@@ -27,6 +27,8 @@ type CoffeeVariantSelectorProps = {
   onSelect?: (variant: CoffeeVariant) => void;
   directBuyUrl?: string | null;
   roasterName?: string | null;
+  /** ICB no longer tracks this coffee: variant stock is stale, so never claim "In Stock". */
+  discontinued?: boolean;
 };
 
 const grindIconMap: Record<string, PhosphorIcon> = {
@@ -66,6 +68,7 @@ export function CoffeeVariantSelector({
   onSelect,
   directBuyUrl,
   roasterName,
+  discontinued = false,
 }: CoffeeVariantSelectorProps) {
   // ─── Initial variant calculation (for useState defaults) ───
   const initialVariant = React.useMemo(() => {
@@ -244,7 +247,11 @@ export function CoffeeVariantSelector({
             )}
         </div>
 
-        {currentVariant?.in_stock ? (
+        {discontinued ? (
+          <span className="badge bg-muted text-muted-foreground">
+            Discontinued
+          </span>
+        ) : currentVariant?.in_stock ? (
           <span className="badge bg-green-500/10 text-green-700 dark:text-green-400">
             In Stock
           </span>
@@ -257,7 +264,20 @@ export function CoffeeVariantSelector({
 
       {/* ─── Actions ─── */}
       <div className="flex items-center gap-3 pt-2">
-        {directBuyUrl ? (
+        {discontinued ? (
+          directBuyUrl ? (
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="flex-1 rounded-xl h-12 md:h-14"
+            >
+              <a href={directBuyUrl} target="_blank" rel="noopener noreferrer">
+                Check availability on {roasterName || "roaster's site"} →
+              </a>
+            </Button>
+          ) : null
+        ) : directBuyUrl ? (
           <Button
             asChild
             size="lg"
