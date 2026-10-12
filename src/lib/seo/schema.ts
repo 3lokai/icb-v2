@@ -321,12 +321,68 @@ export function generateSchemaOrg({
 }
 
 /** BlogPosting JSON-LD for learn article pages */
+/**
+ * Sanity author slug used for house-written pieces. It is the publication, not a
+ * person, so it must be marked up as the Organization.
+ */
+const ORG_AUTHOR_SLUG = "icb";
+
+type SchemaAuthor = {
+  name: string;
+  slug?: string;
+  jobTitle?: string;
+  linkedin?: string;
+  github?: string;
+  website?: string;
+  instagram?: string;
+};
+
+/** Byline entity: the Organization for the house author, otherwise a Person with sameAs. */
+export function authorEntitySchema(
+  author: SchemaAuthor
+): Record<string, unknown> {
+  const baseUrl = getSeoBaseUrl();
+  if (author.slug === ORG_AUTHOR_SLUG) {
+    return {
+      "@type": "Organization",
+      name: "IndianCoffeeBeans.com",
+      url: baseUrl,
+    };
+  }
+  const sameAs = [
+    author.linkedin,
+    author.github,
+    author.website,
+    author.instagram &&
+      `https://www.instagram.com/${author.instagram.replace(/^@/, "")}/`,
+  ].filter(Boolean);
+  return {
+    "@type": "Person",
+    name: author.name,
+    ...(author.slug && { url: `${baseUrl}/learn/author/${author.slug}` }),
+    ...(author.jobTitle && { jobTitle: author.jobTitle }),
+    ...(sameAs.length > 0 && { sameAs }),
+  };
+}
+
+/** Author page: ProfilePage whose subject is the byline entity. */
+export function authorProfilePageSchema(
+  author: SchemaAuthor
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    url: `${getSeoBaseUrl()}/learn/author/${author.slug}`,
+    mainEntity: authorEntitySchema(author),
+  };
+}
+
 export function blogArticleSchema(props: {
   title: string;
   description?: string;
   image?: string;
   url: string;
-  authorName: string;
+  author: SchemaAuthor;
   datePublished: string;
   dateModified?: string;
 }): Record<string, unknown> {
@@ -345,10 +401,7 @@ export function blogArticleSchema(props: {
     headline: props.title,
     description: props.description ?? undefined,
     url,
-    author: {
-      "@type": "Person",
-      name: props.authorName,
-    },
+    author: authorEntitySchema(props.author),
     datePublished: props.datePublished,
     publisher: {
       "@type": "Organization",

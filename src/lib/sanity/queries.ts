@@ -39,7 +39,11 @@ export const ARTICLE_PROJECTION = `
     "slug": slug.current,
     avatar,
     supabaseUserId,
-    instagram
+    instagram,
+    jobTitle,
+    linkedin,
+    github,
+    website
   },
   featured,
   draft,
@@ -152,7 +156,11 @@ export const ARTICLE_CARD_PROJECTION = `
     "slug": slug.current,
     avatar,
     supabaseUserId,
-    instagram
+    instagram,
+    jobTitle,
+    linkedin,
+    github,
+    website
   },
   featured,
   draft,
@@ -380,7 +388,11 @@ export const AUTHOR_BY_SLUG_OR_ID_QUERY = `
     "slug": slug.current,
     avatar,
     supabaseUserId,
-    instagram
+    instagram,
+    jobTitle,
+    linkedin,
+    github,
+    website
   }
 `;
 

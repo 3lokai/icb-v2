@@ -33,6 +33,10 @@ export type Author = {
   avatar?: SanityImage;
   supabaseUserId?: string;
   instagram?: string;
+  jobTitle?: string;
+  linkedin?: string;
+  github?: string;
+  website?: string;
 };
 
 export type CategoryMetadata = {

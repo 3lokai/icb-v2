@@ -103,7 +103,7 @@ export default async function ArticlePage({ params }: Props) {
     description: articleDescription,
     image: articleImage,
     url: articleUrl,
-    authorName: displayAuthor.name,
+    author: displayAuthor,
     datePublished: article.date,
     dateModified: article.updatedAt || article.updated || article._updatedAt,
   });
