@@ -613,9 +613,26 @@ export async function fetchCoffees(
   const { data, error, count } = await query;
 
   // PGRST103 = offset past the last row (e.g. a guessed ?page=99). It's an empty
-  // page, not a failure — callers decide whether that's a 404.
+  // page, not a failure — callers decide whether that's a 404. The error drops
+  // the count, so re-count with the same filters to keep "of N" and pagination real.
   if (error?.code === "PGRST103") {
-    return { items: [], page, limit, total: 0, totalPages: 0 };
+    const { count: realCount, error: countError } = await applyFiltersToQuery(
+      supabase
+        .from("coffee_directory_mv")
+        .select("*", { count: "exact", head: true }),
+      resolvedFilters
+    );
+    if (countError) {
+      throw new Error(`Failed to count coffees: ${countError.message}`);
+    }
+    const total = realCount ?? 0;
+    return {
+      items: [],
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    };
   }
   if (error) {
     throw new Error(`Failed to fetch coffees: ${error.message}`);
