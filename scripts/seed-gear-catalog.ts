@@ -167,8 +167,12 @@ async function repointUserGear(
       continue;
     }
     // User already owns the canonical item: keep their notes from the duplicate, then drop it.
-    // Containment check keeps a retry (notes saved, delete failed) from appending twice.
-    if (ug.notes && !(dupe.notes ?? "").includes(ug.notes)) {
+    // A retry after "notes saved, delete failed" finds exactly what the merge wrote: the source
+    // notes as the final paragraph (or the whole field). Anything else, e.g. "not good" vs
+    // "good", is a different note and is appended.
+    const kept = dupe.notes ?? "";
+    const alreadyMerged = kept === ug.notes || kept.endsWith(`\n\n${ug.notes}`);
+    if (ug.notes && !alreadyMerged) {
       const { error: e } = await supabase
         .from("user_gear")
         .update({

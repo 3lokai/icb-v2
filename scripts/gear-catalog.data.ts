@@ -600,7 +600,7 @@ export const GEAR_SEED: GearSeed[] = [
     subcategory: "hand-grinder",
     brew_methods: ["french-press", "aeropress", "v60", "cold-brew"],
     experience_levels: ["beginner"],
-    aliases: ["hario skerton"],
+    aliases: ["hario skerton pro"],
   },
   {
     slug: "timemore-chestnut-c2",
@@ -644,7 +644,7 @@ export const GEAR_SEED: GearSeed[] = [
     subcategory: "hand-grinder",
     brew_methods: ALL_METHODS,
     experience_levels: ["enthusiast"],
-    aliases: ["timemore c3 esp"],
+    aliases: ["timemore c3 esp pro"],
   },
   {
     slug: "1zpresso-q-air",

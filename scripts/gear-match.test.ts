@@ -87,6 +87,21 @@ test("bundles, merch, third-party and clones are not matched", () => {
   assert.equal(slugOf("Bincoo V60 Ceramic Coffee Dripper"), "stopword");
 });
 
+test("model-distinguishing words are required", () => {
+  assert.equal(
+    slugOf("Hario Skerton Pro Ceramic Grinder"),
+    "hario-skerton-pro"
+  );
+  assert.notEqual(
+    slugOf("Hario Skerton Plus Ceramic Grinder"),
+    "hario-skerton-pro"
+  );
+  assert.notEqual(
+    slugOf("Timemore Chestnut C3 ESP Grinder"),
+    "timemore-chestnut-c3-esp-pro"
+  );
+});
+
 test("replacement parts are not matched to the product they fit", () => {
   assert.equal(slugOf("AeroPress Go Replacement Cap"), "stopword");
   assert.equal(slugOf("AeroPress Plunger Seal"), "stopword");
