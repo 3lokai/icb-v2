@@ -101,7 +101,7 @@ export default async function FreshFromCommunitySection() {
               </div>
 
               {/* Pull-quote */}
-              <blockquote className="text-body-large flex-1 font-serif text-foreground">
+              <blockquote className="text-body flex-1 text-foreground text-pretty">
                 “{truncateAtWord(review.comment)}”
               </blockquote>
 
