@@ -1,5 +1,6 @@
 // lib/seo/schema.ts
 
+import { PRESS_COVERAGE } from "@/lib/press/content";
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import type { CoffeeVariant } from "@/types/coffee-component-types";
 import type { CoffeeSummary } from "@/types/coffee-types";
@@ -610,6 +611,16 @@ export const organizationSchema = {
     "https://www.indiehackers.com/product/indiancoffeebeans-com",
     "https://www.wikidata.org/wiki/Q141137574",
   ],
+  // Third-party coverage of ICB, from the same list /press renders.
+  ...(PRESS_COVERAGE.length > 0 && {
+    subjectOf: PRESS_COVERAGE.map((c) => ({
+      "@type": "CreativeWork",
+      name: c.headline,
+      url: c.url,
+      datePublished: c.date,
+      publisher: { "@type": "Organization", name: c.publication },
+    })),
+  }),
 };
 
 // Website Schema for homepage
