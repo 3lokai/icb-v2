@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { Fragment, useId, useState } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import {
@@ -203,6 +203,7 @@ export function RegionMap({
         : undefined;
   // All seven inset states share the one `northeast-india` card; everything else keys on
   // its own district name or marker slug.
+  const activeCardKey = activeNeState ? "ne" : active;
   const activeCard = activeNeState
     ? northEastCard
     : active
@@ -438,7 +439,15 @@ export function RegionMap({
             is what makes the six destination-less districts worth touching at all.
           */}
           <div className="hidden md:block md:h-full">
-            {activeCard ?? (
+            {/*
+              Keyed so each region mounts its own card. Every slot is a `RegionCard`, so
+              without a key React patches one card's text in place, and a page that the
+              browser has translated has already moved those text nodes: removing one
+              throws `removeChild` NotFoundError.
+            */}
+            {activeCard ? (
+              <Fragment key={activeCardKey}>{activeCard}</Fragment>
+            ) : (
               <div className="flex h-full flex-col justify-center gap-1 py-4">
                 {summary ? (
                   <>
