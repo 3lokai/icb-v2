@@ -96,10 +96,16 @@ test("model-distinguishing words are required", () => {
     slugOf("Hario Skerton Plus Ceramic Grinder"),
     "hario-skerton-pro"
   );
-  assert.notEqual(
-    slugOf("Timemore Chestnut C3 ESP Grinder"),
+  assert.equal(slugOf("Timemore Chestnut C3 ESP Grinder"), "ambiguous");
+  assert.equal(
+    slugOf("Timemore Chestnut C3 ESP Pro Grinder"),
     "timemore-chestnut-c3-esp-pro"
   );
+});
+
+test("a longer alias does not beat a product word it lacks", () => {
+  assert.equal(slugOf("Kalita Wave 155 Filter Papers"), "ambiguous");
+  assert.equal(slugOf("Kalita Wave 155 Dripper"), "kalita-wave-155");
 });
 
 test("replacement parts are not matched to the product they fit", () => {

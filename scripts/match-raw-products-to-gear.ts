@@ -98,13 +98,14 @@ async function main() {
 
   const { data: catalog, error: catalogError } = await supabase
     .from("gear_catalog")
-    .select("id, slug, aliases")
+    .select("id, slug, category, aliases")
     .eq("is_verified", true)
     .not("slug", "is", null);
   if (catalogError) throw catalogError;
   const targets = (catalog ?? []) as {
     id: string;
     slug: string;
+    category: string;
     aliases: string[];
   }[];
   const idBySlug = new Map(targets.map((t) => [t.slug, t.id]));

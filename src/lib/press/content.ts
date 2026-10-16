@@ -144,7 +144,18 @@ export type PressCoverage = {
 };
 
 /** Published coverage only — add YourStory once the article is live. Empty hides the section. */
-export const PRESS_COVERAGE: PressCoverage[] = [];
+export const PRESS_COVERAGE: PressCoverage[] = [
+  {
+    publication: "YourStory",
+    headline:
+      "Named to Vibecode30, YourStory's first cohort of 30 AI-first builders",
+    date: "2026-10-14",
+    url: "https://yourstory.com/cs/uploads/Vibecode30-Report-2026-1791951345453.pdf",
+    type: "recognition",
+    description:
+      "Profiled in the Vibecode30 2026 report, unveiled at TechSparks 2026 in Bengaluru.",
+  },
+];
 
 export type PressAsset = {
   label: string;

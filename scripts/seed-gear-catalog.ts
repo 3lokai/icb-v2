@@ -16,6 +16,7 @@ dotenv.config({ path: ".env.local" });
  *
  * Folding keeps user_gear intact: the first dirty row for a slug becomes the canonical row
  * in place (same id); user_gear on the other dirty rows is repointed, then they're deleted.
+ * usage_count follows the repoint via the user_gear triggers (insert, delete, gear_id update).
  *
  * ponytail: no transaction (supabase-js can't span one). Every step is idempotent, so a
  * failed --write is fixed by re-running; move into an RPC if partial runs ever bite.
@@ -66,7 +67,6 @@ async function main() {
       sourcesBySlug.set(slug, [...sources, row]);
   }
 
-  const recount = new Set<string>();
   for (const [slug, sources] of sourcesBySlug) {
     const existing = catalog.find((r) => r.slug === slug);
     const keep = existing ?? sources[0];
@@ -95,7 +95,6 @@ async function main() {
         .eq("id", other.id);
       if (e) throw e;
     }
-    recount.add(keep.id);
   }
 
   // ── Upsert curated rows ────────────────────────────────────────────────────
@@ -118,20 +117,6 @@ async function main() {
     { onConflict: "slug" }
   );
   if (upsertError) throw upsertError;
-
-  // Repointing via UPDATE doesn't fire the usage_count triggers; recount folded rows.
-  for (const id of recount) {
-    const { count, error: e } = await supabase
-      .from("user_gear")
-      .select("id", { count: "exact", head: true })
-      .eq("gear_id", id);
-    if (e) throw e;
-    const { error: e2 } = await supabase
-      .from("gear_catalog")
-      .update({ usage_count: count ?? 0 })
-      .eq("id", id);
-    if (e2) throw e2;
-  }
 
   const { count } = await supabase
     .from("gear_catalog")
