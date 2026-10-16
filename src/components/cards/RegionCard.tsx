@@ -182,7 +182,7 @@ export function RegionCard({
 
         <p className="text-micro mt-auto pt-2 font-normal opacity-70">
           <span className="tabular-nums">{tally}</span>
-          {region.district ? ` · ${region.district}` : ""}
+          {region.district ? <span>{` · ${region.district}`}</span> : null}
         </p>
       </div>
     </Link>
