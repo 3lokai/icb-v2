@@ -66,7 +66,6 @@ async function main() {
       sourcesBySlug.set(slug, [...sources, row]);
   }
 
-  const recount = new Set<string>();
   for (const [slug, sources] of sourcesBySlug) {
     const existing = catalog.find((r) => r.slug === slug);
     const keep = existing ?? sources[0];
@@ -95,7 +94,6 @@ async function main() {
         .eq("id", other.id);
       if (e) throw e;
     }
-    recount.add(keep.id);
   }
 
   // ── Upsert curated rows ────────────────────────────────────────────────────
@@ -119,8 +117,18 @@ async function main() {
   );
   if (upsertError) throw upsertError;
 
-  // Repointing via UPDATE doesn't fire the usage_count triggers; recount folded rows.
-  for (const id of recount) {
+  // Repointing via UPDATE doesn't fire the usage_count triggers. Recount every curated row,
+  // not just this run's folds: a run that died after deleting the folded rows leaves its
+  // retry no folds to find.
+  const { data: seeded, error: seededError } = await supabase
+    .from("gear_catalog")
+    .select("id")
+    .in(
+      "slug",
+      GEAR_SEED.map((g) => g.slug)
+    );
+  if (seededError) throw seededError;
+  for (const { id } of seeded ?? []) {
     const { count, error: e } = await supabase
       .from("user_gear")
       .select("id", { count: "exact", head: true })
