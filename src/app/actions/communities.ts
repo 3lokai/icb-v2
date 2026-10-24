@@ -1,5 +1,7 @@
 "use server";
 
+import { after } from "next/server";
+import { sendSlackNotification } from "@/lib/notifications/slack";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { CommunityPlatformSchema } from "@/types/community-types";
 import { z } from "zod";
@@ -89,6 +91,18 @@ export async function submitCommunityAction(formData: FormData) {
     });
     return { error: "Failed to submit community. Please try again." };
   }
+
+  // after() keeps the function alive until Slack responds; the helper never throws.
+  after(() =>
+    sendSlackNotification("form", {
+      form_type: "community_submission",
+      email: user.email ?? null,
+      data: { name, slug, platform, invite_url, description, tags, moderators },
+      ip_address: null,
+      user_agent: null,
+      user_id: user.id,
+    })
+  );
 
   // Submissions are inactive until reviewed, so there's nothing to revalidate.
   return { success: true };
