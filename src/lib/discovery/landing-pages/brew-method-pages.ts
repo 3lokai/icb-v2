@@ -5,7 +5,7 @@ export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "aeropress",
     type: "brew_method",
-    h1: "Best Coffees for AeroPress in India",
+    h1: "Coffees for AeroPress in India",
     entityLabel: "AeroPress",
     intro:
       "The AeroPress is the most forgiving brewer in specialty coffee, and the quickest way to read a roaster's range, from a jammy Coorg natural to a bright washed Chikmagalur lot. Gentle pressure and a short steep pull a clean, concentrated cup with almost none of the bitterness longer methods drag out.",
@@ -121,7 +121,7 @@ export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "v60",
     type: "brew_method",
-    h1: "Best Coffees for V60 in India",
+    h1: "Coffees for V60 in India",
     entityLabel: "V60",
     intro:
       "No brewer shows you an Indian coffee's terroir as plainly as the V60. Washed Chikmagalur lots and Araku light roasts taste their clearest here. The cone and single large hole hand you control over every variable, and a thin paper filter strips away anything between you and the cup.",
@@ -238,7 +238,7 @@ export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "chemex",
     type: "brew_method",
-    h1: "Best Coffees for Chemex in India",
+    h1: "Coffees for Chemex in India",
     entityLabel: "Chemex",
     intro:
       "The Chemex's thick bonded filter leaves an Indian coffee at its cleanest and most tea-like: jasmine, peach, and bright citrus from washed Chikmagalur and Baba Budangiri light roasts. Oils, fines, and murk all stay behind, and none of the weight comes with it.",
@@ -348,7 +348,7 @@ export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "kalita",
     type: "brew_method",
-    h1: "Best Coffees for Kalita Wave in India",
+    h1: "Coffees for Kalita Wave in India",
     entityLabel: "Kalita Wave",
     intro:
       "The Kalita Wave is the pour-over for people who'd rather drink good coffee than fuss over it. Washed Chikmagalur and Sakleshpur light-mediums land balanced cup after cup. Its flat bed and three small holes even out an imperfect pour: V60 quality without V60's demands.",
@@ -463,7 +463,7 @@ export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "french-press",
     type: "brew_method",
-    h1: "Best Coffees for French Press in India",
+    h1: "Coffees for French Press in India",
     entityLabel: "French Press",
     intro:
       "The French Press keeps the oils, the body, the full weight of the bean, a natural fit for medium-dark Chikmagalur, Baba Budangiri, and Coorg arabica and robusta blends, which come through deep, chocolatey, and low in acid. About as close as specialty gets to a traditional South Indian filter cup.",
@@ -585,7 +585,7 @@ export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "espresso",
     type: "brew_method",
-    h1: "Best Coffees for Espresso in India",
+    h1: "Coffees for Espresso in India",
     entityLabel: "Espresso",
     intro:
       "Espresso asks more of a coffee than any other method, and Indian beans answer well. Medium-dark Chikmagalur and Coorg arabicas pull shots thick with chocolate and caramel; robusta blends add the crema and body that cut through milk. Monsooned Malabar has anchored Italian espresso blends for decades for exactly this reason.",
@@ -703,7 +703,7 @@ export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "cold-brew",
     type: "brew_method",
-    h1: "Best Coffees for Cold Brew in India",
+    h1: "Coffees for Cold Brew in India",
     entityLabel: "Cold Brew",
     intro:
       "Cold brew trades heat for time, and the result is about as smooth and sweet as coffee gets. The chocolate, nut, and spice notes that run through Chikmagalur and Coorg arabica translate beautifully over a long cold steep, and Monsooned Malabar turns mellow and lingering in a way no other origin quite manages.",
@@ -819,7 +819,7 @@ export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "moka-pot",
     type: "brew_method",
-    h1: "Best Coffees for Moka Pot in India",
+    h1: "Coffees for Moka Pot in India",
     entityLabel: "Moka Pot",
     intro:
       "The Moka Pot makes strong, espresso-adjacent coffee on a stovetop, which is why it sits on so many Indian kitchen shelves. Medium-dark Chikmagalur and Coorg roasts come through with chocolate, spice, and roasted nuts; robusta blends add the body that stands up to milk.",
@@ -936,7 +936,7 @@ export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "filter-coffee",
     type: "brew_method",
-    h1: "Best Coffees for South Indian Filter in India",
+    h1: "Coffees for South Indian Filter in India",
     entityLabel: "South Indian Filter",
     // Default template runs 67 chars once the title suffix is appended; override to fit.
     seoTitle: "Best Coffees for South Indian Filter",

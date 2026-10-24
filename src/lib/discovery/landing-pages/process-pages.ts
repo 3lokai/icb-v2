@@ -6,7 +6,7 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "natural",
     type: "process",
-    h1: "Best Natural Process in India",
+    h1: "Natural Process Coffee in India",
     entityLabel: "Natural Process",
     intro:
       "Indian naturals dry whole in the cherry: bold fruit, wine-like complexity, heavy body. Chikmagalur, Baba Budangiri, and the Shevaroy Hills lead the category, with Ratnagiri and Orchardale among the estates doing it best.",
@@ -132,7 +132,7 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "washed",
     type: "process",
-    h1: "Best Washed Process in India",
+    h1: "Washed Process Coffee in India",
     entityLabel: "Washed Process",
     intro:
       "Washed Indian coffees are the clean ones: vibrant acidity, and the clarity that lets SLN 795 from Chikmagalur and Baba Budangiri show jasmine, peach, and bergamot with no fermentation in the way.",
@@ -252,7 +252,7 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "honey",
     type: "process",
-    h1: "Best Honey Process in India",
+    h1: "Honey Process Coffee in India",
     entityLabel: "Honey Process",
     intro:
       "Honey and pulped-natural Indian coffees sit between washed clarity and natural fruit: sweet, round, forgiving. Salawara, Baarbara, and Tat Tvam Asi lead it, across Chikmagalur, Coorg, and Sakleshpur.",
@@ -379,7 +379,7 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "anaerobic",
     type: "process",
-    h1: "Best Anaerobic Process in India",
+    h1: "Anaerobic Process Coffee in India",
     entityLabel: "Anaerobic Process",
     intro:
       "Anaerobic and experimental ferments from Ratnagiri, Melkodige, and Salawara: intense aromatics and complex fruit from India's most progressive estates in Chikmagalur, Coorg, and Sakleshpur.",
@@ -500,7 +500,7 @@ export const processPages: LandingPageConfig[] = [
   {
     slug: "monsooned-malabar",
     type: "process",
-    h1: "Best Monsooned Malabar in India",
+    h1: "Monsooned Malabar Coffee in India",
     entityLabel: "Monsooned Malabar",
     intro:
       "Monsooned coffees from India's Malabar coast: low acidity, mellow spice, and a heritage profile that exists nowhere else in specialty. Niche, but a steady handful of roasters carry it year-round.",

@@ -8,8 +8,10 @@ export const regionPages: LandingPageConfig[] = [
     slug: "chikmagalur",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Chikmagalur Coffee in India",
+    h1: "Chikmagalur Coffee in India",
     entityLabel: "Chikmagalur",
+    metaDescription:
+      "Chikmagalur specialty coffee compared across roasters: washed SLN 795 to anaerobic microlots from India's oldest arabica region, ranked by ratings.",
     intro:
       "Discover specialty coffees from Chikmagalur, officially Chikkamagaluru, Karnataka's historic coffee heartland, home to India's oldest arabica plantations, high-altitude estates, and the variety that put Indian coffee on the world map.",
     headerNudge:
@@ -26,7 +28,7 @@ export const regionPages: LandingPageConfig[] = [
         knownFor: "SLN 795 washed arabica, heritage estates",
       },
       overview:
-        "Chikmagalur is where Indian specialty coffee begins. The district sits in the Western Ghats at elevations between 900 and 1,800 metres, high enough for slow cherry maturation and complex flavour development. Coffee arrived here in the 17th century, brought by Baba Budan from Yemen, and the region has been producing arabica continuously since. Today it's home to some of India's most celebrated estates, among them Yele Attikan, Hoysala, and Kelachandra, and the primary source of competition-grade Indian coffee.",
+        "Chikmagalur is where Indian specialty coffee begins. The district sits in the Western Ghats at elevations between 900 and 1,800 metres, high enough for slow cherry maturation and complex flavour development. Coffee arrived here in the 17th century, brought by Baba Budan from Yemen, and the region has been producing arabica continuously since. Chikmagalur Arabica received a Geographical Indication tag in 2019, and the Bababudangiri hills, the higher sub-range where that first planting took place, hold a separate GI of their own. The district is also home to the coffee research station at Balehonnur, founded in 1925 and now run by the Coffee Board, where S.795 was bred. Today it's home to some of India's most celebrated estates, among them Yele Attikan, Hoysala, and Kelachandra, and the primary source of competition-grade Indian coffee.",
       flavourProfile: {
         typical: [
           "Jasmine",
@@ -48,7 +50,7 @@ export const regionPages: LandingPageConfig[] = [
         notes:
           "Washed Chikmagalur light roasts are ideally suited to V60 and Chemex, where the clarity of paper-filtered pour-over lets the jasmine and stone fruit come through cleanly. AeroPress works well for a slightly more concentrated version. Natural Chikmagalur lots suit French Press for full body, or V60 with a slightly coarser grind and lower temperature.",
       },
-      nearbyRegions: ["coorg", "wayanad"],
+      nearbyRegions: ["baba-budangiri", "coorg", "wayanad"],
       icbDataNote:
         "Chikmagalur is the most represented region in the ICB catalogue, with more coffees, more ratings, and more roasters than any other single origin. It's the best region to start comparing if you're new to Indian specialty: the data density gives you the most community comparison before buying.",
     },
@@ -74,7 +76,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "What is SLN 795 and why does it matter?",
         answer:
-          "SLN 795, also written S.795, is India's most prized arabica variety, developed at the Scott Laboratories in the 1940s. At high altitude in Chikmagalur, it produces jasmine, stone fruit, and bright acidity, the flavour profile that's made Indian specialty coffee internationally credible.",
+          "SLN 795, also written S.795, is India's most prized arabica variety, bred from a Kent × S.288 cross at the Balehonnur coffee research station in Chikmagalur and released in the mid-1940s. At high altitude in Chikmagalur, it produces jasmine, stone fruit, and bright acidity, the flavour profile that's made Indian specialty coffee internationally credible.",
       },
       {
         question: "What flavours should I expect?",
@@ -116,7 +118,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "baba-budangiri",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Baba Budangiri Coffee in India",
+    h1: "Baba Budangiri Coffee in India",
     entityLabel: "Baba Budangiri",
     intro:
       "Discover specialty coffees from Baba Budangiri, listed by the Coffee Board as Bababudangiris, the highland range within Chikmagalur district that gave India its coffee origin story, and still produces some of the country's highest-rated lots.",
@@ -225,7 +227,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "coorg",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Coorg Coffee in India",
+    h1: "Coorg Coffee in India",
     entityLabel: "Coorg",
     intro:
       "Browse Indian specialty coffees from Coorg (Kodagu): lush Western Ghats hills, established estates, and coffees spanning classic washed arabica to modern experimental processing.",
@@ -331,7 +333,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "araku",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Araku Valley Coffee in India",
+    h1: "Araku Valley Coffee in India",
     entityLabel: "Araku Valley",
     intro:
       "Find specialty coffees from Araku Valley, Andhra Pradesh's highland coffee origin in the Eastern Ghats, known for bright, floral lots from tribal and cooperative producers.",
@@ -349,7 +351,7 @@ export const regionPages: LandingPageConfig[] = [
         knownFor: "Floral, citrus-forward arabica from tribal cooperatives",
       },
       overview:
-        "Araku Valley sits in the Araku plateau of the Eastern Ghats at elevations between 900 and 1,300 metres, significantly different terrain from Karnataka's Western Ghats origins. Coffee here is primarily grown by tribal communities organised into cooperatives, with the Girijan Cooperative Corporation playing a significant role in production and marketing. Araku coffee gained international recognition in 2017 when it received a GI (Geographical Indication) tag, India's first coffee GI. It's also found a notable presence in European markets, particularly Paris, where it's served in high-end cafés.",
+        "Araku Valley sits in the Araku plateau of the Eastern Ghats at elevations between 900 and 1,300 metres, significantly different terrain from Karnataka's Western Ghats origins. Coffee here is primarily grown by tribal communities organised into cooperatives, with the Girijan Cooperative Corporation playing a significant role in production and marketing. Araku Valley Arabica received a GI (Geographical Indication) tag in 2019, one of five Indian regional coffees recognised that year. It's also found a notable presence in European markets, particularly Paris, where it's served in high-end cafés.",
       flavourProfile: {
         typical: [
           "Citrus",
@@ -382,7 +384,7 @@ export const regionPages: LandingPageConfig[] = [
     faqOverline: "Araku",
     faqTitle: "About *Araku Valley* coffee",
     faqDescription:
-      "India's GI-tagged coffee origin: terroir and flavour explained.",
+      "A GI-tagged Eastern Ghats origin: terroir and flavour explained.",
     faqBadge: "Regions",
     filter: {
       region_slugs: ["araku-valley"],
@@ -392,7 +394,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "What is the Araku GI tag?",
         answer:
-          "Araku Valley coffee received India's first coffee Geographical Indication tag in 2017, officially recognising it as a distinct regional product. The GI covers arabica coffee grown in the designated Araku plateau area of Andhra Pradesh's Eastern Ghats.",
+          "Araku Valley Arabica received a Geographical Indication tag in March 2019, one of five Indian regional coffees recognised together (with Coorg Arabica, Chikmagalur Arabica, Bababudangiris Arabica and Wayanad Robusta), officially marking it as a distinct regional product. The GI covers arabica grown in the hill tracts of Visakhapatnam district in Andhra Pradesh's Eastern Ghats and the adjoining Odisha region.",
       },
       {
         question: "How is Araku different from Karnataka coffees?",
@@ -438,7 +440,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "nilgiris",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Nilgiris Coffee in India",
+    h1: "Nilgiris Coffee in India",
     entityLabel: "Nilgiris",
     intro:
       "Explore coffees from the Nilgiris, Tamil Nadu's Blue Mountain highlands, with cool-climate arabica, established estates, and a distinct terroir that sets it apart from Karnataka origins.",
@@ -545,7 +547,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "shevaroy-hills",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Shevaroy Hills Coffee in India",
+    h1: "Shevaroy Hills Coffee in India",
     entityLabel: "Shevaroy Hills",
     intro:
       "Find specialty coffees from the Shevaroy Hills, which the Coffee Board lists as the Sheveroys, Tamil Nadu's largest coffee-growing region, with diverse estates, experimental processing, and a profile distinct from Karnataka's mainstream origins.",
@@ -655,7 +657,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "wayanad",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Wayanad Coffee in India",
+    h1: "Wayanad Coffee in India",
     entityLabel: "Wayanad",
     intro:
       "Discover specialty coffees from Wayanad, Kerala's hilly northern district where spice-country terroir meets a growing specialty coffee presence.",
@@ -761,7 +763,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "koraput",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Koraput Coffee in India",
+    h1: "Koraput Coffee in India",
     entityLabel: "Koraput",
     intro:
       "Discover specialty coffees from Koraput, Odisha's Eastern Ghats highland origin, where tribal smallholder farming and emerging specialty production are creating India's newest coffee story.",
@@ -867,7 +869,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "northeast-india",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Northeast India Coffee",
+    h1: "Northeast India Coffee",
     entityLabel: "Northeast India",
     intro:
       "Browse Indian specialty coffees from the Northeast, the Coffee Board's Brahmaputra region: distinct hill terroirs from Meghalaya's Garo and Khasi Hills, beyond the traditional Western Ghats coffee belt.",
@@ -978,7 +980,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "sakleshpur",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Sakleshpur & Manjarabad Coffee in India",
+    h1: "Sakleshpur & Manjarabad Coffee in India",
     entityLabel: "Sakleshpur",
     intro:
       "Discover specialty coffees from Sakleshpur, the Manjarabad belt of Hassan district, one of Karnataka's wettest coffee tracts and, on the evidence of the catalogue, its most experimental.",
@@ -1085,7 +1087,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "palani-hills",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best Palani Hills (Pulneys) Coffee in India",
+    h1: "Palani Hills (Pulneys) Coffee in India",
     entityLabel: "Palani Hills",
     intro:
       "Discover specialty coffees from the Palani Hills, the Pulneys, the range above Kodaikanal where coffee grows in mixed gardens with pepper, orange and cardamom on a northeast-monsoon calendar all its own.",
@@ -1190,7 +1192,7 @@ export const regionPages: LandingPageConfig[] = [
     slug: "biligiriranga-hills",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
-    h1: "Best BR Hills (Biligiriranga) Coffee in India",
+    h1: "BR Hills (Biligiriranga) Coffee in India",
     entityLabel: "Biligiriranga Hills",
     intro:
       "Discover specialty coffees from the Biligiriranga Hills, BR Hills, the forest corridor where the Western and Eastern Ghats meet, and the smallest mapped coffee area in India with a real specialty catalogue behind it.",

@@ -6,7 +6,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "light-roast",
     type: "roast_level",
-    h1: "Top Light Roast Coffee in India",
+    h1: "Light Roast Coffee in India",
     entityLabel: "Light Roast",
     intro:
       "Light roast is where a coffee tells you most about where it grew. SLN 9 and Chandragiri out of Chikmagalur and Baba Budangiri keep their florals and stone fruit here. Stopped not long after first crack, it is the least developed roast and the most expressive of its terroir.",
@@ -138,7 +138,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "light-medium-roast",
     type: "roast_level",
-    h1: "Top Light-Medium Roast Coffee in India",
+    h1: "Light-Medium Roast Coffee in India",
     entityLabel: "Light-Medium Roast",
     intro:
       "Light-medium splits the difference: enough development for approachable sweetness, not so much that origin clarity disappears. Ratnagiri and Harley lots from Chikmagalur, Baba Budangiri, and Sakleshpur define the level: bright enough to stay interesting, round enough to stay easy.",
@@ -265,7 +265,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "medium-roast",
     type: "roast_level",
-    h1: "Top Medium Roast Coffee in India",
+    h1: "Medium Roast Coffee in India",
     entityLabel: "Medium Roast",
     intro:
       "Medium roast is the great all-rounder: chocolate and caramel sweetness with a little brightness still showing. SLN 795 and SLN 9 from Chikmagalur and Coorg dominate the level, and it holds up across espresso, pour-over, and French Press alike. The safe first pick that is rarely the wrong one.",
@@ -398,7 +398,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "medium-dark-roast",
     type: "roast_level",
-    h1: "Top Medium-Dark Roast Coffee in India",
+    h1: "Medium-Dark Roast Coffee in India",
     entityLabel: "Medium-Dark Roast",
     intro:
       "Medium-dark trades a little origin nuance for richer body and deeper, rounder sweetness, the roast for espresso and milk drinks. Baarbara Estate leads it, out of Chikmagalur and Baba Budangiri: bold and full without tipping into the smoky bitterness of a true dark roast.",
@@ -524,7 +524,7 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "dark-roast",
     type: "roast_level",
-    h1: "Top Dark Roast Coffee in India",
+    h1: "Dark Roast Coffee in India",
     entityLabel: "Dark Roast",
     intro:
       "Dark roast, mostly robusta and blends out of Chikmagalur and Baba Budangiri, is bold, low in acid, and heavy in body, the roast most bound up with traditional Indian coffee culture. Specialty roasters are reimagining it now: bittersweet and intense, with the smoke kept in check rather than charred.",
