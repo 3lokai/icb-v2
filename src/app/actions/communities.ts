@@ -1,9 +1,8 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { CommunityPlatformSchema } from "@/types/community-types";
 import { z } from "zod";
-import { revalidateTag } from "next/cache";
 
 const submissionSchema = z.object({
   name: z
@@ -57,7 +56,11 @@ export async function submitCommunityAction(formData: FormData) {
   const randomSuffix = Math.random().toString(36).substring(2, 7);
   const slug = `${slugBase}-${randomSuffix}`;
 
-  const { error } = await supabase.from("communities").insert({
+  // RLS on communities is admin/operator-only for INSERT, so a regular
+  // user's client always fails. Auth + validation happen above; the row is
+  // forced inactive, so the service role is safe here.
+  const admin = await createServiceRoleClient();
+  const { error } = await admin.from("communities").insert({
     name,
     slug,
     platform,
@@ -87,6 +90,6 @@ export async function submitCommunityAction(formData: FormData) {
     return { error: "Failed to submit community. Please try again." };
   }
 
-  revalidateTag("communities", "max");
+  // Submissions are inactive until reviewed, so there's nothing to revalidate.
   return { success: true };
 }
