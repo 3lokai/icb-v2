@@ -27,7 +27,8 @@ type FormPayload = {
     | "suggestion"
     | "professional_inquiry"
     | "roaster_claim"
-    | "partner_inquiry";
+    | "partner_inquiry"
+    | "community_submission";
   email: string | null;
   data: Record<string, unknown>;
   ip_address: string | null;
@@ -139,6 +140,7 @@ function formatSlackMessage(
         professional_inquiry: "Professional Inquiry",
         roaster_claim: "Roaster Claim Request",
         partner_inquiry: "Partner Inquiry",
+        community_submission: "Community Submission",
       };
 
       const formTypeLabel = formTypeLabels[formPayload.form_type];

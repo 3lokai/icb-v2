@@ -5,7 +5,7 @@ export const priceBucketPages: LandingPageConfig[] = [
   {
     slug: "budget",
     type: "price_bucket",
-    h1: "Best Budget Coffee Under ₹500 in India",
+    h1: "Budget Coffee Under ₹500 in India",
     entityLabel: "Under ₹500",
     displayRange: "Under ₹500",
     seoTitle: "Best Budget Coffee Under ₹500 India",
@@ -143,7 +143,7 @@ export const priceBucketPages: LandingPageConfig[] = [
   {
     slug: "mid-range",
     type: "price_bucket",
-    h1: "Best Coffee Beans Between ₹500–₹1000 in India",
+    h1: "Coffee Beans Between ₹500–₹1000 in India",
     entityLabel: "₹500–₹1000",
     displayRange: "₹500–₹1000",
     // Tier-specific framing, deliberately not "under ₹1000" — /coffees/under-1000
@@ -153,7 +153,7 @@ export const priceBucketPages: LandingPageConfig[] = [
       "Compare specialty coffee beans from ₹500–₹1000 per 250g: SLN 795 and Chandragiri lots, honey and anaerobic processing, ranked on community ratings.",
     ctaLabel: "Browse all mid-range coffees",
     intro:
-      "The ₹500–₹1000 tier is where Indian specialty coffee beans get interesting: Chikmagalur and Baba Budangiri estates, SLN 795 and SLN 9 lots, and processing that turns experimental. Most of the catalogue's standout single origins live in this band.",
+      "The ₹500–₹1000 tier is where Indian specialty whole-bean and ground coffee gets interesting: Chikmagalur and Baba Budangiri estates, SLN 795 and SLN 9 lots, and processing that turns experimental. Most of the catalogue's standout single origins live in this band.",
     headerNudge:
       "The range where naturals, honeys, and experimental ferments start showing up in force.",
     gridNudge:
@@ -181,6 +181,16 @@ export const priceBucketPages: LandingPageConfig[] = [
           detail:
             "Two roasters might both carry a Chikmagalur natural, so compare their tasting notes side by side on ICB before buying. Community ratings and reviews give you actual buyer experience rather than marketing copy.",
         },
+        {
+          tip: "Know which half of the band you're shopping",
+          detail:
+            "₹500–₹700 is the everyday tier: clean washed and natural single origins from established estates. ₹700–₹1000 is where honey, anaerobic, named-varietal microlots and limited harvest lots cluster. Both halves are in this catalogue.",
+        },
+        {
+          tip: "Start from the rated list, then filter",
+          detail:
+            "See All Coffees opens this band already sorted by community rating. Filter it to your brew method and roast level to shortlist before browsing the full catalogue.",
+        },
       ],
       whatToExpect: {
         roastLevels: ["medium-roast", "medium-dark-roast", "light-roast"],
@@ -188,7 +198,7 @@ export const priceBucketPages: LandingPageConfig[] = [
         roastNote:
           "Roasts span the whole spectrum here, with medium the most common, followed by medium-dark and light. Roasters producing high-quality lots often roast lighter to preserve the processing and terroir investment.",
         processNote:
-          "Washed lots lead by count, followed by natural, but this is also where experimental processing concentrates: anaerobic, honey, and double-fermented lots are far more common here than under ₹500. These processes add cost and complexity, and producers price accordingly. What each one tastes like: washed gives a clean cup — citrus, floral notes, clarity; natural runs fruit-forward — mango, berry, heavy sweetness; honey lands between them — caramel, rounded mouthfeel, balanced acidity; anaerobic goes wine-like — intense fruit and exotic aromatics.",
+          "Washed lots lead by count, followed by natural, but this is also where experimental processing concentrates: anaerobic, honey, and double-fermented lots are far more common here than under ₹500. These processes add cost and complexity, and producers price accordingly. What each one tastes like: washed gives a clean cup — citrus, floral notes, clarity; natural runs fruit-forward — mango, berry, heavy sweetness; honey lands between them — caramel, rounded mouthfeel, balanced acidity; anaerobic goes wine-like — intense fruit and exotic aromatics. In an anaerobic lot the coffee ferments in a sealed, oxygen-restricted tank, typically for 24–72 hours, before drying, so the cup shifts with fermentation length and how the vessel is managed.",
       },
       priceNormalizationNote:
         "All prices are normalized to 250g equivalent across all pack sizes. A 100g bag at ₹300 and a 500g bag at ₹1,500 both appear as ₹600/250g. The price you pay on the roaster's site depends on which pack size you choose.",
@@ -225,7 +235,7 @@ export const priceBucketPages: LandingPageConfig[] = [
       {
         question: "What is SLN 795 and why does it matter?",
         answer:
-          "SLN 795 (also written S.795) is India's most celebrated arabica variety, developed at the Scott Laboratories in the 1940s and still widely grown across Chikmagalur and Baba Budangiri. At high altitude with washed processing, it produces jasmine, stone fruit, and bright acidity that's world-competitive. Most top-rated Indian coffees in this price range are SLN 795.",
+          "SLN 795 (also written S.795) is India's most celebrated arabica variety, bred from a Kent × S.288 cross at the Balehonnur coffee research station and released in the mid-1940s. It is still widely grown across Chikmagalur and Baba Budangiri. At high altitude with washed processing, it produces jasmine, stone fruit, and bright acidity that's world-competitive. Most top-rated Indian coffees in this price range are SLN 795.",
       },
       {
         question: "How should I store premium coffee?",
@@ -280,7 +290,7 @@ export const priceBucketPages: LandingPageConfig[] = [
   {
     slug: "under-1000",
     type: "price_bucket",
-    h1: "Best Coffee Under ₹1000 in India",
+    h1: "Coffee Under ₹1000 in India",
     entityLabel: "Under ₹1000",
     displayRange: "Under ₹1000",
     seoTitle: "Best Coffee Under ₹1000 in India",
@@ -359,7 +369,7 @@ export const priceBucketPages: LandingPageConfig[] = [
       {
         question: "What is SLN 795 and why does it matter?",
         answer:
-          "SLN 795 (also written S.795) is India's most celebrated arabica variety, developed at Scott Laboratories in the 1940s and still widely grown across Chikmagalur and Baba Budangiri. At high altitude with washed processing it delivers jasmine, stone fruit, and bright acidity that's world-competitive, and many of the best-rated Indian coffees under ₹1000 are SLN 795.",
+          "SLN 795 (also written S.795) is India's most celebrated arabica variety, bred from a Kent × S.288 cross at the Balehonnur coffee research station in the mid-1940s and still widely grown across Chikmagalur and Baba Budangiri. At high altitude with washed processing it delivers jasmine, stone fruit, and bright acidity that's world-competitive, and many of the best-rated Indian coffees under ₹1000 are SLN 795.",
       },
       {
         question: "How should I store coffee to keep it fresh?",
@@ -400,7 +410,7 @@ export const priceBucketPages: LandingPageConfig[] = [
   {
     slug: "premium",
     type: "price_bucket",
-    h1: "Best Premium Coffee in India",
+    h1: "Premium Coffee in India",
     entityLabel: "Over ₹1000",
     displayRange: "Over ₹1000",
     seoTitle: "Best Premium Coffee in India",
