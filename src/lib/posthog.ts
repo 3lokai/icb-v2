@@ -74,6 +74,10 @@ export function loadPostHog(): Promise<PostHog> {
           // Extension messaging its native host.
           "Error invoking postMessage",
           "runtime.sendNativeMessage",
+          // Brave for iOS injects a cosmetic-filter script into the document;
+          // its frames point at the page HTML, never a /_next bundle. The
+          // companion "t[r]" error from that script is too generic to filter.
+          "standardSelectors",
           // NOT filtered on purpose: "NotFoundError". Root cause is still open.
           // The CookieNotice portal race is a live candidate again: the banner was
           // dormant behind `{false && ...}` when this was last triaged, which is
