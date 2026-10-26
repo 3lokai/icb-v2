@@ -912,3 +912,98 @@ export function settingRangeForMethod(
     source: "estimated",
   };
 }
+
+/**
+ * Parse a user-entered grinder setting, including rotation-based markings.
+ * Plain integers are absolute clicks/ticks for every discrete grinder.
+ * Compound notation like 1.20 on a K6 means one rotation plus 20 clicks,
+ * not 1.2 clicks. Reject malformed and out-of-range input instead of clamping.
+ */
+export function parseGrinderSetting(g: Grinder, input: string): number | null {
+  const text = input.trim();
+  if (!text) return null;
+
+  let setting: number;
+  if (g.style === "triple" && /^\d+\.\d+\.\d+$/.test(text)) {
+    const [rotation, number, tick] = text.split(".").map(Number);
+    const perRotation = g.perRotation ?? 30;
+    const perNumber = g.perNumber ?? 3;
+    if (number >= perRotation / perNumber || tick >= perNumber) return null;
+    setting = rotation * perRotation + number * perNumber + tick;
+  } else if (
+    (g.style === "compound" || g.style === "rotation") &&
+    /^\d+[.:]\d+$/.test(text)
+  ) {
+    const [rotation, click] = text.split(/[.:]/).map(Number);
+    const perRotation = g.perRotation ?? 40;
+    if (click >= perRotation) return null;
+    setting = rotation * perRotation + click;
+  } else if (/^\d+$/.test(text)) {
+    setting = Number(text);
+  } else if (g.style === "numbered" && /^\d+(?:\.\d+)?$/.test(text)) {
+    setting = Number(text);
+    if (setting * 2 !== Math.round(setting * 2)) return null;
+  } else {
+    return null;
+  }
+
+  if (!Number.isSafeInteger(setting * (g.style === "numbered" ? 2 : 1))) {
+    return null;
+  }
+  return setting >= g.settingMin && setting <= g.settingMax ? setting : null;
+}
+
+export interface EquivalentGrindSetting {
+  /** Approximate particle size on ICB's shared calibration axis. */
+  micron: number;
+  /** Rounded to the target grinder's actionable adjustment increment. */
+  targetSetting: number;
+  targetLabel: string;
+  /** Actual modeled micron value after rounding to a usable target setting. */
+  targetMicron: number;
+  /** The target grinder cannot achieve the requested point on this model. */
+  outOfRange: boolean;
+}
+
+/**
+ * Translate a modeled micron point into a grinder's actionable setting.
+ * This is a *starting estimate*, not a measured particle distribution.
+ */
+export function settingForMicrons(
+  target: Grinder,
+  micron: number
+): EquivalentGrindSetting | null {
+  if (!Number.isFinite(micron) || micron < MICRON_AXIS_MIN || micron > MICRON_AXIS_MAX) {
+    return null;
+  }
+
+  const raw = settingPositionForMicron(target, micron);
+  const rounded = target.style === "numbered"
+    ? Math.round(raw * 2) / 2
+    : Math.round(raw);
+  const targetSetting = clamp(rounded, target.settingMin, target.settingMax);
+  return {
+    micron,
+    targetSetting,
+    targetLabel: formatSetting(target, targetSetting),
+    targetMicron: micronForSetting(target, targetSetting),
+    outOfRange: micron < target.micronMin || micron > target.micronMax,
+  };
+}
+
+/** Convert between grinders via the same explicitly estimated micron model. */
+export function convertGrinderSetting(
+  source: Grinder,
+  target: Grinder,
+  sourceSetting: number
+): EquivalentGrindSetting | null {
+  if (
+    !Number.isFinite(sourceSetting) ||
+    sourceSetting < source.settingMin ||
+    sourceSetting > source.settingMax
+  ) {
+    return null;
+  }
+  return settingForMicrons(target, micronForSetting(source, sourceSetting));
+}
+
