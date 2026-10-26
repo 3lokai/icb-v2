@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { GrindChart } from "@/components/tools/GrindChart";
+import { GrinderConversionPanel } from "@/components/tools/GrinderConversionPanel";
 import {
   BREW_METHODS,
   GRINDERS,
@@ -128,6 +129,13 @@ export function GrindConverterClient() {
 
   return (
     <Stack gap="8">
+      <GrinderConversionPanel />
+      <div className="border-t border-border/40 pt-6">
+        <h3 className="text-heading">Or choose by brew method</h3>
+        <p className="mt-1 text-caption text-muted-foreground">
+          Get a recommended range for your existing brewer and grinder.
+        </p>
+      </div>
       {/* Selectors */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
