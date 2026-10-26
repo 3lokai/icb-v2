@@ -113,6 +113,32 @@ export async function fetchRegionFacts(
   };
 }
 
+/**
+ * Harvest window per region page, read from `canon_regions.harvest_season` — the same
+ * value each region page's terroir grid shows, so the two can never disagree. A region
+ * without a canon harvest value drops out rather than render a guessed month.
+ */
+export async function fetchHarvestWindows(
+  pageSlugs: string[]
+): Promise<Array<{ label: string; href: string; season: string }>> {
+  const rows = await Promise.all(
+    pageSlugs.map(async (slug) => {
+      const config = getLandingPageConfig(slug);
+      if (!config || config.type !== "region") return null;
+      const region = await fetchCanonRegion(config);
+      return region?.harvest_season
+        ? {
+            label: config.entityLabel,
+            href: discoveryPagePath(slug),
+            // Canon mixes "-" and "–"; render one.
+            season: region.harvest_season.replace(/\s*[-–]\s*/g, "–"),
+          }
+        : null;
+    })
+  );
+  return rows.filter((row) => row !== null);
+}
+
 /** A nearby-region cross-link, ready for `<RegionCard variant="compact">`. */
 export type NearbyRegionCard = {
   /** The discovery page slug, e.g. `coorg` — not the canon slug. */

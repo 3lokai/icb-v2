@@ -41,9 +41,17 @@ import { Icon } from "@/components/common/Icon";
 import { BeanTypeComparisonGrid } from "@/components/discovery/BeanTypeComparisonGrid";
 import { BEAN_TYPE_NAV_SLUGS } from "@/lib/discovery/landing-pages/bean-species-visuals";
 
+/** One harvest-window row; months come from `canon_regions.harvest_season`. */
+export type HarvestWindow = { label: string; href: string; season: string };
+
 type BeanTypeProfileSectionProps = {
   profile: BeanTypeProfileConfig;
   slug: string;
+  /** Replaces the generic section header with a query-matched H2 + definition. */
+  definition?: { heading: string; body: string };
+  /** Live catalogue figure, prepended to the data note. */
+  dataNoteLead?: string;
+  harvestWindows?: HarvestWindow[];
   className?: string;
 };
 
@@ -116,6 +124,9 @@ function hasValidRoastPairingSlugs(slugs: string[]): boolean {
 export function BeanTypeProfileSection({
   profile,
   slug,
+  definition,
+  dataNoteLead,
+  harvestWindows = [],
   className,
 }: BeanTypeProfileSectionProps) {
   const {
@@ -149,8 +160,14 @@ export function BeanTypeProfileSection({
         divider
         className="mb-8"
         overline="Bean type profile"
-        title="What this *bean type* is"
-        description="Characteristics, flavour, Indian context, and brew guidance: the practical picture behind the catalogue."
+        title={definition?.heading ?? "What this *bean type* is"}
+        description={
+          definition ? (
+            <p>{definition.body}</p>
+          ) : (
+            "Characteristics, flavour, Indian context, and brew guidance: the practical picture behind the catalogue."
+          )
+        }
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />
@@ -439,12 +456,41 @@ export function BeanTypeProfileSection({
           </>
         )}
 
-        {/* 9. ICB data note */}
+        {/* 9. Harvest windows — months read from canon_regions, never typed here */}
+        {harvestWindows.length > 0 && (
+          <div className="max-w-5xl mx-auto w-full space-y-4">
+            <h3 className="text-heading">Harvest windows by region</h3>
+            <dl className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+              {harvestWindows.map((w) => (
+                <div
+                  key={w.href}
+                  className="flex items-baseline justify-between gap-4 border-b border-border/40 py-2"
+                >
+                  <dt>
+                    <Link href={w.href} className="text-body hover:underline">
+                      {w.label}
+                    </Link>
+                  </dt>
+                  <dd className="text-caption text-muted-foreground">
+                    {w.season}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p className="text-caption text-muted-foreground">
+              Months are when the cherry is picked. Processing and resting come
+              after, so roasted lots reach shelves later.
+            </p>
+          </div>
+        )}
+
+        {/* 10. ICB data note */}
         <aside className="max-w-5xl mx-auto w-full rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
           <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2">
             On Indian Coffee Beans
           </p>
           <p className="text-caption text-muted-foreground leading-relaxed">
+            {dataNoteLead ? `${dataNoteLead} ` : null}
             {icbDataNote}
           </p>
         </aside>

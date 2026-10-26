@@ -5,6 +5,8 @@ import type { LandingPageConfig } from "./types";
 export const processPages: LandingPageConfig[] = [
   {
     slug: "natural",
+    metaDescription:
+      "Natural process coffees from India: bold fruit, wine-like depth and heavy body from Chikmagalur, Baba Budangiri and the Shevaroys. Compare community ratings.",
     type: "process",
     h1: "Natural Process Coffee in India",
     entityLabel: "Natural Process",
@@ -131,6 +133,8 @@ export const processPages: LandingPageConfig[] = [
 
   {
     slug: "washed",
+    metaDescription:
+      "Washed process coffees from India: clean, bright SLN 795 from Chikmagalur and Baba Budangiri with jasmine, peach and bergamot. Compare community ratings.",
     type: "process",
     h1: "Washed Process Coffee in India",
     entityLabel: "Washed Process",
@@ -251,6 +255,8 @@ export const processPages: LandingPageConfig[] = [
 
   {
     slug: "honey",
+    metaDescription:
+      "Honey and pulped-natural coffees from India: sweet, round cups from Chikmagalur, Coorg and Sakleshpur estates. Compare roasters and community ratings.",
     type: "process",
     h1: "Honey Process Coffee in India",
     entityLabel: "Honey Process",
@@ -378,6 +384,8 @@ export const processPages: LandingPageConfig[] = [
 
   {
     slug: "anaerobic",
+    metaDescription:
+      "Anaerobic and experimental-ferment Indian coffees from Chikmagalur, Coorg and Sakleshpur estates: intense aromatics and complex fruit. Compare ratings.",
     type: "process",
     h1: "Anaerobic Process Coffee in India",
     entityLabel: "Anaerobic Process",
@@ -499,6 +507,8 @@ export const processPages: LandingPageConfig[] = [
 
   {
     slug: "monsooned-malabar",
+    metaDescription:
+      "Monsooned Malabar coffees from India's Malabar coast: low acidity, mellow spice and a heritage profile found nowhere else. Compare roasters and ratings.",
     type: "process",
     h1: "Monsooned Malabar Coffee in India",
     entityLabel: "Monsooned Malabar",

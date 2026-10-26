@@ -116,6 +116,8 @@ export type CoffeeFilters = {
 
   // Boolean flags
   single_origin_only?: boolean;
+  /** Server-side only (not a URL param): coffees linked to at least one estate. */
+  estate_linked_only?: boolean;
   decaf_only?: boolean;
   international_only?: boolean;
   limited_only?: boolean;
@@ -248,6 +250,10 @@ export type CoffeeSummary = {
   // Junction table arrays (from coffee_directory_mv)
   flavor_keys?: string[] | null;
   brew_method_canonical_keys?: string[] | null;
+
+  /** Canon country of the first non-India origin region; null for Indian coffees.
+   *  Set by `fetchCoffees` only — other card sources leave it undefined. */
+  origin_country?: string | null;
 };
 
 // ----------------------------------------------------------------------------

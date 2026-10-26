@@ -10,6 +10,10 @@ export const regionPages: LandingPageConfig[] = [
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Chikmagalur Coffee in India",
     entityLabel: "Chikmagalur",
+    definition: {
+      heading: "What is *Chikmagalur* coffee?",
+      body: "Chikmagalur coffee is coffee grown in Chikkamagaluru district in Karnataka's Western Ghats, where coffee arrived in the 17th century with Baba Budan. Chikmagalur Arabica has held a Geographical Indication since 2019. The district grows both Arabica and Robusta, but Chikmagalur coffee beans on specialty shelves are mostly Arabica, led by washed SLN 795.",
+    },
     metaDescription:
       "Chikmagalur specialty coffee compared across roasters: washed SLN 795 to anaerobic microlots from India's oldest arabica region, ranked by ratings.",
     intro:
@@ -88,6 +92,11 @@ export const regionPages: LandingPageConfig[] = [
         answer:
           "Both are Karnataka heavyweights. Chikmagalur estates tend toward brighter, more floral profiles especially at higher altitudes. Coorg often produces fuller-bodied, more chocolatey cups. The best way to understand the difference is to compare the same process and roast level from both regions side by side.",
       },
+      {
+        question: "Is Chikmagalur coffee Arabica or Robusta?",
+        answer:
+          "Both grow here. Arabica dominates the higher estates and is what the 2019 Geographical Indication covers, while Robusta grows lower down and goes mostly into blends. Among Chikmagalur coffees listed on ICB, Arabica far outnumbers Robusta. If you want Chikmagalur coffee beans for South Indian filter coffee, look at the blends, which add Robusta or chicory for body.",
+      },
     ],
     utilityCard: {
       type: "tips",
@@ -116,6 +125,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "baba-budangiri",
+    metaDescription:
+      "Baba Budangiri specialty coffee: the Chikmagalur highland range where India's coffee story began, compared across roasters by community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Baba Budangiri Coffee in India",
@@ -225,10 +236,16 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "coorg",
+    metaDescription:
+      "Coorg (Kodagu) specialty coffee compared across roasters: shade-grown Arabica and Robusta from India's largest coffee district, washed to experimental.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Coorg Coffee in India",
     entityLabel: "Coorg",
+    definition: {
+      heading: "What is *Coorg* (Kodagu) coffee?",
+      body: "Coorg coffee is coffee grown in Kodagu, the Karnataka district historically called Coorg and India's largest coffee producer. Most of it grows under a two-tier shade canopy, with pepper vines trained up the same trees. Kodagu is the heart of India's Robusta, but it also grows Arabica at higher elevations, and Arabica makes up most of its specialty listings.",
+    },
     intro:
       "Browse Indian specialty coffees from Coorg (Kodagu): lush Western Ghats hills, established estates, and coffees spanning classic washed arabica to modern experimental processing.",
     headerNudge:
@@ -314,12 +331,12 @@ export const regionPages: LandingPageConfig[] = [
     },
     learnLinks: [
       {
-        label: "Coorg vs Chikmagalur vs Araku: flavour differences",
-        href: "/learn/coorg-vs-chikmagalur-vs-araku-flavor-differences",
+        label: "Coorg coffee: what Kodagu actually grows",
+        href: "/learn/coorg-coffee-region",
       },
       {
-        label: "A complete guide to India's coffee regions",
-        href: "/learn/coffee-regions-of-india-complete-guide",
+        label: "Coorg vs Chikmagalur vs Araku: flavour differences",
+        href: "/learn/coorg-vs-chikmagalur-vs-araku-flavor-differences",
       },
       {
         label: "Understanding Indian coffee estates (and why they matter)",
@@ -331,6 +348,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "araku",
+    metaDescription:
+      "Araku Valley specialty coffee: bright, floral lots from tribal and cooperative producers in Andhra Pradesh's Eastern Ghats, compared by community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Araku Valley Coffee in India",
@@ -438,6 +457,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "nilgiris",
+    metaDescription:
+      "Nilgiris specialty coffee: cool-climate arabica from Tamil Nadu's Blue Mountain estates, distinct from Karnataka origins. Compare community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Nilgiris Coffee in India",
@@ -545,6 +566,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "shevaroy-hills",
+    metaDescription:
+      "Shevaroy Hills specialty coffee from Tamil Nadu's largest coffee region: diverse estates and experimental processing, compared by community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Shevaroy Hills Coffee in India",
@@ -761,6 +784,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "koraput",
+    metaDescription:
+      "Koraput specialty coffee from Odisha's Eastern Ghats: tribal smallholder arabica and India's newest specialty origin, compared by community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Koraput Coffee in India",
@@ -867,6 +892,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "northeast-india",
+    metaDescription:
+      "Northeast India specialty coffee from Meghalaya's Garo and Khasi Hills, beyond the Western Ghats belt. Compare roasters, processes and community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Northeast India Coffee",
@@ -978,6 +1005,8 @@ export const regionPages: LandingPageConfig[] = [
   },
   {
     slug: "sakleshpur",
+    metaDescription:
+      "Sakleshpur and Manjarabad specialty coffee from one of Karnataka's wettest, most experimental coffee tracts. Compare roasters and community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Sakleshpur & Manjarabad Coffee in India",
@@ -1085,6 +1114,8 @@ export const regionPages: LandingPageConfig[] = [
   },
   {
     slug: "palani-hills",
+    metaDescription:
+      "Palani Hills specialty coffee from above Kodaikanal, grown with pepper, orange and cardamom on a northeast-monsoon calendar. Compare community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Palani Hills (Pulneys) Coffee in India",
@@ -1190,6 +1221,8 @@ export const regionPages: LandingPageConfig[] = [
   },
   {
     slug: "biligiriranga-hills",
+    metaDescription:
+      "BR Hills (Biligiriranga) specialty coffee from the forest corridor where the Western and Eastern Ghats meet. Compare roasters and community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "BR Hills (Biligiriranga) Coffee in India",

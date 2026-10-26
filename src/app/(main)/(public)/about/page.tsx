@@ -41,7 +41,6 @@ export const metadata: Metadata = generateMetadata({
     "what is IndianCoffeeBeans",
     "Indian coffee directory FAQ",
   ],
-  image: "/images/placeholder-coffee-beans.jpg",
   canonical: "/about",
   type: "website",
 });

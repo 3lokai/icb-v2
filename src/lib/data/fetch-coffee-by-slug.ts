@@ -88,7 +88,7 @@ async function buildCoffeeDetailFromRow(
     supabase
       .from("coffee_regions")
       .select(
-        "region_id, pct, regions(id, display_name, country, state, subregion)"
+        "region_id, pct, regions(id, display_name, country, state, subregion, canon_regions(country))"
       )
       .eq("coffee_id", coffeeId),
 
@@ -218,12 +218,15 @@ async function buildCoffeeDetailFromRow(
           country: string | null;
           state: string | null;
           subregion: string;
+          canon_regions: { country: string | null } | null;
         } | null;
         if (!region) return null;
         return {
           id: region.id,
           display_name: region.display_name,
           country: region.country,
+          // The scraped `regions.country` is null on ~93% of rows; canon is the clean layer.
+          canon_country: region.canon_regions?.country ?? null,
           state: region.state,
           subregion: region.subregion,
           pct: row.pct,

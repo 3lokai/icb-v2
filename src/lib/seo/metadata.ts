@@ -54,7 +54,9 @@ export function fitTitle(
 
 /**
  * Clamp meta description to SEO-friendly length (120–160 chars).
- * Pads short descriptions with fallback; trims long ones with ellipsis.
+ * Pads short descriptions with fallback only when the whole fallback fits —
+ * a fallback cut off mid-sentence reads worse than a short description;
+ * trims long ones with ellipsis.
  */
 export function clampDescription(
   description: string,
@@ -62,7 +64,8 @@ export function clampDescription(
 ): string {
   let desc = description.trim();
   if (desc.length < META_DESCRIPTION_MIN && fallback) {
-    desc = `${desc} ${fallback}`.trim();
+    const padded = `${desc} ${fallback}`.trim();
+    if (padded.length <= META_DESCRIPTION_MAX) desc = padded;
   }
   if (desc.length > META_DESCRIPTION_MAX) {
     return `${desc.slice(0, META_DESCRIPTION_MAX - 1).trimEnd()}…`;

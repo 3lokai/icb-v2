@@ -4,6 +4,8 @@ import type { LandingPageConfig } from "./types";
 export const brewMethodPages: LandingPageConfig[] = [
   {
     slug: "aeropress",
+    metaDescription:
+      "Indian specialty coffees for AeroPress, from jammy Coorg naturals to bright washed Chikmagalur lots. Brew notes, roast pairings and community ratings.",
     type: "brew_method",
     h1: "Coffees for AeroPress in India",
     entityLabel: "AeroPress",
@@ -120,6 +122,8 @@ export const brewMethodPages: LandingPageConfig[] = [
 
   {
     slug: "v60",
+    metaDescription:
+      "Indian coffees for the V60: washed Chikmagalur lots and Araku light roasts at their clearest. Compare roasts, processes and community ratings.",
     type: "brew_method",
     h1: "Coffees for V60 in India",
     entityLabel: "V60",
@@ -237,6 +241,8 @@ export const brewMethodPages: LandingPageConfig[] = [
 
   {
     slug: "chemex",
+    metaDescription:
+      "Indian coffees for Chemex: washed Chikmagalur and Baba Budangiri light roasts with jasmine, peach and citrus. Compare roasts and community ratings.",
     type: "brew_method",
     h1: "Coffees for Chemex in India",
     entityLabel: "Chemex",
@@ -347,6 +353,8 @@ export const brewMethodPages: LandingPageConfig[] = [
 
   {
     slug: "kalita",
+    metaDescription:
+      "Indian coffees for the Kalita Wave: balanced washed Chikmagalur and Sakleshpur light-mediums. Compare roasts, processes and community ratings.",
     type: "brew_method",
     h1: "Coffees for Kalita Wave in India",
     entityLabel: "Kalita Wave",
@@ -462,6 +470,8 @@ export const brewMethodPages: LandingPageConfig[] = [
 
   {
     slug: "french-press",
+    metaDescription:
+      "Indian coffees for French Press: medium-dark Chikmagalur, Baba Budangiri and Coorg roasts, deep and chocolatey. Compare roasts and community ratings.",
     type: "brew_method",
     h1: "Coffees for French Press in India",
     entityLabel: "French Press",
@@ -584,6 +594,8 @@ export const brewMethodPages: LandingPageConfig[] = [
 
   {
     slug: "espresso",
+    metaDescription:
+      "Indian specialty coffees for espresso, from Monsooned Malabar to medium-dark Chikmagalur and Coorg arabica. Roast pairings and community ratings.",
     type: "brew_method",
     h1: "Coffees for Espresso in India",
     entityLabel: "Espresso",
@@ -702,6 +714,8 @@ export const brewMethodPages: LandingPageConfig[] = [
 
   {
     slug: "cold-brew",
+    metaDescription:
+      "Indian coffees for cold brew: chocolate and spice Chikmagalur and Coorg arabica, plus mellow Monsooned Malabar. Compare roasts and community ratings.",
     type: "brew_method",
     h1: "Coffees for Cold Brew in India",
     entityLabel: "Cold Brew",
@@ -818,6 +832,8 @@ export const brewMethodPages: LandingPageConfig[] = [
 
   {
     slug: "moka-pot",
+    metaDescription:
+      "Indian coffees for the Moka Pot: medium-dark Chikmagalur and Coorg roasts and robusta blends that stand up to milk. Compare community ratings.",
     type: "brew_method",
     h1: "Coffees for Moka Pot in India",
     entityLabel: "Moka Pot",
@@ -935,6 +951,8 @@ export const brewMethodPages: LandingPageConfig[] = [
 
   {
     slug: "filter-coffee",
+    metaDescription:
+      "Coffees for South Indian filter: robusta–chicory blends and newer 100% arabica filter blends from Chikmagalur and Baba Budangiri, with community ratings.",
     type: "brew_method",
     h1: "Coffees for South Indian Filter in India",
     entityLabel: "South Indian Filter",

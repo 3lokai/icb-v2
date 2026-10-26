@@ -5,6 +5,8 @@ import type { RoastLevelLandingPageConfig } from "./types";
 export const roastLevelPages: RoastLevelLandingPageConfig[] = [
   {
     slug: "light-roast",
+    metaDescription:
+      "Indian light roast coffees: SLN 9 and Chandragiri from Chikmagalur and Baba Budangiri with florals and stone fruit. Compare roasters and community ratings.",
     type: "roast_level",
     h1: "Light Roast Coffee in India",
     entityLabel: "Light Roast",
@@ -137,6 +139,8 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
 
   {
     slug: "light-medium-roast",
+    metaDescription:
+      "Indian light-medium roasts from Chikmagalur, Baba Budangiri and Sakleshpur: origin clarity with approachable sweetness. Compare community ratings.",
     type: "roast_level",
     h1: "Light-Medium Roast Coffee in India",
     entityLabel: "Light-Medium Roast",
@@ -264,6 +268,8 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
 
   {
     slug: "medium-roast",
+    metaDescription:
+      "Indian medium roast coffees: SLN 795 and SLN 9 from Chikmagalur and Coorg with chocolate and caramel sweetness. Compare roasters and community ratings.",
     type: "roast_level",
     h1: "Medium Roast Coffee in India",
     entityLabel: "Medium Roast",
@@ -397,6 +403,8 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
 
   {
     slug: "medium-dark-roast",
+    metaDescription:
+      "Indian medium-dark roasts from Chikmagalur and Baba Budangiri: rich body and rounded sweetness for espresso and milk drinks. Compare community ratings.",
     type: "roast_level",
     h1: "Medium-Dark Roast Coffee in India",
     entityLabel: "Medium-Dark Roast",
@@ -523,6 +531,8 @@ export const roastLevelPages: RoastLevelLandingPageConfig[] = [
 
   {
     slug: "dark-roast",
+    metaDescription:
+      "Indian dark roast coffees: bold, low-acid robusta and blends from Chikmagalur and Baba Budangiri, plus specialty takes. Compare community ratings.",
     type: "roast_level",
     h1: "Dark Roast Coffee in India",
     entityLabel: "Dark Roast",

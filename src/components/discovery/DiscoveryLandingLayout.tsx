@@ -31,7 +31,10 @@ import { ValueTips } from "./ValueTips";
 import { BrewMethodProfileSection } from "./BrewMethodProfileSection";
 import { ProcessProfileSection } from "./ProcessProfileSection";
 import { PriceBucketProfileSection } from "./PriceBucketProfileSection";
-import { fetchRegionFacts } from "@/lib/discovery/region-facts";
+import {
+  fetchHarvestWindows,
+  fetchRegionFacts,
+} from "@/lib/discovery/region-facts";
 import { RegionOverviewSection } from "./RegionOverviewSection";
 import { RegionDetailSection } from "./RegionDetailSection";
 import { BeanTypeProfileSection } from "./BeanTypeProfileSection";
@@ -139,12 +142,35 @@ export async function DiscoveryLandingLayout({
   // visible grid and the JSON-LD via the shared filter below.
   const discoveryFilter = { ...config.filter, in_stock_only: true };
 
-  const [coffeeResult, catalogueAsOf, regionFacts] = await Promise.all([
+  const isSingleOrigin = config.filter.single_origin_only === true;
+  const [
+    coffeeResult,
+    catalogueAsOf,
+    regionFacts,
+    estateLinked,
+    harvestWindows,
+  ] = await Promise.all([
     fetchCoffeesCached(discoveryFilter, 1, 20, config.sortOrder),
     getCatalogueAsOf(),
     // Terroir comes from canon_regions, not the config — one source of truth per fact.
     config.type === "region" ? fetchRegionFacts(config) : null,
+    // Live estate-traceability figure for the single-origin data note.
+    isSingleOrigin
+      ? fetchCoffeesCached(
+          { ...discoveryFilter, estate_linked_only: true },
+          1,
+          1,
+          config.sortOrder
+        )
+      : null,
+    config.harvestRegions?.length
+      ? fetchHarvestWindows(config.harvestRegions)
+      : [],
   ]);
+  const singleOriginLead =
+    estateLinked && coffeeResult.total > 0
+      ? `Of the ${coffeeResult.total.toLocaleString("en-IN")} in-stock single-origin coffees on ICB, ${estateLinked.total.toLocaleString("en-IN")} (${Math.round((estateLinked.total / coffeeResult.total) * 100)}%) trace to a named estate.`
+      : undefined;
   const coffeeItems = buildDiscoveryCoffeeListItems(
     coffeeResult.items,
     BASE_URL
@@ -295,6 +321,7 @@ export async function DiscoveryLandingLayout({
           <RegionOverviewSection
             profile={config.regionProfile}
             facts={regionFacts}
+            definition={config.definition}
           />
         )}
 
@@ -308,6 +335,9 @@ export async function DiscoveryLandingLayout({
           <BeanTypeProfileSection
             profile={config.beanTypeProfile}
             slug={config.slug}
+            definition={config.definition}
+            dataNoteLead={singleOriginLead}
+            harvestWindows={harvestWindows}
           />
         )}
 

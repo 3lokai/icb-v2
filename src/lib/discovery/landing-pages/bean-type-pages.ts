@@ -11,6 +11,8 @@ import type { LandingPageConfig } from "./types";
 export const beanTypePages: LandingPageConfig[] = [
   {
     slug: "arabica",
+    metaDescription:
+      "Indian Arabica coffees: SLN 795, SLN 9 and Chandragiri grown under shade at 1,000–1,700m in Chikmagalur and Coorg. Compare roasters and community ratings.",
     type: "bean_type",
     h1: "Arabica Coffee in India",
     entityLabel: "Arabica",
@@ -169,6 +171,8 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "robusta",
+    metaDescription:
+      "Indian Robusta coffees: bold, full-bodied specialty lots like C × R and Old Peradeniya from Kodagu and Chikmagalur. Compare roasters and community ratings.",
     type: "bean_type",
     h1: "Robusta Coffee in India",
     entityLabel: "Robusta",
@@ -331,9 +335,15 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "liberica",
+    metaDescription:
+      "Liberica coffee in India: the rare third species, mostly from Salawara Estate in Sakleshpur, with a smoky, jackfruit-and-woody cup. Compare ratings.",
     type: "bean_type",
     h1: "Liberica Coffee in India",
     entityLabel: "Liberica",
+    definition: {
+      heading: "What is *Liberica* coffee?",
+      body: "Liberica coffee comes from Coffea liberica, the rare third commercial coffee species after Arabica and Robusta, at under 2% of world production. Its large, irregular, almond-shaped beans brew a heavy, low-acid cup with smoky, woody and jackfruit notes. In India it grows only in small plantings, and Salawara Estate in Sakleshpur supplies most listings.",
+    },
     intro:
       "Liberica is the rare third coffee species, and in India it is close to a single address: Salawara Estate in Sakleshpur. Large, irregular, almond-shaped beans with a smoky, jackfruit-and-woody character unlike anything Arabica or Robusta produces.",
     headerNudge:
@@ -447,8 +457,8 @@ export const beanTypePages: LandingPageConfig[] = [
         href: "/learn/indian-coffee-varieties-explained",
       },
       {
-        label: "The growth of single-origin coffee in India",
-        href: "/learn/growth-single-origin-coffee-india",
+        label: "Liberica and Excelsa: India's other two coffee species",
+        href: "/learn/liberica-excelsa-coffee-india",
       },
     ],
     related: ["excelsa", "arabica", "robusta", "french-press"],
@@ -456,9 +466,15 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "excelsa",
+    metaDescription:
+      "Excelsa coffee in India: a tart, fruity, wine-like Liberica-family coffee, mostly from Mooleh Manay Estate in Coorg. Compare roasters and ratings.",
     type: "bean_type",
     h1: "Excelsa Coffee in India",
     entityLabel: "Excelsa",
+    definition: {
+      heading: "What is *Excelsa* coffee?",
+      body: "Excelsa coffee is a rare type in the Liberica family, classified as Coffea liberica var. dewevrei but often traded as its own species. It brews tart, fruity and wine-like, with dark berry notes and brighter acidity than Liberica, and is often blended at 5–20%. In India, most of it comes from Mooleh Manay Estate in Kodagu.",
+    },
     intro:
       "Explore Excelsa, a rare, tart-and-fruity member of the Liberica family that adds a dark, almost wine-like layer to blends. Scarce in India, but Kodagu grows it: Mooleh Manay Estate in Coorg accounts for most of the Indian Excelsa that reaches the catalogue.",
     headerNudge:
@@ -572,8 +588,8 @@ export const beanTypePages: LandingPageConfig[] = [
         href: "/learn/indian-coffee-varieties-explained",
       },
       {
-        label: "How India's coffee processing mix is changing",
-        href: "/learn/how-coffee-process-mix-changing-india",
+        label: "Liberica and Excelsa: India's other two coffee species",
+        href: "/learn/liberica-excelsa-coffee-india",
       },
     ],
     related: ["liberica", "blends", "arabica", "natural"],
@@ -581,6 +597,8 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "blends",
+    metaDescription:
+      "Indian coffee blends: Arabica–Robusta espresso blends and Robusta-forward filter blends from Chikmagalur, Coorg and Baba Budangiri, with community ratings.",
     type: "bean_type",
     h1: "Coffee Blends in India",
     entityLabel: "Coffee Blends",
@@ -724,6 +742,8 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "chicory-mixes",
+    metaDescription:
+      "Indian coffee–chicory blends for South Indian filter coffee, mostly from Chikmagalur and Baba Budangiri. Compare body, roast and community ratings.",
     type: "bean_type",
     h1: "Chicory Coffee Mixes in India",
     entityLabel: "Chicory Coffee Mixes",
@@ -853,9 +873,29 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "single-origin",
+    metaDescription:
+      "Indian single origin coffees traceable to one estate or region: compare Chikmagalur and Araku, washed and natural, SLN 795 and Cauvery by community ratings.",
     type: "bean_type",
     h1: "Single Origin Coffee in India",
     entityLabel: "Single Origin",
+    definition: {
+      heading: "What is *single-origin* coffee?",
+      body: "Single-origin coffee is coffee from one source, whether a single estate, one lot within an estate, or a tightly defined region, sold unblended. Because nothing is mixed in, the altitude, variety, soil and processing of that source show in the cup. Most Indian single origins are Arabica, though single-estate Robusta lots are growing.",
+    },
+    // Page slugs, not canon slugs; months come from canon_regions at render.
+    harvestRegions: [
+      "chikmagalur",
+      "baba-budangiri",
+      "coorg",
+      "sakleshpur",
+      "biligiriranga-hills",
+      "wayanad",
+      "nilgiris",
+      "palani-hills",
+      "shevaroy-hills",
+      "araku",
+      "koraput",
+    ],
     intro:
       "Indian single origins are traceable to one estate or region, unblended: Chikmagalur against Araku, washed against natural, SLN 795 against Cauvery, all unmasked. This is where Indian specialty coffee shows its character, and where the terroir, variety, and processing speak for themselves.",
     headerNudge:
@@ -922,7 +962,8 @@ export const beanTypePages: LandingPageConfig[] = [
         },
       ],
       icbDataNote:
-        "Single-origin lots make up the most highly rated segment of the ICB catalogue, the estate-traceable coffees that define Indian specialty. They account for the majority of top-rated listings and the highest community engagement. This page lists every coffee flagged as single origin, regardless of species, and includes both Arabica and the growing number of fine single-estate Robusta lots.",
+        // The live estate-traceability figure is prepended by DiscoveryLandingLayout.
+        "This page lists every coffee flagged as single origin, regardless of species, and includes both Arabica and the growing number of single-estate Robusta lots.",
     },
 
     filter: {
@@ -944,6 +985,17 @@ export const beanTypePages: LandingPageConfig[] = [
         question: "Are Indian single origins always Arabica?",
         answer:
           "Mostly, but not exclusively. The estate-traceable lots that define Indian specialty are overwhelmingly Arabica, particularly SLN 795, Cauvery, and Chandragiri, but a growing number of roasters now offer fine single-estate Robusta processed with specialty care. Look for 'fine Robusta' or 'specialty Robusta' in the listing.",
+      },
+      {
+        question:
+          "What is the difference between a microlot and a single origin?",
+        answer:
+          "A microlot is a narrower kind of single origin: one small, separately processed lot from a specific plot, picking or process run within an estate, rather than the estate's whole crop. Every microlot is a single origin, but not every single origin is a microlot. Roasters use the term for limited, highly traceable releases.",
+      },
+      {
+        question: "How do I know a single-origin coffee is high quality?",
+        answer:
+          "Look for traceability and a cupping score. Specialty coffee is coffee that scores 80 or more out of 100 on the Specialty Coffee Association (SCA) scale, and some Indian roasters print the score on the listing, for example SCA 87+. A named estate, variety and process also show the roaster knows exactly where the lot came from.",
       },
       {
         question: "Why do single origins sell out quickly?",

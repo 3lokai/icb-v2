@@ -34,12 +34,15 @@ type RegionOverviewSectionProps = {
   profile: RegionProfileConfig;
   /** Terroir read from `canon_regions`. Null for regions with no canon row. */
   facts: RegionFacts | null;
+  /** Replaces the generic section header with a query-matched H2 + definition. */
+  definition?: { heading: string; body: string };
   className?: string;
 };
 
 export function RegionOverviewSection({
   profile,
   facts,
+  definition,
   className,
 }: RegionOverviewSectionProps) {
   const { overview } = profile;
@@ -57,8 +60,14 @@ export function RegionOverviewSection({
         divider
         className="mb-8"
         overline="Region profile"
-        title="Explore the *Terroir*"
-        description="Terroir, flavour profile, and Indian specialty context, all from the data behind our catalogue."
+        title={definition?.heading ?? "Explore the *Terroir*"}
+        description={
+          definition ? (
+            <p>{definition.body}</p>
+          ) : (
+            "Terroir, flavour profile, and Indian specialty context, all from the data behind our catalogue."
+          )
+        }
         rightAside={
           <div className="flex items-center gap-3 text-micro text-muted-foreground/60 uppercase tracking-widest font-medium">
             <span className="h-1 w-1 rounded-full bg-accent/40" />
