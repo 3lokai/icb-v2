@@ -74,14 +74,15 @@ export function loadPostHog(): Promise<PostHog> {
           // Extension messaging its native host.
           "Error invoking postMessage",
           "runtime.sendNativeMessage",
-          // NOT filtered on purpose: "NotFoundError". Root cause is still open.
-          // The CookieNotice portal race is a live candidate again: the banner was
-          // dormant behind `{false && ...}` when this was last triaged, which is
-          // what ruled it out, and it renders again as of this change. It portals
-          // into a node it removes on unmount (CookieNotice.tsx:33-37). The other
-          // candidates are Clarity mutating the DOM under React 19's commit phase,
-          // and the browser translate feature. Filtering it would delete the
-          // evidence that review needs.
+          // Brave for iOS injects a cosmetic-filter script into the document;
+          // its frames point at the page HTML, never a /_next bundle. The
+          // companion "t[r]" error from that script is too generic to filter.
+          "standardSelectors",
+          // Browser page-translate swapping React-owned text nodes, so React's
+          // commit-phase removeChild misses. Kept on after the CookieNotice
+          // portal fix (2952d7d): 16 events in 30 days, 4 of 5 sessions
+          // non-English locales, stacks only ever React internals.
+          "NotFoundError",
         ];
         if (NOISE.some((m) => blob.includes(m))) return null;
         return event;
