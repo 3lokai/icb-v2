@@ -113,6 +113,14 @@ export function CoffeeDetailPage({
   // A null element here throws in getVarietyDescription during SSR and 500s the
   // whole page, so drop the blanks once rather than guarding each use.
   const varieties = coffee.varieties?.filter(Boolean) ?? [];
+  // ICB is an Indian directory; a foreign origin should not read as Indian.
+  const foreignOrigins = [
+    ...new Set(
+      coffee.regions
+        .map((r) => r.canon_country)
+        .filter((c): c is string => !!c && c !== "India")
+    ),
+  ];
 
   return (
     <div className={cn("w-full bg-background min-h-screen", className)}>
@@ -242,6 +250,15 @@ export function CoffeeDetailPage({
                                 );
                               })}
                             </span>
+                            {foreignOrigins.length > 0 && (
+                              <Tag
+                                variant="muted"
+                                size="micro"
+                                className="w-fit"
+                              >
+                                {foreignOrigins.join(" · ")} origin
+                              </Tag>
+                            )}
                           </Stack>
                         )}
                         {coffee.estates.length > 0 && (

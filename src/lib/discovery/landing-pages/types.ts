@@ -207,6 +207,11 @@ export type LandingPageConfig = {
   /** Clean entity name (e.g. "Arabica", "Light Roast", "Chikmagalur"); drives titles, breadcrumbs, keywords. */
   entityLabel: string;
   intro: string;
+  /** Query-matched H2 + 45–60 word definition, rendered above the grid as the profile
+   *  section's header (the featured-snippet slot). `heading` takes one `*accent*` pair. */
+  definition?: { heading: string; body: string };
+  /** Bean type pages: canon region page slugs whose harvest window renders in the profile. */
+  harvestRegions?: string[];
   filter: CoffeeFilters;
   faqs: FAQItem[];
   utilityCard?: UtilityCardConfig;

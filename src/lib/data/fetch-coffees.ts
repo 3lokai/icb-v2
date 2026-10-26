@@ -1,6 +1,10 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
-import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import {
+  createAnonServerClient,
+  createClient,
+  createServiceRoleClient,
+} from "@/lib/supabase/server";
 import {
   NO_MATCH_ID,
   resolveRegionSlugsToRegionIds,
@@ -42,15 +46,31 @@ async function resolveRoasterSlugsToIds(
 }
 
 /**
- * Helper to resolve international (non-India) region IDs for filtering.
- * Used when international_only filter is set - coffees must have at least one
- * origin region outside India.
- * Throws on DB errors; returns [] only when queries succeed but return no rows.
+ * International (non-India) region IDs → their canon country. Drives both the
+ * international_only filter (the keys) and the card origin badge (the values).
+ * Throws on DB errors; returns an empty object only when queries succeed but return no rows.
+ * Cached as a plain object (unstable_cache JSON-serialises, so no Map).
  */
-async function resolveInternationalRegionIds(supabase: any): Promise<string[]> {
+const fetchInternationalRegionCountries = unstable_cache(
+  async (): Promise<Record<string, string>> => {
+    // Cookie-free client: cookies() is forbidden inside unstable_cache.
+    const supabase = process.env.SUPABASE_SECRET_KEY
+      ? await createServiceRoleClient()
+      : createAnonServerClient();
+    return Object.fromEntries(
+      await resolveInternationalRegionCountries(supabase)
+    );
+  },
+  ["international-region-countries"],
+  { revalidate: 86400, tags: ["coffees"] }
+);
+
+async function resolveInternationalRegionCountries(
+  supabase: any
+): Promise<Map<string, string>> {
   const { data: canonRegions, error: canonError } = await supabase
     .from("canon_regions")
-    .select("id")
+    .select("id, country")
     .neq("country", "India");
   if (canonError) {
     throw new Error(
@@ -58,19 +78,26 @@ async function resolveInternationalRegionIds(supabase: any): Promise<string[]> {
     );
   }
   if (!canonRegions || canonRegions.length === 0) {
-    return [];
+    return new Map();
   }
-  const canonRegionIds = canonRegions.map((r: any) => r.id);
+  const countryByCanonId = new Map<string, string>(
+    canonRegions.map((r: any) => [r.id, r.country])
+  );
   const { data: regions, error: regionsError } = await supabase
     .from("regions")
-    .select("id")
-    .in("canon_region_id", canonRegionIds);
+    .select("id, canon_region_id")
+    .in("canon_region_id", [...countryByCanonId.keys()]);
   if (regionsError) {
     throw new Error(
       `Failed to resolve international regions (regions): ${regionsError.message}`
     );
   }
-  return (regions || []).map((r: any) => r.id);
+  return new Map(
+    (regions || []).map((r: any) => [
+      r.id,
+      countryByCanonId.get(r.canon_region_id) as string,
+    ])
+  );
 }
 
 /**
@@ -178,6 +205,11 @@ export function applyFiltersToQuery(query: any, filters: CoffeeFilters): any {
 
   if (filters.single_origin_only === true) {
     filteredQuery = filteredQuery.eq("is_single_origin", true);
+  }
+
+  // The MV stores "no estate" as NULL, never '{}'.
+  if (filters.estate_linked_only === true) {
+    filteredQuery = filteredQuery.not("estate_ids", "is", null);
   }
 
   if (filters.works_with_milk === true) {
@@ -543,10 +575,15 @@ export async function fetchCoffees(
       regionIds.length > 0 ? regionIds : [NO_MATCH_ID];
   }
 
+  // Every list needs this for the card origin badge, so resolve it up front.
+  // Cached (24h / "coffees" tag): no per-request queries.
+  const internationalCountries = new Map(
+    Object.entries(await fetchInternationalRegionCountries())
+  );
+
   // Resolve international (non-India) region IDs when international_only is set
   if (filters.international_only === true) {
-    const internationalRegionIds =
-      await resolveInternationalRegionIds(supabase);
+    const internationalRegionIds = [...internationalCountries.keys()];
     if (resolvedFilters.region_ids?.length) {
       // User provided region filters: intersect with international regions only
       // Never broaden to all international regions; empty intersection is valid
@@ -639,9 +676,13 @@ export async function fetchCoffees(
   }
 
   // Transform data (all fields already in MV, just map directly)
-  const items: CoffeeSummary[] = (data || []).map((row: any) =>
-    transformToCoffeeSummary(row)
-  );
+  const items: CoffeeSummary[] = (data || []).map((row: any) => ({
+    ...transformToCoffeeSummary(row),
+    origin_country:
+      (row.region_ids as string[] | null)
+        ?.map((id) => internationalCountries.get(id))
+        .find(Boolean) ?? null,
+  }));
 
   const total = count ?? 0;
   const totalPages = Math.ceil(total / limit);

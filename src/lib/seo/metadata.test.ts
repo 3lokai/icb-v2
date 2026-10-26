@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   TITLE_MAX_LENGTH,
   TITLE_TEMPLATE_SUFFIX,
+  clampDescription,
   formatAltitudeLabel,
   fitTitle,
   truncateTitle,
@@ -109,4 +110,17 @@ test("fitTitle falls back to truncating when even the barest candidate is too lo
   const out = fitTitle([huge]);
   assert.ok(out.endsWith("…"), out);
   assert.ok(out.length + TITLE_TEMPLATE_SUFFIX.length <= TITLE_MAX_LENGTH);
+});
+
+test("pads a short description only when the whole fallback fits", () => {
+  const fallback =
+    "Explore India's specialty coffee directory — roasters, beans, and brewing guides.";
+  // 103 chars: padding would overflow 160 and cut the fallback mid-sentence
+  const regions =
+    "Compare India's 13 coffee regions — Coorg, Chikmagalur, Araku & more — flavor, altitude & harvest data.";
+  assert.equal(clampDescription(regions, fallback), regions);
+  assert.equal(
+    clampDescription("Short intro.", fallback),
+    `Short intro. ${fallback}`
+  );
 });

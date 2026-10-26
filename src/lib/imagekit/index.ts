@@ -110,12 +110,10 @@ export function generateBlurPlaceholder(imagePath: string): string {
  * Get placeholder image URL
  */
 export function getPlaceholderImage(
-  type: "coffee" | "roaster" = "coffee"
+  _type: "coffee" | "roaster" = "coffee"
 ): string {
-  // Fallback to placeholder service or local placeholder
-  return type === "coffee"
-    ? "/placeholder-coffee.jpg"
-    : "/placeholder-roaster.jpg";
+  // ponytail: one shared image for both; add a roaster-specific asset if logos need their own look.
+  return "/images/placeholder-coffee.avif";
 }
 
 /**

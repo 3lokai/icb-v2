@@ -166,6 +166,16 @@ export default function CoffeeCard({
 
   const detailHref = coffeeDetailHref(coffee.roaster_slug, coffee.slug!);
 
+  // ICB is an Indian directory; a foreign origin should not read as Indian.
+  const originBadge = coffee.origin_country ? (
+    <Badge
+      variant="onMedia"
+      className="absolute top-2 left-2 z-10 text-overline backdrop-blur-sm"
+    >
+      {coffee.origin_country} origin
+    </Badge>
+  ) : null;
+
   // Hero variant - large, interactive rating, spacious
   if (variant === "hero") {
     return (
@@ -195,6 +205,7 @@ export default function CoffeeCard({
               src={imageUrl}
               unoptimized
             />
+            {originBadge}
             {/* Title scrim */}
             <div
               className="absolute inset-x-0 bottom-0 z-10 p-4 pt-20"
@@ -439,6 +450,7 @@ export default function CoffeeCard({
             src={imageUrl}
             unoptimized
           />
+          {originBadge}
           {/* Title scrim */}
           <div
             className="absolute inset-x-0 bottom-0 z-10 p-4 pt-20"

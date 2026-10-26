@@ -103,6 +103,8 @@ export type CoffeeRegion = {
   state: string | null;
   subregion: string;
   pct: number | null;
+  /** Country from the linked canon region; null when unmapped. */
+  canon_country: string | null;
 };
 
 export type CoffeeEstate = {
