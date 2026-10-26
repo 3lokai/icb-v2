@@ -11,6 +11,8 @@ import type { LandingPageConfig } from "./types";
 export const beanTypePages: LandingPageConfig[] = [
   {
     slug: "arabica",
+    metaDescription:
+      "Indian Arabica coffees: SLN 795, SLN 9 and Chandragiri grown under shade at 1,000–1,700m in Chikmagalur and Coorg. Compare roasters and community ratings.",
     type: "bean_type",
     h1: "Arabica Coffee in India",
     entityLabel: "Arabica",
@@ -169,6 +171,8 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "robusta",
+    metaDescription:
+      "Indian Robusta coffees: bold, full-bodied specialty lots like C × R and Old Peradeniya from Kodagu and Chikmagalur. Compare roasters and community ratings.",
     type: "bean_type",
     h1: "Robusta Coffee in India",
     entityLabel: "Robusta",
@@ -331,6 +335,8 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "liberica",
+    metaDescription:
+      "Liberica coffee in India: the rare third species, mostly from Salawara Estate in Sakleshpur, with a smoky, jackfruit-and-woody cup. Compare ratings.",
     type: "bean_type",
     h1: "Liberica Coffee in India",
     entityLabel: "Liberica",
@@ -460,6 +466,8 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "excelsa",
+    metaDescription:
+      "Excelsa coffee in India: a tart, fruity, wine-like Liberica-family coffee, mostly from Mooleh Manay Estate in Coorg. Compare roasters and ratings.",
     type: "bean_type",
     h1: "Excelsa Coffee in India",
     entityLabel: "Excelsa",
@@ -589,6 +597,8 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "blends",
+    metaDescription:
+      "Indian coffee blends: Arabica–Robusta espresso blends and Robusta-forward filter blends from Chikmagalur, Coorg and Baba Budangiri, with community ratings.",
     type: "bean_type",
     h1: "Coffee Blends in India",
     entityLabel: "Coffee Blends",
@@ -732,6 +742,8 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "chicory-mixes",
+    metaDescription:
+      "Indian coffee–chicory blends for South Indian filter coffee, mostly from Chikmagalur and Baba Budangiri. Compare body, roast and community ratings.",
     type: "bean_type",
     h1: "Chicory Coffee Mixes in India",
     entityLabel: "Chicory Coffee Mixes",
@@ -861,6 +873,8 @@ export const beanTypePages: LandingPageConfig[] = [
 
   {
     slug: "single-origin",
+    metaDescription:
+      "Indian single origin coffees traceable to one estate or region: compare Chikmagalur and Araku, washed and natural, SLN 795 and Cauvery by community ratings.",
     type: "bean_type",
     h1: "Single Origin Coffee in India",
     entityLabel: "Single Origin",

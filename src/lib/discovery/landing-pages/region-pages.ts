@@ -125,6 +125,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "baba-budangiri",
+    metaDescription:
+      "Baba Budangiri specialty coffee: the Chikmagalur highland range where India's coffee story began, compared across roasters by community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Baba Budangiri Coffee in India",
@@ -234,6 +236,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "coorg",
+    metaDescription:
+      "Coorg (Kodagu) specialty coffee compared across roasters: shade-grown Arabica and Robusta from India's largest coffee district, washed to experimental.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Coorg Coffee in India",
@@ -344,6 +348,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "araku",
+    metaDescription:
+      "Araku Valley specialty coffee: bright, floral lots from tribal and cooperative producers in Andhra Pradesh's Eastern Ghats, compared by community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Araku Valley Coffee in India",
@@ -451,6 +457,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "nilgiris",
+    metaDescription:
+      "Nilgiris specialty coffee: cool-climate arabica from Tamil Nadu's Blue Mountain estates, distinct from Karnataka origins. Compare community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Nilgiris Coffee in India",
@@ -558,6 +566,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "shevaroy-hills",
+    metaDescription:
+      "Shevaroy Hills specialty coffee from Tamil Nadu's largest coffee region: diverse estates and experimental processing, compared by community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Shevaroy Hills Coffee in India",
@@ -774,6 +784,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "koraput",
+    metaDescription:
+      "Koraput specialty coffee from Odisha's Eastern Ghats: tribal smallholder arabica and India's newest specialty origin, compared by community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Koraput Coffee in India",
@@ -880,6 +892,8 @@ export const regionPages: LandingPageConfig[] = [
 
   {
     slug: "northeast-india",
+    metaDescription:
+      "Northeast India specialty coffee from Meghalaya's Garo and Khasi Hills, beyond the Western Ghats belt. Compare roasters, processes and community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Northeast India Coffee",
@@ -991,6 +1005,8 @@ export const regionPages: LandingPageConfig[] = [
   },
   {
     slug: "sakleshpur",
+    metaDescription:
+      "Sakleshpur and Manjarabad specialty coffee from one of Karnataka's wettest, most experimental coffee tracts. Compare roasters and community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Sakleshpur & Manjarabad Coffee in India",
@@ -1098,6 +1114,8 @@ export const regionPages: LandingPageConfig[] = [
   },
   {
     slug: "palani-hills",
+    metaDescription:
+      "Palani Hills specialty coffee from above Kodaikanal, grown with pepper, orange and cardamom on a northeast-monsoon calendar. Compare community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "Palani Hills (Pulneys) Coffee in India",
@@ -1203,6 +1221,8 @@ export const regionPages: LandingPageConfig[] = [
   },
   {
     slug: "biligiriranga-hills",
+    metaDescription:
+      "BR Hills (Biligiriranga) specialty coffee from the forest corridor where the Western and Eastern Ghats meet. Compare roasters and community ratings.",
     type: "region",
     heroBackgroundImage: REGION_HERO_BACKGROUND,
     h1: "BR Hills (Biligiriranga) Coffee in India",

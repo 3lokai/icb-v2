@@ -4,6 +4,8 @@ import type { LandingPageConfig } from "./types";
 export const priceBucketPages: LandingPageConfig[] = [
   {
     slug: "budget",
+    metaDescription:
+      "Indian specialty coffee under ₹500 from Coorg and Chikmagalur roasters, community-rated and normalized to 250g. Whole bean and ground, never instant.",
     type: "price_bucket",
     h1: "Budget Coffee Under ₹500 in India",
     entityLabel: "Under ₹500",
