@@ -1,8 +1,10 @@
 "use client";
 
+import { Browser } from "leaflet";
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import type { InsightsStats } from "@/lib/data/fetch-insights-stats";
+import { RoasterMapFallback } from "./RoasterMapBoundary";
 
 /* ─── Helpers ──────────────────────────────────────────────────────── */
 // Scale radius: 1 roaster = 12px, ~20 roasters = ~26px
@@ -31,6 +33,9 @@ export function RoasterMap({
 }: {
   cities: InsightsStats["roaster_cities"];
 }) {
+  // Without SVG support Leaflet gets a null renderer and CircleMarker throws on mount
+  if (!Browser.svg) return <RoasterMapFallback />;
+
   return (
     <div
       className="relative overflow-hidden rounded-sm"
