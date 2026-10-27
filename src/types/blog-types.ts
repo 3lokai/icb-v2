@@ -76,6 +76,8 @@ export type Series = {
   description?: string;
   metadata?: SeriesMetadata;
   cover?: SanityImage;
+  /** Editorial position (1 = first) — only on ALL_SERIES_QUERY, which sorts by it. */
+  order?: number;
   /** Published articles in reading order — only on ALL_SERIES_QUERY. */
   parts?: { title: string; slug: string }[];
   audience?: string;

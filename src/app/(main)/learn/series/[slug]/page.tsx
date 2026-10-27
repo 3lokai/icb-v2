@@ -119,6 +119,7 @@ export default async function SeriesPage({ params }: Props) {
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: baseUrl },
     { name: "Field Guide", url: `${baseUrl}/learn` },
+    { name: "Series", url: `${baseUrl}/learn/series` },
     { name: series.name, url: seriesUrl },
   ]);
 

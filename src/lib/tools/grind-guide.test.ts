@@ -5,7 +5,10 @@ import {
   BREW_METHODS,
   GRINDERS,
   type Grinder,
+  convertGrinderSetting,
   formatSetting,
+  parseGrinderSetting,
+  settingForMicrons,
   getBrewMethod,
   getGrinder,
   micronForSetting,
@@ -253,4 +256,60 @@ test("every brew method resolves for every grinder without throwing", () => {
       assert.ok(res.rangeLabel.length > 0, `${g.key}/${m.key}: empty label`);
     }
   }
+});
+
+test("parseGrinderSetting handles native marks and absolute clicks", () => {
+  const k6 = getGrinder("kingrinder-k6")!;
+  assert.equal(parseGrinderSetting(k6, "1.20"), 80);
+  assert.equal(parseGrinderSetting(k6, "80"), 80);
+  assert.equal(parseGrinderSetting(k6, "0.05"), 5);
+  assert.equal(parseGrinderSetting(k6, "1.05"), 65);
+  // Unpadded "1.5" is ambiguous (1.05 vs 1.50) — reject rather than guess.
+  assert.equal(parseGrinderSetting(k6, "1.5"), null);
+  assert.equal(parseGrinderSetting(k6, "1.050"), null);
+  assert.equal(parseGrinderSetting(k6, "1.60"), null);
+  assert.equal(parseGrinderSetting(k6, "3.00"), null);
+  assert.equal(parseGrinderSetting(k6, "-1"), null);
+  assert.equal(parseGrinderSetting(k6, "abc"), null);
+
+  const jx = getGrinder("1zpresso-jx")!;
+  assert.equal(parseGrinderSetting(jx, "1.5.2"), 47);
+  assert.equal(parseGrinderSetting(jx, "47"), 47);
+  assert.equal(parseGrinderSetting(jx, "1.5.3"), null);
+  assert.equal(parseGrinderSetting(jx, "1.10.0"), null);
+
+  const c2 = getGrinder("timemore-c2")!;
+  assert.equal(parseGrinderSetting(c2, "13"), 13);
+  assert.equal(parseGrinderSetting(c2, "13.5"), null);
+  assert.equal(parseGrinderSetting(c2, "31"), null);
+
+  const sculptor = getGrinder("timemore-078")!;
+  assert.equal(parseGrinderSetting(sculptor, "6.5"), 6.5);
+  assert.equal(parseGrinderSetting(sculptor, "6.25"), null);
+});
+
+test("grinder-to-grinder conversion preserves a usable modeled starting point", () => {
+  const k6 = getGrinder("kingrinder-k6")!;
+  const c40 = getGrinder("comandante-c40")!;
+  const input = parseGrinderSetting(k6, "1.20")!;
+  const result = convertGrinderSetting(k6, c40, input)!;
+  assert.ok(result);
+  assert.equal(result.micron, micronForSetting(k6, 80));
+  assert.equal(result.outOfRange, false);
+  assert.equal(result.targetLabel, formatSetting(c40, result.targetSetting));
+  assert.ok(
+    result.targetSetting >= c40.settingMin &&
+      result.targetSetting <= c40.settingMax
+  );
+  assert.equal(convertGrinderSetting(k6, c40, 999), null);
+});
+
+test("micron converter rejects invalid requests and flags unreachable targets", () => {
+  const k6 = getGrinder("kingrinder-k6")!;
+  assert.equal(settingForMicrons(k6, Number.NaN), null);
+  assert.equal(settingForMicrons(k6, -1), null);
+  assert.equal(settingForMicrons(k6, 1401), null);
+  assert.equal(settingForMicrons(k6, 1000)?.outOfRange, false);
+  assert.equal(settingForMicrons(k6, 1400)?.outOfRange, true);
+  assert.equal(settingForMicrons(k6, 1400)?.targetSetting, k6.settingMax);
 });

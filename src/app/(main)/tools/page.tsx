@@ -13,7 +13,7 @@ import { generateMetadata } from "@/lib/seo/metadata";
 import { generateCollectionPageSchema, getSeoBaseUrl } from "@/lib/seo/schema";
 
 const TOOLS_DESCRIPTION =
-  "Free brewing tools for specialty coffee: a ratio calculator, competition recipes, a brew diagnosis compass, and a grind size converter.";
+  "Free coffee brewing tools: ratio calculator, competition recipes, brew compass, and a grinder setting converter with microns.";
 
 // SEO Metadata
 export const metadata = generateMetadata({
@@ -71,7 +71,7 @@ const toolItems = [
       name: "Grind Size Converter",
       url: `${baseUrl}/tools/grind-size-converter`,
       description:
-        "Grind size chart: convert brew method to a grinder setting in clicks and microns",
+        "Convert settings between grinders, microns to clicks, or brew methods to grind ranges",
     },
   },
 ];
@@ -146,9 +146,9 @@ const tools: Tool[] = [
       "The Grind Size Converter, showing brew methods mapped to grinder settings on a micron-scale chart.",
     name: "Grind Size Converter",
     blurb:
-      "Pick your brew method and grinder to get the exact clicks or numbers to dial in. A full grind-size chart maps every method on a micron scale.",
+      "Convert settings between grinders, translate micron targets to clicks, or choose a brew method. Includes a full grind-size chart.",
     features: [
-      "Brew method → grinder setting",
+      "Grinder → grinder and micron conversions",
       "Timemore, 1Zpresso, Baratza, Hario",
       "Micron-scale chart",
     ],

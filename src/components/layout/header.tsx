@@ -96,6 +96,7 @@ const baseNavItems = [
     link: "/learn",
     children: [
       { name: "Articles", link: "/learn" },
+      { name: "Series", link: "/learn/series" },
       { name: "Glossary", link: "/learn/glossary" },
     ],
   },

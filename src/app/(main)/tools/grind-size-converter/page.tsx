@@ -29,9 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const canonicalUrl = `${baseUrl}${canonicalPath}`;
 
   const baseMetadata = generateBaseMetadata({
-    title: "Coffee Grind Size Converter & Chart",
+    title: "Grinder Setting Converter, Microns & Grind Size Chart",
     description:
-      "Convert any brew method to a grinder setting. Pick your brew method and grinder — Timemore, 1Zpresso, Baratza, Hario — and get the clicks or numbers to dial in, plus a full grind-size chart in microns.",
+      "Convert settings between coffee grinders, translate microns into clicks, or get brew-method grind ranges. Includes a free grind size chart.",
     keywords: [
       "coffee grind size chart",
       "grind size converter",
@@ -44,6 +44,8 @@ export async function generateMetadata(): Promise<Metadata> {
       "1Zpresso grind settings",
       "Baratza Encore grind settings",
       "coffee grind microns",
+      "grinder to grinder converter",
+      "coffee micron to grinder clicks",
     ],
     canonical: canonicalPath,
     type: "website",
@@ -90,7 +92,7 @@ const grindToolSchema = {
   "@type": "WebApplication",
   name: "Coffee Grind Size Converter",
   description:
-    "Interactive grind size chart and converter mapping brew methods to grinder settings in microns and clicks.",
+    "Coffee grinder-to-grinder conversion, micron-to-click estimates, brew-method settings and grind-size chart.",
   url: `${process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com"}/tools/grind-size-converter`,
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Web Browser",
@@ -105,6 +107,8 @@ const grindToolSchema = {
     "Particle size in microns",
     "Visual grind-size chart",
     "Shareable grind setups",
+    "Grinder-to-grinder setting conversion",
+    "Micron-to-grinder conversion",
   ],
 };
 
@@ -134,7 +138,7 @@ export default function GrindSizeConverterPage() {
 
       <PageHeader
         backgroundImage="/images/hero-recipes.avif"
-        description="Translate any brew method into a real grinder setting. Pick your method and grinder, get the clicks to dial in, and see the whole grind-size chart in microns."
+        description="Convert between grinder settings or from a micron target, and find brew-method grind ranges. Free, with a visual grind-size chart."
         overline="Grind Size by Brew Method & Grinder"
         title="Grind Size Converter"
       />
