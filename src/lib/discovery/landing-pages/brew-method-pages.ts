@@ -669,7 +669,7 @@ export const brewMethodPages: LandingPageConfig[] = [
       {
         question: "What makes a coffee good for espresso?",
         answer:
-          "Espresso rewards coffees with body, sweetness, and low to moderate acidity. Medium to dark roasts with chocolate, caramel, and nutty profiles pull the best shots. Indian arabica-robusta blends and medium-dark single origins from Karnataka are excellent choices.",
+          "A coffee suited to espresso has body, sweetness, and low to moderate acidity. Medium to dark roasts with chocolate, caramel, or nutty profiles pull the most consistent shots. Among Indian beans, medium-dark Karnataka arabicas and arabica-robusta blends both work well; single-origin medium roasts take more dialling in.",
       },
       {
         question: "Can I use single-origin Indian coffee for espresso?",
@@ -956,8 +956,8 @@ export const brewMethodPages: LandingPageConfig[] = [
     type: "brew_method",
     h1: "Coffees for South Indian Filter in India",
     entityLabel: "South Indian Filter",
-    // Default template runs 67 chars once the title suffix is appended; override to fit.
-    seoTitle: "Best Coffees for South Indian Filter",
+    // Default template runs 62 chars once the title suffix is appended; override to fit.
+    seoTitle: "Coffees for South Indian Filter",
     intro:
       "The South Indian filter runs on dark-roasted robusta and chicory blends, mostly out of Chikmagalur and Baba Budangiri: a slow drip through a metal filter into a thick decoction that meets hot milk and sugar. Specialty roasters are now building 100% arabica filter blends that keep the body without the harshness.",
     headerNudge:

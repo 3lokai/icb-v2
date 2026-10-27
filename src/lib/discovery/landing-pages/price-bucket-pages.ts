@@ -125,8 +125,8 @@ export const priceBucketPages: LandingPageConfig[] = [
         href: "/learn/is-specialty-coffee-worth-it-value-framework",
       },
       {
-        label: "Your first bag of Indian specialty coffee",
-        href: "/learn/your-first-bag-of-indian-specialty-coffee",
+        label: "Indian coffee regions: how geography shapes flavour",
+        href: "/learn/indian-coffee-regions-geography-shapes-flavor",
       },
       {
         label: "Whole bean vs ground: what to actually buy",

@@ -12,6 +12,7 @@ import {
 } from "@/lib/data/fetch-public-directory-totals";
 import type { CoffeeFilters, CoffeeSummary } from "@/types/coffee-types";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
+import { truncateTitle } from "@/lib/seo/metadata";
 import {
   coffeeProductListItem,
   generateCollectionPageSchema,
@@ -64,7 +65,7 @@ export async function generateMetadata({
   const coffeeCountLabel = `${totals.coffees.toLocaleString("en-IN")}+`;
 
   // Build title based on filters — root layout appends "| Indian Coffee Beans"
-  let title = `Buy Coffee Beans in India (${coffeeCountLabel} SKUs)`;
+  let title = `Buy Coffee Beans India (${coffeeCountLabel} SKUs)`;
   if (filters.q) {
     title = `${filters.q} – Coffee Search`;
   } else if (filters.roast_levels && filters.roast_levels.length > 0) {
@@ -116,7 +117,8 @@ export async function generateMetadata({
   }
 
   return {
-    title,
+    // Raw Metadata skips generateMetadata's clamp, and the count label grows with the catalog
+    title: truncateTitle(title),
     description,
     keywords: [
       "buy coffee beans India",
