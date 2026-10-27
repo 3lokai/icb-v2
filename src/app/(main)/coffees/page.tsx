@@ -12,7 +12,7 @@ import {
 } from "@/lib/data/fetch-public-directory-totals";
 import type { CoffeeFilters, CoffeeSummary } from "@/types/coffee-types";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
-import { truncateTitle } from "@/lib/seo/metadata";
+import { TITLE_TEMPLATE_SUFFIX, truncateTitle } from "@/lib/seo/metadata";
 import {
   coffeeProductListItem,
   generateCollectionPageSchema,
@@ -112,13 +112,13 @@ export async function generateMetadata({
       ? `${baseUrl}/coffees`
       : `${baseUrl}/coffees?page=${page}`;
 
-  if (page > 1) {
-    title = `${title} — Page ${page}`;
-  }
+  // Raw Metadata skips generateMetadata's clamp, and the count label grows with
+  // the catalog. Clamp the base only, so each paginated URL keeps a unique title.
+  const pageSuffix = page > 1 ? ` — Page ${page}` : "";
+  title = `${truncateTitle(title, undefined, pageSuffix + TITLE_TEMPLATE_SUFFIX)}${pageSuffix}`;
 
   return {
-    // Raw Metadata skips generateMetadata's clamp, and the count label grows with the catalog
-    title: truncateTitle(title),
+    title,
     description,
     keywords: [
       "buy coffee beans India",

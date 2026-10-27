@@ -162,29 +162,34 @@ export default async function CategoryPage({ params }: Props) {
               </section>
             )}
 
-            <div className="flex items-center justify-between border-b pb-6">
-              <h2 className="text-title font-semibold tracking-tight">
-                All Entries
-              </h2>
-              <div className="text-caption font-medium text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
-                {articles.length} articles
-              </div>
-            </div>
+            {/* A pillar holding only its hub shows just "Start here", not an empty state. */}
+            {(entries.length > 0 || !hub) && (
+              <>
+                <div className="flex items-center justify-between border-b pb-6">
+                  <h2 className="text-title font-semibold tracking-tight">
+                    All Entries
+                  </h2>
+                  <div className="text-caption font-medium text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
+                    {articles.length} articles
+                  </div>
+                </div>
 
-            {entries.length > 0 ? (
-              <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-                {entries.map((article) => (
-                  <PostCard key={article._id} article={article} />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-20 text-center">
-                <h3 className="text-heading mb-2">No articles yet</h3>
-                <p className="text-muted-foreground">
-                  We haven't published anything in this category yet. Check back
-                  soon!
-                </p>
-              </div>
+                {entries.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
+                    {entries.map((article) => (
+                      <PostCard key={article._id} article={article} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-20 text-center">
+                    <h3 className="text-heading mb-2">No articles yet</h3>
+                    <p className="text-muted-foreground">
+                      We haven't published anything in this category yet. Check
+                      back soon!
+                    </p>
+                  </div>
+                )}
+              </>
             )}
           </Stack>
         </Section>
