@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { client } from "@/lib/sanity/client";
 import {
   ALL_ARTICLES_QUERY,
@@ -176,6 +177,13 @@ export default async function LearnPage() {
               </div>
             </details>
           )}
+          <Link
+            href="/learn/series"
+            className="mx-auto mt-6 flex w-fit items-center gap-2 text-caption text-primary hover:underline"
+          >
+            Browse every series by level
+            <span aria-hidden>→</span>
+          </Link>
         </Section>
       )}
     </>

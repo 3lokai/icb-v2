@@ -88,6 +88,10 @@ export async function POST(request: Request) {
     revalidatePath("/learn");
     revalidatePath("/learn/page/[page]", "page");
   }
+  // The series index lists every series and its parts.
+  if (payload._type === "article" || payload._type === "series") {
+    revalidatePath("/learn/series");
+  }
 
   await submitToIndexNow([`${baseUrl().replace(/\/$/, "")}${path}`]);
 

@@ -113,6 +113,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     }),
     withHreflang({
+      url: `${baseUrl}/learn/series`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }),
+    withHreflang({
       url: `${baseUrl}/learn/glossary`,
       lastModified: new Date(),
       changeFrequency: "monthly",
