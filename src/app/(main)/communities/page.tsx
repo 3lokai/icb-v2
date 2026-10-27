@@ -1,6 +1,5 @@
 import { Accent } from "@/components/primitives/accent";
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { CommunityGrid } from "@/components/communities/CommunityGrid";
 import { FAQSection } from "@/components/common/FAQ";
@@ -20,52 +19,19 @@ const baseUrl =
   process.env.NEXT_PUBLIC_APP_URL || "https://www.indiancoffeebeans.com";
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: "Coffee Communities in India",
+  title: "Coffee & Barista Communities in India",
   description:
-    "Connect with fellow coffee enthusiasts in India. Explore active WhatsApp groups, Discord servers, and forums for brewing, roasting, and specialty coffee talk.",
+    "Find active coffee WhatsApp groups, Discord servers and forums in India for home brewers, baristas, roasters and the coffee-curious, each vetted for activity.",
   keywords: [
     "Indian coffee communities",
     "coffee WhatsApp groups India",
     "coffee Discord India",
+    "barista WhatsApp group India",
     "roasting communities India",
   ],
   canonical: `${baseUrl}/communities`,
   type: "website",
 });
-
-function CommunityGridSkeleton() {
-  return (
-    <Section spacing="default">
-      <Stack gap="8">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <Stack gap="2">
-            <div className="h-8 w-56 animate-pulse rounded bg-muted/20" />
-            <div className="h-4 w-32 animate-pulse rounded bg-muted/20" />
-          </Stack>
-          <div className="h-11 w-full max-w-sm animate-pulse rounded bg-muted/20" />
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              className="h-8 w-20 animate-pulse rounded-full bg-muted/20"
-            />
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="h-[320px] w-full animate-pulse rounded-lg border border-border/5 bg-muted/10"
-            />
-          ))}
-        </div>
-      </Stack>
-    </Section>
-  );
-}
 
 export default async function CommunitiesPage() {
   const communities = await getAllCommunities();
@@ -100,18 +66,14 @@ export default async function CommunitiesPage() {
             Where India&apos;s coffee people <Accent>gather.</Accent>
           </>
         }
-        description="Connect with enthusiasts, professionals, and home brewers in vetted WhatsApp, Discord, Telegram, and social communities across India."
+        description={`${communities.length || "Vetted"}${communities.length ? " vetted" : ""} coffee communities across India: home-brew groups, city clubs, roaster circles, and open forums, some with their own channels for baristas.`}
       />
       <PageShell maxWidth="7xl">
         <StructuredData schema={[collectionSchema, breadcrumbSchema]} />
 
-        {/* The directory leads, since it's what people came for.
-            CommunityGrid reads useSearchParams, so it needs its own boundary —
-            but the JSON-LD above must stay outside it, or Next streams the
-            schema as RSC flight data instead of a real script tag. */}
-        <Suspense fallback={<CommunityGridSkeleton />}>
-          <CommunityGrid communities={communities} />
-        </Suspense>
+        {/* The directory leads, since it's what people came for. It server-renders
+            in full: crawlers must see community names and join links. */}
+        <CommunityGrid communities={communities} />
 
         {/* Editorial context lives below the directory: depth for readers and
           search engines (FAQ rich results) without delaying the primary task. */}
@@ -136,6 +98,11 @@ export default async function CommunitiesPage() {
                 "Which platform should I choose: WhatsApp, Discord, Telegram or Reddit?",
               answer:
                 "Each platform has its own rhythm. WhatsApp and Telegram groups are fast and casual, good for quick brew questions and daily chatter. Discord servers split conversation into channels, so roasting, espresso, and gear talk each get their own space for deeper, searchable discussion. Reddit and Facebook groups run on longer posts and slower, reference-style threads. Use the platform filters above to find the format that fits how you like to talk about coffee.",
+            },
+            {
+              question: "Are there WhatsApp groups for baristas in India?",
+              answer:
+                "Yes, though most barista talk happens inside the broader coffee communities rather than in standalone groups. Some of the larger groups listed here run separate channels for baristas and café staff, alongside their home-brewing and gear chats. Join the city or specialty group closest to your work and ask the admins for the barista channel.",
             },
             {
               question: "How do I get a community listed?",
