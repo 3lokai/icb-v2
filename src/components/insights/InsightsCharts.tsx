@@ -21,6 +21,7 @@ import { Stack } from "@/components/primitives/stack";
 import type { InsightsStats } from "@/lib/data/fetch-insights-stats";
 import type { ProcessEnum } from "@/types/db-enums";
 import { ChartCard } from "./ChartCard";
+import { RoasterMapBoundary } from "./RoasterMapBoundary";
 
 /* Leaflet map — SSR-disabled (window / document required) */
 const RoasterMap = dynamic(
@@ -705,7 +706,9 @@ export function RoasterCityChart({
       fileName="icb-roaster-cities"
     >
       {/* The map itself */}
-      <RoasterMap cities={data} />
+      <RoasterMapBoundary>
+        <RoasterMap cities={data} />
+      </RoasterMapBoundary>
 
       {/* City legend below */}
       <div className="mt-4 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
