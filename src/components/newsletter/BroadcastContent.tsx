@@ -50,6 +50,21 @@ function trimEmailFooter(root: HTMLElement): void {
 }
 
 /**
+ * The email carries its own headline `<h1>`, but on-site the page template
+ * already owns the H1 — demote the email's so each archive page has exactly one.
+ */
+function demoteEmailH1s(root: HTMLElement): void {
+  for (const h1 of root.querySelectorAll("h1")) {
+    const h2 = h1.ownerDocument.createElement("h2");
+    for (const { name, value } of Array.from(h1.attributes)) {
+      h2.setAttribute(name, value);
+    }
+    h2.append(...Array.from(h1.childNodes));
+    h1.replaceWith(h2);
+  }
+}
+
+/**
  * The archive files are the emails as they went out, so they still contain
  * Kit/Notifuse Liquid. There is no subscriber on the public web, so:
  * `{% if %}A{% else %}B{% endif %}` keeps B (the generic greeting),
@@ -91,6 +106,7 @@ function sanitizeBroadcastHtml(html: string): string {
       RETURN_DOM: true,
     }) as HTMLElement;
     trimEmailFooter(root);
+    demoteEmailH1s(root);
     return resolveLiquidForArchive(root.innerHTML);
   } finally {
     DOMPurify.removeHook("afterSanitizeAttributes");

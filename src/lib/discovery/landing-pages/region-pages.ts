@@ -807,7 +807,7 @@ export const regionPages: LandingPageConfig[] = [
           "Emerging tribal smallholder specialty, Eastern Ghats terroir",
       },
       overview:
-        "Koraput is a hilly district in southern Odisha, where the Eastern Ghats rise to 1,500 metres. Coffee cultivation here is primarily by tribal communities on smallholder farms, part of a broader tribal agriculture system that includes millet, turmeric, and forest produce. Koraput coffee is genuinely emerging. Awareness in specialty circles is recent, and the number of roasters sourcing from the region is small but growing. The Eastern Ghats terroir, drier than the Western Ghats and with a distinct forest ecosystem, produces a different flavour profile from Karnataka's mainstream origins.",
+        "Koraput is a hilly district in southern Odisha, where coffee grows at roughly 900 to 1,370 metres in the Eastern Ghats. Coffee cultivation here is primarily by tribal communities on smallholder farms, part of a broader tribal agriculture system that includes millet, turmeric, and forest produce. Koraput coffee is genuinely emerging. Awareness in specialty circles is recent, and the number of roasters sourcing from the region is small but growing. The Eastern Ghats terroir, drier than the Western Ghats and with a distinct forest ecosystem, produces a different flavour profile from Karnataka's mainstream origins. TDCCOL (Tribal Development Co-operative Corporation of Odisha Ltd), a state government enterprise, buys cherry from tribal growers, processes it, and sells it under the Koraput Coffee brand, launched in 2019. A small number of lots now carry sub-regional or estate names, such as Kruti Coffee's Deomali Special and Kindiriguda Naturals, and Madhu Agro Estate lots from Hill Groove Coffee. In the Coffee Board's Flavour of India Fine Cup 2024, with results announced in April 2025, Koraput coffees received two Fine Cup Awards, one for Arabica Washed and one for Arabica Natural.",
       flavourProfile: {
         typical: [
           "Mild fruit",
@@ -848,7 +848,7 @@ export const regionPages: LandingPageConfig[] = [
       {
         question: "Where is Koraput coffee grown?",
         answer:
-          "In the Eastern Ghats hills of southern Odisha, up to about 1,500 metres. Almost none of it comes from estates: the growers are tribal smallholders, which is why lots are small, seasonal, and more variable than anything out of Karnataka.",
+          "In the Eastern Ghats hills of southern Odisha, at roughly 900 to 1,370 metres. Most of it comes from tribal smallholders rather than estates, which is why lots are small, seasonal, and more variable than anything out of Karnataka.",
       },
       {
         question: "How does Koraput compare to Araku Valley?",
