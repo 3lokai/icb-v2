@@ -70,20 +70,11 @@ const GROUPS: {
   },
 ];
 
-// ponytail: pinned by slug because series have no order field; add one in
-// studio-icb (schemaTypes/series.ts) if more than one series needs pinning.
-const START_SERIES = "your-first-month-with-indian-specialty-coffee";
-
 export default async function SeriesIndexPage() {
   const series = await client.fetch<Series[]>(ALL_SERIES_QUERY);
   // A series with no published parts has nothing to read yet. The query
-  // orders by name; the starting series moves to the front of its group.
-  const live = series
-    .filter((s) => (s.parts?.length ?? 0) > 0)
-    .sort(
-      (a, b) =>
-        Number(b.slug === START_SERIES) - Number(a.slug === START_SERIES)
-    );
+  // already sorts by the editorial `order` field, so groups keep that order.
+  const live = series.filter((s) => (s.parts?.length ?? 0) > 0);
   const partCount = live.reduce((n, s) => n + (s.parts?.length ?? 0), 0);
 
   const baseUrl = getSeoBaseUrl();

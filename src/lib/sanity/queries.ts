@@ -348,13 +348,14 @@ export const SERIES_BY_SLUG_PROJECTION = `
 export const ALL_SERIES_QUERY = `
   *[_type == "series" && defined(slug.current)] {
     ${SERIES_BY_SLUG_PROJECTION},
+    order,
     "parts": *[_type == "article" && !(_id in path("drafts.**"))
       && seriesRef._ref == ^._id]
       | order(coalesce(seriesPart, 999) asc, date asc) {
         title,
         "slug": slug.current
       }
-  } | order(name asc)
+  } | order(coalesce(order, 999) asc, name asc)
 `;
 
 export const SERIES_BY_SLUG_QUERY = `
