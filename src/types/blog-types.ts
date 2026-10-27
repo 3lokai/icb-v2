@@ -56,6 +56,8 @@ export type Category = {
   kind?: "pillar" | "topic";
   color?: string;
   articleCount?: number;
+  /** Pillar hub article ("Start here"), set per pillar in Studio. */
+  startHere?: { title: string; slug: string } | null;
   metadata?: CategoryMetadata;
   cover?: SanityImage;
 };

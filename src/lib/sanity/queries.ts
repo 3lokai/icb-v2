@@ -246,6 +246,7 @@ export const PILLAR_CATEGORIES_QUERY = `
     description,
     kind,
     color,
+    "startHere": startHere->{ title, "slug": slug.current },
     "articleCount": count(*[_type == "article" && category._ref == ^._id])
   }
   | order(name asc)
@@ -272,6 +273,7 @@ export const CATEGORY_BY_SLUG_QUERY = `
     description,
     kind,
     color,
+    "startHere": startHere->{ title, "slug": slug.current },
     metadata{
       metaTitle,
       metaDescription,

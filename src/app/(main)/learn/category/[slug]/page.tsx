@@ -76,6 +76,11 @@ export default async function CategoryPage({ params }: Props) {
     `*[_type == "article" && defined(slug.current) && category->slug.current == $slug] | order(date desc) { ${ARTICLE_PROJECTION} }`,
     { slug }
   );
+  // The pillar's hub leads the page and is not repeated in the grid.
+  const hub = category.startHere
+    ? articles.find((a) => a.slug === category.startHere?.slug)
+    : undefined;
+  const entries = hub ? articles.filter((a) => a !== hub) : articles;
 
   const pillarImages: Record<string, string> = {
     "origins-and-estates": "/images/learn/pillars/origins-and-estates.webp",
@@ -145,6 +150,18 @@ export default async function CategoryPage({ params }: Props) {
           </Breadcrumb>
 
           <Stack gap="12">
+            {hub && (
+              <section aria-labelledby="start-here" className="space-y-6">
+                <h2
+                  id="start-here"
+                  className="text-title font-semibold tracking-tight"
+                >
+                  Start here
+                </h2>
+                <PostCard article={hub} featured />
+              </section>
+            )}
+
             <div className="flex items-center justify-between border-b pb-6">
               <h2 className="text-title font-semibold tracking-tight">
                 All Entries
@@ -154,9 +171,9 @@ export default async function CategoryPage({ params }: Props) {
               </div>
             </div>
 
-            {articles.length > 0 ? (
+            {entries.length > 0 ? (
               <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-                {articles.map((article) => (
+                {entries.map((article) => (
                   <PostCard key={article._id} article={article} />
                 ))}
               </div>
