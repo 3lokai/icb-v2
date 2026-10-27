@@ -638,6 +638,10 @@ export const brewMethodPages: LandingPageConfig[] = [
           mistake: "Using light roasts without adjustment",
           fix: "Light roasts are denser and harder to extract under pressure. If you must use them, grind significantly finer and increase dose. Most Indian light roasts perform better on pour-over.",
         },
+        {
+          mistake: "Ignoring the roast date",
+          fix: "SCA guidance, based on how fast roasted coffee loses CO₂, treats whole beans as fresh for about three weeks after roasting and ground coffee for about an hour. Check the roast date on the bag and grind just before pulling the shot.",
+        },
       ],
       roastPairing: {
         best: ["medium-roast", "medium-dark-roast", "dark-roast"],

@@ -237,7 +237,7 @@ export const priceBucketPages: LandingPageConfig[] = [
       {
         question: "What is SLN 795 and why does it matter?",
         answer:
-          "SLN 795 (also written S.795) is India's most celebrated arabica variety, bred from a Kent × S.288 cross at the Balehonnur coffee research station and released in the mid-1940s. It is still widely grown across Chikmagalur and Baba Budangiri. At high altitude with washed processing, it produces jasmine, stone fruit, and bright acidity that's world-competitive. Most top-rated Indian coffees in this price range are SLN 795.",
+          "SLN 795 (also written S.795) is India's most celebrated arabica variety, bred from a Kent × S.288 cross at the Balehonnur coffee research station and released in the mid-1940s. It is still widely grown across Chikmagalur and Baba Budangiri. At high altitude with washed processing, it produces jasmine, stone fruit, and bright acidity that's world-competitive. It is also the variety named most often on mid-range lots in the ICB catalogue, at close to a third of those that state a variety.",
       },
       {
         question: "How should I store premium coffee?",

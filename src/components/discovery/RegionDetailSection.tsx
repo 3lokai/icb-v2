@@ -33,6 +33,8 @@ import { Icon } from "@/components/common/Icon";
 
 type RegionDetailSectionProps = {
   profile: RegionProfileConfig;
+  /** Live catalogue sentence on the region's process split (see process-mix.ts). */
+  processMix?: string;
   slug: string;
   guideHref?: string;
   className?: string;
@@ -46,6 +48,7 @@ function regionSlugToLabel(slug: string): string {
 
 export async function RegionDetailSection({
   profile,
+  processMix,
   slug,
   guideHref = "/learn",
   className,
@@ -119,6 +122,11 @@ export async function RegionDetailSection({
                   <p className="text-body leading-relaxed text-foreground/90">
                     {flavourProfile.processVariation}
                   </p>
+                  {processMix && (
+                    <p className="mt-3 text-caption text-muted-foreground">
+                      {processMix}
+                    </p>
+                  )}
                 </div>
               </Stack>
             </div>
