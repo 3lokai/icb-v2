@@ -111,9 +111,11 @@ export function GrindConverterClient() {
     if (typeof window === "undefined") {
       return;
     }
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("method", methodKey);
-    params.set("grinder", grinderKey);
+    // Fresh params so a visit via a conversion link doesn't leak its state here.
+    const params = new URLSearchParams({
+      method: methodKey,
+      grinder: grinderKey,
+    });
     const url = `${window.location.origin}${pathname}?${params.toString()}`;
     try {
       await navigator.clipboard.writeText(url);
@@ -260,19 +262,23 @@ export function GrindConverterClient() {
             {result.outOfRange && (
               <Alert>
                 <AlertDescription>
-                  The {grinder.label} can&apos;t reach a {method.name} grind —
-                  its range is {grinder.micronMin}–{grinder.micronMax} µm. Try a
-                  grinder suited to this brew method.
+                  <p>
+                    The {grinder.label} can&apos;t reach a {method.name} grind —
+                    its range is {grinder.micronMin}–{grinder.micronMax} µm. Try
+                    a grinder suited to this brew method.
+                  </p>
                 </AlertDescription>
               </Alert>
             )}
             {result.partial && !result.outOfRange && (
               <Alert>
                 <AlertDescription>
-                  This is the closest the {grinder.label} can get — part of the{" "}
-                  {method.name} range sits outside its {grinder.micronMin}–
-                  {grinder.micronMax} µm span, so the setting is clamped to the
-                  reachable end.
+                  <p>
+                    This is the closest the {grinder.label} can get — part of
+                    the {method.name} range sits outside its {grinder.micronMin}
+                    –{grinder.micronMax} µm span, so the setting is clamped to
+                    the reachable end.
+                  </p>
                 </AlertDescription>
               </Alert>
             )}

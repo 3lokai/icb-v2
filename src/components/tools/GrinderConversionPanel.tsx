@@ -1,9 +1,18 @@
 "use client";
+// src/components/tools/GrinderConversionPanel.tsx
+// Grinder → grinder and micron → grinder conversions, sitting above the
+// brew-method converter. Runs through the same linear micron model as the rest
+// of the grind guide, so results are starting estimates, not measured grinds.
 
-import { useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { LinkIcon } from "@phosphor-icons/react/dist/ssr";
+import { Icon } from "@/components/common/Icon";
+import { Stack } from "@/components/primitives/stack";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -13,7 +22,9 @@ import {
 } from "@/components/ui/select";
 import {
   GRINDERS,
+  type GrinderStyle,
   MICRON_AXIS_MAX,
+  MICRON_AXIS_MIN,
   convertGrinderSetting,
   getGrinder,
   parseGrinderSetting,
@@ -26,10 +37,16 @@ type Mode = "grinder" | "microns";
 const DEFAULT_SOURCE = "comandante-c40";
 const DEFAULT_TARGET = "kingrinder-k6";
 
-function inputHelp(style: string): string {
+const MODES: { key: Mode; label: string }[] = [
+  { key: "grinder", label: "From grinder" },
+  { key: "microns", label: "From microns" },
+];
+
+/** Input hint for a grinder's native setting notation. */
+function inputHelp(style: GrinderStyle): string {
   switch (style) {
     case "compound":
-      return "Enter rotation.click (e.g. 1.20) or total clicks (80).";
+      return "Enter rotation.click as printed (e.g. 1.20, 1.05) or total clicks (80).";
     case "triple":
       return "Enter rotation.number.tick (e.g. 1.5.2) or total ticks.";
     case "rotation":
@@ -41,63 +58,73 @@ function inputHelp(style: string): string {
   }
 }
 
-/** Independent conversions alongside the existing brew-method guide. */
+/** Grinder-to-grinder and micron-to-grinder conversion card. */
 export function GrinderConversionPanel() {
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
   const pathname = usePathname();
+
+  // Seeded once from a shared conversion link; local state after that.
   const [mode, setMode] = useState<Mode>(
-    params.get("convert") === "microns" ? "microns" : "grinder"
+    searchParams.get("convert") === "microns" ? "microns" : "grinder"
   );
   const [sourceKey, setSourceKey] = useState(
-    getGrinder(params.get("from") ?? "")?.key ?? DEFAULT_SOURCE
+    getGrinder(searchParams.get("from") ?? "")?.key ?? DEFAULT_SOURCE
   );
   const [targetKey, setTargetKey] = useState(
-    getGrinder(params.get("to") ?? "")?.key ?? DEFAULT_TARGET
+    getGrinder(searchParams.get("to") ?? "")?.key ?? DEFAULT_TARGET
   );
-  const [input, setInput] = useState(params.get("input") ?? "");
+  const [input, setInput] = useState(searchParams.get("input") ?? "");
 
+  // Keys are only ever set from GRINDERS, so these always resolve.
   const source = getGrinder(sourceKey)!;
   const target = getGrinder(targetKey)!;
 
-  const calculation = useMemo(() => {
-    if (!input.trim()) return { status: "empty" as const };
-
+  const result = useMemo(() => {
+    const text = input.trim();
+    if (!text) {
+      return undefined;
+    }
     if (mode === "grinder") {
-      const setting = parseGrinderSetting(source, input);
-      if (setting === null) return { status: "invalid" as const };
-      const result = convertGrinderSetting(source, target, setting);
-      return result
-        ? { status: "ready" as const, result }
-        : { status: "invalid" as const };
+      const setting = parseGrinderSetting(source, text);
+      return setting === null
+        ? null
+        : convertGrinderSetting(source, target, setting);
     }
-
-    if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(input.trim())) {
-      return { status: "invalid" as const };
+    if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(text)) {
+      return null;
     }
-    const micron = Number(input.trim());
-    if (!Number.isFinite(micron) || micron < 1 || micron > MICRON_AXIS_MAX) {
-      return { status: "invalid" as const };
-    }
-    const result = settingForMicrons(target, micron);
-    return result
-      ? { status: "ready" as const, result }
-      : { status: "invalid" as const };
+    // settingForMicrons owns the range check.
+    return settingForMicrons(target, Number(text));
   }, [input, mode, source, target]);
 
-  const copyLink = async () => {
-    const linkParams = new URLSearchParams(params.toString());
-    linkParams.set("convert", mode);
-    linkParams.set("to", targetKey);
-    linkParams.set("input", input.trim());
-    if (mode === "grinder") linkParams.set("from", sourceKey);
-    else linkParams.delete("from");
+  const handleModeChange = (key: Mode) => {
+    setMode(key);
+    setInput("");
+  };
 
+  const handleCopyLink = async () => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("convert", mode);
+    params.set("to", targetKey);
+    params.set("input", input.trim());
+    if (mode === "grinder") {
+      params.set("from", sourceKey);
+    } else {
+      params.delete("from");
+    }
+    const url = `${window.location.origin}${pathname}?${params.toString()}`;
     try {
-      const link = `${window.location.origin}${pathname}?${linkParams.toString()}`;
-      await navigator.clipboard.writeText(link);
-      toast.success("Conversion link copied");
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copied!", {
+        description: "Your grinder conversion link is on the clipboard.",
+      });
     } catch {
-      toast.error("Could not copy conversion link");
+      toast.error("Couldn't copy link", {
+        description: "Something went wrong.",
+      });
     }
   };
 
@@ -106,53 +133,111 @@ export function GrinderConversionPanel() {
       aria-labelledby="grinder-convert-title"
       className="surface-1 card-padding rounded-2xl border border-border/40"
     >
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="text-overline tracking-[0.15em] text-muted-foreground">
-            Translate a recipe
-          </p>
-          <h3 id="grinder-convert-title" className="mt-1 text-heading">
-            Grinder-to-grinder conversion
-          </h3>
-          <p className="mt-2 max-w-2xl text-caption text-muted-foreground">
-            Already have a click setting or a micron target? Find an approximate
-            equivalent on another grinder, using ICB&apos;s existing model.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2" aria-label="Conversion input type">
-          {([
-            ["grinder", "From grinder"],
-            ["microns", "From microns"],
-          ] as const).map(([key, label]) => (
-            <button
-              key={key}
-              type="button"
-              aria-pressed={mode === key}
-              onClick={() => {
-                setMode(key);
-                setInput("");
-              }}
-              className={cn(
-                "rounded-full border px-3.5 py-1.5 text-caption font-medium transition-colors",
-                mode === key
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border/60 bg-background text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-              )}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-        {mode === "grinder" && (
+      <Stack gap="6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <label htmlFor="conversion-source" className="mb-2 block text-caption font-medium">
-              Source grinder
+            <p className="text-overline tracking-[0.15em] text-muted-foreground">
+              Translate a recipe
+            </p>
+            <h3 id="grinder-convert-title" className="mt-1 text-heading">
+              Grinder-to-grinder conversion
+            </h3>
+            <p className="mt-1 max-w-xl text-caption text-muted-foreground">
+              Already have a click setting or a micron target? Find the
+              approximate equivalent on another grinder.
+            </p>
+          </div>
+
+          {/* Mode chips */}
+          <div
+            role="group"
+            aria-label="Conversion input type"
+            className="flex flex-wrap gap-2"
+          >
+            {MODES.map(({ key, label }) => {
+              const active = key === mode;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => handleModeChange(key)}
+                  className={cn(
+                    "rounded-full border px-3.5 py-1.5 text-caption font-medium transition-colors",
+                    active
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border/60 bg-background text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                  )}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Inputs */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {mode === "grinder" && (
+            <div>
+              <label
+                className="mb-2 block text-caption font-medium text-muted-foreground"
+                htmlFor="conversion-source"
+              >
+                Source grinder
+              </label>
+              <Select value={sourceKey} onValueChange={setSourceKey}>
+                <SelectTrigger id="conversion-source" className="h-12 w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {GRINDERS.map((g) => (
+                    <SelectItem key={g.key} value={g.key}>
+                      {g.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          <div>
+            <label
+              className="mb-2 block text-caption font-medium text-muted-foreground"
+              htmlFor="conversion-input"
+            >
+              {mode === "grinder" ? "Source setting" : "Target size (µm)"}
             </label>
-            <Select value={sourceKey} onValueChange={setSourceKey}>
-              <SelectTrigger id="conversion-source" className="h-12 w-full">
+            <Input
+              id="conversion-input"
+              inputMode="decimal"
+              autoComplete="off"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={mode === "grinder" ? "e.g. 20" : "e.g. 650"}
+              aria-invalid={result === null}
+              aria-describedby="conversion-help"
+              className="h-12"
+            />
+            <p
+              id="conversion-help"
+              className="mt-2 text-micro text-muted-foreground"
+            >
+              {mode === "grinder"
+                ? inputHelp(source.style)
+                : `Enter ${MICRON_AXIS_MIN}–${MICRON_AXIS_MAX} µm.`}
+            </p>
+          </div>
+
+          <div>
+            <label
+              className="mb-2 block text-caption font-medium text-muted-foreground"
+              htmlFor="conversion-target"
+            >
+              Target grinder
+            </label>
+            <Select value={targetKey} onValueChange={setTargetKey}>
+              <SelectTrigger id="conversion-target" className="h-12 w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -164,91 +249,65 @@ export function GrinderConversionPanel() {
               </SelectContent>
             </Select>
           </div>
-        )}
-        <div>
-          <label htmlFor="conversion-input" className="mb-2 block text-caption font-medium">
-            {mode === "grinder" ? "Source setting" : "Target size (µm)"}
-          </label>
-          <input
-            id="conversion-input"
-            type="text"
-            inputMode="decimal"
-            autoComplete="off"
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder={mode === "grinder" ? "e.g. 20" : "e.g. 650"}
-            aria-invalid={calculation.status === "invalid"}
-            aria-describedby="conversion-help"
-            className="h-12 w-full rounded-md border border-input bg-background px-3 text-body outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          />
-          <p id="conversion-help" className="mt-2 text-micro text-muted-foreground">
-            {mode === "grinder"
-              ? inputHelp(source.style)
-              : `Enter 1–${MICRON_AXIS_MAX} µm.`}
-          </p>
         </div>
-        <div>
-          <label htmlFor="conversion-target" className="mb-2 block text-caption font-medium">
-            Target grinder
-          </label>
-          <Select value={targetKey} onValueChange={setTargetKey}>
-            <SelectTrigger id="conversion-target" className="h-12 w-full">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {GRINDERS.map((g) => (
-                <SelectItem key={g.key} value={g.key}>
-                  {g.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
 
-      {calculation.status === "invalid" && (
-        <p role="alert" className="mt-4 text-caption text-destructive">
-          {mode === "grinder"
-            ? `Invalid setting for ${source.label}. Check its adjustment notation and range.`
-            : `Enter a valid particle-size target between 1 and ${MICRON_AXIS_MAX} µm.`}
-        </p>
-      )}
-      {calculation.status === "ready" && (
-        <div className="mt-6 border-t border-border/40 pt-5">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <p className="text-overline tracking-[0.12em] text-muted-foreground">
-                Approximate {target.label} setting
-              </p>
-              <p className="mt-2 text-title font-semibold">
-                {calculation.result.outOfRange
-                  ? "Outside grinder range"
-                  : calculation.result.targetLabel}
-              </p>
-              <p className="mt-2 text-caption text-muted-foreground">
-                Modeled input: ~{Math.round(calculation.result.micron)} µm
-                {" · "}
-                Nearest target position: {calculation.result.targetLabel}
-              </p>
-            </div>
-            <Button variant="outline" size="sm" onClick={copyLink}>
-              Copy link
-            </Button>
-          </div>
-          {calculation.result.outOfRange && (
-            <p role="status" className="mt-3 text-caption text-destructive">
-              The {target.label} is modeled for {target.micronMin}–
-              {target.micronMax} µm; the nearest setting is only a boundary,
-              not an equivalent grind.
-            </p>
-          )}
-          <p className="mt-4 text-micro leading-relaxed text-muted-foreground">
-            Linear calibration estimate, not a measured particle distribution.
-            Burr geometry, zero points and beans vary. Use this only as a starting
-            point and dial in by taste.
+        {result === null && (
+          <p role="alert" className="text-caption text-destructive">
+            {mode === "grinder"
+              ? `That isn't a valid ${source.label} setting. Check the notation and range.`
+              : `Enter a particle size between ${MICRON_AXIS_MIN} and ${MICRON_AXIS_MAX} µm.`}
           </p>
-        </div>
-      )}
+        )}
+
+        {/* Result */}
+        {result && (
+          <Stack gap="4" className="border-t border-border/40 pt-5">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <p className="text-overline tracking-[0.15em] text-muted-foreground">
+                  {mode === "grinder" ? `${source.label} → ` : ""}
+                  {target.label}
+                </p>
+                <p className="mt-2 text-title leading-tight">
+                  {result.outOfRange ? (
+                    "Out of range"
+                  ) : (
+                    <span className="font-semibold">{result.targetLabel}</span>
+                  )}
+                </p>
+                <p className="mt-1 text-caption text-muted-foreground">
+                  {target.units} · ~{Math.round(result.micron)} µm
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCopyLink}
+                className="group border-border/50 text-caption text-muted-foreground hover:text-foreground"
+              >
+                <Icon className="mr-1 h-3 w-3" icon={LinkIcon} />
+                Copy link
+              </Button>
+            </div>
+
+            {result.outOfRange && (
+              <Alert>
+                <AlertDescription>
+                  <p>
+                    {`The ${target.label} can't reach ~${Math.round(result.micron)} µm — its range is ${target.micronMin}–${target.micronMax} µm. The closest it gets is ${result.targetLabel}, which is a boundary, not an equivalent grind.`}
+                  </p>
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <p className="text-micro leading-relaxed text-muted-foreground/80">
+              Estimated from each grinder&apos;s micron range — not a measured
+              particle distribution. Burr geometry, zero points and beans vary.
+              Treat it as a starting point and dial in by taste.
+            </p>
+          </Stack>
+        )}
+      </Stack>
     </section>
   );
 }

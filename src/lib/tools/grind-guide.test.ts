@@ -263,6 +263,10 @@ test("parseGrinderSetting handles native marks and absolute clicks", () => {
   assert.equal(parseGrinderSetting(k6, "1.20"), 80);
   assert.equal(parseGrinderSetting(k6, "80"), 80);
   assert.equal(parseGrinderSetting(k6, "0.05"), 5);
+  assert.equal(parseGrinderSetting(k6, "1.05"), 65);
+  // Unpadded "1.5" is ambiguous (1.05 vs 1.50) — reject rather than guess.
+  assert.equal(parseGrinderSetting(k6, "1.5"), null);
+  assert.equal(parseGrinderSetting(k6, "1.050"), null);
   assert.equal(parseGrinderSetting(k6, "1.60"), null);
   assert.equal(parseGrinderSetting(k6, "3.00"), null);
   assert.equal(parseGrinderSetting(k6, "-1"), null);
@@ -293,7 +297,10 @@ test("grinder-to-grinder conversion preserves a usable modeled starting point", 
   assert.equal(result.micron, micronForSetting(k6, 80));
   assert.equal(result.outOfRange, false);
   assert.equal(result.targetLabel, formatSetting(c40, result.targetSetting));
-  assert.ok(result.targetSetting >= c40.settingMin && result.targetSetting <= c40.settingMax);
+  assert.ok(
+    result.targetSetting >= c40.settingMin &&
+      result.targetSetting <= c40.settingMax
+  );
   assert.equal(convertGrinderSetting(k6, c40, 999), null);
 });
 
