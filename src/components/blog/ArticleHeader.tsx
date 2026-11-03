@@ -48,6 +48,9 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
             fill
             placeholder={coverLqip ? "blur" : "empty"}
             priority
+            // The cover is the LCP element; without this its preload went out at
+            // Low priority, queued behind fonts and the header logo preloads.
+            fetchPriority="high"
             sizes="100vw"
             src={backgroundImage}
           />
@@ -90,9 +93,12 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
                 <div className="relative size-10 shrink-0 overflow-hidden rounded-full border border-white/20">
                   {displayAuthor.avatar ? (
                     <Image
+                      // Avatars can be SVG uploads (one is 1.1 MB); Sanity only
+                      // rasterizes with an explicit format — auto=format won't.
                       src={urlFor(displayAuthor.avatar)
                         .width(80)
                         .height(80)
+                        .format("webp")
                         .url()}
                       alt={displayAuthor.name}
                       fill

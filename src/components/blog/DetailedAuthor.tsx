@@ -19,7 +19,11 @@ export function DetailedAuthor({ author }: DetailedAuthorProps) {
         <div className="relative size-32 shrink-0 overflow-hidden rounded-full border-4 border-background shadow-md">
           {author.avatar ? (
             <Image
-              src={urlFor(author.avatar).width(256).height(256).url()}
+              src={urlFor(author.avatar)
+                .width(256)
+                .height(256)
+                .format("webp")
+                .url()}
               alt={author.name}
               fill
               className="object-cover"

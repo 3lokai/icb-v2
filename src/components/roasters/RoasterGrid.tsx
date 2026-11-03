@@ -1,11 +1,18 @@
 "use client";
 
+import { memo } from "react";
 import RoasterCard from "@/components/cards/RoasterCard";
 import { RoasterCardSkeleton } from "@/components/cards/RoasterCardSkeleton";
 import { Button } from "@/components/ui/button";
 import type { RoasterSummary } from "@/types/roaster-types";
 
 const SKELETON_COUNT = 6;
+
+// The directory renders every roaster at once (DEFAULT_LIMIT 250, ~100 cards), so
+// each RoasterDirectory re-render (drawer toggle, isFetching flip) re-rendered all
+// of them inside the interaction. Memoised here rather than in RoasterCard, which
+// is also rendered from server components.
+const MemoRoasterCard = memo(RoasterCard);
 
 type RoasterGridProps = {
   items: RoasterSummary[];
@@ -62,7 +69,7 @@ export function RoasterGrid({
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {items.map((roaster) => (
-        <RoasterCard key={roaster.slug || roaster.id} roaster={roaster} />
+        <MemoRoasterCard key={roaster.slug || roaster.id} roaster={roaster} />
       ))}
     </div>
   );

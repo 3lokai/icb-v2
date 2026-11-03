@@ -12,6 +12,7 @@ import {
 } from "@/lib/data/fetch-public-directory-totals";
 import type { CoffeeFilters, CoffeeSummary } from "@/types/coffee-types";
 import { parseCoffeeSearchParams } from "@/lib/filters/coffee-url";
+import { TITLE_TEMPLATE_SUFFIX, truncateTitle } from "@/lib/seo/metadata";
 import {
   coffeeProductListItem,
   generateCollectionPageSchema,
@@ -64,7 +65,7 @@ export async function generateMetadata({
   const coffeeCountLabel = `${totals.coffees.toLocaleString("en-IN")}+`;
 
   // Build title based on filters — root layout appends "| Indian Coffee Beans"
-  let title = `Buy Coffee Beans in India (${coffeeCountLabel} SKUs)`;
+  let title = `Buy Coffee Beans India (${coffeeCountLabel} SKUs)`;
   if (filters.q) {
     title = `${filters.q} – Coffee Search`;
   } else if (filters.roast_levels && filters.roast_levels.length > 0) {
@@ -111,9 +112,10 @@ export async function generateMetadata({
       ? `${baseUrl}/coffees`
       : `${baseUrl}/coffees?page=${page}`;
 
-  if (page > 1) {
-    title = `${title} — Page ${page}`;
-  }
+  // Raw Metadata skips generateMetadata's clamp, and the count label grows with
+  // the catalog. Clamp the base only, so each paginated URL keeps a unique title.
+  const pageSuffix = page > 1 ? ` — Page ${page}` : "";
+  title = `${truncateTitle(title, undefined, pageSuffix + TITLE_TEMPLATE_SUFFIX)}${pageSuffix}`;
 
   return {
     title,

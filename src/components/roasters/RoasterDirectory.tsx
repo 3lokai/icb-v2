@@ -4,6 +4,7 @@ import { Accent } from "@/components/primitives/accent";
 import { ArrowClockwiseIcon, FunnelIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "@/components/common/Icon";
 import { useMemo, useState } from "react";
+import { keepPreviousData } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
 import { RoasterDirectoryFAQ } from "@/components/faqs/RoasterDirectoryFAQs";
 import { Badge } from "@/components/ui/badge";
@@ -62,10 +63,14 @@ export function RoasterDirectory({
   const [serverQueryKey] = useState(() => queryKey);
   const isServerRenderedView = queryKey === serverQueryKey;
 
-  // Fetch data using TanStack Query
+  // Fetch data using TanStack Query. keepPreviousData holds the current rows
+  // through a filter change: without it `data` went undefined, the grid swapped
+  // to skeletons and then remounted every card (~100) when the fetch landed.
   const { data, isFetching, isError, refetch } = useRoasters(
     { filters, page, limit, sort },
-    isServerRenderedView ? { initialData } : {}
+    isServerRenderedView
+      ? { initialData }
+      : { placeholderData: keepPreviousData }
   );
 
   if (isError) {

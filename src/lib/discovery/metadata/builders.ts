@@ -73,7 +73,7 @@ export function buildDiscoveryTitle(config: LandingPageConfig): string {
     return `${config.entityLabel} Coffee in India`;
   }
   if (config.type === "brew_method") {
-    return `Best Coffees for ${config.entityLabel} in India`;
+    return `Coffees for ${config.entityLabel} in India`;
   }
   if (config.type === "price_bucket") {
     return `Best Coffees ${config.entityLabel} in India`;

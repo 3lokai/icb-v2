@@ -50,6 +50,10 @@ import {
   generateFAQSchema,
 } from "@/lib/seo/schema";
 import { fetchCoffeesCached } from "@/lib/data/fetch-coffees";
+import {
+  PROCESS_MIX_KEYS,
+  processMixSentence,
+} from "@/lib/discovery/process-mix";
 import { fetchPublicDirectoryTotals } from "@/lib/data/fetch-public-directory-totals";
 import type { CoffeeSummary } from "@/types/coffee-types";
 
@@ -149,6 +153,7 @@ export async function DiscoveryLandingLayout({
     regionFacts,
     estateLinked,
     harvestWindows,
+    processCounts,
   ] = await Promise.all([
     fetchCoffeesCached(discoveryFilter, 1, 20, config.sortOrder),
     getCatalogueAsOf(),
@@ -166,7 +171,29 @@ export async function DiscoveryLandingLayout({
     config.harvestRegions?.length
       ? fetchHarvestWindows(config.harvestRegions)
       : [],
+    // Live process split for the region's "Process Variation" panel.
+    config.type === "region" && config.regionProfile
+      ? Promise.all(
+          PROCESS_MIX_KEYS.map((p) =>
+            fetchCoffeesCached(
+              { ...discoveryFilter, processes: [p] },
+              1,
+              1,
+              config.sortOrder
+            ).then((r) => r.total)
+          )
+        )
+      : null,
   ]);
+  const processMix = processCounts
+    ? processMixSentence(
+        pageLabel,
+        coffeeResult.total,
+        Object.fromEntries(
+          PROCESS_MIX_KEYS.map((k, i) => [k, processCounts[i]])
+        ) as Record<(typeof PROCESS_MIX_KEYS)[number], number>
+      )
+    : undefined;
   const singleOriginLead =
     estateLinked && coffeeResult.total > 0
       ? `Of the ${coffeeResult.total.toLocaleString("en-IN")} in-stock single-origin coffees on ICB, ${estateLinked.total.toLocaleString("en-IN")} (${Math.round((estateLinked.total / coffeeResult.total) * 100)}%) trace to a named estate.`
@@ -393,6 +420,7 @@ export async function DiscoveryLandingLayout({
         {config.type === "region" && config.regionProfile && (
           <RegionDetailSection
             profile={config.regionProfile}
+            processMix={processMix}
             slug={config.slug}
             guideHref={processGuideHref}
           />

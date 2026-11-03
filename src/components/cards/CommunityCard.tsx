@@ -146,16 +146,17 @@ function CommunityCardComponent({ community, className }: CommunityCardProps) {
             </div>
           )}
 
-          <div
-            className={cn(
-              "inline-flex h-10 items-center rounded-md border border-input bg-background px-4 py-2 text-label font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-              isInviteOnRequest
-                ? "justify-start text-muted-foreground border-border/40 bg-muted/30"
-                : "justify-center group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground"
-            )}
-          >
-            {isInviteOnRequest ? "Invite on Request" : "Join Community"}
-          </div>
+          {isInviteOnRequest ? (
+            // Plain text, not a button shape: these cards have no link, and the
+            // old pill drew dead clicks (Clarity, /communities?platform=whatsapp).
+            <p className="text-label text-muted-foreground">
+              Invite on request · no public join link
+            </p>
+          ) : (
+            <div className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-label font-medium ring-offset-background transition-all duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground">
+              Join Community
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

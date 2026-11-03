@@ -121,8 +121,19 @@ function PillarCard({
           setFocused(false);
       }}
     >
+      {/* Stretched navigation target: covers the whole card, owns keyboard
+          focus (which flips it via the container's onFocus), and carries the
+          accessible name. First in DOM so it is announced before the hub link. */}
+      <Link
+        href={`/learn/category/${category.slug}`}
+        aria-label={`${category.name} — explore this layer`}
+        className="absolute inset-0 z-10 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      />
+
+      {/* Faces sit above the stretched link but let clicks through to it; only
+          the hub link on the back face takes pointer events, and only once flipped. */}
       <motion.div
-        className="relative h-full w-full [transform-style:preserve-3d]"
+        className="pointer-events-none relative z-20 h-full w-full [transform-style:preserve-3d]"
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={
           prefersReduced
@@ -179,26 +190,39 @@ function PillarCard({
               </div>
             </Stack>
 
-            <div className="mt-3 sm:mt-4 flex items-center justify-between border-t pt-3 sm:pt-4 shrink-0">
-              <span className="text-micro font-bold uppercase tracking-widest text-accent">
-                Explore
-              </span>
-              <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-accent text-white flex items-center justify-center">
-                <Icon icon={ArrowRightIcon} size={12} />
+            {category.startHere ? (
+              <Link
+                href={`/learn/${category.startHere.slug}`}
+                className={cn(
+                  "group/hub mt-3 sm:mt-4 flex items-center justify-between gap-3 border-t pt-3 sm:pt-4 shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [@media(hover:none)]:pr-11",
+                  flipped ? "pointer-events-auto" : "pointer-events-none"
+                )}
+              >
+                <span className="min-w-0">
+                  <span className="block text-micro font-bold uppercase tracking-widest text-accent">
+                    Start here
+                  </span>
+                  <span className="text-caption font-medium text-foreground line-clamp-2 group-hover/hub:text-primary transition-colors">
+                    {category.startHere.title}
+                  </span>
+                </span>
+                <span className="h-7 w-7 sm:h-8 sm:w-8 shrink-0 rounded-full bg-accent text-white flex items-center justify-center [@media(hover:none)]:hidden">
+                  <Icon icon={ArrowRightIcon} size={12} />
+                </span>
+              </Link>
+            ) : (
+              <div className="mt-3 sm:mt-4 flex items-center justify-between border-t pt-3 sm:pt-4 shrink-0">
+                <span className="text-micro font-bold uppercase tracking-widest text-accent">
+                  Explore
+                </span>
+                <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-accent text-white flex items-center justify-center">
+                  <Icon icon={ArrowRightIcon} size={12} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </motion.div>
-
-      {/* Stretched navigation target: covers the whole card, owns keyboard
-          focus (which flips it via the container's onFocus), and carries the
-          accessible name. */}
-      <Link
-        href={`/learn/category/${category.slug}`}
-        aria-label={`${category.name} — explore this layer`}
-        className="absolute inset-0 z-10 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-      />
 
       {/* Touch affordance: reveals the back face without navigating. Only on
           devices that can't hover, so it never clutters the pointer UI. */}

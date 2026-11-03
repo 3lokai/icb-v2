@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useMemo, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Section } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
@@ -48,9 +48,10 @@ const PLATFORM_ORDER: CommunityPlatform[] = [
   "other",
 ];
 
+const noopSubscribe = () => () => {};
+
 export function CommunityGrid({ communities }: CommunityGridProps) {
   const reduceMotion = useReducedMotion();
-  const searchParams = useSearchParams();
   const pathname = usePathname();
 
   // Only offer filter chips for platforms that actually have communities.
@@ -60,20 +61,28 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
     [communities]
   );
 
-  const platformParam = searchParams.get("platform");
-  const [activePlatform, setActivePlatform] = useState<
-    CommunityPlatform | "all"
-  >(
-    platformParam &&
-      availablePlatforms.includes(platformParam as CommunityPlatform)
-      ? (platformParam as CommunityPlatform)
-      : "all"
+  // Read ?platform from the URL on the client only, not via useSearchParams():
+  // that hook opts the grid out of SSR, which left crawlers a skeleton with no
+  // community names. The server snapshot is null, so SSR renders "all".
+  const platformParam = useSyncExternalStore(
+    noopSubscribe,
+    () => new URLSearchParams(window.location.search).get("platform"),
+    () => null
   );
+  const [pickedPlatform, setActivePlatform] = useState<
+    CommunityPlatform | "all" | null
+  >(null);
+  const activePlatform: CommunityPlatform | "all" =
+    pickedPlatform ??
+    (platformParam &&
+    availablePlatforms.includes(platformParam as CommunityPlatform)
+      ? (platformParam as CommunityPlatform)
+      : "all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const selectPlatform = (platform: CommunityPlatform | "all") => {
     setActivePlatform(platform);
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(window.location.search);
     if (platform === "all") {
       params.delete("platform");
     } else {

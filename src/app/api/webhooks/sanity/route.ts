@@ -88,6 +88,10 @@ export async function POST(request: Request) {
     revalidatePath("/learn");
     revalidatePath("/learn/page/[page]", "page");
   }
+  // /learn's pillar cards show each category's hub ("Start here").
+  if (payload._type === "category") {
+    revalidatePath("/learn");
+  }
   // The series index lists every series and its parts.
   if (payload._type === "article" || payload._type === "series") {
     revalidatePath("/learn/series");

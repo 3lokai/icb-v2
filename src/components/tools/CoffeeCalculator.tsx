@@ -236,14 +236,14 @@ export function CoffeeCalculator({
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {results.method.tips.map((tip, index) => (
                 <div
-                  className="card-bordered card-hover group relative overflow-hidden rounded-lg bg-background p-5 hover:border-primary/30"
+                  className="card-bordered relative overflow-hidden rounded-lg bg-background p-5"
                   key={`tip-${tip.slice(0, 20)}-${index}`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-medium text-overline group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                    <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-medium text-overline">
                       {index + 1}
                     </div>
-                    <p className="text-muted-foreground text-caption leading-relaxed transition-colors group-hover:text-foreground">
+                    <p className="text-muted-foreground text-caption leading-relaxed">
                       {tip}
                     </p>
                   </div>
