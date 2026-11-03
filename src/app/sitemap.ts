@@ -143,6 +143,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }),
     withHreflang({
+      url: `${baseUrl}/tools/grind-size-converter`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    }),
+    withHreflang({
+      url: `${baseUrl}/learn/insights`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    }),
+    withHreflang({
+      url: `${baseUrl}/developers`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    }),
+    withHreflang({
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
       changeFrequency: "yearly",
