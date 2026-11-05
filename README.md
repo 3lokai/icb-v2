@@ -43,14 +43,14 @@ See [package.json](package.json) for the current versions and available scripts.
 
 ### Start
 
-~~~bash
+```bash
 git clone https://github.com/3lokai/icb-v2.git
 cd icb-v2
 npm ci
 cp .env.local.example .env.local
 # Replace example values with your own development credentials.
 npm run dev
-~~~
+```
 
 Open [http://localhost:3000](http://localhost:3000).
 
@@ -60,27 +60,27 @@ If your change requires database schema work, inspect [supabase/migrations](supa
 
 ## Quality checks
 
-~~~bash
+```bash
 npm run type-check
 npm run lint
 npm run test
 npm run format:check
-~~~
+```
 
 Production builds may require additional environment variables and access to configured services. See the scripts in [package.json](package.json). In a pull request, say which checks you ran and which you could not run.
 
 ## Repository map
 
-| Path | Purpose |
-| --- | --- |
-| [src/app](src/app) | Next.js routes, APIs, and server actions |
-| [src/components](src/components) | Feature and shared UI components |
-| [src/lib](src/lib) | Data access, business logic, utilities, and integrations |
-| [src/hooks](src/hooks) | React hooks |
-| [src/types](src/types) | Domain and generated database types |
-| [supabase](supabase) | Database migrations and Supabase functions/configuration |
-| [docs](docs) | Technical documentation and architecture decisions |
-| [scripts](scripts) | Maintenance and data-operation scripts |
+| Path                             | Purpose                                                  |
+| -------------------------------- | -------------------------------------------------------- |
+| [src/app](src/app)               | Next.js routes, APIs, and server actions                 |
+| [src/components](src/components) | Feature and shared UI components                         |
+| [src/lib](src/lib)               | Data access, business logic, utilities, and integrations |
+| [src/hooks](src/hooks)           | React hooks                                              |
+| [src/types](src/types)           | Domain and generated database types                      |
+| [supabase](supabase)             | Database migrations and Supabase functions/configuration |
+| [docs](docs)                     | Technical documentation and architecture decisions       |
+| [scripts](scripts)               | Maintenance and data-operation scripts                   |
 
 ## Contributing and maintenance
 
