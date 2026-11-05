@@ -33,12 +33,12 @@ The live catalog, media, and editorial data are not shipped as a fixture dataset
 
 Run the relevant checks:
 
-~~~bash
+```bash
 npm run type-check
 npm run lint
 npm run test
 npm run format:check
-~~~
+```
 
 Some checks or production builds need configured external services. In your PR, describe what you ran and any environmental limitations; do not claim unrun checks passed.
 
