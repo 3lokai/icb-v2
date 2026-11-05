@@ -1,62 +1,28 @@
 # Security Policy
 
-## Supported Versions
+## Supported code
 
-We release patches for security vulnerabilities in the following versions:
+ICB is an actively developed web application rather than a versioned package. Security fixes are prioritized for the currently deployed code on the `main` branch; older commits, forks, and self-hosted deployments may not receive backported fixes.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
+## Report a vulnerability privately
 
-## Reporting a Vulnerability
+**Please do not file public issues or pull requests describing exploitable vulnerabilities.**
 
-If you discover a security vulnerability, please report it to us privately:
+Use one of these channels:
 
-1. **Email**: [security@example.com](mailto:security@example.com)
-2. **GitHub Security Advisories**: Use the "Report a vulnerability" button on the repository's Security tab
+1. GitHub's **Report a vulnerability** option in the repository's Security tab, if available.
+2. Email [support@indiancoffeebeans.com](mailto:support@indiancoffeebeans.com) with the subject **Security report**.
 
-Please include the following information:
+Please describe the issue, affected component, steps to reproduce, potential impact, and a safe way to verify a fix. Do not send real credentials, private user data, or exploit traffic against the production application.
 
-- Description of the vulnerability
-- Steps to reproduce
-- Potential impact
-- Suggested fix (if any)
+The maintainer will review reports and coordinate fixes as availability allows. Acknowledgment and resolution times depend on severity and maintenance capacity; we cannot guarantee fixed service-level deadlines.
 
-## Security Best Practices
+## Security practices for contributors
 
-### Environment Variables
+- Never commit secrets or real user data, including `.env.local` and service-role keys.
+- Use a separate development Supabase project; keep service-role credentials server-side only.
+- Preserve appropriate row-level security policies when touching data access.
+- Review dependency updates and test security-sensitive changes.
+- Report suspected production vulnerabilities privately before publishing details.
 
-- Never commit `.env.local` or any file containing secrets
-- Use strong, unique values for all environment variables
-- Rotate secrets regularly
-- Use different secrets for different environments
-
-### Supabase Security
-
-- Enable Row Level Security (RLS) on all tables
-- Use service role keys only on the server-side
-- Regularly review and audit database permissions
-- Enable MFA for Supabase dashboard access
-
-### Dependencies
-
-- Keep all dependencies up to date
-- Use `npm audit` to check for vulnerabilities
-- Consider using tools like Renovate or Dependabot for automated updates
-
-### Deployment
-
-- Use HTTPS in production
-- Set secure headers (HSTS, CSP, etc.)
-- Regularly update your deployment platform
-- Monitor for unusual activity
-
-## Response Timeline
-
-- **Initial Response**: Within 48 hours
-- **Status Update**: Within 7 days
-- **Resolution**: Within 30 days (depending on complexity)
-
-## Acknowledgments
-
-We appreciate the security research community and will acknowledge responsible disclosure in our security advisories.
+Thanks to researchers and contributors who disclose issues responsibly.
