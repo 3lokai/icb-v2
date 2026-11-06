@@ -18,4 +18,4 @@ Check what you actually ran; explain any checks that could not run.
 - Screenshots or recordings for UI changes, if helpful?
 - Any impact on accessibility, search/SEO, or production data?
 
-**Notes:** Do not paste credentials, private user data, or security vulnerability details into this PR. Report vulnerabilities privately via [SECURITY.md](../SECURITY.md).
+**Notes:** Do not paste credentials, private user data, or security vulnerability details into this PR. Report vulnerabilities privately via [SECURITY.md](https://github.com/3lokai/icb-v2/blob/main/SECURITY.md).
