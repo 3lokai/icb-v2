@@ -5,6 +5,7 @@ import { fetchActiveAnnouncement } from "@/lib/data/fetch-announcement";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { CookieNotice } from "@/components/common/CookieNotice";
+import { DiwaliFireworks } from "@/components/common/DiwaliFireworks";
 
 // Lazy load SearchCommand to reduce initial bundle size
 const SearchCommand = dynamic(() =>
@@ -56,6 +57,7 @@ export default function MainLayout({
       <Footer />
       <SearchCommand />
       <CookieNotice />
+      <DiwaliFireworks />
     </div>
   );
 }
