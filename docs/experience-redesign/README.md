@@ -1,6 +1,6 @@
 # ICB Experience Redesign — Project Index
 
-**Status:** Discovery / experience-definition. No visual direction or implementation approved.  
+**Status:** Phase 1, experience screenplays (Phase 0 gate passed 2026-11-07, see [07](07-decisions.md)). No visual direction or implementation approved.  
 **Host repository:** `3lokai/icb-v2` (keep production on `main`).  
 **Proposed repo location:** `docs/experience-redesign/` plus separate experimental prototype area.  
 **Ownership:** Human product owner approves direction. ChatGPT leads UX/experience architecture; Codex and Claude Code serve as research, design-tool and implementation agents.
@@ -34,8 +34,8 @@ Before working, read the existing root `PRODUCT.md`, `DESIGN.md`, `CLAUDE.md` an
 - Maintain a short `status` / next-step handoff in issue or PR descriptions rather than relying on long chat history.
 
 ## Current next action
-1. Commit these docs to a non-production redesign branch with review.
-2. Read-only inventory of actual routes/features, content objects, code/design constraints and SEO baseline.
-3. Write one 60–90-second visitor **experience screenplay** and a returning-expert path.
+1. ~~Commit these docs to a non-production redesign branch with review.~~ Done (`design/experience-redesign`).
+2. ~~Read-only inventory of actual routes/features, content objects, code/design constraints and SEO baseline.~~ Done: [current-state-audit.md](current-state-audit.md), [requirements-traceability.md](requirements-traceability.md).
+3. **In progress:** two experience screenplays (A: evolved Field Guide; B: free, spatial), each covering mobile deep-link landing first, homepage second, plus the expert and returning paths. See [10-screenplays.md](10-screenplays.md).
 4. Create Penpot keyframes and motion storyboard; then a *small browser interaction prototype* on an isolated route/app.
 5. Validate before any full-site redesign.

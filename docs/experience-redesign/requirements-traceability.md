@@ -30,7 +30,7 @@
 | UX-005 | Filter state survives transitions and **browser Back** | 02; 08 metrics | Coffee | Results ↔ Coffee opens | ◐ survives in the URL; Back does not undo filters (`replaceState`) (§7) | Back/forward test across 3 filter changes and a detail visit | PROPOSED |
 | UX-006 | Global search reachable everywhere, including inside expressive scenes | 02; 06 | All | All | ◐ ⌘K on every `(main)` page; coffees and roasters only (§4.2) | Keyboard and touch test from every template | CONFIRMED (search discoverability, 07) |
 | UX-007 | Search spans editorial content (Learn, glossary, regions), not only the catalogue | 02 (Let me explore) | Article, Glossary, Region | Invitation | ❌ (§4.2) | Query test set: "natural process", "Chikmagalur", "bloom" | OPEN |
-| UX-008 | Optional, progressive "Guide me" prompts; no compulsory quiz; technical attributes never hidden | 01 anti-goals; 02 | Coffee, Flavour | Selection | ◐ onboarding wizard only, signed-in only (§5) | Newcomer finds a plausible coffee without jargon; expert can skip in 1 action | PROPOSED |
+| UX-008 | Optional, progressive "Guide me" prompts; no compulsory quiz; technical attributes never hidden | 01 anti-goals; 02 | Coffee, Flavour | Selection | ◐ onboarding wizard only, signed-in only (§5) | Newcomer finds a plausible coffee without jargon; expert can skip in 1 action | CONFIRMED (2026-11-07: prompts map to existing facets and sensory data) |
 | UX-009 | Suggestions explain "why this coffee" and separate known facts, inferred similarity and editorial picks | 02; 04 | Coffee | Results | ❌ similarity is computed but unlabelled (§9) | Copy review; users identify the source of each reason | PROPOSED |
 | UX-010 | Coffee detail opens without breaking visual continuity | 03 arc | Coffee | Coffee opens | ❌ no page or shared-element transitions (§14) | Prototype review; no CLS regression | PROPOSED |
 | UX-011 | Adjacent discovery (estate, region, process, article) grounded in **real** relationships, never a random carousel | 02; 06 | Coffee, Estate, Region, Article | Adjacent discovery | ◐ landing links and similar coffees; no editorial links (§9, §11) | Every adjacency in a storyboard cites its relation type and data source | CONFIRMED (core objects, 07); mechanism PROPOSED |
@@ -70,7 +70,7 @@
 | SEO-007 | Preview and staging stay `noindex` | 05 | — | — | ✅ `VERCEL_ENV !== "production"` (§13) | Header check on the preview URL | CONFIRMED |
 | SEO-008 | Shareable filtered URLs keep working | 05 | Coffee | Results | ✅ (§7) | URL round-trip test | CONFIRMED |
 | SEO-009 | Search Console baseline captured per template before any change | 05; 08 | All | — | ✅ baseline in audit §13a (snapshot 2026-11-02) | Re-run `icb-claude` fetch before Phase 4; compare per template | CONFIRMED |
-| SEO-011 | Mobile deep-link landing (landing pages and articles carry ~54% of top-100 organic clicks; 66% of clicks are mobile) is the primary entry design target | Audit §13a | Landing, Article | Deep-link landing | ✅ server-rendered today | Mobile keyframes for the deep-link path | PROPOSED |
+| SEO-011 | Mobile deep-link landing (landing pages and articles carry ~54% of top-100 organic clicks; 66% of clicks are mobile) is the primary entry design target | Audit §13a | Landing, Article | Deep-link landing | ✅ server-rendered today | Mobile keyframes for the deep-link path | CONFIRMED (2026-11-07: first focus) |
 | SEO-010 | Decide whether any multi-facet combination earns an indexable page | Audit §8 | Landing | Deep-link landing | ❌ single-dimension only | Search-demand research | OPEN |
 
 ## Technical, performance and accessibility (TECH / A11Y)
@@ -106,11 +106,12 @@
 
 | ID | Requirement | Source | Object | Moment | Current state | Validation | Status |
 |---|---|---|---|---|---|---|---|
-| BRAND-001 | Start from the current brand (Fraunces + DM Sans, cream / roasted brown / terracotta, brush-smear); no rebrand by default | 01; PRODUCT.md; DESIGN.md | All | All | ✅ in force | Any deviation needs an ADR (07) | CONFIRMED |
-| BRAND-002 | Depth language: paper layers (production) vs 3D or camera depth (exploration) | DESIGN.md vs 03 | All | Arrival, Reorganise | Conflict (audit §2 C4) | Owner decision (audit §19.2) | OPEN |
-| BRAND-003 | North star: "Coffee Field Guide" vs "hospitality" | DESIGN.md vs 01 | All | All | Conflict (audit §2 C5) | Owner decision (audit §19.1) | OPEN |
-| BRAND-004 | One accent, One Smear Rule, no second emphasis language | DESIGN.md | All | All | ✅ in force | Storyboard review | CONFIRMED (production) |
+| BRAND-001 | Start from the current brand (Fraunces + DM Sans, cream / roasted brown / terracotta, brush-smear); no rebrand by default | 01; PRODUCT.md; DESIGN.md | All | All | ✅ in force on production | Production: any deviation needs an ADR. Exploration: Concept A evolves it, Concept B may depart from it (07, 2026-11-07) | CONFIRMED (production); exploration unconstrained |
+| BRAND-002 | Depth language: paper layers (production) vs 3D or camera depth (exploration) | DESIGN.md vs 03 | All | Arrival, Reorganise | Resolved for exploration (audit §2 C4) | One screenplay may be fully spatial/3D; adoption needs performance validation and approval | CONFIRMED (2026-11-07) |
+| BRAND-003 | North star: "Coffee Field Guide" vs "hospitality" | DESIGN.md vs 01 | All | All | Resolved for exploration (audit §2 C5) | Hospitality = experiential philosophy; explore both an evolved Field Guide (A) and a free identity (B) | CONFIRMED (2026-11-07) |
+| BRAND-004 | One accent, One Smear Rule, no second emphasis language | DESIGN.md | All | All | ✅ in force on production | Binding on production only; Concept B may drop it | CONFIRMED (production) |
 | BRAND-005 | Rejected: literal café or avatar, forced cinematic tour, another round of static moodboards | 01; 07 | — | — | — | Review gate | REJECTED (do not build) |
 
 ## Change log
 - 2026-11-07: initial draft from the Phase 0 audit (Claude Code).
+- 2026-11-07: owner decisions 1–4 and guardrails recorded (07); BRAND-001…004, UX-008 and SEO-011 statuses updated.

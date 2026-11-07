@@ -18,6 +18,18 @@ Use status keywords: **CONFIRMED** (user-approved principle), **PROPOSED** (reco
 | OPEN | Whether Lenis, GSAP, R3F, or other motion tools produce materially better outcomes after prototype. | Validate before committing. |
 | OPEN | Exact personalization data schema, consent, merge behaviour and release timing. | Needs technical audit and user approval. |
 | OPEN | Which page templates are redesigned first, and which are intentionally low-motion. | Depends on route/traffic analysis. |
+| CONFIRMED (2026-11-07) | Phase 0 gate passed. Audit and traceability accepted (`current-state-audit.md`, `requirements-traceability.md`). | Owner review after the Phase 0 audit. |
+| CONFIRMED (2026-11-07) | **North star: explore both.** Phase 1 produces two substantially different creative implementations: **A** evolves the Coffee Field Guide identity; **B** is free to reconsider typography, colour, materials, spatial depth, interaction and motion. Neither must keep the brush-smear, paper layering or current typography if those undermine the experience. | Owner decision 1. |
+| CONFIRMED (2026-11-07) | **DESIGN.md is the baseline record of the current identity, not an immutable creative constraint for this exploration.** It stays binding on production until a superseding ADR is accepted. | Owner clarification. |
+| CONFIRMED (2026-11-07) | **Hospitality is the experiential philosophy**: intimate, cultured, intelligent, attentive, sophisticated, occasionally surprising. It is not a literal café interface. | Owner clarification. |
+| CONFIRMED (2026-11-07) | **Depth/3D:** one screenplay may be fully spatial/3D. Engineering constraints must not prematurely eliminate creative options; trade-offs are documented instead. Adoption requires performance validation and explicit approval. | Owner decision 2. Audit §13a: origin LCP 2.2s, mobile lab LCP 5–8s. |
+| CONFIRMED (2026-11-07) | **Guide me = progressive, optional prompts mapped to existing facets and sensory data** (flavour families, `sensory_params`). No compulsory quiz; no persona funnel. | Owner decision 3. Audit §10.0, §13a (`icb-quiz` prior art not adopted). |
+| CONFIRMED (2026-11-07) | **First focus: mobile deep-link landing first, homepage second.** | Owner decision 4. Audit §13a: landing + articles ≈ 54% of top-100 organic clicks, 66% mobile. Resolves the "which templates first" OPEN item for screenplay focus only. |
+| CONFIRMED (2026-11-07) | **Guardrails:** no production rebrand yet; no framework migration; no changes to public URLs, SEO structures or coffee data; serious technical discovery and direct filter access retained; mobile and reduced-motion alternatives mandatory; no static moodboards or conventional stacked sections; no frontend implementation in Phase 1. | Owner guardrails. |
+| OPEN | Ship `/estates` now (15 estates pass ADR-013) or launch with the redesign? | Audit §10.0, §19.3. |
+| OPEN | Editorial adjacency: reverse lookup of existing article embeds first, or typed catalogue references in `studio-icb`? | Audit §11, §19.5. |
+| OPEN | Variety as a first-class object (strong search demand, 42% data coverage, no table)? | Audit §13a, §19.9. |
+| OPEN | Facet changes push browser history; `AGENTS.md`/`CLAUDE.md` pointer; search/filter event instrumentation. | Audit §19.6, §19.7, §19.10. |
 | REJECTED | Build a literal sexy barista avatar, café interior or forced cinematic tour. | Contradicts metaphor and practical UX. |
 | REJECTED | Ask AI to make another set of three static brand moodboards as the first deliverable. | Failed prior approach. |
 
