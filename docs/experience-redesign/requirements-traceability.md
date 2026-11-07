@@ -1,0 +1,116 @@
+# Requirements Traceability — ICB Experience Redesign
+
+**Status:** Phase 0 draft. Created 2026-11-07. Awaiting owner approval of IDs and statuses.
+**Companion:** [current-state-audit.md](current-state-audit.md). "Audit §" below points into that file.
+
+## How to read this
+- **Status** uses the 07 vocabulary.
+  - **CONFIRMED**: traces to a CONFIRMED row in [07](07-decisions.md) or a production rule in force.
+  - **PROPOSED**: recommended in the redesign docs, not yet accepted.
+  - **OPEN**: an unresolved question.
+  - No requirement is promoted beyond its source.
+- **Planned experience moment** uses the illustrative arc in [03](03-interaction-motion.md):
+  - *Arrival → Invitation → Selection → Reorganise → Results → Coffee opens → Adjacent discovery*
+  - plus *Deep-link landing* and *Return*.
+  - These are placeholders until the Phase 1 screenplays assign real moments. Nothing is designed yet.
+- **Current state** codes:
+  - ✅ exists
+  - ◐ partial
+  - ❌ absent
+- **Validation** is the test that proves the requirement at the relevant gate (08).
+
+## Experience (UX)
+
+| ID | Requirement | Source | Object | Moment | Current state (audit §) | Validation | Status |
+|---|---|---|---|---|---|---|---|
+| UX-001 | Experience conveys thoughtful high-end hospitality as *behaviour*, not a literal café, host or avatar | 01; 07 | All | All | ❌ no such layer; brand reads as "field guide" (§2 C5) | Newcomer and expert sessions: comprehension and enjoyment interviews | CONFIRMED |
+| UX-002 | Scroll, motion, typography and composition act as one choreographed system, not stacked sections | 01; 03; 07 | All | Arrival → Adjacent discovery | ❌ homepage has 14 stacked sections (§4.3) | Storyboard review (Phase 2); prototype review (Phase 3) | CONFIRMED |
+| UX-003 | Three intent paths (Guide me / I know my coffee / Let me explore) coexist; the user can cross between them without losing search, filters or reading context | 02; 07 | Coffee, Article | Invitation, Selection | ◐ expert strong, explore weak, guide absent (§6) | Task test: switch paths mid-task and confirm state is kept | PROPOSED |
+| UX-004 | Expert can apply multiple technical facets (brew + process + roast + region + price) instantly | 02; 06; 07 | Coffee | Selection → Results | ✅ instant, URL-driven (§7) | 20-second expert task (08) | CONFIRMED |
+| UX-005 | Filter state survives transitions and **browser Back** | 02; 08 metrics | Coffee | Results ↔ Coffee opens | ◐ survives in the URL; Back does not undo filters (`replaceState`) (§7) | Back/forward test across 3 filter changes and a detail visit | PROPOSED |
+| UX-006 | Global search reachable everywhere, including inside expressive scenes | 02; 06 | All | All | ◐ ⌘K on every `(main)` page; coffees and roasters only (§4.2) | Keyboard and touch test from every template | CONFIRMED (search discoverability, 07) |
+| UX-007 | Search spans editorial content (Learn, glossary, regions), not only the catalogue | 02 (Let me explore) | Article, Glossary, Region | Invitation | ❌ (§4.2) | Query test set: "natural process", "Chikmagalur", "bloom" | OPEN |
+| UX-008 | Optional, progressive "Guide me" prompts; no compulsory quiz; technical attributes never hidden | 01 anti-goals; 02 | Coffee, Flavour | Selection | ◐ onboarding wizard only, signed-in only (§5) | Newcomer finds a plausible coffee without jargon; expert can skip in 1 action | PROPOSED |
+| UX-009 | Suggestions explain "why this coffee" and separate known facts, inferred similarity and editorial picks | 02; 04 | Coffee | Results | ❌ similarity is computed but unlabelled (§9) | Copy review; users identify the source of each reason | PROPOSED |
+| UX-010 | Coffee detail opens without breaking visual continuity | 03 arc | Coffee | Coffee opens | ❌ no page or shared-element transitions (§14) | Prototype review; no CLS regression | PROPOSED |
+| UX-011 | Adjacent discovery (estate, region, process, article) grounded in **real** relationships, never a random carousel | 02; 06 | Coffee, Estate, Region, Article | Adjacent discovery | ◐ landing links and similar coffees; no editorial links (§9, §11) | Every adjacency in a storyboard cites its relation type and data source | CONFIRMED (core objects, 07); mechanism PROPOSED |
+| UX-012 | Newcomer welcome is atmospheric but fast; never an unskippable intro | 01; 02 | — | Arrival | ◐ hero video is lazy and skipped under reduced motion (§14); homepage scroll 13% and quickback 23.4% (§13a) | LCP budget (TECH-004); homepage scroll and quickback against the §13a baseline | CONFIRMED (anti-goal) |
+| UX-013 | Returning users go straight to saved context (gear, ratings, wishlist, last discovery); never forced through theatre | 02 | Personalization | Return | ◐ hero segments plus recently viewed; no last-filter memory (§5, §12) | Returning-user task: resume the previous search in 1 action | PROPOSED |
+| UX-014 | ICB stays a neutral directory; outbound roaster discovery preserved | 01; PRODUCT.md | Coffee, Roaster | Coffee opens | ✅ `direct_buy_url` outbound, roaster links (§9) | Outbound click rate is not reduced against baseline | CONFIRMED |
+| UX-015 | Compare coffees side by side | 02 (expert journey) | Coffee | Results | ❌ (§7) | Expert task: compare 3 coffees | PROPOSED |
+| UX-016 | Can locate a specific coffee in 20s, discover in 5 min, wander for 40 min | 01 | All | All | ◐ 20s path likely met via ⌘K (unmeasured) | Timed task tests (08 acceptance metrics) | PROPOSED |
+| UX-017 | Recovery states (404, empty results) keep the visitor in the experience | 02 navigation | All | Results | ◐ 404 has no search; empty state only offers "clear all" (§4.5) | Heuristic review | PROPOSED |
+
+## Information architecture and objects (IA)
+
+| ID | Requirement | Source | Object | Moment | Current state | Validation | Status |
+|---|---|---|---|---|---|---|---|
+| IA-001 | Clear, indexable entity pages stay beneath the discovery layer | 02 | All | Deep-link landing | ✅ coffee, roaster, landing and article pages (§3) | Route inventory diff before and after | CONFIRMED |
+| IA-002 | Region object page = `/coffees/<region-slug>`; `/regions` hub only | ADR-013 | Region | Adjacent discovery | ✅ 12 regions configured; 49 India regions exist (§10.0) | Owner decision (audit §19.3) | CONFIRMED (ADR-013); expansion OPEN |
+| IA-003 | Estate pages only for estates passing the ADR-013 gate | ADR-013; 02 | Estate | Adjacent discovery | ❌ UI absent; 15 estates qualify (§10.0) | Gate query in `generateStaticParams`; no thin pages | CONFIRMED (gate); timing OPEN |
+| IA-004 | Variety as a navigable object | 02 | Variety | Adjacent discovery | ❌ text array, 42% coverage (§10.0) | Data model decision first | OPEN |
+| IA-005 | Flavour notes as discovery entry points | 02 | Flavour | Selection, Adjacent discovery | ◐ facet at descriptor level; 15 families and 344 nodes unused as pages (§10) | Coverage check; family-level facet prototype | PROPOSED |
+| IA-006 | Semantic, typed relationships (grown at, roasted by, processed using, tastes of, brewed with, featured in, reviewed by) | 02 | All | Adjacent discovery | ◐ 6 of 8 supported by data; "related variety" is text only; "featured in" is partial (§10.2) | Relationship matrix sign-off | PROPOSED |
+| IA-007 | Editorial is interleaved with the catalogue, not a disconnected blog | 02 | Article ↔ Coffee/Roaster/Region | Adjacent discovery | ◐ one-way spotlight and collection embeds; reverse GROQ lookup possible without schema change (§11) | Count articles with embeds; owner decision on typed references (audit §19) | OPEN |
+| IA-008 | Tools connect back to coffees (brew guidance ↔ coffee) | 02 | Tool, Brew method | Adjacent discovery | ◐ generic `/coffees` CTA only (§4, §7) | Handoff carries brew-method filter | PROPOSED |
+| IA-009 | Breadcrumbs and browser semantics never obscured by editorial journeys | 02 navigation | All | All | ◐ visible on landing and some learn pages; not on coffee or roaster detail (§4.4) | Template checklist | CONFIRMED (principle) |
+| IA-010 | Explore / Discover / Wander are intent modes, not mandatory nav labels | 02 | — | — | n/a (nav is Explore / Learn / Tools today) | Nav card-sort with users | OPEN (labels, 07) |
+| IA-011 | Gear is peripheral, not the centre | 02 | Gear | Return | ✅ no gear route; tables exist (§10) | — | PROPOSED |
+
+## SEO
+
+| ID | Requirement | Source | Object | Moment | Current state | Validation | Status |
+|---|---|---|---|---|---|---|---|
+| SEO-001 | Preserve existing public URLs and slug meanings | 05; 07 | All | Deep-link landing | ✅ baseline in audit §3, §13 | Crawl diff of every sitemap URL before and after | CONFIRMED |
+| SEO-002 | Preserve 301 redirect chains (legacy and alias slugs) | 05 | Landing | — | ✅ ~25 in `next.config.ts` (§13) | Redirect test suite, one hop each | CONFIRMED |
+| SEO-003 | Preserve canonicals, including filtered → bare canonical with noindex and `?page=N` self-canonical | 05 | Coffee, Roaster lists | Results | ✅ bespoke logic in two `page.tsx` files (§13) | Metadata snapshot per template | CONFIRMED |
+| SEO-004 | Preserve JSON-LD per template (Product, LocalBusiness, CollectionPage, FAQPage, BreadcrumbList, BlogPosting, HowTo) | 05 | All | — | ✅ (§13) | Rich-results test per template | CONFIRMED |
+| SEO-005 | Exactly one h1 per template; landing h1, FAQ and related links are config-owned | 05 | Landing, Coffee, Roaster, Article | — | ✅ via shared components (§13) | DOM heading audit | CONFIRMED |
+| SEO-006 | No essential copy, fields, links or taxonomy inside WebGL-only rendering | 03; 05 | All | All | ✅ (no WebGL today) | JS-disabled render shows the same content | CONFIRMED |
+| SEO-007 | Preview and staging stay `noindex` | 05 | — | — | ✅ `VERCEL_ENV !== "production"` (§13) | Header check on the preview URL | CONFIRMED |
+| SEO-008 | Shareable filtered URLs keep working | 05 | Coffee | Results | ✅ (§7) | URL round-trip test | CONFIRMED |
+| SEO-009 | Search Console baseline captured per template before any change | 05; 08 | All | — | ✅ baseline in audit §13a (snapshot 2026-11-02) | Re-run `icb-claude` fetch before Phase 4; compare per template | CONFIRMED |
+| SEO-011 | Mobile deep-link landing (landing pages and articles carry ~54% of top-100 organic clicks; 66% of clicks are mobile) is the primary entry design target | Audit §13a | Landing, Article | Deep-link landing | ✅ server-rendered today | Mobile keyframes for the deep-link path | PROPOSED |
+| SEO-010 | Decide whether any multi-facet combination earns an indexable page | Audit §8 | Landing | Deep-link landing | ❌ single-dimension only | Search-demand research | OPEN |
+
+## Technical, performance and accessibility (TECH / A11Y)
+
+| ID | Requirement | Source | Object | Moment | Current state | Validation | Status |
+|---|---|---|---|---|---|---|---|
+| TECH-001 | Keep Next.js / React / Tailwind / Supabase / Sanity; no framework migration or SPA rebuild | 05; 07 | — | — | ✅ | Architecture review | PROPOSED |
+| TECH-002 | Reuse the existing filter and data layer (`coffee-url.ts`, `fetch-coffees.ts`, MV); no duplicate catalogue or filter logic | 05 | Coffee | Selection → Results | ✅ single implementation (§7) | Code review: no second parser | CONFIRMED (CLAUDE.md conventions) |
+| TECH-003 | 3D only where it materially changes the experience; client-only, lazy, with a static fallback; no idle 60fps loop | 03; 05 | — | Arrival, Reorganise | n/a (no 3D, §14) | Phase 3 prototype: GPU and CPU idle profile | PROPOSED |
+| TECH-004 | Core Web Vitals p75: LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1 (mobile included) | 05 | All | All | ◐ origin field: LCP 2,205ms, INP 163ms, CLS 0 (≈300ms LCP headroom); mobile lab LCP 5.2–8.2s (§13a) | Per-template PostHog `$web_vitals` rollup; no regression per template | CONFIRMED (target) |
+| TECH-007 | Instrument search, filter, sort and facet events so the expert path can be measured | 08 metrics; audit §13a | Coffee | Selection → Results | ❌ no events | PostHog event presence | PROPOSED |
+| TECH-005 | Motion tooling (GSAP / R3F / Lenis) adopted only after the prototype proves benefit | 05; 07 | — | — | n/a (`motion` only) | Phase 3 A/B against a `motion`-only build | OPEN |
+| TECH-006 | No schema changes without a separate explicit decision | 05 | — | — | — | Migration review | CONFIRMED |
+| A11Y-001 | WCAG 2.1 AA, keyboard, visible focus, light/dark parity | PRODUCT.md; 05 | All | All | ◐ stated, not audited (§14, §17) | axe plus a manual keyboard walk in both themes | CONFIRMED |
+| A11Y-002 | Every animation has a `prefers-reduced-motion` static or crossfade alternative | PRODUCT.md; DESIGN.md; 03 | All | All | ✅ in current motion (§14) | Reduced-motion walkthrough of each storyboard | CONFIRMED |
+| A11Y-003 | No scroll hijacking; native scroll by default | 01; 03 | — | All | ✅ | Prototype review | CONFIRMED (anti-goal) |
+| A11Y-004 | Mobile is an equal design target, not a shrunken desktop scene | 03 | All | All | ◐ mobile filter sheet exists; no mobile storyboard yet | Mobile keyframes required in Phase 2 | CONFIRMED |
+
+## Personalization and trust (PERS)
+
+| ID | Requirement | Source | Object | Moment | Current state | Validation | Status |
+|---|---|---|---|---|---|---|---|
+| PERS-001 | Explicit filters are hard constraints; personalization never silently overrides them | 04 | Coffee | Results | n/a (no personalised ranking today, §12) | Ranking unit test when built | PROPOSED |
+| PERS-002 | Users can inspect, edit and reset saved tastes; session intent separate from long-lived preference | 04 | Personalization | Return | ◐ preferences form exists; unused for ranking; no reset of inferred data (§12) | Settings walkthrough | PROPOSED |
+| PERS-003 | Logged-out users get a complete experience | 04 | All | All | ✅ (wishlist and preferences are signed-in only, but core browsing is open) | Anonymous task completion | CONFIRMED |
+| PERS-004 | Respect the anonymous identity, 3-free-ratings gate and anon→account merge | 04; `docs/auth.md` | Review | Return | ✅ active (§2 C9, §12) | Regression on `src/app/actions/reviews.ts` gate | CONFIRMED (production) |
+| PERS-005 | Consent via `src/lib/consent.ts` (ADR-012); no hidden behavioural surveillance | 04; ADR-012 | — | — | ✅ | `scripts/check-consent-attribution.mts` | CONFIRMED |
+| PERS-006 | "Disliked" / "show me something different" signal | 04 | Personalization | Results | ❌ no field (§10) | Schema decision | OPEN |
+| PERS-007 | Serendipity: adjacent, unexpected choices, not an echo chamber | 04 | Coffee | Adjacent discovery | ◐ similar coffees is pure similarity (§9) | Diversity metric on suggestions | PROPOSED |
+| PERS-008 | What is stored anonymously, for how long, and what merges on signup | 04 | Personalization | Return | ◐ known for views and reviews (§12) | Product decision | OPEN |
+
+## Brand (BRAND)
+
+| ID | Requirement | Source | Object | Moment | Current state | Validation | Status |
+|---|---|---|---|---|---|---|---|
+| BRAND-001 | Start from the current brand (Fraunces + DM Sans, cream / roasted brown / terracotta, brush-smear); no rebrand by default | 01; PRODUCT.md; DESIGN.md | All | All | ✅ in force | Any deviation needs an ADR (07) | CONFIRMED |
+| BRAND-002 | Depth language: paper layers (production) vs 3D or camera depth (exploration) | DESIGN.md vs 03 | All | Arrival, Reorganise | Conflict (audit §2 C4) | Owner decision (audit §19.2) | OPEN |
+| BRAND-003 | North star: "Coffee Field Guide" vs "hospitality" | DESIGN.md vs 01 | All | All | Conflict (audit §2 C5) | Owner decision (audit §19.1) | OPEN |
+| BRAND-004 | One accent, One Smear Rule, no second emphasis language | DESIGN.md | All | All | ✅ in force | Storyboard review | CONFIRMED (production) |
+| BRAND-005 | Rejected: literal café or avatar, forced cinematic tour, another round of static moodboards | 01; 07 | — | — | — | Review gate | REJECTED (do not build) |
+
+## Change log
+- 2026-11-07: initial draft from the Phase 0 audit (Claude Code).
