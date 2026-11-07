@@ -21,6 +21,9 @@ Start with [01-vision.md](01-vision.md). Then read the documents in order:
 | 07-decisions.md | Decision statuses, supersession rules, rejected concepts |
 | 08-delivery-plan.md | Stages, quality gates, roles and milestones |
 | 09-agent-handoff.md | Repeatable Codex/Claude instruction and session protocol |
+| current-state-audit.md | Phase 0: evidence-backed inventory, gaps, conflicts, traffic baseline |
+| requirements-traceability.md | Phase 0: requirement IDs → source, object, moment, validation, status |
+| 10-screenplays.md | Phase 1: two experience screenplays (A: Annotated Guide; B: House Lights) |
 
 ## Important repository context
 Before working, read the existing root `PRODUCT.md`, `DESIGN.md`, `CLAUDE.md` and `docs/README.md`. These specify the **current** product and technical system. They remain authoritative for production until a new design is approved and a superseding ADR is accepted. This redesign set specifies an exploration, not permission to overwrite the present brand.
