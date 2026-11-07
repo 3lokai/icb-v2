@@ -1,0 +1,41 @@
+# ICB Experience Redesign — Project Index
+
+**Status:** Discovery / experience-definition. No visual direction or implementation approved.  
+**Host repository:** `3lokai/icb-v2` (keep production on `main`).  
+**Proposed repo location:** `docs/experience-redesign/` plus separate experimental prototype area.  
+**Ownership:** Human product owner approves direction. ChatGPT leads UX/experience architecture; Codex and Claude Code serve as research, design-tool and implementation agents.
+
+## Why this project exists
+The goal is **not** a more expensive-looking landing page or a rebrand by default. It is a coherent, graceful, personal experience of Indian specialty coffee discovery. The governing metaphor is being expertly and thoughtfully hosted in a cultured high-end coffee establishment *inside an opera building, not a mall*. This is a description of the **quality of care, depth, mystery and serendipity**, not an instruction to draw a café or create an avatar.
+
+Start with [01-vision.md](01-vision.md). Then read the documents in order:
+
+| File | Purpose |
+|---|---|
+| 01-vision.md | Emotional and creative north star; exclusions and origins of brief |
+| 02-experience-architecture.md | Core entities, intent modes, journeys, semantic relationships |
+| 03-interaction-motion.md | Interaction grammar, motion/3D choreography, accessibility |
+| 04-personalization.md | Taste profile, learning, privacy, recommender behaviour |
+| 05-technical-guardrails.md | Live code architecture, SEO, performance, compatibility constraints |
+| 06-design-brief.md | Penpot-first design work and what an agent must actually deliver |
+| 07-decisions.md | Decision statuses, supersession rules, rejected concepts |
+| 08-delivery-plan.md | Stages, quality gates, roles and milestones |
+| 09-agent-handoff.md | Repeatable Codex/Claude instruction and session protocol |
+
+## Important repository context
+Before working, read the existing root `PRODUCT.md`, `DESIGN.md`, `CLAUDE.md` and `docs/README.md`. These specify the **current** product and technical system. They remain authoritative for production until a new design is approved and a superseding ADR is accepted. This redesign set specifies an exploration, not permission to overwrite the present brand.
+
+## Non-negotiable translation rules
+- Keep the user's *specific* emotional description and technical requirements, not just abstract buzzwords.
+- Mark information **CONFIRMED**, **PROPOSED**, **OPEN**, or **REJECTED**; never turn a brainstorm into a decided feature.
+- When revising a design, explain which requirements it satisfies and which it risks.
+- Before implementing features, reconcile against live code and schema; this documentation does not claim everything described is implemented.
+- Any work involving routes, data, content, SEO or production behaviour needs explicit approval.
+- Maintain a short `status` / next-step handoff in issue or PR descriptions rather than relying on long chat history.
+
+## Current next action
+1. Commit these docs to a non-production redesign branch with review.
+2. Read-only inventory of actual routes/features, content objects, code/design constraints and SEO baseline.
+3. Write one 60–90-second visitor **experience screenplay** and a returning-expert path.
+4. Create Penpot keyframes and motion storyboard; then a *small browser interaction prototype* on an isolated route/app.
+5. Validate before any full-site redesign.
