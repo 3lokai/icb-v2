@@ -96,6 +96,14 @@ This extends the existing `3lokai/icb-chatbot` headless starter. Its README curr
 
 **Constraints:** Site visitor must not be forced into chat. Don't pipe private identity, saved taste data or Meta-channel conversation into OpenRouter without consent/privacy review. Reuse the factual backend instead of embedding freeform LLM strings into routes. Prioritize structured responses/actions, provider rate limit and session controls. AI is a companion for interpretation and requests, not the graph's source of truth.
 
+## Neutral public entrance and independent review mission — supersession note (2026-11-09)
+
+**The branded Baarbara starting coffee depicted in K1 and K2 is a historical interaction example, NOT the approved neutral homepage.** The anonymous entry stays category/interest-led; only after a visitor deliberately selects a real coffee (through a category, specific search result, an independently relevant deep link or their actual saved history) does an identifiable product occupy the locus. Do not treat the storyboard's old coffee bag as a default homepage recommendation.
+
+The refreshed ICB should clearly communicate **independent coffee ratings and reviews** as a reason to trust it, without making the homepage a giant ratings dashboard or a stack of review sections. When the spatial focus changes to a *specific real coffee*, expose authentic review evidence, sample size and a clear voluntary `Rate this coffee` action. Quick rating and optional structured tasting context are essential to product success; low review counts and absence of ratings are shown honestly. Existing anonymous review caps/auth flows stay intact unless separately approved.
+
+Return visits may show an unobtrusive `Rate a coffee you've tried` opportunity **only** if the logged-in user has genuinely marked it tried. The Atlas/Concierge must increase credible contribution and reuse rather than novelty alone. See [17](17-review-intelligence-and-monetization.md).
+
 ## Copywriting — a new voice, not upgraded marketing
 
 - **Arrival:** intriguing, immediately comprehensible, no 'revolutionize your coffee journey' cliches.
