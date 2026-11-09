@@ -33,6 +33,7 @@ Start with [01-vision.md](01-vision.md). Then read the documents in order:
 | 15-homepage-refresh-motion-screenplay.md | Creative reset; K0–K3 continuity, but branded starting product EXAMPLE is superseded by neutrality decision |
 | **16-alignment-review-and-next-session.md** | **Current synthesis of Atlas/UX decisions and next-chat alignment gate** |
 | **17-review-intelligence-and-monetization.md** | **Owner-confirmed business north star: independent coffee reviews, ratings, proprietary intelligence and ethical revenue; contribution UX and success metrics** |
+| **18-homepage-living-record-penpot.md** | **New continuous scroll homepage design in Penpot (desktop + mobile): living activity, neutral discovery, independent evidence, rating conversion, returning-member relevance** |
 
 ## Important repository context
 Before working, read the existing root `PRODUCT.md`, `DESIGN.md`, `CLAUDE.md` and `docs/README.md`. These specify the **current** product and technical system. They remain authoritative for production until a new design is approved and a superseding ADR is accepted. This redesign set specifies an exploration, not permission to overwrite the present brand.
