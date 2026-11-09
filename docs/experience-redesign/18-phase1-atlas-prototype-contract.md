@@ -23,7 +23,7 @@
 
 **Catalogue:** 1,714 active coffees. Current independent coffee reviews cover 147 active products; 16 have >=3 current submissions. These are coverage indicators, *not* claims of representativeness or review verification.
 
-**Sample path:** `Baarbara Coffee / Naturals Roasted Coffee Beans` (0 current ratings) → `Baarbara Estate` → `BrewClan / Baarbara Naturals` (0). A third example, `Blue Tokai / Baarbara Estate`, had 2 current ratings (mean 4.5). Treat these as grounded product records and *tentative* graph-storyboard relationships pending canonical mapping validation.
+**Sample path:** `Baarbara Coffee / Naturals Roasted Coffee Beans` (0 current ratings) → `Baarbara Estate` → `BrewClan / Baarbara Naturals` (0). A third example, `Blue Tokai / Baarbara Estate`, had 2 current ratings (mean 4.5). All three named coffee-to-estate edges were verified on 2026-11-09 against `coffee_estates → estates → canon_estates` (canonical Baarbara Estate ID `3b403012-d145-4bb9-ba2c-c3256bf6d4dc`). This does **not** verify every future Atlas relationship.
 
 **Other cases:** `Grey Soul / Mogra` 6 current ratings, mean 4.5; `Blue Tokai / Amaltas Blend` 11 current ratings, mean 3.73.
 
