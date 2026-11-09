@@ -1,6 +1,6 @@
 # Requirements Traceability — ICB Experience Redesign
 
-**Status:** Phase 0 draft. Created 2026-11-07. Awaiting owner approval of IDs and statuses.
+**Status:** Phase 0 audit/traceability gate accepted on 2026-11-07 (see `07-decisions.md`); original IDs retained as historical requirements, with new BIZ requirements proposed/confirmed separately on 2026-11-09. Do not interpret proposed product UX as implemented.
 **Companion:** [current-state-audit.md](current-state-audit.md). "Audit §" below points into that file.
 
 ## How to read this
