@@ -1,5 +1,23 @@
 # ICB Living Coffee Atlas — browser prototypes
 
+## Current creative direction — Phase 1E, living activity and review conversion
+
+**[Open Phase 1E: the immersive, living review-first Atlas](./experience-v5-living-activity.html).**
+
+GT's latest product feedback: the live ICB site already contains **recently catalogued coffees, new roasters, articles and community opinions**, but they feel disconnected; the immersive experience must make this activity visible and make it obvious how a visitor can **rate a coffee they've actually tried**.
+
+Phase 1E keeps Phase 1D's continuous scroll-camera and verified estate thread. It adds:
+- a persistent **Rate a coffee** action that goes **search → select exact coffee → stars → optional context** (local preview only);
+- a chapter of date-labelled real catalogue, roaster, latest opinion and Field Guide observations, arranged in the **same spatial world**, not separate cards/sections;
+- connections from an activity event to the actual published ICB page and then a voluntary contribution;
+- visible, clearly dated activity counts and a neutral anonymous entrance.
+
+See [23 — living activity and contribution](../../docs/experience-redesign/23-living-activity-and-contribution.md) and the [earlier immersive Phase 1D comparison](./experience-v4-immersive.html).
+
+**No production or database changes. No real rating is written. No fabricated account history or product-review score.**
+
+---
+
 ## Current creative direction — Phase 1D, immersive progressive reveal
 
 **[Open Phase 1D: immersive homepage depth](./experience-v4-immersive.html).**
