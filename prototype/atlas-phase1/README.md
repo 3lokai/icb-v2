@@ -1,5 +1,17 @@
 # ICB Living Coffee Atlas — browser prototypes
 
+## Latest architecture correction — homepage breadth vs entity immersion
+
+The homepage will **not** use the deep-dive orbit to feature one coffee. Based on GT's feedback, Concept **F · Coffee, Shared** is the editorial front page, displaying *multiple new coffees* plus new roasters, independent reviews and articles with clear review-contribution actions.
+
+Immersive relationship focus (coffee ↔ estate ↔ other roaster) belongs to **actual entity detail pages**: canonical coffee pages, roaster pages, existing region landing routes and, once shipped, estate pages.
+
+See [Decision 24 — Living homepage, immersive entity pages](../../docs/experience-redesign/24-living-homepage-immersive-entity-pages.md). Penpot revision page: **F · Living front page — plural arrivals (revision)**.
+
+Earlier Phase 1E and D prototypes remain useful *for entity transition and review interactions*, not as the approved homepage composition. No production changes.
+
+---
+
 ## Current creative direction — Phase 1E, living activity and review conversion
 
 **[Open Phase 1E: the immersive, living review-first Atlas](./experience-v5-living-activity.html).**
