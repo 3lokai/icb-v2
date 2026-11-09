@@ -22,9 +22,19 @@
 - Review content evidence and art direction against existing brand.
 **Gate:** approve experience architecture and one prototype candidate.
 
+## Cross-phase product gate — business mission (added 2026-11-09)
+
+Every design and release gate must demonstrate that the Atlas is not a beautiful dead-end. Evaluate **discovery → authentic coffee contribution → representative intelligence → ethical revenue potential**.
+
+Before approving a prototype, check current coffee-vs-roaster reviews, review distribution/recency, unique contributors, completion events, anonymous gate, moderation/abuse and capture of optional tasting context. The 2026-11-07 audit has dated counts, not a verified unique-contributor funnel. Preserve neutrality and distinguish sponsor inventory from organic information. Make `Rate this coffee`/review evidence a first-class destination reached from an actual coffee, including via an expert/deep-link path. Logged-in return-to-rate requires actual tried history. See [17](17-review-intelligence-and-monetization.md).
+
+**Not a new implementation authorization.** These are review criteria; owner approves the bounded coding phase after alignment.
+
 ## Phase 3 — Browser prototype
 - Build isolated interactive route/app, optionally with R3F/GSAP/Lenis if proven useful.
 - Realistic ICB content, functional search/filter controls or faithfully mocked results with source labelled.
+- A genuine coffee review-evidence and quick-contribution path, with optional tasting context; existing anonymous/auth review rules preserved, no forced rating or invented review count.
+- A return-to-rate hypothesis using **actually logged as tried** history, or explicitly marked as a simulated state if that signal is absent.
 - Test keyboard, scrolling, browser back, low-power mobile, loading and frame stability.
 **Gate:** UX feel and performance pass; otherwise revise before scale-up.
 
@@ -48,4 +58,8 @@
 - Agents should ask for or infer from README which phase is active. They must not silently advance phases.
 
 ## Acceptance metrics (define baselines, not invented improvements)
-Completion of a search-to-coffee task, successful use of technical filters, user comprehension of connections, ability to return/back without losing context, task speed, enjoyment of exploratory path, Core Web Vitals and SEO/crawl parity. Validate with newcomers and expert coffee users rather than relying only on visual taste.
+**Business leading indicators:** independent published coffee reviews and distinct contributors per month; review coverage across active coffees and roasters (>=1, >=3, >=5 with disclosed recency), optional tasting-context quality, moderation/duplicate rates, and repeat reviewer cohorts. Verify which review data pertains to coffees rather than roasters. Track discovery-to-rating attempts/completions with true cohort/event definitions; outbound purchase clicks are not evidence of coffee consumption.
+
+**Experience and technical indicators:** completion of a search-to-coffee task, success of technical filters, comprehension of connections, confidence in sample sizes/source labels, accessible genuine contribution after tasting, return/back without lost context, task speed, exploration enjoyment, Core Web Vitals and SEO/crawl parity.
+
+**Commercial learning indicators:** validated buyer interviews, concrete use cases, willingness-to-pay and paid pilots for aggregated insights, permitted data APIs or research. Do not invent a revenue forecast or claim an unrepresentative review sample proves category-wide preferences. Validate with newcomers and expert coffee users rather than relying only on visual taste.
