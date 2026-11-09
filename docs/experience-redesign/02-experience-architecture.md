@@ -1,5 +1,15 @@
 # 02 — Experience and Information Architecture
 
+## Business-led experience architecture (confirmed mission; proposed UX mechanics)
+
+**Discovery is the acquisition engine, independent reviews are the proprietary intelligence engine, trust is the moat, and ethical monetization funds sustained coverage.** The Atlas is a route from curiosity to real coffees and ultimately to meaningful contribution—not a destination to admire and leave.
+
+**Contribution is a cross-cutting action across the three intent paths, not another compulsory homepage tile.** A user who finds a coffee can check independent reviews and their sample sizes, mark it tried only if actually tasted, submit a quick personal rating and optionally record brew/sensory observations. Returning members can revisit genuinely tried-but-unrated coffees if recorded evidence exists. Logging, saving and wishlisting are not the same as reviewing or proof of tasting.
+
+Design every coffee-detail/deep-link and Atlas coffee-focus state around **discover → assess independent evidence → rate after tasting / log an experience → return** while preserving neutral exploration and technical filters. The rating flow must be voluntary, fast, genuine, accessible and compatible with existing anonymous/login limits, authenticity safeguards and privacy.
+
+Commercial routes (proposals, not approved products): permissioned aggregate consumer insights, API/data licensing, research reports, and secondary disclosed affiliate/sponsor inventory. Never sell preferential organic ranks, ratings, review removal, graph edges or model answers. For measurement and buyer validation, see [17](17-review-intelligence-and-monetization.md).
+
 ## Fundamental principle
 **Design hospitality, not pages.** Preserve clear, indexable entity pages and precise professional tools beneath a fluid discovery layer. The experience should feel connected even with animations turned off.
 
