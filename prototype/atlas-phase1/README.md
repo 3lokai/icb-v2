@@ -1,5 +1,17 @@
 # ICB Living Coffee Atlas — browser prototypes
 
+## Current creative direction — Phase 1D, immersive progressive reveal
+
+**[Open Phase 1D: immersive homepage depth](./experience-v4-immersive.html).**
+
+The user's latest design feedback: Phase 1C's one-screen orbit was too static and did not showcase ICB's depth of structured data beyond the first 1–2 folds. Phase 1D keeps **one persistent canvas** but transforms it through six natural-scroll beats: quiet neutral entrance → catalogue structure → verified shared estate and three roasters → independent review evidence → Learn/Tools → voluntary tasting journal. Scroll changes camera vantage and editorial focus; it does not route users or silently endorse a seller.
+
+Read [22 — immersive progressive reveal](../../docs/experience-redesign/22-immersive-progressive-reveal.md) before implementing. The earlier [Phase 1C prototype](./experience-v3-continuous.html) is useful as comparison, **not the preferred immersive direction**.
+
+The experience uses static, dated 2026-11-09 ICB data and stylized original CSS illustrations. It contains no credentials, no live fetch or production writes. No deployment or production route changes are approved.
+
+---
+
 ## Current creative direction — Phase 1C
 
 **[Open the continuous Living Coffee Atlas prototype](./experience-v3-continuous.html)**
