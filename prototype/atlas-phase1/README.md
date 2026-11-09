@@ -24,7 +24,7 @@ The interactive sample includes:
 - **Blue Tokai Amaltas Blend**: 11 current ratings, mean ~3.7.
 - These are **community-submitted**, not purchase-verified or proof of distinct persons. Counts and averages may change.
 - All coffee packs and the landscape are **stylized original CSS illustrations**, not actual product photos or estate documentary imagery.
-- Estate relationship in this prototype is a **storyboard/sample mapping**, not approval of the complete canonical origin graph. Exact join keys must be verified before integrating into production.
+- All three sample coffee-to-estate links have been **verified** in the ICB canonical mapping (`coffee_estates → estates → canon_estates`, canonical ID `3b403012-d145-4bb9-ba2c-c3256bf6d4dc`). This does not validate the wider Atlas graph, its other inference types, or readiness for production.
 
 ## Exclusions / safety
 
