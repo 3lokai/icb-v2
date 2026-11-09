@@ -1,4 +1,17 @@
-# ICB Living Coffee Atlas — Phase 1 browser prototype
+# ICB Living Coffee Atlas — browser prototypes
+
+## Current creative direction — Phase 1C
+
+**[Open the continuous Living Coffee Atlas prototype](./experience-v3-continuous.html)**
+
+GT's feedback was that Phase 1B *still feels section after section*. Phase 1C replaces the multiple homepage bands with **one interactive scene**: six directly selectable orbit objects, a contextual evidence plate, a readable site index overlay and no featured roaster at anonymous arrival. Search, real directories, Learn, Tools, member destinations and review contribution remain reachable without scrolling through sections.
+
+Read [21 — Continuous Atlas experience](../../docs/experience-redesign/21-continuous-atlas-experience.md) before implementing this concept. The older [Phase 1B prototype](./experience-v2.html) remains as a comparison, **not the recommended creative direction**.
+
+**No production code, no database writes, no actual account login.** Data shown here is a verified but static snapshot, dated 9 Nov 2026.
+
+---
+
 
 **Status:** isolated design experiment — **not production, not a deployable feature**.
 
