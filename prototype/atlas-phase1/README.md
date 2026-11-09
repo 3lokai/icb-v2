@@ -2,7 +2,21 @@
 
 **Status:** isolated design experiment — **not production, not a deployable feature**.
 
-Open [index.html](./index.html) in a browser (or serve this directory via a local static file server). No environment variables, database credentials, build, dependencies, or account required.
+## Current experience preview — Phase 1B
+
+**[Open Phase 1B: site hierarchy and contextual lenses](./experience-v2.html)**.
+
+Phase 1B is the next experience experiment, alongside (not replacing) the original [Phase 1 focus prototype](./index.html).
+
+This new browser preview adds existing ICB's **Explore / Learn / Tools / My Coffee** hierarchy, a neutral home with six contextual lenses, visible community evidence and objective recency paths, mobile section navigation, and direct links to the **real existing production routes**. It intentionally does not invent live `/explore`, `/estates`, or standalone review-activity pages.
+
+The review and account experiences remain simulations, with no API writes or personal-account reads. The source was checked with Node syntax validation and desktop/mobile Chromium interaction tests.
+
+See the [site IA review](../../docs/experience-redesign/19-homepage-and-information-architecture.md) and [Phase 1B design gate](../../docs/experience-redesign/20-phase1b-site-experience-review.md).
+
+---
+
+Open the original Phase 1 [index.html](./index.html) in a browser (or serve this directory via a local static file server). No environment variables, database credentials, build, dependencies, or account required.
 
 The interactive sample includes:
 
