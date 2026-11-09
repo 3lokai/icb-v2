@@ -48,6 +48,14 @@ Treat catalogue data as a typed relationship graph, but distinguish **navigable 
 
 A coffee with multiple brew methods and six flavour notes should NOT have ten visible spokes.
 
+## Review evidence and contribution in the graph (updated business priority)
+
+Reviewing is a **first-class coffee action**, not a promotional destination competing with estate/roaster/variety spokes. On every real **coffee focus**, keep a concise independent rating/review summary with genuine sample size and a reachable `Rate this coffee` action; zero reviews must be shown honestly. The transition to the review form should preserve node context and allow a fast rating with optional richer personal tasting notes. No pop-up immediately after browsing and no inference of tasting from visiting/buying.
+
+A `reviewed by` relationship is evidence-backed and appropriately privacy-scoped; don't render a public social graph of individual reviewers without a product/privacy decision. For returning signed-in users, an actual `tried` record can produce a quiet `Rate a coffee you tried` doorway. Ratings from third-party merchants are not independent ICB reviews by default.
+
+**Commercial test:** if the graph improves movement but not credible coffee-review contributions, it has failed an essential product goal. See [17](17-review-intelligence-and-monetization.md).
+
 ## 3. A minimal navigator's mental model
 
 Make navigation feel like changing focus, not teleporting between unrelated views.
