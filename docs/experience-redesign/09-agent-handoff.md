@@ -1,5 +1,8 @@
 # 09 — Codex / Claude Code Session Handoff
 
+> **STATUS UPDATE — 2026-11-09:** The “Initial task” and “First agent message” below are **historical Phase 0 instructions, already completed**. Do **not** restart the original audit, revert to A/B exploration or begin coding from this file. For the current new-chat alignment gate, read **[16 — Alignment Review](16-alignment-review-and-next-session.md)**, then **[07 — Decision Log](07-decisions.md)** and the linked audit/design history. The public homepage must remain neutral (no featured branded coffee); logged-in personalization is approved in principle; D is the preferred graph interaction prototype. No application changes until the owner approves a bounded scope.
+
+
 ## Agent role
 You are collaborating on **ICB Experience Redesign**, an approved *exploration* and **not** an authorization to edit production. Read the project documents before proposing designs or code. Your job is to preserve the nuanced hospitality metaphor, direct technical discovery and SEO/information architecture together.
 
