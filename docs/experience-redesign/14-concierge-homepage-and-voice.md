@@ -40,6 +40,12 @@ Potential tools / actions: search, explain-source, open-object, apply-filter, su
 
 **Learning design:** On-device / anonymous ephemeral context can include current object and reversible trail for that session; persistent personal taste profile only where appropriate consent/account handling permits. Questions to design: session retention, export/delete, provider privacy, tokens, abuse/rate limits, and cross-channel linking.
 
+## Concierge and community evidence — review-first extension
+
+ICB is building independent coffee intelligence, not just an AI-curated catalogue. The Concierge can explain review distributions, sample sizes, review methodology, sensory vocabulary and how to record a genuine tasting. It may suggest `Rate the coffee you tried` when that status is actually known, but must **never write or submit a review on a user's behalf, invent a review or nudge a positive score**. Keep users' own subjective notes distinct from roaster tasting copy and ICB inferred sensory parameters.
+
+Any `What do people think?` answer must cite actual independent retrieved reviews and qualify low counts; if evidence is absent, say so. A conversational transcript is not a sellable first-party review. Aggregate insights and commercial AI uses require separate rights/privacy review. See [17](17-review-intelligence-and-monetization.md).
+
 ## 3. Homepage architecture — ONE evolving stage, not stacked sections
 
 A homepage can be longer than one screen without using discrete cards/sections. Keep **one persistent visual anchor and one coherent spatial world**. The scroll reveals aspects of this world; it does not automatically select new nodes or move the user's canonical focus. User clicks change focus and actual navigable destinations.
