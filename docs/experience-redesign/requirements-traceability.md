@@ -115,3 +115,18 @@
 ## Change log
 - 2026-11-07: initial draft from the Phase 0 audit (Claude Code).
 - 2026-11-07: owner decisions 1–4 and guardrails recorded (07); BRAND-001…004, UX-008 and SEO-011 statuses updated.
+
+## Business mission, independent reviews and monetization (owner update 2026-11-09)
+
+IDs below extend the Phase 0 requirement inventory; validate current DB/events and exact technical locations before implementation. [17 — Review Intelligence & Monetization](17-review-intelligence-and-monetization.md) is the complete companion brief.
+
+| ID | Requirement | Source | Existing evidence (2026-11-07 audit) | How to validate | Status |
+| --- | --- | --- | --- | --- | --- |
+| BIZ-001 | Redesign serves independent coffee-review authority and trustworthy intelligence, not discovery alone | Owner 2026-11-09; 17 | 397 review rows in audited DB, scope/coverage unknown; 118 reviews in separate 90-day analytics | Owner confirmation of product north star and metric definitions | CONFIRMED (mission) |
+| BIZ-002 | Coffee focus/detail exposes genuine review summary, sample size, and fast neutral review path after tasting | 17 | Quick rating and review form already present on detail, gate and CTA exist | Prototype: visitor reaches a coffee and contributes a genuine rating without coercion; verify storage | PROPOSED (UX) |
+| BIZ-003 | Optional tasting context increases data quality without gating quick rating | 17; 04 | Review schema, collection quality and moderation need code review | Inspect review model and usability test optional notes/brew context, no AI review generation | PROPOSED |
+| BIZ-004 | Returning member can rate actually tried-but-unrated coffees; saved/viewed is not tried | 17; 04 | `user_coffees`, wishlists, `coffee_views` exist but histories differ | Test accurate state and no consumption inferred from clicks | PROPOSED |
+| BIZ-005 | Publish representative review coverage and independent contributor metrics | 17; audit §10 / §13a | 397 review rows, 183 start events, 102 submit events, 110 abandon events reported under differing scopes | Read-only counts by coffee vs roaster, unique contributors, recency, moderation, review coverage, deduped event cohorts | PROPOSED metric / OPEN baseline |
+| BIZ-006 | Monetization does not influence organic rank, review sentiment/removal, factual edges or AI answers | Owner 2026-11-09; 17 | Independent directory model; commercial policies not yet implemented | Commercial policy review and separation/disclosure of paid inventory | CONFIRMED principle |
+| BIZ-007 | Explore aggregated roaster intelligence, permitted data APIs and research reports as revenue tracks | Owner 2026-11-09; 17 | API infrastructure present; commercial demand, rights and feasibility unverified | Buyer interviews, paid pilots, rights/privacy/sample-size review | PROPOSED products |
+| BIZ-008 | Anonymous contribution, review authenticity, moderation, identity/consent and privacy preserve first-party trust | 17; ADR-012; existing auth/merge | 3-entity cap, review merge and consent exist; moderation specifics need audit | Audit duplicate/abuse detection, moderation, erasure and data rights | CONFIRMED trust / OPEN implementation |
