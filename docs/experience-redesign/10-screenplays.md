@@ -1,331 +1,378 @@
-# 10 — Phase 1 Experience Screenplays
+# 10 — Phase 1 Experience Screenplays (revision 2)
 
-**Status:** Phase 1 draft for owner review. Nothing here is approved. No frontend implementation.
+**Status:** Phase 1, revision 2, for design review. Nothing here is approved. No production implementation.
 **Date:** 2026-11-07 · **Branch:** `design/experience-redesign` · **Author:** Claude Code
-**Inputs:** [01](01-vision.md)–[08](08-delivery-plan.md), [current-state-audit.md](current-state-audit.md), [requirements-traceability.md](requirements-traceability.md), and the owner decisions of 2026-11-07 ([07](07-decisions.md)).
+**Inputs:** [01](01-vision.md)–[08](08-delivery-plan.md), [current-state-audit.md](current-state-audit.md), [requirements-traceability.md](requirements-traceability.md), and the owner decisions in [07](07-decisions.md).
+**Next:** [11-penpot-handoff.md](11-penpot-handoff.md), the self-contained brief for Codex.
+
+### Revision 2 changes (owner review, 2026-11-07)
+
+**Concept A** is accepted for Penpot exploration. It is not yet the winning direction.
+
+**Concept B** is revised and renamed from "House Lights" to **"Sightline"**:
+- The 646 floating coffee objects and the flavour-cluster field are **removed**; they resembled the rejected Taste Observatory.
+- B is now **one continuous spatial composition along a single depth axis**. It evolves from selection → coffee → characteristics → estate → stories.
+- There is no theatre or opera-house environment. Hospitality stays behavioural, expressed through light and depth.
+
+**Both concepts now include:**
+- A **serendipity moment** grounded in real catalogue relations (§2.3).
+- Resolved **filter vs preference semantics**, including coffees with **multiple flavour families** (§2.2).
+
+**Ambition.** A gains layout recomposition and a drawn annotation line, so both concepts carry equal ambition. The recommendation no longer weighs implementation ease (§6).
 
 ## 0. Brief and constraints
 
-**Brief (07, 2026-11-07).** Write two substantially different creative implementations of the hospitality philosophy.
-- **Concept A, "The Annotated Guide":** evolves the Coffee Field Guide identity.
-- **Concept B, "House Lights":** free to reconsider typography, colour, materials, spatial depth, interaction and motion. It is the one fully spatial screenplay.
+Two creative implementations of the hospitality philosophy (07): **A, "The Annotated Guide"** evolves the Coffee Field Guide; **B, "Sightline"** is free to reconsider typography, colour, materials, spatial depth, interaction and motion.
 
 **Focus order.** Mobile deep-link landing first, homepage second, then the expert and returning paths.
 
-**What a screenplay is here.** A timed sequence of beats with decision points. It shows what the visitor sees, what they do, what responds and why, and the URL and data behind each beat. It is not a visual design and not a video script.
-
-**Guardrails (07).**
+**Guardrails.**
 - No production rebrand.
 - No framework migration.
 - No changes to public URLs, SEO structures or coffee data.
-- Technical discovery and direct filter access are retained.
+- Direct expert controls retained.
+- Real data only.
+- Accessible HTML.
 - Mobile and reduced-motion versions are mandatory.
-- No stacked sections and no moodboards.
-- Engineering limits are recorded as trade-offs (§6), not used to veto ideas.
+- No stacked sections or moodboards.
+- Engineering limits are recorded as trade-offs, never as vetoes.
 
-**Evidence rule.** Every coffee, count and relationship below is real. Each is tagged:
-- **L**: live database, 2026-11-07.
+**Evidence tags.**
+- **L**: live database, read-only, 2026-11-07.
 - **K**: read in code.
-- **S**: analytics snapshot.
+- **S**: analytics snapshot from `../icb-claude`.
 
-Where a beat needs something that does not exist yet, it is marked **NEEDS** and listed in §7.
+Assumptions that need something not yet built are marked **NEEDS** (§7).
 
 ---
 
-## 1. The cast: real ICB data used in every scene
+## 1. The cast: real ICB data
 
 | Element | Fact | Source |
 |---|---|---|
 | Entry page | `/coffees/v60`, a brew-method landing page. Filter `brew_method_ids: ["pour_over"]`, sort `rating_desc`. Existing intro copy: *"No brewer shows you an Indian coffee's terroir as plainly as the V60…"* | **K** `src/lib/discovery/landing-pages/brew-method-pages.ts:131,191-194` |
 | Entry traffic | 61 GSC clicks and 3,785 impressions in 91 days. Landing pages are the #1 organic template; 66% of clicks are mobile. | **S** |
-| Pool | 646 in-stock coffees list pour-over. Their top flavour families: Fruity 504 · Chocolatey/Cocoa 205 · Sweet 186 · Nutty 145 · Floral 131 · Caramelized 108 | **L** |
-| Expert combination | pour-over + natural + light/light-medium = **62** in stock; + a Chikmagalur region name = **14** (own-region match; a rolled-up count would include sub-regions) | **L** |
-| Hero coffee | **"Naturals Roasted Coffee Beans"**, Baarbara Coffee. `/roasters/baarbara-coffee/coffees/naturals` | **L** |
-| | Natural, light roast, SLN 795. Notes: Mango, Dry Coconut (families Fruity, Nutty). Region Baba Budangiri. Estate Baarbara Estate. From ₹600; 250 g / 500 g / 1 kg / 5 kg. Brew: pour-over, AeroPress. Sensory source: roaster, confidence high. | **L** |
-| Same-estate sibling | **"Baarbara Naturals"**, BrewClan Coffee Roasters. Natural, light-medium, SLN 795, Berry (Fresh) and Citrus. From ₹699. Sensory: acidity 4/5 and sweetness 3/5, **source `icb_inferred`, confidence medium** | **L** |
-| Estate | Baarbara Estate (Chikmagalur): **119** public coffees, the largest of the **15** estates passing the ADR-013 gate | **L** |
-| Region page | `/coffees/baba-budangiri` exists (region config) | **K** `region-pages.ts:127` |
-| Articles | `/learn/indian-coffee-varieties-explained` ("…SLN-795, SLN-9, Chandragiri, and More", #2 organic page, 282 clicks); `/learn/understanding-indian-coffee-estates`; `/learn/baba-budangiri-coffee` | **S** |
-| Sensory coverage | 1,573 in-stock coffees. acidity 812 · body 822 · sweetness 846 · bitterness 466 · clarity 493 (scale 0–5). Source: roaster 965 / ICB-inferred 608. | **L** |
-| Flavour taxonomy | 344 nodes in 15 families (Fruity, Floral, Chocolatey/Cocoa, Nutty, Caramelized/Brown Sugar, Sweet, Spice, Earthy/Savory, Fermented/Funky, Roasted/Smoky, Herbal/Vegetal, Dairy and others) | **L** |
-| Returning signals | Hero segments, recently viewed (`coffee_views`), wishlist, ratings | **K** audit §12 |
+| Pool | 646 in-stock coffees list pour-over. Of those, Fruity 504 · Chocolatey/Cocoa 205 · Sweet 186 · Nutty 145 · Floral 131 · Caramelized 108 (a coffee can count in several) | **L** |
+| Expert combination | pour-over + natural + light/light-medium = **62**; + Chikmagalur region name = **14** (own-region match) | **L** |
+| **Hero coffee** | **"Naturals Roasted Coffee Beans"**, Baarbara Coffee. `/roasters/baarbara-coffee/coffees/naturals` | **L** |
+| | Natural · light · SLN 795. Notes: **Mango** (family Fruity › Tropical) and **Dry Coconut** (Nutty › Indian), i.e. **two families**. Region Baba Budangiri. Estate Baarbara Estate. From ₹600; 250 g / 500 g / 1 kg / 5 kg. Brews: pour-over, AeroPress. Sensory source: roaster, confidence high. Has image. | **L** |
+| **Estate** | **Baarbara Estate**, Chikmagalur. *"cultivated for over 120 years … now run by the third generation of the Indavara family, owners of MG Plantations. Selection 795 Arabica is shade-grown on the high hills of the Western Ghats … UTZ and Rainforest Alliance … also produces black pepper."* Signature profile: *"Moderately bright, balanced and complex — chocolate and caramel notes with mandarin and spicy undertones."* No altitude recorded. **No estate photography exists (0 of 186 estates).** | **L** `canon_estates` |
+| Estate in the catalogue | **111** in-stock coffees from **23 roasters**. Processes: washed 18 · natural 7 · honey 5 · experimental 34 · other 34 · monsooned 2 · double-fermented 2 · washed-natural 5 · pulped-natural 1. Species: arabica 82 · blends 12 · robusta 2 · arabica–robusta blends 10 · chicory 4. | **L** |
+| Same-estate sibling | **"Baarbara Naturals"**, BrewClan Coffee Roasters. Natural · light-medium · SLN 795 · Berry (Fresh), Citrus · from ₹699. Acidity 4/5 and sweetness 3/5, **source `icb_inferred`, confidence medium**. Has image. | **L** |
+| **Serendipity coffee** | **"Ratnagiri Estate – Robusta Mosto Naturals"**, Naivo Coffee. `/roasters/naivo-coffee/coffees/ratnagiri-estate-robusta-mosto-naturals`. **Robusta** · anaerobic · medium · Baba Budangiri · Ratnagiri Estate. Notes: Cream, Dried Fruit, Jackfruit, **Mango**, Nutmeg. From ₹670. Has image. | **L** |
+| Region art | Commissioned region plates exist for Baba Budangiri, Chikmagalur, Sakleshpur (12 India regions in total). No terroir photos. | **L** `canon_regions.logo_url` |
+| Region page | `/coffees/baba-budangiri` | **K** `region-pages.ts:127` |
+| Articles | `/learn/indian-coffee-varieties-explained` (SLN-795, #2 organic page); `/learn/understanding-indian-coffee-estates`; `/learn/baba-budangiri-coffee` | **S** |
+| Flavour taxonomy | 344 nodes in 15 families | **L** |
+| Family multiplicity | Of 1,573 in-stock coffees: no notes 204 (13%) · 1 family 229 · 2 families 454 · 3 families 428 · 4+ families 258. **85% of coffees with notes span 2 or more families.** Fruity-any 980 · Fruity-only 145 · Fruity and Chocolatey 341. | **L** |
+| Sensory coverage | acidity 812 · body 822 · sweetness 846 · bitterness 466 · clarity 493 of 1,573 (scale 0–5). Source: roaster 965 / ICB-inferred 608. | **L** |
 
 ---
 
-## 2. The shared contract (both concepts honour it)
+## 2. Shared foundations (both concepts)
 
-These are the parts of hospitality that must not depend on art direction. They are what make either concept safe to prototype.
-
+### 2.1 Contract
 | # | Contract | Traces to |
 |---|---|---|
-| SC-1 | **The DOM is the experience; motion and 3D are performance on top of it.** Every beat below exists as server-rendered, indexable HTML at its URL, with the same h1, copy, links and JSON-LD as today. | IA-001, SEO-001…006 |
-| SC-2 | **The "ask" is always within one action.** A persistent search-and-filters control. On mobile it is a bottom-anchored bar in the thumb zone; on desktop, a top bar. It shows the active constraints as chips. It never disappears behind an expressive scene. | UX-004, UX-006 |
-| SC-3 | **Every result state is a URL using existing params** (`brewMethodIds`, `processes`, `roastLevels`, `regions`, `flavors`, …). Guidance and exploration produce the same shareable URLs as expert filtering. | UX-005, SEO-008 |
-| SC-4 | **Every fact carries its provenance in one of three voices.** **Catalogue** = roaster-stated or ICB data. **ICB estimate** = `icb_inferred` sensory and computed similarity. **Editorial** = an ICB writer's suggestion. The two concepts render the voices differently; neither omits them. | UX-009, PERS-*, 02 |
-| SC-5 | **Explicit choices are hard constraints; guidance only ranks.** A prompt answer becomes a visible, removable chip. Sensory data (52–54% coverage) ranks results but never filters out coffees that lack it. | PERS-001 |
-| SC-6 | **Reduced motion and no-JS are complete experiences.** Every transition has an instant or crossfade equivalent. Every spatial scene has a composed static equivalent containing the same choices. | A11Y-001…004 |
-| SC-7 | **The host steps aside for experts.** Once the visitor uses direct filters or search, expressive motion quiets. Experts are never made to watch. | 01, UX-013 |
+| SC-1 | **The DOM is the experience.** Every beat exists as server-rendered, indexable HTML at its URL with today's h1, copy, links and JSON-LD. Motion, depth and light are layered on top. | IA-001, SEO-001…006 |
+| SC-2 | **The ask is always one action away.** A persistent search-and-filters control: bottom-anchored on mobile, top on desktop. It shows **filter** and **preference** chips (§2.2). | UX-004, UX-006 |
+| SC-3 | **Every result state is a URL.** Filters use existing params. Preferences need one additive param (N2). | UX-005, SEO-008 |
+| SC-4 | **Three provenance voices, always as text.** *Catalogue* (roaster-stated or ICB data), *ICB estimate* (`icb_inferred` sensory, computed similarity), *Editorial* (an ICB writer's suggestion). Colour or depth may reinforce a voice but never replaces its text label (WCAG 1.4.1). | UX-009, 02, 04 |
+| SC-5 | **The host steps aside.** Typing in search or touching a filter puts the experience in **control mode**: expressive motion stops and the layout becomes direct and dense. | 01, UX-013 |
+| SC-6 | **Reduced motion and no-JS are complete experiences.** The same choices and relations, with no camera, no scroll-linked effects and crossfades at most. | A11Y-001…004 |
 
-### The "Guide me" model (shared logic, different embodiment)
+### 2.2 Filters, preferences and multiple flavour families (resolved)
 
-At most three prompts. Each is optional, plain-language and individually skippable. Each answer becomes a chip. **The prompts can be answered in any order, or ignored entirely.**
+**Two kinds of constraint, visibly different.**
 
-| Prompt (draft copy) | Maps to (existing data) | URL today | Notes |
+| | **Filter** (hard) | **Preference** (soft) |
+|---|---|---|
+| Meaning | "Only show me coffees that…" | "Show me first the coffees that…" |
+| Effect | **Excludes** non-matching coffees | **Re-orders**; never excludes |
+| Chip | Solid, e.g. **Pour-over** | Outlined, prefixed, e.g. *prefer* **Fruity** |
+| Combination | AND across facets, OR within a facet (today's engine) | Additive score; ties fall back to the chosen sort |
+| Created by | Expert controls; landing-page pre-filter; Guide answers that are **factual compatibility** (brew method, milk, decaf, price) | Guide answers about **taste** (flavour direction, gentle/bold) |
+| Conversion | — | One tap, "Only fruity", turns a preference into a filter |
+
+**Why taste is a preference by default.**
+- 85% of coffees with notes span two or more families, so "Fruity" as a hard filter would keep 980 coffees, 341 of them also chocolatey. A newcomer who said "fruity" would not recognise that set.
+- 13% of coffees have no notes, and sensory data covers only about 52%. A hard taste filter would silently drop coffees for missing data rather than for taste, which breaks PERS-001's spirit.
+
+**Family membership (for filters).** A coffee *has* a family if **any** of its descriptors belongs to it. The hero coffee is in Fruity *and* Nutty. An expert "Fruity" filter keeps it.
+
+**Preference score (explainable, deterministic, no ML).**
+
+```
+taste_share   = (# of the coffee's descriptors in preferred families) / (# of its descriptors)
+                → hero: Mango is Fruity, Dry Coconut is not → 1/2 = 0.5
+sensory_fit   = closeness of acidity/body to the preference (only if the value exists)
+                → ICB-inferred values count, but their why-line says "ICB estimate"
+roast_fit     = 1 if the roast is in the preferred band, else 0
+score         = 0.6·taste_share + 0.25·sensory_fit + 0.15·roast_fit
+                (missing parts are left out and the weights re-normalised; no penalty for missing data)
+```
+
+The weights are placeholders for the prototype; tune them with users.
+
+**Coffees with no notes** stay in the results. They rank on whatever they have and carry the line *"No tasting notes listed by the roaster."*
+
+**Displaying multiple families.** Every result shows its **flavour signature**: each note with its family, e.g. `Mango · Fruity` `Dry Coconut · Nutty`. The why-line states the share honestly: *"1 of 2 notes fruity."* Neither concept ever paints a coffee as belonging to one family.
+
+**Guide prompts (at most three, any order, each skippable).**
+
+| Prompt (draft copy) | Creates | Maps to | URL |
 |---|---|---|---|
-| "How will you brew it?" — Pour-over · Espresso/moka · French press/AeroPress · Filter (South Indian) · With milk | `brewMethodIds`, `worksWithMilk` | ✅ existing params | Skipped automatically when the visitor arrives on a brew landing page; the brewer is already known |
-| "Bright and fruity, or round and comforting?" | Flavour families: Fruity/Floral vs Chocolatey/Caramelized/Nutty | ◐ `flavors` takes descriptor slugs, not families | **NEEDS** a family-level param (additive) or descriptor bundles |
-| "Gentle or bold?" | Roast level (hard), plus `sensory_params.body`/`acidity` (rank only) | ◐ roast ✅; sensory has no param | **NEEDS** a sensory ranking input (additive) |
+| "How will you brew it?" | **Filter** | `brewMethodIds`, `worksWithMilk` | ✅ existing |
+| "Bright and fruity, or round and comforting?" | **Preference** (*prefer* Fruity+Floral, or Chocolatey+Caramelized+Nutty) | Families via `canon_flavor_families` | **NEEDS** N2 |
+| "Gentle or bold?" | **Preference** (roast band plus body/acidity) | `roast_level`, `sensory_params` | **NEEDS** N2 |
 
-The **output** is real results, each with up to three "why" lines. Each line is tagged with its voice. For the hero coffee:
-- "Brews on pour-over · *Catalogue (roaster)*"
-- "Fruity: mango, dry coconut · *Catalogue (roaster)*"
-- "Light roast · *Catalogue*"
+On a brew landing page the first prompt is already answered by the page's filter.
 
-For the BrewClan sibling, the acidity line reads "Bright: acidity 4 of 5 · *ICB estimate*".
+### 2.3 Serendipity (shared rule, different staging)
+
+**Rule.** At most **one** serendipitous introduction per journey. It is a coffee that:
+1. **shares at least two catalogue relations with what the visitor is engaging with right now.** The relations are chosen from: a flavour descriptor they have dwelt on or preferred, the region, the variety, the estate;
+2. **and differs on one attribute the visitor probably assumes is fixed**: species, process, roast band or price tier.
+
+It is labelled *Catalogue*, states both reasons and the difference in one sentence, is dismissible, and never appears in a carousel. If nothing qualifies, nothing is shown. Silence is better than filler. **Computable today** from the MV with a read-only query (N10).
+
+**The scripted instance (L).** From the hero coffee:
+- **Shares** the descriptor **Mango** and the region **Baba Budangiri**.
+- **Differs** in species: **Robusta** (and process, anaerobic). That is a genuine surprise for anyone who assumes Robusta cannot taste of fruit.
+
+> *"Also from the Baba Budangiri hills, also tasting of mango, and it's a Robusta."*
+> → **Ratnagiri Estate – Robusta Mosto Naturals**, Naivo Coffee · anaerobic · medium · Cream, Dried Fruit, Jackfruit, Mango, Nutmeg · from ₹670
+
+The copy makes no quality claim about Robusta; it states only facts.
 
 ---
 
 ## 3. Concept A — "The Annotated Guide"
 
 ### Thesis
-The host is the **margin**. ICB already looks like a printed field guide. In A it *behaves* like one that a knowledgeable person has annotated just for you. Hospitality takes the form of marginalia: short handwritten-register notes appear beside what you are looking at. They:
-- notice what you seem to want ("These lean fruity.");
-- make introductions ("Same farm, another roaster.");
-- go quiet when you are working.
+The host is **the margin and the hand that composes the page**. In A the field guide *behaves* like one annotated for you:
+- notes in the margin notice and introduce;
+- a single drawn line connects things the host wants you to see together;
+- **the page recomposes itself around your intent**, the way a good editor re-lays a spread when the story changes.
 
-The guide does not change pages; it **unfolds plates**. Detail opens like a fold-out, and related objects arrive as tipped-in leaves.
+Detail pages *unfold* as plates; related objects are *tipped-in leaves*.
 
-### What evolves, what is kept, what is dropped
-- **Kept.** Cream ground, roasted-bean ink, Fraunces/DM Sans, the commissioned region plates, the flat paper surface vocabulary.
+### Identity
+- **Kept.** Cream ground, roasted-bean ink, Fraunces/DM Sans, the commissioned region plates, the flat paper vocabulary.
 - **Evolved.**
-  - **The brush-smear becomes functional.** It stops being decoration rationed to one phrase per page. It becomes the host's *mark of attention*: one smear that moves to underline whatever the host is currently pointing at (the active chip, the recommended thread). There is still exactly one on screen.
-  - **A margin column on desktop** (a "notes" rail) and a **note strip on mobile**, docked above the ask bar.
-  - **Fraunces optical sizes pushed to extremes:** a very large opsz for plate titles, a small opsz for marginalia.
-- **Dropped.**
-  - Stacked homepage sections.
-  - Generic card grids, replaced by specimen lists with plate thumbnails.
-  - The eyebrow kicker.
+  - **The brush-smear becomes the host's single mark of attention.** One smear moves to whatever the host is pointing at: the active chip, the recommended thread.
+  - **A drawn annotation line.** A fine ink leader line connects two things across the layout, e.g. a note to a coffee, or a coffee to its serendipitous counterpart.
+  - **Fraunces optical sizes pushed to extremes** (plate titles vs marginalia).
+  - **Layout families chosen by state**, never a fixed grid:
+    - **Index** (many results): dense specimen list.
+    - **Spread** (5–15): editorial two-column with one featured plate.
+    - **Plate** (1 match, or a detail page): full-bleed specimen.
+- **Dropped.** Stacked sections, generic card grids, the eyebrow kicker.
 
 ### Motion grammar (A)
-| Motion | Purpose | Timing / easing | Reduced-motion substitute |
+| Motion | Purpose | Timing / easing | Reduced motion |
 |---|---|---|---|
-| **Unfold** (card → detail, shared element: image + name) | Explains that the detail page *is* this card, opened | 420 ms, `ease-out-expo` (existing Reveal curve) | Instant swap with 120 ms opacity |
-| **Margin note arrives** | The host speaks | Note fades in 240 ms; the smear draws under the referenced phrase over 360 ms | Note appears; smear static |
-| **In-place reorder** when a chip changes | Shows results *responding*, not reloading | 280 ms FLIP layout | Instant reorder; result count announced via `aria-live` |
-| **Tipped-in leaf** (related object slides over its edge) | Introduces an adjacent object without leaving | 360 ms translate from the trailing edge | Opens as a standard sheet |
+| **Recompose** (layout family changes as the result count or intent changes; shared elements keep identity) | The guide re-lays itself for you | 480 ms FLIP, `cubic-bezier(0.16,1,0.3,1)` | Instant layout; `aria-live` announces the count |
+| **Unfold** (row → plate) | The detail *is* this item, opened | 420 ms, same curve | Instant swap, 120 ms opacity |
+| **Margin note** + **smear draw** | The host speaks and points | 240 ms fade; smear 360 ms | Note appears; smear pre-drawn |
+| **Leader line draw** | The host connects two things | 500 ms stroke draw from note to target | Line pre-drawn |
+| **Tipped-in leaf** | Introduces an adjacent object | 360 ms from the trailing edge | Standard sheet / page |
 
-There is no 3D, no camera and no scroll-linked animation. All of A fits the existing `motion` package.
+### Scene A1 — Mobile deep link `/coffees/v60` (≈ 100 s, lead)
 
-### Scene A1 — Mobile deep link: `/coffees/v60` (≈ 90 s, lead scene)
-
-| t | Visitor sees / does | Host response (motion) | URL / data | Voice |
+| t | Visitor | Host response | URL / data | Voice |
 |---|---|---|---|---|
-| 0 s | Lands from Google on a phone. The page reads as an opened plate: the existing h1 and the existing V60 intro paragraph, set large, with the brew-parameters strip as a diagram. The ask bar is docked at the bottom with the chip **Pour-over ✓** already in it. | None, so text is the LCP. The smear draws once under "terroir" after paint. | `/coffees/v60`, unchanged SSR, FAQ JSON-LD intact | — |
-| 6 s | Scrolls. The teaser list begins: specimen rows, each with name, roaster, two flavour words and "from ₹". | The note strip appears above the ask bar: *"646 coffees in the guide brew well on a V60. Most of them lean fruity."* | Counts **L** | Catalogue |
-| 15 s | **Decision D1.** Read on, open the ask bar, or answer the note. The note offers two quiet choices: *Brighter* · *Rounder*. | — | — | — |
-| 18 s | Taps **Brighter**. | Chip **Fruity** joins the bar; the smear slides under it. The list reorders in place (FLIP). The note reads *"Brighter, then. Natural process tends to push this further."*, an introduction to a facet, not a command. | → `/coffees?brewMethodIds=pour_over&flavors=…` (existing params; **NEEDS** family param for an exact "Fruity"). The address change is a real navigation with shared-element continuity. | Editorial (the note), Catalogue (results) |
-| 30 s | Taps **Natural** in the note. | Chip added; count updates: 62 coffees with light/light-medium roast (if the visitor also takes the "Gentle" chip) | `&processes=natural` | Catalogue |
-| 38 s | Opens **"Naturals Roasted Coffee Beans"**, Baarbara Coffee. | **Unfold:** the row's image and name expand into the specimen sheet. | `/roasters/baarbara-coffee/coffees/naturals` (canonical detail) | — |
-| 45 s | Reads the specimen sheet: Mango, Dry Coconut · Natural · Light · SLN 795 · Baba Budangiri · Baarbara Estate · from ₹600. **Buy from Baarbara Coffee** is visible without scrolling. | The margin sets three **threads** beside the sheet. Each has a relation verb and a voice: **Grown at** Baarbara Estate (*119 coffees in the guide come from here*, Catalogue). **Variety** SLN 795 (*The varieties, explained*, Editorial). **From** Baba Budangiri (Catalogue). | Relations **L**; the article match is **NEEDS** (editorial mapping or reverse lookup, audit §11) | 3 voices |
-| 55 s | **Decision D2.** Buy (outbound), follow a thread, or go back. | — | — | — |
-| 58 s | Taps **Grown at Baarbara Estate**. | **Tipped-in leaf:** the estate leaf slides over the sheet's edge. It leads with *"Same farm, other hands"*: BrewClan's **Baarbara Naturals** (Berry, Citrus, light-medium, from ₹699), labelled **"Bright: acidity 4/5 · ICB estimate"**. This is the "overheard conversation": the same estate interpreted by a different roaster. | `/estates/baarbara-estate` if `/estates` ships (OPEN); otherwise an inline leaf with no new URL | Catalogue + ICB estimate |
-| 75 s | Taps the variety thread. | Leaf: the opening of the SLN 795 section of the varieties article, plus *"Read the full field note"*. | `/learn/indian-coffee-varieties-explained` | Editorial |
-| 85 s | Presses Back twice. | Returns to the specimen sheet, then to the results with **Pour-over · Fruity · Natural** intact and scroll restored. | Requires push-history behaviour (**OPEN**, audit §19.6) | — |
+| 0 s | Lands from Google on a phone. **Plate** layout: the existing h1 and V60 intro set large, with the brew-parameter strip as a diagram. The ask bar is docked with the filter chip **Pour-over**. | None until after paint, so text is the LCP. Then the smear draws under "terroir". | `/coffees/v60` SSR unchanged | — |
+| 6 s | Scrolls into the specimen **index**: each row shows name, roaster, flavour signature and "from ₹". | The note strip appears: *"646 coffees here brew well on a V60. Most have at least one fruity note."* | **L** | Catalogue |
+| 15 s | **D1.** Read on, open the ask bar, or answer the note: *Brighter* · *Rounder*. | — | — | — |
+| 18 s | Taps **Brighter**. | *prefer* **Fruity** (outlined) joins the bar and the smear slides under it. Nothing disappears: the list **re-orders**, and each row gains a why-line (*"2 of 3 notes fruity"*). The note reads: *"Nothing's hidden, just re-ordered. Tap 'Only fruity' to narrow."* | → `/coffees?brewMethodIds=pour_over&prefer=fruity` (**NEEDS** N2) | Catalogue |
+| 28 s | Taps **Natural** in the note. | Filter chip **Natural** (solid). The count falls (the 62 figure applies once a light/light-medium filter is added). The layout **recomposes** from index to **spread**. | `&processes=natural` | Catalogue |
+| 38 s | Opens the hero coffee. | **Unfold** into the specimen **plate**. | `/roasters/baarbara-coffee/coffees/naturals` | — |
+| 45 s | Reads the plate: `Mango · Fruity`, `Dry Coconut · Nutty` · Natural · Light · SLN 795 · Baba Budangiri · Baarbara Estate · from ₹600. **Buy from Baarbara Coffee** is visible without scrolling. | Margin threads, each with a relation verb and voice: **Grown at** Baarbara Estate (Catalogue) · **Variety** SLN 795 (*the varieties, explained*, Editorial) · **From** Baba Budangiri (Catalogue). | Relations **L**; article match **NEEDS** N5 | 3 voices |
+| 58 s | Taps **Grown at Baarbara Estate**. | **Tipped-in leaf.** The Baba Budangiri **region plate** (real art; no estate photo exists) sits beside the estate's facts, quoted from the record: 120 years, third-generation Indavara family, S795 shade-grown, pepper, UTZ and Rainforest Alliance. *"111 coffees from 23 roasters come from here."* Under *"Same farm, other hands"*: BrewClan's **Baarbara Naturals**, with acidity 4/5 labelled **ICB estimate**. | `/estates/baarbara-estate` if shipped (OPEN), else inline leaf | Catalogue + ICB estimate |
+| 72 s | **Serendipity.** | A margin note marked **"An aside"** appears. A **leader line draws** from the word *Mango* on the plate, across the margin, to a small tipped-in specimen: *"Also from the Baba Budangiri hills, also tasting of mango, and it's a Robusta."* **Ratnagiri Estate – Robusta Mosto Naturals**, Naivo · anaerobic · from ₹670. A small *"Not now"* dismisses it. | Rule §2.3; N10 | Catalogue |
+| 80 s | **D2.** Opens the Robusta, follows the variety thread, buys, or goes back. | Opening the Robusta unfolds it as a plate; the leader line stays anchored to its *Mango* note. | Robusta detail URL | — |
+| 95 s | Back, Back, Back. | The plates fold back; the results return with **Pour-over · Natural** and *prefer* **Fruity** intact, scroll restored. | **NEEDS** N3 (push history) | — |
 
-**What hospitality means in A1:** it notices (fruity pool), offers (brighter or rounder), introduces (natural, same farm), and never blocks (the ask bar and Buy are always one tap away).
-
-### Scene A2 — Homepage, newcomer (≈ 75 s)
-
-| t | Visitor sees / does | Host response | URL / data |
+### Scene A2 — Homepage, newcomer (≈ 80 s)
+| t | Visitor | Host response | URL |
 |---|---|---|---|
-| 0 s | **Arrival** is a single composed spread, not a stack. On the left (desktop) or top (mobile): one sentence in large Fraunces, for example *"Indian coffee, introduced properly."* On the right or below: a region plate (real commissioned art), the ask bar, and three plain invitations: **Find me a coffee** · **I know what I'm after** · **Show me something interesting**. | The plate settles 8 px over 600 ms after paint. Nothing else moves. | `/` (h1 and SSR preserved) |
-| 5 s | **D1.** The visitor taps **Find me a coffee**. | The spread *turns* (a horizontal shared-axis slide, 360 ms) to the first prompt, *"How will you brew it?"*. The margin note says *"Three questions at most, and you can skip any."* | Prompt state is client-only; no URL until results |
-| 15 s | Picks **Pour-over**, then **Bright and fruity**, then skips the third. | Each answer drops a chip into the ask bar; the smear follows the newest chip. | — |
-| 30 s | Results arrive: 6–8 specimens, each with its why-lines and voice tags. | Results unfold from the chip bar downward. | `/coffees?brewMethodIds=pour_over&flavors=…` |
-| 45 s | Opens the hero coffee, as in A1 (38–75 s). | Same grammar, so the newcomer learns it once. | — |
-| 70 s | **D2.** Saves to wishlist (prompts sign-in), buys, or wanders a thread. | — | Existing wishlist flow |
+| 0 s | **Arrival is one composed plate**, not a stack: one sentence in large Fraunces, a real region plate, the ask bar, and three invitations: **Find me a coffee** · **I know what I'm after** · **Show me something interesting**. | The plate settles 8 px over 600 ms. | `/` |
+| 5 s | **Find me a coffee.** | **Recompose:** the plate gives way to the first prompt. Margin: *"Three questions at most; skip any."* | — |
+| 15 s | Pour-over (filter) → Bright and fruity (preference) → skip. | Each answer drops a chip: solid for filters, outlined for preferences. | — |
+| 30 s | Results as a **spread**, each with flavour signature and why-lines. | Recompose from prompt to spread. | `/coffees?brewMethodIds=pour_over&prefer=fruity` |
+| 45 s | Opens the hero coffee → A1 from 38 s, including the serendipity aside. | — | — |
 
-**Expert / explore invitations.** *"I know what I'm after"* focuses the ask bar with its filters open (SC-7). *"Show me something interesting"* opens an **editorial spread**: one thread a week, drawn from real relations. Example: *"One estate, five roasters: Baarbara."*
+***Show me something interesting*** opens a single editorial spread built from real relations. Example: *"One estate, twenty-three roasters: Baarbara."* It lists the 111 coffees grouped by process (washed 18 … monsooned 2), with the leader line connecting two coffees from the estate that differ in process. The pair is chosen by query at design time; not verified here.
 
-### Scene A3 — Expert, 20 seconds
-`⌘K` or the ask bar → type "natural" → **Natural** suggested as a filter, not just as a coffee name (**NEEDS** search-to-facet suggestions). Add **Pour-over**, **Light**, **Chikmagalur** from the bar. Results update in place: **14 coffees** (**L**). Open two coffees in turn; Back keeps the four chips. **Margin notes stay silent** once filters are typed directly (SC-7).
+### Scene A3 — Expert, 20 s
+`⌘K` or the ask bar → type "natural" → **Natural** offered as a filter (N6). Add **Pour-over**, **Light**, **Chikmagalur** → **14** results, **index** layout. Open two; Back keeps the chips. **Control mode:** no notes, no smear motion, no serendipity.
 
 ### Scene A4 — Returning
-The arrival spread swaps its invitation line for recognition:
-- *"Welcome back. You were looking at Naturals from Baarbara Coffee."* (existing `coffee_views`).
-- One new thread: *"New this fortnight: 3 pour-over naturals."* (MV `created_at`; **NEEDS** a "since last visit" marker).
-- The last filter set is offered as a chip group to resume (**NEEDS** last-context storage; consent-scoped, PERS-008).
+The arrival plate offers recognition:
+- *"Welcome back. You were reading Naturals from Baarbara Coffee."* (`coffee_views`).
+- Last chips, resumable (N7).
+- One new thread: *"New this fortnight: pour-over naturals."* (MV `created_at` + N7).
 
 ### Mobile and reduced motion (A)
-- **Mobile is the primary layout.** The margin becomes a single-line note strip above the ask bar. Threads become a horizontal rail under the specimen sheet. Leaves open as bottom sheets.
-- **Reduced motion.** Unfold becomes an instant swap; the smear is pre-drawn; reorder is instant with an `aria-live` count.
-- **No-JS.** Every leaf is its own linked page (estate, region, article), so nothing is lost.
+- **Mobile first.** The margin is a one-line note strip above the ask bar. The leader line runs vertically from the note strip to the target. Leaves are bottom sheets.
+- **Reduced motion.** Recompose, unfold and line draws become instant, with `aria-live` counts.
+- **No-JS.** Every leaf is a linked page.
 
 ---
 
-## 4. Concept B — "House Lights"
+## 4. Concept B — "Sightline"
 
 ### Thesis
-The host is **light**. In an opera house, care is lighting design:
-- the house dims when the performance needs your attention;
-- a follow-spot finds the soloist;
-- the house lights come up when you need to find your seat.
+The host is **light and depth along one line of sight**.
+- The whole journey is **a single continuous composition on one depth axis**. Each meaningful step (a coffee, its character, its estate, its stories) arrives as a translucent plane in front, while the previous planes recede behind it. **They stay visible and softly lit: the space itself remembers where you have been.**
+- **Light is the attentive host.** It pools on what matters now, drifts with your reading, finds an aside at the edge of view, and **comes up flat and bright the moment you take control.**
+- **Depth carries meaning, never decoration:**
+  - **Journey depth:** further back means earlier in your path.
+  - **Certainty depth:** within a plane, *Catalogue* facts sit nearest, and *ICB estimates* sit slightly recessed with a cool rim light.
 
-B makes ICB a **dark, warm, dimensional space** in which coffees and their relationships are physically arranged, and in which **lighting is the interaction model**. The host never speaks in a voice. It *lights* what matters, and it brings the house lights up the moment you want to work.
+There is no room, stage, curtain, café or architecture: only planes, light and type.
 
-This is a metaphor for behaviour; there is no auditorium, curtain or seat imagery.
-
-### Identity freedoms taken (exploration only)
-- **Ground.** Deep roasted-black with warm undertone (not pure black). Paper is gone.
-- **Materials.** Light, glass-like translucent planes ("scrims") and a fine particulate atmosphere.
-- **Typography.** A high-contrast display serif or didone with theatrical scale, paired with a precise grotesk for data. Fraunces and DM Sans are **not** assumed. Typeface selection is a Phase 2 task.
-- **Colour.** Colour comes from light temperature: warm key light (amber), cool rim light for *ICB estimate*, and white for *Catalogue*. Provenance becomes a lighting language (SC-4).
+### Identity freedoms (exploration)
+- **Ground.** A deep, warm, near-black atmosphere (dark) and a quiet, luminous bone white (light theme = control mode). Paper is gone.
+- **Materials.** Translucent planes with soft edges and a fine atmospheric haze. Light has temperature: warm key on the current focus, cool rim on estimates, amber on editorial.
+- **Typography.** A high-contrast display face at large scale, paired with a precise grotesk for data. Faces are chosen in Penpot; Fraunces and DM Sans are not assumed.
 - **Dropped.** Brush-smear, paper layering, tonal-surface depth.
-- **Light theme.** Required for parity (PRODUCT.md). In "house lights up" mode the stage reads as a bright, quiet hall, so the light theme *is* the utility mode.
-
-### The space
-- **Scene structure.** One persistent WebGL stage behind the DOM. The 646 pour-over coffees (or any current result set) are small lit forms, **clustered by flavour family** (real `canon_flavor_families`), with cluster sizes true to the data (Fruity 504, Chocolatey 205, …).
-- **Relations as sightlines.** Relationships are **sightlines**: thin beams from a coffee to its estate, region, variety and articles, each beam coloured by voice.
-- **Depth means something.** Distance from the viewer encodes *how directly a thing answers your request*. Hard-filter matches sit on the stage plane; guided-rank suggestions sit slightly behind; editorial adjacencies sit in the wings. Depth is never decoration.
-- **Rejected-concept risk.** Clustering coffees by taste in a spatial field could be read as a revival of the rejected "Taste Observatory". The difference must be behavioural (lighting as host, house-lights utility mode, sightline relations), and its imagery must not be reused. **Owner to confirm the distinction at the Phase 1 gate.**
+- **Removed (rev 2).** No field of coffee objects and no flavour-cluster visualisation. Coffees appear only as their **real product image** on their own plane, or as **DOM rows**.
 
 ### Motion grammar (B)
-| Motion | Purpose | Timing / easing | Reduced motion / fallback |
+| Motion | Purpose | Timing / easing | Reduced motion |
 |---|---|---|---|
-| **Follow-spot** (light moves to a cluster or coffee) | The host noticing and pointing | 700 ms, `cubic-bezier(0.22, 1, 0.36, 1)`; camera dolly ≤ 15% of scene depth | Static lit state per selection; crossfade 200 ms |
-| **Step forward** (coffee → detail: its form moves to the stage plane and the DOM detail rises in front) | Opening without a context reset | 600 ms camera + 300 ms DOM rise | Instant page; static portrait image of the lit coffee |
-| **Sightline draw** | Explains a relationship | Beam draws 400 ms; target brightens | Beams pre-drawn in a static composition; relations always listed in DOM |
-| **House lights up** (utility mode) | The host steps aside | 250 ms global brighten; scene freezes; render loop stops | Default state under reduced motion and Save-Data |
+| **Step in** (the new plane arrives in front; the previous one recedes by one depth unit and dims to about 35%) | Moving deeper into one thing without a context reset | 650 ms, `cubic-bezier(0.22,1,0.36,1)`; camera travel ≤ 1 depth unit | Crossfade 200 ms; the trail updates as text |
+| **Step back** (Back) | History is depth, so Back literally retreats | 500 ms reverse | Crossfade |
+| **Reading light** (the key light follows the reading position within a plane) | The host attends to what you are reading | Scroll-linked light only; **the camera never scroll-hijacks** | Static light on the plane's primary fact |
+| **Spill light** (an off-axis glow reveals an aside at the edge of view) | Serendipity: something across the room catches your eye | Light rises over 900 ms; the aside plane slides 12% into view | Aside appears as a labelled inline card |
+| **Bend** (taking the aside turns the line of sight about 15°; the original path stays visible to the side) | A branch, not a reset | 700 ms | Crossfade; the trail shows the branch |
+| **Lights up** (control mode: all planes flatten into one bright, dense 2D layout; the render loop stops) | The host steps aside | 250 ms | Default state under reduced motion and Save-Data |
 
-- **Scroll** is native and never hijacked. The scene responds to *state* (selection), not to scroll position, except for a gentle parallax ≤ 4% on the arrival only.
-- **Render loop.** It runs only during transitions and stops at rest (TECH-003).
+### The trail
+A thin **spatial breadcrumb** of the receding planes, e.g. `V60 · prefer Fruity › Naturals › Baarbara Estate`. On mobile it sits as a compact band at the top. **It is real, focusable HTML** and doubles as the visible breadcrumb that coffee and estate pages lack today (IA-009). Tapping any segment steps back to it.
 
-### Scene B1 — Mobile deep link: `/coffees/v60` (≈ 90 s, lead scene)
+### Scene B1 — Mobile deep link `/coffees/v60` (≈ 100 s, lead)
 
-| t | Visitor sees / does | Host response (light) | URL / data | Voice |
+| t | Visitor | Host response (light and depth) | URL / data | Voice |
 |---|---|---|---|---|
-| 0 s | Lands on a phone. **DOM first:** the h1 and V60 intro in large display type on the dark ground, lit by a warm key light. The ask bar is docked with **Pour-over ✓**. The canvas has not loaded, and the LCP is text. | — | `/coffees/v60`, SSR unchanged | — |
-| 2 s | (After LCP and idle; capable device; no Save-Data) the stage fades in as a **top band about 45% of the viewport**: 646 small forms in loose family clusters, the Fruity cluster visibly largest. | Soft follow-spot sweeps once across the clusters and rests. A caption in DOM reads *"646 coffees for a V60. The light is brightest where most of them are."* | **L** | Catalogue |
-| 10 s | Scrolls. The band stays as a sticky header and compresses to about 25%; the specimen list scrolls beneath it. | List rows and their forms are linked: touching a row brightens its form. | — | — |
-| 15 s | **D1.** Tap a cluster in the band, use the ask bar, or keep reading. | — | — | — |
-| 18 s | Taps the **Fruity** cluster. | The follow-spot settles on Fruity and the other clusters dim (not hide). Chip **Fruity** joins the ask bar. The list re-ranks. | Same URL transition as A1 (**NEEDS** family param) | Catalogue |
-| 30 s | Adds **Natural** from the bar. | Natural coffees step to the stage plane; the rest recede (depth = directness of match). | `&processes=natural` | Catalogue |
-| 38 s | Opens **"Naturals Roasted Coffee Beans"**. | **Step forward:** its form moves to the stage plane as the DOM specimen rises over the band. | `/roasters/baarbara-coffee/coffees/naturals` | — |
-| 45 s | Reads the detail. Buy is visible. | Three **sightlines** draw from the coffee into the wings: a white beam to **Baarbara Estate**, a white beam to **Baba Budangiri**, an amber beam to the **SLN 795 field note**. The beam colour is the voice. | Relations **L**; article **NEEDS** | 3 voices |
-| 58 s | Taps the estate beam (or its DOM link). | The camera pans along the beam. The estate's other coffees light up in the wings; BrewClan's **Baarbara Naturals** stands closest, its acidity line rim-lit cool: **"Bright: acidity 4/5 · ICB estimate."** | `/estates/baarbara-estate` (OPEN) or inline | Catalogue + ICB estimate |
-| 75 s | Taps the ask bar. | **House lights up.** The scene freezes and brightens; the full filter panel is foreground. | — | — |
-| 85 s | Back, Back. | Returns through detail to results; the spot restores to Fruity + Natural. | Push history (**OPEN**) | — |
+| 0 s | Lands on a phone. **DOM first:** the h1 and V60 intro in large display type on the warm-dark ground, the brew-parameter strip, and the ask bar with filter **Pour-over**. | Text is the LCP. After paint a warm key light pools on the intro's first line. Behind the page plane, one empty plane is faintly visible: depth is promised but not yet used. | `/coffees/v60` SSR unchanged | — |
+| 6 s | Scrolls into results: **DOM rows** with product image, name, roaster, flavour signature, "from ₹". | **Reading light** drifts down with the scroll position. | **L** | Catalogue |
+| 15 s | **D1.** A lit line between rows asks *Brighter or rounder?*; or the visitor uses the ask bar or keeps reading. | — | — | — |
+| 18 s | **Brighter.** | *prefer* **Fruity** (outlined) joins the bar. Rows re-order (nothing disappears) with why-lines ("1 of 2 notes fruity"). The key light settles on the top three rows: the host's suggestion, also stated in text. | `…&prefer=fruity` (N2) | Catalogue |
+| 28 s | Adds filter **Natural** from the bar. | Momentary **lights up** while the ask bar is open, then the light returns to the results. | `&processes=natural` | Catalogue |
+| 38 s | Opens the hero coffee. | **Step in.** The coffee plane arrives in front: product image, name, roaster, price, **Buy** (nearest layer). The results plane recedes behind it, dim but visible. Trail: `V60 · prefer Fruity › Naturals`. | `/roasters/baarbara-coffee/coffees/naturals` | — |
+| 46 s | Scrolls through the **characteristics**. | Within the plane, **certainty depth**: `Mango · Fruity` and `Dry Coconut · Nutty`, Natural, Light, SLN 795 sit on the near layer. Any ICB estimate would sit recessed with a cool rim and its text label. **Reading light** follows each fact as it is read. | **L** | Catalogue |
+| 58 s | Taps **Grown at Baarbara Estate** (a lit relation, also a DOM link). | **Step in** along the same axis. The estate plane leads with the **Baba Budangiri region plate**, lit across its surface (real art; no estate photo exists). The estate record's facts follow as type: 120 years · third-generation Indavara family · S795 shade-grown · pepper · UTZ and Rainforest Alliance · *"111 coffees from 23 roasters."* Under *"Same farm, other hands"*: BrewClan's **Baarbara Naturals**, its acidity 4/5 recessed with a cool rim, labelled **ICB estimate**. Trail grows: `… › Baarbara Estate`. | `/estates/baarbara-estate` (OPEN) or inline | Catalogue + ICB estimate |
+| 72 s | **Serendipity.** | **Spill light** rises at the right edge of view. A narrow plane slides 12% into frame, lit warm from the side: *"Also from the Baba Budangiri hills, also tasting of mango, and it's a Robusta."* | Rule §2.3; N10 | Catalogue |
+| 78 s | Taps the aside. | **Bend:** the line of sight turns about 15° and **Ratnagiri Estate – Robusta Mosto Naturals** (Naivo · anaerobic · medium · Cream, Dried Fruit, Jackfruit, **Mango**, Nutmeg · from ₹670) steps in. The original path stays visible to the left. Trail: `… › Baarbara Estate ⤷ Ratnagiri Robusta`. | Robusta detail URL | Catalogue |
+| 88 s | Scrolls to the end of the plane: **stories.** | The deepest layer of the current plane carries **Editorial** stories, lit amber: *Baba Budangiri* (`/learn/baba-budangiri-coffee`) and *Indian coffee varieties explained*. | **NEEDS** N5 | Editorial |
+| 95 s | Touches the ask bar. | **Lights up:** the planes flatten into one bright list-and-filter layout. All chips are intact. | — | — |
+| 100 s | Back, Back. | **Step back** twice along the bent path, with the light following. | N3 | — |
 
-**What hospitality means in B1:** the space shows the *shape* of the choice before any words. Attention is directed by light rather than by copy, and the host withdraws instantly when asked.
-
-### Scene B2 — Homepage, newcomer (≈ 75 s)
-| t | Visitor sees / does | Host response | URL |
+### Scene B2 — Homepage, newcomer (≈ 80 s)
+| t | Visitor | Host response | URL |
 |---|---|---|---|
-| 0 s | The house is dim. One line of display type is lit, e.g. *"Indian coffee, by the people who grow and roast it. Let us light the way to yours."* Copy carries no hard-coded counts; any figure shown must be read live (1,573 in stock today, **L**). Below it, the ask bar and three invitations. | The DOM is painted first; the stage fades in behind after idle. All in-stock coffees sit as a faint field, unclustered. | `/` |
-| 6 s | **Find me a coffee.** | The field **resolves**: forms drift into family clusters (the first meaningful use of motion), 900 ms. The prompt *"How will you brew it?"* is lit centre stage. | — |
-| 15 s | Pour-over → Bright and fruity → skip. | Each answer is a lighting change: the spot narrows; non-matching forms dim; matches step forward. Chips appear in the ask bar. | — |
-| 30 s | Results: 6–8 coffees on the stage plane, with DOM cards and why-lines beneath. | — | `/coffees?…` |
-| 45 s | Opens the hero coffee → as B1. | — | — |
+| 0 s | One plane: a single lit sentence, the ask bar, three invitations. Far behind, faintly lit, the first plane of this fortnight's real story (e.g. Baarbara: *one estate, twenty-three roasters*). | Text LCP; the light rises after paint. | `/` |
+| 6 s | **Find me a coffee.** | Step in to the first prompt plane. Each prompt is one shallow plane; answers become chips. | — |
+| 30 s | Results plane: DOM rows with why-lines. | The key light rests on the top suggestions. | `/coffees?…` |
+| 40 s | Opens the hero coffee → B1 from 38 s, including the spill-light aside. | — | — |
 
-**Other invitations.** *I know what I'm after* = house lights up with filters open. *Show me something interesting* = the spot finds one real sightline story, e.g. one estate lit across five roasters.
+***Show me something interesting*** steps straight into the faint story plane that was visible from arrival. The space has been hinting at it all along.
 
-### Scene B3 — Expert, 20 seconds
-Pressing `⌘K` or touching the ask bar brings the **house lights up** instantly and the scene stops rendering. The expert flow is identical to A3: four chips, **14 results**, open two, Back preserves. The stage returns only if the visitor dims the lights again (a toggle that is remembered per device).
+### Scene B3 — Expert, 20 s
+`⌘K` or the ask bar → **lights up** instantly; the render loop stops. Same flow as A3: four filter chips, **14** results, open two, Back keeps them. Opening a coffee from control mode shows its plane **flat** (no step-in) until the visitor leaves control mode. A remembered per-device toggle keeps control mode permanently.
 
 ### Scene B4 — Returning
-The house is half-lit. Last-viewed coffees glow faintly in their positions, with *"Welcome back"* and the last filter set as resumable chips (**NEEDS** as in A4). A single new form, *"New: 3 pour-over naturals this fortnight"*, is placed in the spot.
+The arrival plane shows the **previous trail**, faintly lit behind it, e.g. `V60 · prefer Fruity › Naturals › Baarbara Estate`. *"Pick up where you left off"* steps back into the last plane (N7).
+
+### How B is built (hypothesis, for Phase 3; recorded so Penpot designs stay feasible)
+- **Tier 1, every device.** Planes are **real DOM layers** using CSS 3D transforms (`perspective`, `translateZ`), opacity and blur; light is CSS gradients and masks. Fully accessible, indexable and keyboard-navigable. It may be enough on its own.
+- **Tier 2, capable devices, after LCP and idle.** A WebGL layer (R3F or plain three.js) adds volumetric light, haze and soft shadows **behind** the DOM planes. Never content.
+- **Gating.** `prefers-reduced-motion`, Save-Data, `deviceMemory`, and a frame-time probe all fall back to Tier 1 or to control mode.
 
 ### Mobile, reduced motion and low power (B)
-- **Mobile.** The stage is a **band, never the full screen**. All interaction is duplicated in the DOM list (tap a row or tap a form). One-handed: the ask bar is at the bottom; the band is touch-pannable horizontally only.
-- **Reduced motion, Save-Data, low GPU or WebGL failure.** **House lights up by default.**
-  - The band is replaced by a **pre-rendered still** of the current lit state (server-generated per landing page, so it is cacheable).
-  - Sightlines become a typed relation list.
-  - Nothing in B is reachable *only* through the canvas (SC-1).
-- **No-JS.** Equivalent to today's pages, restyled.
+- **Mobile.**
+  - One plane fills the viewport; the receding planes show as a stacked edge at the top, behind the trail.
+  - Asides slide in from the right edge.
+  - The ask bar sits at the bottom.
+  - No horizontal camera pans beyond the 15° bend.
+- **Reduced motion.** No camera or scroll-linked light. Planes crossfade, the trail updates, and asides are inline labelled cards.
+- **No-JS.** Pages as today, with the trail rendered server-side from the referrer path or omitted.
 
 ---
 
 ## 5. Requirement coverage by moment
 
-| Requirement | A moment | B moment | Notes |
-|---|---|---|---|
-| UX-001 hospitality as behaviour | Margin notes, threads | Lighting, house lights | Both |
-| UX-002 one choreographed system | Unfold / leaf grammar | One persistent stage | B is stronger; A depends on discipline |
-| UX-003 cross paths without losing state | Chips persist across prompt → filter → detail | Same | SC-2, SC-3 |
-| UX-004 instant facets | A3 | B3 | Unchanged engine (TECH-002) |
-| UX-005 Back restores filters | A1 85 s | B1 85 s | Both **depend on the push-history decision** |
-| UX-006 search everywhere | Ask bar | Ask bar plus house lights | |
-| UX-008 progressive Guide me | A2 | B2 | Needs family and sensory params |
-| UX-009 why plus provenance | Voice tags | Light-colour voices plus DOM tags | B must still render text tags (colour alone fails WCAG 1.4.1) |
-| UX-010 detail opens with continuity | Unfold | Step forward | |
-| UX-011 grounded adjacency | Threads | Sightlines | Article relation **NEEDS** IA-007 |
-| UX-012 fast welcome | Text LCP, no intro | Text LCP; stage after idle | B risk: perceived "loading" if the stage is late |
-| SEO-001…008 | Unchanged URLs, SSR, JSON-LD | Same; the canvas carries no essential content | SC-1 |
-| SEO-011 mobile deep link first | A1 | B1 | |
-| A11Y-002/004 | §3 mobile and reduced motion | §4 mobile, reduced motion and low power | |
-| BRAND-001 | Evolves | Departs (exploration) | Per 07 |
-| TECH-003/004 | No 3D | Stage after LCP, idle-only loop | See §6 |
-
----
-
-## 6. Trade-offs (documented, not used to veto)
-
-| Dimension | A — Annotated Guide | B — House Lights |
+| Requirement | A | B |
 |---|---|---|
-| **Hospitality expressed through** | Words: the host *says* what it notices | Space and light: the host *shows* |
-| **Distinctiveness** | Medium-high. Feels like ICB, elevated. | High. Unlike any coffee site; closer to the FluxTheory ambition (01). |
-| **Risk of the rejected-concept echo** | Low | Medium (spatial taste field vs "Taste Observatory"); needs owner check |
-| **Copy dependency** | High. Notes must be excellent, varied and true; generated notes risk repetition and need templates grounded in data. | Medium. Light carries more and words carry less. |
-| **Data dependency** | Relations, counts, sensory voices | Same, plus a layout must be computed per result set (clustering by family is cheap; positions are deterministic) |
-| **Performance, mobile** | Within today's budget: origin LCP 2.2s; no new heavy assets | **The stage must load after LCP.** A R3F/Three.js bundle (≈150–250 KB gz, order-of-magnitude estimate) plus GPU work on mid-range Android. Mobile lab LCP is already 5–8s, so the stage must never be the LCP element. The pre-rendered still covers weak devices. |
-| **Accessibility** | Straightforward | Every canvas interaction must have a DOM twin; colour-coded voices need text; motion sickness risk from the camera (dolly ≤ 15% and pan limits) |
-| **Brand change** | Evolution: smear repurposed, paper kept | Full departure; needs an ADR before any adoption |
-| **SEO** | Neutral | Neutral if SC-1 holds; the risk is someone moving content into the canvas later |
-| **Build cost (prototype)** | Low-medium: `motion` + layout work | High: R3F scene, clustering layout, still-image pipeline, device gating |
-| **What it risks in requirements** | UX-002 (could slide back into "nice pages with notes") | UX-012/TECH-004 (late stage), A11Y-004 (mobile band cramped) |
-
-### Recommendation (confidence: medium)
-**Take both into Phase 2 keyframes, but prototype them asymmetrically.**
-- **A as the baseline experience** to storyboard fully, A1 → A4. It answers the most requirements at the least risk.
-- **B's three distinctive behaviours** as the experimental layer to test in the browser:
-  1. **House lights up** for experts.
-  2. **Step forward** as the detail transition.
-  3. **Sightlines** as typed relations.
-- The full-stage cluster field is the riskiest part of B and the one that most needs a real-device test before more design investment.
-
-**Unknowns that could change this.**
-- Whether real users read B's light as guidance or as decoration. This needs a prototype, not opinion.
-- Whether A's margin voice can be written well at scale.
-- Mid-range Android performance for B's stage.
+| UX-001 hospitality as behaviour | Margin voice, drawn line, recomposition | Light that attends, depth that remembers, lights-up |
+| UX-002 one choreographed system | Recompose/unfold grammar across all layouts | One continuous axis for the whole journey |
+| UX-003 cross paths, keep state | Chips persist across prompt → filter → plate | Same, plus the trail |
+| UX-004 instant facets | A3 | B3 |
+| UX-005 Back restores | Plates fold back | Step back along the axis (both need N3) |
+| UX-008 progressive Guide me | A2, §2.2 | B2, §2.2 |
+| UX-009 why and provenance | Voice tags, flavour signature | Certainty depth, rim light **and** text tags |
+| UX-010 detail continuity | Unfold | Step in |
+| UX-011 grounded adjacency | Threads, leaves | Lit relations, deeper planes |
+| **Serendipity (01, 02, 04 PERS-007)** | "An aside" + leader line (A1 72 s) | Spill light + bend (B1 72 s) |
+| IA-009 visible breadcrumbs | Plate header path | **Trail** |
+| PERS-001 filters are hard | Solid vs outlined chips, §2.2 | Same |
+| SEO-001…011 | SSR unchanged | SSR unchanged; nothing essential in WebGL |
+| A11Y-002/004 | §3 mobile and reduced motion | §4 mobile, reduced motion and tiers |
 
 ---
 
-## 7. NEEDS: what the screenplays assume that does not exist yet
+## 6. Trade-offs (recorded, not used to choose)
 
-None of these are requested for implementation now. Each is additive. **None changes an existing public URL.**
+| Dimension | A — Annotated Guide | B — Sightline |
+|---|---|---|
+| **How the host shows care** | It *speaks*: notes, a drawn connection, a page re-laid for you | It *attends*: light that follows your reading, depth that remembers your path |
+| **Continuity (UX-002)** | Continuity of grammar: every layout change is a recomposition of the same elements | Continuity of space: one axis, nothing ever resets |
+| **Serendipity staging** | Intimate: a quiet aside in the margin, connected by ink | Peripheral: something lit at the edge of vision; taking it visibly branches the path |
+| **Provenance legibility** | Strong and textual | Strong *and* felt (certainty depth). Must keep text labels. |
+| **Expert respect** | Notes go silent in control mode | Lights up flattens everything; arguably the clearest "host steps aside" |
+| **Main experiential risk** | The voice: notes must be excellent, true and not repetitive at 1,573 coffees, or they become chatter | Legibility of depth on small screens, and whether light reads as guidance or as mood |
+| **Brand** | Evolution | Departure; needs an ADR before adoption |
+| **Performance (recorded)** | Within today's budget (origin LCP 2.2s) | Tier 1 (DOM/CSS 3D) is likely within budget; Tier 2 WebGL must load after LCP. Mobile lab LCP is already 5–8s. |
+| **Accessibility (recorded)** | Straightforward | Depth must not be the only carrier of meaning; vestibular safety (≤ 1 depth unit per step, 15° bend cap) |
+| **Data dependency** | N1–N7, N10 | Same |
 
-| # | Need | Used in | Type | Status |
-|---|---|---|---|---|
-| N1 | Flavour-**family** filter param (or descriptor bundles) | Guide me, A1/B1 18 s | Query param + filter logic | PROPOSED |
-| N2 | Sensory **ranking** input (body, acidity), rank-only | Guide me "Gentle or bold" | Query param + sort logic | PROPOSED |
-| N3 | Push-history on facet changes | Back beats (A1/B1 85 s) | Behaviour | OPEN (audit §19.6) |
-| N4 | `/estates/<slug>` pages (15 qualify) | Estate thread / beam | Planned route (ADR-013) | OPEN (ship timing) |
-| N5 | Coffee → article relation (reverse lookup of embeds, or curated mapping) | Variety thread, SLN 795 note | Data / GROQ | OPEN (IA-007) |
-| N6 | Search suggesting facets ("natural" → Natural filter) | A3/B3 | Search behaviour | PROPOSED |
-| N7 | Last-context storage and "since last visit" marker (consent-scoped) | A4/B4 | Client storage | OPEN (PERS-008) |
-| N8 | Pre-rendered still per landing state (B fallback) | B mobile and reduced motion | Build asset | PROPOSED (B only) |
-| N9 | Search, filter and prompt analytics events | Validating everything above | Instrumentation | PROPOSED (TECH-007) |
+**Position (not an ease-based recommendation).** Both are viable and equally ambitious; they test different hypotheses about what hospitality *feels* like on ICB:
+- **A:** hospitality is **voice and composition**, the sense of a knowledgeable person beside you.
+- **B:** hospitality is **attention and memory in space**, the sense of being looked after without being spoken to.
+
+The decision should come from browser prototypes tested with newcomers and experts (08). Take **both** into Penpot at equal depth (6 keyframes each, same scenes, same data).
+
+**My current read** is that B has the higher ceiling on "one continuous experience" and on serendipity, and A has the higher ceiling on intimacy and trust. Confidence is low until the moments are seen in motion.
 
 ---
 
-## 8. Phase 1 gate: what the owner decides
+## 7. NEEDS: assumptions that do not exist yet
 
-Per 08, the gate is **which behaviour is worth prototyping**, not which looks nicest.
+All are additive. **None changes an existing public URL or coffee data.** None is requested for implementation now.
 
-1. **Concepts into Phase 2.** Both A and B as written; A as baseline plus B's three behaviours (the recommendation); or another split?
-2. **The B distinction.** Is "House Lights" sufficiently distinct from the rejected Taste Observatory, or should the cluster field be replaced with another spatial organiser (e.g. origin geography, which risks Contour Atlas instead)?
-3. **Guide me needs N1 and N2.** Are additive query params acceptable in a later implementation phase? Without them, guidance can only use brew method, roast and descriptor-level flavours.
-4. **N3 push history.** It is now load-bearing in both screenplays' Back beats.
-5. **Penpot access for Phase 2.** No Penpot MCP connector is available in this Claude Code session. Phase 2 (06) needs either a connected Penpot MCP here or Codex to own the Penpot work from this document.
+| # | Need | Used in | Status |
+|---|---|---|---|
+| N1 | Flavour-**family** filter (membership = any descriptor in family) | "Only fruity" conversion; expert family facet | PROPOSED |
+| N2 | **Preference** param (e.g. `prefer=fruity`, `prefer=gentle`) + deterministic preference score (§2.2) | Guide me, A1/B1 18 s | PROPOSED |
+| N3 | Push history on filter and preference changes | Back beats | OPEN (audit §19.6) |
+| N4 | `/estates/<slug>` (15 qualify under ADR-013) | Estate leaf / plane | OPEN (timing) |
+| N5 | Coffee → article relation (reverse lookup of Sanity embeds, or curated mapping) | Variety thread; stories plane | OPEN (IA-007) |
+| N6 | Search offers facets ("natural" → Natural filter) | A3/B3 | PROPOSED |
+| N7 | Consent-scoped last-context storage + "since last visit" marker | A4/B4 | OPEN (PERS-008) |
+| N8 | Estate imagery (0 of 186 estates have any). Until it exists, estate scenes use **region plates and type only**. | Estate leaf / plane | Content gap |
+| N9 | Search, filter, prompt and serendipity analytics events | Validation | PROPOSED (TECH-007) |
+| N10 | Serendipity query (rule §2.3; read-only over `coffee_directory_mv`) | A1/B1 72 s | PROPOSED |
 
-Still open from Phase 0 and not blocking: `/estates` timing, editorial adjacency mechanism, variety as an object, `AGENTS.md` pointer, instrumentation (07).
+---
+
+## 8. Design review: what the owner decides
+
+1. **Is B (Sightline) now distinct enough from Taste Observatory**, and is it behavioural rather than a theatre?
+2. **Approve the filter/preference model (§2.2)**, including preference as the default for taste and "1 of 2 notes" honesty for multi-family coffees.
+3. **Approve the serendipity rule (§2.3)**: two shared relations plus one surprising difference, at most once per journey, silent if nothing qualifies.
+4. **Release [11-penpot-handoff.md](11-penpot-handoff.md) to Codex** for keyframes of both concepts.
+
+Still open and not blocking Penpot: N3 push history, N4 `/estates` timing, N5 editorial mechanism, variety as an object, `AGENTS.md` pointer, instrumentation.
