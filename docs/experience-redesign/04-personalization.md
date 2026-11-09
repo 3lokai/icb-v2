@@ -9,6 +9,14 @@ The experience should increasingly feel like being recognized by a knowledgeable
 - Contextual signals: selected filters, current mood/occasion, recent browsing context. Treat transient intent separately from lasting preference.
 - Existing anonymous-to-account merge paths should be checked before changes. Respect the existing anonymous identity/auth design and 3-free-ratings/login gate if still active.
 
+## Contributor memory and review integrity (business requirement)
+
+Personalization serves **repeat authentic contribution** as well as relevant discovery. Treat `saved`, `wishlisted`, `viewed`, `tried`, `rated`, `reviewed` and `logged a brew` as distinct states; one must not imply another. If a member explicitly logged a coffee as tried but has not rated it, the returning experience *may* offer a quiet `Rate a coffee you've tried` action. Never infer consumption solely from catalogue views, affiliate clicks or a wishlist.
+
+Quick independent ratings should be easy; rich tasting context (brew method, grinder/recipe, flavour perception, harvest/batch where known) remains optional and user-authored. No AI-generated reviews, favourable-score nudges, automatic publishing or pressure to contribute. Review contribution may improve profile context, but individual review histories are not a sellable product. Any aggregate commercial insights require appropriate consent, privacy thresholds, fraud checks and sample-size disclosures.
+
+The existing three-entity anonymous review limit and merge logic are production behaviour to evaluate, not silently change. Use [17](17-review-intelligence-and-monetization.md) for proposed measurement and monetization guardrails.
+
 ## Ranking and recommendations
 - **Explicit filters are hard constraints** unless clearly shown otherwise. Personalization never silently overrides a user-selected brew method/process/roast/price filter.
 - Separate suitability (brewer compatibility) from objective attributes and from subjective taste predictions.
