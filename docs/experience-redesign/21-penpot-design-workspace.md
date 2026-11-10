@@ -37,9 +37,12 @@ This document describes only **where those decisions are designed and tested in 
 ## Update 2026-11-11 — identity decided
 
 - Page `01` has a new board, `Identity DECIDED · 2026-11-11 · Deep Roast + Gambetta/Ranade`, above the earlier boards: type roles, Deep Roast light and dark swatches with hex values, texture candidates and open items.
-- The eight earlier boards on page `01` (Identity 00, Identity 02, A/B/C desktop and mobile) are kept and renamed `SUPERSEDED · …`.
+- The eight earlier boards on page `01` (Identity 00, Identity 02, A/B/C desktop and mobile) were **deleted** on the owner's instruction. They remain only in Penpot's version history (`ICB I · QA fixes + 3 full-screen identity comparisons · 2026-11-10`).
+- Pages `00`–`10` were recoloured to the Deep Roast light tokens (ink, muted, hairline, primary, card, ground, accent, star). The low-contrast label greys were folded into the muted token. Page `90` (the 46 originals) was not touched.
+- DM Mono labels on those pages were changed to DM Sans, and the annotation texts ("Scroll stage 01/02", "Packaging / roasters own their design") were removed from page `02`.
+- Planning text on pages `00` and `07` now states the decided identity. The flavour-note overlap on the mobile directory boards (page `03`) was fixed.
 - Gambetta and Ranade are Fontshare fonts and are not installed in Penpot; the decision board is set in DM Sans. Full renders of the decided identity are in [samples/](samples/) (`identity-deep-roast-*.jpg`) and live in the [playground](playground/index.html).
-- Pages `02`–`06` still show the earlier Fraunces/DM Sans styling. They are not being restyled in Penpot; the playground is the identity source.
+- Pages `02`–`06` are recoloured but still set in Fraunces/DM Sans, and have no texture. The playground is the identity source.
 - The section below describes the state before this decision.
 
 ## Next active work — visual identity (Phase 1)

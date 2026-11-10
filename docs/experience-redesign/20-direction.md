@@ -8,7 +8,7 @@ The workspace is now organized into dedicated pages for direction, identity, hom
 
 | Page | What is active |
 |---|---|
-| `00 · Direction & principles` / `01 · Visual identity laboratory` | Creative baseline; page `01` has the `Identity DECIDED · 2026-11-11` board, with the three earlier candidates kept as `SUPERSEDED` |
+| `00 · Direction & principles` / `01 · Visual identity laboratory` | Creative baseline; page `01` has the `Identity DECIDED · 2026-11-11` board; the three earlier candidates were deleted |
 | `02 · Homepage — I v2 (active experience)` | Original I-v2 desktop/mobile boards and two Penpot walkthrough flows, preserved |
 | `03`–`06` | Editable **reference redraws** of directory/coffee/review/returning-user boards. Refer to page `90` originals for precise visual fidelity |
 | `07`–`10` | Components, motion, copy, and other entity-template work areas |

@@ -36,6 +36,6 @@
 - The **original 46 G/H/I boards** and eight original I-v2 homepage boards are retained; the working copies on pages 03–06 are editable reference redraws, not pixel-identical duplicate Penpot sources.
 - Two homepage walkthroughs are storyboard click transitions, **not actual scrolling, native carousels or Three.js**.
 - Saved versions exist before and after workspace cleanup. `New File 1` is the earlier A–F Penpot design history.
-- **Identity decided (2026-11-11):** page `01` has a board `Identity DECIDED · 2026-11-11` with the type roles and Deep Roast light/dark tokens. The A/B/C boards are kept and renamed `SUPERSEDED · …`. Identity detail is now worked in the HTML playground, not Penpot. Colour roles for Rate/Buy, gallery behaviour and directory terminology are still **PROPOSED** in [07](07-decisions.md).
+- **Identity decided (2026-11-11):** page `01` has a board `Identity DECIDED · 2026-11-11` with the type roles and Deep Roast light/dark tokens. The A/B/C identity boards were deleted on the owner's instruction, and pages `00`–`10` were recoloured to Deep Roast (see [21](21-penpot-design-workspace.md)). Identity detail is now worked in the HTML playground, not Penpot. Colour roles for Rate/Buy, gallery behaviour and directory terminology are still **PROPOSED** in [07](07-decisions.md).
 - **Workspace QA:** pages 03–06 now have the missing coffee sentence/review information, 45 formerly invisible mixed-style texts and 74 uppercase labels restored; see [21](21-penpot-design-workspace.md).
 
