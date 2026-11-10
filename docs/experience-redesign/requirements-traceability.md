@@ -1,6 +1,6 @@
 # Requirements Traceability — ICB Experience Redesign
 
-**Status:** Phase 0 audit/traceability gate accepted on 2026-11-07 (see `07-decisions.md`); original IDs retained as historical requirements, with new BIZ requirements proposed/confirmed separately on 2026-11-09. Do not interpret proposed product UX as implemented.
+**Status:** Phase 0 audit/traceability gate accepted on 2026-11-07 (see `07-decisions.md`), updated for the approved 2026-11-10 I direction in [20](20-direction.md). Older IDs remain as provenance; superseded wording is corrected or marked historical. Do not interpret proposed product UX as implemented.
 **Companion:** [current-state-audit.md](current-state-audit.md). "Audit §" below points into that file.
 
 ## How to read this
@@ -24,8 +24,8 @@
 | ID | Requirement | Source | Object | Moment | Current state (audit §) | Validation | Status |
 |---|---|---|---|---|---|---|---|
 | UX-001 | Experience conveys thoughtful high-end hospitality as *behaviour*, not a literal café, host or avatar | 01; 07 | All | All | ❌ no such layer; brand reads as "field guide" (§2 C5) | Newcomer and expert sessions: comprehension and enjoyment interviews | CONFIRMED |
-| UX-002 | Scroll, motion, typography and composition act as one choreographed system, not stacked sections | 01; 03; 07 | All | Arrival → Adjacent discovery | ❌ homepage has 14 stacked sections (§4.3) | Storyboard review (Phase 2); prototype review (Phase 3) | CONFIRMED |
-| UX-003 | Three intent paths (Guide me / I know my coffee / Let me explore) coexist; the user can cross between them without losing search, filters or reading context | 02; 07 | Coffee, Article | Invitation, Selection | ◐ expert strong, explore weak, guide absent (§6) | Task test: switch paths mid-task and confirm state is kept | PROPOSED |
+| UX-002 | Visually connected, intentional sections and motion; avoid **disconnected, repetitive blocks**, not sections themselves. Native scrolling remains familiar; horizontal gallery can scroll independently. | 07 (2026-11-10); 20 | Homepage | Arrival → discovery → community | ◐ current homepage has 14 discrete sections (§4.3); I-v2 boards propose coherent composition | Scroll prototype test for continuity without scroll hijack, mobile/reduced-motion parity | CONFIRMED (newer wording) |
+| UX-003 | **Historical concept:** three separate named intent modes (Guide / Expert / Wander); optional guidance remains possible, but the approved I direction prioritizes Find and Rate with conventional filters and contextual attribute links, not three compulsory modes. | archive/02; 07 (2026-11-10); 20 | Coffee, Directory | Discovery | ◐ expert search available, contextual paths incomplete (§6) | Test an expert and newcomer reaching real coffees without learning modes | SUPERSEDED (specific three-mode model) |
 | UX-004 | Expert can apply multiple technical facets (brew + process + roast + region + price) instantly | 02; 06; 07 | Coffee | Selection → Results | ✅ instant, URL-driven (§7) | 20-second expert task (08) | CONFIRMED |
 | UX-005 | Filter state survives transitions and **browser Back** | 02; 08 metrics | Coffee | Results ↔ Coffee opens | ◐ survives in the URL; Back does not undo filters (`replaceState`) (§7) | Back/forward test across 3 filter changes and a detail visit | PROPOSED |
 | UX-006 | Global search reachable everywhere, including inside expressive scenes | 02; 06 | All | All | ◐ ⌘K on every `(main)` page; coffees and roasters only (§4.2) | Keyboard and touch test from every template | CONFIRMED (search discoverability, 07) |
@@ -41,6 +41,11 @@
 | UX-016 | Can locate a specific coffee in 20s, discover in 5 min, wander for 40 min | 01 | All | All | ◐ 20s path likely met via ⌘K (unmeasured) | Timed task tests (08 acceptance metrics) | PROPOSED |
 | UX-017 | Recovery states (404, empty results) keep the visitor in the experience | 02 navigation | All | Results | ◐ 404 has no search; empty state only offers "clear all" (§4.5) | Heuristic review | PROPOSED |
 
+| UX-018 | Visual discovery centres real product imagery/packaging, with a consistent image-frame system and neutral exposure | 20; 07 (2026-11-10) | Home, Directory, Coffee | Browse → coffee | ◐ 1,657/1,678 image-backed coffees at audit; mixed photography styles | Diverse, non-sponsored visual examples; screenshot and mobile visual audit | CONFIRMED |
+| UX-019 | Two core actions: find a coffee to buy externally, and rate one genuinely tasted; both available on coffee detail but not duplicated on every card | 20; 07 (2026-11-10); 17 | Coffee, Directory, Rate | Browse → Buy / Rate | ◐ Buy and quick rate already exist with uneven prominence (§9) | Mobile/direct-deep-link user task for each, no fake purchase claim | CONFIRMED |
+| UX-020 | Homepage combines clear action entrances with genuine recent coffees, recent independent ratings, new roasters and editorial content; allow meaningful continuous sections | 20; 07 (2026-11-10) | Homepage | Landing → dynamic activity | ◐ live data feeds exist, presentation disjointed (§4.3) | Mobile + desktop mockups, honest recency, no promotion, one coherent flow | CONFIRMED |
+| UX-021 | Horizontal gallery is native, escapable and accessible; optional animations may enhance but not gate content | 20, provisional motion policy | Homepage | New coffee gallery | ❌ I-v2 boards are static, no runtime gallery yet | Keyboard/touch scroll, reduced-motion, no vertical wheel hijack, mobile performance | PROPOSED implementation |
+
 ## Information architecture and objects (IA)
 
 | ID | Requirement | Source | Object | Moment | Current state | Validation | Status |
@@ -48,9 +53,9 @@
 | IA-001 | Clear, indexable entity pages stay beneath the discovery layer | 02 | All | Deep-link landing | ✅ coffee, roaster, landing and article pages (§3) | Route inventory diff before and after | CONFIRMED |
 | IA-002 | Region object page = `/coffees/<region-slug>`; `/regions` hub only | ADR-013 | Region | Adjacent discovery | ✅ 12 regions configured; 49 India regions exist (§10.0) | Owner decision (audit §19.3) | CONFIRMED (ADR-013); expansion OPEN |
 | IA-003 | Estate pages only for estates passing the ADR-013 gate | ADR-013; 02 | Estate | Adjacent discovery | ❌ UI absent; 15 estates qualify (§10.0) | Gate query in `generateStaticParams`; no thin pages | CONFIRMED (gate); timing OPEN |
-| IA-004 | Variety as a navigable object | 02 | Variety | Adjacent discovery | ❌ text array, 42% coverage (§10.0) | Data model decision first | OPEN |
+| IA-004 | Normalized/alias-mapped variety values can serve as contextual links/facets; whether variety receives a dedicated canonical entity page remains open. No requirement to turn values into enums. | 20; owner clarification; archive/14 | Variety | Coffee detail → directory | ◐ `coffees.varieties text[]`, normalized labels/aliases; no first-class variety table at audit | Validate normalization/canonical destinations and missing coverage; retain SEO | PROPOSED links / OPEN pages |
 | IA-005 | Flavour notes as discovery entry points | 02 | Flavour | Selection, Adjacent discovery | ◐ facet at descriptor level; 15 families and 344 nodes unused as pages (§10) | Coverage check; family-level facet prototype | PROPOSED |
-| IA-006 | Semantic, typed relationships (grown at, roasted by, processed using, tastes of, brewed with, featured in, reviewed by) | 02 | All | Adjacent discovery | ◐ 6 of 8 supported by data; "related variety" is text only; "featured in" is partial (§10.2) | Relationship matrix sign-off | PROPOSED |
+| IA-006 | Factual coffee attributes act as **contextual links into familiar directory results**, not a visible graph; explain provenance and do not fabricate unsupported links. | 20; 07 (2026-11-10) | Coffee, Directory | Follow a coffee | ◐ typed data supported for many fields; linking gaps in estate/flavour (§9–10) | Every active label links to a real validated destination or is displayed non-clickably | CONFIRMED UX / OPEN URLs for absent entities |
 | IA-007 | Editorial is interleaved with the catalogue, not a disconnected blog | 02 | Article ↔ Coffee/Roaster/Region | Adjacent discovery | ◐ one-way spotlight and collection embeds; reverse GROQ lookup possible without schema change (§11) | Count articles with embeds; owner decision on typed references (audit §19) | OPEN |
 | IA-008 | Tools connect back to coffees (brew guidance ↔ coffee) | 02 | Tool, Brew method | Adjacent discovery | ◐ generic `/coffees` CTA only (§4, §7) | Handoff carries brew-method filter | PROPOSED |
 | IA-009 | Breadcrumbs and browser semantics never obscured by editorial journeys | 02 navigation | All | All | ◐ visible on landing and some learn pages; not on coffee or roaster detail (§4.4) | Template checklist | CONFIRMED (principle) |
@@ -115,6 +120,7 @@
 ## Change log
 - 2026-11-07: initial draft from the Phase 0 audit (Claude Code).
 - 2026-11-07: owner decisions 1–4 and guardrails recorded (07); BRAND-001…004, UX-008 and SEO-011 statuses updated.
+- 2026-11-10: reconciled UX-002, UX-003, IA-004 and IA-006 with approved I (Find, Rate, Buy); added UX-018…021. Historical Phase 0 checks still apply.
 
 ## Business mission, independent reviews and monetization (owner update 2026-11-09)
 
