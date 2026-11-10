@@ -2,7 +2,7 @@
 
 **Status:** Design direction **CONFIRMED** by the owner on 2026-11-10. The exact visual system, components and motion are **not** final; they are the next three phases below. No production code or database change is approved.
 
-**Penpot:** file `New File 2` (`d2ec9836-375a-810a-8008-ebd27eb28057`). A non-destructive workspace restructuring is planned; the original boards and examples stay as historic references.
+**Penpot:** file `New File 2` (`d2ec9836-375a-810a-8008-ebd27eb28057`). Workspace restructuring is **complete**; the original 46 G/H/I boards and all eight I-v2 homepage boards are preserved. The working redraws have their missing mixed-style content restored, though rich colours may not be pixel-identical. See [21](21-penpot-design-workspace.md).
 
 The workspace is now organized into dedicated pages for direction, identity, homepage, directory, coffee detail, ratings, personalization, components, motion, copy and remaining templates. The former G/H/I exploration page is preserved as `90 · Archive`. **[21 — Penpot Design Workspace](21-penpot-design-workspace.md)** is the page-by-page map, preservation note and next-phase handoff.
 
@@ -63,6 +63,8 @@ The earlier one-screen desktop homepage is kept for comparison: [samples/home-v1
 
 ### 1. Typography, colour, iconography, motifs
 
+**Identity review ready (2026-11-10):** Penpot page `01` now has three intentionally distinct treatments applied to **the same full desktop I-v2 homepage and mobile Mogra coffee detail** (with Rate, Buy, packaging, reviews and attribute doorways): A · Editorial Heritage (warm paper/serif), B · Contemporary Craft (mineral/sans), C · The Collector's Index (dark/copper). These are **PROPOSED visual candidates, not approved brand tokens**. Compare actual screen legibility, neutrality and brand recognition before choosing. Earlier stub-only variants have been removed. The Mogra sample now uses 4.5 from 6 independent ratings and anaerobic process; do not attach unverified SLN 795 or invented tasting/rating claims to it.
+
 Starting point, as drawn:
 
 | | I boards | Homepage v2 |
@@ -88,14 +90,14 @@ To settle here:
 
 Buttons, cards, chips, filters, search, rating stars and sheet, review item, doorway strips, navigation. To settle here:
 - One wording each for the Rate action, the search placeholder and the ratings link.
-- One name for the collection (record, catalogue, directory and collection are all in use).
+- **PROPOSED naming rule:** call visitor-facing browse/results the **directory**. Reserve `record` for editorial positioning, not another browsing destination. `Catalogue` is the underlying dataset, not a third user-facing nav choice.
 - Desktop and mobile versions of the same component carrying the same information (ways in, recently rated).
 - Tap-target sizes on mobile.
 - Remove annotation text from designs ("Scroll stage 01", "Packaging / roasters own their design").
 
 ### 3. Motion
 
-Starts from the motion grammar board: static at first paint, one native sideways-scrolling gallery, reduced motion as an immediate state change, all content in the DOM, no WebGL on initial mobile load by default. **Working choice for the next prototype:** a normal horizontal rail on desktop and mobile; no vertical scroll hijack or pinned scroll-to-sideways mapping. Scroll-linked transforms/Three.js remain optional experimental enhancement behind performance/accessibility gates, not the base interaction.
+Starts from the motion grammar board: static at first paint, one native sideways-scrolling gallery, reduced motion as an immediate state change, all content in the DOM, no WebGL on initial mobile load by default. **PROPOSED for the next prototype (not owner-confirmed):** a normal horizontal rail on desktop and mobile; no vertical scroll hijack or pinned scroll-to-sideways mapping. Scroll-linked transforms/Three.js remain optional experimental enhancement behind performance/accessibility gates, not the base interaction.
 
 ### 4. Final copy and cross-template polish
 
@@ -105,10 +107,11 @@ Establish a concise, authoritative editorial voice and the factual/provenance vo
 
 These are behaviour and content rules, not styling, so the phases above will not settle them on their own.
 
-1. **Gallery behaviour — PROVISIONAL RESOLUTION:** native horizontally scrollable row on desktop and mobile. No pinning that converts vertical scroll into horizontal movement. Optional passive scroll-linked motion may be prototyped separately and must remain skippable/reduced-motion safe.
-2. **Separate editorial selection from chronology — PROPOSED, needs owner test:** a neutral *Explore the catalogue* visual rail may rotate authentic coffees using a documented independent selection rule (e.g. diversify the first visible set across roasters), and must never claim those coffees were just added. A separate *Just added* feed is genuinely chronological, with actual dates/coffee counts and no older filler, even if several coffees came from one roaster. If too many consecutive new arrivals share a roaster, group honestly by roaster or widen a clearly disclosed recent window; do not silently fabricate recency. No sponsored placement or paid rank. Final policy and balance of diversity vs chronology are still OPEN.
+1. **Gallery behaviour — PROPOSED:** native horizontally scrollable row on desktop and mobile. No pinning that converts vertical scroll into horizontal movement. Optional passive scroll-linked motion may be prototyped separately and must remain skippable/reduced-motion safe.
+2. **Separate editorial selection from chronology — PROPOSED, needs owner test:** a neutral *Browse the directory* visual rail may rotate authentic coffees using a documented independent selection rule (e.g. diversify the first visible set across roasters), and must never claim those coffees were just added. A separate *Just added* feed is genuinely chronological, with actual dates/coffee counts and no older filler, even if several coffees came from one roaster. If too many consecutive new arrivals share a roaster, group honestly by roaster or widen a clearly disclosed recent window; do not silently fabricate recency. No sponsored placement or paid rank. Final policy and balance of diversity vs chronology are still OPEN.
 3. **Copy accuracy — OPEN final system QA:** the catalogue totals are a dated verified snapshot, not automatically live numbers; anonymous rating supports **three distinct entities** before login; roasters are listed independently, not necessarily 'joining'; distinguish roaster claims, ICB inferences and drinkers' words. Treat gallery cards, ratings, reviews and prices in Penpot as dated examples, not a live production feed.
-4. **Desktop/mobile parity — OPEN:** align navigation labels, search text, the quick Rate CTA, ratings links, facet entry points, actual data shown and the meaning of ↗ (reserve external-link signifier for leaving ICB).
+4. **Desktop/mobile parity — OPEN:** align navigation labels, search text, the quick Rate CTA, ratings links, facet entry points and source/recency data. **PROPOSED:** reserve ↗ for leaving ICB and → for internal navigation.
+5. **Rate versus Buy colour roles — PROPOSED:** on coffee detail, Buy uses a filled dark/brown action and Rate uses a contrasting accent outline; in the dedicated rating flow, the submit action can be filled. This is under identity test, not a brand approval.
 
 ## Deferred without being abandoned
 
