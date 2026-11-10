@@ -8,7 +8,8 @@
 
 | File | What it is |
 |---|---|
-| [20-direction.md](20-direction.md) | **Start here.** The fixed direction, sample screens, next steps and open rules. |
+| [20-direction.md](20-direction.md) | **Start here.** The approved UX direction, reference screens, next phases and open behaviour rules. |
+| [21-penpot-design-workspace.md](21-penpot-design-workspace.md) | **Current Penpot page map**, pre/post cleanup versions, editable references, identity-phase workbench and next steps. |
 | [07-decisions.md](07-decisions.md) | Decision log with statuses and dates. |
 | [17-review-intelligence-and-monetization.md](17-review-intelligence-and-monetization.md) | Business north star: independent reviews and coffee intelligence. |
 | [05-technical-guardrails.md](05-technical-guardrails.md) | Architecture, SEO, performance and accessibility constraints. |
@@ -27,7 +28,12 @@
 - Root `PRODUCT.md`, `DESIGN.md` and `CLAUDE.md` stay authoritative for production until an ADR in `docs/decisions/` supersedes them.
 - Mark statements CONFIRMED, PROPOSED, OPEN or REJECTED. A brainstorm is not a decision.
 
-## Penpot
+## Penpot — working workspace (2026-11-10)
 
-- `New File 2` — current work (I journey and Homepage v2). Details in [20-direction.md](20-direction.md).
-- `New File 1` — earlier directions A–F. Design history; leave intact.
+- **File:** `New File 2` (`d2ec9836-375a-810a-8008-ebd27eb28057`); can be renamed in the Penpot UI to `ICB — Experience Design Workspace`.
+- **00** Direction & principles, **01** Visual identity laboratory, **02** Homepage I v2, **03** Discovery, **04** Coffee detail, **05** Ratings, **06** Personalization & AI, **07** Components, **08** Motion, **09** Voice, **10** Other templates, **90** Original G/H/I archive.
+- The **original 46 G/H/I boards** and eight original I-v2 homepage boards are retained; the working copies on pages 03–06 are editable reference redraws, not pixel-identical duplicate Penpot sources.
+- Two homepage walkthroughs are storyboard click transitions, **not actual scrolling, native carousels or Three.js**.
+- Saved versions exist before and after workspace cleanup. `New File 1` is the earlier A–F Penpot design history.
+- **Next design decision:** three identity treatments on the same active I screens, then actual components/variants, motion and final copy QA. See [21](21-penpot-design-workspace.md).
+
