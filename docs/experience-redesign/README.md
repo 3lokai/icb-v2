@@ -1,6 +1,6 @@
 # ICB Experience Redesign
 
-**Status (2026-11-10):** Design direction fixed — **Find, rate, buy**. Next: typography, colour, iconography and motifs; then components; then motion. No production code or database change is approved.
+**Status (2026-11-10):** Core experience direction confirmed — **Find, Rate, Buy**. Penpot now has **three full-screen visual identity alternatives** applied to the same homepage and mobile coffee-detail context; **none selected**. Next decision: identity/token direction, then components, motion and final copy/QA. No production code or database change is approved.
 
 **Branch:** `design/experience-redesign` in `3lokai/icb-v2`. Production stays on `main`.
 
@@ -35,5 +35,6 @@
 - The **original 46 G/H/I boards** and eight original I-v2 homepage boards are retained; the working copies on pages 03–06 are editable reference redraws, not pixel-identical duplicate Penpot sources.
 - Two homepage walkthroughs are storyboard click transitions, **not actual scrolling, native carousels or Three.js**.
 - Saved versions exist before and after workspace cleanup. `New File 1` is the earlier A–F Penpot design history.
-- **Next design decision:** three identity treatments on the same active I screens, then actual components/variants, motion and final copy QA. See [21](21-penpot-design-workspace.md).
+- **Next design decision:** compare **A · Editorial Heritage**, **B · Contemporary Craft** and **C · The Collector’s Index** on full desktop homepage and mobile Mogra coffee-detail boards in page `01`; choose identity tokens before making components/variants. Colour roles for Rate/Buy, gallery behaviour and directory terminology are **PROPOSED** in [07](07-decisions.md), not final production rules.
+- **Workspace QA:** pages 03–06 now have the missing coffee sentence/review information, 45 formerly invisible mixed-style texts and 74 uppercase labels restored; see [21](21-penpot-design-workspace.md).
 
