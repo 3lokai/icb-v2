@@ -4,10 +4,15 @@
 
 **Penpot:** file `New File 2` (`d2ec9836-375a-810a-8008-ebd27eb28057`). A non-destructive workspace restructuring is planned; the original boards and examples stay as historic references.
 
-| Page | Boards |
+The workspace is now organized into dedicated pages for direction, identity, homepage, directory, coffee detail, ratings, personalization, components, motion, copy and remaining templates. The former G/H/I exploration page is preserved as `90 · Archive`. **[21 — Penpot Design Workspace](21-penpot-design-workspace.md)** is the page-by-page map, preservation note and next-phase handoff.
+
+| Page | What is active |
 |---|---|
-| `G · The Line …` | The I journey: mobile `I-1`…`I-11`, desktop `I-D1`…`I-D4`. G and H rows above them are history. |
-| `I · Homepage v2 — continuous editorial scroll` | `I-V2 D1`–`D3`, `M1`–`M4`, motion grammar. This is the homepage going forward. |
+| `00 · Direction & principles` / `01 · Visual identity laboratory` | Creative baseline and three **exploratory** identity treatments for next review; none selected |
+| `02 · Homepage — I v2 (active experience)` | Original I-v2 desktop/mobile boards and two Penpot walkthrough flows, preserved |
+| `03`–`06` | Editable **reference redraws** of directory/coffee/review/returning-user boards. Refer to page `90` originals for precise visual fidelity |
+| `07`–`10` | Components, motion, copy, and other entity-template work areas |
+| `90 · Archive — G/H/I explorations (originals)` | All 46 original boards retained |
 
 ## The direction
 
@@ -26,7 +31,7 @@ The reasons and dates for each are in [07-decisions.md](07-decisions.md).
 
 ## Samples
 
-These are exports of the Penpot boards, kept here as the reference for the next phases. Coffees, counts, prices, ratings and review text are live data from 10 Nov 2026. The four-star rating in the rating screens and the returning-visitor history are illustrative.
+These are frozen Penpot reference exports, **not a live data feed**. Real catalogue assets and dated database values were used in the storyboards, but some example labels, product placement, review text, simulated rating states and returning-user history are illustrative. Specifically, the I-v2 `Just Added` rail contains older filler cards and is **not a production-ready chronological feed**. Recheck counts, coffee/roaster identities, review data, recency and prices against the live site before implementation. See [21](21-penpot-design-workspace.md).
 
 ### Homepage (v2)
 
