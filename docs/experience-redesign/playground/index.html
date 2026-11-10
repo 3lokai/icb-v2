@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Figtree:wght@300..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=Inter:wght@300..700&family=DM+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,700,400i&f[]=gambetta@300,400,500,600,400i&f[]=sentient@300,400,500,700,400i&f[]=ranade@300,400,500,700&f[]=cabinet-grotesk@300,400,500,700&f[]=general-sans@300,400,500,600&f[]=stardom@400&f[]=boska@300,400,500,700,400i&f[]=panchang@300,400,500,600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=erode@300,400,500,600,400i&f[]=bespoke-serif@300,400,500,700,400i&f[]=synonym@300,400,500,600&f[]=supreme@300,400,500,700&display=swap" rel="stylesheet">
 <style>
 /* Playground only. Not production code: nothing here is imported by the app. */
 *{box-sizing:border-box;margin:0}
@@ -44,6 +46,7 @@ body{font:14px/1.4 system-ui,sans-serif;background:#1b1b1b;color:#ddd;display:fl
 :where(#stage) a{color:inherit;text-decoration:none}
 .wrap{padding:0 64px;position:relative}
 .d{font-family:var(--f-display),Georgia,serif;font-weight:var(--w-display);letter-spacing:var(--track);line-height:1.1}
+.hero h1,.coffee h1,.big{font-family:var(--f-hero),Georgia,serif}
 .lab{font:var(--label-size)/1.4 var(--f-label),monospace;text-transform:var(--label-case);letter-spacing:var(--label-track);color:var(--muted)}
 .mut{color:var(--muted)}.acc{color:var(--accent)}
 .star{color:var(--star);letter-spacing:.08em}.star i{font-style:normal;color:var(--rule)}
@@ -118,6 +121,31 @@ nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
 .sheet h3{font-size:26px}.sheet .star{font-size:30px}
 .field{border:1px solid var(--rule);border-radius:var(--radius);padding:16px;color:var(--muted);background:var(--ground);margin:16px 0}
 
+#stage.mono{filter:grayscale(1)}
+/* textures (ported from the texture lab; one material family: paper ground + feature slabs) */
+#stage{--grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* grain sits behind content on the section ground only, never over packaging or type */
+#stage.t-grain .sec::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:var(--grain);opacity:calc(var(--tx)*.22);mix-blend-mode:multiply}
+#stage.t-grain .sec>.wrap{position:relative;z-index:1}
+#stage.t-frame .tile{box-shadow:inset 0 0 0 4px color-mix(in srgb,var(--surface) 55%,transparent),0 calc(var(--tx)*5px) calc(var(--tx)*11px) rgba(45,21,14,.11)}
+#stage.t-frame .rail .tile,#stage.t-frame .card .tile{border-bottom:3px solid color-mix(in srgb,var(--rule) 70%,var(--ink))}
+/* feature slabs. Weave and Contour are dark in both themes (fixed espresso values); Paper follows the theme tokens */
+.slabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.slab{position:relative;isolation:isolate;overflow:hidden;border-radius:var(--radius);min-height:280px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;color:#F6EFE3}
+.slab>*{position:relative;z-index:2}
+.slab::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background-image:var(--grain);opacity:calc(var(--tx)*.3);mix-blend-mode:soft-light}
+.slab .lab{color:inherit;opacity:.75}
+.slab h3{font:var(--w-display) 30px/1.1 var(--f-display),serif;letter-spacing:var(--track);margin:10px 0}
+.slab p{font-size:14px;line-height:1.5;opacity:.88;max-width:26em}
+.slab .pill{align-self:flex-start;margin-top:20px;padding:10px 16px;border-radius:var(--btn-radius);background:#F6EFE3;color:#1F130C;font-weight:600;font-size:14px}
+.tx-weave{background:radial-gradient(ellipse at 60% 0%,rgba(192,110,76,.26),transparent 58%),linear-gradient(125deg,#2E1D15,#17100C 70%)}
+.tx-weave::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:calc(var(--tx)*.8);mix-blend-mode:screen;background-size:18px 18px;background-image:repeating-linear-gradient(45deg,transparent 0 4px,rgba(249,201,166,.19) 4px 5px,transparent 5px 9px,rgba(0,0,0,.55) 9px 10px),repeating-linear-gradient(-45deg,transparent 0 4px,rgba(238,172,141,.14) 4px 5px,transparent 5px 9px,rgba(0,0,0,.42) 9px 10px)}
+.tx-contour{background:radial-gradient(ellipse at 85% 100%,rgba(176,122,30,.30),transparent 60%),linear-gradient(160deg,#4A2E1F,#2C1A11)}
+.tx-contour::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:calc(var(--tx)*1.1);background-image:repeating-radial-gradient(ellipse 70% 95% at 92% 78%,transparent 0 4.5%,rgba(226,178,110,.30) 4.5% 4.9%)}
+.tx-paper{color:var(--ink);background:linear-gradient(140deg,var(--surface),color-mix(in srgb,var(--surface) 90%,var(--ink)));box-shadow:inset 0 0 0 1px var(--rule),inset 0 0 0 7px color-mix(in srgb,var(--ground) 55%,transparent)}
+.tx-paper::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:calc(var(--tx)*1.2);background-image:repeating-linear-gradient(0deg,color-mix(in srgb,var(--ink) 8%,transparent) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,color-mix(in srgb,var(--ink) 7%,transparent) 0 1px,transparent 1px 46px)}
+.tx-paper .lab{color:var(--accent);opacity:1}.tx-paper .pill{background:var(--primary);color:var(--on-primary)}
+.tx-weave,.tx-contour{box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
 /* motifs (toggled by classes on #stage) */
 #stage.m-circles .hero::before{content:'';position:absolute;right:-6%;top:-10%;width:52%;aspect-ratio:1;border-radius:50%;background:var(--surface);opacity:.7;z-index:0}
 #stage.m-circles .comm::before{content:'';position:absolute;left:-12%;top:-20%;width:46%;aspect-ratio:1;border-radius:50%;background:var(--surface);opacity:.6;z-index:0}
@@ -125,7 +153,8 @@ nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
 #stage.m-dots .sec.tint{background-image:radial-gradient(color-mix(in srgb,var(--ink) 18%,transparent) 1px,transparent 1.5px);background-size:22px 22px}
 #stage.m-stripe .sec+.sec{border-top:6px solid;border-image:linear-gradient(90deg,var(--primary),var(--accent),var(--primary)) 1}
 #stage.m-rules .sec+.sec{border-top:1px solid var(--rule)}
-.smear{position:relative;white-space:nowrap}
+.smear{position:relative}
+#stage.m-smear .smear{white-space:nowrap}
 #stage.m-smear .smear::after{content:'';position:absolute;left:-.1em;right:-.1em;bottom:-.02em;height:.42em;background:var(--accent);opacity:.55;z-index:-1;-webkit-mask:url(../../../public/images/stain-smear.png) center/100% 100% no-repeat;mask:url(../../../public/images/stain-smear.png) center/100% 100% no-repeat}
 #stage.m-underline .smear{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:.06em;text-underline-offset:.14em}
 #stage.m-italic .smear{font-style:italic}
@@ -137,6 +166,7 @@ nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
   .hero,.comm,.dir,.coffee,.rate{grid-template-columns:1fr;gap:28px}
   .hero h1{font-size:calc(var(--hero)*.55)}.hero .sub{font-size:15px}
   .btn{height:48px;padding:0 20px;font-size:15px}.hero .acts .btn{flex:1}
+  .slabs{grid-template-columns:1fr}.slab{min-height:220px}
   .mosaic{display:flex;overflow-x:auto;gap:12px}.mosaic .tile{flex:0 0 150px;transform:none!important}
   .railhead{display:block}.railhead h2,.comm h2{font-size:calc(var(--hero)*.55)}
   .rail>a{flex-basis:170px}
@@ -150,6 +180,8 @@ nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
 <div id="panel">
   <h1>ICB identity playground</h1>
   <div class="row" id="presets"></div>
+  
+  <div class="row" style="margin-top:8px"><button id="monoBtn"></button></div>
   <div id="controls"></div>
   <h2>Contrast (AA text needs 4.5)</h2>
   <div id="cr"></div>
@@ -202,7 +234,16 @@ nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
   </div>
 </div></section>
 
-<section class="sec tint"><span class="sectag">directory</span><div class="wrap">
+<section class="sec tint"><span class="sectag">feature surfaces</span><div class="wrap">
+  <div class="lab">Feature surfaces · used for a few moments, never behind the directory</div>
+  <div class="slabs">
+    <div class="slab" data-tx="weave"><div><div class="lab">The coffee community</div><h3>Every cup adds to the picture.</h3><p>Your rating helps the next drinker see past the packaging.</p></div><a class="pill">★ Rate a coffee →</a></div>
+    <div class="slab" data-tx="contour"><div><div class="lab">Regions and estates</div><h3>Start from where it grew.</h3><p>Browse coffees by the hills and estates they come from.</p></div><a class="pill">Browse by origin →</a></div>
+    <div class="slab" data-tx="paper"><div><div class="lab">From the field guide</div><h3>Good coffee opens questions.</h3><p>Indian estates, varieties and brewing, one question at a time.</p></div><a class="pill">Read the field guide →</a></div>
+  </div>
+</div></section>
+
+<section class="sec"><span class="sectag">directory</span><div class="wrap">
   <div class="lab">Coffees</div>
   <div class="dir">
     <aside style="padding-top:64px" id="facets"></aside>
@@ -217,7 +258,7 @@ nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
   </div>
 </div></section>
 
-<section class="sec"><span class="sectag">coffee page</span><div class="wrap">
+<section class="sec tint"><span class="sectag">coffee page</span><div class="wrap">
   <div class="coffee">
     <a class="tile"><img id="heroimg" alt="Mogra packaging"></a>
     <div>
@@ -243,7 +284,7 @@ nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
   </div>
 </div></section>
 
-<section class="sec tint"><span class="sectag">reviews · rating</span><div class="wrap">
+<section class="sec"><span class="sectag">reviews · rating</span><div class="wrap">
   <h2 class="d" style="font-size:32px;margin-bottom:28px">What drinkers say</h2>
   <div class="rate">
     <div>
@@ -291,14 +332,14 @@ $('#facets').innerHTML = D.facets.map(([h, rows]) => `<div class="facet"><div cl
 $('#heroimg').src = IK(D.mogra, 900);
 
 // ---------- tokens
-const SERIF = ['Fraunces', 'Newsreader', 'Instrument Serif', 'Playfair Display'], SANS = ['DM Sans', 'Figtree', 'IBM Plex Sans', 'Inter', 'Bricolage Grotesque'], MONO = ['DM Mono', 'IBM Plex Mono'];
+const SERIF = ['Fraunces', 'Zodiak', 'Gambetta', 'Sentient', 'Erode', 'Bespoke Serif', 'Newsreader', 'Instrument Serif', 'Playfair Display'], SANS = ['DM Sans', 'Ranade', 'Cabinet Grotesk', 'General Sans', 'Synonym', 'Supreme', 'Figtree', 'IBM Plex Sans', 'Inter', 'Bricolage Grotesque'], DISPLAY = ['Stardom', 'Boska', 'Panchang'], SAME = 'Same as heading', MONO = ['DM Mono', 'IBM Plex Mono'];
 const CTRL = [
   ['Colour'],
   ['ground', 'Ground', 'color'], ['surface', 'Surface / card', 'color'], ['ink', 'Ink', 'color'], ['muted', 'Muted text', 'color'], ['rule', 'Hairline', 'color'],
   ['primary', 'Primary (Buy, Browse)', 'color'], ['accent', 'Accent (Rate, links)', 'color'], ['star', 'Star', 'color'],
   ['deepen', 'Tint alternate sections', 'range', 0, 12, 1],
   ['Type'],
-  ['f-display', 'Display', 'select', [...SERIF, ...SANS]], ['f-body', 'Body', 'select', SANS], ['f-label', 'Label', 'select', [...MONO, ...SANS]],
+  ['f-hero', 'Display (hero, coffee name)', 'select', [SAME, ...DISPLAY, ...SERIF, ...SANS]], ['f-display', 'Heading', 'select', [...SERIF, ...SANS]], ['f-body', 'Body', 'select', SANS], ['f-label', 'Label', 'select', [...MONO, ...SANS]],
   ['w-display', 'Display weight', 'range', 300, 700, 50], ['hero', 'Hero size', 'range', 40, 84, 2, 'px'], ['track', 'Display tracking', 'range', -0.04, 0.02, 0.005, 'em'],
   ['body', 'Body size', 'range', 14, 18, 1, 'px'], ['label-size', 'Label size', 'range', 10, 14, 1, 'px'], ['label-track', 'Label tracking', 'range', 0, 0.2, 0.01, 'em'],
   ['label-case', 'Label case', 'select', ['uppercase', 'capitalize', 'none']],
@@ -309,20 +350,25 @@ const CTRL = [
   ['Motifs'],
   ['m-circles', 'Soft circles', 'check'], ['m-dots', 'Dot grid on tinted sections', 'check'], ['m-rules', 'Hairline between sections', 'check'], ['m-stripe', 'Gradient stripe between sections', 'check'],
   ['emph', 'Headline emphasis', 'select', ['none', 'm-smear', 'm-underline', 'm-italic']],
+  ['Texture'],
+  ['t-grain', 'Paper grain on the ground', 'check'], ['t-frame', 'Pressed frame on image tiles', 'check'], ['tx', 'Texture strength', 'range', 0, 1, 0.05],
+  ['slab', 'Feature surface', 'select', ['One of each', 'weave', 'contour', 'paper']],
   ['View'], ['mobile', 'Mobile width (390)', 'check'],
 ];
-const BASE = { ground: '#F4EDE1', surface: '#FBF7F0', ink: '#1E1713', muted: '#6B5E53', rule: '#D8CBB9', primary: '#4A2E1F', accent: '#B14E28', star: '#B07A1E', deepen: 4,
-  'f-display': 'Fraunces', 'f-body': 'DM Sans', 'f-label': 'DM Mono', 'w-display': 400, hero: 60, track: -0.02, body: 16, 'label-size': 11, 'label-track': 0.1, 'label-case': 'uppercase',
-  radius: 12, 'btn-radius': 999, 'img-bg': '#FBF7F0', 'img-pad': 10, 'img-fit': 'contain', 'img-blend': 'normal', stagger: 0,
-  'm-circles': true, 'm-dots': false, 'm-rules': false, 'm-stripe': false, emph: 'none', mobile: false };
+const BASE = { ground: '#F6EFE3', surface: '#FBF6EC', ink: '#1F130C', muted: '#5F5145', rule: '#D6C9B6', primary: '#3B2416', accent: '#9C4526', star: '#93701F', deepen: 4,
+  'f-hero': 'Same as heading', 'f-display': 'Gambetta', 'f-body': 'Ranade', 'f-label': 'Ranade', 'w-display': 400, hero: 60, track: -0.02, body: 16, 'label-size': 11, 'label-track': 0.1, 'label-case': 'uppercase',
+  radius: 12, 'btn-radius': 999, 'img-bg': '#FBF6EC', 'img-pad': 10, 'img-fit': 'contain', 'img-blend': 'normal', stagger: 0,
+  'm-circles': true, 'm-dots': false, 'm-rules': false, 'm-stripe': false, emph: 'm-italic', 't-grain': true, 't-frame': true, tx: 0.6, slab: 'One of each', mobile: false, mono: false };
 const PRESETS = {
-  'A · Heritage': {},
-  'Live site today': { ground: '#FCF9F2', surface: '#F9F3E8', ink: '#26170D', muted: '#6A5B44', rule: '#DBD3C6', primary: '#995503', accent: '#ED855E', star: '#B08D3F', 'img-bg': '#F9F3E8', 'f-label': 'DM Sans', 'label-track': 0.18, 'm-circles': false, 'm-dots': true, emph: 'm-smear' },
-  'B · Mineral': { ground: '#E7EBE5', surface: '#F8FAF6', ink: '#1F2F29', muted: '#55645D', rule: '#C9D2CA', primary: '#27433A', accent: '#2F5C4C', star: '#9E783F', 'img-bg': '#F8FAF6', 'f-display': 'DM Sans', 'w-display': 500 },
-  'C · Dark': { ground: '#231D19', surface: '#30271F', ink: '#F4EDE1', muted: '#C3B3A2', rule: '#4A3C33', primary: '#8A5233', accent: '#E0A070', star: '#E0B060', 'img-bg': '#FBF7F0', deepen: 0 },
+  // Colours are fixed: Deep Roast, light and dark. All text 4.5:1 or better on ground and card.
+  'Deep Roast · Light': {},
+  'Deep Roast · Dark': { ground: '#1E1510', surface: '#2A1E17', ink: '#F6EFE3', muted: '#BFAF9D', rule: '#43342A', primary: '#EBDCC6', accent: '#E28D66', star: '#D9A84A', 'img-bg': '#FBF6EC', deepen: 0 },
+  'Live site today': { ground: '#FCF9F2', surface: '#F9F3E8', ink: '#26170D', muted: '#6A5B44', rule: '#DBD3C6', primary: '#995503', accent: '#ED855E', star: '#B08D3F', 'img-bg': '#F9F3E8', 't-grain': false, 't-frame': false, 'f-display': 'Fraunces', 'f-body': 'DM Sans', 'f-label': 'DM Sans', 'label-track': 0.18, 'm-circles': false, 'm-dots': true, emph: 'm-smear' },
 };
-let S = { ...BASE, ...JSON.parse(localStorage.icbPlay || '{}') };
+let S = { ...BASE, ...JSON.parse(localStorage.icbPlay3 || '{}') };
 if (location.hash === '#mobile') S.mobile = true;
+{ const k = Object.keys(PRESETS).find(n => n.toLowerCase().includes(decodeURIComponent(location.hash.slice(1)).toLowerCase() || '\0')); if (k) Object.assign(S, BASE, PRESETS[k]); } // #dark, #live
+if (location.hash === '#mono') S.mono = true;
 
 const lum = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; };
 const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
@@ -332,6 +378,8 @@ function apply() {
     if (c.length < 3) continue; const [k, , t, , , , unit] = c, v = S[k];
     if (t === 'check') stage.classList.toggle(k, !!v);
     else if (k === 'emph') ['m-smear', 'm-underline', 'm-italic'].forEach(m => stage.classList.toggle(m, v === m));
+    else if (k === 'slab') document.querySelectorAll('.slab').forEach(el => el.className = 'slab tx-' + (v === 'One of each' ? el.dataset.tx : v));
+    else if (k === 'f-hero') stage.style.setProperty('--f-hero', `'${v === SAME ? S['f-display'] : v}'`);
     else stage.style.setProperty('--' + k, k.startsWith('f-') ? `'${v}'` : v + (unit || ''));
   }
   // text on the filled button: whichever of surface or ink reads better
@@ -339,7 +387,8 @@ function apply() {
   const onp = getComputedStyle(stage).getPropertyValue('--on-primary').trim();
   $('#cr').innerHTML = [['Ink on ground', S.ink, S.ground, 4.5], ['Muted on ground', S.muted, S.ground, 4.5], ['Muted on surface', S.muted, S.surface, 4.5], ['Accent text on ground', S.accent, S.ground, 4.5], ['Accent text on surface', S.accent, S.surface, 4.5], ['Text on primary button', onp, S.primary, 4.5], ['Star on ground (needs 3)', S.star, S.ground, 3], ['Hairline on ground (needs 3 if it marks a control)', S.rule, S.ground, 3]]
     .map(([n, a, b, min]) => { const r = ratio(a, b); return `<div>${n} <b class="${r >= min ? 'ok' : 'bad'}">${r.toFixed(2)}</b></div>`; }).join('');
-  localStorage.icbPlay = JSON.stringify(S);
+  stage.classList.toggle('mono', !!S.mono); $('#monoBtn').textContent = 'Monochrome: ' + (S.mono ? 'on' : 'off');
+  localStorage.icbPlay3 = JSON.stringify(S);
 }
 function build() {
   $('#controls').innerHTML = CTRL.map(c => {
@@ -356,7 +405,8 @@ $('#controls').addEventListener('input', e => { const el = e.target, k = el.data
   S[k] = el.type === 'checkbox' ? el.checked : el.type === 'range' ? +el.value : el.value;
   if (el.type === 'range') el.nextElementSibling.textContent = el.value; apply(); });
 $('#presets').innerHTML = Object.keys(PRESETS).map(p => `<button data-p="${p}">${p}</button>`).join('');
-$('#presets').addEventListener('click', e => { const p = e.target.dataset.p; if (!p) return; S = { ...BASE, ...PRESETS[p], mobile: S.mobile }; build(); apply(); });
+$('#presets').addEventListener('click', e => { const p = e.target.dataset.p; if (!p) return; S = { ...BASE, ...PRESETS[p], mobile: S.mobile, mono: S.mono }; build(); apply(); });
+$('#monoBtn').onclick = () => { S.mono = !S.mono; apply(); };
 $('#reset').onclick = () => { S = { ...BASE }; build(); apply(); };
 $('#copy').onclick = () => { navigator.clipboard.writeText(JSON.stringify(S, null, 2)); $('#copy').textContent = 'Copied'; setTimeout(() => $('#copy').textContent = 'Copy tokens', 1200); };
 build(); apply();

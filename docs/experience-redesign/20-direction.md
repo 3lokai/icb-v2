@@ -8,7 +8,7 @@ The workspace is now organized into dedicated pages for direction, identity, hom
 
 | Page | What is active |
 |---|---|
-| `00 · Direction & principles` / `01 · Visual identity laboratory` | Creative baseline and three **exploratory** identity treatments for next review; none selected |
+| `00 · Direction & principles` / `01 · Visual identity laboratory` | Creative baseline; page `01` has the `Identity DECIDED · 2026-11-11` board, with the three earlier candidates kept as `SUPERSEDED` |
 | `02 · Homepage — I v2 (active experience)` | Original I-v2 desktop/mobile boards and two Penpot walkthrough flows, preserved |
 | `03`–`06` | Editable **reference redraws** of directory/coffee/review/returning-user boards. Refer to page `90` originals for precise visual fidelity |
 | `07`–`10` | Components, motion, copy, and other entity-template work areas |
@@ -63,9 +63,40 @@ The earlier one-screen desktop homepage is kept for comparison: [samples/home-v1
 
 ### 1. Typography, colour, iconography, motifs
 
-**Identity review ready (2026-11-10):** Penpot page `01` now has three intentionally distinct treatments applied to **the same full desktop I-v2 homepage and mobile Mogra coffee detail** (with Rate, Buy, packaging, reviews and attribute doorways): A · Editorial Heritage (warm paper/serif), B · Contemporary Craft (mineral/sans), C · The Collector's Index (dark/copper). These are **PROPOSED visual candidates, not approved brand tokens**. Compare actual screen legibility, neutrality and brand recognition before choosing. Earlier stub-only variants have been removed. The Mogra sample now uses 4.5 from 6 independent ratings and anaerobic process; do not attach unverified SLN 795 or invented tasting/rating claims to it.
+**Character (PROPOSED, 2026-11-11):** quiet authority in the typography and information design; warmth in the colour and voice; curiosity and liveliness in the imagery, interactions and graphic details. *ICB provides the structure. Coffee provides the colour. People provide the personality.*
 
-Starting point, as drawn:
+The three Penpot identity candidates (A · Editorial Heritage, B · Contemporary Craft, C · The Collector's Index) are **superseded** by the decisions below. Identity work now happens in the [playground](playground/index.html).
+
+| Deep Roast, light | Deep Roast, dark | Mobile |
+|---|---|---|
+| ![](samples/identity-deep-roast-light.jpg) | ![](samples/identity-deep-roast-dark.jpg) | ![](samples/identity-deep-roast-mobile.jpg) |
+
+**Typefaces CONFIRMED (2026-11-11), from Fontshare:**
+
+| Role | Typeface | Usage |
+|---|---|---|
+| Headings | Gambetta | H1–H4, coffee names, editorial titles |
+| Body & UI | Ranade | Paragraphs, navigation, filters, buttons, ratings |
+| Expressive display | Gambetta Italic | Selective editorial emphasis, quotations, special moments |
+
+Weights, sizes and the small-label treatment are still open. Try them in the [playground](playground/index.html).
+
+**Colour CONFIRMED (2026-11-11): Deep Roast, light and dark.** This replaces the A/B/C identity test and the "one palette" item below.
+
+| Role | Light | Dark |
+|---|---|---|
+| Ground | `#F6EFE3` | `#1E1510` |
+| Card | `#FBF6EC` | `#2A1E17` |
+| Ink | `#1F130C` | `#F6EFE3` |
+| Muted text | `#5F5145` | `#BFAF9D` |
+| Hairline | `#D6C9B6` | `#43342A` |
+| Primary (Buy, Browse) | `#3B2416` | `#EBDCC6` |
+| Accent (Rate, links) | `#9C4526` | `#E28D66` |
+| Star | `#93701F` | `#D9A84A` |
+
+Texture and feature surfaces (paper grain, pressed image frame, Roasted Weave, Estate Contour, Laid Paper) are in the playground and not yet decided.
+
+Earlier starting point, as drawn (superseded by the tables above):
 
 | | I boards | Homepage v2 |
 |---|---|---|
@@ -78,8 +109,10 @@ Starting point, as drawn:
 | Ground | `#F4EDE1`, card `#FBF7F0` | `#F4EDE2` → `#F0E6D8` → `#EDE1D1` by stage |
 
 To settle here:
-- One palette. The two sets above have drifted apart.
-- Small-text contrast. Labels in `#978575` are about 3:1 and small terracotta text about 4–4.4:1 on these grounds; the minimum is 4.5:1.
+- ~~One palette~~ and ~~small-text contrast~~: settled by Deep Roast (all text ≥ 4.5:1 on ground and card).
+- Texture: paper grain, the pressed image frame, and which of the three feature surfaces to keep and where they may appear.
+- Dark-mode image tiles: white-background pack shots sit in bright tiles on the dark ground.
+- Sidebar, chart, focus and destructive tokens.
 - Whether the ground changes per scroll stage.
 - Icon rules, including what `↗` means. It marks leaving for the roaster's site in the I boards and is used on internal links in v2.
 - Star rendering, including a half star (4.5 currently shows five full stars).

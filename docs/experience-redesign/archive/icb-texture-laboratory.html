@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ICB · Material Editorial Laboratory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Figtree:wght@300..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=Inter:wght@300..700&family=DM+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,700,400i&f[]=gambetta@300,400,500,600,400i&f[]=sentient@300,400,500,700,400i&f[]=ranade@300,400,500,700&f[]=cabinet-grotesk@300,400,500,700&f[]=general-sans@300,400,500,600&f[]=stardom@400&f[]=boska@300,400,500,700,400i&f[]=panchang@300,400,500,600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=erode@300,400,500,600,400i&f[]=bespoke-serif@300,400,500,700,400i&f[]=synonym@300,400,500,600&f[]=supreme@300,400,500,700&display=swap" rel="stylesheet">
+<style>
+/* Playground only. Not production code: nothing here is imported by the app. */
+*{box-sizing:border-box;margin:0}
+body{font:14px/1.4 system-ui,sans-serif;background:#1b1b1b;color:#ddd;display:flex;min-height:100vh}
+
+/* ---------- control panel (deliberately plain; not part of the design) */
+#panel{width:300px;flex:none;height:100vh;position:sticky;top:0;overflow:auto;padding:14px;background:#222;border-right:1px solid #333}
+#panel h1{font-size:14px;margin-bottom:10px}
+#panel h2{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#999;margin:16px 0 6px}
+#panel label{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:3px 0;font-size:13px}
+#panel input[type=color]{width:38px;height:24px;border:0;background:none;padding:0}
+#panel input[type=range]{width:120px}
+#panel select,#panel button{font:inherit;background:#333;color:#eee;border:1px solid #444;border-radius:5px;padding:4px 7px;max-width:160px}
+#panel button{cursor:pointer}
+#panel .row{display:flex;flex-wrap:wrap;gap:6px}
+#panel code{font-size:11px;color:#aaa}
+#cr{font-size:12px;line-height:1.7}
+#cr b{font-weight:600}.ok{color:#8fd18f}.bad{color:#ff8a7a}
+#stagewrap{flex:1;min-width:0;padding:20px;display:flex;justify-content:center}
+
+/* ---------- the design: every value below comes from a token */
+#stage{
+  --ground:#F4EDE1;--surface:#FBF7F0;--ink:#1E1713;--muted:#6B5E53;--rule:#D8CBB9;
+  --primary:#4A2E1F;--on-primary:#FBF7F0;--accent:#B14E28;--star:#B07A1E;
+  --f-display:'Fraunces';--f-body:'DM Sans';--f-label:'DM Mono';
+  --w-display:400;--hero:60px;--track:-0.02em;--body:16px;
+  --label-case:uppercase;--label-track:.1em;--label-size:11px;
+  --radius:12px;--btn-radius:999px;--img-bg:#FBF7F0;--img-pad:10px;--img-fit:contain;--img-blend:normal;
+  width:100%;max-width:1440px;container-type:inline-size;
+  background:var(--ground);color:var(--ink);font:var(--body)/1.5 var(--f-body),system-ui,sans-serif;
+  position:relative;overflow:hidden;border-radius:6px;align-self:flex-start
+}
+#stage.mobile{max-width:390px}
+:where(#stage) a{color:inherit;text-decoration:none}
+.wrap{padding:0 64px;position:relative}
+.d{font-family:var(--f-display),Georgia,serif;font-weight:var(--w-display);letter-spacing:var(--track);line-height:1.1}
+.hero h1,.coffee h1,.big{font-family:var(--f-hero),Georgia,serif}
+.lab{font:var(--label-size)/1.4 var(--f-label),monospace;text-transform:var(--label-case);letter-spacing:var(--label-track);color:var(--muted)}
+.mut{color:var(--muted)}.acc{color:var(--accent)}
+.star{color:var(--star);letter-spacing:.08em}.star i{font-style:normal;color:var(--rule)}
+hr{border:0;border-top:1px solid var(--rule)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 28px;border-radius:var(--btn-radius);font:500 16px var(--f-body),sans-serif;border:1.5px solid transparent;cursor:pointer;white-space:nowrap}
+.btn.fill{background:var(--primary);color:var(--on-primary)}
+.btn.line{border-color:var(--accent);color:var(--accent);background:transparent}
+.btn.sm{height:44px;padding:0 20px;font-size:14px}
+.chip{display:inline-flex;align-items:center;height:36px;padding:0 14px;border:1px solid var(--rule);border-radius:var(--btn-radius);font-size:13px}
+.chip.on{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.search{display:flex;align-items:center;height:56px;padding:0 24px;border:1px solid var(--rule);border-radius:var(--btn-radius);background:var(--surface);color:var(--muted)}
+.tile{background:var(--img-bg);border:1px solid var(--rule);border-radius:var(--radius);padding:var(--img-pad);overflow:hidden;display:block}
+.tile img{width:100%;height:100%;display:block;object-fit:var(--img-fit);mix-blend-mode:var(--img-blend);border-radius:calc(var(--radius) - var(--img-pad))}
+
+nav{display:flex;align-items:center;gap:32px;height:72px;border-bottom:1px solid var(--rule)}
+nav .logo{font:500 20px var(--f-display),serif;margin-right:auto}
+nav .links{display:flex;gap:28px;font-size:14px}
+nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
+.sec{padding:72px 0;position:relative;overflow:hidden}
+.hero>*,.comm>*,.dir>*,.coffee>*,.rate>*{min-width:0}
+.sec.tint{background:color-mix(in srgb,var(--ground) 100%,var(--primary) calc(var(--deepen,0)*1%))}
+.sectag{position:absolute;right:16px;top:8px;font:10px system-ui;color:var(--muted);opacity:.5}
+
+/* home */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.hero h1{font-size:var(--hero);margin:18px 0 24px}
+.hero .sub{font-size:18px;max-width:30em;margin-bottom:28px}
+.hero .acts{display:flex;gap:14px;margin:16px 0 30px;flex-wrap:wrap}
+.ways{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.mosaic{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mosaic .tile{aspect-ratio:5/6}
+.mosaic .tile:nth-child(2),.mosaic .tile:nth-child(5){transform:translateY(calc(var(--stagger,0)*1px))}
+.railhead{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:28px}
+.railhead h2{font-size:calc(var(--hero)*.7)}
+.rail{display:flex;gap:20px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x proximity}
+.rail>a{flex:0 0 220px;scroll-snap-align:start}
+.rail .tile{aspect-ratio:4/5;margin-bottom:10px}
+.cn{font-weight:500;line-height:1.25}.cr{font-size:13px;color:var(--muted)}
+.comm{display:grid;grid-template-columns:1.3fr 1fr;gap:72px}
+.comm h2{font-size:calc(var(--hero)*.75);margin:14px 0 18px}
+.rated{display:grid;grid-template-columns:72px 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--rule)}
+.rated .tile{width:72px;height:84px;--img-pad:4px}
+.q{font-family:var(--f-display),serif;font-style:italic;font-weight:300;color:var(--muted)}
+.fg a{display:block;font-family:var(--f-display),serif;font-size:24px;line-height:1.2;padding:14px 0;border-top:1px solid var(--rule)}
+
+/* directory */
+.dir{display:grid;grid-template-columns:240px 1fr;gap:48px}
+.dir h2{font-size:calc(var(--hero)*.62);margin:8px 0 28px}
+.facet{margin-bottom:22px}.facet div{display:flex;justify-content:space-between;padding:4px 0;font-size:14px}
+.facet div span:first-child::before{content:'';display:inline-block;width:14px;height:14px;border:1px solid var(--rule);border-radius:4px;margin-right:10px;vertical-align:-2px;background:var(--surface)}
+.facet div.on span:first-child{font-weight:500}.facet div.on span:first-child::before{background:var(--primary);border-color:var(--primary)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 24px}
+.card .tile{aspect-ratio:4/5;margin-bottom:10px}
+.card .meta{display:flex;justify-content:space-between;font-size:13px;margin-top:4px}
+
+/* coffee */
+.coffee{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.coffee .tile{aspect-ratio:1/1;--img-pad:24px}
+.coffee h1{font-size:calc(var(--hero)*1.2);margin:6px 0 10px}
+.sent{font-family:var(--f-display),serif;font-weight:300;font-size:28px;line-height:1.4;margin:22px 0 10px}
+.sent a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;text-decoration-color:var(--accent)}
+.buyrow{display:flex;gap:14px;margin:26px 0 8px;flex-wrap:wrap}
+.doors{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:28px}
+.doors b{display:block;font:var(--w-display) 22px var(--f-display),serif;margin:4px 0}
+
+/* rating */
+.rate{display:grid;grid-template-columns:300px 1fr;gap:72px}
+.big{font-size:72px}
+.bar{display:grid;grid-template-columns:28px 1fr 16px;gap:10px;align-items:center;font-size:13px;color:var(--muted);margin:5px 0}
+.bar i{height:8px;border-radius:4px;background:var(--rule);display:block;position:relative;overflow:hidden}.bar i::after{content:'';position:absolute;inset:0;width:var(--w);background:var(--star)}
+.sheet{background:var(--surface);border:1px solid var(--rule);border-radius:calc(var(--radius) + 4px);padding:28px}
+.sheet h3{font-size:26px}.sheet .star{font-size:30px}
+.field{border:1px solid var(--rule);border-radius:var(--radius);padding:16px;color:var(--muted);background:var(--ground);margin:16px 0}
+
+#stage.mono{filter:grayscale(1)}
+/* motifs (toggled by classes on #stage) */
+#stage.m-circles .hero::before{content:'';position:absolute;right:-6%;top:-10%;width:52%;aspect-ratio:1;border-radius:50%;background:var(--surface);opacity:.7;z-index:0}
+#stage.m-circles .comm::before{content:'';position:absolute;left:-12%;top:-20%;width:46%;aspect-ratio:1;border-radius:50%;background:var(--surface);opacity:.6;z-index:0}
+#stage.m-circles .hero>*,#stage.m-circles .comm>*{position:relative;z-index:1}
+#stage.m-dots .sec.tint{background-image:radial-gradient(color-mix(in srgb,var(--ink) 18%,transparent) 1px,transparent 1.5px);background-size:22px 22px}
+#stage.m-stripe .sec+.sec{border-top:6px solid;border-image:linear-gradient(90deg,var(--primary),var(--accent),var(--primary)) 1}
+#stage.m-rules .sec+.sec{border-top:1px solid var(--rule)}
+.smear{position:relative}
+#stage.m-smear .smear{white-space:nowrap}
+#stage.m-smear .smear::after{content:'';position:absolute;left:-.1em;right:-.1em;bottom:-.02em;height:.42em;background:var(--accent);opacity:.55;z-index:-1;-webkit-mask:url(../../../public/images/stain-smear.png) center/100% 100% no-repeat;mask:url(../../../public/images/stain-smear.png) center/100% 100% no-repeat}
+#stage.m-underline .smear{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:.06em;text-underline-offset:.14em}
+#stage.m-italic .smear{font-style:italic}
+
+/* mobile: the stage is the container, so the toggle previews real breakpoints */
+@container (max-width:760px){
+  .wrap{padding:0 20px}.sec{padding:40px 0}
+  nav .links,nav .search,nav .acc,nav .signin{display:none}nav{height:56px}nav .logo{font-size:17px}nav::after{content:'Search   Menu';font:var(--label-size) var(--f-label);text-transform:var(--label-case);letter-spacing:var(--label-track);color:var(--muted);white-space:pre}
+  .hero,.comm,.dir,.coffee,.rate{grid-template-columns:1fr;gap:28px}
+  .hero h1{font-size:calc(var(--hero)*.55)}.hero .sub{font-size:15px}
+  .btn{height:48px;padding:0 20px;font-size:15px}.hero .acts .btn{flex:1}
+  .mosaic{display:flex;overflow-x:auto;gap:12px}.mosaic .tile{flex:0 0 150px;transform:none!important}
+  .railhead{display:block}.railhead h2,.comm h2{font-size:calc(var(--hero)*.55)}
+  .rail>a{flex-basis:170px}
+  .dir aside{display:none}.dir h2{font-size:24px}.grid{grid-template-columns:1fr 1fr;gap:20px 14px}
+  .coffee h1{font-size:44px}.sent{font-size:21px}.buyrow .btn.fill{flex:1}
+  .doors{grid-template-columns:1fr 1fr}.big{font-size:56px}.fg a{font-size:20px}
+}
+
+/* MATERIAL LAB — isolated from production and from the original layout logic. */
+#panel .materialModes{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#panel .materialModes button{max-width:none;min-height:38px;padding:7px 5px;text-align:center;font-size:11px;line-height:1.25}
+#panel .materialModes button[aria-pressed="true"]{color:#fff;background:#8e493f;border-color:#e5a58c}
+#panel .materialNote{min-height:53px;color:#bbb;font-size:12px;line-height:1.5;margin-top:9px}
+#panel #materialStrength{accent-color:#df7659}
+#stage{--material-strength:.65;--m-lilac:#D8C5EB;--m-lilac-pale:#F0E7F4;--m-vermilion:#B53624;--material-shadow:0 14px 25px rgba(45,21,14,.09)}
+#stage.material-study{--ground:#F6EFE3;--surface:#FBF6EC;--ink:#261611;--muted:#66534A;--rule:#D7CABE;--primary:#3B2416;--accent:#A93725;--star:#93701F;--img-bg:#FAF6EE;--deepen:0;--f-display:'Gambetta';--f-hero:'Gambetta';--f-body:'Ranade';--f-label:'Ranade';--w-display:400;--track:-.025em;--label-case:none;--label-track:.025em;--radius:3px;--btn-radius:5px}
+#stage.material-study nav .logo{letter-spacing:-.035em;font-weight:500}
+#stage.material-study .sectag{display:none}
+#stage.material-study .mosaic .tile,#stage.material-study .rail .tile,#stage.material-study .grid .tile,#stage.material-study .coffee .tile{transition:transform .42s cubic-bezier(.2,.7,.2,1),box-shadow .42s,background .42s,border-color .42s}
+#stage.material-study .grid .card:hover .tile,#stage.material-study .rail>a:hover .tile{transform:translateY(-4px)}
+#stage.material-study :is(.btn,.chip){transition:background-color .2s,color .2s,border-color .2s,transform .2s}
+#stage.material-study .btn:hover{transform:translateY(-2px)}
+#stage.material-study .btn:focus-visible,#stage.material-study a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+#stage.material-study .btn.line{color:var(--accent)}
+#stage.material-study .smear{font-style:italic}
+#stage.material-study .sec.tint{background:var(--section-wash,transparent)}
+#stage.material-study .tile img{position:relative;z-index:1}
+#stage.material-study .grid .card{position:relative}
+#stage.material-study .grid .card .cn{margin-top:12px}
+#stage.material-study .rated .tile{border-radius:2px}
+/* Identity A — Pressed / embossed: precision of etched print and paper strata. */
+#stage.pressed{--section-wash:#F0E9DE;--img-bg:#F9F2E6;--m-vermilion:#A93725}
+#stage.pressed::after{content:"";pointer-events:none;position:absolute;inset:0;z-index:9;opacity:calc(var(--material-strength)*.20);background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");mix-blend-mode:multiply}
+#stage.pressed .hero h1{font-weight:400;text-shadow:0 1px 0 rgba(255,255,255,.8),0 2px 1px rgba(38,22,17,calc(var(--material-strength)*.12))}
+#stage.pressed .sec+.sec{border-top:1px solid #D5C7B4;box-shadow:inset 0 3px 0 rgba(255,255,255,.35)}
+#stage.pressed .tile{border:1px solid #D9CAB6;box-shadow:inset 0 0 0 5px rgba(255,255,255,.45),0 calc(var(--material-strength)*5px) calc(var(--material-strength)*11px) rgba(45,21,14,.11)}
+#stage.pressed .mosaic .tile:nth-child(2),#stage.pressed .mosaic .tile:nth-child(5){transform:translateY(calc(var(--material-strength)*18px))}
+#stage.pressed .rail .tile{border-bottom:4px solid #CBB6A1}
+#stage.pressed .sheet{background:#F4E9DA;border-radius:1px;border:1px solid #CDBCA7;box-shadow:inset 0 0 0 6px rgba(255,255,255,.42)}
+#stage.pressed .lab{letter-spacing:.07em;text-transform:uppercase;font-size:10px}
+#stage.pressed .doors>div{border-top:2px solid var(--ink);padding-top:12px}
+/* Identity B — Vellum: diffuse, translucent panels in the empty space; imagery remains crisp. */
+#stage.vellum{--section-wash:#F0E9F0;--img-bg:#F9F4ED;--radius:10px;--btn-radius:8px}
+#stage.vellum .sec{isolation:isolate}
+#stage.vellum .sec:nth-of-type(odd){background-image:radial-gradient(ellipse at 90% 10%,rgba(216,197,235,calc(var(--material-strength)*.38)),transparent 52%)}
+#stage.vellum .hero::before{content:"";position:absolute;z-index:-1;pointer-events:none;width:48%;aspect-ratio:1;left:34%;top:3%;border-radius:50%;background:rgba(216,197,235,.18);filter:blur(34px)}
+#stage.vellum .hero>div:first-child{padding:24px 26px 26px 0;position:relative}
+#stage.vellum .hero>div:first-child::before{content:"";position:absolute;pointer-events:none;inset:5px -26px -8px -16px;z-index:-1;background:rgba(255,255,255,calc(var(--material-strength)*.55));border:1px solid rgba(255,255,255,.75);box-shadow:0 14px 32px rgba(56,30,42,calc(var(--material-strength)*.10));border-radius:4px}
+#stage.vellum .tile{border-color:rgba(112,75,81,.17);background:rgba(255,255,255,.68);box-shadow:0 8px 20px rgba(57,31,47,calc(var(--material-strength)*.13))}
+#stage.vellum .mosaic .tile:nth-child(2),#stage.vellum .mosaic .tile:nth-child(5){transform:translateY(calc(var(--material-strength)*26px))}
+#stage.vellum .mosaic{padding:10px 8px 32px 6px}
+#stage.vellum .comm>div:last-child{background:rgba(255,255,255,calc(var(--material-strength)*.6));border:1px solid rgba(106,75,97,.15);padding:26px;border-radius:5px}
+#stage.vellum .sheet{background:rgba(255,255,255,.7);border-color:#DFD0DC;box-shadow:0 18px 44px rgba(47,26,38,.09)}
+#stage.vellum .doors>div{border-left:2px solid #D8C5EB;padding-left:15px}
+#stage.vellum .chip.on{background:var(--accent);border-color:var(--accent);color:white}
+/* Identity C — Framed: confident gallery layouts, asymmetric off-register plates and index marks. */
+#stage.framed{--section-wash:#F2EDE6;--img-bg:#F9F5F0;--radius:0px;--btn-radius:2px}
+#stage.framed nav{border-bottom:2px solid var(--ink)}
+#stage.framed .hero h1{max-width:11ch;line-height:1.03}
+#stage.framed .sec+.sec{border-top:1px solid var(--ink)}
+#stage.framed .sec .lab{color:#785149}
+#stage.framed .tile{border:1px solid #D1C6B9;box-shadow:calc(var(--material-strength)*9px) calc(var(--material-strength)*9px) 0 #E2D2DB;overflow:visible}
+#stage.framed .tile img{border-radius:0}
+#stage.framed .mosaic{gap:20px;padding:7px 18px 20px 0}
+#stage.framed .mosaic .tile:nth-child(2),#stage.framed .mosaic .tile:nth-child(5){transform:translateY(calc(var(--material-strength)*22px));box-shadow:calc(var(--material-strength)*-9px) calc(var(--material-strength)*9px) 0 #E9B5AA}
+#stage.framed .rail>a{position:relative}
+#stage.framed .rail>a::before{content:counter(coffee,decimal-leading-zero);position:absolute;top:8px;left:7px;z-index:2;font:600 11px var(--f-body);padding:4px 6px;background:#F6EFE3;color:#261611}
+#stage.framed .rail{counter-reset:coffee}
+#stage.framed .rail>a{counter-increment:coffee}
+#stage.framed .grid .card:nth-child(3n+1) .tile{box-shadow:calc(var(--material-strength)*8px) calc(var(--material-strength)*8px) 0 #E9B5AA}
+#stage.framed .grid{row-gap:36px}
+#stage.framed .sheet{border-radius:0;border-top:5px solid var(--accent)}
+#stage.framed .doors>div{border-top:3px solid var(--ink);padding-top:12px}
+#stage.framed .fg a{border-top:2px solid var(--ink)}
+#stage.framed .btn.fill{background:#261611}
+/* Subtle interaction preview; always accessible without hover. */
+#stage.framed .coffee .tile:hover{transform:translate(-3px,-3px);box-shadow:calc(var(--material-strength)*14px) calc(var(--material-strength)*14px) 0 #E9B5AA}
+#stage.vellum .coffee .tile:hover{transform:translateY(-5px);box-shadow:0 20px 34px rgba(57,31,47,.18)}
+#stage.pressed .coffee .tile:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 5px rgba(255,255,255,.45),0 14px 22px rgba(45,21,14,.15)}
+#stage.material-dark{--ground:#1E1510;--surface:#2C211B;--ink:#F6EFE3;--muted:#C6B7A8;--rule:#51423A;--primary:#EBDCC6;--accent:#EBA080;--star:#D9A84A;--img-bg:#F7F1E7;--section-wash:#291E1B}
+#stage.material-dark .sec.tint{background:#291F1C}
+#stage.material-dark :is(.pressed,.vellum,.framed){color:var(--ink)}
+#stage.material-dark .tile{background:#F7F1E7;border-color:#6A5145}
+#stage.material-dark .tile img{mix-blend-mode:normal}
+#stage.material-dark .hero>div:first-child::before{background:rgba(65,48,56,.8);border-color:#5A4B4F}
+#stage.material-dark .comm>div:last-child{background:#30282C;border-color:#55464C}
+#stage.material-dark .sheet{background:#2E2524;border-color:#64514F}
+#stage.material-dark .doors>div{border-color:#9C867B}
+#stage.material-dark .sec+.sec{border-color:#58463D}
+#stage.material-dark .lab{color:#C6B7A8}
+#stage.material-dark .btn.fill{background:#EBDCC6;color:#1E1510}
+#stage.material-dark .btn.line{color:#EBA080;border-color:#EBA080}
+#stage.material-dark .mosaic .tile{box-shadow:calc(var(--material-strength)*8px) calc(var(--material-strength)*8px) 0 #5F4558}
+@container (max-width:760px){
+ #stage.vellum .hero>div:first-child{padding:0}
+ #stage.vellum .hero>div:first-child::before{inset:-10px -9px -12px}
+ #stage.vellum .comm>div:last-child{padding:18px}
+ #stage.framed .hero h1{max-width:none}
+ #stage.framed .tile{box-shadow:4px 4px 0 #E2D2DB}
+ #stage.framed .mosaic{padding:5px 10px 18px 0}
+ #stage.pressed .mosaic .tile:nth-child(2),#stage.pressed .mosaic .tile:nth-child(5),#stage.vellum .mosaic .tile:nth-child(2),#stage.vellum .mosaic .tile:nth-child(5),#stage.framed .mosaic .tile:nth-child(2),#stage.framed .mosaic .tile:nth-child(5){transform:none}
+}
+@media (prefers-reduced-motion: reduce){#stage.material-study *,#stage.material-study *::before,#stage.material-study *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* === ICB texture experiments: procedural, no bitmap dependency === */
+#panel .textureControls{border:1px solid #444;background:#272727;border-radius:8px;padding:12px;margin:12px 0}
+#panel .textureControls label{display:grid;grid-template-columns:1fr auto;gap:12px;margin:10px 0 2px;font-size:12px}
+#panel .textureControls input[type=range]{width:100%;accent-color:#df806e}
+#panel .textureControls .rangeline{display:flex;align-items:center;gap:10px}
+#panel .textureControls output{font:12px monospace;color:#ddd;min-width:40px;text-align:right}
+#panel .textureControls .checkline{display:flex;gap:7px;align-items:center;margin:9px 0}
+#stage{--tx-opacity:.50;--tx-size:18px;--tx-light:56%;--tx-grain:.22;--tx-hover:1;--tx-glow:.55}
+.textureIntro{padding:44px 64px 25px;border-bottom:1px solid #D8C9B9;background:#F6EFE3;color:#261611}
+.textureIntro h2{font:400 clamp(30px,3.5vw,48px)/1.08 'Gambetta',Georgia,serif;letter-spacing:-.035em;margin:8px 0 8px}
+.textureIntro p{font:14px/1.6 'Ranade',sans-serif;color:#635349;max-width:700px}
+.textureKicker{font:600 11px/1.3 'Ranade',sans-serif;text-transform:uppercase;letter-spacing:.16em;color:#9C4526}
+.textureSamples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:22px 64px 36px;background:#F6EFE3}
+.textureSample{position:relative;isolation:isolate;min-height:290px;overflow:hidden;border-radius:14px;padding:24px;color:#F8F0E6;box-shadow:0 18px 26px -22px rgba(39,20,15,.65);display:flex;flex-direction:column;justify-content:space-between}
+.textureSample h3{font:400 clamp(25px,2.1vw,32px)/1.1 'Gambetta',serif;letter-spacing:-.025em;margin:10px 0}
+.textureSample p{font:13px/1.5 'Ranade',sans-serif;max-width:25em;opacity:.9}
+.textureSample .micro{font:600 10px 'Ranade',sans-serif;letter-spacing:.13em;text-transform:uppercase;opacity:.72}
+.textureSample .panelAction{display:inline-flex;align-items:center;padding:9px 13px;border:1px solid currentColor;width:max-content;border-radius:4px;font:600 12px 'Ranade',sans-serif;margin-top:18px}
+.textureSample>*{position:relative;z-index:2}
+/* Weave: diagonal strands cross under delicate horizontal fiber; restrained specular light */
+.tx-weave{background:radial-gradient(ellipse at var(--tx-light) 0%,rgba(192,110,76,calc(var(--tx-glow)*.40)),transparent 58%),linear-gradient(125deg,#2A1C18,#130F11 70%)}
+.tx-weave::before{content:"";pointer-events:none;position:absolute;inset:0;opacity:var(--tx-opacity);background-image:repeating-linear-gradient(45deg,transparent 0 4px,rgba(249,201,166,.19) 4px 5px,transparent 5px 9px,rgba(0,0,0,.55) 9px 10px),repeating-linear-gradient(-45deg,transparent 0 4px,rgba(238,172,141,.14) 4px 5px,transparent 5px 9px,rgba(0,0,0,.42) 9px 10px),repeating-linear-gradient(0deg,transparent 0 3px,rgba(245,177,145,.10) 3px 4px);background-size:var(--tx-size) var(--tx-size);mix-blend-mode:screen}
+.tx-weave::after{content:"";position:absolute;pointer-events:none;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.055),transparent 35%,rgba(0,0,0,.35) 100%);z-index:1}
+/* Mineral night: tonal, not a neon cosmic scene; technical concentric engravings */
+.tx-mineral{background:radial-gradient(ellipse at var(--tx-light) 40%,rgba(121,91,154,calc(var(--tx-glow)*.42)) 0,transparent 57%),radial-gradient(ellipse at 10% 100%,#29263F,transparent 75%),linear-gradient(125deg,#161521,#0F101B 78%)}
+.tx-mineral::before{content:"";pointer-events:none;position:absolute;inset:0;opacity:var(--tx-opacity);background-image:repeating-radial-gradient(circle at 84% 54%,transparent 0 19px,rgba(222,204,247,.13) 19.5px 20.5px,transparent 21px 39px),linear-gradient(90deg,rgba(208,197,235,.07) 1px,transparent 1px),linear-gradient(0deg,rgba(208,197,235,.07) 1px,transparent 1px);background-size:100% 100%,calc(var(--tx-size)*4) calc(var(--tx-size)*4),calc(var(--tx-size)*4) calc(var(--tx-size)*4)}
+.tx-mineral::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 84% 54%,rgba(228,210,255,.5) 0 1px,transparent 2px),radial-gradient(circle at 85% 18%,rgba(238,220,250,.55) 0 1px,transparent 2px);opacity:calc(var(--tx-opacity)*.85);pointer-events:none}
+/* Vellum: visible offset sheets with printed microfibers. No backdrop filter. */
+.tx-vellum{background:linear-gradient(140deg,#EAD9E7,#F9F4E9 55%,#E5D7CB);color:#382724}
+.tx-vellum::before{content:"";position:absolute;inset:15px 20px 30px 12px;background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(251,241,246,.6));border:1px solid rgba(255,255,255,.82);box-shadow:9px 12px 0 rgba(172,139,168,calc(var(--tx-opacity)*.35)),16px 22px 24px rgba(84,46,69,.12);transform:rotate(-1deg);pointer-events:none}
+.tx-vellum::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:calc(var(--tx-opacity)*.60);background-image:repeating-linear-gradient(90deg,rgba(98,62,75,.045) 0 1px,transparent 1px 5px),repeating-linear-gradient(0deg,rgba(98,62,75,.03) 0 1px,transparent 1px 9px);background-size:var(--tx-size) var(--tx-size)}
+.tx-vellum .micro{color:#85493F}.tx-vellum p{color:#604A4D}
+.tx-vellum .panelAction{color:#9C4526}
+/* Base paper noise: SVG feTurbulence, only on slabs, not text or bags */
+.textureSample .grain,.featureSlab .grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:var(--tx-grain);mix-blend-mode:soft-light;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.83' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.85'/%3E%3C/svg%3E")}
+.textureLegend{padding:0 64px 28px;background:#F6EFE3;font:12px/1.5 'Ranade',sans-serif;color:#6C594D}
+/* Slabs within real ICB context. Normal page remains editorial and packaging-led. */
+.featureArea{background:#F6EFE3!important;padding:46px 0 74px!important}
+.featureHeading{font:400 32px 'Gambetta',serif;color:#261611;margin:8px 0 8px}
+.featureExplain{color:#66534A;max-width:660px;font:14px/1.5 'Ranade',sans-serif;margin-bottom:25px}
+.featureLayout{display:grid;grid-template-columns:1.07fr .93fr;gap:20px}
+.featureSlab{position:relative;isolation:isolate;overflow:hidden;border-radius:16px;min-height:270px;padding:34px;color:#F7EEE5;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.featureSlab>*:not(.grain){position:relative;z-index:2}
+.featureSlab .slabCopy{max-width:340px}
+.featureSlab h3{font:400 33px/1.07 'Gambetta',serif;letter-spacing:-.03em;margin:12px 0}
+.featureSlab p{font:13px/1.55 'Ranade',sans-serif;opacity:.85}
+.featureSlab .pill{display:inline-flex;padding:9px 14px;border-radius:4px;background:#F6EFE3;color:#261611;font:600 12px 'Ranade',sans-serif;margin-top:20px}
+.featureSlab .coin{border:1px solid rgba(255,255,255,.25);border-radius:100%;width:130px;aspect-ratio:1;display:grid;place-items:center;font:italic 44px 'Gambetta',serif;flex:none;box-shadow:inset 0 0 0 16px rgba(255,255,255,.03)}
+.featureSlab.tx-vellum{color:#382724}
+.featureSlab.tx-vellum p{color:#604A4D}.featureSlab.tx-vellum .pill{background:#382724;color:#FAF3E8}
+.featureSlab.tx-vellum .coin{border-color:rgba(95,63,71,.35)}
+.featureStrip{margin-top:20px;min-height:185px}
+.featureStrip .coin{width:108px;font-size:34px}
+#stage.texture-no-motion .featureSlab,#stage.texture-no-motion .textureSample{transition:none!important}
+#stage:not(.texture-no-motion) .featureSlab{transition:transform .35s ease,box-shadow .35s ease}
+#stage:not(.texture-no-motion) .featureSlab:hover{transform:translateY(-3px);box-shadow:0 22px 33px -26px rgba(40,20,16,.6)}
+@container (max-width:760px){.textureIntro{padding:30px 20px 17px}.textureSamples{padding:15px 20px 20px;grid-template-columns:1fr}.textureSample{min-height:225px}.textureLegend{padding:0 20px 20px}.featureLayout{grid-template-columns:1fr}.featureSlab{padding:25px;min-height:240px}.featureSlab h3{font-size:27px}.featureSlab .coin{width:76px;font-size:26px}.featureHeading{font-size:27px}}
+@media (prefers-reduced-motion: reduce){#stage .featureSlab{transition:none!important;transform:none!important}}
+</style>
+</head>
+<body>
+<div id="panel">
+  <h1>ICB · Texture Laboratory</h1>
+  <p style="font-size:12px;color:#aaa;line-height:1.6;margin-bottom:12px">Gambetta + Ranade · ivory, espresso, vermilion and restrained lilac. Same content, three material philosophies.</p>
+  <h2>Material directions</h2>
+  <div id="materialModes" class="materialModes" role="group" aria-label="Material direction"></div>
+  <p id="materialNote" class="materialNote" aria-live="polite"></p>
+  <label for="materialStrength" style="margin:12px 0 4px">Depth / tactility <strong id="strengthValue">65%</strong></label>
+  <input id="materialStrength" type="range" min="0" max="100" step="5" value="65" style="width:100%">
+  <label style="margin:8px 0"><span>Dark material preview</span><input id="materialDark" type="checkbox"></label>
+  <h2>Jump to screen</h2>
+  <div class="materialModes" id="jumpModes"><button type="button" data-jump="arrival">Home</button><button type="button" data-jump="directory">Directory</button><button type="button" data-jump="coffee-detail">Mogra</button><button type="button" data-jump="reviews">Reviews</button></div>
+
+  <div class="textureControls" id="textureControls">
+    <h2 style="margin:0 0 6px">Procedural texture lab</h2>
+    <label for="txIntensity">Pattern strength <output id="txIntensityVal">50%</output></label><input id="txIntensity" type="range" min="0" max="100" value="50">
+    <label for="txScale">Pattern scale <output id="txScaleVal">18px</output></label><input id="txScale" type="range" min="8" max="52" value="18">
+    <label for="txGrain">Organic grain <output id="txGrainVal">22%</output></label><input id="txGrain" type="range" min="0" max="100" value="22">
+    <label for="txLight">Light position <output id="txLightVal">56%</output></label><input id="txLight" type="range" min="0" max="100" value="56">
+    <label for="txGlow">Light intensity <output id="txGlowVal">55%</output></label><input id="txGlow" type="range" min="0" max="100" value="55">
+    <label class="checkline"><input id="txMotion" type="checkbox" checked> Hover movement</label>
+    <button id="txReset" type="button">Reset texture controls</button>
+    <button id="txJump" type="button">View real ICB panels ↓</button>
+    <p style="font-size:11px;color:#aaa;line-height:1.45;margin-top:9px">All textures are procedural CSS and SVG. No raster assets, blur filters or heavy effects.</p>
+  </div>
+  <h2>Original playground presets</h2>
+  <div class="row" id="presets"></div>
+  
+  <div class="row" style="margin-top:8px"><button id="monoBtn"></button></div>
+  <div id="controls"></div>
+  <h2>Contrast (AA text needs 4.5)</h2>
+  <div id="cr"></div>
+  <h2>Tokens</h2>
+  <div class="row"><button id="copy">Copy tokens</button><button id="reset">Reset</button></div>
+  <p style="margin-top:10px"><code>Changes save in this browser. Images and data are a 10 Nov 2026 snapshot.</code></p>
+</div>
+
+<div id="stagewrap"><div id="stage">
+
+<div class="wrap"><nav>
+  <span class="logo">Indian Coffee Beans</span>
+  <span class="links"><a>Coffees</a><a>Roasters</a><a>Regions</a><a>Field guide</a></span>
+  <span class="search">Find a coffee, roaster or estate</span>
+  <a class="acc" style="font-weight:500">★ Rate a coffee</a><a class="signin" style="font-size:14px">Sign in</a>
+</nav></div>
+
+
+<div class="textureIntro" id="texture-specimens">
+  <div class="textureKicker">Material study / 01</div>
+  <h2>Texture should be felt,<br><i>not noticed first.</i></h2>
+  <p>Three signature surfaces against the same typography and restrained palette. Adjust material controls in the left rail. No existing coffee data or navigation is changed.</p>
+</div>
+<div class="textureSamples">
+  <article class="textureSample tx-weave"><span class="grain"></span><div><span class="micro">01 / Community</span><h3>Roasted<br>Weave</h3><p>Warm cross-fibre engraving and a restrained reflected glow. The human, collaborative material.</p></div><span class="panelAction">Rate a coffee ↗</span></article>
+  <article class="textureSample tx-mineral"><span class="grain"></span><div><span class="micro">02 / Intelligence</span><h3>Mineral<br>Night</h3><p>Fine concentric lines, near-black violet and one radial light. The analytical, exploratory material.</p></div><span class="panelAction">Explore connections ↗</span></article>
+  <article class="textureSample tx-vellum"><span class="grain"></span><div><span class="micro">03 / Editorial</span><h3>Vellum<br>Layers</h3><p>Translucent stacked sheets, pale lilac and soft paper fibres. The welcoming, informative material.</p></div><span class="panelAction">Read the field guide ↗</span></article>
+</div>
+<div class="textureLegend">Texture swatches are deliberately exaggerated enough to compare. Below, see all three used selectively within a normal ICB editorial page.</div>
+
+<section class="sec" id="arrival"><span class="sectag">home · arrival</span><div class="wrap hero">
+  <div>
+    <div class="lab">Independent · 1,678 coffees · 122 roasters</div>
+    <h1 class="d">India’s specialty coffee, <span class="smear">independently rated.</span></h1>
+    <p class="sub mut">Find coffees worth trying. See what other drinkers think. Leave your own rating when you’ve tasted one.</p>
+    <div class="search">Find a coffee, roaster or estate</div>
+    <div class="acts"><a class="btn fill">Browse coffees</a><a class="btn line">★ Rate a coffee</a></div>
+    <div class="lab">Or start with something you know</div>
+    <div class="ways"><a class="chip">By roast</a><a class="chip">By brew method</a><a class="chip">By process</a><a class="chip">By origin</a><a class="chip">By flavour</a><a class="chip">Under ₹500</a></div>
+  </div>
+  <div><div class="mosaic" id="mosaic"></div><p class="lab" style="margin-top:14px">A different set every visit · no paid positions</p></div>
+</div></section>
+
+<section class="sec tint"><span class="sectag">home · just added</span><div class="wrap">
+  <div class="railhead"><div><div class="lab">Just added · 7 Nov · 6 coffees</div><h2 class="d" style="margin-top:12px">New in the directory.</h2></div><a class="acc">All new coffees →</a></div>
+  <div class="rail" id="rail"></div>
+</div></section>
+
+<section class="sec"><span class="sectag">home · community</span><div class="wrap comm">
+  <div>
+    <div class="lab">Recently rated · newest first</div>
+    <h2 class="d">Written one cup at a time.</h2>
+    <div id="rated"></div>
+    <p style="margin-top:16px"><a class="acc">All recent ratings →</a></p>
+  </div>
+  <div>
+    <div class="lab">New roasters</div>
+    <div id="roasters" style="margin:12px 0 36px"></div>
+    <div class="lab">From the field guide</div>
+    <div class="fg" style="margin:12px 0 28px"><a>Indian coffee varieties, explained</a><a>Understanding Indian coffee estates</a></div>
+    <a class="btn fill" style="width:100%">★ Rate a coffee you’ve tried</a>
+    <p class="lab" style="margin-top:12px">No paid ranking · three ratings without an account</p>
+  </div>
+</div></section>
+
+
+<section class="sec featureArea" id="texture-in-context"><div class="wrap">
+  <div class="textureKicker">Material study / 02 · Applied in context</div>
+  <h2 class="featureHeading">Quiet pages. Distinctive moments.</h2>
+  <p class="featureExplain">The homepage and directory remain calm. Only selected editorial and community moments receive a tactile surface. The words here are exploratory UI copy, not product claims.</p>
+  <div class="featureLayout">
+    <article class="featureSlab tx-weave"><span class="grain"></span><div class="slabCopy"><span class="textureKicker" style="color:#E6A88C">THE COFFEE COMMUNITY</span><h3>Every cup adds<br>to the picture.</h3><p>Your tasting notes help other drinkers understand a coffee beyond its packaging.</p><span class="pill">Rate a coffee →</span></div><div class="coin">★</div></article>
+    <article class="featureSlab tx-mineral"><span class="grain"></span><div class="slabCopy"><span class="textureKicker" style="color:#C2ADD8">EXPLORE RELATIONSHIPS</span><h3>Follow the<br>connections.</h3><p>Move from one coffee to the estates, processes and regions it shares with others.</p><span class="pill">Explore coffees →</span></div><div class="coin">◎</div></article>
+  </div>
+  <article class="featureSlab featureStrip tx-vellum"><span class="grain"></span><div class="slabCopy"><span class="textureKicker" style="color:#A04539">FROM THE FIELD GUIDE</span><h3>Good coffee opens questions.</h3><p>Learn about Indian estates, varieties and brewing, one question at a time.</p><span class="pill">Browse the field guide →</span></div><div class="coin">↗</div></article>
+</div></section>
+
+<section class="sec tint" id="directory"><span class="sectag">directory</span><div class="wrap">
+  <div class="lab">Coffees</div>
+  <div class="dir">
+    <aside style="padding-top:64px" id="facets"></aside>
+    <div>
+      <h2 class="d">Light, natural coffees for pour-over, tasting of fruit</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:24px">
+        <span class="chip on">Light ×</span><span class="chip on">Natural ×</span><span class="chip on">Pour-over ×</span><span class="chip on">Fruity ×</span>
+        <a class="acc" style="font-size:13px">Clear all</a><span class="mut" style="margin-left:auto;font-size:13px">36 coffees · 5 rated · Sort: newest ▾</span>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec" id="coffee-detail"><span class="sectag">coffee page</span><div class="wrap">
+  <div class="coffee">
+    <a class="tile"><img id="heroimg" alt="Mogra packaging"></a>
+    <div>
+      <a class="acc" style="font-weight:500">Grey Soul Coffee Roasters →</a>
+      <h1 class="d">Mogra</h1>
+      <p><span class="star">★</span> <b style="font-weight:500">4.5</b> <span class="mut">from 6 independent ratings</span></p>
+      <p class="sent">A <a>light</a>, <a>anaerobic</a> coffee from <a>Ratnagiri Estate</a>, <a>Chikmagalur</a>. Tastes of <a>jasmine</a>, <a>mosambi</a> and <a>vanilla</a>. Best as <a>pour-over</a>.</p>
+      <p class="lab">Every underlined word opens the coffees that share it</p>
+      <div class="buyrow"><a class="btn fill">Buy from Grey Soul ↗</a><a class="btn line">★ Rate this coffee</a></div>
+      <p class="mut" style="font-size:13px">₹799 · roaster’s own site</p>
+      <hr style="margin:26px 0 20px">
+      <p class="q" style="font-size:20px">“Intense flavor of jasmine, but it does not overpower the sweetness of the coffee.”</p>
+      <p style="margin-top:10px"><span class="star">★★★★★</span> <span class="mut" style="font-size:13px">A drinker · AeroPress · 7 Apr</span></p>
+    </div>
+  </div>
+  <hr style="margin:56px 0 32px">
+  <h2 class="d" style="font-size:28px">Follow this coffee</h2>
+  <div class="doors">
+    <div><span class="lab">Estate</span><b>Ratnagiri Estate</b><a class="acc" style="font-size:13px">93 coffees from 34 roasters · 11 rated →</a></div>
+    <div><span class="lab">Roaster</span><b>Grey Soul Coffee Roasters</b><a class="acc" style="font-size:13px">15 coffees →</a></div>
+    <div><span class="lab">Flavour</span><b>Jasmine</b><a class="acc" style="font-size:13px">36 coffees →</a></div>
+    <div><span class="lab">Process</span><b>Anaerobic</b><a class="acc" style="font-size:13px">155 coffees →</a></div>
+  </div>
+</div></section>
+
+<section class="sec tint" id="reviews"><span class="sectag">reviews · rating</span><div class="wrap">
+  <h2 class="d" style="font-size:32px;margin-bottom:28px">What drinkers say</h2>
+  <div class="rate">
+    <div>
+      <div class="d big">4.5</div><div class="star" style="font-size:18px">★★★★<i>★</i></div>
+      <p class="mut" style="font-size:13px;margin:6px 0 18px">6 ratings · 4 with notes</p>
+      <div class="bar">5★<i style="--w:67%"></i>4</div><div class="bar">4★<i style="--w:17%"></i>1</div><div class="bar">3★<i style="--w:17%"></i>1</div><div class="bar">2★<i style="--w:0"></i>0</div><div class="bar">1★<i style="--w:0"></i>0</div>
+      <p class="lab" style="margin-top:20px">Brewed as</p><p style="font-size:14px">Pour-over 4 · filter 1 · AeroPress 1</p>
+    </div>
+    <div>
+      <div class="sheet">
+        <h3 class="d">Saved — thank you.</h3>
+        <p style="margin:10px 0 18px"><span class="star">★★★★<i>★</i></span> <a class="acc" style="font-size:13px;text-decoration:underline;margin-left:12px">Change</a></p>
+        <p class="lab">Optional — helps the next drinker</p>
+        <p style="font-weight:500;margin:10px 0 8px">How did you brew it?</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="chip on">Pour-over</span><span class="chip">AeroPress</span><span class="chip">Espresso</span><span class="chip">Filter</span><span class="chip">Other</span></div>
+        <div class="field">What did it taste like to you?</div>
+        <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a class="btn fill sm">Done</a><a class="mut" style="font-size:13px">Skip</a><span class="lab">1 of 3 ratings without an account</span></div>
+      </div>
+      <div style="margin-top:28px">
+        <p><span class="star">★★★★★</span> <span class="mut" style="font-size:12px">Pour-over · 20 Sep</span></p>
+        <p class="q" style="font-size:17px;margin:6px 0 22px">“Loved it despite being intensely floral with pungent jasmine flavour as well as aroma”</p>
+        <p><span class="star">★★★<i>★★</i></span> <span class="mut" style="font-size:12px">Filter · 25 May</span></p>
+        <p class="q" style="font-size:17px;margin-top:6px">“Its a bit high acidic coffee, works better iced”</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+</div></div>
+
+<script>
+const D = {"wall":["classic-coffees/classic-coffees-banana-black-honey-1","seasonsync/seasonsync-the-winter-roast-1","bitter-waters-coffee/bitter-waters-coffee-bon-bock-cafe-sca-88-2-0","seven-beans-coffee-company/seven-beans-coffee-company-mishta-1","6-degrees-coffee/6-degrees-coffee-speciality-coffee-premium-blend-250-grms-1-0","caffinary/caffinary-kora-zinfandel-1"],"mogra":"grey-soul-coffee-roasters/grey-soul-coffee-roasters-mogra-light-roast-1","set":[{"i":"shodh-coffee/shodh-coffee-almost-home-0","n":"Almost Home","r":"Shodh Coffee","f":"gooseberry, raspberry","rc":2,"ra":4.5,"pr":null},{"i":"blue-tokai-coffee/blue-tokai-coffee-kerehaklu-estate-blossom-culture-natural-1","n":"Kerehaklu Blossom","r":"Blue Tokai Coffee","f":"melon, orange blossoms","rc":0,"ra":null,"pr":1000.0},{"i":"ikkis-coffee-roasters/ikkis-coffee-roasters-golden-glow-1","n":"Golden Glow","r":"Ikkis Coffee Roasters","f":"apricot, brown sugar","rc":0,"ra":null,"pr":875.0},{"i":"coffeeverse/coffeeverse-flowerette-naturals-1","n":"Flowerette Naturals","r":"Coffeeverse","f":"apricot, cherry","rc":0,"ra":null,"pr":1100.0},{"i":"hill-groove-coffee/hill-groove-coffee-biccode-estate-32-hrs-oro-fermented-naturals-1","n":"Biccode Estate ORO","r":"Hill Groove Coffee","f":"brown sugar, caramel","rc":1,"ra":5.0,"pr":799.0},{"i":"dream-hill-coffee/dream-hill-coffee-summer-breeze-natural-sundried-1","n":"Summer Breeze","r":"Dream Hill Coffee","f":"berry (fresh), cherry","rc":0,"ra":null,"pr":730.0},{"i":"roast-coffee/roast-coffee-ratnagiri-estate-ratnagiri-rose-1","n":"Ratnagiri Rose","r":"Roast Coffee","f":"litchi, rose","rc":0,"ra":null,"pr":995.0},{"i":"bitter-waters-coffee/bitter-waters-coffee-spiced-opinions-sca-88-5-0","n":"Spiced Opinions","r":"Bitter Waters Coffee","f":"cardamom, lemon","rc":1,"ra":5.0,"pr":1099.0}],"neu":[{"i":"zupreme-coffee/zupreme-coffee-noir-blend-signature-90-10-arabica-robusta-coffee-1-0","n":"Noir Blend","r":"Zupreme Coffee","pr":589.0},{"i":"zupreme-coffee/zupreme-coffee-honey-sun-dried-signature-specialty-coffee-1-0","n":"Honey Sun-Dried","r":"Zupreme Coffee","pr":849.0},{"i":"zupreme-coffee/zupreme-coffee-intenso-signature-dark-roast-robusta-coffee-1-0","n":"Intenso","r":"Zupreme Coffee","pr":549.0},{"i":"zupreme-coffee/zupreme-coffee-house-blend-signature-60-40-arabica-robusta-coffee-1-0","n":"House Blend","r":"Zupreme Coffee","pr":559.0},{"i":"zupreme-coffee/zupreme-coffee-rum-barrel-aged-signature-oak-barrel-aged-coffee-1-0","n":"Rum Barrel Aged","r":"Zupreme Coffee","pr":849.0},{"i":"zupreme-coffee/zupreme-coffee-onyx-premium-100-arabica-coffee-beans-medium-roast-1-0","n":"Onyx","r":"Zupreme Coffee","pr":599.0}],"recent":[{"i":"true-tribe-coffee-roasters/true-tribe-coffee-roasters-madhumala-0","n":"Madhumala","r":"True Tribe Coffee Roasters","rt":5,"c":"A great coffee with balanced bosy, sweeteness and brightness","d":"9 Nov","bm":"Moka pot"},{"i":"blue-tokai-coffee/blue-tokai-coffee-m-s-estate-1","n":"M.S. Estate","r":"Blue Tokai Coffee","rt":5,"c":"","d":"7 Nov","bm":""},{"i":"hunkal-estate-coffee/hunkal-estate-coffee-tiger-reserve-coffee-beans-1","n":"Tiger Reserve","r":"Hunkal Estate Coffee","rt":4,"c":"Good with milk","d":"7 Nov","bm":"South Indian filter"},{"i":"naivo-coffee/naivo-coffee-mango-moonshine-melkodige-wine-yeast-anoxic-naturals-0","n":"Mango Moonshine","r":"Naivo Coffee","rt":3,"c":"","d":"6 Nov","bm":"Pour-over"}],"roasters":[["Ko Ho Coffee Co","Vadodara"],["Navees Farm & Roastery","Chikmagalur"],["True Tribe Coffee Roasters","Bhubaneswar"]],"facets":[["Roast",[["Light",287,1],["Light-medium",279],["Medium",538],["Medium-dark",283],["Dark",193]]],["Process",[["Washed",410],["Natural",216,1],["Anaerobic",155],["Honey",99],["Monsooned",39]]],["Brew method",[["Pour-over",693,1],["Espresso",631],["AeroPress",543],["French press",545],["Moka pot",384]]],["Flavour",[["Fruity","1,034",1],["Chocolatey",620],["Nutty",399],["Floral",210]]]]};
+const IK = (p, w = 480) => `https://ik.imagekit.io/indiancoffeebeans/products/${p}?tr=w-${w},f-auto`;
+const $ = s => document.querySelector(s), stage = $('#stage');
+const img = (p, alt, w) => `<span class="tile"><img loading="lazy" src="${IK(p, w)}" alt="${alt}"></span>`;
+const stars = n => '★'.repeat(n) + (n < 5 ? `<i>${'★'.repeat(5 - n)}</i>` : '');
+const inr = n => n ? '₹' + Number(n).toLocaleString('en-IN') : '';
+
+$('#mosaic').innerHTML = D.wall.map(p => img(p, 'Coffee packaging')).join('');
+$('#rail').innerHTML = D.neu.map(c => `<a>${img(c.i, c.n)}<div class="cn">${c.n}</div><div class="cr">${c.r} · ${inr(c.pr)}</div></a>`).join('');
+$('#rated').innerHTML = D.recent.map(c => `<div class="rated">${img(c.i, c.n, 160)}<div><div class="cn">${c.n}</div><div class="cr">${c.r}</div><div><span class="star">${stars(c.rt)}</span> <span class="cr">${[c.bm, c.d].filter(Boolean).join(' · ')}</span></div>${c.c ? `<div class="q">“${c.c}”</div>` : ''}</div></div>`).join('');
+$('#roasters').innerHTML = D.roasters.map(r => `<div style="padding:8px 0"><div class="cn">${r[0]}</div><div class="cr">${r[1]}</div></div>`).join('');
+$('#grid').innerHTML = D.set.map(c => `<a class="card">${img(c.i, c.n)}<div class="cn">${c.n}</div><div class="cr">${c.r}</div><div class="q" style="font-size:13px">${c.f}</div><div class="meta">${c.rc ? `<span><span class="star">★</span> <b style="font-weight:500">${c.ra.toFixed(1)}</b> <span class="mut">· ${c.rc} rating${c.rc > 1 ? 's' : ''}</span></span>` : '<span class="mut">Not yet rated</span>'}<span class="mut">${inr(c.pr)}</span></div></a>`).join('');
+$('#facets').innerHTML = D.facets.map(([h, rows]) => `<div class="facet"><div class="lab" style="display:block;margin-bottom:6px">${h}</div>${rows.map(([l, n, on]) => `<div class="${on ? 'on' : ''}"><span>${l}</span><span class="mut">${n}</span></div>`).join('')}</div>`).join('');
+$('#heroimg').src = IK(D.mogra, 900);
+
+// ---------- tokens
+const SERIF = ['Fraunces', 'Zodiak', 'Gambetta', 'Sentient', 'Erode', 'Bespoke Serif', 'Newsreader', 'Instrument Serif', 'Playfair Display'], SANS = ['DM Sans', 'Ranade', 'Cabinet Grotesk', 'General Sans', 'Synonym', 'Supreme', 'Figtree', 'IBM Plex Sans', 'Inter', 'Bricolage Grotesque'], DISPLAY = ['Stardom', 'Boska', 'Panchang'], SAME = 'Same as heading', MONO = ['DM Mono', 'IBM Plex Mono'];
+const CTRL = [
+  ['Colour'],
+  ['ground', 'Ground', 'color'], ['surface', 'Surface / card', 'color'], ['ink', 'Ink', 'color'], ['muted', 'Muted text', 'color'], ['rule', 'Hairline', 'color'],
+  ['primary', 'Primary (Buy, Browse)', 'color'], ['accent', 'Accent (Rate, links)', 'color'], ['star', 'Star', 'color'],
+  ['deepen', 'Tint alternate sections', 'range', 0, 12, 1],
+  ['Type'],
+  ['f-hero', 'Display (hero, coffee name)', 'select', [SAME, ...DISPLAY, ...SERIF, ...SANS]], ['f-display', 'Heading', 'select', [...SERIF, ...SANS]], ['f-body', 'Body', 'select', SANS], ['f-label', 'Label', 'select', [...MONO, ...SANS]],
+  ['w-display', 'Display weight', 'range', 300, 700, 50], ['hero', 'Hero size', 'range', 40, 84, 2, 'px'], ['track', 'Display tracking', 'range', -0.04, 0.02, 0.005, 'em'],
+  ['body', 'Body size', 'range', 14, 18, 1, 'px'], ['label-size', 'Label size', 'range', 10, 14, 1, 'px'], ['label-track', 'Label tracking', 'range', 0, 0.2, 0.01, 'em'],
+  ['label-case', 'Label case', 'select', ['uppercase', 'capitalize', 'none']],
+  ['Shape and imagery'],
+  ['radius', 'Card radius', 'range', 0, 24, 1, 'px'], ['btn-radius', 'Button radius', 'range', 0, 999, 1, 'px', [0, 6, 12, 999]],
+  ['img-bg', 'Image tile', 'color'], ['img-pad', 'Image padding', 'range', 0, 28, 2, 'px'], ['img-fit', 'Image fit', 'select', ['contain', 'cover']],
+  ['img-blend', 'Blend white backgrounds', 'select', ['normal', 'multiply']], ['stagger', 'Stagger hero tiles', 'range', 0, 40, 4],
+  ['Motifs'],
+  ['m-circles', 'Soft circles', 'check'], ['m-dots', 'Dot grid on tinted sections', 'check'], ['m-rules', 'Hairline between sections', 'check'], ['m-stripe', 'Gradient stripe between sections', 'check'],
+  ['emph', 'Headline emphasis', 'select', ['none', 'm-smear', 'm-underline', 'm-italic']],
+  ['View'], ['mobile', 'Mobile width (390)', 'check'],
+];
+const BASE = { ground: '#F4EDE1', surface: '#FBF7F0', ink: '#1E1713', muted: '#6B5E53', rule: '#D8CBB9', primary: '#4A2E1F', accent: '#B14E28', star: '#B07A1E', deepen: 4,
+  'f-hero': 'Same as heading', 'f-display': 'Gambetta', 'f-body': 'Ranade', 'f-label': 'Ranade', 'w-display': 400, hero: 60, track: -0.02, body: 16, 'label-size': 11, 'label-track': 0.1, 'label-case': 'uppercase',
+  radius: 12, 'btn-radius': 999, 'img-bg': '#FBF7F0', 'img-pad': 10, 'img-fit': 'contain', 'img-blend': 'normal', stagger: 0,
+  'm-circles': true, 'm-dots': false, 'm-rules': false, 'm-stripe': false, emph: 'm-italic', mobile: false, mono: false };
+const PRESETS = {
+  // Three refinements of the existing warm palette. All text colours are 4.5:1 or better on ground and card; stars 3:1 or better.
+  '1 · Original, corrected': { ground: '#FCF9F2', surface: '#F9F3E8', ink: '#26170D', muted: '#6A5B44', rule: '#DBD3C6', primary: '#995503', accent: '#B24E28', star: '#9A7420', 'img-bg': '#F9F3E8', 'm-circles': false, 'm-dots': true },
+  '2 · Deep Roast': { ground: '#F6EFE3', surface: '#FBF6EC', ink: '#1F130C', muted: '#5F5145', rule: '#D6C9B6', primary: '#3B2416', accent: '#9C4526', star: '#93701F', 'img-bg': '#FBF6EC' },
+  '2 · Deep Roast · Dark': { ground: '#1E1510', surface: '#2A1E17', ink: '#F6EFE3', muted: '#BFAF9D', rule: '#43342A', primary: '#EBDCC6', accent: '#E28D66', star: '#D9A84A', 'img-bg': '#FBF6EC', deepen: 0 },
+  '4 · Deep Roast + Verdigris': { ground: '#F6EFE3', surface: '#FBF6EC', ink: '#1F130C', muted: '#5F5145', rule: '#D6C9B6', primary: '#3B2416', accent: '#2F615B', star: '#93701F', 'img-bg': '#FBF6EC' },
+  '4 · Verdigris · Dark': { ground: '#1E1510', surface: '#2A1E17', ink: '#F6EFE3', muted: '#BFAF9D', rule: '#43342A', primary: '#EBDCC6', accent: '#8FC1B7', star: '#D9A84A', 'img-bg': '#FBF6EC', deepen: 0 },
+  '3 · Editorial Paper': { ground: '#FAF7F0', surface: '#FFFDF8', ink: '#241A14', muted: '#655B50', rule: '#E0D9CC', primary: '#241A14', accent: '#A04E2C', star: '#96721F', 'img-bg': '#FFFFFF', deepen: 2, 'm-circles': false, 'm-rules': true },
+  'A · Heritage': {},
+  'Neutral': { ground: '#F6F4F0', surface: '#FDFCFA', ink: '#1A1715', muted: '#625C56', rule: '#DAD6CF', primary: '#1A1715', accent: '#A8482A', star: '#9A7420', 'img-bg': '#FFFFFF', deepen: 3, 'm-circles': false, 'm-rules': true },
+  'Live site today': { ground: '#FCF9F2', surface: '#F9F3E8', ink: '#26170D', muted: '#6A5B44', rule: '#DBD3C6', primary: '#995503', accent: '#ED855E', star: '#B08D3F', 'img-bg': '#F9F3E8', 'f-display': 'Fraunces', 'f-body': 'DM Sans', 'f-label': 'DM Sans', 'label-track': 0.18, 'm-circles': false, 'm-dots': true, emph: 'm-smear' },
+  'B · Mineral': { ground: '#E7EBE5', surface: '#F8FAF6', ink: '#1F2F29', muted: '#55645D', rule: '#C9D2CA', primary: '#27433A', accent: '#2F5C4C', star: '#9E783F', 'img-bg': '#F8FAF6', 'f-display': 'DM Sans', 'w-display': 500 },
+  'C · Dark': { ground: '#231D19', surface: '#30271F', ink: '#F4EDE1', muted: '#C3B3A2', rule: '#4A3C33', primary: '#8A5233', accent: '#E0A070', star: '#E0B060', 'img-bg': '#FBF7F0', deepen: 0 },
+};
+let S = { ...BASE, ...JSON.parse(localStorage.icbPlay2 || '{}') };
+if (location.hash === '#mobile') S.mobile = true;
+{ const k = Object.keys(PRESETS).find(n => n.toLowerCase().startsWith(decodeURIComponent(location.hash.slice(1)).toLowerCase() || '\0')); if (k) Object.assign(S, BASE, PRESETS[k]); } // #neutral, #1, #2, #3
+if (location.hash === '#mono') S.mono = true;
+
+const lum = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; };
+const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+
+function apply() {
+  for (const c of CTRL) {
+    if (c.length < 3) continue; const [k, , t, , , , unit] = c, v = S[k];
+    if (t === 'check') stage.classList.toggle(k, !!v);
+    else if (k === 'emph') ['m-smear', 'm-underline', 'm-italic'].forEach(m => stage.classList.toggle(m, v === m));
+    else if (k === 'f-hero') stage.style.setProperty('--f-hero', `'${v === SAME ? S['f-display'] : v}'`);
+    else stage.style.setProperty('--' + k, k.startsWith('f-') ? `'${v}'` : v + (unit || ''));
+  }
+  // text on the filled button: whichever of surface or ink reads better
+  stage.style.setProperty('--on-primary', ratio(S.surface, S.primary) >= ratio(S.ink, S.primary) ? S.surface : S.ink);
+  const onp = getComputedStyle(stage).getPropertyValue('--on-primary').trim();
+  $('#cr').innerHTML = [['Ink on ground', S.ink, S.ground, 4.5], ['Muted on ground', S.muted, S.ground, 4.5], ['Muted on surface', S.muted, S.surface, 4.5], ['Accent text on ground', S.accent, S.ground, 4.5], ['Accent text on surface', S.accent, S.surface, 4.5], ['Text on primary button', onp, S.primary, 4.5], ['Star on ground (needs 3)', S.star, S.ground, 3], ['Hairline on ground (needs 3 if it marks a control)', S.rule, S.ground, 3]]
+    .map(([n, a, b, min]) => { const r = ratio(a, b); return `<div>${n} <b class="${r >= min ? 'ok' : 'bad'}">${r.toFixed(2)}</b></div>`; }).join('');
+  stage.classList.toggle('mono', !!S.mono); $('#monoBtn').textContent = 'Monochrome: ' + (S.mono ? 'on' : 'off');
+  localStorage.icbPlay2 = JSON.stringify(S);
+  if (typeof applyMaterial === 'function' && stage.classList.contains('material-study')) applyMaterial();
+}
+function build() {
+  $('#controls').innerHTML = CTRL.map(c => {
+    if (c.length === 1) return `<h2>${c[0]}</h2>`;
+    const [k, label, t, a, b, step, unit] = c, v = S[k];
+    const inp = t === 'color' ? `<input type="color" data-k="${k}" value="${v}">`
+      : t === 'check' ? `<input type="checkbox" data-k="${k}" ${v ? 'checked' : ''}>`
+      : t === 'select' ? `<select data-k="${k}">${a.map(o => `<option ${o === v ? 'selected' : ''}>${o}</option>`).join('')}</select>`
+      : `<span><input type="range" data-k="${k}" min="${a}" max="${b}" step="${step}" value="${v}"> <code>${v}</code></span>`;
+    return `<label>${label}${inp}</label>`;
+  }).join('');
+}
+$('#controls').addEventListener('input', e => { const el = e.target, k = el.dataset.k; if (!k) return;
+  S[k] = el.type === 'checkbox' ? el.checked : el.type === 'range' ? +el.value : el.value;
+  if (el.type === 'range') el.nextElementSibling.textContent = el.value; apply(); });
+$('#presets').innerHTML = Object.keys(PRESETS).map(p => `<button data-p="${p}">${p}</button>`).join('');
+$('#presets').addEventListener('click', e => { const p = e.target.dataset.p; if (!p) return; S = { ...BASE, ...PRESETS[p], mobile: S.mobile, mono: S.mono }; build(); apply(); });
+$('#monoBtn').onclick = () => { S.mono = !S.mono; apply(); };
+$('#reset').onclick = () => { S = { ...BASE }; build(); apply(); };
+$('#copy').onclick = () => { navigator.clipboard.writeText(JSON.stringify(S, null, 2)); $('#copy').textContent = 'Copied'; setTimeout(() => $('#copy').textContent = 'Copy tokens', 1200); };
+build(); apply();
+
+// Separate, comparable MATERIAL study (no server calls, no production tokens changed).
+const materialDescriptions={
+ pressed:'Pressed & Embossed — layered paper edges, subtle grain and etched rules. The most authoritative, least playful.',
+ vellum:'Vellum & Transparency — light permeable sheets, lilac atmospheric washes and generous softness. The most welcoming.',
+ framed:'Framed & Layered — crisp exhibition-style plates, off-register lilac/vermilion shadows and index numbers. The most distinctive.'
+};
+let M={mode:'pressed',strength:65,dark:false};
+try{const saved=JSON.parse(localStorage.icbMaterialLab||'{}');M={...M,...saved}}catch(e){}
+const materialModes=$('#materialModes');
+materialModes.innerHTML=[['pressed','01 · Pressed'],['vellum','02 · Vellum'],['framed','03 · Framed']].map(([key,label])=>`<button type="button" data-material="${key}">${label}</button>`).join('');
+function applyMaterial(){
+ ['pressed','vellum','framed'].forEach(x=>stage.classList.toggle(x,x===M.mode));
+ stage.classList.add('material-study');
+ stage.classList.toggle('material-dark',!!M.dark);
+ stage.style.setProperty('--material-strength',(M.strength/100).toFixed(2));
+ stage.style.setProperty('--radius',M.mode==='vellum'?'10px':M.mode==='framed'?'0px':'3px');
+ stage.style.setProperty('--btn-radius',M.mode==='vellum'?'8px':M.mode==='framed'?'2px':'5px');
+ stage.style.setProperty('--section-wash',M.dark?'#291F1C':M.mode==='vellum'?'#F0E9F0':M.mode==='pressed'?'#F0E9DE':'#F2EDE6');
+ // Values are isolated to the comparison; do not rewrite main playground tokens.
+ Object.entries({ground:M.dark?'#1E1510':'#F6EFE3',surface:M.dark?'#2C211B':'#FBF6EC',ink:M.dark?'#F6EFE3':'#261611',muted:M.dark?'#C6B7A8':'#66534A',rule:M.dark?'#51423A':'#D7CABE',primary:M.dark?'#EBDCC6':'#3B2416',accent:M.dark?'#EBA080':'#A93725',star:M.dark?'#D9A84A':'#93701F','img-bg':'#F7F1E7','f-display':"'Gambetta'",'f-hero':"'Gambetta'",'f-body':"'Ranade'",'f-label':"'Ranade'"}).forEach(([k,v])=>stage.style.setProperty('--'+k,v));
+ stage.style.setProperty('--on-primary',M.dark?'#1E1510':'#F6EFE3');
+ materialModes.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.material===M.mode)));
+ $('#materialNote').textContent=materialDescriptions[M.mode];
+ $('#materialStrength').value=M.strength;$('#strengthValue').textContent=M.strength+'%';$('#materialDark').checked=!!M.dark;
+ try{localStorage.icbMaterialLab=JSON.stringify(M)}catch(e){}
+}
+materialModes.addEventListener('click',e=>{const mode=e.target.closest('button')?.dataset.material;if(!mode)return;M.mode=mode;applyMaterial()});
+$('#materialStrength').addEventListener('input',e=>{M.strength=+e.target.value;applyMaterial()});
+$('#materialDark').addEventListener('change',e=>{M.dark=e.target.checked;applyMaterial()});
+$('#jumpModes').addEventListener('click',e=>{const id=e.target.closest('button')?.dataset.jump;if(!id)return;document.getElementById(id)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'})});
+applyMaterial();
+
+// Texture control plane: operates only on this standalone playground.
+const textureDefaults={txIntensity:50,txScale:18,txGrain:22,txLight:56,txGlow:55,txMotion:true};
+let textureState={...textureDefaults};
+try{textureState={...textureState,...JSON.parse(localStorage.icbTextureStudy||'{}')}}catch(e){}
+function renderTextures(){
+ const vals={"--tx-opacity":textureState.txIntensity/100,"--tx-size":textureState.txScale+'px',"--tx-grain":textureState.txGrain/100,"--tx-light":textureState.txLight+'%',"--tx-glow":textureState.txGlow/100};
+ Object.entries(vals).forEach(([k,v])=>stage.style.setProperty(k,v));
+ stage.classList.toggle('texture-no-motion',!textureState.txMotion);
+ for(const [id,unit] of [['txIntensity','%'],['txScale','px'],['txGrain','%'],['txLight','%'],['txGlow','%']]){document.getElementById(id).value=textureState[id];document.getElementById(id+'Val').textContent=textureState[id]+unit}
+ document.getElementById('txMotion').checked=textureState.txMotion;
+ try{localStorage.icbTextureStudy=JSON.stringify(textureState)}catch(e){}
+}
+for(const id of ['txIntensity','txScale','txGrain','txLight','txGlow'])document.getElementById(id).addEventListener('input',e=>{textureState[id]=+e.target.value;renderTextures()});
+document.getElementById('txMotion').addEventListener('change',e=>{textureState.txMotion=e.target.checked;renderTextures()});
+document.getElementById('txReset').addEventListener('click',()=>{textureState={...textureDefaults};renderTextures()});
+document.getElementById('txJump').addEventListener('click',()=>{document.getElementById('texture-in-context').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})});
+renderTextures();
+
+</script>
+</body>
+</html>

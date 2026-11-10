@@ -1,6 +1,6 @@
 # 21 — Penpot Design Workspace: Active Concept I
 
-**Status:** Workspace structured and quality-corrected on 2026-11-10. Original explorations and homepage preserved. Three full-screen visual alternatives exist but **no identity, component library or production change is approved**. This document maps Penpot; [20](20-direction.md) and [07](07-decisions.md) remain the product/decision sources of truth.
+**Status (updated 2026-11-11):** Identity decided — see the update section below. Workspace structured and quality-corrected on 2026-11-10. Original explorations and homepage preserved. Three full-screen visual alternatives exist but **no identity, component library or production change is approved**. This document maps Penpot; [20](20-direction.md) and [07](07-decisions.md) remain the product/decision sources of truth.
 
 **Penpot:** Existing connected file **`New File 2`**, ID `d2ec9836-375a-810a-8008-ebd27eb28057`. The file title may be changed manually in Penpot to **`ICB — Experience Design Workspace`**; the plugin does not expose file renaming. Numbered names indicate the intended navigation order even though original page ordering remains at the top.
 
@@ -33,6 +33,14 @@
 **Do not duplicate the product brief here.** [20 — Find, Rate, Buy](20-direction.md) is the active UX baseline; [17 — Independent Reviews & Monetization](17-review-intelligence-and-monetization.md) defines business purpose and trust; [07 — Decision Log](07-decisions.md) tracks CONFIRMED / PROPOSED / OPEN; [05 — Technical Guardrails](05-technical-guardrails.md) governs accessibility, SEO and implementation.
 
 This document describes only **where those decisions are designed and tested in Penpot**, plus the fidelity and maintenance rules for its working artboards.
+
+## Update 2026-11-11 — identity decided
+
+- Page `01` has a new board, `Identity DECIDED · 2026-11-11 · Deep Roast + Gambetta/Ranade`, above the earlier boards: type roles, Deep Roast light and dark swatches with hex values, texture candidates and open items.
+- The eight earlier boards on page `01` (Identity 00, Identity 02, A/B/C desktop and mobile) are kept and renamed `SUPERSEDED · …`.
+- Gambetta and Ranade are Fontshare fonts and are not installed in Penpot; the decision board is set in DM Sans. Full renders of the decided identity are in [samples/](samples/) (`identity-deep-roast-*.jpg`) and live in the [playground](playground/index.html).
+- Pages `02`–`06` still show the earlier Fraunces/DM Sans styling. They are not being restyled in Penpot; the playground is the identity source.
+- The section below describes the state before this decision.
 
 ## Next active work — visual identity (Phase 1)
 
