@@ -5,8 +5,9 @@
 **Penpot:** Existing connected file **`New File 2`**, ID `d2ec9836-375a-810a-8008-ebd27eb28057`. The file title may be changed manually in Penpot to **`ICB — Experience Design Workspace`**; the plugin does not expose file renaming. Numbered names indicate the intended navigation order even though original page ordering remains at the top.
 
 **Version saved before edits:** `PRE WORKSPACE CLEANUP — G/H/I and Homepage v2 intact — 2026-11-10`.  
-**Version saved after edits:** `ICB Design Workspace · organized I v2, identity lab, working screens, archive · 2026-11-10`.  
-**Validation:** `penpot.currentFile.validate()` returned zero errors in the completed workspace. The homepage's **two existing Penpot walkthrough flows** remain on page `02`, using click-through dissolves; these are not functional scroll effects.
+**Version saved after organization:** `ICB Design Workspace · organized I v2, identity lab, working screens, archive · 2026-11-10`.  
+**Latest QA/version checkpoint:** `ICB I · QA fixes + 3 full-screen identity comparisons · 2026-11-10`.  
+**Validation:** `penpot.currentFile.validate()` returned zero errors after the correction pass (84 boards across 12 pages). The homepage's **two existing Penpot walkthrough flows** remain on page `02`, using click-through dissolves; these are not functional scroll effects.
 
 ## Page directory
 
@@ -35,11 +36,19 @@ This document describes only **where those decisions are designed and tested in 
 
 ## Next active work — visual identity (Phase 1)
 
-**Now ready for review on page 01:** A · Editorial Heritage (warm paper/Fraunces), B · Contemporary Craft (mineral/sans), and C · The Collector's Index (dark/copper). Each is shown against the **full existing I-v2 desktop homepage and the real Mogra mobile coffee-detail composition**—packaging, Rate, Buy, rating summary and attribute doorway sentence included. The former simplistic card-only comparisons were retired. These are **design alternatives only**; none is an approved global theme, and the current production light/dark setting is unchanged. Next expand the selected candidate into the directory and rating pages after owner review.
+**Now ready for review on page 01:** A · Editorial Heritage (warm paper/Fraunces), B · Contemporary Craft (mineral/sans), and C · The Collector's Index (dark/copper). Each is shown against the **full existing I-v2 desktop homepage and the real Mogra mobile coffee-detail composition**—packaging, Rate, Buy, rating summary and attribute doorway sentence included. The former simplistic card-only comparisons were retired. A, B and C are materially different in typography and atmosphere (warm editorial / mineral modern / near-black collector), not just button colours. The preview uses dated source imagery and Mogra 4.5/6 + anaerobic facts; unsupported Mogra variety details were removed. These are **design alternatives only**; none is an approved global theme, and the current production light/dark setting is unchanged. Next expand the selected candidate into the directory and rating pages after owner review.
 
 **Compare:** typography hierarchy, ink/background/accents, brand recognition, logo usage, packaging frame, refined motifs, critical rating/star colours, component contrast, legibility, quality of editorial atmosphere, and mobile differentiation. Respect the fact that ICB users notice actual bags, labels and logos.
 
 **Approval gate:** owner chooses one primary treatment or a documented combination. Ensure small copy/labels meet at least WCAG AA contrast, and establish tokens before building shared components. The current I-v2 homepage uses slightly different colours from source I; neither palette is authoritative yet. The existing light/dark production policy is not silently changed.
+
+### Visual QA status
+
+- Working coffee-detail copies on pages 04/05 now show the original rating data, underlined linked-facts sentence and uppercase labels. Several multi-colour text spans were simplified to one readable base colour; they are *not* literal clones.
+- Three full-screen candidates have an internally consistent Buy/Rate treatment; this **colour-role rule is PROPOSED** and recorded in [07](07-decisions.md), not approved.
+- Mogra example: **4.5 / 5 from six independent ratings; anaerobic process**; unsupported SLN 795 removed from associated sample panels. Dated prototype facts still require live revalidation at implementation.
+- New identity homepage examples use an explicitly dated catalogue snapshot and internal → links; the original page 02 contains historical copy/motion placeholders awaiting the final copy and motion passes.
+- Preliminary colour contrast checks on *candidate* background/muted/accent pairs meet 4.5:1, but complete component-level WCAG checks, especially over imagery and for interactive states, remain OPEN.
 
 ## Subsequent work
 
