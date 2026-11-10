@@ -2,7 +2,7 @@
 
 **Status:** Design direction **CONFIRMED** by the owner on 2026-11-10. The exact visual system, components and motion are **not** final; they are the next three phases below. No production code or database change is approved.
 
-**Penpot:** file `New File 2` (`d2ec9836-375a-810a-8008-ebd27eb28057`).
+**Penpot:** file `New File 2` (`d2ec9836-375a-810a-8008-ebd27eb28057`). A non-destructive workspace restructuring is planned; the original boards and examples stay as historic references.
 
 | Page | Boards |
 |---|---|
@@ -90,15 +90,30 @@ Buttons, cards, chips, filters, search, rating stars and sheet, review item, doo
 
 ### 3. Motion
 
-Starts from the motion grammar board: static at first paint, one sideways gallery, native scroll, reduced motion as an immediate state change, all content in the DOM, no WebGL on initial mobile load by default.
+Starts from the motion grammar board: static at first paint, one native sideways-scrolling gallery, reduced motion as an immediate state change, all content in the DOM, no WebGL on initial mobile load by default. **Working choice for the next prototype:** a normal horizontal rail on desktop and mobile; no vertical scroll hijack or pinned scroll-to-sideways mapping. Scroll-linked transforms/Three.js remain optional experimental enhancement behind performance/accessibility gates, not the base interaction.
+
+### 4. Final copy and cross-template polish
+
+Establish a concise, authoritative editorial voice and the factual/provenance vocabulary in parallel with visual identity; **finalize** CTAs, error/empty states, route labels, microcopy and consistency after component and interaction testing. Fix annotation text, contrast, screen-reader labels and mobile touch targets before any implementation handoff; don't assume these resolve solely by choosing a font.
 
 ## Open rules to decide before they are built
 
 These are behaviour and content rules, not styling, so the phases above will not settle them on their own.
 
-1. **Gallery behaviour.** The motion board asks for a pinned horizontal gallery and also promises no scroll lock. Pick one. A plain sideways-scrolling row keeps the promise.
-2. **What "Just added" may show.** Today's six newest coffees are one roaster's batch, and the desktop gallery pads them with three coffees that are not new. Decide whether to limit to one coffee per roaster and whether padding is allowed.
-3. **Copy accuracy.** Counts labelled "illustrative" are real; "first rating without sign-in" should match the actual limit of three; "joining the record" implies roasters opt in.
+1. **Gallery behaviour — PROVISIONAL RESOLUTION:** native horizontally scrollable row on desktop and mobile. No pinning that converts vertical scroll into horizontal movement. Optional passive scroll-linked motion may be prototyped separately and must remain skippable/reduced-motion safe.
+2. **Separate editorial selection from chronology — PROPOSED, needs owner test:** a neutral *Explore the catalogue* visual rail may rotate authentic coffees using a documented independent selection rule (e.g. diversify the first visible set across roasters), and must never claim those coffees were just added. A separate *Just added* feed is genuinely chronological, with actual dates/coffee counts and no older filler, even if several coffees came from one roaster. If too many consecutive new arrivals share a roaster, group honestly by roaster or widen a clearly disclosed recent window; do not silently fabricate recency. No sponsored placement or paid rank. Final policy and balance of diversity vs chronology are still OPEN.
+3. **Copy accuracy — OPEN final system QA:** the catalogue totals are a dated verified snapshot, not automatically live numbers; anonymous rating supports **three distinct entities** before login; roasters are listed independently, not necessarily 'joining'; distinguish roaster claims, ICB inferences and drinkers' words. Treat gallery cards, ratings, reviews and prices in Penpot as dated examples, not a live production feed.
+4. **Desktop/mobile parity — OPEN:** align navigation labels, search text, the quick Rate CTA, ratings links, facet entry points, actual data shown and the meaning of ↗ (reserve external-link signifier for leaving ICB).
+
+## Deferred without being abandoned
+
+The chosen I direction does **not** cancel the owner-approved vision for logged-in personalization, a contextual website AI Concierge (`3lokai/icb-chatbot`), or ethical monetization of aggregated coffee intelligence. These are later delivery phases, but need design homes and clear data/trust guardrails **now**:
+
+- **Returning experience:** existing homepage hero segments/recent views and saved ratings/gear; don't equate view or outbound Buy clicks with an actual tasting. A personalized I homepage remains to be drawn and validated.
+- **AI Concierge:** optional first-party guidance for choosing, brewing, interpreting reviews, and proposing explicit, validated filters/links. Never author fake independent reviews or alter organic ranking. No mandatory chatbot bubble; website integration isn't implemented.
+- **Business flywheel:** credible distinct reviewers and coffee review coverage, quality/context, return-to-rate, purchase-intent click measurement (not assumed sales), representative aggregate insights, licensed data/API and industry research. [17](17-review-intelligence-and-monetization.md) remains binding.
+- **Entity coverage:** roaster, region, estate, articles, tools, account and other site templates still need to share the identity and rating/discovery principles. Do not claim the homepage is the whole site.
+- **Copy/content:** provenance labels, FAQ, negative/empty states and neutral editorial policy belong to the system, not a late cosmetic pass.
 
 ## Not drawn yet
 
