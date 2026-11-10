@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ICB identity playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Figtree:wght@300..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=Inter:wght@300..700&family=DM+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Playground only. Not production code: nothing here is imported by the app. */
+*{box-sizing:border-box;margin:0}
+body{font:14px/1.4 system-ui,sans-serif;background:#1b1b1b;color:#ddd;display:flex;min-height:100vh}
+
+/* ---------- control panel (deliberately plain; not part of the design) */
+#panel{width:300px;flex:none;height:100vh;position:sticky;top:0;overflow:auto;padding:14px;background:#222;border-right:1px solid #333}
+#panel h1{font-size:14px;margin-bottom:10px}
+#panel h2{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#999;margin:16px 0 6px}
+#panel label{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:3px 0;font-size:13px}
+#panel input[type=color]{width:38px;height:24px;border:0;background:none;padding:0}
+#panel input[type=range]{width:120px}
+#panel select,#panel button{font:inherit;background:#333;color:#eee;border:1px solid #444;border-radius:5px;padding:4px 7px;max-width:160px}
+#panel button{cursor:pointer}
+#panel .row{display:flex;flex-wrap:wrap;gap:6px}
+#panel code{font-size:11px;color:#aaa}
+#cr{font-size:12px;line-height:1.7}
+#cr b{font-weight:600}.ok{color:#8fd18f}.bad{color:#ff8a7a}
+#stagewrap{flex:1;min-width:0;padding:20px;display:flex;justify-content:center}
+
+/* ---------- the design: every value below comes from a token */
+#stage{
+  --ground:#F4EDE1;--surface:#FBF7F0;--ink:#1E1713;--muted:#6B5E53;--rule:#D8CBB9;
+  --primary:#4A2E1F;--on-primary:#FBF7F0;--accent:#B14E28;--star:#B07A1E;
+  --f-display:'Fraunces';--f-body:'DM Sans';--f-label:'DM Mono';
+  --w-display:400;--hero:60px;--track:-0.02em;--body:16px;
+  --label-case:uppercase;--label-track:.1em;--label-size:11px;
+  --radius:12px;--btn-radius:999px;--img-bg:#FBF7F0;--img-pad:10px;--img-fit:contain;--img-blend:normal;
+  width:100%;max-width:1440px;container-type:inline-size;
+  background:var(--ground);color:var(--ink);font:var(--body)/1.5 var(--f-body),system-ui,sans-serif;
+  position:relative;overflow:hidden;border-radius:6px;align-self:flex-start
+}
+#stage.mobile{max-width:390px}
+:where(#stage) a{color:inherit;text-decoration:none}
+.wrap{padding:0 64px;position:relative}
+.d{font-family:var(--f-display),Georgia,serif;font-weight:var(--w-display);letter-spacing:var(--track);line-height:1.1}
+.lab{font:var(--label-size)/1.4 var(--f-label),monospace;text-transform:var(--label-case);letter-spacing:var(--label-track);color:var(--muted)}
+.mut{color:var(--muted)}.acc{color:var(--accent)}
+.star{color:var(--star);letter-spacing:.08em}.star i{font-style:normal;color:var(--rule)}
+hr{border:0;border-top:1px solid var(--rule)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 28px;border-radius:var(--btn-radius);font:500 16px var(--f-body),sans-serif;border:1.5px solid transparent;cursor:pointer;white-space:nowrap}
+.btn.fill{background:var(--primary);color:var(--on-primary)}
+.btn.line{border-color:var(--accent);color:var(--accent);background:transparent}
+.btn.sm{height:44px;padding:0 20px;font-size:14px}
+.chip{display:inline-flex;align-items:center;height:36px;padding:0 14px;border:1px solid var(--rule);border-radius:var(--btn-radius);font-size:13px}
+.chip.on{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.search{display:flex;align-items:center;height:56px;padding:0 24px;border:1px solid var(--rule);border-radius:var(--btn-radius);background:var(--surface);color:var(--muted)}
+.tile{background:var(--img-bg);border:1px solid var(--rule);border-radius:var(--radius);padding:var(--img-pad);overflow:hidden;display:block}
+.tile img{width:100%;height:100%;display:block;object-fit:var(--img-fit);mix-blend-mode:var(--img-blend);border-radius:calc(var(--radius) - var(--img-pad))}
+
+nav{display:flex;align-items:center;gap:32px;height:72px;border-bottom:1px solid var(--rule)}
+nav .logo{font:500 20px var(--f-display),serif;margin-right:auto}
+nav .links{display:flex;gap:28px;font-size:14px}
+nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
+.sec{padding:72px 0;position:relative;overflow:hidden}
+.hero>*,.comm>*,.dir>*,.coffee>*,.rate>*{min-width:0}
+.sec.tint{background:color-mix(in srgb,var(--ground) 100%,var(--primary) calc(var(--deepen,0)*1%))}
+.sectag{position:absolute;right:16px;top:8px;font:10px system-ui;color:var(--muted);opacity:.5}
+
+/* home */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.hero h1{font-size:var(--hero);margin:18px 0 24px}
+.hero .sub{font-size:18px;max-width:30em;margin-bottom:28px}
+.hero .acts{display:flex;gap:14px;margin:16px 0 30px;flex-wrap:wrap}
+.ways{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.mosaic{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mosaic .tile{aspect-ratio:5/6}
+.mosaic .tile:nth-child(2),.mosaic .tile:nth-child(5){transform:translateY(calc(var(--stagger,0)*1px))}
+.railhead{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:28px}
+.railhead h2{font-size:calc(var(--hero)*.7)}
+.rail{display:flex;gap:20px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x proximity}
+.rail>a{flex:0 0 220px;scroll-snap-align:start}
+.rail .tile{aspect-ratio:4/5;margin-bottom:10px}
+.cn{font-weight:500;line-height:1.25}.cr{font-size:13px;color:var(--muted)}
+.comm{display:grid;grid-template-columns:1.3fr 1fr;gap:72px}
+.comm h2{font-size:calc(var(--hero)*.75);margin:14px 0 18px}
+.rated{display:grid;grid-template-columns:72px 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--rule)}
+.rated .tile{width:72px;height:84px;--img-pad:4px}
+.q{font-family:var(--f-display),serif;font-style:italic;font-weight:300;color:var(--muted)}
+.fg a{display:block;font-family:var(--f-display),serif;font-size:24px;line-height:1.2;padding:14px 0;border-top:1px solid var(--rule)}
+
+/* directory */
+.dir{display:grid;grid-template-columns:240px 1fr;gap:48px}
+.dir h2{font-size:calc(var(--hero)*.62);margin:8px 0 28px}
+.facet{margin-bottom:22px}.facet div{display:flex;justify-content:space-between;padding:4px 0;font-size:14px}
+.facet div span:first-child::before{content:'';display:inline-block;width:14px;height:14px;border:1px solid var(--rule);border-radius:4px;margin-right:10px;vertical-align:-2px;background:var(--surface)}
+.facet div.on span:first-child{font-weight:500}.facet div.on span:first-child::before{background:var(--primary);border-color:var(--primary)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 24px}
+.card .tile{aspect-ratio:4/5;margin-bottom:10px}
+.card .meta{display:flex;justify-content:space-between;font-size:13px;margin-top:4px}
+
+/* coffee */
+.coffee{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.coffee .tile{aspect-ratio:1/1;--img-pad:24px}
+.coffee h1{font-size:calc(var(--hero)*1.2);margin:6px 0 10px}
+.sent{font-family:var(--f-display),serif;font-weight:300;font-size:28px;line-height:1.4;margin:22px 0 10px}
+.sent a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;text-decoration-color:var(--accent)}
+.buyrow{display:flex;gap:14px;margin:26px 0 8px;flex-wrap:wrap}
+.doors{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:28px}
+.doors b{display:block;font:var(--w-display) 22px var(--f-display),serif;margin:4px 0}
+
+/* rating */
+.rate{display:grid;grid-template-columns:300px 1fr;gap:72px}
+.big{font-size:72px}
+.bar{display:grid;grid-template-columns:28px 1fr 16px;gap:10px;align-items:center;font-size:13px;color:var(--muted);margin:5px 0}
+.bar i{height:8px;border-radius:4px;background:var(--rule);display:block;position:relative;overflow:hidden}.bar i::after{content:'';position:absolute;inset:0;width:var(--w);background:var(--star)}
+.sheet{background:var(--surface);border:1px solid var(--rule);border-radius:calc(var(--radius) + 4px);padding:28px}
+.sheet h3{font-size:26px}.sheet .star{font-size:30px}
+.field{border:1px solid var(--rule);border-radius:var(--radius);padding:16px;color:var(--muted);background:var(--ground);margin:16px 0}
+
+/* motifs (toggled by classes on #stage) */
+#stage.m-circles .hero::before{content:'';position:absolute;right:-6%;top:-10%;width:52%;aspect-ratio:1;border-radius:50%;background:var(--surface);opacity:.7;z-index:0}
+#stage.m-circles .comm::before{content:'';position:absolute;left:-12%;top:-20%;width:46%;aspect-ratio:1;border-radius:50%;background:var(--surface);opacity:.6;z-index:0}
+#stage.m-circles .hero>*,#stage.m-circles .comm>*{position:relative;z-index:1}
+#stage.m-dots .sec.tint{background-image:radial-gradient(color-mix(in srgb,var(--ink) 18%,transparent) 1px,transparent 1.5px);background-size:22px 22px}
+#stage.m-stripe .sec+.sec{border-top:6px solid;border-image:linear-gradient(90deg,var(--primary),var(--accent),var(--primary)) 1}
+#stage.m-rules .sec+.sec{border-top:1px solid var(--rule)}
+.smear{position:relative;white-space:nowrap}
+#stage.m-smear .smear::after{content:'';position:absolute;left:-.1em;right:-.1em;bottom:-.02em;height:.42em;background:var(--accent);opacity:.55;z-index:-1;-webkit-mask:url(../../../public/images/stain-smear.png) center/100% 100% no-repeat;mask:url(../../../public/images/stain-smear.png) center/100% 100% no-repeat}
+#stage.m-underline .smear{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:.06em;text-underline-offset:.14em}
+#stage.m-italic .smear{font-style:italic}
+
+/* mobile: the stage is the container, so the toggle previews real breakpoints */
+@container (max-width:760px){
+  .wrap{padding:0 20px}.sec{padding:40px 0}
+  nav .links,nav .search,nav .acc,nav .signin{display:none}nav{height:56px}nav .logo{font-size:17px}nav::after{content:'Search   Menu';font:var(--label-size) var(--f-label);text-transform:var(--label-case);letter-spacing:var(--label-track);color:var(--muted);white-space:pre}
+  .hero,.comm,.dir,.coffee,.rate{grid-template-columns:1fr;gap:28px}
+  .hero h1{font-size:calc(var(--hero)*.55)}.hero .sub{font-size:15px}
+  .btn{height:48px;padding:0 20px;font-size:15px}.hero .acts .btn{flex:1}
+  .mosaic{display:flex;overflow-x:auto;gap:12px}.mosaic .tile{flex:0 0 150px;transform:none!important}
+  .railhead{display:block}.railhead h2,.comm h2{font-size:calc(var(--hero)*.55)}
+  .rail>a{flex-basis:170px}
+  .dir aside{display:none}.dir h2{font-size:24px}.grid{grid-template-columns:1fr 1fr;gap:20px 14px}
+  .coffee h1{font-size:44px}.sent{font-size:21px}.buyrow .btn.fill{flex:1}
+  .doors{grid-template-columns:1fr 1fr}.big{font-size:56px}.fg a{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div id="panel">
+  <h1>ICB identity playground</h1>
+  <div class="row" id="presets"></div>
+  <div id="controls"></div>
+  <h2>Contrast (AA text needs 4.5)</h2>
+  <div id="cr"></div>
+  <h2>Tokens</h2>
+  <div class="row"><button id="copy">Copy tokens</button><button id="reset">Reset</button></div>
+  <p style="margin-top:10px"><code>Changes save in this browser. Images and data are a 10 Nov 2026 snapshot.</code></p>
+</div>
+
+<div id="stagewrap"><div id="stage">
+
+<div class="wrap"><nav>
+  <span class="logo">Indian Coffee Beans</span>
+  <span class="links"><a>Coffees</a><a>Roasters</a><a>Regions</a><a>Field guide</a></span>
+  <span class="search">Find a coffee, roaster or estate</span>
+  <a class="acc" style="font-weight:500">★ Rate a coffee</a><a class="signin" style="font-size:14px">Sign in</a>
+</nav></div>
+
+<section class="sec"><span class="sectag">home · arrival</span><div class="wrap hero">
+  <div>
+    <div class="lab">Independent · 1,678 coffees · 122 roasters</div>
+    <h1 class="d">India’s specialty coffee, <span class="smear">independently rated.</span></h1>
+    <p class="sub mut">Find coffees worth trying. See what other drinkers think. Leave your own rating when you’ve tasted one.</p>
+    <div class="search">Find a coffee, roaster or estate</div>
+    <div class="acts"><a class="btn fill">Browse coffees</a><a class="btn line">★ Rate a coffee</a></div>
+    <div class="lab">Or start with something you know</div>
+    <div class="ways"><a class="chip">By roast</a><a class="chip">By brew method</a><a class="chip">By process</a><a class="chip">By origin</a><a class="chip">By flavour</a><a class="chip">Under ₹500</a></div>
+  </div>
+  <div><div class="mosaic" id="mosaic"></div><p class="lab" style="margin-top:14px">A different set every visit · no paid positions</p></div>
+</div></section>
+
+<section class="sec tint"><span class="sectag">home · just added</span><div class="wrap">
+  <div class="railhead"><div><div class="lab">Just added · 7 Nov · 6 coffees</div><h2 class="d" style="margin-top:12px">New in the directory.</h2></div><a class="acc">All new coffees →</a></div>
+  <div class="rail" id="rail"></div>
+</div></section>
+
+<section class="sec"><span class="sectag">home · community</span><div class="wrap comm">
+  <div>
+    <div class="lab">Recently rated · newest first</div>
+    <h2 class="d">Written one cup at a time.</h2>
+    <div id="rated"></div>
+    <p style="margin-top:16px"><a class="acc">All recent ratings →</a></p>
+  </div>
+  <div>
+    <div class="lab">New roasters</div>
+    <div id="roasters" style="margin:12px 0 36px"></div>
+    <div class="lab">From the field guide</div>
+    <div class="fg" style="margin:12px 0 28px"><a>Indian coffee varieties, explained</a><a>Understanding Indian coffee estates</a></div>
+    <a class="btn fill" style="width:100%">★ Rate a coffee you’ve tried</a>
+    <p class="lab" style="margin-top:12px">No paid ranking · three ratings without an account</p>
+  </div>
+</div></section>
+
+<section class="sec tint"><span class="sectag">directory</span><div class="wrap">
+  <div class="lab">Coffees</div>
+  <div class="dir">
+    <aside style="padding-top:64px" id="facets"></aside>
+    <div>
+      <h2 class="d">Light, natural coffees for pour-over, tasting of fruit</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:24px">
+        <span class="chip on">Light ×</span><span class="chip on">Natural ×</span><span class="chip on">Pour-over ×</span><span class="chip on">Fruity ×</span>
+        <a class="acc" style="font-size:13px">Clear all</a><span class="mut" style="margin-left:auto;font-size:13px">36 coffees · 5 rated · Sort: newest ▾</span>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec"><span class="sectag">coffee page</span><div class="wrap">
+  <div class="coffee">
+    <a class="tile"><img id="heroimg" alt="Mogra packaging"></a>
+    <div>
+      <a class="acc" style="font-weight:500">Grey Soul Coffee Roasters →</a>
+      <h1 class="d">Mogra</h1>
+      <p><span class="star">★</span> <b style="font-weight:500">4.5</b> <span class="mut">from 6 independent ratings</span></p>
+      <p class="sent">A <a>light</a>, <a>anaerobic</a> coffee from <a>Ratnagiri Estate</a>, <a>Chikmagalur</a>. Tastes of <a>jasmine</a>, <a>mosambi</a> and <a>vanilla</a>. Best as <a>pour-over</a>.</p>
+      <p class="lab">Every underlined word opens the coffees that share it</p>
+      <div class="buyrow"><a class="btn fill">Buy from Grey Soul ↗</a><a class="btn line">★ Rate this coffee</a></div>
+      <p class="mut" style="font-size:13px">₹799 · roaster’s own site</p>
+      <hr style="margin:26px 0 20px">
+      <p class="q" style="font-size:20px">“Intense flavor of jasmine, but it does not overpower the sweetness of the coffee.”</p>
+      <p style="margin-top:10px"><span class="star">★★★★★</span> <span class="mut" style="font-size:13px">A drinker · AeroPress · 7 Apr</span></p>
+    </div>
+  </div>
+  <hr style="margin:56px 0 32px">
+  <h2 class="d" style="font-size:28px">Follow this coffee</h2>
+  <div class="doors">
+    <div><span class="lab">Estate</span><b>Ratnagiri Estate</b><a class="acc" style="font-size:13px">93 coffees from 34 roasters · 11 rated →</a></div>
+    <div><span class="lab">Roaster</span><b>Grey Soul Coffee Roasters</b><a class="acc" style="font-size:13px">15 coffees →</a></div>
+    <div><span class="lab">Flavour</span><b>Jasmine</b><a class="acc" style="font-size:13px">36 coffees →</a></div>
+    <div><span class="lab">Process</span><b>Anaerobic</b><a class="acc" style="font-size:13px">155 coffees →</a></div>
+  </div>
+</div></section>
+
+<section class="sec tint"><span class="sectag">reviews · rating</span><div class="wrap">
+  <h2 class="d" style="font-size:32px;margin-bottom:28px">What drinkers say</h2>
+  <div class="rate">
+    <div>
+      <div class="d big">4.5</div><div class="star" style="font-size:18px">★★★★<i>★</i></div>
+      <p class="mut" style="font-size:13px;margin:6px 0 18px">6 ratings · 4 with notes</p>
+      <div class="bar">5★<i style="--w:67%"></i>4</div><div class="bar">4★<i style="--w:17%"></i>1</div><div class="bar">3★<i style="--w:17%"></i>1</div><div class="bar">2★<i style="--w:0"></i>0</div><div class="bar">1★<i style="--w:0"></i>0</div>
+      <p class="lab" style="margin-top:20px">Brewed as</p><p style="font-size:14px">Pour-over 4 · filter 1 · AeroPress 1</p>
+    </div>
+    <div>
+      <div class="sheet">
+        <h3 class="d">Saved — thank you.</h3>
+        <p style="margin:10px 0 18px"><span class="star">★★★★<i>★</i></span> <a class="acc" style="font-size:13px;text-decoration:underline;margin-left:12px">Change</a></p>
+        <p class="lab">Optional — helps the next drinker</p>
+        <p style="font-weight:500;margin:10px 0 8px">How did you brew it?</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="chip on">Pour-over</span><span class="chip">AeroPress</span><span class="chip">Espresso</span><span class="chip">Filter</span><span class="chip">Other</span></div>
+        <div class="field">What did it taste like to you?</div>
+        <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a class="btn fill sm">Done</a><a class="mut" style="font-size:13px">Skip</a><span class="lab">1 of 3 ratings without an account</span></div>
+      </div>
+      <div style="margin-top:28px">
+        <p><span class="star">★★★★★</span> <span class="mut" style="font-size:12px">Pour-over · 20 Sep</span></p>
+        <p class="q" style="font-size:17px;margin:6px 0 22px">“Loved it despite being intensely floral with pungent jasmine flavour as well as aroma”</p>
+        <p><span class="star">★★★<i>★★</i></span> <span class="mut" style="font-size:12px">Filter · 25 May</span></p>
+        <p class="q" style="font-size:17px;margin-top:6px">“Its a bit high acidic coffee, works better iced”</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+</div></div>
+
+<script>
+const D = {"wall":["classic-coffees/classic-coffees-banana-black-honey-1","seasonsync/seasonsync-the-winter-roast-1","bitter-waters-coffee/bitter-waters-coffee-bon-bock-cafe-sca-88-2-0","seven-beans-coffee-company/seven-beans-coffee-company-mishta-1","6-degrees-coffee/6-degrees-coffee-speciality-coffee-premium-blend-250-grms-1-0","caffinary/caffinary-kora-zinfandel-1"],"mogra":"grey-soul-coffee-roasters/grey-soul-coffee-roasters-mogra-light-roast-1","set":[{"i":"shodh-coffee/shodh-coffee-almost-home-0","n":"Almost Home","r":"Shodh Coffee","f":"gooseberry, raspberry","rc":2,"ra":4.5,"pr":null},{"i":"blue-tokai-coffee/blue-tokai-coffee-kerehaklu-estate-blossom-culture-natural-1","n":"Kerehaklu Blossom","r":"Blue Tokai Coffee","f":"melon, orange blossoms","rc":0,"ra":null,"pr":1000.0},{"i":"ikkis-coffee-roasters/ikkis-coffee-roasters-golden-glow-1","n":"Golden Glow","r":"Ikkis Coffee Roasters","f":"apricot, brown sugar","rc":0,"ra":null,"pr":875.0},{"i":"coffeeverse/coffeeverse-flowerette-naturals-1","n":"Flowerette Naturals","r":"Coffeeverse","f":"apricot, cherry","rc":0,"ra":null,"pr":1100.0},{"i":"hill-groove-coffee/hill-groove-coffee-biccode-estate-32-hrs-oro-fermented-naturals-1","n":"Biccode Estate ORO","r":"Hill Groove Coffee","f":"brown sugar, caramel","rc":1,"ra":5.0,"pr":799.0},{"i":"dream-hill-coffee/dream-hill-coffee-summer-breeze-natural-sundried-1","n":"Summer Breeze","r":"Dream Hill Coffee","f":"berry (fresh), cherry","rc":0,"ra":null,"pr":730.0},{"i":"roast-coffee/roast-coffee-ratnagiri-estate-ratnagiri-rose-1","n":"Ratnagiri Rose","r":"Roast Coffee","f":"litchi, rose","rc":0,"ra":null,"pr":995.0},{"i":"bitter-waters-coffee/bitter-waters-coffee-spiced-opinions-sca-88-5-0","n":"Spiced Opinions","r":"Bitter Waters Coffee","f":"cardamom, lemon","rc":1,"ra":5.0,"pr":1099.0}],"neu":[{"i":"zupreme-coffee/zupreme-coffee-noir-blend-signature-90-10-arabica-robusta-coffee-1-0","n":"Noir Blend","r":"Zupreme Coffee","pr":589.0},{"i":"zupreme-coffee/zupreme-coffee-honey-sun-dried-signature-specialty-coffee-1-0","n":"Honey Sun-Dried","r":"Zupreme Coffee","pr":849.0},{"i":"zupreme-coffee/zupreme-coffee-intenso-signature-dark-roast-robusta-coffee-1-0","n":"Intenso","r":"Zupreme Coffee","pr":549.0},{"i":"zupreme-coffee/zupreme-coffee-house-blend-signature-60-40-arabica-robusta-coffee-1-0","n":"House Blend","r":"Zupreme Coffee","pr":559.0},{"i":"zupreme-coffee/zupreme-coffee-rum-barrel-aged-signature-oak-barrel-aged-coffee-1-0","n":"Rum Barrel Aged","r":"Zupreme Coffee","pr":849.0},{"i":"zupreme-coffee/zupreme-coffee-onyx-premium-100-arabica-coffee-beans-medium-roast-1-0","n":"Onyx","r":"Zupreme Coffee","pr":599.0}],"recent":[{"i":"true-tribe-coffee-roasters/true-tribe-coffee-roasters-madhumala-0","n":"Madhumala","r":"True Tribe Coffee Roasters","rt":5,"c":"A great coffee with balanced bosy, sweeteness and brightness","d":"9 Nov","bm":"Moka pot"},{"i":"blue-tokai-coffee/blue-tokai-coffee-m-s-estate-1","n":"M.S. Estate","r":"Blue Tokai Coffee","rt":5,"c":"","d":"7 Nov","bm":""},{"i":"hunkal-estate-coffee/hunkal-estate-coffee-tiger-reserve-coffee-beans-1","n":"Tiger Reserve","r":"Hunkal Estate Coffee","rt":4,"c":"Good with milk","d":"7 Nov","bm":"South Indian filter"},{"i":"naivo-coffee/naivo-coffee-mango-moonshine-melkodige-wine-yeast-anoxic-naturals-0","n":"Mango Moonshine","r":"Naivo Coffee","rt":3,"c":"","d":"6 Nov","bm":"Pour-over"}],"roasters":[["Ko Ho Coffee Co","Vadodara"],["Navees Farm & Roastery","Chikmagalur"],["True Tribe Coffee Roasters","Bhubaneswar"]],"facets":[["Roast",[["Light",287,1],["Light-medium",279],["Medium",538],["Medium-dark",283],["Dark",193]]],["Process",[["Washed",410],["Natural",216,1],["Anaerobic",155],["Honey",99],["Monsooned",39]]],["Brew method",[["Pour-over",693,1],["Espresso",631],["AeroPress",543],["French press",545],["Moka pot",384]]],["Flavour",[["Fruity","1,034",1],["Chocolatey",620],["Nutty",399],["Floral",210]]]]};
+const IK = (p, w = 480) => `https://ik.imagekit.io/indiancoffeebeans/products/${p}?tr=w-${w},f-auto`;
+const $ = s => document.querySelector(s), stage = $('#stage');
+const img = (p, alt, w) => `<span class="tile"><img loading="lazy" src="${IK(p, w)}" alt="${alt}"></span>`;
+const stars = n => '★'.repeat(n) + (n < 5 ? `<i>${'★'.repeat(5 - n)}</i>` : '');
+const inr = n => n ? '₹' + Number(n).toLocaleString('en-IN') : '';
+
+$('#mosaic').innerHTML = D.wall.map(p => img(p, 'Coffee packaging')).join('');
+$('#rail').innerHTML = D.neu.map(c => `<a>${img(c.i, c.n)}<div class="cn">${c.n}</div><div class="cr">${c.r} · ${inr(c.pr)}</div></a>`).join('');
+$('#rated').innerHTML = D.recent.map(c => `<div class="rated">${img(c.i, c.n, 160)}<div><div class="cn">${c.n}</div><div class="cr">${c.r}</div><div><span class="star">${stars(c.rt)}</span> <span class="cr">${[c.bm, c.d].filter(Boolean).join(' · ')}</span></div>${c.c ? `<div class="q">“${c.c}”</div>` : ''}</div></div>`).join('');
+$('#roasters').innerHTML = D.roasters.map(r => `<div style="padding:8px 0"><div class="cn">${r[0]}</div><div class="cr">${r[1]}</div></div>`).join('');
+$('#grid').innerHTML = D.set.map(c => `<a class="card">${img(c.i, c.n)}<div class="cn">${c.n}</div><div class="cr">${c.r}</div><div class="q" style="font-size:13px">${c.f}</div><div class="meta">${c.rc ? `<span><span class="star">★</span> <b style="font-weight:500">${c.ra.toFixed(1)}</b> <span class="mut">· ${c.rc} rating${c.rc > 1 ? 's' : ''}</span></span>` : '<span class="mut">Not yet rated</span>'}<span class="mut">${inr(c.pr)}</span></div></a>`).join('');
+$('#facets').innerHTML = D.facets.map(([h, rows]) => `<div class="facet"><div class="lab" style="display:block;margin-bottom:6px">${h}</div>${rows.map(([l, n, on]) => `<div class="${on ? 'on' : ''}"><span>${l}</span><span class="mut">${n}</span></div>`).join('')}</div>`).join('');
+$('#heroimg').src = IK(D.mogra, 900);
+
+// ---------- tokens
+const SERIF = ['Fraunces', 'Newsreader', 'Instrument Serif', 'Playfair Display'], SANS = ['DM Sans', 'Figtree', 'IBM Plex Sans', 'Inter', 'Bricolage Grotesque'], MONO = ['DM Mono', 'IBM Plex Mono'];
+const CTRL = [
+  ['Colour'],
+  ['ground', 'Ground', 'color'], ['surface', 'Surface / card', 'color'], ['ink', 'Ink', 'color'], ['muted', 'Muted text', 'color'], ['rule', 'Hairline', 'color'],
+  ['primary', 'Primary (Buy, Browse)', 'color'], ['accent', 'Accent (Rate, links)', 'color'], ['star', 'Star', 'color'],
+  ['deepen', 'Tint alternate sections', 'range', 0, 12, 1],
+  ['Type'],
+  ['f-display', 'Display', 'select', [...SERIF, ...SANS]], ['f-body', 'Body', 'select', SANS], ['f-label', 'Label', 'select', [...MONO, ...SANS]],
+  ['w-display', 'Display weight', 'range', 300, 700, 50], ['hero', 'Hero size', 'range', 40, 84, 2, 'px'], ['track', 'Display tracking', 'range', -0.04, 0.02, 0.005, 'em'],
+  ['body', 'Body size', 'range', 14, 18, 1, 'px'], ['label-size', 'Label size', 'range', 10, 14, 1, 'px'], ['label-track', 'Label tracking', 'range', 0, 0.2, 0.01, 'em'],
+  ['label-case', 'Label case', 'select', ['uppercase', 'capitalize', 'none']],
+  ['Shape and imagery'],
+  ['radius', 'Card radius', 'range', 0, 24, 1, 'px'], ['btn-radius', 'Button radius', 'range', 0, 999, 1, 'px', [0, 6, 12, 999]],
+  ['img-bg', 'Image tile', 'color'], ['img-pad', 'Image padding', 'range', 0, 28, 2, 'px'], ['img-fit', 'Image fit', 'select', ['contain', 'cover']],
+  ['img-blend', 'Blend white backgrounds', 'select', ['normal', 'multiply']], ['stagger', 'Stagger hero tiles', 'range', 0, 40, 4],
+  ['Motifs'],
+  ['m-circles', 'Soft circles', 'check'], ['m-dots', 'Dot grid on tinted sections', 'check'], ['m-rules', 'Hairline between sections', 'check'], ['m-stripe', 'Gradient stripe between sections', 'check'],
+  ['emph', 'Headline emphasis', 'select', ['none', 'm-smear', 'm-underline', 'm-italic']],
+  ['View'], ['mobile', 'Mobile width (390)', 'check'],
+];
+const BASE = { ground: '#F4EDE1', surface: '#FBF7F0', ink: '#1E1713', muted: '#6B5E53', rule: '#D8CBB9', primary: '#4A2E1F', accent: '#B14E28', star: '#B07A1E', deepen: 4,
+  'f-display': 'Fraunces', 'f-body': 'DM Sans', 'f-label': 'DM Mono', 'w-display': 400, hero: 60, track: -0.02, body: 16, 'label-size': 11, 'label-track': 0.1, 'label-case': 'uppercase',
+  radius: 12, 'btn-radius': 999, 'img-bg': '#FBF7F0', 'img-pad': 10, 'img-fit': 'contain', 'img-blend': 'normal', stagger: 0,
+  'm-circles': true, 'm-dots': false, 'm-rules': false, 'm-stripe': false, emph: 'none', mobile: false };
+const PRESETS = {
+  'A · Heritage': {},
+  'Live site today': { ground: '#FCF9F2', surface: '#F9F3E8', ink: '#26170D', muted: '#6A5B44', rule: '#DBD3C6', primary: '#995503', accent: '#ED855E', star: '#B08D3F', 'img-bg': '#F9F3E8', 'f-label': 'DM Sans', 'label-track': 0.18, 'm-circles': false, 'm-dots': true, emph: 'm-smear' },
+  'B · Mineral': { ground: '#E7EBE5', surface: '#F8FAF6', ink: '#1F2F29', muted: '#55645D', rule: '#C9D2CA', primary: '#27433A', accent: '#2F5C4C', star: '#9E783F', 'img-bg': '#F8FAF6', 'f-display': 'DM Sans', 'w-display': 500 },
+  'C · Dark': { ground: '#231D19', surface: '#30271F', ink: '#F4EDE1', muted: '#C3B3A2', rule: '#4A3C33', primary: '#8A5233', accent: '#E0A070', star: '#E0B060', 'img-bg': '#FBF7F0', deepen: 0 },
+};
+let S = { ...BASE, ...JSON.parse(localStorage.icbPlay || '{}') };
+if (location.hash === '#mobile') S.mobile = true;
+
+const lum = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; };
+const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+
+function apply() {
+  for (const c of CTRL) {
+    if (c.length < 3) continue; const [k, , t, , , , unit] = c, v = S[k];
+    if (t === 'check') stage.classList.toggle(k, !!v);
+    else if (k === 'emph') ['m-smear', 'm-underline', 'm-italic'].forEach(m => stage.classList.toggle(m, v === m));
+    else stage.style.setProperty('--' + k, k.startsWith('f-') ? `'${v}'` : v + (unit || ''));
+  }
+  // text on the filled button: whichever of surface or ink reads better
+  stage.style.setProperty('--on-primary', ratio(S.surface, S.primary) >= ratio(S.ink, S.primary) ? S.surface : S.ink);
+  const onp = getComputedStyle(stage).getPropertyValue('--on-primary').trim();
+  $('#cr').innerHTML = [['Ink on ground', S.ink, S.ground, 4.5], ['Muted on ground', S.muted, S.ground, 4.5], ['Muted on surface', S.muted, S.surface, 4.5], ['Accent text on ground', S.accent, S.ground, 4.5], ['Accent text on surface', S.accent, S.surface, 4.5], ['Text on primary button', onp, S.primary, 4.5], ['Star on ground (needs 3)', S.star, S.ground, 3], ['Hairline on ground (needs 3 if it marks a control)', S.rule, S.ground, 3]]
+    .map(([n, a, b, min]) => { const r = ratio(a, b); return `<div>${n} <b class="${r >= min ? 'ok' : 'bad'}">${r.toFixed(2)}</b></div>`; }).join('');
+  localStorage.icbPlay = JSON.stringify(S);
+}
+function build() {
+  $('#controls').innerHTML = CTRL.map(c => {
+    if (c.length === 1) return `<h2>${c[0]}</h2>`;
+    const [k, label, t, a, b, step, unit] = c, v = S[k];
+    const inp = t === 'color' ? `<input type="color" data-k="${k}" value="${v}">`
+      : t === 'check' ? `<input type="checkbox" data-k="${k}" ${v ? 'checked' : ''}>`
+      : t === 'select' ? `<select data-k="${k}">${a.map(o => `<option ${o === v ? 'selected' : ''}>${o}</option>`).join('')}</select>`
+      : `<span><input type="range" data-k="${k}" min="${a}" max="${b}" step="${step}" value="${v}"> <code>${v}</code></span>`;
+    return `<label>${label}${inp}</label>`;
+  }).join('');
+}
+$('#controls').addEventListener('input', e => { const el = e.target, k = el.dataset.k; if (!k) return;
+  S[k] = el.type === 'checkbox' ? el.checked : el.type === 'range' ? +el.value : el.value;
+  if (el.type === 'range') el.nextElementSibling.textContent = el.value; apply(); });
+$('#presets').innerHTML = Object.keys(PRESETS).map(p => `<button data-p="${p}">${p}</button>`).join('');
+$('#presets').addEventListener('click', e => { const p = e.target.dataset.p; if (!p) return; S = { ...BASE, ...PRESETS[p], mobile: S.mobile }; build(); apply(); });
+$('#reset').onclick = () => { S = { ...BASE }; build(); apply(); };
+$('#copy').onclick = () => { navigator.clipboard.writeText(JSON.stringify(S, null, 2)); $('#copy').textContent = 'Copied'; setTimeout(() => $('#copy').textContent = 'Copy tokens', 1200); };
+build(); apply();
+</script>
+</body>
+</html>
