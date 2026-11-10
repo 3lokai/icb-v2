@@ -3,7 +3,7 @@
 **Status:** CONSOLIDATED REVIEW — 2026-11-09. Owner sign-off on this synthesis and on any implementation scope is still required.
 **Branch:** `design/experience-redesign` in `3lokai/icb-v2`.
 **Review scope:** Project documents `01`–`15`, audit, traceability, decision log, README, agent handoff, plus the user's subsequent homepage-neutrality and personalization decisions.
-**BUSINESS MISSION UPDATE — 2026-11-09:** [17 — Review Intelligence & Monetization](17-review-intelligence-and-monetization.md) is the complementary mandatory source of truth on ICB's core mission. Read **17 and 16 together**. The owner clarified that ICB's independent coffee reviews and ratings, proprietary intelligence and eventual ethical monetization are the purpose; Atlas discovery and Concierge are means to grow genuine contributions. The earlier review overemphasized exploration. Review evidence, a quick voluntary rating path, return-to-contribute and verified metrics now belong in every prototype alignment review.
+**BUSINESS MISSION UPDATE — 2026-11-09:** [17 — Review Intelligence & Monetization](../17-review-intelligence-and-monetization.md) is the complementary mandatory source of truth on ICB's core mission. Read **17 and 16 together**. The owner clarified that ICB's independent coffee reviews and ratings, proprietary intelligence and eventual ethical monetization are the purpose; Atlas discovery and Concierge are means to grow genuine contributions. The earlier review overemphasized exploration. Review evidence, a quick voluntary rating path, return-to-contribute and verified metrics now belong in every prototype alignment review.
 
 **Authority:** This document reconciles the latest conversation with earlier exploratory drafts. It **does not** silently turn a proposal into an approved production decision. Read `07-decisions.md` for explicit decision statuses and keep historical documents for rationale.
 
@@ -61,7 +61,7 @@ Before approving PR 1 or a browser experiment, establish the real **reviews/rati
 4. Define measurable acquisition/contribution/coverage/retention/trust outcomes and who could pay for **permitted, aggregated** data insights, APIs or research. Treat revenue concepts as pilots requiring rights/privacy/representativeness and customer discovery; **no paid influence on organic results or reviews**.
 5. Add contribution to the isolated browser prototype's acceptance tests. Review privacy/consent, anti-abuse, moderation and data rights before any new tracking or commercial use.
 
-See [17](17-review-intelligence-and-monetization.md). This gate **adds to**, rather than erases, the graph/focus/history and homepage interaction tests below.
+See [17](../17-review-intelligence-and-monetization.md). This gate **adds to**, rather than erases, the graph/focus/history and homepage interaction tests below.
 
 ## Next-phase scope — review before code
 
@@ -97,4 +97,4 @@ Final visual theme; exact graph-node priorities and relation caps; URL semantics
 - Do not edit production routes, global CSS/tokens, DB schema, auth/consent, search indexation or Meta/assistant infrastructure during the read-only alignment review.
 - End each session with a concise summary: decisions made, docs/code changed, data checks, tests, open issues and next action.
 
-**Next owner gate:** review [16](16-alignment-review-and-next-session.md) **and [17](17-review-intelligence-and-monetization.md) together**, including the contribution/data-quality/commercial flywheel, then choose whether to authorize a bounded graph + independent-review-flow prototype. A pure graph/state demo with no authentic review path is not sufficient.
+**Next owner gate:** review [16](16-alignment-review-and-next-session.md) **and [17](../17-review-intelligence-and-monetization.md) together**, including the contribution/data-quality/commercial flywheel, then choose whether to authorize a bounded graph + independent-review-flow prototype. A pure graph/state demo with no authentic review path is not sufficient.

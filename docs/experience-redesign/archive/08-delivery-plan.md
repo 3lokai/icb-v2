@@ -26,7 +26,7 @@
 
 Every design and release gate must demonstrate that the Atlas is not a beautiful dead-end. Evaluate **discovery → authentic coffee contribution → representative intelligence → ethical revenue potential**.
 
-Before approving a prototype, check current coffee-vs-roaster reviews, review distribution/recency, unique contributors, completion events, anonymous gate, moderation/abuse and capture of optional tasting context. The 2026-11-07 audit has dated counts, not a verified unique-contributor funnel. Preserve neutrality and distinguish sponsor inventory from organic information. Make `Rate this coffee`/review evidence a first-class destination reached from an actual coffee, including via an expert/deep-link path. Logged-in return-to-rate requires actual tried history. See [17](17-review-intelligence-and-monetization.md).
+Before approving a prototype, check current coffee-vs-roaster reviews, review distribution/recency, unique contributors, completion events, anonymous gate, moderation/abuse and capture of optional tasting context. The 2026-11-07 audit has dated counts, not a verified unique-contributor funnel. Preserve neutrality and distinguish sponsor inventory from organic information. Make `Rate this coffee`/review evidence a first-class destination reached from an actual coffee, including via an expert/deep-link path. Logged-in return-to-rate requires actual tried history. See [17](../17-review-intelligence-and-monetization.md).
 
 **Not a new implementation authorization.** These are review criteria; owner approves the bounded coding phase after alignment.
 

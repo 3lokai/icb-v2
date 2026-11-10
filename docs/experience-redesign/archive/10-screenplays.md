@@ -2,7 +2,7 @@
 
 **Status:** Phase 1, revision 2, for design review. Nothing here is approved. No production implementation.
 **Date:** 2026-11-07 · **Branch:** `design/experience-redesign` · **Author:** Claude Code
-**Inputs:** [01](01-vision.md)–[08](08-delivery-plan.md), [current-state-audit.md](current-state-audit.md), [requirements-traceability.md](requirements-traceability.md), and the owner decisions in [07](07-decisions.md).
+**Inputs:** [01](01-vision.md)–[08](08-delivery-plan.md), [current-state-audit.md](../current-state-audit.md), [requirements-traceability.md](../requirements-traceability.md), and the owner decisions in [07](../07-decisions.md).
 **Next:** [11-penpot-handoff.md](11-penpot-handoff.md), the self-contained brief for Codex.
 
 ### Revision 2 changes (owner review, 2026-11-07)

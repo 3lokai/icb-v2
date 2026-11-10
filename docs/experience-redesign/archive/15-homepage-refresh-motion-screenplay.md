@@ -102,7 +102,7 @@ This extends the existing `3lokai/icb-chatbot` headless starter. Its README curr
 
 The refreshed ICB should clearly communicate **independent coffee ratings and reviews** as a reason to trust it, without making the homepage a giant ratings dashboard or a stack of review sections. When the spatial focus changes to a *specific real coffee*, expose authentic review evidence, sample size and a clear voluntary `Rate this coffee` action. Quick rating and optional structured tasting context are essential to product success; low review counts and absence of ratings are shown honestly. Existing anonymous review caps/auth flows stay intact unless separately approved.
 
-Return visits may show an unobtrusive `Rate a coffee you've tried` opportunity **only** if the logged-in user has genuinely marked it tried. The Atlas/Concierge must increase credible contribution and reuse rather than novelty alone. See [17](17-review-intelligence-and-monetization.md).
+Return visits may show an unobtrusive `Rate a coffee you've tried` opportunity **only** if the logged-in user has genuinely marked it tried. The Atlas/Concierge must increase credible contribution and reuse rather than novelty alone. See [17](../17-review-intelligence-and-monetization.md).
 
 ## Copywriting — a new voice, not upgraded marketing
 

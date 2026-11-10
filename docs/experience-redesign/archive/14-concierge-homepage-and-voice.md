@@ -44,7 +44,7 @@ Potential tools / actions: search, explain-source, open-object, apply-filter, su
 
 ICB is building independent coffee intelligence, not just an AI-curated catalogue. The Concierge can explain review distributions, sample sizes, review methodology, sensory vocabulary and how to record a genuine tasting. It may suggest `Rate the coffee you tried` when that status is actually known, but must **never write or submit a review on a user's behalf, invent a review or nudge a positive score**. Keep users' own subjective notes distinct from roaster tasting copy and ICB inferred sensory parameters.
 
-Any `What do people think?` answer must cite actual independent retrieved reviews and qualify low counts; if evidence is absent, say so. A conversational transcript is not a sellable first-party review. Aggregate insights and commercial AI uses require separate rights/privacy review. See [17](17-review-intelligence-and-monetization.md).
+Any `What do people think?` answer must cite actual independent retrieved reviews and qualify low counts; if evidence is absent, say so. A conversational transcript is not a sellable first-party review. Aggregate insights and commercial AI uses require separate rights/privacy review. See [17](../17-review-intelligence-and-monetization.md).
 
 ## 3. Homepage architecture — ONE evolving stage, not stacked sections
 

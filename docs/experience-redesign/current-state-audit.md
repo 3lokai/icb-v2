@@ -6,7 +6,7 @@
 
 ## 0. Goal, method, constraints
 
-**Goal.** This audit gives an evidence-backed inventory of what ICB ships today. It covers routes, navigation, entry points, journeys, the filter system, discovery landing pages, objects and relationships, personalization, SEO and motion. Each item is mapped to the three intent paths and canonical objects in [02](02-experience-architecture.md). The audit also reconciles the redesign docs against the production rules.
+**Goal.** This audit gives an evidence-backed inventory of what ICB ships today. It covers routes, navigation, entry points, journeys, the filter system, discovery landing pages, objects and relationships, personalization, SEO and motion. Each item is mapped to the three intent paths and canonical objects in [02](archive/02-experience-architecture.md). The audit also reconciles the redesign docs against the production rules.
 
 **What was reviewed.**
 - The redesign docs: `README.md` and files 01–09.

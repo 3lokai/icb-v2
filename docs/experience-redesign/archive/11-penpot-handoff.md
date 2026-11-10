@@ -31,10 +31,10 @@ This brief is self-contained. Everything needed to build the keyframes is here o
 ## 2. Read first (in order)
 
 1. [10-screenplays.md](10-screenplays.md). **Mandatory.** It is the source of every beat, string and motion spec. Sections §2 (shared foundations), §3 (A) and §4 (B) are the design spec.
-2. [07-decisions.md](07-decisions.md): the owner decisions and guardrails.
+2. [07-decisions.md](../07-decisions.md): the owner decisions and guardrails.
 3. [01-vision.md](01-vision.md) and [03-interaction-motion.md](03-interaction-motion.md): the emotional brief and the motion principles.
 4. Root `DESIGN.md`. For **A only**, it is the identity you evolve. For B it is background; B may depart from it.
-5. Optional evidence: [current-state-audit.md](current-state-audit.md) §10.0 and §13a.
+5. Optional evidence: [current-state-audit.md](../current-state-audit.md) §10.0 and §13a.
 
 ---
 

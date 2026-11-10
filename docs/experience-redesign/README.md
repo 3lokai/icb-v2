@@ -1,46 +1,33 @@
-# ICB Experience Redesign — Project Index
+# ICB Experience Redesign
 
-**Status:** Phase 1, experience screenplays (Phase 0 gate passed 2026-11-07, see [07](07-decisions.md)). No visual direction or implementation approved.  
-**Host repository:** `3lokai/icb-v2` (keep production on `main`).  
-**Proposed repo location:** `docs/experience-redesign/` plus separate experimental prototype area.  
-**Ownership:** Human product owner approves direction. ChatGPT leads UX/experience architecture; Codex and Claude Code serve as research, design-tool and implementation agents.
+**Status (2026-11-10):** Design direction fixed — **Find, rate, buy**. Next: typography, colour, iconography and motifs; then components; then motion. No production code or database change is approved.
 
-## Why this project exists
-The goal is **not** a more expensive-looking landing page or a rebrand by default. It is a coherent, graceful, personal experience of Indian specialty coffee discovery. The governing metaphor is being expertly and thoughtfully hosted in a cultured high-end coffee establishment *inside an opera building, not a mall*. This is a description of the **quality of care, depth, mystery and serendipity**, not an instruction to draw a café or create an avatar.
+**Branch:** `design/experience-redesign` in `3lokai/icb-v2`. Production stays on `main`.
 
-Start with [01-vision.md](01-vision.md). Then read the documents in order:
+## Read these
 
-| File | Purpose |
+| File | What it is |
 |---|---|
-| 01-vision.md | Emotional and creative north star; exclusions and origins of brief |
-| 02-experience-architecture.md | Core entities, intent modes, journeys, semantic relationships |
-| 03-interaction-motion.md | Interaction grammar, motion/3D choreography, accessibility |
-| 04-personalization.md | Taste profile, learning, privacy, recommender behaviour |
-| 05-technical-guardrails.md | Live code architecture, SEO, performance, compatibility constraints |
-| 06-design-brief.md | Penpot-first design work and what an agent must actually deliver |
-| 07-decisions.md | Decision statuses, supersession rules, rejected concepts |
-| 08-delivery-plan.md | Stages, quality gates, roles and milestones |
-| 09-agent-handoff.md | Repeatable Codex/Claude instruction and session protocol |
-| current-state-audit.md | Phase 0: evidence-backed inventory, gaps, conflicts, traffic baseline |
-| requirements-traceability.md | Phase 0: requirement IDs → source, object, moment, validation, status |
-| 10-screenplays.md | Phase 1: two experience screenplays (A: Annotated Guide; B: Sightline), rev 2 |
-| 11-penpot-handoff.md | Phase 2: self-contained Penpot keyframe brief for Codex |
+| [20-direction.md](20-direction.md) | **Start here.** The fixed direction, sample screens, next steps and open rules. |
+| [07-decisions.md](07-decisions.md) | Decision log with statuses and dates. |
+| [17-review-intelligence-and-monetization.md](17-review-intelligence-and-monetization.md) | Business north star: independent reviews and coffee intelligence. |
+| [05-technical-guardrails.md](05-technical-guardrails.md) | Architecture, SEO, performance and accessibility constraints. |
+| [current-state-audit.md](current-state-audit.md) | Evidence-backed inventory of the live site and traffic baseline. |
+| [requirements-traceability.md](requirements-traceability.md) | Requirement IDs traced to source and status. |
+| [samples/](samples/) | Exports of the current Penpot boards. |
+| [archive/](archive/) | Superseded exploration (directions A–F, Atlas, Concierge, earlier screenplays and handoffs). History only; do not build from it. |
 
-## Important repository context
-Before working, read the existing root `PRODUCT.md`, `DESIGN.md`, `CLAUDE.md` and `docs/README.md`. These specify the **current** product and technical system. They remain authoritative for production until a new design is approved and a superseding ADR is accepted. This redesign set specifies an exploration, not permission to overwrite the present brand.
+## Rules that hold throughout
 
-## Non-negotiable translation rules
-- Keep the user's *specific* emotional description and technical requirements, not just abstract buzzwords.
-- Mark information **CONFIRMED**, **PROPOSED**, **OPEN**, or **REJECTED**; never turn a brainstorm into a decided feature.
-- When revising a design, explain which requirements it satisfies and which it risks.
-- Before implementing features, reconcile against live code and schema; this documentation does not claim everything described is implemented.
-- Any work involving routes, data, content, SEO or production behaviour needs explicit approval.
-- Maintain a short `status` / next-step handoff in issue or PR descriptions rather than relying on long chat history.
+- ICB stays independent and neutral. No paid manipulation of reviews or organic rankings.
+- Coffee discovery stays fast and precise. Existing SEO equity and canonical URLs are protected.
+- Real information stays accessible without complex animation. Mobile is critical.
+- Accessibility and performance are not traded for spectacle.
+- Keep the Next.js, React, Supabase and Sanity architecture.
+- Root `PRODUCT.md`, `DESIGN.md` and `CLAUDE.md` stay authoritative for production until an ADR in `docs/decisions/` supersedes them.
+- Mark statements CONFIRMED, PROPOSED, OPEN or REJECTED. A brainstorm is not a decision.
 
-## Current next action
-1. ~~Commit these docs to a non-production redesign branch with review.~~ Done (`design/experience-redesign`).
-2. ~~Read-only inventory of actual routes/features, content objects, code/design constraints and SEO baseline.~~ Done: [current-state-audit.md](current-state-audit.md), [requirements-traceability.md](requirements-traceability.md).
-3. ~~Two experience screenplays~~ Done: [10-screenplays.md](10-screenplays.md) rev 2 (A: Annotated Guide; B: Sightline).
-4. **Phase 2 keyframes built in Penpot**, awaiting design review: [11-penpot-handoff.md](11-penpot-handoff.md) (Phase 2 handoff section) and `keyframes/`.
-5. Phase 3: a *small browser interaction prototype* on an isolated route/app for the candidate chosen at the Phase 2 gate.
-6. Validate before any full-site redesign.
+## Penpot
+
+- `New File 2` — current work (I journey and Homepage v2). Details in [20-direction.md](20-direction.md).
+- `New File 1` — earlier directions A–F. Design history; leave intact.

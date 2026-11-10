@@ -9,7 +9,7 @@
   - **PROPOSED**: recommended in the redesign docs, not yet accepted.
   - **OPEN**: an unresolved question.
   - No requirement is promoted beyond its source.
-- **Planned experience moment** uses the illustrative arc in [03](03-interaction-motion.md):
+- **Planned experience moment** uses the illustrative arc in [03](archive/03-interaction-motion.md):
   - *Arrival → Invitation → Selection → Reorganise → Results → Coffee opens → Adjacent discovery*
   - plus *Deep-link landing* and *Return*.
   - These are placeholders until the Phase 1 screenplays assign real moments. Nothing is designed yet.

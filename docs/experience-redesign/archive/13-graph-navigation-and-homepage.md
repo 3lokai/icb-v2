@@ -54,7 +54,7 @@ Reviewing is a **first-class coffee action**, not a promotional destination comp
 
 A `reviewed by` relationship is evidence-backed and appropriately privacy-scoped; don't render a public social graph of individual reviewers without a product/privacy decision. For returning signed-in users, an actual `tried` record can produce a quiet `Rate a coffee you tried` doorway. Ratings from third-party merchants are not independent ICB reviews by default.
 
-**Commercial test:** if the graph improves movement but not credible coffee-review contributions, it has failed an essential product goal. See [17](17-review-intelligence-and-monetization.md).
+**Commercial test:** if the graph improves movement but not credible coffee-review contributions, it has failed an essential product goal. See [17](../17-review-intelligence-and-monetization.md).
 
 ## 3. A minimal navigator's mental model
 

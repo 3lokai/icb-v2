@@ -8,7 +8,7 @@
 
 Design every coffee-detail/deep-link and Atlas coffee-focus state around **discover → assess independent evidence → rate after tasting / log an experience → return** while preserving neutral exploration and technical filters. The rating flow must be voluntary, fast, genuine, accessible and compatible with existing anonymous/login limits, authenticity safeguards and privacy.
 
-Commercial routes (proposals, not approved products): permissioned aggregate consumer insights, API/data licensing, research reports, and secondary disclosed affiliate/sponsor inventory. Never sell preferential organic ranks, ratings, review removal, graph edges or model answers. For measurement and buyer validation, see [17](17-review-intelligence-and-monetization.md).
+Commercial routes (proposals, not approved products): permissioned aggregate consumer insights, API/data licensing, research reports, and secondary disclosed affiliate/sponsor inventory. Never sell preferential organic ranks, ratings, review removal, graph edges or model answers. For measurement and buyer validation, see [17](../17-review-intelligence-and-monetization.md).
 
 ## Fundamental principle
 **Design hospitality, not pages.** Preserve clear, indexable entity pages and precise professional tools beneath a fluid discovery layer. The experience should feel connected even with animations turned off.

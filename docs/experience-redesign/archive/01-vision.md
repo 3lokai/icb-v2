@@ -2,7 +2,7 @@
 
 ## Core product and business mission (owner-confirmed 2026-11-09)
 
-ICB's long-term purpose is to become **India's trusted, independent source of coffee ratings, reviews and market intelligence**. Its catalogue/SEO/Atlas/Concierge help people discover coffees; voluntary, authentic reviews and useful tasting context create a credible first-party data asset; independent, methodologically honest aggregate insights can become paid research, APIs and B2B products. The new UX must improve **discovery → genuine tasting → independent review → repeat contribution**, not just page views, delight or time spent. Trust, neutrality, data quality and representative coverage are essential for authority. See [17 — Review Intelligence & Monetization](17-review-intelligence-and-monetization.md).
+ICB's long-term purpose is to become **India's trusted, independent source of coffee ratings, reviews and market intelligence**. Its catalogue/SEO/Atlas/Concierge help people discover coffees; voluntary, authentic reviews and useful tasting context create a credible first-party data asset; independent, methodologically honest aggregate insights can become paid research, APIs and B2B products. The new UX must improve **discovery → genuine tasting → independent review → repeat contribution**, not just page views, delight or time spent. Trust, neutrality, data quality and representative coverage are essential for authority. See [17 — Review Intelligence & Monetization](../17-review-intelligence-and-monetization.md).
 
 ## Creative north star
 **ICB should feel like being welcomed into a world of coffee by someone with extraordinary taste, deep knowledge, and absolutely nothing to prove.**

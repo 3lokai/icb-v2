@@ -15,7 +15,7 @@ Personalization serves **repeat authentic contribution** as well as relevant dis
 
 Quick independent ratings should be easy; rich tasting context (brew method, grinder/recipe, flavour perception, harvest/batch where known) remains optional and user-authored. No AI-generated reviews, favourable-score nudges, automatic publishing or pressure to contribute. Review contribution may improve profile context, but individual review histories are not a sellable product. Any aggregate commercial insights require appropriate consent, privacy thresholds, fraud checks and sample-size disclosures.
 
-The existing three-entity anonymous review limit and merge logic are production behaviour to evaluate, not silently change. Use [17](17-review-intelligence-and-monetization.md) for proposed measurement and monetization guardrails.
+The existing three-entity anonymous review limit and merge logic are production behaviour to evaluate, not silently change. Use [17](../17-review-intelligence-and-monetization.md) for proposed measurement and monetization guardrails.
 
 ## Ranking and recommendations
 - **Explicit filters are hard constraints** unless clearly shown otherwise. Personalization never silently overrides a user-selected brew method/process/roast/price filter.
