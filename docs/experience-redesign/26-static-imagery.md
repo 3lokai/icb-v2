@@ -1,6 +1,6 @@
 # 26 — Static Imagery Inventory and Selective Replacement
 
-**Status (2026-11-11): reviewed assets and a staged replacement candidate; `src/` and production image files are UNCHANGED by this document.** Keep the existing image system where it works. This is the asset-selection handoff for Phase C, not a new visual identity exploration.
+**Status (2026-11-11): asset audit complete, four collection image URLs repointed on `design/experience-redesign`; one original candidate staged separately. Production on `main` and original image files remain unchanged.** Keep the existing image system where it works. This is the asset-selection handoff for Phase C, not a new visual identity exploration.
 
 ## Scope and source
 
@@ -21,10 +21,10 @@ Inspected the assets under `public/images`, `public/videos`, `public/icb-world`,
 | `public/images/collections/low-acidity.webp` | Low-acidity collection | KEEP / REFRAME | Generic bean macro but not misleading; a photograph cannot prove chemical acidity. |
 | `public/images/collections/bold-dark.webp` | Bold/dark collection | KEEP | Strong, coffee-appropriate image. |
 | `public/images/collections/default-filter.webp` | Shared by FIVE secondary/value categories | REASSIGN selectively | It is a generic stock bean spill; avoid five visually identical cards in the same collection view. |
-| Experimental Processes | Currently uses `default-filter.webp` | EXISTING ASSET CANDIDATE: `/images/discovery/process-anaerobic-context.avif` | Verify crop and actual subject before mapping to this collection. No estate-specific claim. |
-| Single-Estate | Currently uses `default-filter.webp` | EXISTING ASSET CANDIDATE: `/images/learn/pillars/origins-and-estates.webp` | Generic editorial cherries only: never present it as a specific estate photo. |
-| Espresso-Focused Blends | Currently uses `default-filter.webp` | EXISTING ASSET CANDIDATE: `/images/discovery/espresso-hero.avif` | Better semantic fit; inspect image and focal point in card crop. |
-| Great Value Picks | Currently uses `default-filter.webp` | EXISTING ASSET CANDIDATE: `/images/discovery/budget.avif` | Better category relevance; crop and overlay QA required. |
+| Experimental Processes | Currently uses `default-filter.webp` | REPOINTED (design branch): `/images/discovery/process-anaerobic-context.avif` | Verify crop and actual subject before mapping to this collection. No estate-specific claim. |
+| Single-Estate | Currently uses `default-filter.webp` | REPOINTED (design branch): `/images/learn/pillars/origins-and-estates.webp` | Generic editorial cherries only: never present it as a specific estate photo. |
+| Espresso-Focused Blends | Currently uses `default-filter.webp` | REPOINTED (design branch): `/images/discovery/espresso-hero.avif` | Better semantic fit; inspect image and focal point in card crop. |
+| Great Value Picks | Currently uses `default-filter.webp` | REPOINTED (design branch): `/images/discovery/budget.avif` | Better category relevance; crop and overlay QA required. |
 | Premium & Microlots | Currently uses `default-filter.webp` | RETAIN TEMPORARILY | Better to preserve a neutral image than depict an invented premium product. Seek credible generic contextual photo later. |
 | `public/images/discovery/` | Brew/roast/process/region landing images | KEEP | Broad existing coverage, including topic-specific `*-context.avif` and brew-method assets. Check each assigned template visually before making replacements. |
 | `public/images/learn/pillars/` | Five Learn category images | KEEP / OPTIMIZE | Relevant imagery already exists, but several WebP files exceed 1 MB. Produce responsive versions and verify attribution. |
@@ -40,7 +40,7 @@ A standalone portrait illustration/photo-style editorial still-life shows a clea
 
 **Important:** the candidate is AI-generated, not a documented real roaster, estate, brewing event or evidence photograph. Don't cite it as an actual image of a named farm or product.
 
-The candidate binary is delivered separately as a conversation asset pack; it has **not** been written to the repository. The prior original image remains in the branch.
+The candidate binary is delivered separately as a conversation asset pack; it has **not** been written to the repository. The existing Fruity Filter image is still active and unmodified in the branch.
 
 ## Applying the locked visual system
 
@@ -53,6 +53,6 @@ The candidate binary is delivered separately as a conversation asset pack; it ha
 
 ## Implementation boundary
 
-No production image files, image URLs, CSS or component source files were modified in this pass. **Do not automatically rewrite all collection mappings**; crop and authenticity validation is required. Once a candidate is visually accepted, integrate in the redesign branch, run responsive/SEO/performance checks and obtain an ADR before deploying any production redesign.
+**What changed:** `src/lib/collections/coffee-collections.ts` on the redesign branch references four existing static images instead of `default-filter.webp` for Experimental Processes, Single-Estate, Espresso-Focused Blends and Great Value. **What did not:** no new binary image was committed, no `main` update, no CSS/component modification. The AI-generated Fruity Filter candidate remains an external staged asset awaiting image comparison/approval. Four category mappings have been changed on the redesign branch; verify their **actual portrait crops** and photos against label meanings before accepting them in the final component lab. Do not automatically rewrite remaining mappings; authenticity and contrast QA is still needed. Once a candidate is visually accepted, integrate in the redesign branch, run responsive/SEO/performance checks and obtain an ADR before deploying any production redesign.
 
 Next stage remains the shadcn/Phosphor component lab, with this document as the imagery input. See [22](22-visual-system.md), [24](24-information-architecture.md) and [25](25-page-hierarchy.md).
