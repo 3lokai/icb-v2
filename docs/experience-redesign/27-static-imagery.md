@@ -1,4 +1,4 @@
-# 26 — Static Imagery Inventory and Selective Replacement
+# 27 — Static Imagery Inventory and Selective Replacement
 
 **Status (2026-11-11): asset audit complete, four collection image URLs repointed on `design/experience-redesign`; one original candidate staged separately. Production on `main` and original image files remain unchanged.** Keep the existing image system where it works. This is the asset-selection handoff for Phase C, not a new visual identity exploration.
 

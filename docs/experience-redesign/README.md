@@ -1,6 +1,6 @@
 # ICB Experience Redesign
 
-**Status (2026-11-11):** **Find, Rate, Buy** experience and the **visual identity are locked for design**: Gambetta + Ranade, Deep Roast light/dark, texture/terrain motif and gradient rules ([22](22-visual-system.md)). **NEXT: audit the sitemap, information architecture, navigation and page-template coverage before building individual components.** Follow [23 — Next Design Phase](23-next-design-phase.md). Production remains unchanged pending an approved ADR.
+**Status (2026-11-12):** **Find, Rate, Buy** experience and the **visual identity are locked for design**: Gambetta + Ranade, Deep Roast light/dark, texture/terrain motif and gradient rules ([22](22-visual-system.md)). IA and page hierarchy are approved ([24](24-information-architecture.md), [25](25-page-hierarchy.md)). **NOW: Phase C component foundations** per [26](26-component-system.md), reviewed in the React playground at `/design/components` (dev/preview only). CoffeeCard and product components wait for foundation approval. Production remains unchanged pending an approved ADR.
 
 **Branch:** `design/experience-redesign` in `3lokai/icb-v2`. Production stays on `main`.
 
@@ -11,13 +11,17 @@
 | [20-direction.md](20-direction.md) | **Start here.** The approved UX direction, reference screens, next phases and open behaviour rules. |
 | [21-penpot-design-workspace.md](21-penpot-design-workspace.md) | **Current Penpot page map**, pre/post cleanup versions, editable references, identity-phase workbench and next steps. |
 | [22-visual-system.md](22-visual-system.md) | **Locked visual system**: type, Deep Roast, grain, terrain motif, wash/scrims and ambient surfaces; implementation tokens/assets and verification. |
-| [26-static-imagery.md](26-static-imagery.md) | **Static photo triage:** keep/reframe/repoint, four branch-only collection image mapping changes and one staged fruit-filter WebP candidate. |
-| [23-next-design-phase.md](23-next-design-phase.md) | **START HERE IN THE NEW CHAT:** current-vs-proposed sitemap and navigation, page-template inventory, approval gates, then component/copy sequence. |
+| [23-next-design-phase.md](23-next-design-phase.md) | Phase plan: current-vs-proposed sitemap and navigation, page-template inventory, approval gates, then component/copy sequence. |
+| [24-information-architecture.md](24-information-architecture.md) | **APPROVED** IA: audit, proposed sitemap and the navigation contract (section 6). |
+| [25-page-hierarchy.md](25-page-hierarchy.md) | **APPROVED** page-level hierarchy, account menu and per-page content order. |
+| [26-component-system.md](26-component-system.md) | **Phase C working contract:** shadcn-at-source ownership, phase order, primitive changes, playground and acceptance checklist. |
+| [27-static-imagery.md](27-static-imagery.md) | **Static photo triage:** keep/reframe/repoint, four branch-only collection image mapping changes and one staged fruit-filter WebP candidate. (Renumbered from a duplicate 26 on 2026-11-12.) |
 | [07-decisions.md](07-decisions.md) | Decision log with statuses and dates. |
 | [17-review-intelligence-and-monetization.md](17-review-intelligence-and-monetization.md) | Business north star: independent reviews and coffee intelligence. |
 | [05-technical-guardrails.md](05-technical-guardrails.md) | Architecture, SEO, performance and accessibility constraints. |
 | [current-state-audit.md](current-state-audit.md) | Evidence-backed inventory of the live site and traffic baseline. |
 | [requirements-traceability.md](requirements-traceability.md) | Requirement IDs traced to source and status. |
+| `src/app/design/components/` → `/design/components` | **React component playground** (Phase C): real shadcn source under the Deep Roast token bridge and Gambetta/Ranade. 404s on the production deployment, `noindex` elsewhere. |
 | [playground/index.html](playground/index.html) | Exploration workbench (the decided system is in [22](22-visual-system.md)). Single-file HTML replica of the homepage, directory, coffee page and rating, with live controls for colour, type, motifs and texture. Open it in a browser; no build. |
 | [samples/](samples/) | Exports of the Penpot boards, plus playground captures of the decided identity (`identity-deep-roast-*.jpg`). |
 | [archive/](archive/) | Superseded exploration (directions A–F, Atlas, Concierge, earlier screenplays and handoffs). History only; do not build from it. |

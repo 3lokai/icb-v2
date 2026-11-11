@@ -1,0 +1,96 @@
+/* Deep Roast → shadcn token bridge, active ONLY while the component playground is mounted
+   (html:has([data-icb-playground])), so Radix portals (Dialog, Select, Sheet) are themed too.
+   Locked values: docs/experience-redesign/system/icb-system.css. This is a review surface,
+   not the globals.css migration (Phase C step 6). */
+
+html:has([data-icb-playground]) {
+  --icb-ground: #f6efe3;
+  --icb-surface: #fbf6ec;
+  --icb-ink: #1f130c;
+  --icb-muted: #5f5145;
+  --icb-rule: #d6c9b6;
+  --icb-primary: #3b2416;
+  --icb-on-primary: #fbf6ec;
+  --icb-accent: #9c4526;
+  --icb-star: #93701f;
+
+  --background: var(--icb-ground);
+  --foreground: var(--icb-ink);
+  --card: var(--icb-surface);
+  --card-foreground: var(--icb-ink);
+  --popover: var(--icb-surface);
+  --popover-foreground: var(--icb-ink);
+  --primary: var(--icb-primary);
+  --primary-foreground: var(--icb-on-primary);
+  --secondary: color-mix(in srgb, var(--icb-rule) 45%, var(--icb-ground));
+  --secondary-foreground: var(--icb-ink);
+  --muted: color-mix(in srgb, var(--icb-rule) 45%, var(--icb-ground));
+  --muted-foreground: var(--icb-muted);
+  /* In this codebase --accent is the brand accent (420× text-accent), not a hover wash */
+  --accent: var(--icb-accent);
+  --accent-foreground: var(--icb-on-primary);
+  --rating: var(--icb-star);
+  /* Dividers/card edges stay on the locked rule (decorative, 1.4:1). */
+  --border: var(--icb-rule);
+  /* PROPOSED: form-control edge derived from locked rule+muted to reach WCAG 1.4.11 3:1 (3.3:1). */
+  --input: color-mix(in srgb, var(--icb-muted) 60%, var(--icb-rule));
+  --ring: var(--icb-accent);
+
+  --font-sans: "Ranade", system-ui, sans-serif;
+  --font-display: "Gambetta", Georgia, serif;
+}
+
+html.dark:has([data-icb-playground]) {
+  --icb-ground: #1e1510;
+  --icb-surface: #2a1e17;
+  --icb-ink: #f6efe3;
+  --icb-muted: #bfaf9d;
+  --icb-rule: #43342a;
+  --icb-primary: #ebdcc6;
+  --icb-on-primary: #1e1510;
+  --icb-accent: #e28d66;
+  --icb-star: #d9a84a;
+
+  --secondary: color-mix(in srgb, var(--icb-rule) 70%, var(--icb-ground));
+  --muted: color-mix(in srgb, var(--icb-rule) 70%, var(--icb-ground));
+  /* PROPOSED: 3.2:1 on dark ground */
+  --input: color-mix(in srgb, var(--icb-muted) 40%, var(--icb-rule));
+}
+
+/* Grain: locked rule 5 — on the page ground. Replaces the production .bg-noise overlay
+   with the locked tile and blend (icb-system.css .icb-grain). */
+html:has([data-icb-playground]) .bg-noise {
+  display: none;
+}
+html:has([data-icb-playground]) {
+  --icb-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --icb-grain-blend: multiply;
+  --icb-grain-opacity: 0.13;
+}
+html.dark:has([data-icb-playground]) {
+  --icb-grain-blend: soft-light;
+  --icb-grain-opacity: 0.22;
+}
+[data-icb-playground] {
+  position: relative;
+  isolation: isolate;
+}
+[data-icb-playground]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--icb-grain);
+  opacity: var(--icb-grain-opacity);
+  mix-blend-mode: var(--icb-grain-blend);
+}
+
+/* Headings: Gambetta 400, -0.02em, 1.1 as in system/index.html. Overrides the repo's
+   medium-weight type utilities on this page only (they're unlayered, so a utility can't). */
+html:has([data-icb-playground])
+  :is(.text-hero, .text-display, .text-title, .text-heading) {
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}

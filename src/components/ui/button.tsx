@@ -13,7 +13,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40",
         outline:
-          "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:hover:bg-input/50",
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:hover:bg-input/50",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:
@@ -28,9 +28,10 @@ const buttonVariants = cva(
         chip: "rounded-full border border-white/20 bg-black/20 text-white/90 hover:bg-black/30 hover:text-white focus-visible:ring-white/40",
       },
       size: {
-        default: "min-h-10 px-4 py-2 has-[>svg]:px-3",
-        sm: "min-h-9 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
-        lg: "min-h-11 rounded-md px-6 has-[>svg]:px-4",
+        // ponytail: fixed h-* (not min-h-*) so a caller's className="h-6" still wins via tailwind-merge
+        default: "h-10 px-4 py-2 has-[>svg]:px-3",
+        sm: "h-9 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
+        lg: "h-11 rounded-md px-6 has-[>svg]:px-4",
         icon: "size-10",
         "icon-sm": "size-9",
         "icon-lg": "size-11",

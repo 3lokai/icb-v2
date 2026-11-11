@@ -1,6 +1,6 @@
 # 26 — Component System: Ownership and First Pass
 
-**Status (2026-11-11): IMPLEMENTATION STARTED on `design/experience-redesign`; not merged into `main`, not verified in browser.** This is the Phase C working contract after [24](24-information-architecture.md) and [25](25-page-hierarchy.md). It does not supersede locked visual tokens in [22](22-visual-system.md) or authorize a production rollout.
+**Status (2026-11-12): FOUNDATIONS IN REVIEW on `design/experience-redesign`.** Button/Input/Textarea/Card verified in the React playground (below); awaiting owner approval before CoffeeCard, product components or Penpot updates. Not merged into `main`. This is the Phase C working contract after [24](24-information-architecture.md) and [25](25-page-hierarchy.md). It does not supersede locked visual tokens in [22](22-visual-system.md) or authorize a production rollout.
 
 ## Core decision: evolve shadcn at its source
 
@@ -17,7 +17,7 @@ Use shared semantic colour, radius, typography and spacing tokens as we roll the
 | **Domain components** `src/components/cards/`, `src/components/coffees/`, `src/components/roasters/` | CoffeeCard, CardRatingFooter, coffee detail, roaster summaries, rating flow | Remain distinct; their data/provenance/action contracts are not shadcn concerns |
 | **Visual storytelling** homepage/feature-specific components | Scroll progression, editorial transitions, ambient surfaces | Kept out of base controls. Native scroll and reduced-motion fallback required |
 
-**Iconography:** keep Phosphor. `components.json` already selects `phosphor`, and `common/Icon.tsx` enables tree-shaken direct imports. Icon weight is a context decision; do not globally force duotone for every icon or replace the library.
+**Iconography (CONFIRMED 2026-11-12):** keep Phosphor. **Regular is the default functional weight**; fill marks an active state (wishlisted, rated stars); duotone only where a context calls for it. `components.json` already selects `phosphor`, and `common/Icon.tsx` enables tree-shaken direct imports. Direct imports already default to regular, but the `Icon` wrapper still defaults to `duotone` (461 call sites) — flipping that default is a broad visual change, held until the foundations are approved.
 
 ## Phase C order
 
@@ -30,17 +30,79 @@ Use shared semantic colour, radius, typography and spacing tokens as we roll the
 
 ## First-pass file changes
 
-- `ui/button.tsx`: preserved all button variants and sizes; adjusted default touch sizing, motion-reduction support and border/text tokens for outline.
-- `ui/input.tsx`, `ui/textarea.tsx`: semantic background surface, reduced-motion-safe focus transitions, slightly larger default targets.
-- `ui/card.tsx`: solid semantic border, no coffee-specific layout or image rules.
+- `ui/button.tsx`: all variants and sizes preserved. Sizes: `sm` 36px, `default` 40px, `lg` 44px; `icon-sm`/`icon`/`icon-lg` 36/40/44px. Outline uses `border-input`. Transitions limited to colour/border/shadow/transform and disabled under `prefers-reduced-motion`.
+- `ui/input.tsx`: 40px, solid `bg-background`, reduced-motion-safe focus transition.
+- `ui/textarea.tsx`: min 96px, solid `bg-background`, reduced-motion-safe focus transition.
+- `ui/card.tsx`: solid `border-border` (was `/60`); no coffee-specific layout or image rules.
 
-**Risk note:** These primitives are used throughout the current application, so changes on the design branch will affect existing screens when that branch runs. Review representative live pages in *both* themes before merging, and do not interpret these commits as visual QA. No changes were made to `globals.css`, layout fonts, existing `CoffeeCard`, header, routes, data, SEO or production.
+### Regression review (2026-11-12) — fixed
 
-## Acceptance checklist (not yet verified)
+- **Fixed-height overrides were lost.** The first pass used `min-h-*` on Button sizes and Input. `tailwind-merge` doesn't treat `min-h-*` and `h-*` as conflicting, so a caller's smaller `h-*` lost to the new minimum. 35 Button and 8 Input call sites pass `h-*`. Broken examples: the remove buttons on `tags-input` chips (`h-4`, `h-6` → 36px), the button inside `HeroSearch` (`h-8` → 40px), `BrewTimer` (`h-8`), and the sidebar input (`h-8`). **Fix:** back to fixed `h-*` like upstream shadcn, so overrides win again (verified: `h-8` → 32px, `h-6` → 24px, `h-14` → 56px).
+- **Outline text colour.** The first pass added `text-foreground` to outline, which overrides inherited colour wherever outline buttons sit inside coloured containers. Removed, matching upstream.
+- **Input padding.** `py-2` inside 40px left 22px for `file:h-7` (28px) and overflowed. Reverted to `py-1`.
+- APIs unchanged: no variant, size, prop or export was added or removed.
 
-- [ ] Run type-check, lint and tests on branch checkout
-- [ ] Render Button variants, disabled/loading and keyboard focus
-- [ ] Verify Input and Textarea touch sizing, invalid states and form layouts
-- [ ] Verify Card layouts do not regress in coffee, roaster, editorial and settings contexts
-- [ ] Verify dark and light contrast, keyboard and reduced-motion behavior
-- [ ] Confirm Deep Roast token bridge and Gambetta/Ranade integration in dedicated step
+## Component playground (review surface)
+
+`src/app/design/components/` → **`/design/components`** on a dev server or preview deployment. It returns 404 on the production deployment (`VERCEL_ENV === "production"`) and is `noindex` everywhere else. It is not in the sitemap or navigation.
+
+- **Real source:** it imports `@/components/ui/*` directly, with no copies or forks.
+- **Token bridge:** `deep-roast.css` maps the locked Deep Roast light/dark values onto the existing shadcn variables. It is scoped with `html:has([data-icb-playground])`, so it reaches Radix portals (Dialog, Select, Sheet, DropdownMenu) and disappears when you leave the page. `globals.css` is untouched.
+- **Aligned with `system/index.html`:**
+  - The locked paper grain sits on the page ground: 13% multiply in light, 22% soft-light in dark. It replaces the production noise overlay on this page only.
+  - Headings use Gambetta 400 at −0.02em tracking and 1.1 line height. The repo's `text-title` and `text-heading` are still weight 500; moving the production type scale to 400 is a rollout-gate decision.
+  - Still open, because neither is locked: the reference's 48px pill CTA versus the shadcn button sizes, and its uppercase 12px label style.
+- **Fonts:** Gambetta and Ranade come from Fontshare for review only, using the same URL as `system/index.html`. Production will self-host via `next/font/local` at the rollout gate. **Trap:** adding more weights or italics to the combined Fontshare URL makes it silently serve Switzer or Kola instead of Ranade.
+- **Sections:** type and tokens; Button (every variant × size, icons, icon sizes, disabled, loading, `aria-invalid`, `asChild`, static focus preview, caller overrides, mobile action bar); Input and Textarea (default, focus, invalid, disabled, file, inline search, newsletter); Card (roaster summary, editorial teaser, settings, full-width review form); Phosphor weights; and an unchanged step-2 preview (Badge, Tabs, Dialog, Sheet).
+
+**Verified in a browser on 2026-11-12** (Chromium at 1280px and 375px, light and dark): sizes measure exactly as specified; nothing overflows horizontally at 375px; real Tab focus shows a solid accent border plus a 3px halo; Dialog renders on the bridged ground with a Gambetta title; `prefers-reduced-motion` drops transitions to `none`; all Gambetta and Ranade faces load.
+
+### Alignment with the decision docs (2026-11-12)
+
+The playground copy and compositions follow [07](07-decisions.md), [20](20-direction.md), [22](22-visual-system.md), [24](24-information-architecture.md) and [25](25-page-hierarchy.md). Wording is the docs' working copy, not final copy.
+
+- **Rate/Buy roles** (07 PROPOSED, 20 §5, 25 B9): Buy is filled; Rate is an accent outline. Rate is a `className` composition on the existing `outline` variant; no new Button variant until the role is approved.
+- **Arrows** (07/20/23 PROPOSED): ↗ (`ArrowUpRight`) only for leaving ICB; → (`ArrowRight`) for internal links.
+- **Coffee page actions** (25 §5): "Buy from [roaster] ↗", "Rate", wishlist. States: "View at [roaster] ↗" (sold out), "Visit [roaster] ↗" (no product link), "Your rating: 4 · Edit".
+- **Roaster page** (25): "Visit [roaster] ↗" filled, "Rate this roaster" outline.
+- **Mobile sticky bar** (25 B7): Buy and Rate only; wishlist stays in the page actions.
+- **Rating entry points** (24 §6): "Rate a coffee you've tried" alongside "Browse coffees". There's no Rate button in a header.
+- **Rating copy** (25 §1, B1): "4.3 · 12 ratings" and "No ratings yet · Tried it? Rate it". Sample counts are realistic: only 16 coffees have 3+ ratings. Stars are `aria-hidden`; the number and count carry the evidence.
+- **Rating context form** (24 §7.2, 25 §5, real `isValidComment`): optional brew method and notes, at most 1,000 characters, no minimum. Placeholders match `QuickRating` ("Any notes to share about this coffee?", "How did you brew this coffee?"). The anonymous three-rating limit is stated up front, and the limit dialog is "Sign in to keep rating" with the reason given.
+- **Search** (24 §6, 25 §2): the header placeholder is "Search coffees, roasters, origins…" and the directory one is "Search coffees by name, roaster or note".
+- **Filters** (25 §2): "Filters (3)" opens a sheet with "Show 86 coffees" and "Clear all".
+- **Account menu** (24 §6, 25 B24): Profile, Settings, Sign out. Profile's children stay OPEN, and Wishlist, My ratings and Developer are not top-level items. The dashboard is labelled Settings.
+- **Neutrality** (07, 17): the sample roaster is fictional, no real roaster is spotlighted, and nothing implies rank. The invented "follow roaster" control, the "ships pan-India" claim and the 20-character review minimum were removed.
+- **Flat surfaces** (22 rule 2): cards and forms carry no gradient or motif; grain sits on the page ground only.
+
+**New finding:** at 375px, "Buy from [roaster] ↗" in the sticky bar truncates once a roaster name is about 12 characters or longer. It needs a rule before CoffeeCard and coffee-detail work: for example, "Buy ↗" with the roaster named on the price line, or a two-line bar.
+
+### Token bridge decisions (PROPOSED — need owner approval)
+
+| shadcn var | Light | Dark | Note |
+|---|---|---|---|
+| `--background` / `--card` / `--popover` | ground / surface / surface | same roles | locked |
+| `--primary` / `--primary-foreground` | `#3B2416` / `#FBF6EC` | `#EBDCC6` / `#1E1510` | locked; 13.4:1 |
+| `--accent` | copper `#9C4526` | `#E28D66` | In this codebase `--accent` is the **brand accent** (420× `text-accent`), so it stays copper. As a result, ghost/outline hover and menu focus fill with copper. Separating a neutral hover wash is a step-2 decision. |
+| `--border` | rule `#D6C9B6` | `#43342A` | dividers and card edges only (decorative, 1.4:1) |
+| `--input` | rule+muted mix → `#8F8172` (3.3:1) | → `#756558` (3.2:1) | **New derived value.** The locked rule at 1.4:1 fails WCAG 1.4.11 for form-control edges. |
+| `--ring` | accent | accent | **PROPOSED** (focus token is OPEN in 07): the focus border is solid accent (5.6:1 light, 7.0:1 dark) |
+| `--rating` | star `#93701F` (4.0:1) | `#D9A84A` (8.3:1) | locked |
+
+### Findings for the step-2 audit (not changed)
+
+- **Destructive** (an existing production token) is 3.48:1 white-on-red in light mode, below AA for 14px button text. It needs a deeper red or a dark-text treatment.
+- **SelectTrigger** is 36px next to 40px Inputs, so mixed form rows don't align (visible in the review-form card).
+- **TabsList** is 36px.
+- **Dialog** uses an ICB-specific large radius and centred header. Check this against the 14px locked radius.
+
+## Acceptance checklist
+
+- [x] Run type-check, lint (zero warnings) and tests (90/90) on the branch checkout — 2026-11-12
+- [x] Render Button variants, disabled/loading and keyboard focus — playground
+- [x] Verify Input and Textarea touch sizing, invalid states and form layouts — playground
+- [ ] Verify Card layouts don't regress in **live** coffee, roaster, editorial and settings pages (the playground covers generic compositions only)
+- [x] Verify dark and light contrast, keyboard and reduced-motion behaviour for the four primitives — playground; destructive contrast flagged
+- [ ] **Owner review** of the playground and the PROPOSED bridge values (`--input`, `--accent` hover)
+- [ ] Flip the `Icon` default to `regular` after approval
+- [ ] Deep Roast token and Gambetta/Ranade integration into `globals.css` and the root layout (rollout gate, step 6)
