@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import HeroSection from "@/components/homepage/hero/HeroSection";
+import { TrackedSection } from "@/components/analytics/TrackedSection";
 import { HeroSuspenseFallback } from "@/components/homepage/hero/HeroSuspenseFallback";
 import NewAdditionsStrip from "@/components/homepage/NewAdditionsStrip";
 import NewArrivalsSection from "@/components/homepage/NewArrivalsSection";
@@ -125,44 +126,70 @@ export default function Home({ searchParams }: HomePageProps) {
             </div>
           </div>
         </div>
-        <Suspense fallback={<TopRatedSectionSkeleton />}>
-          <TopRatedSectionServer />
-        </Suspense>
+        <TrackedSection name="top_rated" position={2}>
+          <Suspense fallback={<TopRatedSectionSkeleton />}>
+            <TopRatedSectionServer />
+          </Suspense>
+        </TrackedSection>
         {/* Boundary is required: unwrapped, this section's RPC blocks the document's
             first flush and is the homepage's TTFB floor. The fallback is height-matched
             (an earlier 0-height one expanded into a tall section and shifted everything below). */}
-        <Suspense fallback={<FreshFromCommunitySkeleton />}>
-          <FreshFromCommunitySection />
-        </Suspense>
+        <TrackedSection name="fresh_from_community" position={3}>
+          <Suspense fallback={<FreshFromCommunitySkeleton />}>
+            <FreshFromCommunitySection />
+          </Suspense>
+        </TrackedSection>
         {/* Recency, deliberately not adjacent to the hero's NewAdditionsStrip —
             the strip tickers every recent name above the fold, this is the
             scannable card surface for anyone who scrolls. Warm ground restores
             the alternating band rhythm (Fresh and HomeCollectionGrid are both
             cream, so this sits between them rather than beside another warm). */}
-        <Suspense fallback={<NewArrivalsSectionSkeleton />}>
-          <NewArrivalsSection />
-        </Suspense>
-        <HomeCollectionGridLazy tier="core" />
-        <Section spacing="default" ground="warm" decor={{ texture: "grain" }}>
-          <DiscoveryAccordionGrid
-            rows={DISCOVERY_PILL_ROWS}
-            description="Jump straight to top-rated coffees by roast, brew method, process, origin, and more."
-          />
-        </Section>
-        <HowItWorksSection />
-        <Suspense fallback={<TopProfilesSectionSkeleton />}>
-          <TopProfilesSectionServer />
-        </Suspense>
-        <RoasterInfrastructureSection />
-        <Suspense fallback={<EducationSectionSkeleton />}>
-          <EducationSectionServer />
-        </Suspense>
-        <Suspense fallback={<CuratorSpotlightSkeleton />}>
-          <CuratorSpotlightServer />
-        </Suspense>
-        <TestimonialsSection />
-        <HomepageFAQ />
-        <CtaSection />
+        <TrackedSection name="new_arrivals" position={4}>
+          <Suspense fallback={<NewArrivalsSectionSkeleton />}>
+            <NewArrivalsSection />
+          </Suspense>
+        </TrackedSection>
+        <TrackedSection name="collection_grid" position={5}>
+          <HomeCollectionGridLazy tier="core" />
+        </TrackedSection>
+        <TrackedSection name="discovery_accordion" position={6}>
+          <Section spacing="default" ground="warm" decor={{ texture: "grain" }}>
+            <DiscoveryAccordionGrid
+              rows={DISCOVERY_PILL_ROWS}
+              description="Jump straight to top-rated coffees by roast, brew method, process, origin, and more."
+            />
+          </Section>
+        </TrackedSection>
+        <TrackedSection name="how_it_works" position={7}>
+          <HowItWorksSection />
+        </TrackedSection>
+        <TrackedSection name="top_profiles" position={8}>
+          <Suspense fallback={<TopProfilesSectionSkeleton />}>
+            <TopProfilesSectionServer />
+          </Suspense>
+        </TrackedSection>
+        <TrackedSection name="roaster_infrastructure" position={9}>
+          <RoasterInfrastructureSection />
+        </TrackedSection>
+        <TrackedSection name="education" position={10}>
+          <Suspense fallback={<EducationSectionSkeleton />}>
+            <EducationSectionServer />
+          </Suspense>
+        </TrackedSection>
+        <TrackedSection name="curator_spotlight" position={11}>
+          <Suspense fallback={<CuratorSpotlightSkeleton />}>
+            <CuratorSpotlightServer />
+          </Suspense>
+        </TrackedSection>
+        <TrackedSection name="testimonials" position={12}>
+          <TestimonialsSection />
+        </TrackedSection>
+        <TrackedSection name="faq" position={13}>
+          <HomepageFAQ />
+        </TrackedSection>
+        <TrackedSection name="cta" position={14}>
+          <CtaSection />
+        </TrackedSection>
       </div>
     </div>
   );
