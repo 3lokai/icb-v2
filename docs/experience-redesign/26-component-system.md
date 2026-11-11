@@ -60,7 +60,8 @@ Use shared semantic colour, radius, typography and spacing tokens as we roll the
 Rules:
 
 1. Use a primitive before writing a spacing class. New section wrappers are not created per page.
-2. Any hand-written spacing class uses a value on the scale.
+2. Hand-written spacing uses a value on the scale by default. An off-scale value is allowed as a **documented exception** — an optical correction or a dense control that needs it — with a one-line comment at the call site saying why.
+4. The homepage and editorial compositions may break the section rhythm deliberately. `Section`'s warm ground, borders and decor are optional props, not the expected pattern.
 3. Adjacent sections get their separation from `Section`, not from margins on their children.
 
 **Applied on this branch (2026-11-12):**
@@ -69,6 +70,14 @@ Rules:
 - The component playground uses `Section` and `Stack` instead of its own wrapper.
 - Sweep of hand-written classes: 492 changes in 144 files, nearest step on the scale — 6→8, 10→12, 14→16, 20→24, 28→24, 40→32, 44→48, 56→48, 80→64px.
 - Checked: type-check and lint pass; `/`, `/coffees`, `/roasters` and `/learn` render at 1280px and `/`, `/coffees` at 375px with no horizontal overflow. Only the top of `/` and `/coffees` was compared by eye; other pages were not reviewed visually.
+
+**Visual regression check (2026-11-12):** the pre-sweep commit `9211287` and the swept branch were rendered side by side at 1280px and 375px for seven pages: `/coffees`, a coffee detail page, a roaster page, a Learn article, `/profile/anon`, `/tools/coffee-calculator` and `/coffees/v60`.
+
+- No page gained horizontal overflow or an error overlay at either width.
+- Page height moved by less than 1% on five of the seven at desktop. The two larger shifts were `/profile/anon` (−244px, about 6%) and `/coffees/v60` (−190px, about 2%), both from tighter section padding.
+- By eye (desktop: coffee detail, directory, profile, calculator; mobile: coffee detail, directory): layouts, card grids, filters and chips are intact. Section gaps are slightly tighter; nothing collides or wraps differently.
+- Not covered: signed-in dashboard pages, the open mobile filter sheet, auth screens, dark theme, and the lower part of long pages. The spacing migration stays **provisional** until those are looked at.
+- Pre-existing, not caused by the sweep: on mobile the coffee detail "About …" heading runs past the right edge in both versions.
 
 **Not swept:** `src/components/ui/` (shadcn internals; part of the Phase C step 2 audit), `src/app/api/` (OG images), and two one-off 144px and 176px values. Arbitrary values such as `lg:pb-[200px]` are untouched.
 
