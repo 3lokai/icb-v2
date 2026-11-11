@@ -7,9 +7,8 @@
 <title>ICB identity playground</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Figtree:wght@300..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=Inter:wght@300..700&family=DM+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,700,400i&f[]=gambetta@300,400,500,600,400i&f[]=sentient@300,400,500,700,400i&f[]=ranade@300,400,500,700&f[]=cabinet-grotesk@300,400,500,700&f[]=general-sans@300,400,500,600&f[]=stardom@400&f[]=boska@300,400,500,700,400i&f[]=panchang@300,400,500,600&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=erode@300,400,500,600,400i&f[]=bespoke-serif@300,400,500,700,400i&f[]=synonym@300,400,500,600&f[]=supreme@300,400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=gambetta@300,400,500,600,400i&f[]=ranade@300,400,500,700&display=swap" rel="stylesheet">
 <style>
 /* Playground only. Not production code: nothing here is imported by the app. */
 *{box-sizing:border-box;margin:0}
@@ -128,6 +127,7 @@ nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
 #stage.t-grain .sec::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:var(--grain);opacity:calc(var(--tx)*.22);mix-blend-mode:multiply}
 #stage.t-grain .sec>.wrap{position:relative;z-index:1}
 #stage.t-frame .tile{box-shadow:inset 0 0 0 4px color-mix(in srgb,var(--surface) 55%,transparent),0 calc(var(--tx)*5px) calc(var(--tx)*11px) rgba(45,21,14,.11)}
+#stage.t-frame .tile img{padding:7%}
 #stage.t-frame .rail .tile,#stage.t-frame .card .tile{border-bottom:3px solid color-mix(in srgb,var(--rule) 70%,var(--ink))}
 /* feature slabs. Weave and Contour are dark in both themes (fixed espresso values); Paper follows the theme tokens */
 .slabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
@@ -149,9 +149,11 @@ nav .search{height:38px;width:300px;font-size:13px;padding:0 16px}
 /* motifs (toggled by classes on #stage) */
 #stage.m-circles .hero::before{content:'';position:absolute;right:-6%;top:-10%;width:52%;aspect-ratio:1;border-radius:50%;background:var(--surface);opacity:.7;z-index:0}
 #stage.m-circles .comm::before{content:'';position:absolute;left:-12%;top:-20%;width:46%;aspect-ratio:1;border-radius:50%;background:var(--surface);opacity:.6;z-index:0}
-#stage.m-circles .hero>*,#stage.m-circles .comm>*{position:relative;z-index:1}
+#stage.m-contour .hero::before,#stage.m-contour .comm::before{content:'';position:absolute;top:-12%;width:58%;aspect-ratio:1;z-index:0;pointer-events:none;background:repeating-radial-gradient(ellipse 70% 95% at var(--cx) 12%,transparent 0 4.5%,color-mix(in srgb,var(--star) 34%,transparent) 4.5% 4.85%);-webkit-mask:radial-gradient(ellipse at var(--cx) 8%,#000 10%,transparent 72%);mask:radial-gradient(ellipse at var(--cx) 8%,#000 10%,transparent 72%)}
+#stage.m-contour .hero::before{right:-6%;--cx:92%}
+#stage.m-contour .comm::before{left:-10%;--cx:8%}
+#stage.m-circles .hero>*,#stage.m-circles .comm>*,#stage.m-contour .hero>*,#stage.m-contour .comm>*{position:relative;z-index:1}
 #stage.m-dots .sec.tint{background-image:radial-gradient(color-mix(in srgb,var(--ink) 18%,transparent) 1px,transparent 1.5px);background-size:22px 22px}
-#stage.m-stripe .sec+.sec{border-top:6px solid;border-image:linear-gradient(90deg,var(--primary),var(--accent),var(--primary)) 1}
 #stage.m-rules .sec+.sec{border-top:1px solid var(--rule)}
 .smear{position:relative}
 #stage.m-smear .smear{white-space:nowrap}
@@ -332,7 +334,7 @@ $('#facets').innerHTML = D.facets.map(([h, rows]) => `<div class="facet"><div cl
 $('#heroimg').src = IK(D.mogra, 900);
 
 // ---------- tokens
-const SERIF = ['Fraunces', 'Zodiak', 'Gambetta', 'Sentient', 'Erode', 'Bespoke Serif', 'Newsreader', 'Instrument Serif', 'Playfair Display'], SANS = ['DM Sans', 'Ranade', 'Cabinet Grotesk', 'General Sans', 'Synonym', 'Supreme', 'Figtree', 'IBM Plex Sans', 'Inter', 'Bricolage Grotesque'], DISPLAY = ['Stardom', 'Boska', 'Panchang'], SAME = 'Same as heading', MONO = ['DM Mono', 'IBM Plex Mono'];
+const SERIF = ['Gambetta', 'Fraunces'], SANS = ['Ranade', 'DM Sans'], DISPLAY = [], SAME = 'Same as heading', MONO = ['DM Mono']; // fonts are decided; Fraunces/DM Sans/DM Mono kept for the live-site comparison
 const CTRL = [
   ['Colour'],
   ['ground', 'Ground', 'color'], ['surface', 'Surface / card', 'color'], ['ink', 'Ink', 'color'], ['muted', 'Muted text', 'color'], ['rule', 'Hairline', 'color'],
@@ -348,8 +350,8 @@ const CTRL = [
   ['img-bg', 'Image tile', 'color'], ['img-pad', 'Image padding', 'range', 0, 28, 2, 'px'], ['img-fit', 'Image fit', 'select', ['contain', 'cover']],
   ['img-blend', 'Blend white backgrounds', 'select', ['normal', 'multiply']], ['stagger', 'Stagger hero tiles', 'range', 0, 40, 4],
   ['Motifs'],
-  ['m-circles', 'Soft circles', 'check'], ['m-dots', 'Dot grid on tinted sections', 'check'], ['m-rules', 'Hairline between sections', 'check'], ['m-stripe', 'Gradient stripe between sections', 'check'],
-  ['emph', 'Headline emphasis', 'select', ['none', 'm-smear', 'm-underline', 'm-italic']],
+  ['m-contour', 'Contour lines (signature)', 'check'], ['m-circles', 'Soft circles (phasing out)', 'check'], ['m-dots', 'Dot grid (phasing out)', 'check'], ['m-rules', 'Hairline between sections', 'check'],
+  ['emph', 'Headline emphasis', 'select', ['none', 'm-underline', 'm-italic']],
   ['Texture'],
   ['t-grain', 'Paper grain on the ground', 'check'], ['t-frame', 'Pressed frame on image tiles', 'check'], ['tx', 'Texture strength', 'range', 0, 1, 0.05],
   ['slab', 'Feature surface', 'select', ['One of each', 'weave', 'contour', 'paper']],
@@ -358,14 +360,14 @@ const CTRL = [
 const BASE = { ground: '#F6EFE3', surface: '#FBF6EC', ink: '#1F130C', muted: '#5F5145', rule: '#D6C9B6', primary: '#3B2416', accent: '#9C4526', star: '#93701F', deepen: 4,
   'f-hero': 'Same as heading', 'f-display': 'Gambetta', 'f-body': 'Ranade', 'f-label': 'Ranade', 'w-display': 400, hero: 60, track: -0.02, body: 16, 'label-size': 11, 'label-track': 0.1, 'label-case': 'uppercase',
   radius: 12, 'btn-radius': 999, 'img-bg': '#FBF6EC', 'img-pad': 10, 'img-fit': 'contain', 'img-blend': 'normal', stagger: 0,
-  'm-circles': true, 'm-dots': false, 'm-rules': false, 'm-stripe': false, emph: 'm-italic', 't-grain': true, 't-frame': true, tx: 0.6, slab: 'One of each', mobile: false, mono: false };
+  'm-contour': true, 'm-circles': false, 'm-dots': false, 'm-rules': false, emph: 'm-italic', 't-grain': true, 't-frame': true, tx: 0.6, slab: 'One of each', mobile: false, mono: false };
 const PRESETS = {
   // Colours are fixed: Deep Roast, light and dark. All text 4.5:1 or better on ground and card.
   'Deep Roast · Light': {},
   'Deep Roast · Dark': { ground: '#1E1510', surface: '#2A1E17', ink: '#F6EFE3', muted: '#BFAF9D', rule: '#43342A', primary: '#EBDCC6', accent: '#E28D66', star: '#D9A84A', 'img-bg': '#FBF6EC', deepen: 0 },
-  'Live site today': { ground: '#FCF9F2', surface: '#F9F3E8', ink: '#26170D', muted: '#6A5B44', rule: '#DBD3C6', primary: '#995503', accent: '#ED855E', star: '#B08D3F', 'img-bg': '#F9F3E8', 't-grain': false, 't-frame': false, 'f-display': 'Fraunces', 'f-body': 'DM Sans', 'f-label': 'DM Sans', 'label-track': 0.18, 'm-circles': false, 'm-dots': true, emph: 'm-smear' },
+  'Live site today': { ground: '#FCF9F2', surface: '#F9F3E8', ink: '#26170D', muted: '#6A5B44', rule: '#DBD3C6', primary: '#995503', accent: '#ED855E', star: '#B08D3F', 'img-bg': '#F9F3E8', 't-grain': false, 't-frame': false, 'f-display': 'Fraunces', 'f-body': 'DM Sans', 'f-label': 'DM Sans', 'label-track': 0.18, 'm-contour': false, 'm-circles': false, 'm-dots': true, emph: 'm-smear' },
 };
-let S = { ...BASE, ...JSON.parse(localStorage.icbPlay3 || '{}') };
+let S = { ...BASE, ...JSON.parse(localStorage.icbPlay5 || '{}') };
 if (location.hash === '#mobile') S.mobile = true;
 { const k = Object.keys(PRESETS).find(n => n.toLowerCase().includes(decodeURIComponent(location.hash.slice(1)).toLowerCase() || '\0')); if (k) Object.assign(S, BASE, PRESETS[k]); } // #dark, #live
 if (location.hash === '#mono') S.mono = true;
@@ -388,7 +390,7 @@ function apply() {
   $('#cr').innerHTML = [['Ink on ground', S.ink, S.ground, 4.5], ['Muted on ground', S.muted, S.ground, 4.5], ['Muted on surface', S.muted, S.surface, 4.5], ['Accent text on ground', S.accent, S.ground, 4.5], ['Accent text on surface', S.accent, S.surface, 4.5], ['Text on primary button', onp, S.primary, 4.5], ['Star on ground (needs 3)', S.star, S.ground, 3], ['Hairline on ground (needs 3 if it marks a control)', S.rule, S.ground, 3]]
     .map(([n, a, b, min]) => { const r = ratio(a, b); return `<div>${n} <b class="${r >= min ? 'ok' : 'bad'}">${r.toFixed(2)}</b></div>`; }).join('');
   stage.classList.toggle('mono', !!S.mono); $('#monoBtn').textContent = 'Monochrome: ' + (S.mono ? 'on' : 'off');
-  localStorage.icbPlay3 = JSON.stringify(S);
+  localStorage.icbPlay5 = JSON.stringify(S);
 }
 function build() {
   $('#controls').innerHTML = CTRL.map(c => {

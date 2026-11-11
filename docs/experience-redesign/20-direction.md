@@ -116,7 +116,7 @@ To settle here:
 - Whether the ground changes per scroll stage.
 - Icon rules, including what `↗` means. It marks leaving for the roaster's site in the I boards and is used on internal links in v2.
 - Star rendering, including a half star (4.5 currently shows five full stars).
-- Motifs: the large soft circles, the mono eyebrow labels and the staggered packaging cards in v2 are the candidates.
+- Motifs (PROPOSED 2026-11-11): contour lines as the signature motif; weave for occasional editorial features; laid-paper grid as support. Soft circles and dot grid are being phased out, gradient stripes are removed and the brush smear is retired from the core system. See [07](07-decisions.md).
 - One image frame for mixed source imagery (pack shots, lifestyle photos, info cards).
 
 ### 2. Components
