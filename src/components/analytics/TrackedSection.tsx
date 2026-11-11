@@ -8,9 +8,12 @@ import { capture } from "@/lib/posthog";
  * click in it. Baseline for the experience redesign: before this, only the
  * hero's buttons were instrumented.
  *
- * - `home_section_viewed` fires once per page view, when a quarter of the
- *   section (or a quarter of the viewport, for tall sections) is on screen.
- * - `home_section_clicked` fires for any link or button inside it.
+ * - `home_section_viewed` fires once per page view, when the section reaches
+ *   the middle half of the viewport. That means at least a quarter of the
+ *   viewport's height (or the whole section, if it is shorter) is on screen,
+ *   whichever direction the visitor scrolls from.
+ * - `home_section_clicked` fires for any link or button inside it, including
+ *   ones that stop propagation (WishlistButton), hence the capture phase.
  */
 export function TrackedSection({
   name,
@@ -32,9 +35,11 @@ export function TrackedSection({
         capture("home_section_viewed", { section: name, position });
         observer.disconnect();
       },
-      // Tall sections never reach a 25% ratio on a phone, so also accept the
-      // section crossing a quarter of the way up the viewport.
-      { threshold: [0, 0.25], rootMargin: "0px 0px -25% 0px" }
+      // Shrink the viewport to its middle half. A ratio threshold would never
+      // fire for sections taller than four screens on a phone; this measures
+      // exposure against the viewport instead, and shrinking both edges stops
+      // a section scrolled into view from above counting on its last pixels.
+      { threshold: 0, rootMargin: "-25% 0px -25% 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -44,7 +49,7 @@ export function TrackedSection({
     <div
       ref={ref}
       data-section={name}
-      onClick={(e) => {
+      onClickCapture={(e) => {
         const target = (e.target as HTMLElement).closest("a, button");
         if (!target) return;
         capture("home_section_clicked", {
