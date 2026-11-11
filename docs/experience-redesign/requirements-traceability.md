@@ -111,16 +111,18 @@
 
 | ID | Requirement | Source | Object | Moment | Current state | Validation | Status |
 |---|---|---|---|---|---|---|---|
-| BRAND-001 | Start from the current brand (Fraunces + DM Sans, cream / roasted brown / terracotta, brush-smear); no rebrand by default | 01; PRODUCT.md; DESIGN.md | All | All | ✅ in force on production | Production: any deviation needs an ADR. Exploration: Concept A evolves it, Concept B may depart from it (07, 2026-11-07) | CONFIRMED (production); exploration unconstrained |
+| BRAND-001 | Keep the existing production identity and routes binding until an explicit redesign ADR; the new visual identity applies only to the design branch until then | PRODUCT.md; DESIGN.md; 07; 22 | All | All | ✅ existing Fraunces/DM Sans and brush smear still in production | Compare current tokens and templates to confirmed Deep Roast/Gambetta/Ranade, then prepare an ADR and phased migration after design acceptance | CONFIRMED (production guardrail) |
 | BRAND-002 | Depth language: paper layers (production) vs 3D or camera depth (exploration) | DESIGN.md vs 03 | All | Arrival, Reorganise | Resolved for exploration (audit §2 C4) | One screenplay may be fully spatial/3D; adoption needs performance validation and approval | CONFIRMED (2026-11-07) |
-| BRAND-003 | North star: "Coffee Field Guide" vs "hospitality" | DESIGN.md vs 01 | All | All | Resolved for exploration (audit §2 C5) | Hospitality = experiential philosophy; explore both an evolved Field Guide (A) and a free identity (B) | CONFIRMED (2026-11-07) |
+| BRAND-003 | "Quiet authority in the typography and information design; warmth in the colour and voice; curiosity and liveliness in the imagery, interactions and graphic details." Hospitality is behavioural, not a literal café UI. | Owner; 07; 20 | All | All | CONFIRMED brand character, not yet production | Check real directory, editorial, app and social contexts against this sentence and against the independent Find/Rate/Buy purpose | CONFIRMED (2026-11-11) |
 | BRAND-004 | One accent, One Smear Rule, no second emphasis language | DESIGN.md | All | All | ✅ in force on production | Binding on production only; Concept B may drop it | CONFIRMED (production) |
 | BRAND-005 | Rejected: literal café or avatar, forced cinematic tour, another round of static moodboards | 01; 07 | — | — | — | Review gate | REJECTED (do not build) |
+| BRAND-006 | The redesign identity is Gambetta/Ranade, Deep Roast light/dark, paper grain, selective terrain motif, espresso wash, legibility scrim and Light + Contour. No gradients on packaging or the data-dense directory | 22; 07 | All, editorial | Throughout | Design tokens/assets and demo committed, production unchanged | Visual QA across web/mobile/Instagram/report; correct packaging colours, contrast, normal/reduced motion; component variants after IA sign-off | CONFIRMED (design, 2026-11-11) |
 
 ## Change log
 - 2026-11-07: initial draft from the Phase 0 audit (Claude Code).
 - 2026-11-07: owner decisions 1–4 and guardrails recorded (07); BRAND-001…004, UX-008 and SEO-011 statuses updated.
 - 2026-11-10: reconciled UX-002, UX-003, IA-004 and IA-006 with approved I (Find, Rate, Buy); added UX-018…021. Historical Phase 0 checks still apply.
+- 2026-11-11: updated BRAND-001/003 for closed visual identity and unchanged production guardrails; added BRAND-006. Next sitemap/template coverage gate is in [23](23-next-design-phase.md).
 
 ## Business mission, independent reviews and monetization (owner update 2026-11-09)
 
