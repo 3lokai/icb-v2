@@ -11,6 +11,7 @@
 | [20-direction.md](20-direction.md) | **Start here.** The approved UX direction, reference screens, next phases and open behaviour rules. |
 | [21-penpot-design-workspace.md](21-penpot-design-workspace.md) | **Current Penpot page map**, pre/post cleanup versions, editable references, identity-phase workbench and next steps. |
 | [22-visual-system.md](22-visual-system.md) | **Locked visual system**: type, Deep Roast, grain, terrain motif, wash/scrims and ambient surfaces; implementation tokens/assets and verification. |
+| [26-static-imagery.md](26-static-imagery.md) | **Static photo triage:** keep/reframe/repoint, four branch-only collection image mapping changes and one staged fruit-filter WebP candidate. |
 | [23-next-design-phase.md](23-next-design-phase.md) | **START HERE IN THE NEW CHAT:** current-vs-proposed sitemap and navigation, page-template inventory, approval gates, then component/copy sequence. |
 | [07-decisions.md](07-decisions.md) | Decision log with statuses and dates. |
 | [17-review-intelligence-and-monetization.md](17-review-intelligence-and-monetization.md) | Business north star: independent reviews and coffee intelligence. |
