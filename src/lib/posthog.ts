@@ -85,6 +85,17 @@ export function loadPostHog(): Promise<PostHog> {
           "NotFoundError",
         ];
         if (NOISE.some((m) => blob.includes(m))) return null;
+        // The iOS Google app (GSA/) injects a script that overflows the stack
+        // on some pages; its frames point at the page HTML. Scoped to that UA
+        // and to stacks with no /_next frame, so a real recursion bug in our
+        // bundles still surfaces.
+        if (
+          blob.includes("Maximum call stack size exceeded") &&
+          !blob.includes("/_next/") &&
+          typeof navigator !== "undefined" &&
+          navigator.userAgent.includes("GSA/")
+        )
+          return null;
         return event;
       },
     });
