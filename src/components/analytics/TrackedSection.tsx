@@ -3,15 +3,16 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { capture } from "@/lib/posthog";
 
+const VIEW_THRESHOLDS = Array.from({ length: 101 }, (_, i) => i / 100);
+
 /**
  * Wraps a homepage section to record whether visitors reach it and what they
  * click in it. Baseline for the experience redesign: before this, only the
  * hero's buttons were instrumented.
  *
- * - `home_section_viewed` fires once per page view, when the section reaches
- *   the middle half of the viewport. That means at least a quarter of the
- *   viewport's height (or the whole section, if it is shorter) is on screen,
- *   whichever direction the visitor scrolls from.
+ * - `home_section_viewed` fires once per page view, when at least a quarter of
+ *   the viewport's height (or the whole section, if it is shorter) is on
+ *   screen, whichever direction the visitor scrolls from.
  * - `home_section_clicked` fires for any link or button inside it, including
  *   ones that stop propagation (WishlistButton), hence the capture phase.
  */
@@ -32,14 +33,20 @@ export function TrackedSection({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry?.isIntersecting) return;
+        // Measure visible pixels against the viewport height. A single ratio
+        // threshold can't express this (a section four screens tall never
+        // reaches 25%), and rootMargin percentages resolve against the
+        // viewport's width, so on wide windows they collapse the area.
+        const needed = Math.min(
+          entry.boundingClientRect.height,
+          window.innerHeight * 0.25
+        );
+        if (entry.intersectionRect.height < needed - 1) return;
         capture("home_section_viewed", { section: name, position });
         observer.disconnect();
       },
-      // Shrink the viewport to its middle half. A ratio threshold would never
-      // fire for sections taller than four screens on a phone; this measures
-      // exposure against the viewport instead, and shrinking both edges stops
-      // a section scrolled into view from above counting on its last pixels.
-      { threshold: 0, rootMargin: "-25% 0px -25% 0px" }
+      // Steps of 1% so the callback re-runs as more of the section shows.
+      { threshold: VIEW_THRESHOLDS }
     );
     observer.observe(el);
     return () => observer.disconnect();
