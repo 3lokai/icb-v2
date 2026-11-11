@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { getAllLandingPageSlugs } from "@/lib/discovery/landing-pages";
+import { fetchAllRows } from "@/lib/data/fetch-all-rows";
 import { client } from "@/lib/sanity/client";
 import { listNewsletters } from "@/lib/data/fetch-newsletters";
 import { issueDate } from "@/types/newsletter-types";
@@ -213,12 +214,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // is_coffee IS NOT FALSE mirrors the coffee_directory_mv filter — combo
       // packs, subscriptions and wholesale SKUs are excluded from the directory,
       // so listing their URLs here would point the sitemap at dead pages.
-      supabase
-        .from("coffees")
-        .select("slug, updated_at, roasters(slug)")
-        .in("status", ["active", "seasonal"])
-        .not("is_coffee", "is", false)
-        .not("slug", "is", null),
+      // Paged (ADR-011): an unbounded select is capped at 1000 rows, which
+      // silently dropped every public coffee past the first 1000.
+      fetchAllRows(
+        () =>
+          supabase
+            .from("coffees")
+            .select("slug, updated_at, roasters(slug)")
+            .in("status", ["active", "seasonal"])
+            .not("is_coffee", "is", false)
+            .not("slug", "is", null),
+        "sitemap coffees",
+        "id"
+      ).then(
+        (data) => ({ data, error: null }),
+        (error) => ({ data: null, error })
+      ),
       // Fetch active roasters only
       supabase
         .from("roasters")
