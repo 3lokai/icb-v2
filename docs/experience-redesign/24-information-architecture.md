@@ -1,6 +1,6 @@
 # 24 — Information Architecture: Audit, Proposed Sitemap and Navigation
 
-**Status (2026-11-11): APPROVED by the owner as the design baseline** ("go with this, and change it if needed"). Phase A deliverable of [23](23-next-design-phase.md). Production route and navigation changes still need an ADR. Where §6 "Final navigation" differs from older wording elsewhere in this document, §6 wins.
+**Status (2026-11-11): APPROVED design baseline (Phase A).** Navigation, sitemap and discovery architecture are approved for design, not yet deployed. The owner is handling urgent production fixes in a separate PR to `main`; do not treat local tests or this design document as proof of a deployed fix. Section 6 is the authoritative navigation contract, and [25](25-page-hierarchy.md) defines account-menu hierarchy and page content.
 
 **Summary.** The URL structure is sound and should stay almost entirely as it is. What needs to change is navigation, the dead-end attributes on coffee pages, the separation between editorial and the directory, and a handful of orphaned pages. One new entity template (estate) is justified; everything else is reorganisation or deferral.
 
@@ -14,9 +14,9 @@
 | Database | **Not re-queried** (the SQL connector refused permission). Estate-gate and public-coffee counts below are the 7 Nov audit figures. |
 | Search Console, analytics | Not re-fetched; the audit's 2 Nov snapshot is used. |
 
-### Defects found while auditing (production; reported, not fixed)
+### Defects found during the audit (historical evidence; production fixes handled in a separate PR)
 
-1. **The sitemap lists exactly 1,000 coffee pages.** `src/app/sitemap.ts` selects coffees without paging, so PostgREST truncates at 1,000 rows (the problem ADR-011 describes). With 1,688 public coffees on 7 Nov, roughly 690 coffee URLs are absent from the sitemap. This is the largest SEO issue found and is independent of the redesign.
+1. **The audited live sitemap listed exactly 1,000 coffee pages.** `src/app/sitemap.ts` selects coffees without paging, so PostgREST truncates at 1,000 rows (the problem ADR-011 describes). With 1,688 public coffees on 7 Nov, roughly 690 coffee URLs are absent from the sitemap. This is the largest SEO issue found and is independent of the redesign.
 2. `/tools/grind-size-converter` is not in the sitemap although it was the eighth-ranked organic page (85 clicks). `/developers`, `/learn/insights` and `/learn/author/*` are also absent.
 3. The header's Explore parent links to `/explore`, which does not exist, and it carries a disabled "Estates — Coming Soon" item pointing at a route that does not exist.
 4. The homepage "Fruity" chip goes to `/coffees?q=fruity`, which is a name search, not the flavour facet.
@@ -173,10 +173,10 @@ Typed references in Sanity are the better long-term answer, but they need editor
 | Change type | Items |
 |---|---|
 | **Keep unchanged** | All existing URLs, slugs, canonicals, noindex rules, JSON-LD, the ~40 redirects, the flat `/coffees/<slug>` namespace, coffee detail under the roaster path, `/regions` as hub only, Learn URL structure, filter URL parameters |
-| **Reorganise within existing pages** | Coffee detail (doorways, breadcrumbs, editorial strip, altitude); roaster detail (same); landing pages (estate links, fuller grid handoff); articles (closing strip); homepage (14 sections down to the v2 sequence); tools (handoff); 404 (add search) |
-| **Add to navigation** | Coffees and Roasters as top-level; landing pages via a "Browse by" panel; Regions; Rate a coffee; Insights; footer links for regions, curations, tools hub, developers |
+| **Reorganise within existing pages** | Coffee detail (doorways, breadcrumbs, editorial strip, altitude); roaster detail (same); landing pages (estate links, fuller grid handoff); articles (closing strip); homepage (content bands combined into one coherent scroll-led story, without requiring visually isolated sections); tools (handoff); 404 (add search) |
+| **Add to navigation** | Coffees, Roasters and Origins as top-level; landing pages via a "Browse by" panel; Rate via search/home/mobile menu; Insights via Learn; footer links for regions, curations, tools hub, developers |
 | **New templates** | Estate detail and estate index. A returning-member homepage state (same URL). Grouped search results (no URL). |
-| **Merge or simplify** | Explore dropdown removed. "Profile", `/profile/anon` and dashboard presented as one account menu (URLs kept). Tools dropdown reduced to one link. Communities and Curations to the footer. Two search behaviours (palette and directory `q`) given the same matching. |
+| **Merge or simplify** | Explore dropdown removed. Profile (with nested shortcuts), Settings and Sign out in one account menu; URLs kept. Tools dropdown reduced to one link. Communities and Curations to the footer. Two search behaviours (palette and directory `q`) given the same matching. |
 | **Defer** | Variety pages (no table, 42% coverage); flavour-family landings (need demand research and a slug rule, since `honey` is already a process slug); extra process and region landings; `/gear`; a research section (use `/learn/insights`); compare; Concierge; `/regions/<slug>` (rejected by ADR-013, no reason to reopen) |
 
 ## 6. Recommended navigation
@@ -200,7 +200,7 @@ Every label is itself a link; panels add secondary discovery.
 | More | — | Communities, Curations, Newsletter, future partnership surfaces. New items join here, not the top level |
 
 - **No Rate button in the header.** Rating is an action, not a page, and has no URL. It is offered in the search panel ("Rate a coffee you've tried"), on the homepage as one of the two main actions, in the mobile menu, and on every coffee page. Add a header button later only if rating data shows people cannot find it.
-- **Account**: Sign in, or an avatar menu with My ratings, Wishlist, Profile, Settings, Developer. Anonymous visitors who have rated see "Your ratings".
+- **Account — owner-approved structure:** Sign in for signed-out visitors; for members, **Profile ▸** (expandable submenu of important profile destinations), **Settings**, **Sign out**. The Profile submenu destinations and exact labels are **OPEN until the account-menu component phase**; do not hard-code My ratings, Wishlist or Developer as additional top-level account items. Anonymous visitors who have rated can access `/profile/anon` via "Your profile" and can Sign in. Profile content and Settings remain distinct; see [25 §8.3](25-page-hierarchy.md).
 - "For Roasters" moves to the footer.
 - Communities and Curations also appear in the homepage community band and contextually (a curation that includes a coffee is shown on that coffee's page). The "Missing a community?" request path on `/communities` stays prominent.
 
@@ -259,14 +259,14 @@ Neutrality rules that the structure must hold: default sort stays newest; Top ra
 ### 7.2 Rate and contribute
 
 ```
-Header "Rate a coffee" ─► search (rating mode) ─► coffee ─► rating sheet ─► optional context (brew, notes) ─► Your ratings
+Homepage / search / mobile menu "Rate a coffee" ─► search (rating mode) ─► coffee ─► rating sheet ─► optional context (brew, notes) ─► Your ratings
 Coffee page ─► Rate ──────────────────────────────────────┘
 Return visit ─► "Have you tried it?" on coffees viewed ─► rating sheet
 ```
 
 | | Today | Proposed |
 |---|---|---|
-| Entry | Coffee page and the palette's rating mode; nothing in the header | Header and mobile-menu entry |
+| Entry | Coffee page and the palette's rating mode; nothing in the header | Homepage, search panel and mobile menu; no separate desktop-header Rate button |
 | Anonymous | Up to three entities, then sign-in | Same; the limit is stated before the visitor hits it |
 | After rating | Modal closes | Offer context fields, then link to Your ratings |
 | Returning | Hero segment | Asks, never assumes, and never on the strength of a Buy click |
@@ -339,21 +339,21 @@ Shared components this implies: coffee card and grid; doorway chip with the §5.
 | 3 | Flavour-family landings; extra process and region landings | Needs demand research |
 | Later | `/gear`, research reports, compare, Concierge | Own plans |
 
-## 11. Decisions (all accepted 2026-11-11; rows 2, 4, 5, 9 superseded by §6 "Final navigation")
+## 11. Decision register (reconciled 2026-11-11; §6 and [25 §8.3](25-page-hierarchy.md) govern navigation/account details)
 
-Phase B order: discovery landing and directory, coffee detail, homepage, then roaster/region/estate, then articles, tools and account.
+Phase B order: discovery landing and directory, coffee detail, homepage, then roaster/region/estate, then articles, tools and account. Homepage bands are a **content inventory and narrative order**, not a mandate for visually separate stacked sections. Scroll-driven transitions may connect them into a single story; specify and validate motion in the composition phase, respecting performance, keyboard access and reduced motion.
 
 | # | Decision | Recommendation |
 |---|---|---|
 | 1 | Accept "URLs unchanged; estates are the only new URL family" as the baseline | Yes |
-| 2 | Primary navigation: Coffees ▾ · Roasters · Learn ▾ · Tools · More ▾, with Regions inside the Coffees panel | Yes (revised; core approach agreed 2026-11-11) |
+| 2 | Primary navigation: Coffees ▾ · Roasters · Origins ▾ · Learn ▾ · Tools · More ▾ | Approved; see §6 |
 | 3 | "Browse by" panel exposing the landing pages | Yes |
-| 4 | Rate a coffee in the header, opening search in rating mode | Yes |
+| 4 | Rating-intent search from homepage, search panel and mobile menu; no desktop-header Rate button | Approved in §6 |
 | 5 | Communities and Curations sit in a More ▾ menu with Newsletter and future partnership surfaces, plus homepage and contextual placement | Yes (owner direction 2026-11-11) |
 | 6 | Mobile: no global bottom bar; coffee page owns the sticky Rate and Buy bar | Yes |
 | 7 | The doorway rule in §5.1, including links to noindex filtered views | Yes |
 | 8 | Estates: ship detail and index together with the redesign; link to filtered views until then; remove the "Coming Soon" item now | Yes. Confirm the gate count first (15 on 7 Nov) |
-| 9 | Regions and Estates sit in an "Origins" column of the Coffees panel rather than a top-level item | Yes |
+| 9 | Origins is a top-level label linking to `/regions`, with regions and qualifying estates in its panel | Approved; see §6 |
 | 10 | Keep the label "Learn" in navigation; "Field guide" stays editorial language on the homepage | Keep "Learn" |
 | 11 | Search scope: add Browse group first, articles and glossary second | Yes |
 | 12 | Editorial links: start from existing `learnLinks` and embeds; typed Sanity references later | Yes |
@@ -361,4 +361,4 @@ Phase B order: discovery landing and directory, coffee detail, homepage, then ro
 | 14 | Variety: no pages; make it a facet first | Yes |
 | 15 | `/learn/insights` becomes the home for research, with no separate section | Yes |
 | 16 | `/gear` takes the Tools slot as Brew ▾ when it ships; Compare and Concierge stay out | Yes |
-| 17 | Fix the production defects in §0 now, ahead of the redesign | Sitemap paging approved and fixed 2026-11-11 (1,678 coffee URLs locally, was 1,000); the rest pending |
+| 17 | Urgent production defects in §0 | Owner is working on a separate PR to `main`. Historical local sitemap pagination test reported 1,678 coffee URLs; merge/deployment and other fixes must be verified through that PR, not claimed complete here |
