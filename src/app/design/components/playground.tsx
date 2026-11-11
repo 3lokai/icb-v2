@@ -2,6 +2,8 @@
 
 import { Section as BaseSection } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
+import CoffeeCard from "@/components/cards/CoffeeCard";
+import type { CoffeeSummary } from "@/types/coffee-types";
 import {
   ArrowRightIcon,
   ArrowUpRightIcon,
@@ -109,13 +111,55 @@ const RATE_OUTLINE =
   "border-accent text-accent hover:bg-accent hover:text-accent-foreground dark:border-accent dark:hover:bg-accent dark:hover:text-accent-foreground";
 const ROASTER = "Malnad Ridge"; // fictional sample roaster; neutral, no real brand spotlighted
 
+// The REAL CoffeeCard renders here. No live coffee ID is supplied, so wishlist and
+// rating mutations cannot be triggered from this visual review surface.
+const SAMPLE_COFFEE: CoffeeSummary = {
+  coffee_id: null,
+  slug: "sample-natural",
+  name: "Malnad Ridge Natural",
+  display_name: "Malnad Ridge Natural",
+  roaster_id: null,
+  status: "active",
+  process: "natural",
+  process_raw: null,
+  roast_level: "medium",
+  roast_level_raw: null,
+  roast_style_raw: null,
+  direct_buy_url: null,
+  has_250g_bool: true,
+  has_sensory: false,
+  in_stock_count: 1,
+  min_price_in_stock: 450,
+  best_variant_id: null,
+  best_normalized_250g: 450,
+  weights_available: [250],
+  sensory_public: null,
+  sensory_updated_at: null,
+  decaf: false,
+  is_limited: false,
+  bean_species: "arabica",
+  rating_avg: 4.3,
+  rating_count: 12,
+  tags: [],
+  roaster_slug: "malnad-ridge-example",
+  roaster_name: ROASTER,
+  hq_city: "Chikmagalur",
+  hq_state: "Karnataka",
+  hq_country: "India",
+  website: null,
+  image_url: null,
+  flavor_keys: ["chocolate", "mango"],
+  brew_method_canonical_keys: ["v60"],
+};
+
 const SECTIONS = [
   ["type", "Type & tokens"],
   ["buttons", "Button"],
   ["fields", "Input & Textarea"],
   ["cards", "Card"],
   ["icons", "Icons"],
-  ["audit", "Next audit (unchanged)"],
+  ["audit", "Overlays & controls"],
+  ["coffee-cards", "Real CoffeeCard"],
 ] as const;
 
 function Section({
@@ -776,8 +820,8 @@ export function ComponentPlayground() {
 
         <Section
           id="audit"
-          note="Phase C step 2 primitives, shown unchanged under the bridged tokens (and in portals) so the next audit starts from evidence. No source changes."
-          title="Next audit (unchanged)"
+          note="Phase C second-pass shadcn primitives: review neutral menu focus, 40px default Select and Tabs, Dialog radius, overlay animation and keyboard interactions."
+          title="Overlays & controls"
         >
           <Row label="Badge">
             <Badge>default</Badge>
@@ -793,7 +837,7 @@ export function ComponentPlayground() {
                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
               </TabsList>
               <TabsContent className="pt-3 text-caption" value="coffees">
-                Tabs list is h-9 (36px) — candidate for the step-2 audit.
+                Tabs list now aligns to 40px with default Input and Select.
               </TabsContent>
               <TabsContent className="pt-3" value="roasters">
                 Roasters panel
@@ -882,6 +926,20 @@ export function ComponentPlayground() {
               </SheetContent>
             </Sheet>
           </Row>
+        </Section>
+
+        <Section
+          id="coffee-cards"
+          title="Real CoffeeCard"
+          note="These are imported directly from src/components/cards/CoffeeCard.tsx, including the genuine CardRatingFooter. Fictional sample data has no coffee ID: this is a visual/layout QA surface, not a functioning rating, wishlist or purchase demo. The detail URL is illustrative and must not be followed as a real product."
+        >
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <CoffeeCard coffee={SAMPLE_COFFEE} variant="default" />
+            <CoffeeCard coffee={{ ...SAMPLE_COFFEE, slug: "sample-unrated", rating_avg: null, rating_count: 0 }} variant="default" />
+            <CoffeeCard coffee={{ ...SAMPLE_COFFEE, slug: "sample-rated" }} userRating={4} variant="default" />
+            <CoffeeCard coffee={{ ...SAMPLE_COFFEE, slug: "sample-similar" }} variant="similar" matchInfo={{ matchType: "flavor", chips: ["Mango", "Natural"] }} />
+          </div>
+          <p className="text-caption text-muted-foreground">Review at 375px and 1280px in both themes. The card uses the actual image fallback, typography, price logic, interactive footer markup and card variants; without an entity ID its actions cannot write data.</p>
         </Section>
       </main>
     </div>
