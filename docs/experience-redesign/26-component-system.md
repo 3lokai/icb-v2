@@ -1,6 +1,6 @@
 # 26 — Component System: Ownership and First Pass
 
-**Status (2026-11-12): FOUNDATIONS IN REVIEW on `design/experience-redesign`.** Button/Input/Textarea/Card verified in the React playground (below); awaiting owner approval before CoffeeCard, product components or Penpot updates. Not merged into `main`. This is the Phase C working contract after [24](24-information-architecture.md) and [25](25-page-hierarchy.md). It does not supersede locked visual tokens in [22](22-visual-system.md) or authorize a production rollout.
+**Status (2026-11-12): SECOND SHADCN PASS COMMITTED FOR REVIEW on `design/experience-redesign`.** Button/Input/Textarea/Card were browser-reviewed previously; Select/Dialog/Sheet/Dropdown/Tabs/Badge and genuine CoffeeCard preview have now been committed, but **the newest changes have not yet undergone type-check or browser QA**. Not merged into `main`. This is the Phase C working contract after [24](24-information-architecture.md) and [25](25-page-hierarchy.md). It does not supersede locked visual tokens in [22](22-visual-system.md) or authorize a production rollout.
 
 ## Core decision: evolve shadcn at its source
 
@@ -22,9 +22,9 @@ Use shared semantic colour, radius, typography and spacing tokens as we roll the
 ## Phase C order
 
 1. **Base controls, narrow pass (started):** Button, Input, Textarea, Card. Existing variant names are retained; improve motion reduction, touch sizing and semantic surface use. This is not the locked brand-token migration.
-2. **Base controls, audited pass:** Select, Dialog/Sheet, DropdownMenu, Tabs, Badge and popovers. Audit each in real contexts before altering radius, layout or content behavior. There are already ICB-specific overrides.
+2. **Base controls, audited pass (committed for QA):** Select, Dialog/Sheet, DropdownMenu, Tabs and Badge received focused updates for control heights, neutral focus surfaces, dialog geometry and reduced motion. No public component API was changed. Popovers and real-page context checks remain pending.
 3. **Navigation/search contracts:** Separate nav configuration from rendering; top-level Coffees · Roasters · Origins · Learn · Tools · More; Profile submenu with children to be decided at component design; search groups and rating-intent mode. Do not add `/explore` or `/rate`.
-4. **Coffee card contract:** Reuse existing `CoffeeCard` and `CardRatingFooter`; preserve in-place rating, one card detail link, wishlist, packing imagery, meaningful states and review provenance.
+4. **Coffee card contract (preview added):** The playground imports the genuine `CoffeeCard` and its `CardRatingFooter` with fictional sample values (rated, unrated, viewer-rated and similar). The sample uses `coffee_id: null` so rating/wishlist actions cannot persist data. Production CoffeeCard remains unchanged. The playground's illustrative detail link is **not** a real coffee page.
 5. **Directory, coffee detail and homepage compositions:** Shared primitives, different information density. Homepage bands form a continuous, scroll-driven narrative rather than visually isolated boxes. Never animate packaging artwork itself.
 6. **Rollout gate:** integrate locked light/dark tokens and typography with the root layout, test contrast, focus, mobile tap targets, visual parity, `prefers-reduced-motion`, LCP, CLS and SEO. Only then consider a production ADR/merge.
 
@@ -128,12 +128,18 @@ The playground copy and compositions follow [07](07-decisions.md), [20](20-direc
 | `--ring` | accent | accent | **PROPOSED** (focus token is OPEN in 07): the focus border is solid accent (5.6:1 light, 7.0:1 dark) |
 | `--rating` | star `#93701F` (4.0:1) | `#D9A84A` (8.3:1) | locked |
 
-### Findings for the step-2 audit (not changed)
+### Findings and second-pass work (2026-11-12)
+
+- **Applied:** Default SelectTrigger height 36 → 40px and small 32 → 36px; same default vertical alignment as Input. TabsList height 36 → 40px. Dialog border radius 40px → shared `rounded-xl` and stronger semantic border. Dialog/Sheet overlays and content gain reduced-motion safeguards, and close buttons receive consistent keyboard focus styling.
+- **Applied:** DropdownMenu/Select focused items use neutral `bg-muted` and normal foreground instead of filling every row with copper `--accent`. Badge transitions respect reduced-motion preferences. These are updates to shadcn primitives directly, not wrappers or duplicate CSS.
+- **To verify:** Existing menus/Selects and sheets across both themes, keyboard operation, close controls, portal overlays, forms with explicit small heights and nested dialogs. Actual runtime tests were not run for this newest pass.
+
+### Previously identified issues
 
 - **Destructive** (an existing production token) is 3.48:1 white-on-red in light mode, below AA for 14px button text. It needs a deeper red or a dark-text treatment.
-- **SelectTrigger** is 36px next to 40px Inputs, so mixed form rows don't align (visible in the review-form card).
-- **TabsList** is 36px.
-- **Dialog** uses an ICB-specific large radius and centred header. Check this against the 14px locked radius.
+- **SelectTrigger** was 36px next to 40px Inputs; the default is now aligned to 40px, pending live form verification.
+- **TabsList** was 36px; now 40px, pending navigation/tab regression checks.
+- **Dialog** previously used a 40px radius; now uses the shared `rounded-xl`. Its centred mobile header remains; compare against the locked ~14px radius and real modal designs during visual QA.
 
 ## Acceptance checklist
 
@@ -145,3 +151,13 @@ The playground copy and compositions follow [07](07-decisions.md), [20](20-direc
 - [ ] **Owner review** of the playground and the PROPOSED bridge values (`--input`, `--accent` hover)
 - [ ] Flip the `Icon` default to `regular` after approval
 - [ ] Deep Roast token and Gambetta/Ranade integration into `globals.css` and the root layout (rollout gate, step 6)
+
+## Latest pass verification gate (2026-11-12)
+
+- [ ] Type-check, lint and tests **after** the second primitive edits and playground addition
+- [ ] Render `/design/components` at 375px and 1280px, light and dark; open Select, Dialog, Sheet and Dropdown
+- [ ] Confirm real CoffeeCard demo renders from a **null coffee ID** without remote mutations, and default/rated/unrated/similar states remain legible
+- [ ] Keyboard navigation through menu, select, dialog focus trap and rating footer; reduced-motion screenshots
+- [ ] Regression review on live filter sheets, account dropdown, auth and review dialogs before rollout
+
+**Boundary:** No global palette/font migration, navigation rebuild, production routes, dataset or actual rating submissions were modified by this pass.
