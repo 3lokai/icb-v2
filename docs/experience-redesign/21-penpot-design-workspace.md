@@ -87,3 +87,11 @@ This document describes only **where those decisions are designed and tested in 
 ## Quick acceptance checklist for the next review
 
 Can a new visitor understand the independent coffee directory and find **Browse** or **Rate** immediately? Can a mobile visitor use the real familiar filters? Is Rate/Buy both accessible and neutral on coffee detail? Are visual coffee packaging and rating provenance readable? Do the design-system candidates improve those journeys without making the interface more complex? Are visual/interaction changes represented in working screens rather than abstract style tiles?
+
+## Update 2026-11-11 — visual system locked
+
+- Page `01` has a second board, `Visual system LOCKED · 2026-11-11`, beside the identity board. It lists the six locked treatments (including the three feature surfaces, as text only) and the "never" rules, and shows Light + Contour in light and dark plus the bottom-scrim spec.
+- It is a summary, not the source. The source is [22-visual-system.md](22-visual-system.md) and `system/`.
+- Limits: Penpot shows Fraunces / DM Sans in place of Gambetta / Ranade; the terrain motif there is a simplified redraw, with no paper grain; the application captures could not be placed because Penpot cannot fetch local files.
+- Pages `02`–`10` were not redrawn with the new texture, motif or gradients.
+

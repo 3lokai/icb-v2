@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ICB visual system — applications</title>
+<link href="https://api.fontshare.com/v2/css?f[]=gambetta@400,500,400i&f[]=ranade@400,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="icb-system.css">
+<style>
+/* demo layout only — not part of the system */
+*{box-sizing:border-box;margin:0}
+body{background:var(--icb-ground);color:var(--icb-ink);font:16px/1.55 var(--icb-font-body)}
+h1,h2,h3,.serif{font-family:var(--icb-font-heading);font-weight:400;letter-spacing:-.02em;line-height:1.1}
+em{font-style:italic}
+.page{max-width:1120px;margin:0 auto;padding:32px 20px 80px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+.top a{color:var(--icb-accent)}
+.lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--icb-muted)}
+.demo{margin-top:56px}
+.demo>h2{font-size:28px;margin:6px 0 20px}
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--icb-primary);color:var(--icb-on-primary);font-weight:500;text-decoration:none}
+/* website section */
+.feature{border-radius:var(--icb-radius);padding:44px 40px;border:1px solid var(--icb-rule)}
+.feature h3{font-size:clamp(30px,5vw,46px);margin:12px 0 14px;max-width:14em}
+.feature p{color:var(--icb-muted);max-width:32em;margin-bottom:24px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:20px}
+.card .icb-frame{aspect-ratio:4/5;margin-bottom:10px}
+.card b{font-weight:500;display:block}.card span{font-size:14px;color:var(--icb-muted)}
+/* editorial */
+.cover{aspect-ratio:16/9;display:flex;align-items:flex-end}
+.cover .txt{padding:28px;max-width:34em}
+.cover .lab,.post .lab,.banner .lab{color:inherit;opacity:.85}
+.cover h3{font-size:clamp(28px,5vw,48px);margin-top:8px}
+.article{max-width:40em;padding:28px 0 0}
+.article .stand{font:400 22px/1.4 var(--icb-font-heading);margin-bottom:14px}
+.article p{color:var(--icb-muted)}
+.banner{aspect-ratio:3/1;display:flex;align-items:center;margin-top:20px}
+.banner .txt{padding:24px;max-width:52%}
+.banner h3{font-size:clamp(20px,3.4vw,32px);margin-top:6px}
+/* instagram */
+.posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.post{aspect-ratio:4/5;border-radius:6px;display:flex;flex-direction:column;justify-content:flex-end;padding:8%}
+.post h3{font-size:clamp(24px,3.2vw,36px);margin:10px 0}
+.post.quote{justify-content:space-between;border:1px solid var(--icb-rule)}
+.post .mark{font:400 15px var(--icb-font-heading)}
+.post small{font-size:13px;color:var(--icb-muted)}
+/* visiting card, 89 × 51 mm */
+.vcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:820px}
+.vc{aspect-ratio:89/51;border-radius:8px;padding:7%;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--icb-rule);container-type:inline-size}
+.vc .mark{font:400 7.5cqw/1.05 var(--icb-font-heading);letter-spacing:-.02em}
+.vc .who{font:400 5.5cqw/1.1 var(--icb-font-heading)}
+.vc small{font-size:max(3.3cqw,11px);color:var(--icb-muted);display:block}
+#checks{margin-top:56px;font-size:14px}
+#checks li{margin-left:18px}
+.ok::marker{content:'✓  '}.bad{color:#C0392B}.bad::marker{content:'✗  '}
+@media (max-width:760px){
+  .feature{padding:28px 22px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .posts,.vcards{grid-template-columns:1fr}
+  .cover{aspect-ratio:4/5}.cover .txt{padding:20px}
+  .banner{aspect-ratio:16/9}.banner .txt{max-width:55%;padding:16px}
+}
+</style>
+
+<div class="page icb-grain">
+  <div class="top"><div class="lab">ICB visual system · Deep Roast · applications</div><a href="#" id="tog">Switch theme</a></div>
+  <h1 style="font-size:clamp(32px,6vw,52px)">One system, <em>five places.</em></h1>
+
+  <section class="demo" data-demo="Website section">
+    <div class="lab">1 · Website section</div><h2>Feature moment above a flat directory row</h2>
+    <div class="feature icb-ambient icb-terrain">
+      <div class="lab">Regions and estates</div>
+      <h3>Start from where it <em>grew.</em></h3>
+      <p>Browse coffees by the hills and estates they come from. Ratings come from drinkers, never from roasters.</p>
+      <a class="btn" href="#">Browse by origin</a>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="demo" data-demo="Editorial feature">
+    <div class="lab">2 · Editorial feature</div><h2>Cover with espresso wash and bottom scrim</h2>
+    <div class="icb-photo icb-wash icb-scrim-bottom cover" data-scrim="bottom">
+      <img src="../../../public/images/discovery/regions-hero.avif" alt="Ripe coffee cherries on the branch">
+      <div class="txt"><div class="lab">Field guide · Regions</div><h3>Where the monsoon shapes the cup.</h3></div>
+    </div>
+    <div class="article">
+      <p class="stand">Three months of rain decide what a Malabar coffee tastes like for the rest of the year.</p>
+      <p>Article body sits on the flat paper ground in Ranade. No gradient, no motif and no grain behind running text.</p>
+    </div>
+    <div class="icb-photo icb-wash icb-scrim-side banner" data-scrim="side">
+      <img src="../../../public/images/home/open-book-cafe.avif" alt="An open book on a café table">
+      <div class="txt"><div class="lab">Side scrim · when the composition needs it</div><h3>How to read a coffee label.</h3></div>
+    </div>
+  </section>
+
+  <section class="demo" data-demo="Instagram post">
+    <div class="lab">3 · Instagram post · 4:5</div><h2>Photo post, and a quote post in each theme</h2>
+    <div class="posts">
+      <div class="icb-photo icb-wash icb-scrim-bottom post" data-scrim="bottom" data-count>
+        <img src="../../../public/images/discovery/regions-hero.avif" alt="Ripe coffee cherries on the branch">
+        <div class="lab">Estate notes</div><h3>Picked ripe, <em>one cherry at a time.</em></h3><span class="mark">Indian Coffee Beans</span>
+      </div>
+      <div class="post quote icb-ambient icb-terrain icb-grain" data-theme="light" data-count>
+        <div class="lab">From a drinker</div>
+        <h3><em>“A great coffee with balanced body, sweetness and brightness.”</em></h3>
+        <div><span class="mark">Indian Coffee Beans</span><br><small>Independent ratings. No paid positions.</small></div>
+      </div>
+      <div class="post quote icb-ambient icb-terrain icb-grain" data-theme="dark" data-count>
+        <div class="lab">From a drinker</div>
+        <h3><em>“A great coffee with balanced body, sweetness and brightness.”</em></h3>
+        <div><span class="mark">Indian Coffee Beans</span><br><small>Independent ratings. No paid positions.</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo" data-demo="Visiting card">
+    <div class="lab">4 · Visiting card · 89 × 51 mm</div><h2>Contour on the front, flat on the back</h2>
+    <div class="vcards">
+      <div class="vc icb-ambient icb-terrain" data-theme="dark" data-count><span class="mark">Indian<br>Coffee Beans</span><small>India’s specialty coffee, independently rated.</small></div>
+      <div class="vc icb-flat" data-theme="light"><span class="who">Name Surname</span><div><small>Role</small><small>name@example.com · +91 00000 00000</small><small>indiancoffeebeans.com</small></div></div>
+      <div class="vc icb-ambient icb-terrain" data-theme="light" data-count><span class="mark">Indian<br>Coffee Beans</span><small>India’s specialty coffee, independently rated.</small></div>
+      <div class="vc icb-flat" data-theme="dark"><span class="who">Name Surname</span><div><small>Role</small><small>name@example.com · +91 00000 00000</small><small>indiancoffeebeans.com</small></div></div>
+    </div>
+  </section>
+
+  <section class="demo" data-demo="Feature surfaces">
+    <div class="lab">5 · Feature surfaces</div><h2>Three textures, one per place</h2>
+    <div class="posts">
+      <div class="icb-surface icb-surface--weave"><div><div class="lab" style="color:inherit;opacity:.8">Roasted Weave</div><h3 style="font-size:28px;margin:10px 0">Every cup adds to the picture.</h3></div><small>Community and rating moments.</small></div>
+      <div class="icb-surface icb-surface--contour"><div><div class="lab" style="color:inherit;opacity:.8">Estate Contour</div><h3 style="font-size:28px;margin:10px 0">Start from where it grew.</h3></div><small>Regions and estates.</small></div>
+      <div class="icb-surface icb-surface--paper"><div><div class="lab">Laid Paper</div><h3 style="font-size:28px;margin:10px 0">Good coffee opens questions.</h3></div><small>Field guide and editorial.</small></div>
+    </div>
+  </section>
+
+  <section id="checks"><div class="lab">Self-check · runs on load, in the theme shown</div><ul></ul></section>
+</div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const IK = p => `https://ik.imagekit.io/indiancoffeebeans/products/${p}?tr=w-480,f-auto`;
+const COFFEES = [['shodh-coffee/shodh-coffee-almost-home-0', 'Almost Home', 'Shodh Coffee'], ['classic-coffees/classic-coffees-banana-black-honey-1', 'Banana Black Honey', 'Classic Coffees'], ['seasonsync/seasonsync-the-winter-roast-1', 'The Winter Roast', 'SeasonSync'], ['caffinary/caffinary-kora-zinfandel-1', 'Kora Zinfandel', 'Caffinary']];
+$('#cards').innerHTML = COFFEES.map(([i, n, r]) => `<a class="card"><span class="icb-frame"><img src="${IK(i)}" alt="${n} packaging"></span><b>${n}</b><span>${r}</span></a>`).join('');
+
+const root = document.documentElement;
+if (location.hash === '#dark') root.dataset.theme = 'dark';
+$('#tog').onclick = e => { e.preventDefault(); root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark'; check(); };
+
+// ── self-check: contrast, packaging fidelity, motif restraint ──
+const probe = document.createElement('i'); document.body.append(probe);
+const rgb = (c, scope = root) => { scope.append(probe); probe.style.color = c; const m = getComputedStyle(probe).color.match(/[\d.]+/g).map(Number); return getComputedStyle(probe).color.startsWith('color(') ? m.slice(0, 3).map(v => v * 255) : m.slice(0, 3); };
+const lum = c => { const [r, g, b] = c.map(v => v / 255).map(v => v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * r + .7152 * g + .0722 * b; };
+const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+const over = (fg, a, bg) => fg.map((v, i) => v * a + bg[i] * (1 - a));
+function check() {
+  const out = [], add = (ok, msg) => out.push(`<li class="${ok ? 'ok' : 'bad'}">${msg}</li>`);
+  for (const th of ['light', 'dark']) {
+    const s = document.createElement('div'); s.dataset.theme = th; document.body.append(s);
+    const t = n => rgb(`var(--icb-${n})`, s);
+    const pairs = [['ink', 'ground', 4.5], ['ink', 'surface', 4.5], ['ink', 'glow', 4.5], ['muted', 'ground', 4.5], ['muted', 'surface', 4.5], ['muted', 'glow', 4.5], ['accent', 'ground', 4.5], ['accent', 'surface', 4.5], ['on-primary', 'primary', 4.5], ['star', 'ground', 3]];
+    const res = pairs.map(([a, b, min]) => [a, b, min, ratio(t(a), t(b))]), bad = res.filter(r => r[3] < r[2]);
+    add(!bad.length, `${th}: text contrast — ` + res.map(([a, b, , r]) => `${a}/${b} ${r.toFixed(1)}`).join(', '));
+    document.body.append(probe); s.remove();
+  }
+  // scrim: text over a pure white photo at the weakest alpha the rule allows (edge of the solid half)
+  const scrim = rgb('rgb(var(--icb-scrim))'), on = rgb('var(--icb-on-image)');
+  for (const [k, a] of [['bottom', .8], ['side', .78]]) { const r = ratio(on, over(scrim, a, [255, 255, 255])); add(r >= 4.5, `${k} scrim: worst case over a white photo ${r.toFixed(1)} (needs 4.5)`); }
+  for (const el of $$('[data-scrim]')) {
+    const box = el.getBoundingClientRect(), ts = [...el.children].filter(c => c.tagName !== 'IMG').map(c => c.getBoundingClientRect());
+    const far = el.dataset.scrim === 'bottom' ? (box.bottom - Math.min(...ts.map(t => t.top))) / box.height : (Math.max(...[...el.querySelectorAll('.lab,h3')].map(c => { const r = document.createRange(); r.selectNodeContents(c); return r.getBoundingClientRect().right; })) - box.left) / box.width;
+    const lim = el.dataset.scrim === 'bottom' ? .5 : .55;
+    add(far <= lim + .005, `${el.closest('[data-demo]').dataset.demo}: text reaches ${(far * 100).toFixed(0)}% into the ${el.dataset.scrim} scrim (limit ${Math.round(lim * 100)}%)`);
+  }
+  // packaging: nothing may alter its colour
+  const packs = $$('.icb-frame>img'), dirty = packs.filter(i => { for (let e = i; e && e !== document.body; e = e.parentElement) { const c = getComputedStyle(e); if (c.mixBlendMode !== 'normal' || c.filter !== 'none' || +c.opacity !== 1 || e.matches('.icb-photo,.icb-wash,.icb-ambient,.icb-terrain')) return true; } return getComputedStyle(i.parentElement).backgroundColor !== 'rgb(251, 246, 236)'; });
+  add(packs.length > 0 && !dirty.length, `packaging: ${packs.length} images, ${dirty.length} altered by blend, filter, opacity, wash or motif; all on the paper tile`);
+  // motif restraint: one terrain per composition
+  for (const d of $$('[data-demo]')) { const units = d.querySelectorAll('[data-count]').length ? $$('[data-count]').filter(u => d.contains(u)) : [d]; const worst = Math.max(...units.map(u => (u.matches('.icb-terrain') ? 1 : 0) + u.querySelectorAll('.icb-terrain').length)); add(worst <= 1, `${d.dataset.demo}: at most ${worst} terrain motif per composition`); }
+  add(!$$('.icb-surface .icb-frame, .icb-surface .icb-surface, .icb-surface.icb-terrain, .icb-surface.icb-ambient').length, 'feature surfaces: never stacked, never behind packaging');
+  for (const [k, fg, bg] of [['weave', '#F6EFE3', '#2E1D15'], ['contour', '#F6EFE3', '#4A2E1F']]) { const r = ratio(rgb(fg), rgb(bg)); add(r >= 4.5, `${k} surface: text on its lightest tone ${r.toFixed(1)}`); }
+  add(!$$('.icb-terrain .icb-frame, .icb-photo.icb-terrain, .icb-photo .icb-terrain').length, 'motif never sits behind packaging or on a photograph');
+  $('#checks ul').innerHTML = out.join('');
+  document.title = (out.some(o => o.includes('"bad"')) ? 'FAIL' : 'PASS') + ' · ICB visual system';
+}
+addEventListener('load', () => document.fonts.ready.then(check));
+</script>
+</html>

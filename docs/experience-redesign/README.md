@@ -1,6 +1,6 @@
 # ICB Experience Redesign
 
-**Status (2026-11-11):** Core experience direction confirmed — **Find, Rate, Buy**. Identity decisions made: **Gambetta + Ranade** typefaces and the **Deep Roast** palette in light and dark. Texture and feature surfaces are being tried in the [playground](playground/index.html) and are not decided. Next: finish motifs and texture, then components, motion and final copy/QA. No production code or database change is approved.
+**Status (2026-11-11):** Core experience direction confirmed — **Find, Rate, Buy**. Identity decisions made: **Gambetta + Ranade** typefaces and the **Deep Roast** palette in light and dark. Texture, signature motif and gradient roles are decided and that phase is closed; see [22](22-visual-system.md). Next: image framing, iconography and components, then motion and final copy/QA. No production code or database change is approved.
 
 **Branch:** `design/experience-redesign` in `3lokai/icb-v2`. Production stays on `main`.
 
@@ -10,12 +10,13 @@
 |---|---|
 | [20-direction.md](20-direction.md) | **Start here.** The approved UX direction, reference screens, next phases and open behaviour rules. |
 | [21-penpot-design-workspace.md](21-penpot-design-workspace.md) | **Current Penpot page map**, pre/post cleanup versions, editable references, identity-phase workbench and next steps. |
+| [22-visual-system.md](22-visual-system.md) | **Locked visual system**: texture, terrain motif, wash, scrims and ambient surface, with tokens and SVG assets in [system/](system/) and the verification results. |
 | [07-decisions.md](07-decisions.md) | Decision log with statuses and dates. |
 | [17-review-intelligence-and-monetization.md](17-review-intelligence-and-monetization.md) | Business north star: independent reviews and coffee intelligence. |
 | [05-technical-guardrails.md](05-technical-guardrails.md) | Architecture, SEO, performance and accessibility constraints. |
 | [current-state-audit.md](current-state-audit.md) | Evidence-backed inventory of the live site and traffic baseline. |
 | [requirements-traceability.md](requirements-traceability.md) | Requirement IDs traced to source and status. |
-| [playground/index.html](playground/index.html) | **Working identity source.** Single-file HTML replica of the homepage, directory, coffee page and rating, with live controls for colour, type, motifs and texture. Open it in a browser; no build. |
+| [playground/index.html](playground/index.html) | Exploration workbench (the decided system is in [22](22-visual-system.md)). Single-file HTML replica of the homepage, directory, coffee page and rating, with live controls for colour, type, motifs and texture. Open it in a browser; no build. |
 | [samples/](samples/) | Exports of the Penpot boards, plus playground captures of the decided identity (`identity-deep-roast-*.jpg`). |
 | [archive/](archive/) | Superseded exploration (directions A–F, Atlas, Concierge, earlier screenplays and handoffs). History only; do not build from it. |
 
