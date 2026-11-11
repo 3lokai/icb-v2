@@ -1,6 +1,6 @@
 # 20 — The fixed direction: Find, rate, buy
 
-**Status:** Design direction **CONFIRMED** by the owner on 2026-11-10. The exact visual system, components and motion are **not** final; they are the next three phases below. No production code or database change is approved.
+**Status:** Find/Rate/Buy experience **CONFIRMED** (2026-11-10); typography, Deep Roast palette, textures, motifs and gradients **CONFIRMED** (2026-11-11). Sitemap/IA, final component contracts, motion and copy QA are **next**, not approved. Start with [23 — Next Design Phase](23-next-design-phase.md). No production code or route change is approved.
 
 **Penpot:** file `New File 2` (`d2ec9836-375a-810a-8008-ebd27eb28057`). Workspace restructuring is **complete**; the original 46 G/H/I boards and all eight I-v2 homepage boards are preserved. The working redraws have their missing mixed-style content restored, though rich colours may not be pixel-identical. See [21](21-penpot-design-workspace.md).
 
@@ -59,11 +59,11 @@ These are frozen Penpot reference exports, **not a live data feed**. Real catalo
 
 The earlier one-screen desktop homepage is kept for comparison: [samples/home-v1-desktop.png](samples/home-v1-desktop.png).
 
-## Next steps, in order
+## Locked visual identity (reference; phase closed)
 
-### 1. Typography, colour, iconography, motifs
+Next-stage sequence and gates are in **[23 — Information Architecture → Components → Copy](23-next-design-phase.md)**. Keep identity details below as the stable reference, not an invitation to run more visual alternatives.
 
-**Character (PROPOSED, 2026-11-11):** quiet authority in the typography and information design; warmth in the colour and voice; curiosity and liveliness in the imagery, interactions and graphic details. *ICB provides the structure. Coffee provides the colour. People provide the personality.*
+**Brand character (CONFIRMED, 2026-11-11):** **"Quiet authority in the typography and information design; warmth in the colour and voice; curiosity and liveliness in the imagery, interactions and graphic details."** An optional supporting interpretation remains: *ICB provides the structure. Coffee provides the colour. People provide the personality.*
 
 The three Penpot identity candidates (A · Editorial Heritage, B · Contemporary Craft, C · The Collector's Index) are **superseded** by the decisions below. Identity work now happens in the [playground](playground/index.html).
 
@@ -94,9 +94,9 @@ Weights, sizes and the small-label treatment are still open. Try them in the [pl
 | Accent (Rate, links) | `#9C4526` | `#E28D66` |
 | Star | `#93701F` | `#D9A84A` |
 
-Texture and feature surfaces (paper grain, pressed image frame, Roasted Weave, Estate Contour, Laid Paper) are in the playground and not yet decided.
+**Texture, motif and gradients are CONFIRMED and closed (2026-11-11):** restrained paper grain and package framing; an organic terrain contour signature; espresso wash for editorial photos; bottom scrim for text on images (side scrim when appropriate); selected Light + Contour ambient moments; and separate Roasted Weave / Estate Contour / Laid Paper feature treatments. See [22 — Visual System](22-visual-system.md). Their assignment to particular page intents remains OPEN.
 
-Earlier starting point, as drawn (superseded by the tables above):
+**Historical only — superseded palette and fonts** (the original I boards remain an archive, not a design token source):
 
 | | I boards | Homepage v2 |
 |---|---|---|
@@ -108,20 +108,17 @@ Earlier starting point, as drawn (superseded by the tables above):
 | Brown (primary) | `#4A2E1F` | `#4A2E1F` |
 | Ground | `#F4EDE1`, card `#FBF7F0` | `#F4EDE2` → `#F0E6D8` → `#EDE1D1` by stage |
 
-To settle here:
-- ~~One palette~~ and ~~small-text contrast~~: settled by Deep Roast (all text ≥ 4.5:1 on ground and card).
-- Texture: paper grain, the pressed image frame, and which of the three feature surfaces to keep and where they may appear.
-- Dark-mode image tiles: white-background pack shots sit in bright tiles on the dark ground.
-- Sidebar, chart, focus and destructive tokens.
-- Whether the ground changes per scroll stage.
-- Icon rules, including what `↗` means. It marks leaving for the roaster's site in the I boards and is used on internal links in v2.
-- Star rendering, including a half star (4.5 currently shows five full stars).
-- Motifs, texture and gradients: **CONFIRMED 2026-11-11, phase closed.** See [22-visual-system.md](22-visual-system.md).
-- One image frame for mixed source imagery (pack shots, lifestyle photos, info cards).
+**Still OPEN within implementation (not a reason to re-open the visual identity):** font sizes/weights and small-label treatment; dark-theme packaging plate and mixed-image framing specifics; sidebar, chart, focus and destructive UI tokens; icon library and internal/external arrow meaning; half-star rendering and accessibility; feature-surface assignment. Design these in Phase C of [23](23-next-design-phase.md).
 
-### 2. Components
+### 1. Sitemap, navigation and page-template coverage — NEXT
 
-Buttons, cards, chips, filters, search, rating stars and sheet, review item, doorway strips, navigation. To settle here:
+Begin with a fresh **route/SEO audit**, then compare current versus proposed visitor-facing navigation, contextual discovery paths and entity templates. Preserve canonical URLs and existing redirect equity. Distinguish `/coffees/[slug]` **discovery landings** from the canonical coffee detail under `/roasters/[slug]/coffees/[coffeeSlug]`. Plan potential estates, varieties, gear and editorial connections only where data and existing ADRs support them. Owner approval is required before any route changes.
+
+**Full Phase A brief and deliverables:** [23 — Next Design Phase](23-next-design-phase.md).
+
+### 2. Information hierarchy, images, iconography and components
+
+After sitemap/template sign-off, define content/provenance and exact dynamic states before designing buttons, cards, chips, filters, search, review evidence, doorway strips, navigation, image treatment and iconography. Set working CTA terminology here; polish it later. To settle here:
 - One wording each for the Rate action, the search placeholder and the ratings link.
 - **PROPOSED naming rule:** call visitor-facing browse/results the **directory**. Reserve `record` for editorial positioning, not another browsing destination. `Catalogue` is the underlying dataset, not a third user-facing nav choice.
 - Desktop and mobile versions of the same component carrying the same information (ways in, recently rated).
@@ -132,9 +129,9 @@ Buttons, cards, chips, filters, search, rating stars and sheet, review item, doo
 
 Starts from the motion grammar board: static at first paint, one native sideways-scrolling gallery, reduced motion as an immediate state change, all content in the DOM, no WebGL on initial mobile load by default. **PROPOSED for the next prototype (not owner-confirmed):** a normal horizontal rail on desktop and mobile; no vertical scroll hijack or pinned scroll-to-sideways mapping. Scroll-linked transforms/Three.js remain optional experimental enhancement behind performance/accessibility gates, not the base interaction.
 
-### 4. Final copy and cross-template polish
+### 4. Final copy and cross-template QA (wording begins in the IA phase)
 
-Establish a concise, authoritative editorial voice and the factual/provenance vocabulary in parallel with visual identity; **finalize** CTAs, error/empty states, route labels, microcopy and consistency after component and interaction testing. Fix annotation text, contrast, screen-reader labels and mobile touch targets before any implementation handoff; don't assume these resolve solely by choosing a font.
+Establish navigation language, user tasks and provenance vocabulary **during IA and content architecture**; **finalize** CTAs, error/empty states, microcopy and consistency after component and interaction testing. Fix annotation text, contrast, screen-reader labels and mobile touch targets before any implementation handoff; don't assume these resolve solely by choosing a font.
 
 ## Open rules to decide before they are built
 
