@@ -78,6 +78,9 @@ export function loadPostHog(): Promise<PostHog> {
           // its frames point at the page HTML, never a /_next bundle. The
           // companion "t[r]" error from that script is too generic to filter.
           "standardSelectors",
+          // Firefox for iOS injected-script global; arrives frameless, so the
+          // "__firefox__" frame match above never sees it.
+          "EmptyRanges",
           // Browser page-translate swapping React-owned text nodes, so React's
           // commit-phase removeChild misses. Kept on after the CookieNotice
           // portal fix (2952d7d): 16 events in 30 days, 4 of 5 sessions
