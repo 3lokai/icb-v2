@@ -1,6 +1,6 @@
 # 25 — Page-Level Information Hierarchy (Phase B)
 
-**Status (2026-11-11): parts 1–2 decided by the owner; parts 3–4 (homepage, roaster, regions, estates) decided; part 5 (articles, tools, account, §8) PROPOSED.** Builds on the approved architecture in [24](24-information-architecture.md). Covered so far: the coffee card, the coffee directory, the discovery landing page and coffee detail (§5). Homepage, roaster/region/estate, and articles/tools/account follow in that order.
+**Status (2026-11-11): Phase B content hierarchy approved as the design baseline, with explicit open implementation/component details.** Coffee cards, directory, discovery landing, coffee detail, homepage, roaster, regions, estates, articles, tools and Profile/Settings have agreed content structure. Account Profile submenu children remain OPEN for the component phase. This document specifies content and sequence, not pixel layout or motion implementation. Builds on [24](24-information-architecture.md); no production change is authorized.
 
 This document decides **what appears and in what order**, not how it looks. Wording is working copy.
 
@@ -108,8 +108,8 @@ The top organic template, mostly reached on mobile. Today the order is: breadcru
 | 8 | Estates here | region pages, once estates exist | I | Qualified estates in this region, each with coffee count |
 | 9 | Read more | if curated | E | Existing `learnLinks`; two to four articles |
 | 10 | Tool handoff | if relevant | E | Existing utility card (e.g. calculator for brew pages) |
-| 11 | FAQ | yes | E (config-owned) | Unchanged; keeps FAQPage schema |
-| 12 | Related | yes | E / I | Existing related links: sibling values and nearby regions |
+| 11 | Related | yes | E / I | Existing related links: sibling values and nearby regions |
+| 12 | **FAQ — final content block** | yes | E (config-owned) | Unchanged FAQ content, at the end of the page before the footer; preserve existing valid structured data |
 
 ### Actions
 
@@ -223,6 +223,10 @@ Mainly a door for direct and returning traffic (second-highest landing sessions,
 - Landing sessions by site section (GA4, 1 Aug–30 Oct, top 200 landing pages, 11,123 of 17,678 sessions): landing pages 2,511 · Learn 2,357 · Home 2,171 · roaster detail 1,011 · coffee detail 915 · coffee directory 440 · Communities 353 · roaster directory 350 · Tools 187. `/regions` and `/curations` do not appear in the top 200.
 - Recommended before the redesign ships: add view and click events per homepage section, so the new bands can be compared with a baseline.
 
+### Experience composition principle: connected bands, not isolated sections (owner clarification, 2026-11-11)
+
+The bands below define **required content and narrative order, not visually independent section boxes**. The owner is comfortable with technically separate sections, provided their transitions, scroll-driven motion and continuous visual language make the page feel like one evolving story. Modern scroll-linked animations are explicitly in scope for composition/prototyping, not approved as a particular library or scroll-hijacking mechanism. Preserve native scroll, readable content, reduced-motion alternatives, SEO-visible DOM content and mobile performance. The FAQ remains the final content block. Design the transitions *between* bands, not just motion *inside* each band.
+
 ### Principle: show, don't tell (owner direction, 2026-11-11)
 
 Each band demonstrates the breadth of what ICB covers through real data, not through statements about it, while still leading into one of the three journeys. The test for every band in the design phases: could a visitor infer the scale and depth of the directory from what is on screen, without reading a claim? Sentences such as "India's most comprehensive coffee directory" fail it; a row of real packs, a live count beside each region, or a dated rating passes.
@@ -327,7 +331,7 @@ Aggregate figures ("4.3 · 12 ratings") carry no avatars; this rule is for indiv
 
 ### Site-wide rule: FAQ last (owner direction, 2026-11-11)
 
-Every important page ends with its FAQ as the final content block before the footer, with FAQPage schema: homepage, landing pages, coffee detail, roaster detail, estate detail, and articles and tools where one exists. It helps search and AI-answer visibility. No redesign step may remove, collapse out of the markup, or move it above other content.
+For pages **with an existing or editorially justified FAQ**, place it as the **last content block before the footer**: homepage, existing discovery landings, coffee detail, roaster detail, and articles/tools where present. Estate pages may add an FAQ **only if substantiated questions and answers exist**; a new estate FAQ is not mandatory. Preserve genuine FAQ content, internal links, current SEO metadata and appropriate structured data. Do not assume FAQPage rich-result display or add thin/templated FAQs solely for schema. The discovery landing Related block moves **before** FAQ (§3); nothing follows FAQ except the footer. Avoid hiding FAQ text from rendered HTML.
 
 ## 7. Roaster, regions and estates
 
@@ -386,6 +390,7 @@ Published only for estates that pass the ADR-013 gate (India, has a description,
 | 7 | Photos | if held | E | With credit |
 | 8 | In this region | always | I | Other qualified estates nearby; link to the region page |
 | 9 | Read more | if an article features it | E | Explicit references only |
+| 10 | FAQ — final block | only if meaningful FAQ content exists | E | Original, factual estate questions and answers; omit otherwise. Do not add boilerplate merely for schema |
 
 No Buy and no estate rating: an estate is an origin, not a product. Rating happens on its coffees.
 
@@ -405,7 +410,7 @@ A directory in the same template as `/coffees` and `/roasters`: title with live 
 | B18 | Roaster partner call-to-action reduced to one line | **Accepted 2026-11-11** |
 | B19 | Estates are not rateable; ratings stay on coffees and roasters | **Accepted 2026-11-11** |
 | B20 | Estate page lists every sourcing roaster, ordered by coffee count | **Accepted 2026-11-11** |
-| B21 | Add per-section homepage tracking before the redesign ships | **Done 2026-11-11**: `home_section_viewed` and `home_section_clicked` on the 13 sections below the hero (uncommitted) |
+| B21 | Add per-band homepage tracking before the redesign ships | Approved requirement. Local/uncommitted work on `home_section_viewed` and `home_section_clicked` was reported; GitHub branch and production status not verified. Owner is handling urgent production fixes in a separate PR |
 
 ## 8. Articles, tools and account
 
@@ -495,13 +500,13 @@ Leaving Settings: **Wishlist** moves to the profile (decided). **My reviews** fo
 
 #### Account menu (header avatar)
 
-| Item | Goes to |
-|---|---|
-| My profile | `/profile` |
-| Settings | `/dashboard` |
-| Sign out | — |
+| Item | Goes to | Status |
+|---|---|---|
+| **Profile ▸** | `/profile` (parent entry) | **APPROVED** expandable parent; its important child shortcuts and exact labels are **OPEN**, to decide in the account-menu component phase |
+| **Settings** | `/dashboard` | **APPROVED** |
+| **Sign out** | Existing sign-out action | **APPROVED** |
 
-Anonymous visitors who have rated see "Your profile" (`/profile/anon`) and Sign in.
+Do not introduce My ratings, Wishlist or Developer as competing top-level avatar-menu items: they live in Profile or Settings. Anonymous visitors who have rated see "Your profile" (`/profile/anon`) and Sign in. Make the Profile parent a usable link as well as an accessible submenu trigger; the exact interaction pattern is part of component design.
 
 Other rules: sign-in is asked for when it is needed (fourth rating, wishlist), with the reason stated, never on arrival. Onboarding stays two steps and skippable. Empty profile: "You haven't rated anything yet. Find a coffee you've tried →" opening search in rating mode.
 
@@ -518,6 +523,6 @@ Other rules: sign-in is asked for when it is needed (fourth rating, wishlist), w
 |---|---|---|
 | B22 | Articles: no automatic "In this article" strip; existing spotlight and collection embeds do that job, plus one category link at the end | **Decided 2026-11-11** |
 | B23 | Tools put the tool first, explanation after | **Accepted 2026-11-11.** Each tool may be redesigned individually later for better use; out of scope here |
-| B24 | Profile holds everything about a member's coffees, including Wishlist (owner-only); the dashboard is labelled Settings; account menu is My profile, Settings, Sign out | **Decided 2026-11-11** |
+| B24 | Profile holds members' coffee activity including private Wishlist; dashboard is labelled Settings. Avatar menu: expandable Profile (children TBD), Settings, Sign out | **Approved 2026-11-11**; submenu children OPEN until component phase |
 | B26 | My reviews folds into the profile's Ratings section (full list, coffees and roasters) | **Accepted 2026-11-11** |
-| B25 | 404 gains a search field | Yes |
+| B25 | 404 gains a search field | Approved design requirement; not implemented |
