@@ -4,6 +4,10 @@
 
 This is a design reference. Production `DESIGN.md` and production code are unchanged until an ADR in `docs/decisions/`.
 
+**Brand character (CONFIRMED):** "Quiet authority in the typography and information design; warmth in the colour and voice; curiosity and liveliness in the imagery, interactions and graphic details."
+
+**This phase is closed.** The next activity is not another visual treatment: review current and proposed navigation, sitemap/SEO and template coverage using [23 — Next Design Phase](23-next-design-phase.md), then design components and finish copy/QA.
+
 ## Assets
 
 | File | What it is |
