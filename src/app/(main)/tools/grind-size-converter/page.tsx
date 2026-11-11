@@ -133,7 +133,7 @@ const STEPS = [
 /** Grind size converter landing page with tool UI, how-it-works, and FAQ. */
 export default function GrindSizeConverterPage() {
   return (
-    <div className="pb-20">
+    <div className="pb-16">
       <StructuredData schema={[grindHowToSchema, grindToolSchema]} />
 
       <PageHeader

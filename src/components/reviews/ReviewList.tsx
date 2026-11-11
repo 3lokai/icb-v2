@@ -66,7 +66,7 @@ export function ReviewList({
         {reviews.length > 1 && (
           <select
             aria-label="Sort reviews"
-            className="text-caption text-foreground bg-background border border-input/60 rounded-md px-3 py-1.5 hover:border-primary/50 focus:border-primary/50 transition-colors"
+            className="text-caption text-foreground bg-background border border-input/60 rounded-md px-3 py-2 hover:border-primary/50 focus:border-primary/50 transition-colors"
             defaultValue="latest"
           >
             <option value="latest">Latest first</option>
@@ -116,12 +116,12 @@ function ReviewItem({ review }: { review: ReviewWithProfile }) {
     : "?";
 
   return (
-    <div className="group relative py-5 border-b border-border/40 last:border-0 transition-colors hover:bg-muted/20 rounded-lg px-3 -mx-3">
+    <div className="group relative py-6 border-b border-border/40 last:border-0 transition-colors hover:bg-muted/20 rounded-lg px-3 -mx-3">
       <Stack gap="4">
         {/* Rating & Recommend Badge */}
         <Cluster gap="3" align="center" className="flex-wrap">
           {review.rating && (
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               {[...Array(5)].map((_, i) => (
                 <Icon
                   key={i}
@@ -153,7 +153,7 @@ function ReviewItem({ review }: { review: ReviewWithProfile }) {
               <Icon
                 icon={review.recommend ? ThumbsUpIcon : ThumbsDownIcon}
                 size={12}
-                className="mr-1.5"
+                className="mr-2"
               />
               {review.recommend ? "Recommends" : "Doesn't recommend"}
             </Badge>
@@ -179,7 +179,7 @@ function ReviewItem({ review }: { review: ReviewWithProfile }) {
                 <Icon
                   icon={review.value_for_money ? ThumbsUpIcon : ThumbsDownIcon}
                   size={11}
-                  className="mr-1.5"
+                  className="mr-2"
                 />
                 {review.value_for_money ? "Good value" : "Not great value"}
               </Badge>

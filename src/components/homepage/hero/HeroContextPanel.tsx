@@ -63,7 +63,7 @@ function CoffeeRowLink({
   return (
     <Link
       className={cn(
-        "group flex items-center gap-3.5 rounded-2xl border border-white/10 bg-black/25 p-3.5",
+        "group flex items-center gap-4 rounded-2xl border border-white/10 bg-black/25 p-4",
         "transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:bg-black/40 hover:shadow-lg"
       )}
       href={href}
@@ -153,7 +153,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
   } = hero;
 
   const panelClass =
-    "w-full min-w-0 rounded-3xl border border-white/10 bg-black/45 p-7 shadow-2xl backdrop-blur-md on-media-scrim-strong";
+    "w-full min-w-0 rounded-3xl border border-white/10 bg-black/45 p-6 shadow-2xl backdrop-blur-md on-media-scrim-strong";
 
   switch (segment) {
     case "discovery":
@@ -168,7 +168,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
               <div className="flex flex-wrap gap-2">
                 {HERO_QUICK_CHIPS.map((chip) => (
                   <Link
-                    className="rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-overline text-white/90 transition-colors hover:border-accent/50 hover:bg-white/10"
+                    className="rounded-full border border-white/20 bg-white/5 px-3 py-2 text-overline text-white/90 transition-colors hover:border-accent/50 hover:bg-white/10"
                     href={chip.href}
                     key={chip.label}
                   >
@@ -304,7 +304,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
               </p>
             )}
             <ProgressDots count={ratingCount} />
-            <div className="mt-4 border-t border-white/10 pt-5">
+            <div className="mt-4 border-t border-white/10 pt-6">
               <p className="mb-3 text-overline font-semibold uppercase tracking-wider text-accent">
                 Unlock With A Profile
               </p>
@@ -351,7 +351,7 @@ export function HeroContextPanel({ totals, hero }: HeroContextPanelProps) {
       return (
         <div className={panelClass}>
           <Stack gap="4">
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-2">
               <PanelHeader icon={UserCircleIcon}>Your profile</PanelHeader>
               <ProgressDots count={ratingCount} total={10} />
             </div>

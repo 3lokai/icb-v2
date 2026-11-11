@@ -50,7 +50,7 @@ export function NewsletterSection({
               </p>
             </Stack>
 
-            <div className="grid md:grid-cols-2 gap-10">
+            <div className="grid md:grid-cols-2 gap-8">
               <ul className="space-y-4">
                 {[
                   "New roaster discoveries",
@@ -71,7 +71,7 @@ export function NewsletterSection({
               </ul>
 
               <form
-                className="space-y-5"
+                className="space-y-6"
                 onSubmit={onSubmit}
                 aria-busy={formSubmitting}
                 noValidate={false}
@@ -96,7 +96,7 @@ export function NewsletterSection({
                   </label>
                   <input
                     autoComplete="email"
-                    className="w-full px-5 py-3.5 rounded-xl border border-border/60 bg-background text-body focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all outline-none"
+                    className="w-full px-6 py-4 rounded-xl border border-border/60 bg-background text-body focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all outline-none"
                     id="email"
                     name="email"
                     placeholder="yourname@gmail.com"

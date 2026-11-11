@@ -132,7 +132,7 @@ const calculatorToolSchema = {
 
 export default function CoffeeCalculatorPage() {
   return (
-    <div className="pb-20">
+    <div className="pb-16">
       {/* Structured Data */}
       <StructuredData schema={[calculatorHowToSchema, calculatorToolSchema]} />
 

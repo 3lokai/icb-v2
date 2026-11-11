@@ -159,7 +159,7 @@ export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
                   {i < STEPS.length - 1 ? (
                     <div
                       className={cn(
-                        "hidden h-0.5 flex-1 self-center rounded-full md:-mt-10 md:block",
+                        "hidden h-0.5 flex-1 self-center rounded-full md:-mt-8 md:block",
                         "min-w-[0.5rem] max-w-none",
                         activeIndex >= 0 && i < activeIndex
                           ? "bg-gradient-to-r from-accent/60 to-accent/40"

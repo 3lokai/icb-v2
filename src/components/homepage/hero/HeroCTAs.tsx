@@ -13,7 +13,7 @@ import { capture } from "@/lib/posthog";
 import { useSearchContext } from "@/providers/SearchProvider";
 import type { HeroSegmentPayload } from "@/types/hero-segment";
 
-const heroCtaButtonClass = "hover-lift px-8 lg:px-10";
+const heroCtaButtonClass = "hover-lift px-8 lg:px-8";
 
 type HeroCTAsProps = {
   hero: HeroSegmentPayload;

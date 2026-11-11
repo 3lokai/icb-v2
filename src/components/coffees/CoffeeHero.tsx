@@ -119,8 +119,8 @@ export function CoffeeHero({ coffee, stats }: CoffeeHeroProps) {
     .join(" — ");
 
   return (
-    <Band id="overview" className="py-10 md:py-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-start">
+    <Band id="overview" className="py-8 md:py-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
         {/* Image */}
         <div className="w-full max-w-md mx-auto md:mx-0">
           <CoffeeImageCarousel
@@ -153,7 +153,7 @@ export function CoffeeHero({ coffee, stats }: CoffeeHeroProps) {
           {/* Rating Badge + Price */}
           <div className="flex flex-wrap items-center gap-4">
             {stats && stats.review_count !== null && stats.review_count > 0 ? (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border/40 bg-card">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-full border border-border/40 bg-card">
                 <Icon
                   icon={StarIcon}
                   size={16}
@@ -173,7 +173,7 @@ export function CoffeeHero({ coffee, stats }: CoffeeHeroProps) {
             )}
 
             {coffee.summary.min_price_in_stock && (
-              <div className="px-3 py-1.5 rounded-full border border-border/40 bg-muted/20">
+              <div className="px-3 py-2 rounded-full border border-border/40 bg-muted/20">
                 <span className="text-caption text-muted-foreground">
                   From{" "}
                 </span>

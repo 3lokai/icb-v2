@@ -33,7 +33,7 @@ export function ChartCard({
       )}
     >
       {/* Chart header */}
-      <div className="flex flex-col gap-1 border-b border-border/40 px-6 py-5 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-1 border-b border-border/40 px-6 py-6 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex flex-col gap-1">
           <h2 className="text-heading text-foreground">{title}</h2>
           <p className="text-caption">{subtitle}</p>
@@ -48,7 +48,7 @@ export function ChartCard({
         {children}
 
         {callout && (
-          <div className="mt-5 rounded-sm border-l-2 border-accent bg-accent/8 px-4 py-3">
+          <div className="mt-6 rounded-sm border-l-2 border-accent bg-accent/8 px-4 py-3">
             <p className="text-body leading-relaxed text-foreground/80">
               <span className="font-medium text-accent">↳ </span>
               {callout}

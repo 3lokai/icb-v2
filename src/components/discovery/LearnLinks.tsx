@@ -25,7 +25,7 @@ export function LearnLinks({ links }: LearnLinksProps) {
 
   return (
     <Section spacing="default" contained={false}>
-      <div className="mb-10">
+      <div className="mb-8">
         <Stack gap="6">
           <div className="inline-flex items-center gap-4">
             <span className="h-px w-8 md:w-12 bg-accent/60" />

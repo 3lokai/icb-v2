@@ -118,7 +118,7 @@ export function TopProfileCard({
 
           <div className="mt-auto flex flex-col gap-4 pt-2">
             {methods.length ? (
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {methods.map((m) => (
                   <Badge
                     key={m}
@@ -131,7 +131,7 @@ export function TopProfileCard({
               </div>
             ) : null}
 
-            <div className="flex items-baseline gap-1.5 border-t border-border/40 pt-4">
+            <div className="flex items-baseline gap-2 border-t border-border/40 pt-4">
               <span className="text-title tabular-nums text-foreground">
                 {profile.review_count}
               </span>

@@ -166,10 +166,10 @@ export default async function SeriesPage({ params }: Props) {
         backgroundImageAlt={series.cover?.alt || ""}
       />
 
-      <PageShell className="py-12 md:py-20">
+      <PageShell className="py-12 md:py-16">
         <div className="mx-auto max-w-4xl space-y-16">
           {hasIntro && (
-            <section className="grid gap-10 md:grid-cols-5">
+            <section className="grid gap-8 md:grid-cols-5">
               <div className="space-y-8 md:col-span-3">
                 {series.audience && (
                   <div className="space-y-2">
@@ -230,7 +230,7 @@ export default async function SeriesPage({ params }: Props) {
               </ol>
             </section>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-20 text-center">
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-16 text-center">
               <h3 className="text-heading mb-2">Series coming soon</h3>
               <p className="text-muted-foreground">
                 The first part of this series is being written.
@@ -307,7 +307,7 @@ function SeriesPartRow({ article, part }: { article: Article; part: number }) {
   return (
     <Link
       href={`/learn/${article.slug}`}
-      className="group flex items-start gap-4 py-5 md:gap-6"
+      className="group flex items-start gap-4 py-6 md:gap-6"
     >
       <span className="w-8 shrink-0 pt-1 text-body-large font-semibold tabular-nums text-accent">
         {String(part).padStart(2, "0")}

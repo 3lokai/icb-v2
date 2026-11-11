@@ -57,7 +57,7 @@ export function ProfileRatings({
       </Cluster>
 
       {ratings.length === 0 ? (
-        <Card className="bg-background py-20 border border-dashed border-border/60 rounded-3xl flex flex-col items-center justify-center text-center gap-0">
+        <Card className="bg-background py-16 border border-dashed border-border/60 rounded-3xl flex flex-col items-center justify-center text-center gap-0">
           <Icon
             icon={CoffeeIcon}
             size={32}
@@ -71,7 +71,7 @@ export function ProfileRatings({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {ratings.slice(0, 6).map((rating) => {
             const cardContent = (
-              <CardContent className="p-5">
+              <CardContent className="p-6">
                 <Stack gap="3">
                   <Cluster align="start">
                     <Stack gap="1">
@@ -88,7 +88,7 @@ export function ProfileRatings({
                         {rating.roaster}
                       </p>
                     </Stack>
-                    <div className="bg-amber-500/10 text-amber-600 px-1.5 py-0.5 rounded text-micro font-bold flex items-center gap-0.5 border border-amber-500/20">
+                    <div className="bg-amber-500/10 text-amber-600 px-2 py-0.5 rounded text-micro font-bold flex items-center gap-0.5 border border-amber-500/20">
                       <Icon
                         icon={StarIcon}
                         size={10}

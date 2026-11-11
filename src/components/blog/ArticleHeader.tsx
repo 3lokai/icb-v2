@@ -60,14 +60,14 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
       )}
 
       {/* Content */}
-      <div className="relative z-20 mx-auto w-full max-w-7xl px-4 py-12 md:px-6 md:py-20 lg:px-8">
+      <div className="relative z-20 mx-auto w-full max-w-7xl px-4 py-12 md:px-6 md:py-16 lg:px-8">
         <div className="max-w-4xl text-left">
           <Stack gap="8">
             {/* Category */}
             {category && (
               <Link
                 href={`/learn/category/${category.slug}`}
-                className="inline-flex rounded-full bg-accent/20 px-4 py-1.5 text-overline text-accent backdrop-blur-md transition-colors hover:bg-accent/30"
+                className="inline-flex rounded-full bg-accent/20 px-4 py-2 text-overline text-accent backdrop-blur-md transition-colors hover:bg-accent/30"
               >
                 {category.name}
               </Link>
@@ -87,7 +87,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
 
             {/* Metadata Bottom Row — 2-col grid on phones (dividers drop out,
                 so a plain wrap would read ragged), flex row from sm up. */}
-            <div className="grid grid-cols-2 gap-x-6 gap-y-5 pt-4 border-t border-white/10 w-full mt-4 sm:flex sm:flex-wrap sm:items-center sm:gap-6">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-6 pt-4 border-t border-white/10 w-full mt-4 sm:flex sm:flex-wrap sm:items-center sm:gap-6">
               {/* Author */}
               <div className="col-span-2 flex items-center gap-3 sm:col-auto">
                 <div className="relative size-10 shrink-0 overflow-hidden rounded-full border border-white/20">

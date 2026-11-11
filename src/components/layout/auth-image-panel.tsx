@@ -47,7 +47,7 @@ export function AuthImagePanel({
       {/* Bottom-weighted warm scrim: keeps the caption ≥4.5:1 without greying the
           whole photograph. */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
-      <figcaption className="absolute inset-x-0 bottom-0 p-8 lg:p-10">
+      <figcaption className="absolute inset-x-0 bottom-0 p-8 lg:p-8">
         <p className="text-overline text-white/70">{label}</p>
         <p className="text-heading mt-2 max-w-sm text-balance text-white">
           {caption}

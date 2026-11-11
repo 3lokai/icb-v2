@@ -6,11 +6,11 @@ import { Skeleton } from "@/components/ui/skeleton";
  * motion/react usage into the eagerly-loaded route bundle. */
 export function CuratorSpotlightSkeleton() {
   return (
-    <Section spacing="default" className="py-8 md:py-14 overflow-hidden">
+    <Section spacing="default" className="py-8 md:py-12 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
         <div className="overflow-hidden rounded-3xl border border-border/60 bg-card">
           <div className="grid grid-cols-1 lg:grid-cols-12">
-            <div className="lg:col-span-8 flex flex-col justify-center gap-6 p-6 md:p-10 lg:p-12">
+            <div className="lg:col-span-8 flex flex-col justify-center gap-6 p-6 md:p-8 lg:p-12">
               <Skeleton className="h-4 w-40" />
               <Skeleton className="h-10 w-64" />
               <Skeleton className="h-5 w-full max-w-xl" />

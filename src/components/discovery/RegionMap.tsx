@@ -511,7 +511,7 @@ export function RegionMap({
           below. Every stop is labelled now, and the swatches are aria-hidden because the
           numbers carry the scale for anyone who cannot see the colour.
         */}
-        <div className="flex flex-col gap-1.5 sm:max-w-sm">
+        <div className="flex flex-col gap-2 sm:max-w-sm">
           <p className="text-micro font-medium">
             Area under coffee, per district
           </p>

@@ -23,12 +23,12 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
   const spotlightImage = curator.gallery?.[0] || curator.logo;
 
   return (
-    <Section spacing="default" className="py-8 md:py-14 overflow-hidden">
+    <Section spacing="default" className="py-8 md:py-12 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
         <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card transition-all duration-500 hover:border-border hover:shadow-lg">
           <div className="grid grid-cols-1 lg:grid-cols-12">
             {/* Left Column: Editorial Content (approx 70%) */}
-            <div className="lg:col-span-8 relative z-10 flex flex-col justify-center p-6 md:p-10 lg:p-12 overflow-hidden">
+            <div className="lg:col-span-8 relative z-10 flex flex-col justify-center p-6 md:p-8 lg:p-12 overflow-hidden">
               {/* Decorative Brand top rule - matching homepage CtaSection */}
               <div className="absolute left-0 right-0 top-0 h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60" />
 
@@ -96,7 +96,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
                   <h3 className="text-title font-bold text-white mb-1 leading-none">
                     {curator.name}
                   </h3>
-                  <div className="flex items-center gap-1.5 text-white">
+                  <div className="flex items-center gap-2 text-white">
                     <Icon icon={MapPinIcon} size={14} className="opacity-80" />
                     <span className="text-caption font-medium uppercase tracking-wider">
                       {curator.location}

@@ -42,6 +42,36 @@ Use shared semantic colour, radius, typography and spacing tokens as we roll the
 - **Input padding.** `py-2` inside 40px left 22px for `file:h-7` (28px) and overflowed. Reverted to `py-1`.
 - APIs unchanged: no variant, size, prop or export was added or removed.
 
+## Spacing scale and layout primitives (CONFIRMED 2026-11-12)
+
+**Scale:** power of 2 with half-steps, fixed across the site — **4, 8, 12, 16, 24, 32, 48, 64, 96px** (Tailwind `1, 2, 3, 4, 6, 8, 12, 16, 24`). Off the scale: 6, 10, 14, 20, 28, 40, 56, 80, 112px. Control heights (buttons, inputs) are sizes, not spacing, and are exempt; they follow what the new design needs.
+
+**Layout primitives own spacing.** Pages and components compose these from `src/components/primitives/` instead of hand-writing section padding and gaps:
+
+| Primitive | Role | Spacing |
+|---|---|---|
+| `Section` | Vertical rhythm between page sections, with optional eyebrow, title and description | tight 24/32/48, default 32/48/64, loose 48/64/96 at mobile/tablet/desktop; header to content 48 |
+| `Stack` | Vertical gap between components | 4, 8, 12, 16, 24, 32, 48, 64 |
+| `Cluster` | Horizontal wrapping gap | 4, 8, 12, 16, 24, 32 |
+| `PageShell` | Max width and side padding | 16/24/32 |
+| `Band` | Full-bleed band | 48/64 top and bottom |
+| base `Card` (`ui/card.tsx`) | Card padding and internal gap | 24 |
+
+Rules:
+
+1. Use a primitive before writing a spacing class. New section wrappers are not created per page.
+2. Any hand-written spacing class uses a value on the scale.
+3. Adjacent sections get their separation from `Section`, not from margins on their children.
+
+**Applied on this branch (2026-11-12):**
+
+- `Section` moved from 24/40/56, 40/56/80, 56/80/112 to the values above. The other primitives were already on the scale.
+- The component playground uses `Section` and `Stack` instead of its own wrapper.
+- Sweep of hand-written classes: 492 changes in 144 files, nearest step on the scale — 6→8, 10→12, 14→16, 20→24, 28→24, 40→32, 44→48, 56→48, 80→64px.
+- Checked: type-check and lint pass; `/`, `/coffees`, `/roasters` and `/learn` render at 1280px and `/`, `/coffees` at 375px with no horizontal overflow. Only the top of `/` and `/coffees` was compared by eye; other pages were not reviewed visually.
+
+**Not swept:** `src/components/ui/` (shadcn internals; part of the Phase C step 2 audit), `src/app/api/` (OG images), and two one-off 144px and 176px values. Arbitrary values such as `lg:pb-[200px]` are untouched.
+
 ## Component playground (review surface)
 
 `src/app/design/components/` → **`/design/components`** on a dev server or preview deployment. It returns 404 on the production deployment (`VERCEL_ENV === "production"`) and is `noindex` everywhere else. It is not in the sitemap or navigation.

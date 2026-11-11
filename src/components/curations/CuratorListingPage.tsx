@@ -129,7 +129,7 @@ export function CuratorListingPage({ curators }: CuratorListingPageProps) {
       </Section>
 
       {/* Integrity note — tone anchor */}
-      <div className="mx-auto max-w-4xl py-12 md:py-20">
+      <div className="mx-auto max-w-4xl py-12 md:py-16">
         <div className="border-l border-accent/30 pl-8 md:pl-12">
           <Stack gap="6">
             <Stack gap="3">
@@ -181,8 +181,8 @@ export function CuratorListingPage({ curators }: CuratorListingPageProps) {
               <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-primary/5 blur-[80px]" />
             </div>
 
-            <div className="relative p-6 sm:p-10 md:p-14 lg:p-16">
-              <div className="grid items-center gap-10 md:gap-16 lg:grid-cols-12">
+            <div className="relative p-6 sm:p-8 md:p-12 lg:p-16">
+              <div className="grid items-center gap-8 md:gap-16 lg:grid-cols-12">
                 {/* Left: Editorial Copy */}
                 <div className="lg:col-span-7">
                   <Stack gap="8">
@@ -211,7 +211,7 @@ export function CuratorListingPage({ curators }: CuratorListingPageProps) {
                       </div>
                     </Stack>
 
-                    <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-5 pt-2">
+                    <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-6 pt-2">
                       <Button
                         asChild
                         className="hover-lift w-full sm:w-auto px-8"

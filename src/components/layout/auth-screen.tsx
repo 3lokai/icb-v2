@@ -35,7 +35,7 @@ export function AuthScreen({
 }: AuthScreenProps) {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="relative flex flex-col overflow-hidden p-6 md:p-10">
+      <div className="relative flex flex-col overflow-hidden p-6 md:p-8">
         <Decor texture="grain" />
         <Stack gap="8" className="relative h-full">
           <div className="flex justify-center md:justify-start">

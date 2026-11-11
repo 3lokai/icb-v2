@@ -73,7 +73,7 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
       >
         <div className="bg-noise pointer-events-none absolute inset-0 z-0 opacity-[0.03]" />
 
-        <CardContent className="relative z-10 flex h-full flex-1 flex-col gap-5 card-padding">
+        <CardContent className="relative z-10 flex h-full flex-1 flex-col gap-6 card-padding">
           <div className="flex items-start justify-between gap-3">
             <div className="relative overflow-hidden rounded border border-border/40 p-0.5 shadow-sm transition-colors duration-500 group-hover:border-accent/40">
               <div className="relative h-14 w-14 overflow-hidden rounded-sm grayscale transition-all duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0">
@@ -123,13 +123,13 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
 
           <div className="mt-auto pt-4">
             <Stack gap="4">
-              <div className="flex items-center justify-between border-t border-border/10 pt-5">
+              <div className="flex items-center justify-between border-t border-border/10 pt-6">
                 <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60">
                   CURATOR PICKS
                 </span>
               </div>
 
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {picks.map((pick, i) => (
                   <Badge
                     key={`${pick}-${i}`}

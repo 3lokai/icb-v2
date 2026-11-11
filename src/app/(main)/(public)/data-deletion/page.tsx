@@ -32,7 +32,7 @@ Thank you,
 [Your name]`;
 
   return (
-    <Stack gap="12" className="pb-20">
+    <Stack gap="12" className="pb-16">
       {/* Hero Header */}
       <header className="relative pt-12 text-center">
         <Section spacing="tight">
@@ -226,7 +226,7 @@ Thank you,
                     "Login credentials and session data",
                   ].map((item) => (
                     <li className="flex items-start gap-3" key={item}>
-                      <div className="h-1.5 w-1.5 rounded-full bg-accent mt-2.5" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-accent mt-3" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -244,7 +244,7 @@ Thank you,
                     "Community contributions",
                   ].map((item) => (
                     <li className="flex items-start gap-3" key={item}>
-                      <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40 mt-2.5" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40 mt-3" />
                       <span>{item}</span>
                     </li>
                   ))}

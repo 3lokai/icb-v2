@@ -205,7 +205,7 @@ export function BeanTypeProfileSection({
         )}
 
         {/* 2. Flavour profile — tags + Indian context */}
-        <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-10 shadow-xl shadow-primary/5">
+        <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-8 shadow-xl shadow-primary/5">
           <div className="relative z-10">
             <Stack gap="8">
               <Stack gap="4">
@@ -220,7 +220,7 @@ export function BeanTypeProfileSection({
                     <Badge
                       key={tag}
                       variant="secondary"
-                      className="rounded-lg border-accent/10 bg-accent/5 px-4 py-1.5 text-caption font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
+                      className="rounded-lg border-accent/10 bg-accent/5 px-4 py-2 text-caption font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
                     >
                       {tag}
                     </Badge>
@@ -228,7 +228,7 @@ export function BeanTypeProfileSection({
                 </Cluster>
               </Stack>
 
-              <div className="relative border-l-2 border-accent/30 py-1 pl-5">
+              <div className="relative border-l-2 border-accent/30 py-1 pl-6">
                 <p className="text-body leading-relaxed text-foreground/80">
                   {flavourProfile.indianContext}
                 </p>
@@ -287,7 +287,7 @@ export function BeanTypeProfileSection({
         )}
 
         {/* 4. Indian context — promoted block */}
-        <div className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-accent/5 shadow-sm p-6 py-10 md:px-12 md:py-14">
+        <div className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-accent/5 shadow-sm p-6 py-8 md:px-12 md:py-12">
           <Stack gap="6" className="relative z-10 w-full">
             <div className="flex items-center gap-2">
               <Icon icon={MapPinIcon} className="h-5 w-5 text-accent/70" />
@@ -334,7 +334,7 @@ export function BeanTypeProfileSection({
             </div>
           )}
 
-          <div className="surface-2 rounded-xl p-5 mt-4">
+          <div className="surface-2 rounded-xl p-6 mt-4">
             <div className="flex items-start gap-3">
               <Icon
                 icon={InfoIcon}
@@ -396,7 +396,7 @@ export function BeanTypeProfileSection({
                   <AccordionItem
                     key={i}
                     value={`mistake-${i}`}
-                    className="rounded-xl border border-border/40 bg-card/30 px-5 data-[state=open]:bg-card/60 transition-colors"
+                    className="rounded-xl border border-border/40 bg-card/30 px-6 data-[state=open]:bg-card/60 transition-colors"
                   >
                     <AccordionTrigger className="text-body font-medium py-4 [&[data-state=open]>svg]:rotate-180">
                       <span className="flex items-center gap-2 text-left">
@@ -485,7 +485,7 @@ export function BeanTypeProfileSection({
         )}
 
         {/* 10. ICB data note */}
-        <aside className="max-w-5xl mx-auto w-full rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
+        <aside className="max-w-5xl mx-auto w-full rounded-2xl border border-border/50 bg-muted/20 px-6 py-4 md:px-6 md:py-6">
           <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2">
             On Indian Coffee Beans
           </p>

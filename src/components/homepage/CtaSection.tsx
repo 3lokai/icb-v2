@@ -39,8 +39,8 @@ export default async function CtaSection() {
           {/* Subtle "magazine" accent: stripe + film grain + wash */}
           <Decor stripe texture="grain" wash />
 
-          <div className="relative p-6 sm:p-10 md:p-14 lg:p-16">
-            <div className="grid items-center gap-10 md:gap-16 md:grid-cols-12">
+          <div className="relative p-6 sm:p-8 md:p-12 lg:p-16">
+            <div className="grid items-center gap-8 md:gap-16 md:grid-cols-12">
               {/* Left: editorial copy */}
               <div className="md:col-span-7">
                 <Stack gap="8">
@@ -63,7 +63,7 @@ export default async function CtaSection() {
                     </p>
                   </Stack>
 
-                  <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-5">
+                  <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-6">
                     <Button
                       asChild
                       className="hover-lift w-full sm:w-auto px-8"
@@ -133,7 +133,7 @@ export default async function CtaSection() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="rounded-xl border border-border bg-card p-5 group/stat">
+                      <div className="rounded-xl border border-border bg-card p-6 group/stat">
                         <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5 tabular-nums">
                           {totals.roasters.toLocaleString("en-IN")}+
                         </div>
@@ -142,7 +142,7 @@ export default async function CtaSection() {
                         </div>
                       </div>
 
-                      <div className="rounded-xl border border-border bg-card p-5 group/stat">
+                      <div className="rounded-xl border border-border bg-card p-6 group/stat">
                         <div className="text-title font-bold tracking-tighter transition-transform group-hover/stat:-translate-y-0.5 tabular-nums">
                           {totals.coffees.toLocaleString("en-IN")}+
                         </div>
@@ -152,7 +152,7 @@ export default async function CtaSection() {
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-border bg-card p-5">
+                    <div className="rounded-xl border border-border bg-card p-6">
                       <Stack gap="3">
                         <div className="flex items-center gap-2">
                           <Icon
@@ -169,7 +169,7 @@ export default async function CtaSection() {
                             (item) => (
                               <span
                                 key={item}
-                                className="flex items-center gap-1.5"
+                                className="flex items-center gap-2"
                               >
                                 <span className="h-1 w-1 rounded-full bg-border" />
                                 {item}

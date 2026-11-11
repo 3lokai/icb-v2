@@ -330,7 +330,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5"
                           >
-                            <div className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -367,7 +367,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}
@@ -467,7 +467,7 @@ export default function TermsPage() {
                             key={index}
                             className="flex items-start gap-3 p-3 rounded-lg border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                            <div className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent group-hover:scale-150 transition-transform" />
                             <p className="text-body">{item}</p>
                           </div>
                         ))}

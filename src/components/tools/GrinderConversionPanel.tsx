@@ -163,7 +163,7 @@ export function GrinderConversionPanel() {
                   aria-pressed={active}
                   onClick={() => handleModeChange(key)}
                   className={cn(
-                    "rounded-full border px-3.5 py-1.5 text-caption font-medium transition-colors",
+                    "rounded-full border px-4 py-2 text-caption font-medium transition-colors",
                     active
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-border/60 bg-background text-muted-foreground hover:bg-muted/50 hover:text-foreground"
@@ -261,7 +261,7 @@ export function GrinderConversionPanel() {
 
         {/* Result */}
         {result && (
-          <Stack gap="4" className="border-t border-border/40 pt-5">
+          <Stack gap="4" className="border-t border-border/40 pt-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="text-overline tracking-[0.15em] text-muted-foreground">

@@ -42,10 +42,10 @@ type SectionProps = {
  * Section - Vertical spacing primitive with optional header.
  * Use for major page sections with consistent spacing.
  *
- * Spacing scale:
- * - tight: py-6/10/14 — compact sections
- * - default: py-10/14/20 — standard section rhythm (most homepage sections)
- * - loose: py-14/20/28 — extra breathing room (e.g. HowItWorks, FAQ on homepage)
+ * Spacing scale (power of 2 with half-steps: 4, 8, 12, 16, 24, 32, 48, 64, 96px):
+ * - tight: 24/32/48px — compact sections
+ * - default: 32/48/64px — standard section rhythm (most homepage sections)
+ * - loose: 48/64/96px — extra breathing room (e.g. HowItWorks, FAQ on homepage)
  *
  * Homepage note: Hero does not use Section (full-viewport) but uses the same
  * horizontal padding scale as PageShell (px-4 md:px-6 lg:px-8).
@@ -66,9 +66,9 @@ export function Section({
   id,
 }: SectionProps) {
   const spacingClasses = {
-    tight: "py-6 md:py-10 lg:py-14",
-    default: "py-10 md:py-14 lg:py-20",
-    loose: "py-14 md:py-20 lg:py-28",
+    tight: "py-6 md:py-8 lg:py-12",
+    default: "py-8 md:py-12 lg:py-16",
+    loose: "py-12 md:py-16 lg:py-24",
   };
 
   // Warm bands sit a tonal step above the cream page ground (surface-1),

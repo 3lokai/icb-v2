@@ -173,7 +173,7 @@ function PillarCard({
         </div>
 
         {/* Back Side */}
-        <div className="absolute inset-0 h-full w-full overflow-hidden rounded-xl border border-border bg-card p-4 sm:p-5 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+        <div className="absolute inset-0 h-full w-full overflow-hidden rounded-xl border border-border bg-card p-4 sm:p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <div className="flex h-full flex-col">
             <Stack gap="3" className="flex-1 overflow-hidden">
               <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl bg-accent/10 text-accent shrink-0">
@@ -194,7 +194,7 @@ function PillarCard({
               <Link
                 href={`/learn/${category.startHere.slug}`}
                 className={cn(
-                  "group/hub mt-3 sm:mt-4 flex items-center justify-between gap-3 border-t pt-3 sm:pt-4 shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [@media(hover:none)]:pr-11",
+                  "group/hub mt-3 sm:mt-4 flex items-center justify-between gap-3 border-t pt-3 sm:pt-4 shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [@media(hover:none)]:pr-12",
                   flipped ? "pointer-events-auto" : "pointer-events-none"
                 )}
               >

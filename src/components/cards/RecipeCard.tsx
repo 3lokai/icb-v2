@@ -68,7 +68,7 @@ export function RecipeCard({
             <h3 className="text-body line-clamp-1">{recipe.title}</h3>
 
             {/* Secondary info - expert name and key stat */}
-            <div className="flex items-center gap-1.5 line-clamp-1">
+            <div className="flex items-center gap-2 line-clamp-1">
               <span className="text-caption">by {recipe.expert.name}</span>
               <span className="text-caption text-muted-foreground">•</span>
               <span className="text-caption text-muted-foreground">
@@ -85,7 +85,7 @@ export function RecipeCard({
         {/* Right indicator */}
         <div
           className={cn(
-            "flex items-center gap-1.5 text-caption transition-colors",
+            "flex items-center gap-2 text-caption transition-colors",
             isSelected
               ? "text-primary"
               : "text-muted-foreground group-hover:text-accent"
@@ -140,7 +140,7 @@ export function RecipeCard({
 
       <div className="flex flex-1 flex-col gap-2 px-6">
         {/* Quick Stats */}
-        <div className="grid grid-cols-2 gap-1.5">
+        <div className="grid grid-cols-2 gap-2">
           <div className="flex items-center justify-between rounded-md bg-background/50 px-2 py-1">
             <span className="text-label">Ratio</span>
             <span className="text-caption">{recipe.ratio}</span>
@@ -161,7 +161,7 @@ export function RecipeCard({
 
         {/* Key Technique Preview */}
         <div className="mt-4 rounded-md bg-background/30 p-2">
-          <div className="mb-1 flex items-center gap-1.5">
+          <div className="mb-1 flex items-center gap-2">
             <Icon className="h-3 w-3 text-accent" icon={LightbulbIcon} />
             <span className="text-accent text-overline">Key Technique</span>
           </div>
@@ -177,7 +177,7 @@ export function RecipeCard({
         </div>
         <div
           className={cn(
-            "flex items-center gap-1.5 text-caption transition-colors",
+            "flex items-center gap-2 text-caption transition-colors",
             isSelected
               ? "text-primary"
               : "text-muted-foreground group-hover:text-accent"

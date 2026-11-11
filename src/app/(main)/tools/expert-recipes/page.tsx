@@ -163,7 +163,7 @@ const expertRecipesCollectionSchema = {
 
 export default function ExpertRecipesPage() {
   return (
-    <div className="pb-20">
+    <div className="pb-16">
       {/* Structured Data */}
       <StructuredData
         schema={[expertRecipesHowToSchema, expertRecipesCollectionSchema]}

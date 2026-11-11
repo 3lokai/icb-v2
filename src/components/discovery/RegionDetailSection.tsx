@@ -82,7 +82,7 @@ export async function RegionDetailSection({
 
       <div className="mx-auto max-w-6xl w-full space-y-12 px-4 md:px-0">
         {/* 1. Flavour impact — tags + process variation + roaster context */}
-        <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-10 shadow-xl shadow-primary/5">
+        <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-8 shadow-xl shadow-primary/5">
           <div className="relative z-10 grid gap-8 md:grid-cols-5 md:items-start">
             {/* Content column */}
             <div className="md:col-span-5 lg:col-span-3">
@@ -103,7 +103,7 @@ export async function RegionDetailSection({
                       <Badge
                         key={tag}
                         variant="secondary"
-                        className="rounded-lg border-accent/10 bg-accent/5 px-4 py-1.5 text-caption font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
+                        className="rounded-lg border-accent/10 bg-accent/5 px-4 py-2 text-caption font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
                       >
                         {tag}
                       </Badge>
@@ -112,7 +112,7 @@ export async function RegionDetailSection({
                 </Stack>
 
                 {/* Process Variation */}
-                <div className="rounded-[1.25rem] border border-border bg-muted/30 px-5 py-5 transition-colors hover:bg-muted/50">
+                <div className="rounded-[1.25rem] border border-border bg-muted/30 px-6 py-6 transition-colors hover:bg-muted/50">
                   <div className="mb-3 flex items-center gap-2">
                     <Icon icon={DropIcon} className="h-4 w-4 text-accent/60" />
                     <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
@@ -160,7 +160,7 @@ export async function RegionDetailSection({
               className="object-cover"
             />
           </div>
-          <div className="order-2 md:order-1 md:col-span-3 p-6 py-10 md:px-12 md:py-14 flex items-center">
+          <div className="order-2 md:order-1 md:col-span-3 p-6 py-8 md:px-12 md:py-12 flex items-center">
             <Stack
               gap="6"
               className="relative z-10 w-full text-center md:text-left"
@@ -211,7 +211,7 @@ export async function RegionDetailSection({
             </div>
           </Stack>
 
-          <div className="surface-2 rounded-xl p-5 mt-4">
+          <div className="surface-2 rounded-xl p-6 mt-4">
             <div className="flex items-start gap-3">
               <Icon
                 icon={InfoIcon}
@@ -262,7 +262,7 @@ export async function RegionDetailSection({
         )}
 
         {/* 5. ICB data note */}
-        <aside className="max-w-5xl mx-auto w-full rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
+        <aside className="max-w-5xl mx-auto w-full rounded-2xl border border-border/50 bg-muted/20 px-6 py-4 md:px-6 md:py-6">
           <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-2">
             <Icon icon={DatabaseIcon} className="h-4 w-4" />
             On Indian Coffee Beans

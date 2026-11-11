@@ -72,7 +72,7 @@ export function Callout({ value }: CalloutProps) {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.4, ease: "easeOut" as const }}
       className={cn(
-        "not-prose my-8 flex gap-5 rounded-2xl border p-6 shadow-sm backdrop-blur-[2px]",
+        "not-prose my-8 flex gap-6 rounded-2xl border p-6 shadow-sm backdrop-blur-[2px]",
         config.class
       )}
     >

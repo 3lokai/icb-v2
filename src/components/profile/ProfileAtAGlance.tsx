@@ -112,7 +112,7 @@ export function ProfileAtAGlance({
                   key={stat.label}
                   className="rounded-2xl bg-background px-3 py-3 group/stat transition-colors hover:bg-muted/40"
                 >
-                  <div className="flex items-center gap-1.5 text-muted-foreground mb-1">
+                  <div className="flex items-center gap-2 text-muted-foreground mb-1">
                     <Icon icon={stat.icon} size={12} className="text-accent" />
                     <p className="text-micro uppercase font-medium tracking-wider m-0">
                       {stat.label}

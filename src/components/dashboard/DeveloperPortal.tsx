@@ -146,7 +146,7 @@ export function DeveloperPortal({
                 >
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-medium">{key.name}</span>
-                    <code className="rounded bg-muted px-1.5 py-0.5 text-caption">
+                    <code className="rounded bg-muted px-2 py-0.5 text-caption">
                       {key.key_prefix}…
                     </code>
                     <Badge variant={key.is_active ? "default" : "secondary"}>
@@ -219,7 +219,7 @@ export function DeveloperPortal({
                 value={createName}
                 onChange={(e) => setCreateName(e.target.value)}
                 placeholder="e.g. My AI Chat App"
-                className="w-full px-5 py-3.5 rounded-xl border border-border bg-muted/5 text-body focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all outline-none"
+                className="w-full px-6 py-4 rounded-xl border border-border bg-muted/5 text-body focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all outline-none"
               />
             </div>
             {createError && (
@@ -267,7 +267,7 @@ export function DeveloperPortal({
                 readOnly
                 aria-label="API key"
                 value={rawKeyValue ?? ""}
-                className="flex-1 font-mono text-caption px-5 py-3.5 rounded-xl border border-border bg-muted/5"
+                className="flex-1 font-mono text-caption px-6 py-4 rounded-xl border border-border bg-muted/5"
               />
               <Button
                 variant="outline"

@@ -61,11 +61,11 @@ export function FreshFromCommunitySkeleton() {
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
-            className="flex flex-col gap-5 rounded-xl border border-border/60 bg-card p-6"
+            className="flex flex-col gap-6 rounded-xl border border-border/60 bg-card p-6"
           >
             <div className="flex items-center gap-3">
               <Skeleton className="size-10 shrink-0 rounded-full" />
-              <div className="min-w-0 flex-1 space-y-1.5">
+              <div className="min-w-0 flex-1 space-y-2">
                 <Skeleton className="h-4 w-28" />
                 <Skeleton className="h-3 w-40" />
               </div>
@@ -88,7 +88,7 @@ export function FreshFromCommunitySkeleton() {
         ))}
       </div>
 
-      <p className="text-body text-muted-foreground mt-10 text-center">
+      <p className="text-body text-muted-foreground mt-8 text-center">
         <InlineSkeleton className="w-16" /> ratings and counting across the
         directory — add yours.
       </p>

@@ -10,7 +10,7 @@ export function CurationGallery({ images }: CurationGalleryProps) {
   if (!images || images.length === 0) return null;
 
   return (
-    <section className="py-12 md:py-20">
+    <section className="py-12 md:py-16">
       <div className="mx-auto max-w-7xl w-full px-4 md:px-6 lg:px-8">
         {/* Mobile: Simple stacked layout */}
         <Stack gap="3" className="md:hidden">

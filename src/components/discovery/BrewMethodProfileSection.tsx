@@ -142,7 +142,7 @@ export function BrewMethodProfileSection({
       />
       <div className="mx-auto max-w-6xl w-full space-y-12 px-4 md:px-0">
         {/* 1. Brewer characteristics - stays as a 2x2 grid card */}
-        <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-10 shadow-xl shadow-primary/5">
+        <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-8 shadow-xl shadow-primary/5">
           <div className="relative grid gap-8 md:grid-cols-5 items-center">
             <div className="md:col-span-2 relative aspect-[4/3] md:aspect-square rounded-2xl overflow-hidden shadow-sm border border-border/10">
               <Image
@@ -189,7 +189,7 @@ export function BrewMethodProfileSection({
               className="object-cover"
             />
           </div>
-          <div className="order-2 md:order-1 md:col-span-3 p-6 py-10 md:px-12 md:py-14 flex items-center">
+          <div className="order-2 md:order-1 md:col-span-3 p-6 py-8 md:px-12 md:py-12 flex items-center">
             <Stack
               gap="6"
               className="relative z-10 w-full text-center md:text-left"
@@ -222,12 +222,12 @@ export function BrewMethodProfileSection({
                 <AccordionItem
                   key={i}
                   value={`item-${i}`}
-                  className="rounded-xl border border-border/40 bg-card/30 px-5 data-[state=open]:bg-card/60 transition-colors"
+                  className="rounded-xl border border-border/40 bg-card/30 px-6 data-[state=open]:bg-card/60 transition-colors"
                 >
                   <AccordionTrigger className="text-left text-body font-bold text-foreground hover:no-underline py-4">
                     {item.mistake}
                   </AccordionTrigger>
-                  <AccordionContent className="text-body text-muted-foreground leading-relaxed pt-1 pb-5">
+                  <AccordionContent className="text-body text-muted-foreground leading-relaxed pt-1 pb-6">
                     {item.fix}
                   </AccordionContent>
                 </AccordionItem>
@@ -269,7 +269,7 @@ export function BrewMethodProfileSection({
 
         {/* 5. Related brewers */}
         {siblingLinks.length > 0 ? (
-          <div className="max-w-5xl mx-auto w-full border-t border-border/40 pt-10">
+          <div className="max-w-5xl mx-auto w-full border-t border-border/40 pt-8">
             <p className="text-overline text-muted-foreground tracking-[0.15em] uppercase mb-4">
               Related Brewers
             </p>
@@ -291,7 +291,7 @@ export function BrewMethodProfileSection({
         ) : null}
 
         {/* 6. ICB data note */}
-        <aside className="max-w-5xl mx-auto w-full rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
+        <aside className="max-w-5xl mx-auto w-full rounded-2xl border border-border/50 bg-muted/20 px-6 py-4 md:px-6 md:py-6">
           <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2">
             On Indian Coffee Beans
           </p>

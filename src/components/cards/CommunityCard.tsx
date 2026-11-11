@@ -90,7 +90,7 @@ function CommunityCardComponent({ community, className }: CommunityCardProps) {
     >
       <div className="bg-noise pointer-events-none absolute inset-0 z-0 opacity-[0.03]" />
 
-      <CardContent className="relative z-10 flex h-full flex-1 flex-col gap-5 card-padding">
+      <CardContent className="relative z-10 flex h-full flex-1 flex-col gap-6 card-padding">
         <div className="flex items-start justify-between gap-3">
           <div
             className={cn(

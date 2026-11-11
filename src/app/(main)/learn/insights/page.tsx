@@ -194,7 +194,7 @@ export default async function InsightsPage() {
           </nav>
 
           {/* Charts grid */}
-          <div className="py-10 md:py-14 lg:py-16">
+          <div className="py-8 md:py-12 lg:py-16">
             <InsightsChartsGridLoader
               stats={stats}
               catalogTotal={totals.coffees}

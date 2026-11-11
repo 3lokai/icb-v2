@@ -142,7 +142,7 @@ export function GearSelector({
                             {item.is_verified && (
                               <Badge
                                 variant="secondary"
-                                className="shrink-0 text-micro px-1.5 py-0"
+                                className="shrink-0 text-micro px-2 py-0"
                               >
                                 Verified
                               </Badge>

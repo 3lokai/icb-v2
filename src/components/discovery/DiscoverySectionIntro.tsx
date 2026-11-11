@@ -55,11 +55,11 @@ export function DiscoverySectionIntro({
       <div
         className={cn(
           "grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-12 md:items-end",
-          divider && "border-b border-border/40 pb-7"
+          divider && "border-b border-border/40 pb-6"
         )}
       >
         <div className="md:col-span-8">
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-6">
             <span className="inline-flex items-center gap-3 text-overline font-medium tracking-[0.18em] text-muted-foreground">
               <span aria-hidden="true" className="h-px w-7 bg-accent" />
               {overline}

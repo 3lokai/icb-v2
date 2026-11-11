@@ -34,7 +34,7 @@ export function DiscoveryAccordionGridSkeleton({
               key={i}
               className="relative flex min-h-[110px] flex-1 border-b border-border/30 bg-muted/10 md:border-b-0 md:border-r md:last:border-r-0"
             >
-              <div className="relative z-10 mt-auto flex w-full flex-col p-4 sm:p-5">
+              <div className="relative z-10 mt-auto flex w-full flex-col p-4 sm:p-6">
                 <Skeleton className="mb-3 h-9 w-9 rounded-lg" />
                 <Skeleton className="mb-2 h-7 w-24" />
                 <div className="my-2 h-0.5 w-8 rounded-full bg-border/40" />

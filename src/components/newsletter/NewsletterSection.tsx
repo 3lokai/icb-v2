@@ -71,8 +71,8 @@ export default function NewsletterSection() {
         <div aria-hidden="true" className="decor-grain absolute inset-0" />
         <PostmarkStamp />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-20 lg:px-8">
-          <div className="grid items-center gap-10 md:grid-cols-[1.15fr_1fr] md:gap-16">
+        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-16 lg:px-8">
+          <div className="grid items-center gap-8 md:grid-cols-[1.15fr_1fr] md:gap-16">
             {/* Masthead */}
             <Stack gap="6">
               <h2

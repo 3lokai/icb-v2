@@ -15,7 +15,7 @@ const sectionSurfaceClassName =
 export function TopRatedSectionSkeleton() {
   return (
     <Section id="top-rated" spacing="loose" className={sectionSurfaceClassName}>
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-start relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 items-start relative z-10">
         <div className="md:col-span-5 lg:col-span-4 md:sticky md:top-32">
           <Stack gap="8">
             <Skeleton className="h-10 w-48" />

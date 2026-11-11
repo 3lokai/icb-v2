@@ -154,7 +154,7 @@ export default function AboutPage() {
       />
 
       {/* Platform: overlapping editorial card lifted over the hero */}
-      <PageShell className="relative z-30 -mt-20 pb-4">
+      <PageShell className="relative z-30 -mt-16 pb-4">
         <div className="surface-1 rounded-xl p-8 shadow-sm md:p-12">
           <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12">
             <div className="md:col-span-12 lg:col-span-7">
@@ -257,7 +257,7 @@ export default function AboutPage() {
                 src="/images/about/indian-coffee-regions.avif"
               />
               <div className="absolute bottom-6 left-6">
-                <p className="rounded-full border border-border/40 bg-background/90 px-4 py-1.5 text-micro font-medium uppercase tracking-widest text-muted-foreground">
+                <p className="rounded-full border border-border/40 bg-background/90 px-4 py-2 text-micro font-medium uppercase tracking-widest text-muted-foreground">
                   Coffee Growing Regions of India
                 </p>
               </div>
@@ -340,11 +340,11 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="grid gap-x-12 gap-y-10 md:grid-cols-2">
+        <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
           {AUDIENCES.map((user) => (
             <div
               key={user.title}
-              className="flex items-start gap-5 border-t border-border/40 pt-6"
+              className="flex items-start gap-6 border-t border-border/40 pt-6"
             >
               <span className="mt-1 flex-shrink-0 text-primary">
                 <Icon icon={user.icon} size={26} />
@@ -466,7 +466,7 @@ export default function AboutPage() {
 
       {/* Community CTA */}
       <Section spacing="loose">
-        <div className="surface-1 relative overflow-hidden rounded-xl p-12 text-center md:p-20">
+        <div className="surface-1 relative overflow-hidden rounded-xl p-12 text-center md:p-16">
           <Decor wash />
 
           <Stack gap="8" className="relative items-center">
@@ -495,8 +495,8 @@ export default function AboutPage() {
               ))}
             </Cluster>
 
-            <div className="mx-auto w-full max-w-2xl border-t border-border/40 pt-10">
-              <div className="grid grid-cols-1 items-center gap-10 text-left md:grid-cols-2">
+            <div className="mx-auto w-full max-w-2xl border-t border-border/40 pt-8">
+              <div className="grid grid-cols-1 items-center gap-8 text-left md:grid-cols-2">
                 <Stack gap="3">
                   <h3 className="text-heading">Stay in the loop</h3>
                   <p className="text-caption leading-relaxed text-muted-foreground">

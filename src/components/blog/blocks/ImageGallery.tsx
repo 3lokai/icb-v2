@@ -47,7 +47,7 @@ export function ImageGallery({ value }: ImageGalleryProps) {
 
   return (
     <motion.div
-      className={cn("not-prose my-14 grid gap-5", columnClass)}
+      className={cn("not-prose my-12 grid gap-6", columnClass)}
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"

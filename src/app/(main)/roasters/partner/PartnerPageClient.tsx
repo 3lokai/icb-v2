@@ -81,7 +81,7 @@ const InteractiveBentoCard = ({
     </div>
 
     <div className="relative z-10 p-6 md:p-8 flex flex-col h-full">
-      <div className="flex transform-gpu flex-col gap-5 transition-all duration-500 grow">
+      <div className="flex transform-gpu flex-col gap-6 transition-all duration-500 grow">
         <div className="flex items-center justify-between">
           <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-accent/10 border border-accent/20 group-hover:scale-110 group-hover:bg-accent/20 transition-all duration-500">
             <Icon icon={icon} size={24} color="accent" />
@@ -157,7 +157,7 @@ const StatsBar = ({ totals }: { totals: PublicDirectoryTotals }) => {
                   {stat.urgent && (
                     <Badge
                       variant="secondary"
-                      className="bg-accent/10 border-accent/20 text-accent text-micro px-1.5 py-0 h-4 uppercase font-bold tracking-wider"
+                      className="bg-accent/10 border-accent/20 text-accent text-micro px-2 py-0 h-4 uppercase font-bold tracking-wider"
                     >
                       Limited
                     </Badge>
@@ -362,14 +362,14 @@ const PricingTiers = ({
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
               <Badge
                 variant="default"
-                className="bg-accent text-accent-foreground text-micro uppercase font-bold tracking-[0.2em] px-4 py-1.5 shadow-lg shadow-accent/20"
+                className="bg-accent text-accent-foreground text-micro uppercase font-bold tracking-[0.2em] px-4 py-2 shadow-lg shadow-accent/20"
               >
                 Recommended
               </Badge>
             </div>
           )}
 
-          <div className="p-8 md:p-10 flex flex-col flex-1">
+          <div className="p-8 md:p-8 flex flex-col flex-1">
             <div className="mb-8">
               <div className="text-micro font-bold uppercase tracking-[0.3em] text-muted-foreground/60 mb-6">
                 {tierData.name}
@@ -422,7 +422,7 @@ const PricingTiers = ({
 
             <div className="h-px w-full bg-border/20 mb-8" />
 
-            <ul className="flex-1 space-y-4 mb-10">
+            <ul className="flex-1 space-y-4 mb-8">
               {tierData.features.map((feature, featureIndex) => (
                 <li
                   key={featureIndex}
@@ -524,7 +524,7 @@ const FeaturesGrid = () => {
           key={index}
           className="group p-6 rounded-2xl border border-border/40 bg-card/20 hover:border-accent/30 hover:bg-card/40 transition-all duration-300"
         >
-          <div className="flex items-start gap-5">
+          <div className="flex items-start gap-6">
             <div className="h-14 w-14 flex items-center justify-center rounded-xl bg-accent/5 text-accent border border-accent/10 group-hover:scale-110 group-hover:bg-accent/10 transition-all duration-500 shrink-0">
               <Icon icon={feature.icon} size={28} />
             </div>
@@ -569,7 +569,7 @@ const FinalCTA = ({
         />
       </div>
 
-      <div className="relative p-10 md:p-20 text-center md:text-left">
+      <div className="relative p-8 md:p-16 text-center md:text-left">
         <Stack gap="12">
           <Stack gap="6">
             <div className="flex flex-col md:flex-row md:items-center gap-4">
@@ -684,7 +684,7 @@ export default function PartnerPageClient({
   };
 
   return (
-    <div className="pb-20">
+    <div className="pb-16">
       <PageHeader
         title={
           <>
@@ -719,7 +719,7 @@ export default function PartnerPageClient({
         }
       />
 
-      <PageShell className="-mt-20 relative z-30">
+      <PageShell className="-mt-16 relative z-30">
         <Stack gap="4">
           {/* Stats Bar */}
           <Section spacing="tight">

@@ -226,7 +226,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{purpose}</p>
                           </div>
                         ))}
@@ -331,7 +331,7 @@ export default function PrivacyPage() {
                         ].map((item) => (
                           <div
                             key={item.title}
-                            className="p-5 rounded-xl border border-border/20 bg-card/5 hover:bg-card/10 transition-colors"
+                            className="p-6 rounded-xl border border-border/20 bg-card/5 hover:bg-card/10 transition-colors"
                           >
                             <h3 className="font-serif italic text-primary mb-1">
                               {item.title}
@@ -381,7 +381,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{point}</p>
                           </div>
                         ))}
@@ -509,7 +509,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{note}</p>
                           </div>
                         ))}
@@ -540,7 +540,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{info}</p>
                           </div>
                         ))}
@@ -565,7 +565,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{step}</p>
                           </div>
                         ))}
@@ -656,7 +656,7 @@ export default function PrivacyPage() {
                             key={index}
                             className="flex items-start gap-4 p-4 rounded-xl border border-border/20 bg-muted/5 group"
                           >
-                            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
+                            <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
                             <p className="text-body">{point}</p>
                           </div>
                         ))}

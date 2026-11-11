@@ -121,7 +121,7 @@ export default async function CoffeeCompassPage({ searchParams }: PageProps) {
       : [];
 
   return (
-    <div className="pb-20">
+    <div className="pb-16">
       <StructuredData schema={compassSchema} />
 
       <PageHeader
@@ -131,11 +131,11 @@ export default async function CoffeeCompassPage({ searchParams }: PageProps) {
         title="Coffee Compass"
       />
 
-      <div className="container mx-auto px-4 -mt-20 relative z-30">
+      <div className="container mx-auto px-4 -mt-16 relative z-30">
         <Stack gap="12">
           {/* Main Tool Card */}
           <div
-            className="bg-background rounded-3xl p-6 md:p-10 border border-border/50 shadow-xl overflow-hidden"
+            className="bg-background rounded-3xl p-6 md:p-8 border border-border/50 shadow-xl overflow-hidden"
             id="compass"
           >
             <Stack gap="8">

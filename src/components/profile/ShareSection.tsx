@@ -122,7 +122,7 @@ export function ShareSection({ section, username }: ShareSectionProps) {
           size="sm"
           className="h-8 text-muted-foreground hover:text-foreground"
         >
-          <Icon icon={ShareIcon} size={16} className="mr-1.5" />
+          <Icon icon={ShareIcon} size={16} className="mr-2" />
           Share
         </Button>
       </DropdownMenuTrigger>
@@ -140,7 +140,7 @@ export function ShareSection({ section, username }: ShareSectionProps) {
             </DropdownMenuItem>
           )}
         <DropdownMenuSeparator />
-        <div className="px-2 py-1.5">
+        <div className="px-2 py-2">
           <div className="flex items-center justify-center gap-3">
             <button
               onClick={handleShareWhatsApp}

@@ -191,7 +191,7 @@ export default async function ArticlePage({ params }: Props) {
       />
       <ArticleHeader article={article} />
 
-      <div className="mt-12 md:mt-20">
+      <div className="mt-12 md:mt-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[250px_1fr] xl:grid-cols-[250px_1fr_200px]">
           {/* Left: TOC — sticky so it floats with scroll; overflow-visible so sticky works */}
           <aside className="overflow-visible">
@@ -250,8 +250,8 @@ export default async function ArticlePage({ params }: Props) {
             )}
 
             {/* Bottom Section: Share & Author */}
-            <footer className="mt-20 space-y-12">
-              <div className="flex flex-col gap-6 border-t pt-10 md:flex-row md:items-center md:justify-between">
+            <footer className="mt-16 space-y-12">
+              <div className="flex flex-col gap-6 border-t pt-8 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h2 className="mb-2 text-title font-semibold">
                     Enjoyed this article?

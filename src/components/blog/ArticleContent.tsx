@@ -36,7 +36,7 @@ const createComponents = (
 ): PortableTextComponents => ({
   types: {
     image: ({ value }) => (
-      <figure className="my-10 overflow-hidden rounded-xl border border-border/60 bg-muted/30">
+      <figure className="my-8 overflow-hidden rounded-xl border border-border/60 bg-muted/30">
         <Image
           src={urlFor(value).width(1200).url()}
           alt={value.alt || "Article image"}
@@ -96,7 +96,7 @@ const createComponents = (
       return (
         <h2
           id={id}
-          className="mb-4 mt-10 text-title font-semibold tracking-tight"
+          className="mb-4 mt-8 text-title font-semibold tracking-tight"
         >
           {children}
         </h2>

@@ -29,7 +29,7 @@ export function SeriesCard({ series }: { series: Series }) {
         className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-xl border border-border/60 bg-card transition-transform duration-300 group-hover:translate-x-2 group-hover:translate-y-2"
       />
 
-      <div className="relative flex h-full flex-col gap-5 rounded-xl border border-border/60 bg-card p-6 transition-colors group-hover:border-border">
+      <div className="relative flex h-full flex-col gap-6 rounded-xl border border-border/60 bg-card p-6 transition-colors group-hover:border-border">
         <div className="flex items-center gap-4">
           {cover?.asset && (
             <div className="relative size-14 shrink-0 overflow-hidden rounded-lg">
@@ -66,10 +66,7 @@ export function SeriesCard({ series }: { series: Series }) {
             <p className="text-label mb-1">Contents</p>
             <ol className="divide-y divide-border/60 border-y border-border/60">
               {preview.map((part, i) => (
-                <li
-                  key={part.slug}
-                  className="flex items-baseline gap-3 py-2.5"
-                >
+                <li key={part.slug} className="flex items-baseline gap-3 py-3">
                   <span className="text-micro tabular-nums !text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>

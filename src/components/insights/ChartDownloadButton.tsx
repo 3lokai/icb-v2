@@ -46,7 +46,7 @@ export function ChartDownloadButton({
       onClick={handleDownload}
       disabled={loading}
       aria-label={`Download ${fileName} chart as PNG`}
-      className="text-caption inline-flex items-center gap-1.5 rounded-sm border border-border/60 bg-background px-3 py-1.5 font-medium transition-colors hover:border-accent/60 hover:text-accent disabled:opacity-50"
+      className="text-caption inline-flex items-center gap-2 rounded-sm border border-border/60 bg-background px-3 py-2 font-medium transition-colors hover:border-accent/60 hover:text-accent disabled:opacity-50"
     >
       {loading ? (
         <CircleNotch className="h-3.5 w-3.5 animate-spin" />

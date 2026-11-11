@@ -92,7 +92,7 @@ export default function ContactPage() {
       </Section>
       <Suspense
         fallback={
-          <div className="pb-20">
+          <div className="pb-16">
             <h2 className="sr-only">Contact forms</h2>
           </div>
         }

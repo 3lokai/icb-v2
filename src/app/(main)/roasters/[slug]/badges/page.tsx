@@ -80,7 +80,7 @@ export default async function RoasterBadgesPage({ params }: Props) {
         }
         description="Collect independent ratings and show customers your coffees are listed on IndianCoffeeBeans. Free, self-updating, and just copy and paste: no app, plugin or script."
         rightSideContent={
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-6">
             {featured && (
               <Showcase
                 target={{

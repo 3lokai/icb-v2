@@ -21,7 +21,7 @@ export function TopProfileCardSkeleton() {
         </Stack>
 
         <div className="mt-auto flex flex-col gap-4 pt-2">
-          <div className="flex gap-1.5">
+          <div className="flex gap-2">
             <Skeleton className="h-5 w-16 rounded-full" />
             <Skeleton className="h-5 w-20 rounded-full" />
           </div>

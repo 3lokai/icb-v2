@@ -147,7 +147,7 @@ export function RoasterFilterContent({
         >
           {items.map((item) => (
             <label
-              className="group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors hover:text-accent"
+              className="group flex cursor-pointer items-center gap-3 rounded-md py-2 transition-colors hover:text-accent"
               key={item.value}
             >
               <input

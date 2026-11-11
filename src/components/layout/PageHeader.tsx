@@ -42,7 +42,7 @@ export function PageHeader({
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
 
       {/* Content aligned with PageShell (max-w-7xl + same horizontal padding) */}
-      <div className="relative z-20 mx-auto w-full max-w-7xl px-4 py-12 md:px-6 md:py-20 lg:px-8">
+      <div className="relative z-20 mx-auto w-full max-w-7xl px-4 py-12 md:px-6 md:py-16 lg:px-8">
         <div className="mx-auto max-w-6xl w-full">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
             <div className="md:col-span-8">

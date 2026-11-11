@@ -53,7 +53,7 @@ export async function RoastersSourcing({
               key={r.roasterId}
               href={`/roasters/${r.slug}`}
               className={cn(
-                "group inline-flex max-w-full items-center rounded-full border border-border/50 bg-background/60 px-3 py-1.5 text-micro font-medium text-muted-foreground truncate",
+                "group inline-flex max-w-full items-center rounded-full border border-border/50 bg-background/60 px-3 py-2 text-micro font-medium text-muted-foreground truncate",
                 "transition-all duration-300 hover:border-accent/40 hover:bg-accent/5 hover:text-foreground hover:scale-[1.02] hover:shadow-sm"
               )}
             >

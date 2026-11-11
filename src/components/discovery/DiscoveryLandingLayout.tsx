@@ -441,7 +441,7 @@ export async function DiscoveryLandingLayout({
 
         {/* 3. Utility Card (brew_guide shown on brew method pages only) */}
         {config.utilityCard && showUtilityCard ? (
-          <div className="py-10 md:py-14 px-4 md:px-0 mx-auto max-w-6xl w-full">
+          <div className="py-8 md:py-12 px-4 md:px-0 mx-auto max-w-6xl w-full">
             <Stack gap="4">
               {config.utilityNudge && (
                 <div className="border-l-2 border-accent/20 pl-4 py-1">

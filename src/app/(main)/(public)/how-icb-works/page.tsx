@@ -94,7 +94,7 @@ export default function HowICBWorksPage() {
       />
 
       {/* The Essence — floated card lifting over the hero */}
-      <div className="container relative z-30 mx-auto -mt-20 px-4">
+      <div className="container relative z-30 mx-auto -mt-16 px-4">
         <Reveal>
           <div className="rounded-3xl border border-border/60 bg-background p-8 shadow-xl md:p-12">
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
@@ -152,7 +152,7 @@ export default function HowICBWorksPage() {
             </Stack>
           </Reveal>
 
-          <div className="grid grid-cols-1 gap-x-10 gap-y-12 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
             {discoverySteps.map((step, i) => (
               <Reveal key={step.num} delay={i * 0.06}>
                 <Stack gap="3">

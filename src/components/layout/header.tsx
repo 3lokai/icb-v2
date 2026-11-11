@@ -194,13 +194,13 @@ export function Header() {
             aria-label="Search"
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "h-9 gap-2 px-2.5 text-muted-foreground"
+              "h-9 gap-2 px-3 text-muted-foreground"
             )}
             onClick={() => openSearch()}
             type="button"
           >
             <Icon color="muted" icon={MagnifyingGlassIcon} size={20} />
-            <kbd className="hidden items-center gap-0.5 rounded border border-border/70 bg-muted/60 px-1.5 py-0.5 font-medium text-overline text-muted-foreground lg:inline-flex">
+            <kbd className="hidden items-center gap-0.5 rounded border border-border/70 bg-muted/60 px-2 py-0.5 font-medium text-overline text-muted-foreground lg:inline-flex">
               {isMac ? "⌘K" : "Ctrl K"}
             </kbd>
           </button>

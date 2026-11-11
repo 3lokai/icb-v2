@@ -118,12 +118,12 @@ export function RegionSpotlight({ value }: RegionSpotlightProps) {
         <Link
           href={href}
           aria-label={`${name} — explore coffees from this region`}
-          className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-10"
+          className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-8"
         >
           {body}
         </Link>
       ) : (
-        <div className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-10">
+        <div className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-8">
           {body}
         </div>
       )}

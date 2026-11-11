@@ -66,7 +66,7 @@ export function RegionCollection({ value }: RegionCollectionProps) {
         <span
           className={cn(
             buttonVariants({ variant: "default", size: "lg" }),
-            "rounded-xl bg-emerald-600 shadow-md transition-all group-hover:translate-y-[-2px] px-10 font-bold"
+            "rounded-xl bg-emerald-600 shadow-md transition-all group-hover:translate-y-[-2px] px-8 font-bold"
           )}
         >
           {moreText} <Icon icon={ArrowRightIcon} size={18} className="ml-2" />

@@ -32,7 +32,7 @@ export function CurationHeader({ subtitle, curator }: CurationHeaderProps) {
       <div className="bg-noise absolute inset-0 opacity-[0.05] z-15 pointer-events-none" />
 
       {/* Content Container */}
-      <div className="relative z-20 mx-auto w-full max-w-7xl px-4 py-12 md:px-6 md:py-20 lg:px-8">
+      <div className="relative z-20 mx-auto w-full max-w-7xl px-4 py-12 md:px-6 md:py-16 lg:px-8">
         <div className="mx-auto max-w-6xl w-full">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start lg:items-end">
             {/* Left Column: Primary Content */}
@@ -48,7 +48,7 @@ export function CurationHeader({ subtitle, curator }: CurationHeaderProps) {
 
                 {/* Main Title Area: Logo + Name */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 md:gap-8">
-                  <div className="relative h-24 w-24 md:h-28 md:w-28 overflow-hidden rounded-full border-2 border-white/30 p-1.5 bg-white/10 shadow-2xl shrink-0 group">
+                  <div className="relative h-24 w-24 md:h-28 md:w-28 overflow-hidden rounded-full border-2 border-white/30 p-2 bg-white/10 shadow-2xl shrink-0 group">
                     <div className="relative h-full w-full overflow-hidden rounded-full grayscale hover:grayscale-0 transition-all duration-700">
                       <Image
                         src={curator.logo}
@@ -83,7 +83,7 @@ export function CurationHeader({ subtitle, curator }: CurationHeaderProps) {
                       <Badge
                         key={tag}
                         variant="onMedia"
-                        className="text-micro uppercase tracking-[0.2em] px-3 py-1.5 backdrop-blur-sm"
+                        className="text-micro uppercase tracking-[0.2em] px-3 py-2 backdrop-blur-sm"
                       >
                         {tag}
                       </Badge>

@@ -195,7 +195,7 @@ export function DashboardClient({
                 <span className="font-medium">
                   {initialReviewStats.coffeeCount}
                   {initialReviewStats.coffeeAverageRating !== null && (
-                    <span className="ml-1.5 text-muted-foreground">
+                    <span className="ml-2 text-muted-foreground">
                       ({initialReviewStats.coffeeAverageRating.toFixed(1)}{" "}
                       <Icon
                         icon={StarIcon}
@@ -212,7 +212,7 @@ export function DashboardClient({
                 <span className="font-medium">
                   {initialReviewStats.roasterCount}
                   {initialReviewStats.roasterAverageRating !== null && (
-                    <span className="ml-1.5 text-muted-foreground">
+                    <span className="ml-2 text-muted-foreground">
                       ({initialReviewStats.roasterAverageRating.toFixed(1)}{" "}
                       <Icon
                         icon={StarIcon}

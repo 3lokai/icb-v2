@@ -30,7 +30,7 @@ function BeanCardInner({ species }: { species: BeanSpeciesVisual }) {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
       </div>
-      <div className="flex flex-col gap-1.5 p-4">
+      <div className="flex flex-col gap-2 p-4">
         <p className="text-body-large font-serif font-medium text-foreground">
           {species.label}
         </p>
@@ -66,7 +66,7 @@ export function BeanTypeComparisonGrid({
                   "ring-2 ring-accent/50 shadow-xl shadow-primary/5"
                 )}
               >
-                <span className="absolute right-3 top-3 z-10 rounded-full bg-accent px-2.5 py-0.5 text-micro font-semibold uppercase tracking-widest text-accent-foreground">
+                <span className="absolute right-3 top-3 z-10 rounded-full bg-accent px-3 py-0.5 text-micro font-semibold uppercase tracking-widest text-accent-foreground">
                   You&apos;re here
                 </span>
                 <BeanCardInner species={species} />
@@ -100,7 +100,7 @@ export function BeanTypeComparisonGrid({
           {BEAN_CATEGORY_LINKS.map((category) => {
             const isActive = category.slug === activeSlug;
             const pillClass =
-              "rounded-full border px-4 py-1.5 text-caption font-medium transition-colors";
+              "rounded-full border px-4 py-2 text-caption font-medium transition-colors";
 
             if (isActive) {
               return (

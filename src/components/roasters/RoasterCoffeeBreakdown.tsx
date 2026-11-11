@@ -65,7 +65,7 @@ function BreakdownColumn({
             {total} {total === 1 ? "coffee" : "coffees"}
           </span>
         </div>
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {items.map((item) => (
             <div key={item.value}>
               <div className="flex items-center justify-between mb-1">

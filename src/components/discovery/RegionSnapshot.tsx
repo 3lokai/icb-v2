@@ -66,13 +66,13 @@ function SnapshotContent({
   );
 
   const cardShell = embedded
-    ? "relative overflow-hidden rounded-xl border border-border/40 bg-card/40 p-4 shadow-sm transition-all duration-300 hover:border-border/60 md:p-5"
+    ? "relative overflow-hidden rounded-xl border border-border/40 bg-card/40 p-4 shadow-sm transition-all duration-300 hover:border-border/60 md:p-6"
     : "surface-1 relative overflow-hidden card-padding card-hover group rounded-2xl transition-all duration-300 hover:-translate-y-1";
 
   return (
     <>
       {embedded ? (
-        <div className="mb-5 space-y-3 md:mb-6">
+        <div className="mb-6 space-y-3 md:mb-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0 space-y-2">
               <div className="inline-flex items-center gap-3">
@@ -156,7 +156,7 @@ export function RegionSnapshot({
   if (embedded) {
     return (
       <div
-        className={cn("w-full px-4 py-5 sm:px-5 md:px-6 md:py-6", className)}
+        className={cn("w-full px-4 py-6 sm:px-6 md:px-6 md:py-6", className)}
       >
         <SnapshotContent regionSnapshot={regionSnapshot} embedded />
       </div>

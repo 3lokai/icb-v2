@@ -159,7 +159,7 @@ const tools: Tool[] = [
 
 export default function ToolsPage() {
   return (
-    <div className="pb-20">
+    <div className="pb-16">
       {/* Structured Data */}
       <StructuredData schema={toolsCollectionSchema} />
 
@@ -178,7 +178,7 @@ export default function ToolsPage() {
             <li key={tool.href}>
               <Link
                 href={tool.href}
-                className="group grid items-center gap-6 py-10 md:grid-cols-12 md:gap-12 lg:py-12"
+                className="group grid items-center gap-6 py-8 md:grid-cols-12 md:gap-12 lg:py-12"
               >
                 {/* Tool screenshot */}
                 <div className="md:col-span-5">

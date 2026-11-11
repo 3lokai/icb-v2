@@ -202,7 +202,7 @@ function ReviewItem({ review }: { review: MyReview }) {
       : `/roasters/${review.entity.slug}`;
 
   return (
-    <div className="group relative py-5 border-b border-border/40 last:border-0 transition-colors hover:bg-muted/20 rounded-lg px-3 -mx-3">
+    <div className="group relative py-6 border-b border-border/40 last:border-0 transition-colors hover:bg-muted/20 rounded-lg px-3 -mx-3">
       <Stack gap="4">
         {/* Entity Name */}
         <div>
@@ -217,7 +217,7 @@ function ReviewItem({ review }: { review: MyReview }) {
         {/* Rating & Recommend Badge */}
         <Cluster gap="3" align="center" className="flex-wrap">
           {review.rating && (
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               {[...Array(5)].map((_, i) => (
                 <Icon
                   key={i}
@@ -249,7 +249,7 @@ function ReviewItem({ review }: { review: MyReview }) {
               <Icon
                 icon={review.recommend ? ThumbsUpIcon : ThumbsDownIcon}
                 size={12}
-                className="mr-1.5"
+                className="mr-2"
               />
               {review.recommend ? "Recommends" : "Doesn't recommend"}
             </Badge>
@@ -275,7 +275,7 @@ function ReviewItem({ review }: { review: MyReview }) {
                 <Icon
                   icon={review.value_for_money ? ThumbsUpIcon : ThumbsDownIcon}
                   size={11}
-                  className="mr-1.5"
+                  className="mr-2"
                 />
                 {review.value_for_money ? "Good value" : "Not great value"}
               </Badge>

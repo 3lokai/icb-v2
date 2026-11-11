@@ -56,7 +56,7 @@ export function PriceBucketProfileSection({
 
       <div className="mx-auto max-w-6xl w-full space-y-12 px-4 md:px-0">
         {/* 1. What You Get */}
-        <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-10 shadow-xl shadow-primary/5">
+        <div className="surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-8 shadow-xl shadow-primary/5">
           <Stack gap="6" className="relative z-10">
             <div className="flex items-center gap-2">
               <Icon
@@ -153,8 +153,8 @@ export function PriceBucketProfileSection({
         </div>
 
         {/* 4. Notes & Disclosures */}
-        <div className="max-w-5xl mx-auto w-full grid md:grid-cols-2 gap-6 pt-10 border-t border-border/40">
-          <aside className="rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
+        <div className="max-w-5xl mx-auto w-full grid md:grid-cols-2 gap-6 pt-8 border-t border-border/40">
+          <aside className="rounded-2xl border border-border/50 bg-muted/20 px-6 py-4 md:px-6 md:py-6">
             <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-2">
               <Icon icon={InfoIcon} className="w-4 h-4" />
               Price Normalization
@@ -164,7 +164,7 @@ export function PriceBucketProfileSection({
             </p>
           </aside>
 
-          <aside className="rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
+          <aside className="rounded-2xl border border-border/50 bg-muted/20 px-6 py-4 md:px-6 md:py-6">
             <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-2">
               <Icon icon={DatabaseIcon} className="w-4 h-4" />
               On Indian Coffee Beans

@@ -281,7 +281,7 @@ export function HeroSearch() {
                     No matches for &ldquo;{debouncedQuery}&rdquo;
                   </p>
                   <button
-                    className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-muted/60 px-3 py-2 font-medium text-caption text-foreground transition-colors hover:bg-muted"
+                    className="mt-3 inline-flex items-center gap-2 rounded-lg bg-muted/60 px-3 py-2 font-medium text-caption text-foreground transition-colors hover:bg-muted"
                     onClick={handleSearch}
                     type="button"
                   >

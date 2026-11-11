@@ -56,19 +56,19 @@ export function BrewingTable({ value }: BrewingTableProps) {
             {value.rows?.map((row, i) => (
               // ponytail: inert rows, so no hover highlight (see DataTable).
               <tr key={i}>
-                <td className="px-6 py-5 text-body font-bold text-foreground">
+                <td className="px-6 py-6 text-body font-bold text-foreground">
                   {row.method}
                 </td>
-                <td className="px-6 py-5 text-body text-muted-foreground">
+                <td className="px-6 py-6 text-body text-muted-foreground">
                   {row.grind}
                 </td>
-                <td className="px-6 py-5 text-body text-muted-foreground">
+                <td className="px-6 py-6 text-body text-muted-foreground">
                   {row.ratio}
                 </td>
-                <td className="px-6 py-5 text-body text-muted-foreground">
+                <td className="px-6 py-6 text-body text-muted-foreground">
                   {row.time}
                 </td>
-                <td className="px-6 py-5 text-body italic text-muted-foreground/70 leading-relaxed min-w-[200px]">
+                <td className="px-6 py-6 text-body italic text-muted-foreground/70 leading-relaxed min-w-[200px]">
                   {row.notes || "—"}
                 </td>
               </tr>

@@ -639,7 +639,7 @@ export function CoffeeFacetedFilterBar({
                         )
                         .map((status) => (
                           <label
-                            className="flex cursor-pointer items-center gap-2 py-1.5 transition-colors hover:text-accent"
+                            className="flex cursor-pointer items-center gap-2 py-2 transition-colors hover:text-accent"
                             key={status.value}
                           >
                             <input
@@ -749,7 +749,7 @@ export function CoffeeFacetedFilterBar({
             <Cluster gap="2">
               {filters.q && (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Search: {filters.q}
@@ -766,7 +766,7 @@ export function CoffeeFacetedFilterBar({
               {filters.roast_levels?.map((v) => (
                 <Badge
                   key={v}
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   {v}
@@ -790,7 +790,7 @@ export function CoffeeFacetedFilterBar({
               ))}
               {filters.brew_method_ids?.length ? (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Brew
@@ -809,7 +809,7 @@ export function CoffeeFacetedFilterBar({
               {filters.bean_species?.map((v) => (
                 <Badge
                   key={v}
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   {SPECIES_LABELS_MAP[v] ?? v}
@@ -833,7 +833,7 @@ export function CoffeeFacetedFilterBar({
               ))}
               {filters.in_stock_only && (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   In Stock
@@ -849,7 +849,7 @@ export function CoffeeFacetedFilterBar({
               )}
               {filters.has_250g_only && (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Has 250g
@@ -865,7 +865,7 @@ export function CoffeeFacetedFilterBar({
               )}
               {filters.works_with_milk === true && (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Works with milk
@@ -883,7 +883,7 @@ export function CoffeeFacetedFilterBar({
               )}
               {filters.decaf_only && (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Decaf Only
@@ -899,7 +899,7 @@ export function CoffeeFacetedFilterBar({
               )}
               {filters.international_only && (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   International
@@ -917,7 +917,7 @@ export function CoffeeFacetedFilterBar({
               )}
               {(filters.min_price || filters.max_price) && (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Price
@@ -938,7 +938,7 @@ export function CoffeeFacetedFilterBar({
               )}
               {filters.processes?.length ? (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Process
@@ -954,7 +954,7 @@ export function CoffeeFacetedFilterBar({
               ) : null}
               {filters.region_slugs?.length || filters.region_ids?.length ? (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Region
@@ -975,7 +975,7 @@ export function CoffeeFacetedFilterBar({
               ) : null}
               {filters.roaster_slugs?.length || filters.roaster_ids?.length ? (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Roaster
@@ -996,7 +996,7 @@ export function CoffeeFacetedFilterBar({
               ) : null}
               {filters.canon_flavor_slugs?.length ? (
                 <Badge
-                  className="gap-1.5 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
                   variant="secondary"
                 >
                   Flavor

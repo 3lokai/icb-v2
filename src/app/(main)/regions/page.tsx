@@ -333,7 +333,7 @@ export default async function RegionsPage() {
   );
 
   return (
-    <div className="pb-20">
+    <div className="pb-16">
       <StructuredData schema={schema} />
 
       <PageHeader
@@ -404,7 +404,7 @@ export default async function RegionsPage() {
           {groups.map((group) => (
             <Fragment key={group.state}>
               <div
-                className="col-span-full flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-border/60 pt-5 first:border-t-0 first:pt-0"
+                className="col-span-full flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-border/60 pt-6 first:border-t-0 first:pt-0"
                 id={stateAnchor(group.state)}
                 style={{ scrollMarginTop: "6rem" }}
               >

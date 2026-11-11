@@ -17,7 +17,7 @@ type CurationFooterProps = {
 };
 
 const primarySocialLinkClass =
-  "p-2.5 rounded-full hover:bg-accent/10 text-muted-foreground hover:text-accent transition-all border border-border/40 bg-background shadow-sm";
+  "p-3 rounded-full hover:bg-accent/10 text-muted-foreground hover:text-accent transition-all border border-border/40 bg-background shadow-sm";
 
 export function CurationFooter({ partner }: CurationFooterProps) {
   const primaryRow: {
@@ -57,8 +57,8 @@ export function CurationFooter({ partner }: CurationFooterProps) {
   }
 
   return (
-    <footer className="py-20 border-t border-border/40">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+    <footer className="py-16 border-t border-border/40">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
         <Stack gap="4" className="max-w-md">
           <Cluster gap="3" align="center">
             <span className="h-px w-8 bg-accent/60" />

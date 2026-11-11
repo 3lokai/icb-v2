@@ -208,7 +208,7 @@ export default function CoffeeCard({
             {originBadge}
             {/* Title scrim */}
             <div
-              className="absolute inset-x-0 bottom-0 z-10 p-4 pt-20"
+              className="absolute inset-x-0 bottom-0 z-10 p-4 pt-16"
               style={{ background: TITLE_SCRIM }}
             >
               <h3 className="text-title text-white text-balance line-clamp-2 drop-shadow-md">
@@ -246,7 +246,7 @@ export default function CoffeeCard({
                     </div>
                   )}
                   {flavorLabels.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-1.5">
+                    <div className="flex flex-wrap items-center gap-2">
                       {flavorLabels.map((flavor, idx) => (
                         <Badge
                           key={idx}
@@ -337,7 +337,7 @@ export default function CoffeeCard({
 
               {/* Match chips row - max 3 badges */}
               {matchInfo && matchInfo.chips.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 pt-1">
+                <div className="flex flex-wrap gap-2 pt-1">
                   {matchInfo.chips.slice(0, 3).map((chip, idx) => (
                     <Badge
                       key={idx}
@@ -453,7 +453,7 @@ export default function CoffeeCard({
           {originBadge}
           {/* Title scrim */}
           <div
-            className="absolute inset-x-0 bottom-0 z-10 p-4 pt-20"
+            className="absolute inset-x-0 bottom-0 z-10 p-4 pt-16"
             style={{ background: TITLE_SCRIM }}
           >
             <h3 className="text-heading text-white text-balance line-clamp-2 drop-shadow-md">
@@ -491,7 +491,7 @@ export default function CoffeeCard({
                   </div>
                 )}
                 {flavorLabels.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
                     {flavorLabels.map((flavor, idx) => (
                       <Badge
                         key={idx}

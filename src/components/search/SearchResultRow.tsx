@@ -49,7 +49,7 @@ export function SearchResultRow({
         </AvatarFallback>
       </Avatar>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div
           className={cn(
             "font-medium text-popover-foreground leading-snug",
@@ -64,7 +64,7 @@ export function SearchResultRow({
           </div>
         )}
         {(displayTags.length > 0 || item.flavorNotes?.length) && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-2">
             {item.flavorNotes?.slice(0, 2).map((note) => (
               <Badge
                 className="font-medium text-overline"

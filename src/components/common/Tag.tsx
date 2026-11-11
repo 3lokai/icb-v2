@@ -31,9 +31,9 @@ export default function Tag({
         variant === "brown" && "bg-accent text-accent-foreground shadow-sm",
         variant === "muted" && "bg-muted text-muted-foreground shadow-sm",
         // Keep size typography after variant color so twMerge preserves text-overline/text-label/text-micro.
-        size === "default" && "px-2.5 py-0.5 text-overline",
+        size === "default" && "px-3 py-0.5 text-overline",
         size === "small" && "px-2 py-0.5 text-label",
-        size === "micro" && "px-1.5 py-0.5 text-micro",
+        size === "micro" && "px-2 py-0.5 text-micro",
         className
       )}
     >

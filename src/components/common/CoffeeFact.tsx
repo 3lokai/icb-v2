@@ -36,7 +36,7 @@ export default function CoffeeFact({ className = "" }: CoffeeFactProps) {
     >
       <div className="flex items-start gap-4">
         <div className="mt-1 shrink-0">
-          <div className="rounded-xl bg-accent/10 p-2.5">
+          <div className="rounded-xl bg-accent/10 p-3">
             <Icon className="text-accent" icon={CoffeeIcon} size={24} />
           </div>
         </div>

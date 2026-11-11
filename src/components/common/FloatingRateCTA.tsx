@@ -78,7 +78,7 @@ export function FloatingRateCTA({
       aria-label={label}
       className={cn(
         "fixed bottom-6 right-6 z-50",
-        "flex items-center gap-2 px-5 py-3",
+        "flex items-center gap-2 px-6 py-3",
         "bg-primary text-primary-foreground",
         "rounded-full shadow-xl",
         "font-medium text-sm",

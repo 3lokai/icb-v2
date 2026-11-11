@@ -16,7 +16,7 @@ export function CurationStory({ curator }: CurationStoryProps) {
   if (!curator.story && !curator.philosophy) return null;
 
   return (
-    <section className="pt-8 pb-16 md:pt-10 md:pb-24 bg-accent/[0.02]">
+    <section className="pt-8 pb-16 md:pt-8 md:pb-24 bg-accent/[0.02]">
       <div className="mx-auto max-w-4xl w-full px-4 md:px-6 lg:px-8">
         <Stack gap="12">
           <Stack gap="2">
@@ -32,7 +32,7 @@ export function CurationStory({ curator }: CurationStoryProps) {
           </Stack>
 
           {/* Grid: Story & Philosophy */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
             {curator.story && (
               <Stack gap="6">
                 <div className="flex items-center gap-3">
@@ -61,7 +61,7 @@ export function CurationStory({ curator }: CurationStoryProps) {
                     Philosophy
                   </h3>
                 </div>
-                <div className="bg-card/50 border border-border/40 rounded-3xl p-8 md:p-10 relative overflow-hidden group">
+                <div className="bg-card/50 border border-border/40 rounded-3xl p-8 md:p-8 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-accent/10 transition-colors" />
                   <p className="text-body-large text-foreground font-serif italic leading-relaxed relative z-10">
                     &quot;{curator.philosophy}&quot;

@@ -46,7 +46,7 @@ function SpotlightCard({
       <Link
         href={href}
         aria-label={`${data.name} — view roaster`}
-        className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-10"
+        className="flex flex-col gap-8 p-6 md:flex-row md:items-center lg:p-8"
       >
         <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl bg-white p-6 md:w-48 lg:w-56 shadow-sm border border-border/10">
           <Image

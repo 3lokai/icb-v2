@@ -175,10 +175,10 @@ export function CoffeeDetailPage({
                     <h2 className="text-heading">Production details</h2>
 
                     {hasProductionSpecs && (
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-6">
                         {coffee.roast_level && (
                           <Stack gap="1">
-                            <span className="flex items-center gap-1.5 text-label">
+                            <span className="flex items-center gap-2 text-label">
                               <Icon
                                 icon={FireIcon}
                                 size={14}
@@ -198,7 +198,7 @@ export function CoffeeDetailPage({
                         )}
                         {coffee.process && (
                           <Stack gap="1">
-                            <span className="flex items-center gap-1.5 text-label">
+                            <span className="flex items-center gap-2 text-label">
                               <Icon
                                 icon={FunnelIcon}
                                 size={14}
@@ -216,7 +216,7 @@ export function CoffeeDetailPage({
                         )}
                         {coffee.regions.length > 0 && (
                           <Stack gap="1">
-                            <span className="flex items-center gap-1.5 text-label">
+                            <span className="flex items-center gap-2 text-label">
                               <Icon
                                 icon={MapPinIcon}
                                 size={14}
@@ -263,7 +263,7 @@ export function CoffeeDetailPage({
                         )}
                         {coffee.estates.length > 0 && (
                           <Stack gap="1">
-                            <span className="flex items-center gap-1.5 text-label">
+                            <span className="flex items-center gap-2 text-label">
                               <Icon
                                 icon={MountainsIcon}
                                 size={14}
@@ -280,7 +280,7 @@ export function CoffeeDetailPage({
                         )}
                         {varieties.length > 0 && (
                           <Stack gap="1">
-                            <span className="flex items-center gap-1.5 text-label">
+                            <span className="flex items-center gap-2 text-label">
                               <Icon
                                 icon={LeafIcon}
                                 size={14}
@@ -319,7 +319,7 @@ export function CoffeeDetailPage({
                         )}
                         {coffee.bean_species && (
                           <Stack gap="1">
-                            <span className="flex items-center gap-1.5 text-label">
+                            <span className="flex items-center gap-2 text-label">
                               <Icon
                                 icon={FlaskIcon}
                                 size={14}
@@ -340,7 +340,7 @@ export function CoffeeDetailPage({
                         )}
                         {coffee.crop_year && (
                           <Stack gap="1">
-                            <span className="flex items-center gap-1.5 text-label">
+                            <span className="flex items-center gap-2 text-label">
                               <Icon
                                 icon={CalendarIcon}
                                 size={14}
@@ -355,7 +355,7 @@ export function CoffeeDetailPage({
                         )}
                         {coffee.harvest_window && (
                           <Stack gap="1">
-                            <span className="flex items-center gap-1.5 text-label">
+                            <span className="flex items-center gap-2 text-label">
                               <Icon
                                 icon={SunIcon}
                                 size={14}
@@ -371,7 +371,7 @@ export function CoffeeDetailPage({
                         {coffee.brew_methods &&
                           coffee.brew_methods.length > 0 && (
                             <Stack gap="1" className="col-span-2 md:col-span-4">
-                              <span className="flex items-center gap-1.5 text-label">
+                              <span className="flex items-center gap-2 text-label">
                                 <Icon
                                   icon={CoffeeIcon}
                                   size={14}
@@ -399,7 +399,7 @@ export function CoffeeDetailPage({
                     )}
 
                     {hasTags && (
-                      <div className="pt-5 border-t border-border/20">
+                      <div className="pt-6 border-t border-border/20">
                         <Stack gap="3">
                           <span className="text-label">Tags</span>
                           <TagList>

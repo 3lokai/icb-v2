@@ -177,7 +177,7 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
               size={18}
             />
             <Input
-              className="h-11 border-border/40 bg-muted/30 pl-10 transition-colors focus:bg-background"
+              className="h-11 border-border/40 bg-muted/30 pl-8 transition-colors focus:bg-background"
               placeholder="Search by name, tags, or mods..."
               type="text"
               value={searchQuery}
@@ -226,7 +226,7 @@ export function CommunityGrid({ communities }: CommunityGridProps) {
                 initial={{ opacity: reduceMotion ? 1 : 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="col-span-full py-20 text-center"
+                className="col-span-full py-16 text-center"
               >
                 <Stack gap="4" className="items-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
@@ -278,7 +278,7 @@ function FilterChip({ active, onClick, icon, children }: FilterChipProps) {
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-label transition-colors",
+        "inline-flex items-center gap-2 rounded-full border px-3 py-2 text-label transition-colors",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         active
           ? "border-primary bg-primary text-primary-foreground"

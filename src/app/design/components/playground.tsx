@@ -1,5 +1,7 @@
 "use client";
 
+import { Section as BaseSection } from "@/components/primitives/section";
+import { Stack } from "@/components/primitives/stack";
 import {
   ArrowRightIcon,
   ArrowUpRightIcon,
@@ -127,14 +129,17 @@ function Section({
   note?: ReactNode;
   children: ReactNode;
 }) {
+  // Site primitives own the rhythm; this page adds nothing of its own.
   return (
-    <section aria-labelledby={`${id}-h`} className="scroll-mt-32 py-10" id={id}>
-      <h2 className="text-title" id={`${id}-h`}>
-        {title}
-      </h2>
-      {note && <p className="mt-2 max-w-prose text-caption">{note}</p>}
-      <div className="mt-6 space-y-8">{children}</div>
-    </section>
+    <BaseSection
+      className="scroll-mt-32"
+      contained={false}
+      description={note}
+      id={id}
+      title={title}
+    >
+      <Stack gap="8">{children}</Stack>
+    </BaseSection>
   );
 }
 
@@ -452,7 +457,7 @@ export function ComponentPlayground() {
           title="Input & Textarea"
         >
           <div className="grid gap-8 lg:grid-cols-2">
-            <div className="space-y-5">
+            <div className="space-y-6">
               <Field>
                 <FieldLabel htmlFor="pg-default">
                   Default · header search (24 §6)
@@ -503,7 +508,7 @@ export function ComponentPlayground() {
                 <Input id="pg-file" type="file" />
               </Field>
             </div>
-            <div className="space-y-5">
+            <div className="space-y-6">
               <Field>
                 <FieldLabel htmlFor="pg-notes">Textarea</FieldLabel>
                 <Textarea
@@ -546,7 +551,7 @@ export function ComponentPlayground() {
                     />
                     <Input
                       aria-label="Search coffees"
-                      className="pl-9"
+                      className="pl-8"
                       placeholder="Search coffees by name, roaster or note"
                       type="search"
                     />
@@ -672,7 +677,7 @@ export function ComponentPlayground() {
               </CardHeader>
               <CardContent>
                 <form
-                  className="grid gap-5 md:grid-cols-[1fr_16rem]"
+                  className="grid gap-6 md:grid-cols-[1fr_16rem]"
                   noValidate
                   onSubmit={(e) => e.preventDefault()}
                 >
@@ -695,7 +700,7 @@ export function ComponentPlayground() {
                       </FieldDescription>
                     )}
                   </Field>
-                  <div className="space-y-5">
+                  <div className="space-y-6">
                     <Field>
                       <FieldLabel htmlFor="pg-brew">Brew method</FieldLabel>
                       <Select>

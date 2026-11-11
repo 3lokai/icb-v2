@@ -58,7 +58,7 @@ function TierTeaser({ required, label, totalReviews, icon }: TierTeaserProps) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group relative flex flex-col gap-4 p-5 rounded-2xl border border-dashed border-border/60 bg-background transition-colors hover:bg-card h-full"
+      className="group relative flex flex-col gap-4 p-6 rounded-2xl border border-dashed border-border/60 bg-background transition-colors hover:bg-card h-full"
     >
       <div className="flex items-center justify-between">
         <h3 className="m-0 text-overline text-muted-foreground tracking-[0.15em]">
@@ -170,7 +170,7 @@ export function ProfileTasteProfile({
                 <Link href="/coffees" className="mt-2">
                   <Tag
                     variant="outline"
-                    className="px-8 py-5 rounded-full border-accent/40 text-accent hover:bg-accent hover:text-accent-foreground font-medium transition-all active:scale-95 cursor-pointer shadow-lg shadow-accent/5"
+                    className="px-8 py-6 rounded-full border-accent/40 text-accent hover:bg-accent hover:text-accent-foreground font-medium transition-all active:scale-95 cursor-pointer shadow-lg shadow-accent/5"
                   >
                     Begin the Journey
                   </Tag>
@@ -247,7 +247,7 @@ export function ProfileTasteProfile({
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-accent/8 rounded-3xl p-8 md:p-10 border border-accent/20 flex flex-col md:flex-row items-center gap-8"
+                  className="bg-accent/8 rounded-3xl p-8 md:p-8 border border-accent/20 flex flex-col md:flex-row items-center gap-8"
                 >
                   <div className="bg-background p-6 rounded-2xl border border-accent/20 shrink-0">
                     <Icon icon={TargetIcon} size={40} className="text-accent" />
@@ -272,7 +272,7 @@ export function ProfileTasteProfile({
             {/* Insight Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-12">
               {/* TIER 1 SECTION */}
-              <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Methods */}
                 <Stack gap="4">
                   <h3 className="m-0 text-overline text-muted-foreground tracking-[0.15em]">
@@ -283,7 +283,7 @@ export function ProfileTasteProfile({
                       <Tag
                         key={method}
                         variant="outline"
-                        className="px-3 py-1.5 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider"
+                        className="px-3 py-2 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider"
                       >
                         {method}
                       </Tag>
@@ -301,7 +301,7 @@ export function ProfileTasteProfile({
                       <Tag
                         key={roast}
                         variant="outline"
-                        className="px-3 py-1.5 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider"
+                        className="px-3 py-2 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider"
                       >
                         {roast}
                       </Tag>
@@ -328,7 +328,7 @@ export function ProfileTasteProfile({
                             <Tag
                               key={label}
                               variant="outline"
-                              className="px-3 py-1.5 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider"
+                              className="px-3 py-2 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider"
                             >
                               {label}
                             </Tag>
@@ -404,7 +404,7 @@ export function ProfileTasteProfile({
                           <Tag
                             key={region}
                             variant="outline"
-                            className="px-3 py-1.5 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider"
+                            className="px-3 py-2 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider"
                           >
                             {region}
                           </Tag>
@@ -427,7 +427,7 @@ export function ProfileTasteProfile({
                           <Tag
                             key={process}
                             variant="outline"
-                            className="px-3 py-1.5 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider capitalize"
+                            className="px-3 py-2 border-accent/10 bg-accent/5 text-accent text-micro font-medium tracking-wider capitalize"
                           >
                             {process.replace("_", " ")}
                           </Tag>
@@ -454,7 +454,7 @@ export function ProfileTasteProfile({
               </div>
 
               {/* Sidebar Insights */}
-              <div className="lg:col-span-4 flex flex-col gap-10">
+              <div className="lg:col-span-4 flex flex-col gap-8">
                 {/* Bean Species Section */}
                 {tier >= 1 && (
                   <motion.div

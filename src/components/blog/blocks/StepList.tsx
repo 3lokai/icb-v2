@@ -64,7 +64,7 @@ export function StepList({ value }: StepListProps) {
 
   return (
     <motion.div
-      className="not-prose my-12 space-y-10"
+      className="not-prose my-12 space-y-8"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
@@ -101,7 +101,7 @@ export function StepList({ value }: StepListProps) {
                 />
               )}
               {step.time && (
-                <span className="flex items-center gap-1.5 rounded-full bg-muted/50 px-3 py-1 text-micro font-medium text-muted-foreground border border-border/40">
+                <span className="flex items-center gap-2 rounded-full bg-muted/50 px-3 py-1 text-micro font-medium text-muted-foreground border border-border/40">
                   <Icon icon={TimerIcon} size={12} />
                   {step.time}
                 </span>

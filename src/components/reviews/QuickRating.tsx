@@ -341,7 +341,7 @@ export function QuickRating({
           )}
         >
           <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-destructive/60 via-destructive to-destructive/60 opacity-60 z-10" />
-          <DialogHeader className="p-8 pb-6 border-b border-border/10 pt-10">
+          <DialogHeader className="p-8 pb-6 border-b border-border/10 pt-8">
             <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60 mb-1 text-left">
               Confirm Action
             </p>
@@ -382,7 +382,7 @@ export function QuickRating({
             className={cn(
               isInline
                 ? "pb-6"
-                : "p-8 md:p-10 pb-6 border-b border-border/10 pt-10"
+                : "p-8 md:p-8 pb-6 border-b border-border/10 pt-8"
             )}
           >
             <p className="text-overline tracking-[0.1em] text-muted-foreground/60 mb-1 text-left">
@@ -399,7 +399,7 @@ export function QuickRating({
           </div>
           <div
             className={cn(
-              isInline ? "pt-6" : "p-8 md:p-10 pt-6",
+              isInline ? "pt-6" : "p-8 md:p-8 pt-6",
               "flex flex-col gap-4"
             )}
           >
@@ -663,7 +663,7 @@ export function QuickRating({
                   variant="secondary"
                   className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-3 py-1"
                 >
-                  <Icon icon={CheckIcon} size={12} className="mr-1.5" />
+                  <Icon icon={CheckIcon} size={12} className="mr-2" />
                   Saved
                 </Badge>
               </div>
@@ -745,7 +745,7 @@ export function QuickRating({
                     <Link
                       href={`/tools/coffee-compass?coffeeId=${encodeURIComponent(entityId)}`}
                     >
-                      <Icon icon={CompassIcon} size={14} className="mr-1.5" />
+                      <Icon icon={CompassIcon} size={14} className="mr-2" />
                       Fix Your Brew
                     </Link>
                   </Button>
@@ -757,7 +757,7 @@ export function QuickRating({
                   disabled={isDeleting}
                   className="text-destructive hover:text-destructive hover:bg-destructive/10"
                 >
-                  <Icon icon={TrashSimpleIcon} size={14} className="mr-1.5" />
+                  <Icon icon={TrashSimpleIcon} size={14} className="mr-2" />
                   {isDeleting ? "Deleting..." : "Delete"}
                 </Button>
               </Cluster>

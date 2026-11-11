@@ -168,7 +168,7 @@ function DiscoveryAccordionCard({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/20" />
 
-        <div className="relative z-10 mt-auto flex w-full flex-col p-4 sm:p-5">
+        <div className="relative z-10 mt-auto flex w-full flex-col p-4 sm:p-6">
           <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-accent shadow-lg shadow-accent/20 ring-1 ring-white/20">
             <Icon
               className="h-4 w-4"

@@ -72,7 +72,7 @@ export default async function FreshFromCommunitySection() {
           return (
             <article
               key={review.id}
-              className="flex flex-col gap-5 rounded-xl border border-border/60 bg-card p-6"
+              className="flex flex-col gap-6 rounded-xl border border-border/60 bg-card p-6"
             >
               {/* Reviewer */}
               <div className="flex items-center gap-3">
@@ -134,7 +134,7 @@ export default async function FreshFromCommunitySection() {
         })}
       </Reveal>
 
-      <p className="text-body text-muted-foreground mt-10 text-center">
+      <p className="text-body text-muted-foreground mt-8 text-center">
         <span className="text-foreground font-medium">
           {data.total_ratings.toLocaleString("en-IN")}
         </span>{" "}

@@ -92,9 +92,9 @@ export function FAQSection({
 
       {/* Editorial header — kicker, Fraunces title, lead, anchored by a hairline rule */}
       <div className="mx-auto max-w-5xl">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-6 border-b border-border/40 pb-7 md:grid-cols-12 md:items-end">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 border-b border-border/40 pb-6 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-6">
               <span className="inline-flex items-center gap-3 text-overline font-medium tracking-[0.18em] text-muted-foreground">
                 <span aria-hidden="true" className="h-px w-7 bg-accent" />
                 {overline}
@@ -117,7 +117,7 @@ export function FAQSection({
       </div>
 
       {/* Answers sit on a clean paper panel — depth via surface, not blur */}
-      <div className="mx-auto mt-8 max-w-5xl surface-1 rounded-2xl px-5 md:px-8">
+      <div className="mx-auto mt-8 max-w-5xl surface-1 rounded-2xl px-6 md:px-8">
         <FAQ className="my-0" items={items} />
       </div>
     </Section>

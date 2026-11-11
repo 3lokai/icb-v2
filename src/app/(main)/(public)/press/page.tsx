@@ -250,7 +250,7 @@ export default async function PressPage() {
               src="/press/screenshots/icb-industry-insights.jpg"
             />
           </div>
-          <Stack className="p-6 md:p-10" gap="6">
+          <Stack className="p-6 md:p-8" gap="6">
             <h3 className="text-title">Industry Insights</h3>
             <p className="text-body text-muted-foreground">
               Original, regularly refreshed data from the ICB catalogue:
@@ -371,7 +371,7 @@ export default async function PressPage() {
             >
               <h3 className="text-heading">{angle.title}</h3>
               <p className="text-body text-muted-foreground">{angle.premise}</p>
-              <ul className="mt-auto flex flex-wrap gap-x-5 gap-y-2">
+              <ul className="mt-auto flex flex-wrap gap-x-6 gap-y-2">
                 {angle.links.map((l) => (
                   <li key={l.href}>
                     <TrackClicks
@@ -427,7 +427,7 @@ export default async function PressPage() {
 
           <div>
             <h3 className="mb-4 text-heading">Brand usage</h3>
-            <ul className="max-w-3xl list-disc space-y-2 pl-5 text-body text-muted-foreground">
+            <ul className="max-w-3xl list-disc space-y-2 pl-6 text-body text-muted-foreground">
               {BRAND_GUIDELINES.map((g) => (
                 <li key={g}>{g}</li>
               ))}
@@ -444,7 +444,7 @@ export default async function PressPage() {
         title="Meet the Founder"
         className="border-t border-border/60"
       >
-        <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-12">
+        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-12">
           <Stack className="md:col-span-4" gap="3">
             <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-border/40">
               <Image
@@ -568,7 +568,7 @@ export default async function PressPage() {
         title="Get in Touch"
         className="border-t border-border/60"
       >
-        <div className="surface-1 flex flex-col gap-6 rounded-xl p-6 md:flex-row md:items-center md:justify-between md:p-10">
+        <div className="surface-1 flex flex-col gap-6 rounded-xl p-6 md:flex-row md:items-center md:justify-between md:p-8">
           <div className="max-w-2xl space-y-2">
             <p className="text-body-large">
               For interviews, quotes, data questions, speaking and events, or

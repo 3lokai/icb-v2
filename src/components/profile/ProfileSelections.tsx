@@ -173,7 +173,7 @@ export function ProfileSelections({
           )}
         >
           <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-destructive/60 via-destructive to-destructive/60 opacity-60 z-10" />
-          <DialogHeader className="p-8 pb-6 border-b border-border/10 pt-10">
+          <DialogHeader className="p-8 pb-6 border-b border-border/10 pt-8">
             <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground mb-1 text-left">
               Confirm Action
             </p>

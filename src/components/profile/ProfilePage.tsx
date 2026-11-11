@@ -203,7 +203,7 @@ export function ProfilePage({
         ground="warm"
         texture="grain"
         maxWidth="6xl"
-        className="lg:py-20"
+        className="lg:py-16"
         aria-label="Taste insights"
       >
         <ProfileTasteProfile
@@ -219,7 +219,7 @@ export function ProfilePage({
       <Band
         id="selections"
         maxWidth="6xl"
-        className="lg:py-20"
+        className="lg:py-16"
         aria-label="Selections"
       >
         <ProfileSelections
@@ -237,7 +237,7 @@ export function ProfilePage({
         ground="warm"
         texture="grain"
         maxWidth="6xl"
-        className="lg:py-20"
+        className="lg:py-16"
         aria-label="Wishlist"
       >
         <Stack gap="8">
@@ -262,7 +262,7 @@ export function ProfilePage({
         ground="warm"
         texture="grain-coarse"
         maxWidth="6xl"
-        className="lg:py-20"
+        className="lg:py-16"
         aria-label="Ratings"
       >
         <ProfileRatings
@@ -276,7 +276,7 @@ export function ProfilePage({
       <Band
         id="gear-station"
         maxWidth="6xl"
-        className="lg:py-20"
+        className="lg:py-16"
         aria-label="Gear and station"
       >
         <ProfileGearStation
@@ -289,7 +289,7 @@ export function ProfilePage({
       </Band>
 
       {isAnonymous && (
-        <Band ground="warm" texture="grain" maxWidth="5xl" className="lg:py-20">
+        <Band ground="warm" texture="grain" maxWidth="5xl" className="lg:py-16">
           <Stack gap="8" className="text-center items-center">
             <Stack gap="2" className="items-center">
               <h2 className="text-title font-serif italic text-accent m-0">

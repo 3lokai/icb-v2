@@ -106,7 +106,7 @@ export default function EducationSection({
                 </div>
 
                 {/* Simple List with Icons */}
-                <ul className="flex flex-col gap-5">
+                <ul className="flex flex-col gap-6">
                   {educationItems.map((item, index) => (
                     <li key={item.id}>
                       <Reveal

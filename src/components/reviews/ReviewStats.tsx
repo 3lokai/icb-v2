@@ -32,7 +32,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
         <Cluster gap="4" align="center" className="flex-wrap">
           {/* Star Rating */}
           {avg_rating != null && (
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-muted/30 rounded-lg border border-border/40">
+            <div className="flex items-center gap-2 px-4 py-3 bg-muted/30 rounded-lg border border-border/40">
               <div className="flex items-center gap-1">
                 <Icon
                   icon={StarIcon}
@@ -53,7 +53,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
           <button
             onClick={onReviewsClick}
             className={cn(
-              "text-body font-semibold transition-all px-4 py-2.5 rounded-lg border border-border/40",
+              "text-body font-semibold transition-all px-4 py-3 rounded-lg border border-border/40",
               onReviewsClick
                 ? "text-primary hover:text-primary/90 hover:bg-primary/5 hover:border-primary/30 active:scale-95"
                 : "text-foreground bg-muted/30"
@@ -64,7 +64,7 @@ export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
 
           {/* Recommend % */}
           {recommend_pct != null && recommend_pct > 0 && (
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-muted/30 rounded-lg border border-border/40">
+            <div className="flex items-center gap-2 px-4 py-3 bg-muted/30 rounded-lg border border-border/40">
               <Icon icon={ThumbsUpIcon} size={16} className="text-primary" />
               <span className="text-body font-medium text-foreground">
                 {Math.round(recommend_pct)}% recommend

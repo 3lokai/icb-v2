@@ -166,7 +166,7 @@ export default async function LearnPage() {
               The toggle hides itself once open — expand is one-way. */}
           {series.length > SERIES_PREVIEW && (
             <details className="group mt-8">
-              <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-2 rounded-lg border border-border/60 px-5 py-2.5 text-caption text-primary transition-colors hover:border-border hover:bg-muted group-open:hidden [&::-webkit-details-marker]:hidden">
+              <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-2 rounded-lg border border-border/60 px-6 py-3 text-caption text-primary transition-colors hover:border-border hover:bg-muted group-open:hidden [&::-webkit-details-marker]:hidden">
                 See all {series.length} series
                 <span aria-hidden>↓</span>
               </summary>

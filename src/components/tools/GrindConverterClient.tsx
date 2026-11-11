@@ -198,7 +198,7 @@ export function GrindConverterClient() {
               aria-pressed={active}
               onClick={() => setMethodKey(key)}
               className={cn(
-                "rounded-full border px-3.5 py-1.5 text-caption font-medium transition-colors",
+                "rounded-full border px-4 py-2 text-caption font-medium transition-colors",
                 active
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border/60 bg-background text-muted-foreground hover:bg-muted/50 hover:text-foreground"
@@ -241,7 +241,7 @@ export function GrindConverterClient() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 border-t border-border/40 pt-5 sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 border-t border-border/40 pt-6 sm:grid-cols-3">
               <Stat
                 label="Grind category"
                 value={categoryLabelForRange(

@@ -68,7 +68,7 @@ function SimilarRoasterCard({ roaster }: { roaster: SimilarRoaster }) {
 
             {/* Why this roaster matched */}
             {roaster.shared_tags.length > 0 && (
-              <div className="flex flex-wrap items-center gap-1.5">
+              <div className="flex flex-wrap items-center gap-2">
                 {roaster.shared_tags.map((tag) => (
                   <Badge key={tag} variant="outline" className="text-micro">
                     {labelForTag(tag)}
@@ -156,7 +156,7 @@ function RoasterSummaryCard({
 
               {/* Secondary info - always show coffee count, location optional */}
               {coffeeCount > 0 && (
-                <div className="flex items-center gap-1.5 line-clamp-1">
+                <div className="flex items-center gap-2 line-clamp-1">
                   <Icon icon={CoffeeIcon} size={12} color="muted" />
                   <span className="text-caption">
                     {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
@@ -221,14 +221,14 @@ function RoasterSummaryCard({
 
             {/* Location */}
             {hqLocation && (
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <Icon icon={MapPinIcon} size={14} color="muted" />
                 <p className="text-body-muted">{hqLocation}</p>
               </div>
             )}
 
             {/* Coffee count */}
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <Icon icon={CoffeeIcon} size={14} color="muted" />
               <p className="text-body-muted">
                 {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}

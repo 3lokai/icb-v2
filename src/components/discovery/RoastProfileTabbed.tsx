@@ -64,7 +64,7 @@ function DetailBlock({
 }
 
 const tabTriggerClass =
-  "flex-none shrink-0 snap-start inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-caption font-medium transition-all duration-300 after:hidden sm:px-5 " +
+  "flex-none shrink-0 snap-start inline-flex items-center gap-2 rounded-full px-4 py-3 text-caption font-medium transition-all duration-300 after:hidden sm:px-6 " +
   "text-muted-foreground hover:text-foreground hover:bg-accent/5 " +
   "data-[state=active]:bg-primary/[0.08] data-[state=active]:text-primary data-[state=active]:shadow-sm";
 
@@ -91,7 +91,7 @@ export function RoastProfileTabbed({
   return (
     <div
       className={cn(
-        "surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-10 shadow-xl shadow-primary/5",
+        "surface-1 relative overflow-hidden rounded-[2rem] p-6 md:p-8 shadow-xl shadow-primary/5",
         className
       )}
     >
@@ -141,7 +141,7 @@ export function RoastProfileTabbed({
               </div>
             </div>
             <div className="md:col-span-3">
-              <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
+              <div className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
                 <DetailBlock
                   icon={PaletteIcon}
                   label="Colour"
@@ -187,7 +187,7 @@ export function RoastProfileTabbed({
               </div>
             </div>
             <div className="md:col-span-3">
-              <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
+              <div className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
                 <DetailBlock
                   icon={ThermometerIcon}
                   label="Stage"
@@ -251,19 +251,19 @@ export function RoastProfileTabbed({
                       <Badge
                         key={tag}
                         variant="secondary"
-                        className="rounded-lg border-accent/10 bg-accent/5 px-4 py-1.5 text-caption font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
+                        className="rounded-lg border-accent/10 bg-accent/5 px-4 py-2 text-caption font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
                       >
                         {tag}
                       </Badge>
                     ))}
                   </Cluster>
                 </Stack>
-                <div className="relative border-l-2 border-accent/30 py-1 pl-5">
+                <div className="relative border-l-2 border-accent/30 py-1 pl-6">
                   <p className="text-body leading-relaxed text-foreground/80">
                     {flavourProfile.indianContext}
                   </p>
                 </div>
-                <div className="rounded-[1.25rem] border border-border bg-muted/30 px-5 py-5 transition-colors hover:bg-muted/50">
+                <div className="rounded-[1.25rem] border border-border bg-muted/30 px-6 py-6 transition-colors hover:bg-muted/50">
                   <div className="mb-3 flex items-center gap-2">
                     <Icon icon={UsersIcon} className="h-4 w-4 text-accent/60" />
                     <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground">
@@ -300,7 +300,7 @@ export function RoastProfileTabbed({
             </div>
             <div className="flex h-full flex-col justify-center md:col-span-3">
               <Stack gap="8">
-                <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
+                <div className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
                   <DetailBlock
                     icon={ThermometerSimpleIcon}
                     label="Water temp"
@@ -319,7 +319,7 @@ export function RoastProfileTabbed({
                     />
                   </div>
                 </div>
-                <div className="surface-2 rounded-xl p-5">
+                <div className="surface-2 rounded-xl p-6">
                   <div className="flex items-start gap-3">
                     <Icon
                       icon={InfoIcon}

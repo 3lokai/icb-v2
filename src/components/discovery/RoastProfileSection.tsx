@@ -32,7 +32,7 @@ export function RoastProfileSection({
       <div className="mx-auto max-w-6xl w-full space-y-8 px-4 md:px-0">
         <RoastProfileTabbed roastProfile={roastProfile} />
 
-        <aside className="rounded-2xl border border-border/50 bg-muted/20 px-5 py-4 md:px-6 md:py-5">
+        <aside className="rounded-2xl border border-border/50 bg-muted/20 px-6 py-4 md:px-6 md:py-6">
           <p className="text-micro font-semibold uppercase tracking-widest text-muted-foreground mb-2">
             On Indian Coffee Beans
           </p>

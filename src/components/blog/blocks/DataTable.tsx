@@ -55,8 +55,8 @@ export function DataTable({ value }: DataTableProps) {
                     key={ci}
                     className={
                       ci === 0
-                        ? "px-6 py-5 text-body font-bold text-foreground"
-                        : "px-6 py-5 text-body text-muted-foreground"
+                        ? "px-6 py-6 text-body font-bold text-foreground"
+                        : "px-6 py-6 text-body text-muted-foreground"
                     }
                   >
                     {cell || "—"}

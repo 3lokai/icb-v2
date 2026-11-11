@@ -397,12 +397,12 @@ export function CoffeeCompassClient({
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div className="relative">
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
         {/* ── LEFT PANEL ─────────────────────────────────────────────────── */}
         <div className="flex-1 min-w-0 space-y-6">
           {/* Method */}
           <div>
-            <p className="text-label font-semibold uppercase tracking-widest mb-2.5">
+            <p className="text-label font-semibold uppercase tracking-widest mb-3">
               Brewing Method
             </p>
             <Select
@@ -427,7 +427,7 @@ export function CoffeeCompassClient({
 
           {/* Roaster */}
           <div>
-            <p className="text-label font-semibold uppercase tracking-widest mb-2.5">
+            <p className="text-label font-semibold uppercase tracking-widest mb-3">
               Roaster{" "}
               <span className="normal-case font-normal opacity-50">
                 (optional)
@@ -456,7 +456,7 @@ export function CoffeeCompassClient({
 
           {/* Coffee */}
           <div>
-            <p className="text-label font-semibold uppercase tracking-widest mb-2.5">
+            <p className="text-label font-semibold uppercase tracking-widest mb-3">
               Coffee{" "}
               <span className="normal-case font-normal opacity-50">
                 (optional)
@@ -509,7 +509,7 @@ export function CoffeeCompassClient({
               const style = GROUP_STYLES[group.chipColor];
               return (
                 <div key={group.label}>
-                  <p className="text-label mb-1.5 flex items-center gap-1.5">
+                  <p className="text-label mb-2 flex items-center gap-2">
                     <span
                       className={cn(
                         "inline-block h-1.5 w-1.5 rounded-full",
@@ -518,7 +518,7 @@ export function CoffeeCompassClient({
                     />
                     {group.label}
                   </p>
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap gap-2">
                     {group.keys.map((key) => {
                       const isActive = chips.has(key);
                       return (
@@ -544,8 +544,8 @@ export function CoffeeCompassClient({
 
           {/* Empty state — tells a first-timer what to do and what they'll get back */}
           {!result && (
-            <div className="rounded-xl border border-dashed border-border/60 bg-muted/20 px-5 py-6 text-center">
-              <p className="text-label font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">
+            <div className="rounded-xl border border-dashed border-border/60 bg-muted/20 px-6 py-6 text-center">
+              <p className="text-label font-semibold uppercase tracking-widest text-muted-foreground mb-2">
                 Your fix appears here
               </p>
               <p className="text-caption text-muted-foreground leading-relaxed mx-auto max-w-sm">
@@ -559,7 +559,7 @@ export function CoffeeCompassClient({
           {/* Result banner */}
           {result && (
             <div className="rounded-xl border border-border/50 bg-card shadow-sm overflow-hidden">
-              <div className="px-5 pt-4 pb-3 border-b border-border/30 flex items-start justify-between gap-3">
+              <div className="px-6 pt-4 pb-3 border-b border-border/30 flex items-start justify-between gap-3">
                 <div>
                   <p className="text-label font-semibold uppercase tracking-widest mb-0.5">
                     Diagnosis
@@ -581,8 +581,8 @@ export function CoffeeCompassClient({
                 </div>
               </div>
 
-              <div className="px-5 py-3 space-y-2.5">
-                <div className="flex items-start gap-2.5">
+              <div className="px-6 py-3 space-y-3">
+                <div className="flex items-start gap-3">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded bg-primary/10 text-micro font-bold text-primary">
                     1
                   </span>
@@ -590,7 +590,7 @@ export function CoffeeCompassClient({
                     {result.primaryAction}
                   </p>
                 </div>
-                <div className="flex items-start gap-2.5">
+                <div className="flex items-start gap-3">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded bg-muted/50 text-micro font-bold text-muted-foreground">
                     2
                   </span>
@@ -601,12 +601,9 @@ export function CoffeeCompassClient({
               </div>
 
               {result.notes.length > 0 && (
-                <div className="px-5 pb-3 border-t border-border/20 pt-3 space-y-1">
+                <div className="px-6 pb-3 border-t border-border/20 pt-3 space-y-1">
                   {result.notes.map((n, i) => (
-                    <p
-                      key={i}
-                      className="text-caption flex items-start gap-1.5"
-                    >
+                    <p key={i} className="text-caption flex items-start gap-2">
                       <span className="text-accent shrink-0 mt-0.5">›</span>
                       {n}
                     </p>
@@ -615,7 +612,7 @@ export function CoffeeCompassClient({
               )}
 
               {/* Reassurance — how to actually use the fix */}
-              <p className="px-5 pb-4 pt-3 border-t border-border/20 text-caption text-muted-foreground leading-relaxed">
+              <p className="px-6 pb-4 pt-3 border-t border-border/20 text-caption text-muted-foreground leading-relaxed">
                 Start with step 1, then brew and taste again before changing
                 anything else. One adjustment at a time keeps the cause clear.
               </p>
@@ -624,7 +621,7 @@ export function CoffeeCompassClient({
         </div>
 
         {/* ── RIGHT PANEL — Wheel (half-visible on desktop) ─────────────────── */}
-        <div className="w-full lg:w-[560px] lg:shrink-0 lg:-mr-36 xl:-mr-44 pt-10 lg:pt-0">
+        <div className="w-full lg:w-[560px] lg:shrink-0 lg:-mr-36 xl:-mr-44 pt-8 lg:pt-0">
           <div
             ref={wheelRef}
             tabIndex={0}
@@ -850,10 +847,10 @@ export function CoffeeCompassClient({
           >
             <p className="hidden lg:flex items-center gap-2">
               <span>Spin the wheel —</span>
-              <kbd className="rounded border border-border/60 px-1.5 py-0.5 font-mono text-micro">
+              <kbd className="rounded border border-border/60 px-2 py-0.5 font-mono text-micro">
                 ←
               </kbd>
-              <kbd className="rounded border border-border/60 px-1.5 py-0.5 font-mono text-micro">
+              <kbd className="rounded border border-border/60 px-2 py-0.5 font-mono text-micro">
                 →
               </kbd>
               <span>or scroll to rotate</span>

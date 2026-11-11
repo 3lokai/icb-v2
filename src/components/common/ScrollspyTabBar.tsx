@@ -60,7 +60,7 @@ export function ScrollspyTabBar({
               aria-current={activeId === section.id ? "true" : undefined}
               onClick={() => handleClick(section.id)}
               className={cn(
-                "relative px-4 py-2.5 text-caption font-medium rounded-full transition-all whitespace-nowrap",
+                "relative px-4 py-3 text-caption font-medium rounded-full transition-all whitespace-nowrap",
                 activeId === section.id
                   ? "text-primary-foreground bg-primary shadow-sm"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/40"

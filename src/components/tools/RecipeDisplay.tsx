@@ -95,7 +95,7 @@ Made with IndianCoffeeBeans.com
           <Button
             aria-describedby={copyError ? "recipe-copy-error" : undefined}
             aria-invalid={copyError ? true : undefined}
-            className="h-8 gap-1.5 rounded-full text-overline"
+            className="h-8 gap-2 rounded-full text-overline"
             onClick={handleCopyRecipe}
             size="sm"
             variant="outline"

@@ -106,7 +106,7 @@ export function CardRatingFooter({
     );
 
   const shellClass =
-    "mt-auto border-t border-border/40 px-3 py-2 md:px-4 md:py-2.5";
+    "mt-auto border-t border-border/40 px-3 py-2 md:px-4 md:py-3";
 
   const unratedRow = (
     <p className="text-caption text-muted-foreground">

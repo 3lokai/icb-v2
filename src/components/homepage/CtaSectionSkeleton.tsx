@@ -10,8 +10,8 @@ export function CtaSectionSkeleton() {
     <Section spacing="default">
       <div className="mx-auto max-w-6xl">
         <div className="overflow-hidden rounded-3xl border border-border bg-card">
-          <div className="p-6 sm:p-10 md:p-14 lg:p-16">
-            <div className="grid items-center gap-10 md:gap-16 md:grid-cols-12">
+          <div className="p-6 sm:p-8 md:p-12 lg:p-16">
+            <div className="grid items-center gap-8 md:gap-16 md:grid-cols-12">
               <div className="md:col-span-7">
                 <Stack gap="8">
                   <Skeleton className="h-4 w-40" />
@@ -19,7 +19,7 @@ export function CtaSectionSkeleton() {
                     <Skeleton className="h-10 w-full max-w-md" />
                     <Skeleton className="h-5 w-full max-w-xl" />
                   </Stack>
-                  <div className="flex flex-wrap gap-5">
+                  <div className="flex flex-wrap gap-6">
                     <Skeleton className="h-12 w-44" />
                     <Skeleton className="h-12 w-40" />
                   </div>

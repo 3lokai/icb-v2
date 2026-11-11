@@ -103,7 +103,7 @@ export function DashboardSidebarContent({
                 key={item.url}
                 href={item.url}
                 className={cn(
-                  "group flex cursor-pointer items-center gap-2.5 rounded-md py-1.5 transition-colors",
+                  "group flex cursor-pointer items-center gap-3 rounded-md py-2 transition-colors",
                   isActive
                     ? "text-accent font-medium"
                     : "text-foreground hover:text-accent"

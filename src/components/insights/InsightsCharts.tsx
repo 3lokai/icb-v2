@@ -442,7 +442,7 @@ export function TopRegionsChart({
         {Object.entries(STATE_COLORS)
           .filter(([state]) => regionData.some((r) => r.state === state))
           .map(([state, color]) => (
-            <div key={state} className="flex items-center gap-1.5">
+            <div key={state} className="flex items-center gap-2">
               <span
                 className="inline-block h-2.5 w-2.5 rounded-sm"
                 style={{ backgroundColor: color }}
@@ -619,11 +619,11 @@ export function VarietyDistributionChart({
     >
       {/* Legend */}
       <div className="mb-4 flex gap-4">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <span className="inline-block h-2.5 w-2.5 rounded-sm bg-primary" />
           <span className="text-caption">Indian-bred</span>
         </div>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <span className="inline-block h-2.5 w-2.5 rounded-sm bg-muted-foreground" />
           <span className="text-caption">Global / Imported</span>
         </div>
@@ -708,7 +708,7 @@ export function RoasterCityChart({
       <RoasterMap cities={data} />
 
       {/* City legend below */}
-      <div className="mt-4 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
+      <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
         {roasterLegend.map((d, i) => (
           <div key={d.city} className="flex items-center gap-2">
             <span

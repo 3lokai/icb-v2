@@ -75,7 +75,7 @@ export function WishlistButton({
           aria-label={label}
           aria-pressed={saved}
           className={cn(
-            "inline-flex items-center justify-center rounded-full p-1.5",
+            "inline-flex items-center justify-center rounded-full p-2",
             "transition-transform hover:scale-110 focus-visible:outline-none",
             "focus-visible:ring-2 focus-visible:ring-ring",
             "motion-reduce:transition-none motion-reduce:hover:scale-100",

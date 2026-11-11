@@ -66,7 +66,7 @@ export function FormModal({
   };
 
   const inputClasses =
-    "w-full px-5 py-3.5 rounded-xl border border-border bg-muted/5 text-body focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all outline-none";
+    "w-full px-6 py-4 rounded-xl border border-border bg-muted/5 text-body focus:bg-background focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all outline-none";
   const labelClasses =
     "text-micro font-bold uppercase tracking-widest text-muted-foreground/60 mb-2 block";
 
@@ -515,7 +515,7 @@ export function FormModal({
         {/* Decorative stripe */}
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60" />
 
-        <div className="sticky top-0 z-20 flex items-center justify-between p-8 md:p-10 border-b border-border/10 bg-card/95 backdrop-blur-md rounded-t-[2.5rem]">
+        <div className="sticky top-0 z-20 flex items-center justify-between p-8 md:p-8 border-b border-border/10 bg-card/95 backdrop-blur-md rounded-t-[2.5rem]">
           <Stack gap="2">
             <h3 className="font-serif italic text-title text-primary leading-none">
               {getModalTitle()}
@@ -539,7 +539,7 @@ export function FormModal({
           </button>
         </div>
 
-        <div className="flex-1 p-8 md:p-10 overflow-y-auto">
+        <div className="flex-1 p-8 md:p-8 overflow-y-auto">
           {activeForm === "roaster" && renderRoasterForm()}
           {activeForm === "suggestion" && renderSuggestionForm()}
           {activeForm === "professional" && renderProfessionalForm()}

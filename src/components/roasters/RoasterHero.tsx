@@ -116,8 +116,8 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
   };
 
   return (
-    <Band id="overview" className="py-10 md:py-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-start">
+    <Band id="overview" className="py-8 md:py-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
         {/* Logo Column */}
         <div className="w-full max-w-sm mx-auto md:mx-0">
           <div
@@ -170,7 +170,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
           {/* Rating + Basic Stats */}
           <div className="flex flex-wrap items-center gap-4">
             {stats && stats.review_count ? (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border/40 bg-card">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-full border border-border/40 bg-card">
                 <Icon
                   icon={StarIcon}
                   size={16}
@@ -307,7 +307,7 @@ export function RoasterHero({ roaster, stats }: RoasterHeroProps) {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-full hover:bg-accent/10 text-muted-foreground hover:text-accent transition-all border border-border/40 bg-background shadow-sm"
+                  className="p-3 rounded-full hover:bg-accent/10 text-muted-foreground hover:text-accent transition-all border border-border/40 bg-background shadow-sm"
                   title={link.label}
                   aria-label={`${roaster.name} on ${link.label}`}
                 >

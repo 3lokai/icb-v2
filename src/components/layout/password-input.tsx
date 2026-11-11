@@ -22,7 +22,7 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
       <Input
         {...props}
         aria-label={props["aria-label"] ?? "Password"}
-        className={cn("pr-10", className)}
+        className={cn("pr-8", className)}
         type={visible ? "text" : "password"}
       />
       <button

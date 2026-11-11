@@ -236,7 +236,7 @@ export function CoffeeCalculator({
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {results.method.tips.map((tip, index) => (
                 <div
-                  className="card-bordered relative overflow-hidden rounded-lg bg-background p-5"
+                  className="card-bordered relative overflow-hidden rounded-lg bg-background p-6"
                   key={`tip-${tip.slice(0, 20)}-${index}`}
                 >
                   <div className="flex items-start gap-4">

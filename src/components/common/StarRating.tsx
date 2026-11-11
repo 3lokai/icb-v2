@@ -96,7 +96,7 @@ export function StarRating({
 
     return (
       <div
-        className="flex items-center gap-1.5"
+        className="flex items-center gap-2"
         onMouseLeave={() => setHoverRating(null)}
       >
         <div
@@ -156,7 +156,7 @@ export function StarRating({
 
   // ---- Read-only display path (unchanged) --------------------------------
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-2">
       <div className="flex items-center gap-0.5">
         {[...Array(5)].map((_, index) => {
           const fillPercentage = Math.min(Math.max(rating - index, 0), 1);

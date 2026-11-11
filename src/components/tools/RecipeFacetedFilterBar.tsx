@@ -91,7 +91,7 @@ export function RecipeFacetedFilterBar({
           <Input
             aria-label="Search recipes, experts, or techniques"
             placeholder="Search recipes, experts or techniques..."
-            className="pl-10 h-11 bg-background"
+            className="pl-8 h-11 bg-background"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
           />
@@ -197,7 +197,7 @@ export function RecipeFacetedFilterBar({
             Clear All
             <Badge
               variant="secondary"
-              className="ml-2 px-1.5 py-0 min-w-[1.2rem] flex justify-center"
+              className="ml-2 px-2 py-0 min-w-[1.2rem] flex justify-center"
             >
               {activeFiltersCount}
             </Badge>

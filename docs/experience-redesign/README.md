@@ -14,7 +14,7 @@
 | [23-next-design-phase.md](23-next-design-phase.md) | Phase plan: current-vs-proposed sitemap and navigation, page-template inventory, approval gates, then component/copy sequence. |
 | [24-information-architecture.md](24-information-architecture.md) | **APPROVED** IA: audit, proposed sitemap and the navigation contract (section 6). |
 | [25-page-hierarchy.md](25-page-hierarchy.md) | **APPROVED** page-level hierarchy, account menu and per-page content order. |
-| [26-component-system.md](26-component-system.md) | **Phase C working contract:** shadcn-at-source ownership, phase order, primitive changes, playground and acceptance checklist. |
+| [26-component-system.md](26-component-system.md) | **Phase C working contract:** shadcn-at-source ownership, phase order, primitive changes, playground and acceptance checklist. Also holds the **confirmed spacing scale** and the layout primitives that own spacing. |
 | [27-static-imagery.md](27-static-imagery.md) | **Static photo triage:** keep/reframe/repoint, four branch-only collection image mapping changes and one staged fruit-filter WebP candidate. (Renumbered from a duplicate 26 on 2026-11-12.) |
 | [07-decisions.md](07-decisions.md) | Decision log with statuses and dates. |
 | [17-review-intelligence-and-monetization.md](17-review-intelligence-and-monetization.md) | Business north star: independent reviews and coffee intelligence. |

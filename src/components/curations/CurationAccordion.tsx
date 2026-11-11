@@ -76,9 +76,9 @@ export function CurationAccordion({
           <AccordionItem
             key={curation.id}
             value={curation.id}
-            className="border border-border/40 rounded-2xl px-5 md:px-6 overflow-hidden bg-card/50 data-[state=open]:bg-card data-[state=open]:border-accent/20 transition-colors"
+            className="border border-border/40 rounded-2xl px-6 md:px-6 overflow-hidden bg-card/50 data-[state=open]:bg-card data-[state=open]:border-accent/20 transition-colors"
           >
-            <AccordionTrigger className="hover:no-underline py-5 md:py-6">
+            <AccordionTrigger className="hover:no-underline py-6 md:py-6">
               <div className="flex flex-col items-start gap-1">
                 <div className="flex items-center gap-3">
                   <span className="text-heading leading-snug tracking-tight">
@@ -115,7 +115,7 @@ function SelectionGrid({
   selections: CurationList["selections"];
 }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
       {selections.map((selection) => (
         <Card
           key={selection.id}
@@ -143,7 +143,7 @@ function SelectionGrid({
           </div>
 
           {/* Content */}
-          <CardContent className="p-5 md:p-6 flex-1 flex flex-col justify-center">
+          <CardContent className="p-6 md:p-6 flex-1 flex flex-col justify-center">
             <Stack gap="3">
               <Stack gap="1">
                 {selection.roasterSlug && selection.coffeeSlug ? (

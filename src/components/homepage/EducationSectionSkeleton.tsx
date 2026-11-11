@@ -17,7 +17,7 @@ export function EducationSectionSkeleton() {
                   <Skeleton className="h-10 w-full max-w-md" />
                   <Skeleton className="h-6 w-full max-w-xl" />
                 </Stack>
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-6">
                   {Array.from({ length: 3 }).map((_, i) => (
                     <div key={i} className="flex items-start gap-4">
                       <Skeleton className="h-10 w-10 rounded-lg flex-shrink-0" />

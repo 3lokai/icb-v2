@@ -69,7 +69,7 @@ function Choice<T extends string>({
   format?: (v: T) => string;
 }) {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-2">
       <span className="text-label text-muted-foreground">{label}</span>
       <div
         role="radiogroup"
@@ -168,7 +168,7 @@ function BadgeControls({
   };
 
   return (
-    <div className="flex items-center justify-end gap-1.5">
+    <div className="flex items-center justify-end gap-2">
       <Button
         size="sm"
         className="whitespace-nowrap"
@@ -209,7 +209,7 @@ function BadgeControls({
             value={look.size}
             onChange={(size) => setLook({ ...look, size })}
           />
-          <div className="flex gap-1.5 border-t border-border pt-3">
+          <div className="flex gap-2 border-t border-border pt-3">
             <Button
               size="sm"
               variant="ghost"
@@ -343,19 +343,19 @@ function InstallDialog({
             tasting notes. The store badge fits your footer or About page.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-5 text-body">
-          <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-6 text-body">
+          <div className="flex flex-col gap-2">
             <h3 className="font-medium">Shopify</h3>
-            <ol className="list-decimal pl-5 text-muted-foreground space-y-0.5">
+            <ol className="list-decimal pl-6 text-muted-foreground space-y-0.5">
               <li>Online Store → Themes → Customize.</li>
               <li>Open the product template, a page, or the footer.</li>
               <li>Add block → Custom Liquid.</li>
               <li>Paste the embed and Save.</li>
             </ol>
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             <h3 className="font-medium">WooCommerce / WordPress</h3>
-            <ol className="list-decimal pl-5 text-muted-foreground space-y-0.5">
+            <ol className="list-decimal pl-6 text-muted-foreground space-y-0.5">
               <li>Edit the product, page or template.</li>
               <li>Add a Custom HTML block.</li>
               <li>Paste the embed, then Publish / Update.</li>
@@ -481,7 +481,7 @@ export function RoasterBadges({
           accentWord="profile."
           description="One badge for your whole store, linking customers to your roaster page on IndianCoffeeBeans."
         >
-          <div className="flex flex-col gap-4 rounded-xl border border-border bg-background p-5 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-4 rounded-xl border border-border bg-background p-6 md:flex-row md:items-center md:justify-between">
             <Preview target={storeTarget} look={storeLook} />
             <BadgeControls
               siteUrl={siteUrl}

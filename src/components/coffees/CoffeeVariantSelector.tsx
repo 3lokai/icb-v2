@@ -159,7 +159,7 @@ export function CoffeeVariantSelector({
                 key={w}
                 onClick={() => setSelectedWeight(w)}
                 className={cn(
-                  "relative px-5 py-2 rounded-full text-caption font-medium transition-all",
+                  "relative px-6 py-2 rounded-full text-caption font-medium transition-all",
                   isSelected
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : inStock
@@ -194,7 +194,7 @@ export function CoffeeVariantSelector({
                 key={String(g)}
                 onClick={() => setSelectedGrind(g)}
                 className={cn(
-                  "relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all",
+                  "relative inline-flex items-center gap-2 px-3 py-2 rounded-full border transition-all",
                   isSelected
                     ? "bg-primary text-primary-foreground border-primary shadow-sm"
                     : inStock

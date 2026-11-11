@@ -13,7 +13,7 @@ const BASE_URL = "https://www.indiancoffeebeans.com";
 export default function DevelopersPage() {
   return (
     <PageShell>
-      <div className="mx-auto max-w-4xl space-y-14 py-12">
+      <div className="mx-auto max-w-4xl space-y-12 py-12">
         <header>
           <h1 className="text-heading font-bold">API Documentation</h1>
           <p className="mt-2 text-muted-foreground text-body">
@@ -24,7 +24,7 @@ export default function DevelopersPage() {
 
         <section className="space-y-4">
           <h2 className="text-subheading font-bold">Getting started</h2>
-          <ol className="list-decimal space-y-2 pl-5 text-body">
+          <ol className="list-decimal space-y-2 pl-6 text-body">
             <li>
               <Link href="/auth?mode=sign-up" className="text-accent underline">
                 Sign up
@@ -717,7 +717,7 @@ X-API-Key: icb_live_<your-key>`}
             <code className="rounded bg-muted px-1">error</code> string. Common
             status codes:
           </p>
-          <ul className="list-disc pl-5 space-y-1 text-body text-muted-foreground">
+          <ul className="list-disc pl-6 space-y-1 text-body text-muted-foreground">
             <li>
               <strong>400</strong> — Bad request (invalid params or body)
             </li>

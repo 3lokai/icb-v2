@@ -57,7 +57,7 @@ export function UtilityCard({ config }: UtilityCardProps) {
               {config.ctaText}
             </span>
             <Icon
-              className="ml-2.5 h-4 w-4 transition-transform group-hover:translate-x-1"
+              className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-1"
               icon={ArrowRightIcon}
             />
           </Link>

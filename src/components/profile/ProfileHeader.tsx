@@ -402,14 +402,14 @@ function PreferencesStrip({ preferences }: { preferences: CoffeePreferences }) {
     <div className="absolute -bottom-6 left-0 right-0">
       <div className="inline-flex items-center flex-wrap gap-y-4 gap-x-8 py-4 px-1 border-t border-border/40 w-full">
         {groups.map((group) => (
-          <div key={group.label} className="flex flex-col gap-1.5">
-            <div className="flex items-center gap-1.5 text-muted-foreground">
+          <div key={group.label} className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 text-muted-foreground">
               <Icon icon={group.icon} size={10} />
               <span className="text-overline text-micro tracking-widest">
                 {group.label}
               </span>
             </div>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <span className="text-caption font-serif italic text-foreground">
                 {group.items.join(", ")}
               </span>

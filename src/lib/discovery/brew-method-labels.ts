@@ -23,4 +23,4 @@ export function brewSlugToLabel(slug: string): string {
 
 /** Shared styles for brew-method pills linking to discovery pages. */
 export const brewMethodDiscoveryLinkClassName =
-  "group inline-flex items-center rounded-full border border-border/40 bg-background/50 px-4 py-1.5 text-micro font-medium text-muted-foreground transition-all duration-300 hover:border-accent/40 hover:bg-accent/5 hover:text-accent hover:scale-[1.02] hover:shadow-sm";
+  "group inline-flex items-center rounded-full border border-border/40 bg-background/50 px-4 py-2 text-micro font-medium text-muted-foreground transition-all duration-300 hover:border-accent/40 hover:bg-accent/5 hover:text-accent hover:scale-[1.02] hover:shadow-sm";
