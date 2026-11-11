@@ -305,7 +305,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
     },
     sort: "newest",
-    imageUrl: "/images/collections/default-filter.webp",
+    imageUrl: "/images/discovery/process-anaerobic-context.avif",
     sortOrder: 9,
   },
 
@@ -322,7 +322,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       // estate_ids: [...], // Add when available
     },
     sort: "rating_desc",
-    imageUrl: "/images/collections/default-filter.webp",
+    imageUrl: "/images/learn/pillars/origins-and-estates.webp",
     sortOrder: 10,
   },
 
@@ -339,7 +339,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
     },
     sort: "rating_desc",
-    imageUrl: "/images/collections/default-filter.webp",
+    imageUrl: "/images/discovery/espresso-hero.avif",
     sortOrder: 11,
   },
 
@@ -358,7 +358,7 @@ export const COFFEE_COLLECTIONS: CoffeeCollection[] = [
       in_stock_only: true,
     },
     sort: "best_value",
-    imageUrl: "/images/collections/default-filter.webp",
+    imageUrl: "/images/discovery/budget.avif",
     sortOrder: 12,
   },
 
