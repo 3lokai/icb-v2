@@ -152,6 +152,135 @@ const SAMPLE_COFFEE: CoffeeSummary = {
   brew_method_canonical_keys: ["v60"],
 };
 
+// Real coffees (owner-approved for review, 2026-11-13) so the card shows true packaging,
+// names and rating counts. These carry live IDs: submitting a rating or wishlist here writes real data.
+const IK = "https://ik.imagekit.io/indiancoffeebeans/products/";
+const REAL_COFFEES: CoffeeSummary[] = [
+  {
+    ...SAMPLE_COFFEE,
+    coffee_id: "ab5ec84e-8287-48f4-addd-b983a95b716a",
+    slug: "cold-brew-blend-light",
+    name: "Amaltas Blend",
+    display_name: "Amaltas Blend",
+    roaster_slug: "blue-tokai-coffee",
+    roaster_name: "Blue Tokai Coffee",
+    roast_level: "light",
+    process: "washed_natural",
+    min_price_in_stock: 650,
+    best_normalized_250g: 650,
+    rating_avg: 3.73,
+    rating_count: 11,
+    image_url: `${IK}blue-tokai-coffee/blue-tokai-coffee-cold-brew-blend-light-1`,
+    flavor_keys: ["blueberry", "fruit", "milk_chocolate"],
+  },
+  {
+    ...SAMPLE_COFFEE,
+    coffee_id: "5b5728fa-548c-4d71-8c5e-c84d46f8c484",
+    slug: "attikan-estate",
+    name: "Attikan Estate",
+    display_name: "Attikan Estate",
+    roaster_slug: "blue-tokai-coffee",
+    roaster_name: "Blue Tokai Coffee",
+    roast_level: "medium_dark",
+    process: "washed",
+    min_price_in_stock: 700,
+    best_normalized_250g: 700,
+    rating_avg: 3.71,
+    rating_count: 7,
+    image_url: `${IK}blue-tokai-coffee/blue-tokai-coffee-attikan-estate-1`,
+    flavor_keys: ["dark_chocolate", "figs", "roasted_almond"],
+  },
+  {
+    ...SAMPLE_COFFEE,
+    coffee_id: "eb9b1380-2a12-473c-b2e7-d116c653ad6b",
+    slug: "mogra-light-roast",
+    name: "MOGRA",
+    display_name: "Mogra",
+    roaster_slug: "grey-soul-coffee-roasters",
+    roaster_name: "Grey Soul Coffee Roasters",
+    roast_level: "light",
+    process: "anaerobic",
+    has_250g_bool: false,
+    weights_available: [200],
+    min_price_in_stock: 799,
+    best_normalized_250g: 998.75,
+    rating_avg: 4.5,
+    rating_count: 6,
+    image_url: `${IK}grey-soul-coffee-roasters/grey-soul-coffee-roasters-mogra-light-roast-1`,
+    flavor_keys: ["jasmine", "sweet_lime", "vanilla"],
+  },
+  {
+    ...SAMPLE_COFFEE,
+    coffee_id: "9f981672-88ec-43d1-97ad-1a0182049258",
+    slug: "kerehaklu-estate-blossom-culture-natural",
+    name: "Kerehaklu Estate - Blossom Culture",
+    display_name: "Kerehaklu Estate - Blossom Culture",
+    roaster_slug: "blue-tokai-coffee",
+    roaster_name: "Blue Tokai Coffee",
+    roast_level: "light",
+    process: "natural",
+    has_250g_bool: false,
+    weights_available: [200],
+    min_price_in_stock: 1000,
+    best_normalized_250g: 1250,
+    rating_avg: null,
+    rating_count: 0,
+    is_limited: true,
+    image_url: `${IK}blue-tokai-coffee/blue-tokai-coffee-kerehaklu-estate-blossom-culture-natural-1`,
+    flavor_keys: ["orange_blossom", "pomegranate", "strawberry", "sun_melon"],
+  },
+];
+const NOTES = [
+  "blueberry, milk chocolate",
+  "dark chocolate, fig, roasted almond",
+  "jasmine, sweet lime, vanilla",
+  "orange blossom, pomegranate, strawberry",
+];
+
+// PROPOSED look from the approved HTML playground (docs/experience-redesign/playground): packaging
+// untouched on the paper tile (22 rule 1: no scrim on packaging), name below in Gambetta, notes in
+// italic, rating evidence and price on one line. Static mock, not the production component.
+function ProposedCoffeeCard({ c, notes }: { c: CoffeeSummary; notes: string }) {
+  const rated = Boolean(c.rating_count);
+  return (
+    <a className="group block" href="#coffee-cards">
+      <span className="block aspect-[4/5] rounded-xl border border-border bg-[#FBF6EC] p-[7%] shadow-[0_3px_8px_rgba(45,21,14,0.08)]">
+        {/* eslint-disable-next-line @next/next/no-img-element -- review mock; production uses the card's image pipeline */}
+        <img
+          alt={`${c.display_name} packaging`}
+          className="size-full object-contain"
+          loading="lazy"
+          src={`${c.image_url}?tr=w-480,f-auto`}
+        />
+      </span>
+      <span className="mt-3 block text-heading group-hover:underline">
+        {c.display_name}
+      </span>
+      <span className="block text-caption">{c.roaster_name}</span>
+      <span className="mt-1 block font-display text-caption text-foreground italic">
+        {notes}
+      </span>
+      <span className="mt-2 flex items-baseline justify-between gap-2 whitespace-nowrap text-caption text-foreground">
+        {rated ? (
+          <span>
+            <span aria-hidden className="text-rating">
+              ★
+            </span>{" "}
+            <span className="font-medium">{c.rating_avg?.toFixed(1)}</span>
+            <span className="text-muted-foreground">
+              {" "}
+              · {c.rating_count} ratings
+            </span>
+          </span>
+        ) : (
+          <span className="text-muted-foreground">Not yet rated</span>
+        )}
+        <span className="text-muted-foreground">₹{c.min_price_in_stock}</span>
+      </span>
+    </a>
+  );
+}
+
 const SECTIONS = [
   ["type", "Type & tokens"],
   ["buttons", "Button"],
@@ -931,15 +1060,36 @@ export function ComponentPlayground() {
         <Section
           id="coffee-cards"
           title="Real CoffeeCard"
-          note="These are imported directly from src/components/cards/CoffeeCard.tsx, including the genuine CardRatingFooter. Fictional sample data has no coffee ID: this is a visual/layout QA surface, not a functioning rating, wishlist or purchase demo. The detail URL is illustrative and must not be followed as a real product."
+          note="The first row is the real CoffeeCard and CardRatingFooter from src/components/cards, fed four real coffees. They carry live IDs, so submitting a rating or wishlist here writes real data. The second row is a static mock of the look approved in the HTML playground."
         >
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <CoffeeCard coffee={SAMPLE_COFFEE} variant="default" />
-            <CoffeeCard coffee={{ ...SAMPLE_COFFEE, slug: "sample-unrated", rating_avg: null, rating_count: 0 }} variant="default" />
-            <CoffeeCard coffee={{ ...SAMPLE_COFFEE, slug: "sample-rated" }} userRating={4} variant="default" />
-            <CoffeeCard coffee={{ ...SAMPLE_COFFEE, slug: "sample-similar" }} variant="similar" matchInfo={{ matchType: "flavor", chips: ["Mango", "Natural"] }} />
-          </div>
-          <p className="text-caption text-muted-foreground">Review at 375px and 1280px in both themes. The card uses the actual image fallback, typography, price logic, interactive footer markup and card variants; without an entity ID its actions cannot write data.</p>
+          <Row label="Current component with real coffees (Deep Roast tokens, Gambetta / Ranade)">
+            <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
+              {REAL_COFFEES.map((c, i) => (
+                <CoffeeCard
+                  coffee={c}
+                  key={c.slug}
+                  userRating={i === 1 ? 4 : undefined}
+                  variant="default"
+                />
+              ))}
+            </div>
+          </Row>
+          <Row label="PROPOSED look from the approved HTML playground — packaging on the paper tile, no overlay">
+            <div className="grid w-full grid-cols-2 gap-6 lg:grid-cols-4">
+              {REAL_COFFEES.map((c, i) => (
+                <ProposedCoffeeCard c={c} key={c.slug} notes={NOTES[i]} />
+              ))}
+            </div>
+          </Row>
+          <Row label="Similar-coffee variant (fictional data)">
+            <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
+              <CoffeeCard
+                coffee={{ ...SAMPLE_COFFEE, slug: "sample-similar" }}
+                variant="similar"
+                matchInfo={{ matchType: "flavor", chips: ["Mango", "Natural"] }}
+              />
+            </div>
+          </Row>
         </Section>
       </main>
     </div>
