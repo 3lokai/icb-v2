@@ -121,7 +121,7 @@ export function CollectionCard({
             {coffeeCount !== undefined && !isSmall && (
               <>
                 <span className="text-white/50">·</span>
-                <span className="text-ui-meta text-white/70">
+                <span className="text-[13px] leading-[18px] tabular-nums text-white/70">
                   {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
                 </span>
               </>
