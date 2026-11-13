@@ -337,3 +337,13 @@ Read against [Geist Typography](https://vercel.com/geist/typography), specifical
 
 **QA pending:** independent build/browser verification at 375px and 1280px in both themes, full card text wraps/overflow, selected/disabled/focus states, and explicit 44px mobile primary hit areas. These are code updates, not a claim that all visual QA is complete.
 
+
+## Current vs Minimal CoffeeCard experiment (2026-11-14)
+
+The Next.js playground at `/design/components#coffee-cards` now displays two full grids backed by the **same four real coffees** already present in its `REAL_COFFEES` fixtures. The coffee names, ImageKit packaging paths, real destination slugs, and representative price/rating values are unchanged from the existing playground.
+
+- **Current:** imports `src/components/cards/CoffeeCard.tsx`, unchanged.
+- **Minimal (proposal):** uses `src/app/design/components/minimal-coffee-card.tsx` and the same `CoffeeSummary` type/formatters; square `object-contain` packaging frame, no roast/process row, one-line flavour notes without a `+N` indicator, price plus community rating on a single wrapping row, quiet Rate label.
+- **Safety:** All fixture `coffee_id` values remain null; no rating or wishlist writes are possible. The Minimal Rate label is a *visual placeholder*, not a working control. Coffee title/image links still point to real product pages and will navigate if clicked.
+- **Scope:** a review-only alternative, not a second production card implementation. No global tokens, production CoffeeCard, CardRatingFooter, grid rules or existing route were changed.
+- **QA pending:** browser compare at 375px and 1280px in light/dark, assess real product packshots with `object-contain`, visual height and two-line title cases. No build or browser test was executed in this commit.
