@@ -89,7 +89,7 @@ Rules:
 - **Token bridge:** `deep-roast.css` maps the locked Deep Roast light/dark values onto the existing shadcn variables. It is scoped with `html:has([data-icb-playground])`, so it reaches Radix portals (Dialog, Select, Sheet, DropdownMenu) and disappears when you leave the page. `globals.css` is untouched.
 - **Aligned with `system/index.html`:**
   - The locked paper grain sits on the page ground: 13% multiply in light, 22% soft-light in dark. It replaces the production noise overlay on this page only.
-  - Headings use Gambetta 400 at −0.02em tracking and 1.1 line height. The repo's `text-title` and `text-heading` are still weight 500; moving the production type scale to 400 is a rollout-gate decision.
+  - Headings use Gambetta 400 at −0.02em tracking and 1.1 line height. At this first review the repo still used weight 500; the design branch now uses weight 400 in `src/app/styles/typography.css`. The root-layout font migration remains a rollout-gate decision.
   - Still open, because neither is locked: the reference's 48px pill CTA versus the shadcn button sizes, and its uppercase 12px label style.
 - **Fonts:** Gambetta and Ranade come from Fontshare for review only, using the same URL as `system/index.html`. Production will self-host via `next/font/local` at the rollout gate. **Trap:** adding more weights or italics to the combined Fontshare URL makes it silently serve Switzer or Kola instead of Ranade.
 - **Sections:** type and tokens; Button (every variant × size, icons, icon sizes, disabled, loading, `aria-invalid`, `asChild`, static focus preview, caller overrides, mobile action bar); Input and Textarea (default, focus, invalid, disabled, file, inline search, newsletter); Card (roaster summary, editorial teaser, settings, full-width review form); Phosphor weights; and an unchanged step-2 preview (Badge, Tabs, Dialog, Sheet).
@@ -195,7 +195,7 @@ Owner go-ahead to close the gaps between the React components and the approved H
 | Icon buttons | 36 / 40 / 44px | 36 / 44 / 48px |
 | Input, Select | 40px, 8px corners | 44px, 10px corners; search fields are pills by `className` |
 | Textarea | 8px corners | 10px corners |
-| `text-title` | 24 / 30px, weight 500 | 24 / 30 / 36px, weight 400 |
+| `text-title` | 24 / 30px, weight 500 | Intermediate: 24 / 30 / 36px, weight 400; **superseded by approved 24 / 30 / 32px** |
 | `text-heading` | weight 500 | weight 400 |
 | Eyebrow | none | `text-eyebrow`: 12px uppercase, 0.14em tracking; `Section`'s eyebrow uses it |
 | Light ground / surface | `#F6EFE3` / `#FBF6EC` | `#FBF6EC` / `#F6EFE3` |
@@ -208,7 +208,7 @@ Owner go-ahead to close the gaps between the React components and the approved H
 
 ## Component scale comparison — CURRENT / COMPACT (2026-11-13)
 
-**Experimental, not approved for rollout.** The existing `/design/components` playground now has a Current / Compact toggle in its header. It uses the genuine shadcn Button/Input/Select and CoffeeCard components under the existing Deep Roast token bridge; `deep-roast.css` applies the compact changes **only when** `[data-icb-playground][data-ui-scale="compact"]` is present. Current mode leaves their committed classes unchanged. Dialog/Sheet buttons rendered through Radix portals are also scoped. No shared shadcn, production route, global token or typography source changes were made for this comparison.
+**Completed historical experiment (before Compact was approved).** The `/design/components` playground temporarily had a Current / Compact toggle in its header. It uses the genuine shadcn Button/Input/Select and CoffeeCard components under the existing Deep Roast token bridge; `deep-roast.css` applies the compact changes **only when** `[data-icb-playground][data-ui-scale="compact"]` is present. Current mode leaves their committed classes unchanged. Dialog/Sheet buttons rendered through Radix portals are also scoped. No shared shadcn, production route, global token or typography source changes were made for this comparison.
 
 | Element | Existing `main` source | Current redesign | Compact preview |
 |---|---:|---:|---:|
@@ -223,7 +223,7 @@ Owner go-ahead to close the gaps between the React components and the approved H
 
 **Preview safety correction:** `REAL_COFFEES` retains actual coffee names/images and representative price/rating values, but all `coffee_id` values have been set to `null` in the playground. Consequently neither the wishlist action nor the rating submission can target a real coffee from this isolated page. The wishlist control is absent when there is no ID; final fidelity must be validated on a separate sandbox or with non-mutating previews. The previously committed text implying that this route can write live ratings is no longer true.
 
-**Review gate:** User chooses Current versus Compact after seeing identical real controls in both modes. Only then migrate the selected dimensions to the shadcn source and apply typographic adjustments through the shared type system; this toggle remains a review tool.
+**Review gate completed:** Owner chose Compact on 2026-11-13; the selected dimensions have been migrated into the shadcn source and the toggle removed.
 
 ## Compact scale adopted (2026-11-13)
 
@@ -294,3 +294,18 @@ Still open before any rollout, carried forward rather than blocking the next ste
 2. Add a typography **role specimen** for actual ICB surfaces: page title, section header, coffee name, body/article prose, buttons, UI label, rating and prices; specify responsive sizes, line-height, tracking, weights and tabular-number treatment.
 3. Compare on a real directory and coffee detail page at 375px / 1280px, both themes, with long names and price/rating evidence. Do not let serif editorial headlines dictate button or form-label sizes.
 4. Choose roles and sizes by owner review; only then change `src/app/styles/typography.css` and shadcn source for those roles. No global type-scale migration is authorized by this note.
+
+### Geist type roles: targeted reconciliation (2026-11-14)
+
+Read against [Geist Typography](https://vercel.com/geist/typography), specifically its division between **one-line Label**, **multiline Copy**, **Button** and **Heading** roles. This is a reference for disciplined combinations of size, line height, weight and letter spacing, not a mandate to import Geist fonts or spacing.
+
+**Changes made on the redesign branch:**
+
+- `src/app/styles/typography.css` now defines `text-ui-label` (**14px/20px**, Ranade 500, one line), `text-copy-compact` (**14px/22px**, Ranade 400, multiline) and `text-ui-meta` (**13px/18px**, Ranade 400 with tabular numerals for secondary figures).
+- The actual React playground's **Type & tokens** section shows specimens of those three roles. Its stale descriptions of 44px directory search controls and 44px Input/Select were corrected to **40px**. Former H2/H4 naming in the typography specimen was made consistent with the approved type roles.
+- Numeric evidence in `CoffeeCard` prices and `CardRatingFooter` rating/count lines uses tabular numerals, **without changing the approved font sizes, action targets, field heights, or the 16px Gambetta italic flavour notes**.
+- [07-decisions.md](07-decisions.md) now matches the approved **32px desktop section heading**, not the superseded 36px intermediate pass, and specifies that uppercase eyebrows belong to selective feature moments.
+
+**Intentionally unchanged:** the global `text-caption`, `text-label`, `text-overline`, body-copy and page-heading utilities. Changing those globally would touch existing information-heavy pages before full visual QA. The approved Compact controls are still **36/40/44px**, main mobile actions 44px. Geist's Copy 14 being its most common style does **not** mean ICB article paragraphs or editorial introductions must all become 14px; longer reading passages remain 16px unless individually tested.
+
+**QA gate:** Render the type-role specimen at 375px and 1280px, light/dark. Verify button-label baseline, caption readability and rating/price alignment in two-column CoffeeCard grids. This was a code/documentation reconciliation, not an independently completed visual/browser pass.
