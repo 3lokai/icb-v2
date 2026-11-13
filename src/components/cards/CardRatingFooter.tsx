@@ -149,7 +149,7 @@ export function CardRatingFooter({
       >
         <div className="flex items-center gap-2">
           {!isUnrated && stars}
-          <p className="text-caption whitespace-nowrap">
+          <p className="text-caption whitespace-nowrap tabular-nums">
             {hasOverallRating ? (
               <>
                 <span className="font-medium text-foreground">
@@ -213,7 +213,7 @@ export function CardRatingFooter({
     >
       {/* Left: average and count at equal weight — "4.5 · 1 rating" */}
       {hasOverallRating ? (
-        <p className="text-label whitespace-nowrap font-medium">
+        <p className="text-label whitespace-nowrap font-medium tabular-nums">
           {ratingAvg!.toFixed(1)} <span aria-hidden>·</span> {safeCount}{" "}
           {safeCount === 1 ? "rating" : "ratings"}
         </p>
