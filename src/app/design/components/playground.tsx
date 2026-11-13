@@ -93,15 +93,17 @@ const VARIANTS = [
   "link",
   "destructive",
 ] as const;
+type UIScale = "current" | "compact";
+// Current is the committed shadcn source; Compact is scoped to this playground.
 const SIZES = [
-  ["sm", "36px"],
-  ["default", "44px"],
-  ["lg", "48px"],
+  ["sm", "36px", "36px"],
+  ["default", "44px", "40px"],
+  ["lg", "48px", "44px"],
 ] as const;
 const ICON_SIZES = [
-  ["icon-sm", "36px"],
-  ["icon", "44px"],
-  ["icon-lg", "48px"],
+  ["icon-sm", "36px", "36px"],
+  ["icon", "44px", "40px"],
+  ["icon-lg", "48px", "44px"],
 ] as const;
 // Mirrors the focus-visible classes so the focus ring is visible in static screenshots.
 const FOCUS_PREVIEW = "border-ring ring-[3px] ring-ring/50";
@@ -154,13 +156,13 @@ const SAMPLE_COFFEE: CoffeeSummary = {
   brew_method_canonical_keys: ["v60"],
 };
 
-// Real coffees (owner-approved for review, 2026-11-13) so the card shows true packaging,
-// names and rating counts. These carry live IDs: submitting a rating or wishlist here writes real data.
+// Real coffee packaging, names and representative rating counts for visual QA.
+// Coffee IDs are null: preview rating and wishlist controls cannot write to live data.
 const IK = "https://ik.imagekit.io/indiancoffeebeans/products/";
 const REAL_COFFEES: CoffeeSummary[] = [
   {
     ...SAMPLE_COFFEE,
-    coffee_id: "ab5ec84e-8287-48f4-addd-b983a95b716a",
+    coffee_id: null,
     slug: "cold-brew-blend-light",
     name: "Amaltas Blend",
     display_name: "Amaltas Blend",
@@ -177,7 +179,7 @@ const REAL_COFFEES: CoffeeSummary[] = [
   },
   {
     ...SAMPLE_COFFEE,
-    coffee_id: "5b5728fa-548c-4d71-8c5e-c84d46f8c484",
+    coffee_id: null,
     slug: "attikan-estate",
     name: "Attikan Estate",
     display_name: "Attikan Estate",
@@ -194,7 +196,7 @@ const REAL_COFFEES: CoffeeSummary[] = [
   },
   {
     ...SAMPLE_COFFEE,
-    coffee_id: "eb9b1380-2a12-473c-b2e7-d116c653ad6b",
+    coffee_id: null,
     slug: "mogra-light-roast",
     name: "MOGRA",
     display_name: "Mogra",
@@ -213,7 +215,7 @@ const REAL_COFFEES: CoffeeSummary[] = [
   },
   {
     ...SAMPLE_COFFEE,
-    coffee_id: "9f981672-88ec-43d1-97ad-1a0182049258",
+    coffee_id: null,
     slug: "kerehaklu-estate-blossom-culture-natural",
     name: "Kerehaklu Estate - Blossom Culture",
     display_name: "Kerehaklu Estate - Blossom Culture",
@@ -234,6 +236,7 @@ const REAL_COFFEES: CoffeeSummary[] = [
 ];
 
 const SECTIONS = [
+  ["scale", "Scale comparison"],
   ["type", "Type & tokens"],
   ["buttons", "Button"],
   ["fields", "Input & Textarea"],
@@ -311,6 +314,35 @@ function ThemeSwitch() {
   );
 }
 
+function ScaleSwitch({
+  value,
+  onChange,
+}: {
+  value: UIScale;
+  onChange: (value: UIScale) => void;
+}) {
+  return (
+    <div aria-label="UI scale" className="flex items-center gap-1" role="group">
+      <Button
+        aria-pressed={value === "current"}
+        onClick={() => onChange("current")}
+        size="sm"
+        variant={value === "current" ? "secondary" : "ghost"}
+      >
+        Current
+      </Button>
+      <Button
+        aria-pressed={value === "compact"}
+        onClick={() => onChange("compact")}
+        size="sm"
+        variant={value === "compact" ? "secondary" : "ghost"}
+      >
+        Compact
+      </Button>
+    </div>
+  );
+}
+
 function Swatch({ name, token }: { name: string; token: string }) {
   return (
     <div className="flex items-center gap-3">
@@ -327,6 +359,7 @@ function Swatch({ name, token }: { name: string; token: string }) {
 }
 
 export function ComponentPlayground() {
+  const [scale, setScale] = useState<UIScale>("current");
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
@@ -343,9 +376,10 @@ export function ComponentPlayground() {
     <div
       className="min-h-dvh bg-background font-sans text-foreground"
       data-icb-playground
+      data-ui-scale={scale}
     >
       <header className="sticky top-0 z-40 border-border border-b bg-background/95 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="min-w-0">
             <p className="truncate text-heading">Component playground</p>
             <p className="truncate text-caption">
@@ -353,7 +387,10 @@ export function ComponentPlayground() {
               branch only
             </p>
           </div>
-          <ThemeSwitch />
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <ScaleSwitch onChange={setScale} value={scale} />
+            <ThemeSwitch />
+          </div>
         </div>
         <nav
           aria-label="Sections"
@@ -368,6 +405,57 @@ export function ComponentPlayground() {
       </header>
 
       <main className="mx-auto max-w-6xl divide-y divide-border px-4 sm:px-6">
+        <section aria-labelledby="scale-title" className="scroll-mt-32 py-6" id="scale">
+          <p className="text-eyebrow">UI density test</p>
+          <h2 className="mt-2 text-heading" id="scale-title">Compare component scale</h2>
+          <p className="mt-2 max-w-3xl text-caption">
+            Use Current / Compact above. The controls below are the real shadcn
+            components; Compact modifies only this playground, never shared source.
+            Keep viewport and browser zoom identical when comparing to the present site.
+            Colours, fonts and layout spacing remain the same.
+          </p>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full min-w-[530px] border-collapse text-left text-caption">
+              <thead className="border-b border-border text-foreground">
+                <tr>
+                  <th className="py-2 pr-3 font-medium" scope="col">Element</th>
+                  <th className="py-2 pr-3 font-medium" scope="col">Existing main source</th>
+                  <th className="py-2 pr-3 font-medium" scope="col">Current redesign</th>
+                  <th className="py-2 font-medium" scope="col">Compact test</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/60">
+                {[
+                  ["Button / sm", "32px", "36px", "36px"],
+                  ["Button / default", "36px · 14px text", "44px · 15px", "40px · 14px"],
+                  ["Button / lg", "40px · 14px text", "48px · 16px", "44px · 14px"],
+                  ["Input / default", "36px", "44px", "40px"],
+                  ["Select / default", "36px", "44px", "40px"],
+                  ["Section H2 / desktop", "30px", "36px", "32px"],
+                  ["Coffee notes / grid", "Previously smaller", "16px italic", "14px italic"],
+                ].map(([name, live, current, compact]) => (
+                  <tr key={name}>
+                    <th className="py-2 pr-3 font-normal text-foreground" scope="row">{name}</th>
+                    <td className="py-2 pr-3">{live}</td>
+                    <td className="py-2 pr-3">{current}</td>
+                    <td className="py-2">{compact}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 text-caption">
+            The existing-site dimensions come from main-branch source, not a
+            pixel measurement of the deployed site. Compare at the same
+            viewport and 100% zoom.
+          </p>
+          <Button asChild className="mt-3" size="sm" variant="outline">
+            <a href="https://indiancoffeebeans.com/" rel="noreferrer" target="_blank">
+              Compare with live ICB <ArrowUpRightIcon />
+            </a>
+          </Button>
+        </section>
+
         <Section
           id="type"
           note="Tokens are bridged from system/icb-system.css onto the existing shadcn variables only while this page is mounted. globals.css is untouched."
@@ -413,11 +501,11 @@ export function ComponentPlayground() {
 
         <Section
           id="buttons"
-          note="All existing variants. Pill shape; default 44px with 15px text, sm 36px for dense UI such as filters and tables, lg 48px with 16px text. Press Tab to walk the real focus ring."
+          note="All existing variants; pill shape preserved. Current 36/44/48px vs Compact 36/40/44px, with smaller labels. Press Tab to inspect the real focus ring."
           title="Button"
         >
-          {SIZES.map(([size, px]) => (
-            <Row key={size} label={`size="${size}" · ${px}`}>
+          {SIZES.map(([size, currentPx, compactPx]) => (
+            <Row key={size} label={`size="${size}" · ${scale === "compact" ? compactPx : currentPx}`}>
               {VARIANTS.map((variant) => (
                 <Button key={variant} size={size} variant={variant}>
                   {variant}
@@ -501,9 +589,9 @@ export function ComponentPlayground() {
             </Button>
           </Row>
           <Row label="Icon sizes (always pass aria-label)">
-            {ICON_SIZES.map(([size, px]) => (
+            {ICON_SIZES.map(([size, currentPx, compactPx]) => (
               <Button
-                aria-label={`Share (${px})`}
+                aria-label={`Share (${scale === "compact" ? compactPx : currentPx})`}
                 key={size}
                 size={size}
                 variant="outline"
@@ -579,7 +667,7 @@ export function ComponentPlayground() {
 
         <Section
           id="fields"
-          note="Input and Select 44px to align with the default button, Textarea min 96px, modest radius, softer focus ring than buttons. Search fields are pills."
+          note={`Input and Select ${scale === "compact" ? "40px" : "44px"}; Textarea min 96px. Focus ring remains softer than buttons, and search fields stay pill-shaped. Mobile text remains 16px to avoid automatic zoom.`}
           title="Input & Textarea"
         >
           <div className="grid gap-8 lg:grid-cols-2">
@@ -1077,7 +1165,7 @@ export function ComponentPlayground() {
         <Section
           id="coffee-cards"
           title="CoffeeCard"
-          note="The real CoffeeCard and CardRatingFooter from src/components/cards, rebuilt to the approved look: packaging untouched on the paper tile, name below in Gambetta, notes in italic, evidence line, in-place rating. Fed four real coffees with live IDs, so submitting a rating or wishlist here writes real data."
+          note="Real CoffeeCard and CardRatingFooter with authentic packaging and representative rating values. IDs are null in this review: rating and wishlist controls cannot submit live changes."
         >
           <Row label="Default variant, real coffees — rated, your rating, rated, unrated">
             <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
