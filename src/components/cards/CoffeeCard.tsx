@@ -227,7 +227,7 @@ export default function CoffeeCard({
           {displayName}
         </h3>
         {coffee.roaster_name && (
-          <p className="mt-0.5 text-caption line-clamp-1">
+          <p className="mt-0.5 text-ui-meta line-clamp-1">
             {coffee.roaster_name}
           </p>
         )}
