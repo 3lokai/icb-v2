@@ -96,3 +96,57 @@ html:has([data-icb-playground])
   letter-spacing: -0.02em;
   line-height: 1.1;
 }
+
+
+/* Phase C scale calibration — preview ONLY. These selectors affect the actual
+   shadcn elements inside /design/components, not shared component source or
+   production. Explicit caller height overrides (h-6/h-8/h-14) are preserved.
+   The committed/current setting uses the original classes unchanged. */
+[data-icb-playground][data-ui-scale="compact"] [data-slot="button"][class~="h-11"] {
+  height: 40px;
+  padding-inline: 16px;
+  font-size: 14px;
+}
+[data-icb-playground][data-ui-scale="compact"] [data-slot="button"][class~="h-12"] {
+  height: 44px;
+  padding-inline: 20px;
+  font-size: 14px;
+}
+[data-icb-playground][data-ui-scale="compact"] [data-slot="button"][class~="size-11"] {
+  width: 40px;
+  height: 40px;
+}
+[data-icb-playground][data-ui-scale="compact"] [data-slot="button"][class~="size-12"] {
+  width: 44px;
+  height: 44px;
+}
+[data-icb-playground][data-ui-scale="compact"] [data-slot="input"][class~="h-11"],
+[data-icb-playground][data-ui-scale="compact"] [data-slot="select-trigger"][data-size="default"] {
+  height: 40px;
+}
+/* Portal overlays render outside the playground node; still use the same
+   compact Button sizing inside their Dialog and Sheet content only. */
+html:has([data-icb-playground][data-ui-scale="compact"])
+  :is([data-slot="dialog-content"], [data-slot="sheet-content"])
+  [data-slot="button"][class~="h-11"] {
+  height: 40px;
+  padding-inline: 16px;
+  font-size: 14px;
+}
+html:has([data-icb-playground][data-ui-scale="compact"])
+  :is([data-slot="dialog-content"], [data-slot="sheet-content"])
+  [data-slot="button"][class~="h-12"] {
+  height: 44px;
+  padding-inline: 20px;
+  font-size: 14px;
+}
+@media (min-width: 1024px) {
+  [data-icb-playground][data-ui-scale="compact"] .text-title {
+    font-size: 32px;
+  }
+}
+/* Compact grid metadata only. Editorial headlines and 16px body prose stay. */
+[data-icb-playground][data-ui-scale="compact"] article p.font-serif.text-body.italic {
+  font-size: 14px;
+  line-height: 1.45;
+}
