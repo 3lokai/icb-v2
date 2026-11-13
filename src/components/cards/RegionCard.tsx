@@ -169,9 +169,7 @@ export function RegionCard({
           <h3 className="text-heading text-balance transition-colors group-hover:text-accent">
             {region.display_name}
           </h3>
-          {elevation ? (
-            <p className="text-ui-meta">{elevation}</p>
-          ) : null}
+          {elevation ? <p className="text-ui-meta">{elevation}</p> : null}
         </Stack>
 
         {region.signature_profile ? (

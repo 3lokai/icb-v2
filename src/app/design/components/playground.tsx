@@ -608,7 +608,11 @@ export function ComponentPlayground() {
                     <ArrowUpRightIcon />
                   </a>
                 </Button>
-                <Button className={`${RATE_OUTLINE} min-h-11`} size="lg" variant="outline">
+                <Button
+                  className={`${RATE_OUTLINE} min-h-11`}
+                  size="lg"
+                  variant="outline"
+                >
                   Rate
                 </Button>
               </div>
