@@ -108,20 +108,20 @@ export function CollectionCard({
 
           {/* Tagline - only show in default variant */}
           {!isSmall && (
-            <p className="text-body font-medium text-white/90 drop-shadow-md line-clamp-2">
+            <p className="text-copy-compact text-white/90 drop-shadow-md line-clamp-2">
               {collection.tagline}
             </p>
           )}
 
           {/* CTA with Coffee Count */}
           <div className="flex items-center gap-2 text-white/90 group-hover:text-white transition-colors">
-            <span className={cn(isSmall ? "text-caption" : "text-body")}>
+            <span className={cn(isSmall ? "text-caption" : "text-ui-label")}>
               Explore
             </span>
             {coffeeCount !== undefined && !isSmall && (
               <>
                 <span className="text-white/50">·</span>
-                <span className="text-caption text-white/70">
+                <span className="text-ui-meta text-white/70">
                   {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
                 </span>
               </>
