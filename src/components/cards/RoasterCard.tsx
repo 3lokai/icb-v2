@@ -223,14 +223,14 @@ function RoasterSummaryCard({
             {hqLocation && (
               <div className="flex items-center gap-2">
                 <Icon icon={MapPinIcon} size={14} color="muted" />
-                <p className="text-body-muted">{hqLocation}</p>
+                <p className="text-ui-meta">{hqLocation}</p>
               </div>
             )}
 
             {/* Coffee count */}
             <div className="flex items-center gap-2">
               <Icon icon={CoffeeIcon} size={14} color="muted" />
-              <p className="text-body-muted">
+              <p className="text-ui-meta">
                 {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
               </p>
             </div>
