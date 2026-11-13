@@ -94,14 +94,14 @@ const VARIANTS = [
   "destructive",
 ] as const;
 const SIZES = [
-  ["sm", "36px"],
-  ["default", "40px"],
-  ["lg", "44px"],
+  ["sm", "32px"],
+  ["default", "36px"],
+  ["lg", "40px"],
 ] as const;
 const ICON_SIZES = [
-  ["icon-sm", "36px"],
-  ["icon", "40px"],
-  ["icon-lg", "44px"],
+  ["icon-sm", "32px"],
+  ["icon", "36px"],
+  ["icon-lg", "40px"],
 ] as const;
 // Mirrors the focus-visible classes so the focus ring is visible in static screenshots.
 const FOCUS_PREVIEW = "border-ring ring-[3px] ring-ring/50";
@@ -445,7 +445,7 @@ export function ComponentPlayground() {
 
         <Section
           id="buttons"
-          note="All existing variants. Pill shape; 36 / 40 / 44px with 14px labels. Use lg (44px) for primary actions on mobile. Press Tab to walk the real focus ring."
+          note="Original shadcn size defaults from main: 32 / 36 / 40px with 14px labels. Pill styling stays. Mobile primary actions add an explicit 44px minimum hit area."
           title="Button"
         >
           {SIZES.map(([size, px]) => (
@@ -580,8 +580,8 @@ export function ComponentPlayground() {
             </Button>
           </Row>
           <Row label="Caller overrides still win (regression check)">
-            <Button className="h-8" size="sm" variant="outline">
-              sm + h-8 → 32px
+            <Button className="h-10" size="sm" variant="outline">
+              sm + h-10 → 40px
             </Button>
             <Button className="h-6 px-2" size="sm" variant="outline">
               tag chip h-6
@@ -595,13 +595,13 @@ export function ComponentPlayground() {
               <p className="mb-2 text-caption">From ₹450 / 250g · In stock</p>
               <div className="flex gap-2">
                 {/* 25 §5: only Buy and Rate sit in the bar; wishlist stays in the page actions */}
-                <Button asChild className="min-w-0 flex-1" size="lg">
+                <Button asChild className="min-h-11 min-w-0 flex-1" size="lg">
                   <a href="#buttons">
                     <span className="truncate">Buy from {ROASTER}</span>
                     <ArrowUpRightIcon />
                   </a>
                 </Button>
-                <Button className={RATE_OUTLINE} size="lg" variant="outline">
+                <Button className={`${RATE_OUTLINE} min-h-11`} size="lg" variant="outline">
                   Rate
                 </Button>
               </div>
@@ -611,7 +611,7 @@ export function ComponentPlayground() {
 
         <Section
           id="fields"
-          note={`Input and Select 40px; Textarea min 96px. Focus ring remains softer than buttons, and search fields stay pill-shaped. Mobile text remains 16px to avoid automatic zoom.`}
+          note="Original shadcn dimensions: Input/Select default 36px, Select small 32px, Textarea min 64px. Shape, focus styling and pill search are preserved. Mobile inputs remain 16px text to avoid iOS zoom."
           title="Input & Textarea"
         >
           <div className="grid gap-8 lg:grid-cols-2">
@@ -697,7 +697,7 @@ export function ComponentPlayground() {
                   value="Bright, citrusy on V60; heavier as a South Indian filter."
                 />
               </Field>
-              <Row label="Directory search (25 §2) — pill search field + button align at 40px">
+              <Row label="Directory search (25 §2) — pill search field + button align at 36px">
                 <form
                   className="flex w-full gap-2"
                   onSubmit={(e) => e.preventDefault()}
@@ -740,7 +740,7 @@ export function ComponentPlayground() {
 
         <Section
           id="cards"
-          note="Generic Card only. CoffeeCard and CardRatingFooter are deliberately out of scope until these foundations are approved."
+          note="Shadcn Card structure stays at its original source sizing; content roles create the hierarchy: editorial and entity names > functional labels > supporting copy > numerical metadata. CoffeeCard and RoasterCard are domain compositions."
           title="Card"
         >
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -754,14 +754,14 @@ export function ComponentPlayground() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p>24 coffees listed, mostly washed and natural lots.</p>
+                <p className="text-copy-compact">24 coffees listed, mostly washed and natural lots.</p>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">Washed</Badge>
                   <Badge variant="secondary">Natural</Badge>
                 </div>
               </CardContent>
               <CardFooter className="justify-between">
-                <span className="flex items-center gap-1">
+                <span className="text-ui-meta flex items-center gap-1">
                   <StarIcon aria-hidden className="text-rating" weight="fill" />{" "}
                   4.3 · 12 ratings
                 </span>
@@ -787,7 +787,7 @@ export function ComponentPlayground() {
                 </CardTitle>
                 <CardDescription>8 min read</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="text-copy-compact">
                 From Araku’s valley floors to the high slopes of Kodagu,
                 elevation changes how a cherry ripens — and what ends up in your
                 cup.
@@ -796,7 +796,7 @@ export function ComponentPlayground() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-heading">Profile details</CardTitle>
+                <CardTitle className="text-base font-medium leading-snug">Profile details</CardTitle>
                 <CardDescription>
                   Settings (the relabelled dashboard)
                 </CardDescription>
@@ -824,7 +824,7 @@ export function ComponentPlayground() {
 
             <Card className="md:col-span-2 xl:col-span-3">
               <CardHeader>
-                <CardTitle className="text-title">
+                <CardTitle className="text-heading">
                   Add context <em>(optional)</em>
                 </CardTitle>
                 <CardDescription>
@@ -935,7 +935,7 @@ export function ComponentPlayground() {
 
         <Section
           id="audit"
-          note="Phase C second-pass shadcn primitives: review neutral menu focus, 40px default Select and Tabs, Dialog radius, overlay animation and keyboard interactions."
+          note="Review neutral menu focus, original shadcn 36px TabsList and Select (32px small), Dialog radius, overlay animation and keyboard interactions."
           title="Overlays & controls"
         >
           <Row label="Badge">
@@ -952,7 +952,7 @@ export function ComponentPlayground() {
                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
               </TabsList>
               <TabsContent className="pt-3 text-caption" value="coffees">
-                Tabs list, Input and Select are all 40px.
+                Tabs list, Input and Select default are all 36px.
               </TabsContent>
               <TabsContent className="pt-3" value="roasters">
                 Roasters panel
