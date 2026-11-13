@@ -225,3 +225,32 @@ Owner go-ahead to close the gaps between the React components and the approved H
 
 **Review gate:** User chooses Current versus Compact after seeing identical real controls in both modes. Only then migrate the selected dimensions to the shadcn source and apply typographic adjustments through the shared type system; this toggle remains a review tool.
 
+## Geist typography reference — chosen 2026-11-14
+
+**CONFIRMED reference, PROPOSED application.** The owner selected [Vercel Geist Typography](https://vercel.com/geist/typography) as a **sample of information hierarchy, control density and typesetting discipline**, not a font or colour replacement. Keep Gambetta for editorial headings and coffee names, Ranade for UI and reading, and Deep Roast. Do not import Geist fonts, switch to Vercel's palette, or copy the layout wholesale.
+
+**Evidence from the reference:** Geist bundles **font-size, line-height, letter-spacing and weight** into role-based text styles. Headings introduce a section; **Button 14** is the default and Button 16 the largest, **Label 14** is frequently used in menus and Label 13 for secondary/tabular data, while Label 12 is tertiary/caps; **Copy 14** is used most commonly, Copy 16 in less dense views and Copy 13 where space is constrained. These are the reference site's own use cases, not binding ICB tokens.
+
+### Proposed ICB role map (not yet approved for production)
+
+| ICB role | Proposed desktop size | Face / notes |
+|---|---:|---|
+| Feature / editorial hero | 48–64px | Gambetta 400; only narrative arrival/feature moments |
+| Main page heading | 36–40px | Gambetta 400; responsive smaller on mobile |
+| Standard section heading | 28–32px | Gambetta 400; not 36px on every section |
+| CoffeeCard name | 18–20px | Gambetta 400; maintain two-line truncation rule |
+| Long-form/article prose | 16px | Ranade 400; generous multiline line height; preserve readability |
+| Standard functional UI / helper copy | 14px | Ranade; compact but legible |
+| Button, filter, tabs, menus | 14px | Ranade 500; distinguish size of control from size of text |
+| Ratings, prices, secondary metadata | 13–14px | Ranade; tabular numerals for price/count comparison |
+| Tertiary / eyebrow | 12px | Ranade uppercase with restrained tracking; not for paragraphs |
+
+**Keep the confirmed spacing scale** (4/8/12/16/24/32/48/64/96px). The supplied Geist typography page does not specify a universal spacing scale; do not attribute one to it. Review line-height/letter-spacing alongside size, and **avoid scaling every text role proportionally**. Preserve visible small controls versus adequate mobile touch targets; don't assume that a 36px-high button automatically provides a 44px hit target.
+
+### Review protocol
+
+1. In `/design/components`, compare **Current** and **Compact** at the same viewport / 100% zoom, keeping button shapes and colours constant.
+2. Add a typography **role specimen** for actual ICB surfaces: page title, section header, coffee name, body/article prose, buttons, UI label, rating and prices; specify responsive sizes, line-height, tracking, weights and tabular-number treatment.
+3. Compare on a real directory and coffee detail page at 375px / 1280px, both themes, with long names and price/rating evidence. Do not let serif editorial headlines dictate button or form-label sizes.
+4. Choose roles and sizes by owner review; only then change `src/app/styles/typography.css` and shadcn source. No global type-scale migration is authorized by this note.
+
