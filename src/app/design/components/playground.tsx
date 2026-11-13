@@ -379,9 +379,9 @@ export function ComponentPlayground() {
             <p className="text-hero">
               Find, <em>rate</em>, buy.
             </p>
-            <p className="text-display">Monsoon Malabar AA · Gambetta H2</p>
+            <p className="text-display">Monsoon Malabar AA · Page display</p>
             <p className="text-heading">
-              Ratnagiri Estate Natural · H4 / coffee name
+              Ratnagiri Estate Natural · Coffee name / H3
             </p>
             <p className="max-w-prose">
               Ranade body. Grown at 1,100 m in the shade of silver oak in
@@ -396,8 +396,38 @@ export function ComponentPlayground() {
               .
             </p>
             <p className="text-caption">
-              Muted 14px · meta text · 24 coffees · Updated 3 days ago
+              Caption 14px · Secondary copy
             </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Geist-inspired type role specimens">
+            <div className="rounded-lg border border-border bg-card p-4">
+              <p className="text-ui-meta mb-2">LABEL · 14/20 · RANADE 500</p>
+              <p className="text-ui-label">Brew method</p>
+              <p className="text-ui-label mt-2">Filter · Roast · Price</p>
+              <p className="text-ui-meta mt-3">
+                Single-line controls and menu labels, not prose.
+              </p>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-4">
+              <p className="text-ui-meta mb-2">COPY · 14/22 · RANADE 400</p>
+              <p className="text-copy-compact">
+                Explore recently added coffees from Indian roasters, then
+                rate the ones you have actually brewed.
+              </p>
+              <p className="text-ui-meta mt-3">
+                Multi-line explanations have more leading than UI labels.
+              </p>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-4">
+              <p className="text-ui-meta mb-2">DATA · 13/18 · TABULAR NUMERALS</p>
+              <p className="text-ui-meta">
+                <span className="font-medium text-foreground">4.3</span>
+                {" "}· 12 ratings · ₹650 / 250g
+              </p>
+              <p className="text-ui-meta mt-3">
+                Secondary rating and price evidence: aligned, never stretched.
+              </p>
+            </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Swatch name="Ground" token="--background" />
@@ -667,7 +697,7 @@ export function ComponentPlayground() {
                   value="Bright, citrusy on V60; heavier as a South Indian filter."
                 />
               </Field>
-              <Row label="Directory search (25 §2) — pill search field + button align at 44px">
+              <Row label="Directory search (25 §2) — pill search field + button align at 40px">
                 <form
                   className="flex w-full gap-2"
                   onSubmit={(e) => e.preventDefault()}
@@ -922,7 +952,7 @@ export function ComponentPlayground() {
                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
               </TabsList>
               <TabsContent className="pt-3 text-caption" value="coffees">
-                Tabs list is 40px; Input and Select are 44px.
+                Tabs list, Input and Select are all 40px.
               </TabsContent>
               <TabsContent className="pt-3" value="roasters">
                 Roasters panel
