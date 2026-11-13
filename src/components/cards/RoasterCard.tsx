@@ -1,6 +1,6 @@
 // src/components/cards/RoasterCard.tsx
 import Link from "next/link";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { RoasterSummary, SimilarRoaster } from "@/types/roaster-types";
@@ -35,18 +35,14 @@ function formatAddress(roaster: RoasterSummary): string {
  */
 function SimilarRoasterCard({ roaster }: { roaster: SimilarRoaster }) {
   return (
-    <Card
-      className={cn(
-        "group relative overflow-hidden",
-        "surface-1 rounded-lg card-hover",
-        "h-full flex flex-col p-0"
-      )}
+    <article
+      className="group relative flex h-full w-full flex-col"
       itemScope
       itemType="https://schema.org/Organization"
     >
       <Link
         aria-label={`View ${roaster.name} roaster profile`}
-        className="flex h-full flex-col cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+        className="flex flex-1 flex-col"
         href={`/roasters/${roaster.slug}`}
       >
         <RoasterLogo
@@ -55,36 +51,29 @@ function SimilarRoasterCard({ roaster }: { roaster: SimilarRoaster }) {
           logoIsLight={roaster.logo_is_light}
           variant="similar"
         />
-
-        {/* Content */}
-        <div className="flex-1 card-padding-compact">
-          <Stack gap="2">
-            <CardTitle
-              className="text-heading text-balance line-clamp-2 leading-tight"
-              itemProp="name"
-            >
-              {roaster.name}
-            </CardTitle>
-
-            {/* Why this roaster matched */}
-            {roaster.shared_tags.length > 0 && (
-              <div className="flex flex-wrap items-center gap-2">
-                {roaster.shared_tags.map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-micro">
-                    {labelForTag(tag)}
-                  </Badge>
-                ))}
-              </div>
-            )}
-          </Stack>
-        </div>
+        <h3
+          className="mt-4 text-heading text-balance line-clamp-2 underline-offset-4 group-hover:underline"
+          itemProp="name"
+        >
+          {roaster.name}
+        </h3>
+        {/* Why this roaster matched */}
+        {roaster.shared_tags.length > 0 && (
+          <span className="flex flex-wrap gap-2 pt-2">
+            {roaster.shared_tags.map((tag) => (
+              <Badge key={tag} variant="outline" className="text-micro">
+                {labelForTag(tag)}
+              </Badge>
+            ))}
+          </span>
+        )}
       </Link>
 
       <meta
         content={`https://www.indiancoffeebeans.com/roasters/${roaster.slug}`}
         itemProp="url"
       />
-    </Card>
+    </article>
   );
 }
 
@@ -184,61 +173,41 @@ function RoasterSummaryCard({
     );
   }
 
-  // Default variant - directory tile with rating footer
+  // Default variant: same structure as CoffeeCard — framed tile, name, one quiet
+  // meta line, then the in-place rating row. No outer card.
+  const meta = [
+    hqLocation,
+    `${coffeeCount} ${coffeeCount === 1 ? "coffee" : "coffees"}`,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
   return (
-    <Card
-      className={cn(
-        "group relative overflow-hidden",
-        "surface-1 rounded-lg card-hover",
-        "h-full flex flex-col p-0"
-      )}
+    <article
+      className="group relative flex h-full w-full flex-col"
       itemScope
       itemType="https://schema.org/Organization"
     >
       <Link
         aria-label={ariaLabel}
-        className="flex-1 flex flex-col cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+        className="flex flex-1 flex-col"
         href={`/roasters/${roaster.slug}`}
       >
-        {/* Logo Container - Dynamic gradient based on logo color */}
         <RoasterLogo
           slug={roaster.slug}
           name={roaster.name}
           logoIsLight={roaster.logo_is_light}
           variant="default"
         />
-
-        {/* Content */}
-        <div className="relative card-padding-compact">
-          <Stack gap="1">
-            {/* Roaster name */}
-            <CardTitle
-              className="text-heading text-balance line-clamp-2 leading-tight"
-              itemProp="name"
-            >
-              {roaster.name}
-            </CardTitle>
-
-            {/* Location */}
-            {hqLocation && (
-              <div className="flex items-center gap-2">
-                <Icon icon={MapPinIcon} size={14} color="muted" />
-                <p className="text-ui-meta">{hqLocation}</p>
-              </div>
-            )}
-
-            {/* Coffee count */}
-            <div className="flex items-center gap-2">
-              <Icon icon={CoffeeIcon} size={14} color="muted" />
-              <p className="text-ui-meta">
-                {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
-              </p>
-            </div>
-          </Stack>
-        </div>
+        <h3
+          className="mt-4 text-heading text-balance line-clamp-2 underline-offset-4 group-hover:underline"
+          itemProp="name"
+        >
+          {roaster.name}
+        </h3>
+        <p className="mt-0.5 text-ui-meta line-clamp-1">{meta}</p>
       </Link>
 
-      {/* Opinion-first rating footer — roaster ratings (QuickRating entityType="roaster") */}
       <CardRatingFooter
         entityType="roaster"
         entityId={roaster.id}
@@ -246,12 +215,13 @@ function RoasterSummaryCard({
         ratingAvg={roaster.avg_rating}
         ratingCount={roaster.total_ratings_count}
         size="md"
+        variant="inline"
       />
 
       <meta
         content={`https://www.indiancoffeebeans.com/roasters/${roaster.slug}`}
         itemProp="url"
       />
-    </Card>
+    </article>
   );
 }

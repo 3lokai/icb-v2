@@ -7,6 +7,7 @@ import {
   roasterLogoUrl,
   roasterPlateClass,
 } from "@/lib/utils/roaster-logo-plate";
+import { TILE_FRAME } from "./tile";
 
 /**
  * The only part of a roaster card that genuinely needs the browser: the initials
@@ -17,9 +18,7 @@ import {
  * body is static markup, so under a server parent (SimilarRoasters,
  * RoasterDetailPage) only these small islands ship.
  *
- * Markup per variant is lifted verbatim out of RoasterCard; the variants differ
- * in plate, frame size and fallback scale, so they are spelled out rather than
- * parameterised.
+ * Default and similar share one framed tile (see ./tile.ts); compact is a bare 40px logo.
  */
 type RoasterLogoProps = {
   slug: string;
@@ -77,85 +76,36 @@ export function RoasterLogo({
     );
   }
 
-  // Similar - logo plate, shorter than the directory tile
-  if (variant === "similar") {
-    return (
-      <div
-        className={cn(
-          "relative flex w-full items-center justify-center overflow-hidden border-b border-border/40 p-6 transition-colors duration-300",
-          plateClass
-        )}
-      >
-        <div className="relative flex h-14 w-full max-w-[120px] items-center justify-center">
-          {!hasError && logoUrl ? (
-            <Image
-              alt={altText}
-              className="object-contain"
-              fill
-              itemProp="logo"
-              sizes="(max-width: 640px) 50vw, 120px"
-              src={logoUrl}
-              onError={() => setHasError(true)}
-              unoptimized
-            />
-          ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10 border-2 border-accent/20">
-              <span className="text-body font-black tracking-tighter text-accent">
-                {initials}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // Default - directory tile plate with dot texture
+  // Default and similar: the logo sits uncropped and unblended on its contrast plate, inside
+  // the same pressed frame as the coffee packaging tile. Similar is a shorter tile.
+  const isSimilar = variant === "similar";
   return (
-    <div
+    <span
       className={cn(
-        "relative w-full overflow-hidden flex items-center justify-center border-b border-border/40 transition-colors duration-300",
+        TILE_FRAME,
+        "flex items-center justify-center",
+        isSimilar ? "aspect-[2/1]" : "aspect-[4/3]",
         plateClass
       )}
     >
-      {/* Subtle Plate Texture */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(0,0,0,0.4) 1px, transparent 0)",
-            backgroundSize: "16px 16px",
-          }}
-        />
-      </div>
-
-      {/* Logo Frame: Centered, larger size */}
-      <div className="relative z-10 flex h-full w-full items-center justify-center p-8">
-        <div className="relative flex h-20 w-full items-center justify-center max-w-[160px]">
-          {!hasError && logoUrl ? (
-            <Image
-              alt={altText}
-              className="object-contain"
-              fill
-              itemProp="logo"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 160px"
-              src={logoUrl}
-              onError={() => setHasError(true)}
-              unoptimized
-            />
-          ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 border-2 border-accent/20">
-              <span className="text-heading font-black tracking-tighter text-accent">
-                {initials}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+      <span className="relative block h-1/2 w-3/5">
+        {!hasError && logoUrl ? (
+          <Image
+            alt={altText}
+            className="object-contain"
+            fill
+            itemProp="logo"
+            sizes="(max-width: 640px) 50vw, 180px"
+            src={logoUrl}
+            onError={() => setHasError(true)}
+            unoptimized
+          />
+        ) : (
+          <span className="flex size-full items-center justify-center font-serif text-title text-muted-foreground">
+            {initials}
+          </span>
+        )}
+      </span>
+    </span>
   );
 }

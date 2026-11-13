@@ -3,7 +3,6 @@
 import { Section as BaseSection } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import CoffeeCard from "@/components/cards/CoffeeCard";
-import { MinimalCoffeeCardPreview } from "./minimal-coffee-card";
 import type { CoffeeSummary } from "@/types/coffee-types";
 import {
   ArrowRightIcon,
@@ -1122,44 +1121,20 @@ export function ComponentPlayground() {
         </Section>
         <Section
           id="coffee-cards"
-          title="CoffeeCard · Current vs Minimal"
-          note="Same actual coffees, packaging URLs, prices and representative community ratings in both versions. Coffee IDs are null so rating/wishlist actions cannot write. Card titles link to their real ICB coffee pages; the new minimal version is a design-only preview."
+          title="CoffeeCard"
+          note="The production card on four real coffees. Coffee IDs are null so rating and wishlist actions cannot write; titles link to the real ICB coffee pages."
         >
-          <div className="space-y-4">
-            <h3 className="text-heading">Current · approved card</h3>
-            <p className="text-caption text-muted-foreground">
-              4:5 packaging tile, roast and process specifications, 1–2 lines of flavour notes, and interactive-star footer.
-            </p>
-            <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
-              {REAL_COFFEES.map((c, i) => (
-                <CoffeeCard
-                  coffee={c}
-                  key={c.slug}
-                  userRating={i === 1 ? 4 : undefined}
-                  variant="default"
-                />
-              ))}
-            </div>
+          <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
+            {REAL_COFFEES.map((c, i) => (
+              <CoffeeCard
+                coffee={c}
+                key={c.slug}
+                userRating={i === 1 ? 4 : undefined}
+                variant="default"
+              />
+            ))}
           </div>
-          <div className="space-y-4">
-            <h3 className="text-heading">Minimal · proposed</h3>
-            <p className="text-caption text-muted-foreground">
-              Square contained pack shot, no roast/process row, one flavour line, price and rating together, a single quiet Rate entry point.
-            </p>
-            <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
-              {REAL_COFFEES.map((c, i) => (
-                <MinimalCoffeeCardPreview
-                  coffee={c}
-                  key={c.slug}
-                  userRating={i === 1 ? 4 : undefined}
-                />
-              ))}
-            </div>
-          </div>
-          <p className="text-caption text-muted-foreground">
-            Compare at 375px (two-column) and 1280px, in light and dark themes. The Minimal Rate label is intentionally non-interactive until the design is approved; actual rating integration stays with the production card. No existing route or CoffeeCard implementation has changed.
-          </p>
-          <Row label="Existing similar and compact variants (unchanged)">
+          <Row label="Similar and compact variants">
             <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
               <CoffeeCard
                 coffee={REAL_COFFEES[2]}

@@ -34,7 +34,7 @@ This is a design reference. Production `DESIGN.md` and production code are uncha
 ### Rules that follow from them
 
 1. **Packaging is never altered.** No wash, scrim, blend, filter, grain or motif on coffee packaging, roaster logos or evidence photos. Packaging sits on the paper tile in both themes.
-   - **Sanctioned exception (owner, 2026-11-13): the coffee card tile.** On `CoffeeCard` the pack image fills the tile (`cover`, 8px inset) and is multiplied into the paper so white pack-shot backgrounds disappear, with the pressed-frame shadow from the playground. This crops some packs and tints white areas cream. It applies to card tiles only; the coffee detail hero and evidence photos keep the rule.
+   - **Sanctioned exception (owner, 2026-11-13; revised 2026-11-14): the coffee card tile.** On `CoffeeCard` the pack is shown whole in a square tile (`contain`, 8px inset) and multiplied into the paper so white pack-shot backgrounds disappear, with the pressed-frame shadow. Packs are no longer cropped; multiply still tints light areas cream, and coloured photo backdrops remain visible as a rectangle. It applies to card tiles only; the coffee detail hero and evidence photos keep the rule.
 2. **Directory, coffee pages, filters, forms and review cards are flat.** No gradient and no motif.
 3. **One terrain motif per view or composition.** It is decoration and carries no information.
 4. **Never motif on a photograph, never motif behind packaging.**

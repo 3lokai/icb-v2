@@ -7,6 +7,7 @@
 // CardRatingFooter, StarRating — declare their own boundaries and stay islands.
 import Image from "next/image";
 import Link from "next/link";
+import { CoffeeBeanIcon, StarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { coffeeImagePresets } from "@/lib/imagekit";
@@ -19,21 +20,57 @@ import {
 import type { CoffeeSummary } from "@/types/coffee-types";
 import { getCoffeeDisplayName } from "@/lib/utils/coffee-name";
 import { cn } from "@/lib/utils";
-import { StarRating } from "../common/StarRating";
 import { CardRatingFooter } from "./CardRatingFooter";
 import { Stack } from "../primitives/stack";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { WishlistButton } from "@/components/coffees/WishlistButton";
+import { TILE_FRAME } from "./tile";
 
-// Packaging tile, as in the approved HTML playground: paper tile with a pressed frame (inner
-// highlight, soft drop shadow, heavier bottom edge), image filling the tile with an 8px inset and
-// white pack-shot backgrounds multiplied into the paper. The tile stays paper in both themes (a
-// dark tile would turn every multiplied pack muddy); in dark it is one step dimmer so it does not glow.
-// Owner decision 2026-11-13; note this crops and tints packaging, which 22-visual-system.md rule 1
-// otherwise forbids — recorded there as the sanctioned exception.
-const TILE =
-  "relative block w-full overflow-hidden rounded-xl border border-border border-b-[3px] bg-[#F6EFE3] p-2 dark:bg-[#E2D4BE] shadow-[inset_0_0_0_4px_rgb(251_246_236/0.6),0_3px_7px_rgb(45_21_14/0.11)] transition-colors motion-reduce:transition-none group-hover:border-foreground/30";
-const TILE_IMAGE = "object-cover mix-blend-multiply";
+// Packaging tile: square paper tile with a pressed frame (see ./tile.ts). The pack is shown whole
+// (`contain`, 8px inset) and multiplied into the paper so white pack-shot backgrounds disappear;
+// coloured backdrops stay visible as a rectangle. The tile stays paper in both themes (a dark tile
+// would turn every multiplied pack muddy); in dark it is one step dimmer so it does not glow.
+// Multiply tints packaging, which 22-visual-system.md rule 1 otherwise forbids — recorded there as
+// the sanctioned exception. The 64px compact thumbnail still fills its square.
+const TILE = cn(TILE_FRAME, "bg-[#F6EFE3] dark:bg-[#E2D4BE]");
+const TILE_IMAGE = "object-contain mix-blend-multiply";
+const THUMB_IMAGE = "object-cover mix-blend-multiply";
+
+// Roast as 1–5 beans, light to dark. Unknown wording falls back to medium, as the original card did.
+const ROAST_BEANS: Record<string, number> = {
+  light: 1,
+  light_medium: 2,
+  medium: 3,
+  medium_dark: 4,
+  dark: 5,
+};
+
+function RoastBeans({ level, label }: { level: string; label: string }) {
+  const key = level
+    .toLowerCase()
+    .trim()
+    .replace(/[\s-]+/g, "_");
+  const count =
+    ROAST_BEANS[key] ??
+    (key.includes("light") ? 1 : key.includes("dark") ? 5 : 3);
+  return (
+    <span
+      role="img"
+      aria-label={`Roast: ${label}`}
+      title={`${label} roast`}
+      className="inline-flex shrink-0 items-center gap-0.5 text-foreground"
+    >
+      {Array.from({ length: 5 }, (_, i) => (
+        <CoffeeBeanIcon
+          key={i}
+          aria-hidden
+          weight={i < count ? "fill" : "regular"}
+          className={cn("size-3", i >= count && "opacity-30")}
+        />
+      ))}
+    </span>
+  );
+}
 
 type CoffeeCardProps = {
   coffee: CoffeeSummary;
@@ -70,7 +107,7 @@ export default function CoffeeCard({
 
   const processLabel = formatProcess(coffee.process);
 
-  const flavorLabels = formatFlavorLabels(coffee.flavor_keys, 3);
+  const flavorLabels = formatFlavorLabels(coffee.flavor_keys, 2);
   const extraFlavorCount =
     (coffee.flavor_keys?.length ?? 0) - flavorLabels.length;
 
@@ -110,10 +147,8 @@ export default function CoffeeCard({
       ? flavorLabels.join(", ").toLowerCase() +
         (extraFlavorCount > 0 ? ` +${extraFlavorCount}` : "")
       : null;
-  const specs = [roastLevel, processLabel]
-    .filter(Boolean)
-    .join(" · ")
-    .replace(/[_-]+/g, " ");
+  const roastKey = coffee.roast_level ?? coffee.roast_level_raw;
+  const processText = processLabel?.replace(/[_-]+/g, " ") ?? null;
 
   // Compact variant - dense, horizontal row card, display-only rating
   if (variant === "compact") {
@@ -135,7 +170,7 @@ export default function CoffeeCard({
           <div className="relative size-16 shrink-0 self-center overflow-hidden rounded-md border border-border bg-[#F6EFE3]">
             <Image
               alt={imageAlt}
-              className={TILE_IMAGE}
+              className={THUMB_IMAGE}
               fill
               sizes="64px"
               src={imageUrl}
@@ -146,13 +181,6 @@ export default function CoffeeCard({
           {/* Content - 1-2 lines total */}
           <div className="flex-1 min-w-0 flex flex-col justify-center">
             <Stack gap="1">
-              {/* Display-only rating (rendered only when a community rating exists) */}
-              <StarRating
-                rating={coffee.rating_avg ?? 0}
-                count={coffee.rating_count}
-                size="sm"
-              />
-
               {/* Coffee name - primary */}
               <h3 className="text-body line-clamp-1">{displayName}</h3>
 
@@ -164,6 +192,24 @@ export default function CoffeeCard({
               )}
             </Stack>
           </div>
+
+          {/* Display-only rating at the right edge, only when a community rating exists */}
+          {!!coffee.rating_avg && coffee.rating_count > 0 && (
+            <span
+              className="flex shrink-0 items-center gap-1 text-ui-meta tabular-nums"
+              aria-label={`${coffee.rating_avg.toFixed(1)} out of 5 from ${coffee.rating_count} ${coffee.rating_count === 1 ? "rating" : "ratings"}`}
+            >
+              <StarIcon
+                aria-hidden
+                weight="fill"
+                className="size-3.5 text-rating"
+              />
+              <span className="font-medium text-foreground">
+                {coffee.rating_avg.toFixed(1)}
+              </span>
+              ({coffee.rating_count})
+            </span>
+          )}
         </Link>
       </Card>
     );
@@ -189,16 +235,7 @@ export default function CoffeeCard({
         className="absolute top-2 right-2 z-10"
       />
       <Link href={detailHref} className="flex flex-1 flex-col">
-        <span
-          className={cn(
-            TILE,
-            isHero
-              ? "aspect-square"
-              : isSimilar
-                ? "aspect-[3/4]"
-                : "aspect-[4/5]"
-          )}
-        >
+        <span className={cn(TILE, "aspect-square")}>
           <span className="relative block size-full overflow-hidden rounded-lg">
             <Image
               alt={imageAlt}
@@ -220,9 +257,10 @@ export default function CoffeeCard({
 
         <h3
           className={cn(
-            "mt-4 text-balance line-clamp-2 underline-offset-4 group-hover:underline",
+            "mt-4 line-clamp-1 underline-offset-4 group-hover:underline",
             isHero ? "text-title" : "text-heading"
           )}
+          title={displayName}
         >
           {displayName}
         </h3>
@@ -250,13 +288,20 @@ export default function CoffeeCard({
         ) : (
           <>
             {notes && (
-              <p className="mt-2 font-serif text-body text-foreground italic leading-snug line-clamp-2">
+              <p className="mt-2 font-serif text-body text-foreground italic leading-snug line-clamp-1">
                 {notes}
               </p>
             )}
-            {(specs || formattedPrice) && (
-              <p className="mt-auto flex items-baseline justify-between gap-2 pt-2">
-                <span className="min-w-0 truncate text-label">{specs}</span>
+            {(roastLevel || processText || formattedPrice) && (
+              <p className="mt-auto flex items-center justify-between gap-2 pt-2">
+                <span className="flex min-w-0 items-center gap-2 text-label">
+                  {roastLevel && roastKey && (
+                    <RoastBeans level={roastKey} label={roastLevel} />
+                  )}
+                  {processText && (
+                    <span className="truncate">{processText}</span>
+                  )}
+                </span>
                 {formattedPrice && (
                   <span className="whitespace-nowrap text-caption tabular-nums">
                     <span className="font-medium text-foreground">

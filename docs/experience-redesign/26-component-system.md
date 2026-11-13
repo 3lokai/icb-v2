@@ -347,3 +347,25 @@ The Next.js playground at `/design/components#coffee-cards` now displays two ful
 - **Safety:** All fixture `coffee_id` values remain null; no rating or wishlist writes are possible. The Minimal Rate label is a *visual placeholder*, not a working control. Coffee title/image links still point to real product pages and will navigate if clicked.
 - **Scope:** a review-only alternative, not a second production card implementation. No global tokens, production CoffeeCard, CardRatingFooter, grid rules or existing route were changed.
 - **QA pending:** browser compare at 375px and 1280px in light/dark, assess real product packshots with `object-contain`, visual height and two-line title cases. No build or browser test was executed in this commit.
+
+## RoasterCard rebuilt (2026-11-14)
+
+`RoasterCard` default and similar variants now follow CoffeeCard: `<article>` with no outer card, framed tile, name, one `text-ui-meta` line, `CardRatingFooter variant="inline"`. The frame classes are shared in `src/components/cards/tile.ts` (`TILE_FRAME`); CoffeeCard adds the paper background, `RoasterLogo` adds the contrast plate. Logos are `object-contain` at 60% × 50% of the tile, with no blend. `RoasterCardSkeleton` mirrors it. Compact row unchanged. This supersedes the "RoasterCard still has the old bordered card" notes above.
+
+Checked: type-check passes; `/roasters` viewed at 1280px and 375px in light theme, no overflow. Not checked: dark theme, the similar variant on a roaster page, keyboard. Known: on dark plates the frame's cream inner highlight reads as a grey rim.
+
+The component review calls for scale, overlays, card variants, states, remaining primitives, colour and icons are in [07](07-decisions.md) as one PROPOSED row.
+
+## CoffeeCard made smaller (2026-11-14)
+
+Applied to the production `CoffeeCard` (hero, default, similar) and its skeleton: square tile, `object-contain mix-blend-multiply`; name `line-clamp-1` with `title`; `formatFlavorLabels(keys, 2)` plus "+N", one line; `RoastBeans` (1–5 Phosphor beans, filled vs 30% outline, `role="img"` with "Roast: …" label) replaces the roast word in the specs line, process text beside it. The compact thumbnail keeps `cover`.
+
+Checked: type-check and lint pass; playground at 1280px light and live `/coffees?sort=rating_desc` at 375px viewed, no overflow. Card height in the playground row dropped from about 540px to about 430px. Not checked: dark theme, hero and similar variants, keyboard. Known: Blue Tokai style shots with coloured backdrops show as a rectangle inside the tile; long names lose their distinguishing suffix ("Kerehaklu Estate - Blossom…").
+
+## Minimal experiment closed (2026-11-14)
+
+Owner chose the smaller production card above. The Minimal preview (`minimal-coffee-card.tsx`) and the Current vs Minimal comparison were removed from the playground; the "Current vs Minimal CoffeeCard experiment" section above is history. Name stays one line so cards in a row keep equal height.
+
+## Backlog (not blocking the next step)
+
+- **CoffeeCard image load failure.** `coffeeImagePresets` already falls back to `/images/placeholder-coffee.avif` when a coffee has no image path. A path that exists but fails to load (deleted or broken ImageKit file) still shows an empty tile, because the card is server-rendered with no `onError`. Fix: a small client image wrapper like `RoasterLogo`. Frequency in the catalogue not measured. Added 2026-11-14.

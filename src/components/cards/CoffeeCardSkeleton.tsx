@@ -36,13 +36,6 @@ export function CoffeeCardSkeleton({
   }
 
   // Hero, default and similar mirror CoffeeCard: framed tile, then text lines and the rating row.
-  const aspect =
-    variant === "hero"
-      ? "aspect-square"
-      : variant === "similar"
-        ? "aspect-[3/4]"
-        : "aspect-[4/5]";
-
   return (
     <div
       className={
@@ -53,7 +46,7 @@ export function CoffeeCardSkeleton({
             : "flex h-full w-full flex-col"
       }
     >
-      <Skeleton className={`${aspect} w-full rounded-xl`} />
+      <Skeleton className="aspect-square w-full rounded-xl" />
       <Stack gap="2" className="mt-4">
         <Skeleton className="h-6 w-3/4" />
         <Skeleton className="h-4 w-1/2" />
