@@ -170,12 +170,12 @@ export function RegionCard({
             {region.display_name}
           </h3>
           {elevation ? (
-            <p className="text-caption tabular-nums">{elevation}</p>
+            <p className="text-ui-meta">{elevation}</p>
           ) : null}
         </Stack>
 
         {region.signature_profile ? (
-          <p className="text-caption line-clamp-2">
+          <p className="text-copy-compact text-muted-foreground line-clamp-2">
             {region.signature_profile}
           </p>
         ) : null}
