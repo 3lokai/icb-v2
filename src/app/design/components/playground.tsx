@@ -93,17 +93,15 @@ const VARIANTS = [
   "link",
   "destructive",
 ] as const;
-type UIScale = "current" | "compact";
-// Current is the committed shadcn source; Compact is scoped to this playground.
 const SIZES = [
-  ["sm", "36px", "36px"],
-  ["default", "44px", "40px"],
-  ["lg", "48px", "44px"],
+  ["sm", "36px"],
+  ["default", "40px"],
+  ["lg", "44px"],
 ] as const;
 const ICON_SIZES = [
-  ["icon-sm", "36px", "36px"],
-  ["icon", "44px", "40px"],
-  ["icon-lg", "48px", "44px"],
+  ["icon-sm", "36px"],
+  ["icon", "40px"],
+  ["icon-lg", "44px"],
 ] as const;
 // Mirrors the focus-visible classes so the focus ring is visible in static screenshots.
 const FOCUS_PREVIEW = "border-ring ring-[3px] ring-ring/50";
@@ -236,7 +234,6 @@ const REAL_COFFEES: CoffeeSummary[] = [
 ];
 
 const SECTIONS = [
-  ["scale", "Scale comparison"],
   ["type", "Type & tokens"],
   ["buttons", "Button"],
   ["fields", "Input & Textarea"],
@@ -275,7 +272,7 @@ function Section({
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
-      <p className="mb-3 text-eyebrow">{label}</p>
+      <p className="mb-3 font-medium text-caption">{label}</p>
       <div className="flex flex-wrap items-center gap-3">{children}</div>
     </div>
   );
@@ -314,35 +311,6 @@ function ThemeSwitch() {
   );
 }
 
-function ScaleSwitch({
-  value,
-  onChange,
-}: {
-  value: UIScale;
-  onChange: (value: UIScale) => void;
-}) {
-  return (
-    <div aria-label="UI scale" className="flex items-center gap-1" role="group">
-      <Button
-        aria-pressed={value === "current"}
-        onClick={() => onChange("current")}
-        size="sm"
-        variant={value === "current" ? "secondary" : "ghost"}
-      >
-        Current
-      </Button>
-      <Button
-        aria-pressed={value === "compact"}
-        onClick={() => onChange("compact")}
-        size="sm"
-        variant={value === "compact" ? "secondary" : "ghost"}
-      >
-        Compact
-      </Button>
-    </div>
-  );
-}
-
 function Swatch({ name, token }: { name: string; token: string }) {
   return (
     <div className="flex items-center gap-3">
@@ -359,7 +327,6 @@ function Swatch({ name, token }: { name: string; token: string }) {
 }
 
 export function ComponentPlayground() {
-  const [scale, setScale] = useState<UIScale>("current");
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
@@ -376,7 +343,6 @@ export function ComponentPlayground() {
     <div
       className="min-h-dvh bg-background font-sans text-foreground"
       data-icb-playground
-      data-ui-scale={scale}
     >
       <header className="sticky top-0 z-40 border-border border-b bg-background/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
@@ -388,7 +354,6 @@ export function ComponentPlayground() {
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
-            <ScaleSwitch onChange={setScale} value={scale} />
             <ThemeSwitch />
           </div>
         </div>
@@ -405,57 +370,6 @@ export function ComponentPlayground() {
       </header>
 
       <main className="mx-auto max-w-6xl divide-y divide-border px-4 sm:px-6">
-        <section aria-labelledby="scale-title" className="scroll-mt-32 py-6" id="scale">
-          <p className="text-eyebrow">UI density test</p>
-          <h2 className="mt-2 text-heading" id="scale-title">Compare component scale</h2>
-          <p className="mt-2 max-w-3xl text-caption">
-            Use Current / Compact above. The controls below are the real shadcn
-            components; Compact modifies only this playground, never shared source.
-            Keep viewport and browser zoom identical when comparing to the present site.
-            Colours, fonts and layout spacing remain the same.
-          </p>
-          <div className="mt-4 overflow-x-auto">
-            <table className="w-full min-w-[530px] border-collapse text-left text-caption">
-              <thead className="border-b border-border text-foreground">
-                <tr>
-                  <th className="py-2 pr-3 font-medium" scope="col">Element</th>
-                  <th className="py-2 pr-3 font-medium" scope="col">Existing main source</th>
-                  <th className="py-2 pr-3 font-medium" scope="col">Current redesign</th>
-                  <th className="py-2 font-medium" scope="col">Compact test</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/60">
-                {[
-                  ["Button / sm", "32px", "36px", "36px"],
-                  ["Button / default", "36px · 14px text", "44px · 15px", "40px · 14px"],
-                  ["Button / lg", "40px · 14px text", "48px · 16px", "44px · 14px"],
-                  ["Input / default", "36px", "44px", "40px"],
-                  ["Select / default", "36px", "44px", "40px"],
-                  ["Section H2 / desktop", "30px", "36px", "32px"],
-                  ["Coffee notes / grid", "Previously smaller", "16px italic", "14px italic"],
-                ].map(([name, live, current, compact]) => (
-                  <tr key={name}>
-                    <th className="py-2 pr-3 font-normal text-foreground" scope="row">{name}</th>
-                    <td className="py-2 pr-3">{live}</td>
-                    <td className="py-2 pr-3">{current}</td>
-                    <td className="py-2">{compact}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-3 text-caption">
-            The existing-site dimensions come from main-branch source, not a
-            pixel measurement of the deployed site. Compare at the same
-            viewport and 100% zoom.
-          </p>
-          <Button asChild className="mt-3" size="sm" variant="outline">
-            <a href="https://indiancoffeebeans.com/" rel="noreferrer" target="_blank">
-              Compare with live ICB <ArrowUpRightIcon />
-            </a>
-          </Button>
-        </section>
-
         <Section
           id="type"
           note="Tokens are bridged from system/icb-system.css onto the existing shadcn variables only while this page is mounted. globals.css is untouched."
@@ -501,11 +415,11 @@ export function ComponentPlayground() {
 
         <Section
           id="buttons"
-          note="All existing variants; pill shape preserved. Current 36/44/48px vs Compact 36/40/44px, with smaller labels. Press Tab to inspect the real focus ring."
+          note="All existing variants. Pill shape; 36 / 40 / 44px with 14px labels. Use lg (44px) for primary actions on mobile. Press Tab to walk the real focus ring."
           title="Button"
         >
-          {SIZES.map(([size, currentPx, compactPx]) => (
-            <Row key={size} label={`size="${size}" · ${scale === "compact" ? compactPx : currentPx}`}>
+          {SIZES.map(([size, px]) => (
+            <Row key={size} label={`size="${size}" · ${px}`}>
               {VARIANTS.map((variant) => (
                 <Button key={variant} size={size} variant={variant}>
                   {variant}
@@ -589,9 +503,9 @@ export function ComponentPlayground() {
             </Button>
           </Row>
           <Row label="Icon sizes (always pass aria-label)">
-            {ICON_SIZES.map(([size, currentPx, compactPx]) => (
+            {ICON_SIZES.map(([size, px]) => (
               <Button
-                aria-label={`Share (${scale === "compact" ? compactPx : currentPx})`}
+                aria-label={`Share (${px})`}
                 key={size}
                 size={size}
                 variant="outline"
@@ -667,7 +581,7 @@ export function ComponentPlayground() {
 
         <Section
           id="fields"
-          note={`Input and Select ${scale === "compact" ? "40px" : "44px"}; Textarea min 96px. Focus ring remains softer than buttons, and search fields stay pill-shaped. Mobile text remains 16px to avoid automatic zoom.`}
+          note={`Input and Select 40px; Textarea min 96px. Focus ring remains softer than buttons, and search fields stay pill-shaped. Mobile text remains 16px to avoid automatic zoom.`}
           title="Input & Textarea"
         >
           <div className="grid gap-8 lg:grid-cols-2">

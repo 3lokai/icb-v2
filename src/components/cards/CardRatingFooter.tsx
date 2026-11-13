@@ -23,7 +23,11 @@ type CardRatingFooterProps = {
    * `minimal` — a compact interactive stars + microcopy row, no number block
    * (similar / recommendation contexts).
    */
-  variant?: "full" | "minimal";
+  /**
+   * `inline` — one row for cards without an outer container: interactive stars with the
+   * average and count beside them, and the prompt at the right as a 44px-tall target.
+   */
+  variant?: "full" | "minimal" | "inline";
   /** Drop the horizontal padding so the row aligns with a card that has no outer container. */
   flush?: boolean;
 };
@@ -92,7 +96,7 @@ export function CardRatingFooter({
   // stars, only without a pre-filled value, so the words people actually read
   // ("Rate it") are a control rather than decoration. Falls back
   // to plain text when there is nothing to rate, so it never renders dead.
-  const renderMicrocopy = (className: string) =>
+  const renderMicrocopy = (className: string, label: string = microcopy) =>
     entityId ? (
       <button
         type="button"
@@ -104,10 +108,10 @@ export function CardRatingFooter({
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
         )}
       >
-        {microcopy}
+        {label}
       </button>
     ) : (
-      <span className={className}>{microcopy}</span>
+      <span className={className}>{label}</span>
     );
 
   const shellClass = cn(
@@ -131,6 +135,45 @@ export function CardRatingFooter({
       onRate={(rating) => openRatingModal(rating)}
     />
   );
+
+  // Inline: stars and evidence on one line, prompt at the right. The row and the prompt
+  // are 44px tall so the rating action is a comfortable touch target on mobile.
+  if (variant === "inline") {
+    return (
+      <div
+        className="mt-2 flex min-h-11 flex-wrap items-center justify-between gap-x-2 border-t border-border/40"
+        onPointerDown={(e) => {
+          // Keep card navigation isolated from the rating zone.
+          e.stopPropagation();
+        }}
+      >
+        <div className="flex items-center gap-2">
+          {!isUnrated && stars}
+          <p className="text-caption whitespace-nowrap">
+            {hasOverallRating ? (
+              <>
+                <span className="font-medium text-foreground">
+                  {ratingAvg!.toFixed(1)}
+                </span>{" "}
+                ({safeCount}
+                <span className="sr-only">
+                  {safeCount === 1 ? " rating" : " ratings"}
+                </span>
+                )
+              </>
+            ) : isUnrated ? (
+              "Not yet rated"
+            ) : null}
+          </p>
+        </div>
+        {renderMicrocopy(
+          "text-caption inline-flex min-h-11 items-center whitespace-nowrap pl-2",
+          // Short form so the row stays on one line at card width; the stars already show the value.
+          hasUserRating ? `Yours: ${userRating}` : undefined
+        )}
+      </div>
+    );
+  }
 
   // Minimal: compact interactive stars + microcopy, no number block.
   if (variant === "minimal") {

@@ -148,15 +148,15 @@ The playground copy and compositions follow [07](07-decisions.md), [20](20-direc
 - [x] Verify Input and Textarea touch sizing, invalid states and form layouts — playground
 - [ ] Verify Card layouts don't regress in **live** coffee, roaster, editorial and settings pages (the playground covers generic compositions only)
 - [x] Verify dark and light contrast, keyboard and reduced-motion behaviour for the four primitives — playground; destructive contrast flagged
-- [ ] **Owner review** of the playground and the PROPOSED bridge values (`--input`, `--accent` hover)
-- [ ] Flip the `Icon` default to `regular` after approval
+- [x] **Owner review** of the playground and the PROPOSED bridge values (`--input`, `--accent` hover) — approved 2026-11-13 with the Compact scale, pill buttons, rebuilt CoffeeCard and review-pass changes
+- [x] Flip the `Icon` default to `regular` after approval — done 2026-11-13
 - [ ] Deep Roast token and Gambetta/Ranade integration into `globals.css` and the root layout (rollout gate, step 6)
 
 ## Latest pass verification gate (2026-11-12)
 
-- [ ] Type-check, lint and tests **after** the second primitive edits and playground addition
-- [ ] Render `/design/components` at 375px and 1280px, light and dark; open Select, Dialog, Sheet and Dropdown
-- [ ] Confirm real CoffeeCard demo renders from a **null coffee ID** without remote mutations, and default/rated/unrated/similar states remain legible
+- [x] Type-check, lint and tests **after** the second primitive edits and playground addition — pass, 2026-11-13 (90/90)
+- [x] Render `/design/components` at 375px and 1280px, light and dark; open Select, Dialog, Sheet and Dropdown — rendered at both widths in light and at 1280px in dark; Dialog, Sheet and Dropdown opened; Select not opened
+- [x] Confirm real CoffeeCard demo renders from a **null coffee ID** without remote mutations, and default/rated/unrated/similar states remain legible — renders; default, rated, your-rating, unrated, similar and compact legible
 - [ ] Keyboard navigation through menu, select, dialog focus trap and rating footer; reduced-motion screenshots
 - [ ] Regression review on live filter sheets, account dropdown, auth and review dialogs before rollout
 
@@ -225,6 +225,47 @@ Owner go-ahead to close the gaps between the React components and the approved H
 
 **Review gate:** User chooses Current versus Compact after seeing identical real controls in both modes. Only then migrate the selected dimensions to the shadcn source and apply typographic adjustments through the shared type system; this toggle remains a review tool.
 
+## Compact scale adopted (2026-11-13)
+
+Owner chose Compact after the Current / Compact comparison, with two exceptions. It now lives in the shared source; the playground toggle and its scoped CSS are removed.
+
+| Element | Adopted |
+|---|---|
+| Button sm / default / lg | 36 / 40 / 44px, pill, 14px labels |
+| Icon button sm / default / lg | 36 / 40 / 44px |
+| Input, Select | 40px, 10px corners |
+| `text-title` desktop | 32px, weight 400 |
+| CoffeeCard flavour notes | **16px italic kept** (exception: 14px Gambetta italic was too thin and flattened the card hierarchy) |
+
+**Rule: primary actions on mobile use `size="lg"` (44px)** — Buy, Rate, form submit — so the main touch target meets 44px. Default (40px) is for secondary and desktop actions.
+
+Fixed in the same pass: the CoffeeCard rating-and-price line now wraps instead of overflowing into the next card in two-column mobile grids.
+
+## Review pass (2026-11-13, owner-approved items 1–6)
+
+- **CoffeeCard rating row merged.** One row instead of two: interactive stars with "4.5 (6)" beside them, and the prompt ("Rate it" / "Yours: 4") at the right. Price moved up beside roast and process. `CardRatingFooter` gained an `inline` variant for this; `full` (RoasterCard) and `minimal` (similar cards) are unchanged.
+- **Touch target.** The rating row and its prompt are 44px tall. Individual stars are still narrow; the prompt is the reliable target on mobile.
+- **Eyebrows rationed.** `text-eyebrow` is for feature moments only, not every section (PRODUCT.md anti-reference). Playground row labels went back to plain captions.
+- **Destructive colour (PROPOSED, token bridge only):** brick `#A32B2B` in light, `#D2584F` in dark, replacing the coral.
+- **Packaging tile in dark:** stays paper, one step dimmer (`#E2D4BE`). A dark tile was rejected because white pack backgrounds are multiplied into the tile, so a dark tile would turn every pack muddy.
+- **`CoffeeCardSkeleton`** now mirrors the rebuilt card.
+- Checked: type-check, lint, 90 tests; playground cards at 1280px in light and dark; live directory (top-rated) at 1280px. In two-column mobile grids the rating row wraps to two lines (measured, not viewed).
+- Deferred by the owner: updating `PRODUCT.md` / `DESIGN.md` until everything is final.
+
+## Gate status (2026-11-13)
+
+**Phase C steps 1, 2 and 4 are closed** on the design branch: base controls, the audited second pass, and the CoffeeCard contract. Owner approved moving on.
+
+Still open before any rollout, carried forward rather than blocking the next step:
+
+- Card layouts on live coffee, roaster, editorial and settings pages viewed in full (only the directory and coffee detail tops were viewed).
+- Keyboard pass through menu, select, dialog focus trap and the rating row; reduced-motion screenshots.
+- Regression review of live filter sheets, account dropdown, auth and review dialogs.
+- `RoasterCard` still has the old bordered card and the `full` rating footer; it has not been rebuilt to match CoffeeCard.
+- Deep Roast tokens and Gambetta/Ranade into `globals.css` and the root layout (step 6).
+
+**Next: Phase C step 3 — navigation and search contracts.** Needs one owner decision first: which destinations sit under the member **Profile ▸** submenu ([24](24-information-architecture.md)).
+
 ## Geist typography reference — chosen 2026-11-14
 
 **CONFIRMED reference, PROPOSED application.** The owner selected [Vercel Geist Typography](https://vercel.com/geist/typography) as a **sample of information hierarchy, control density and typesetting discipline**, not a font or colour replacement. Keep Gambetta for editorial headings and coffee names, Ranade for UI and reading, and Deep Roast. Do not import Geist fonts, switch to Vercel's palette, or copy the layout wholesale.
@@ -249,8 +290,7 @@ Owner go-ahead to close the gaps between the React components and the approved H
 
 ### Review protocol
 
-1. In `/design/components`, compare **Current** and **Compact** at the same viewport / 100% zoom, keeping button shapes and colours constant.
+1. Control sizes are already Compact in the shared source (section above); the Current / Compact toggle is gone. Compare type roles at the same viewport and 100% zoom, keeping button shapes and colours constant.
 2. Add a typography **role specimen** for actual ICB surfaces: page title, section header, coffee name, body/article prose, buttons, UI label, rating and prices; specify responsive sizes, line-height, tracking, weights and tabular-number treatment.
 3. Compare on a real directory and coffee detail page at 375px / 1280px, both themes, with long names and price/rating evidence. Do not let serif editorial headlines dictate button or form-label sizes.
-4. Choose roles and sizes by owner review; only then change `src/app/styles/typography.css` and shadcn source. No global type-scale migration is authorized by this note.
-
+4. Choose roles and sizes by owner review; only then change `src/app/styles/typography.css` and shadcn source for those roles. No global type-scale migration is authorized by this note.

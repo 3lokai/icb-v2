@@ -22,7 +22,7 @@
 
 /* Title - For section headers (h2) */
 .text-title {
-  @apply font-serif text-2xl md:text-3xl lg:text-4xl font-normal leading-tight tracking-tight;
+  @apply font-serif text-2xl md:text-3xl lg:text-[2rem] font-normal leading-tight tracking-tight;
 }
 
 /* Heading - For card headers, subsections (h3) — one clear step below

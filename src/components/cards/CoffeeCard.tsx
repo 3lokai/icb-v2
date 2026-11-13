@@ -27,11 +27,12 @@ import { WishlistButton } from "@/components/coffees/WishlistButton";
 
 // Packaging tile, as in the approved HTML playground: paper tile with a pressed frame (inner
 // highlight, soft drop shadow, heavier bottom edge), image filling the tile with an 8px inset and
-// white pack-shot backgrounds multiplied into the paper. The tile colour is fixed in both themes.
+// white pack-shot backgrounds multiplied into the paper. The tile stays paper in both themes (a
+// dark tile would turn every multiplied pack muddy); in dark it is one step dimmer so it does not glow.
 // Owner decision 2026-11-13; note this crops and tints packaging, which 22-visual-system.md rule 1
 // otherwise forbids — recorded there as the sanctioned exception.
 const TILE =
-  "relative block w-full overflow-hidden rounded-xl border border-border border-b-[3px] bg-[#F6EFE3] p-2 shadow-[inset_0_0_0_4px_rgb(251_246_236/0.6),0_3px_7px_rgb(45_21_14/0.11)] transition-colors motion-reduce:transition-none group-hover:border-foreground/30";
+  "relative block w-full overflow-hidden rounded-xl border border-border border-b-[3px] bg-[#F6EFE3] p-2 dark:bg-[#E2D4BE] shadow-[inset_0_0_0_4px_rgb(251_246_236/0.6),0_3px_7px_rgb(45_21_14/0.11)] transition-colors motion-reduce:transition-none group-hover:border-foreground/30";
 const TILE_IMAGE = "object-cover mix-blend-multiply";
 
 type CoffeeCardProps = {
@@ -113,37 +114,6 @@ export default function CoffeeCard({
     .filter(Boolean)
     .join(" · ")
     .replace(/[_-]+/g, " ");
-
-  const hasRating = Boolean(coffee.rating_avg && coffee.rating_count);
-  const ratingCount = coffee.rating_count ?? 0;
-
-  // Evidence line: community average and count at the left, price at the right.
-  // The rating footer below is the action; this line is the read-only evidence.
-  const evidence = (hasRating || formattedPrice) && (
-    <span className="mt-auto flex items-baseline justify-between gap-2 whitespace-nowrap pt-2 text-caption">
-      {hasRating ? (
-        <span className="text-foreground">
-          <span aria-hidden className="text-rating">
-            ★
-          </span>{" "}
-          <span className="font-medium">{coffee.rating_avg!.toFixed(1)}</span>
-          <span className="text-muted-foreground">
-            {" "}
-            · {ratingCount} {ratingCount === 1 ? "rating" : "ratings"}
-          </span>
-        </span>
-      ) : (
-        <span />
-      )}
-      {formattedPrice && (
-        <span>
-          From{" "}
-          <span className="font-medium text-foreground">₹{formattedPrice}</span>{" "}
-          / 250g
-        </span>
-      )}
-    </span>
-  );
 
   // Compact variant - dense, horizontal row card, display-only rating
   if (variant === "compact") {
@@ -284,8 +254,19 @@ export default function CoffeeCard({
                 {notes}
               </p>
             )}
-            {specs && <p className="mt-1 text-label line-clamp-1">{specs}</p>}
-            {evidence}
+            {(specs || formattedPrice) && (
+              <p className="mt-auto flex items-baseline justify-between gap-2 pt-2">
+                <span className="min-w-0 truncate text-label">{specs}</span>
+                {formattedPrice && (
+                  <span className="whitespace-nowrap text-caption">
+                    <span className="font-medium text-foreground">
+                      ₹{formattedPrice}
+                    </span>{" "}
+                    / 250g
+                  </span>
+                )}
+              </p>
+            )}
           </>
         )}
       </Link>
@@ -299,8 +280,8 @@ export default function CoffeeCard({
         ratingCount={coffee.rating_count}
         userRating={userRating}
         size={isHero ? "lg" : isSimilar ? "sm" : "md"}
-        variant="minimal"
-        flush
+        variant={isSimilar ? "minimal" : "inline"}
+        flush={isSimilar}
       />
     </article>
   );

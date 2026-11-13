@@ -28,7 +28,7 @@ type CustomIconProps = {
   size?: IconProps["size"];
   className?: string;
   color?: IconColor;
-  /** Phosphor weight. Defaults to `duotone`. Use `fill` for solid icons (e.g. wishlist). */
+  /** Phosphor weight. Defaults to `regular` (Deep Roast, 2026-11-13); `fill` marks an active state (wishlisted, rated); `duotone` only where a context calls for it. */
   weight?: IconProps["weight"];
 } & Omit<
   ComponentPropsWithoutRef<"svg">,
@@ -40,7 +40,7 @@ export const Icon = ({
   size = 20,
   className = "inline-block",
   color = "primary",
-  weight = "duotone",
+  weight = "regular",
   style,
   ...props
 }: CustomIconProps) => {

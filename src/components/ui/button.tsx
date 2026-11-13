@@ -29,13 +29,13 @@ const buttonVariants = cva(
       },
       size: {
         // ponytail: fixed h-* (not min-h-*) so a caller's className="h-6" still wins via tailwind-merge
-        // Deep Roast: pill buttons. sm is the compact size for dense UI (filters, tables).
-        default: "h-11 px-5 text-[0.9375rem] has-[>svg]:px-4",
+        // Deep Roast: pill buttons, 36 / 40 / 44px, 14px labels. Use lg (44px) for primary actions on mobile.
+        default: "h-10 px-5 has-[>svg]:px-4",
         sm: "h-9 gap-1.5 px-4 has-[>svg]:px-3",
-        lg: "h-12 px-6 text-base has-[>svg]:px-5",
-        icon: "size-11",
+        lg: "h-11 px-6 has-[>svg]:px-5",
+        icon: "size-10",
         "icon-sm": "size-9",
-        "icon-lg": "size-12",
+        "icon-lg": "size-11",
       },
     },
     defaultVariants: {

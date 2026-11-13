@@ -14,74 +14,6 @@ type CoffeeCardSkeletonProps = {
 export function CoffeeCardSkeleton({
   variant = "default",
 }: CoffeeCardSkeletonProps) {
-  // Hero variant skeleton
-  if (variant === "hero") {
-    return (
-      <Card className="surface-1 rounded-lg overflow-hidden h-full flex flex-col p-0">
-        {/* Hero image skeleton - 4:3 */}
-        <Skeleton className="aspect-[4/3] w-full" />
-
-        {/* Content skeleton */}
-        <div className="flex-1 card-padding">
-          <Stack gap="3">
-            {/* Title */}
-            <Skeleton className="h-8 w-3/4" />
-            {/* Roaster */}
-            <Skeleton className="h-4 w-1/2" />
-            {/* Metadata - inline */}
-            <Skeleton className="h-4 w-2/3" />
-            {/* Price */}
-            <Skeleton className="h-3 w-32 mt-auto pt-2" />
-          </Stack>
-        </div>
-
-        {/* Bottom rating zone skeleton - horizontal layout */}
-        <div className="mt-auto border-t border-border/40">
-          <div className="flex flex-row items-center justify-between px-3 py-2 md:px-4 md:py-3">
-            {/* Left: Rating inline block */}
-            <Skeleton className="h-6 w-20" />
-            {/* Right: Action block */}
-            <div className="flex flex-col items-end gap-0.5">
-              <Skeleton className="h-5 w-32" />
-              <Skeleton className="h-3 w-24" />
-            </div>
-          </div>
-        </div>
-      </Card>
-    );
-  }
-
-  // Similar variant skeleton - 3:4 image + content + minimal rating row
-  if (variant === "similar") {
-    return (
-      <Card className="surface-1 rounded-lg overflow-hidden h-full flex flex-col p-0">
-        {/* Image - 3:4 */}
-        <Skeleton className="aspect-[3/4] w-full" />
-
-        {/* Content */}
-        <div className="flex-1 card-padding-compact">
-          <Stack gap="2">
-            {/* Title */}
-            <Skeleton className="h-5 w-4/5" />
-            {/* Roaster */}
-            <Skeleton className="h-4 w-1/2" />
-            {/* Match chips */}
-            <Skeleton className="h-4 w-2/3" />
-          </Stack>
-        </div>
-
-        {/* Minimal rating row reserve */}
-        <div className="mt-auto border-t border-border/40">
-          <div className="flex flex-row items-center justify-between px-3 py-2 md:px-4 md:py-3">
-            <Skeleton className="h-3 w-20" />
-            <Skeleton className="h-3 w-24" />
-          </div>
-        </div>
-      </Card>
-    );
-  }
-
-  // Compact variant skeleton
   if (variant === "compact") {
     return (
       <Card className="surface-1 rounded-lg overflow-hidden flex flex-row items-center gap-3 card-padding-compact h-[80px] p-0">
@@ -103,40 +35,35 @@ export function CoffeeCardSkeleton({
     );
   }
 
-  // Default variant skeleton
+  // Hero, default and similar mirror CoffeeCard: framed tile, then text lines and the rating row.
+  const aspect =
+    variant === "hero"
+      ? "aspect-square"
+      : variant === "similar"
+        ? "aspect-[3/4]"
+        : "aspect-[4/5]";
+
   return (
-    <Card className="surface-1 rounded-lg overflow-hidden h-full flex flex-col p-0">
-      {/* Image skeleton - 3:2 */}
-      <Skeleton className="aspect-[3/2] w-full" />
-
-      {/* Content skeleton - strict hierarchy */}
-      <div className="flex-1 card-padding-compact">
-        <Stack gap="2">
-          {/* 1. Stars (even if empty) */}
-          <Skeleton className="h-4 w-24" />
-          {/* 2. Title */}
-          <Skeleton className="h-6 w-4/5" />
-          {/* 3. Roaster */}
-          <Skeleton className="h-4 w-1/2" />
-          {/* 4. Metadata - inline */}
-          <Skeleton className="h-4 w-2/3" />
-          {/* 5. Price */}
-          <Skeleton className="h-3 w-32 mt-auto pt-2" />
-        </Stack>
+    <div
+      className={
+        variant === "hero"
+          ? "mx-auto flex h-full w-full max-w-[420px] flex-col"
+          : variant === "default"
+            ? "flex h-full w-full max-w-[300px] flex-col"
+            : "flex h-full w-full flex-col"
+      }
+    >
+      <Skeleton className={`${aspect} w-full rounded-xl`} />
+      <Stack gap="2" className="mt-4">
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="h-4 w-1/2" />
+        {variant !== "similar" && <Skeleton className="h-5 w-5/6" />}
+        <Skeleton className="h-4 w-full" />
+      </Stack>
+      <div className="mt-2 flex min-h-11 items-center justify-between border-t border-border/40">
+        <Skeleton className="h-4 w-28" />
+        <Skeleton className="h-4 w-12" />
       </div>
-
-      {/* Rating zone skeleton - horizontal layout */}
-      <div className="mt-auto border-t border-border/40">
-        <div className="flex flex-row items-center justify-between px-3 py-2 md:px-4 md:py-3">
-          {/* Left: Rating inline block */}
-          <Skeleton className="h-6 w-20" />
-          {/* Right: Action block */}
-          <div className="flex flex-col items-end gap-0.5">
-            <Skeleton className="h-4 w-28" />
-            <Skeleton className="h-3 w-24" />
-          </div>
-        </div>
-      </div>
-    </Card>
+    </div>
   );
 }
