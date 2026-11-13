@@ -4,8 +4,8 @@
    not the globals.css migration (Phase C step 6). */
 
 html:has([data-icb-playground]) {
-  --icb-ground: #f6efe3;
-  --icb-surface: #fbf6ec;
+  --icb-ground: #fbf6ec;
+  --icb-surface: #f6efe3;
   --icb-ink: #1f130c;
   --icb-muted: #5f5145;
   --icb-rule: #d6c9b6;
@@ -41,6 +41,8 @@ html:has([data-icb-playground]) {
 }
 
 html.dark:has([data-icb-playground]) {
+  --icb-glow: #4a3020;
+  --icb-contour: rgba(217, 168, 74, 0.5);
   --icb-ground: #1e1510;
   --icb-surface: #2a1e17;
   --icb-ink: #f6efe3;

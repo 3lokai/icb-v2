@@ -24,6 +24,8 @@ type CardRatingFooterProps = {
    * (similar / recommendation contexts).
    */
   variant?: "full" | "minimal";
+  /** Drop the horizontal padding so the row aligns with a card that has no outer container. */
+  flush?: boolean;
 };
 
 /**
@@ -44,6 +46,7 @@ export function CardRatingFooter({
   userRating,
   size = "md",
   variant = "full",
+  flush = false,
 }: CardRatingFooterProps) {
   const { openModal } = useModal();
 
@@ -62,7 +65,9 @@ export function CardRatingFooter({
   if (hasUserRating) {
     microcopy = `Your rating: ${userRating}`;
   } else if (hasOverallRating) {
-    microcopy = "Tried this? Rate it.";
+    // Short on purpose: the longer prompt wrapped beside the count at card width.
+    // The stars carry the full "Rate <name>" label for assistive tech.
+    microcopy = "Rate it";
   } else {
     microcopy = "Rate it";
   }
@@ -105,8 +110,10 @@ export function CardRatingFooter({
       <span className={className}>{microcopy}</span>
     );
 
-  const shellClass =
-    "mt-auto border-t border-border/40 px-3 py-2 md:px-4 md:py-3";
+  const shellClass = cn(
+    "mt-auto border-t border-border/40 py-2 md:py-3",
+    flush ? "mt-2 px-0" : "px-3 md:px-4"
+  );
 
   const unratedRow = (
     <p className="text-caption text-muted-foreground">
@@ -156,11 +163,14 @@ export function CardRatingFooter({
 
   return (
     <div
-      className={cn(shellClass, "flex flex-row items-center justify-between")}
+      className={cn(
+        shellClass,
+        "flex flex-row items-center justify-between gap-2"
+      )}
     >
       {/* Left: average and count at equal weight — "4.5 · 1 rating" */}
       {hasOverallRating ? (
-        <p className="text-label font-medium">
+        <p className="text-label whitespace-nowrap font-medium">
           {ratingAvg!.toFixed(1)} <span aria-hidden>·</span> {safeCount}{" "}
           {safeCount === 1 ? "rating" : "ratings"}
         </p>

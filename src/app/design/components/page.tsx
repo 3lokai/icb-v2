@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ComponentPlayground } from "./playground";
+// Locked visual system (motif, ambient surface, feature surfaces); namespaced .icb-* only.
+import "../../../../docs/experience-redesign/system/icb-system.css";
 import "./deep-roast.css";
 
 export const metadata: Metadata = {

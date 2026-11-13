@@ -22,13 +22,13 @@
 
 /* Title - For section headers (h2) */
 .text-title {
-  @apply font-serif text-2xl md:text-3xl font-medium leading-tight tracking-tight;
+  @apply font-serif text-2xl md:text-3xl lg:text-4xl font-normal leading-tight tracking-tight;
 }
 
 /* Heading - For card headers, subsections (h3) — one clear step below
  * .text-title (~25% smaller at base: 18px vs 24px, ~33% smaller at md: 20px vs 30px) */
 .text-heading {
-  @apply font-serif text-lg md:text-xl font-medium leading-snug tracking-tight;
+  @apply font-serif text-lg md:text-xl font-normal leading-snug tracking-tight;
 }
 
 /* Subheading - For smaller headers */
@@ -60,6 +60,11 @@
 .text-overline {
   /* Refined tracking: Print UI feel, not SaaS dashboard */
   @apply text-xs capitalize font-medium tracking-wide;
+}
+
+/* Eyebrow - small uppercase tracked label above headings and beside sections (Deep Roast) */
+.text-eyebrow {
+  @apply text-xs uppercase font-medium tracking-[0.14em] text-muted-foreground;
 }
 
 /* Label - For metadata, tags, small caps */

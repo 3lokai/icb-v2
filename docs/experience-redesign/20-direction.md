@@ -85,8 +85,8 @@ Weights, sizes and the small-label treatment are still open. Try them in the [pl
 
 | Role | Light | Dark |
 |---|---|---|
-| Ground | `#F6EFE3` | `#1E1510` |
-| Card | `#FBF6EC` | `#2A1E17` |
+| Ground | `#FBF6EC` | `#1E1510` |
+| Card | `#F6EFE3` | `#2A1E17` |
 | Ink | `#1F130C` | `#F6EFE3` |
 | Muted text | `#5F5145` | `#BFAF9D` |
 | Hairline | `#D6C9B6` | `#43342A` |

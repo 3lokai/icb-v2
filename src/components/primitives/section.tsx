@@ -90,9 +90,7 @@ export function Section({
       {(eyebrow || title || description) && (
         <div className={cn("mb-12", align === "center" && "text-center")}>
           {eyebrow && (
-            <p className="text-overline mb-3 font-semibold uppercase tracking-[0.18em] text-accent">
-              {eyebrow}
-            </p>
+            <p className="text-eyebrow mb-3 text-accent">{eyebrow}</p>
           )}
           {title && (
             <h2 className="text-title text-balance">

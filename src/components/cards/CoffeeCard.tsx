@@ -9,8 +9,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CoffeeBeanIcon } from "@phosphor-icons/react/dist/ssr";
-import { Icon } from "@/components/common/Icon";
 import { coffeeImagePresets } from "@/lib/imagekit";
 import { formatPrice } from "@/lib/utils/coffee-utils";
 import {
@@ -27,11 +25,14 @@ import { Stack } from "../primitives/stack";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { WishlistButton } from "@/components/coffees/WishlistButton";
 
-// Title-scrim gradient. Uses the palette's darkest color (the dark-theme
-// --background warm coffee-black) as a fixed literal, not var(--background),
-// which flips to near-white in light mode — the scrim must stay dark in both.
-const TITLE_SCRIM =
-  "linear-gradient(to top, oklch(0.195 0.01 59.58), oklch(0.195 0.01 59.58 / 0.7) 40%, oklch(0.195 0.01 59.58 / 0.2) 70%, transparent)";
+// Packaging tile, as in the approved HTML playground: paper tile with a pressed frame (inner
+// highlight, soft drop shadow, heavier bottom edge), image filling the tile with an 8px inset and
+// white pack-shot backgrounds multiplied into the paper. The tile colour is fixed in both themes.
+// Owner decision 2026-11-13; note this crops and tints packaging, which 22-visual-system.md rule 1
+// otherwise forbids — recorded there as the sanctioned exception.
+const TILE =
+  "relative block w-full overflow-hidden rounded-xl border border-border border-b-[3px] bg-[#F6EFE3] p-2 shadow-[inset_0_0_0_4px_rgb(251_246_236/0.6),0_3px_7px_rgb(45_21_14/0.11)] transition-colors motion-reduce:transition-none group-hover:border-foreground/30";
+const TILE_IMAGE = "object-cover mix-blend-multiply";
 
 type CoffeeCardProps = {
   coffee: CoffeeSummary;
@@ -42,81 +43,6 @@ type CoffeeCardProps = {
     chips: string[]; // Max 3 labels to display
   };
 };
-
-type RoastLevelIndicatorProps = {
-  roastLevel: string | null;
-  roastLevelRaw: string | null;
-  roastStyleRaw: string | null;
-  className?: string;
-};
-
-/**
- * Roast Level Indicator Component
- * Shows 1-5 coffee beans based on roast level (light to dark)
- */
-function RoastLevelIndicator({
-  roastLevel,
-  roastLevelRaw,
-  roastStyleRaw,
-  className,
-}: RoastLevelIndicatorProps) {
-  // Get the formatted roast level text
-  const displayText = formatRoastLevel(
-    roastLevel,
-    roastLevelRaw,
-    roastStyleRaw
-  );
-
-  if (!displayText) return null;
-
-  // Map roast level to number of beans (1-5)
-  const getBeanCount = (level: string | null): number => {
-    if (!level) return 0;
-    const normalized = level.toLowerCase();
-    if (normalized === "light") return 1;
-    if (normalized === "light_medium" || normalized === "light medium")
-      return 2;
-    if (normalized === "medium") return 3;
-    if (normalized === "medium_dark" || normalized === "medium dark") return 4;
-    if (normalized === "dark") return 5;
-    // Fallback: try to infer from text
-    if (normalized.includes("light")) return 1;
-    if (normalized.includes("dark")) return 5;
-    return 3; // Default to medium
-  };
-
-  const beanCount = getBeanCount(roastLevel ?? roastLevelRaw);
-  const beans = Array.from({ length: 5 }, (_, i) => i < beanCount);
-
-  return (
-    <div className={cn("flex flex-col gap-1", className)}>
-      <span className="text-label">Roast</span>
-      <div
-        className="flex items-center gap-0.5"
-        aria-label={`Roast level: ${displayText}`}
-        title={displayText}
-      >
-        {beans.map((filled, idx) => (
-          <Icon
-            key={idx}
-            icon={CoffeeBeanIcon}
-            size={12}
-            color="muted"
-            className={cn(
-              "transition-opacity",
-              filled ? "opacity-100" : "opacity-20"
-            )}
-            style={
-              {
-                "--ph-secondary": "var(--muted-foreground)",
-              } as React.CSSProperties
-            }
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function CoffeeCard({
   coffee,
@@ -169,204 +95,55 @@ export default function CoffeeCard({
   // ICB is an Indian directory; a foreign origin should not read as Indian.
   const originBadge = coffee.origin_country ? (
     <Badge
-      variant="onMedia"
-      className="absolute top-2 left-2 z-10 text-overline backdrop-blur-sm"
+      variant="secondary"
+      className="absolute top-2 left-2 z-10 text-overline"
     >
       {coffee.origin_country} origin
     </Badge>
   ) : null;
 
-  // Hero variant - large, interactive rating, spacious
-  if (variant === "hero") {
-    return (
-      <Card
-        className={cn(
-          "group relative overflow-hidden cursor-pointer",
-          "surface-1 rounded-lg card-hover border-0 ring-1 ring-border/60 hover:ring-border",
-          "h-full flex flex-col",
-          "max-w-[420px] w-full mx-auto",
-          "gap-0 p-0"
-        )}
-        aria-label={ariaLabel}
-      >
-        <WishlistButton
-          variant="icon"
-          coffeeId={coffee.coffee_id}
-          className="absolute top-2 right-2 z-10"
-        />
-        <Link href={detailHref} className="flex-1 flex flex-col">
-          {/* Hero Image with title scrim */}
-          <div className="relative aspect-square w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
-            <Image
-              alt={imageAlt}
-              className="object-cover"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 420px"
-              src={imageUrl}
-              unoptimized
-            />
-            {originBadge}
-            {/* Title scrim */}
-            <div
-              className="absolute inset-x-0 bottom-0 z-10 p-4 pt-16"
-              style={{ background: TITLE_SCRIM }}
-            >
-              <h3 className="text-title text-white text-balance line-clamp-2 drop-shadow-md">
-                {displayName}
-              </h3>
-              {coffee.roaster_name && (
-                <p className="text-body font-medium text-white/85 line-clamp-1 drop-shadow">
-                  {coffee.roaster_name}
-                </p>
-              )}
-            </div>
-          </div>
+  // One quiet line each, instead of chips and scales: notes in the display italic,
+  // then roast and process for precise scanning.
+  const notes =
+    flavorLabels.length > 0
+      ? flavorLabels.join(", ").toLowerCase() +
+        (extraFlavorCount > 0 ? ` +${extraFlavorCount}` : "")
+      : null;
+  const specs = [roastLevel, processLabel]
+    .filter(Boolean)
+    .join(" · ")
+    .replace(/[_-]+/g, " ");
 
-          {/* Content */}
-          <div className="flex-1 card-padding transition-opacity duration-200 group-hover:opacity-90">
-            <Stack gap="2" className="h-full">
-              {/* Metadata - roast indicator, process and flavor notes */}
-              {(roastLevel || processLabel || flavorLabels.length > 0) && (
-                <div className="flex flex-col gap-3">
-                  {(roastLevel || processLabel) && (
-                    <div className="flex items-start justify-between gap-2">
-                      {roastLevel && (
-                        <RoastLevelIndicator
-                          roastLevel={coffee.roast_level}
-                          roastLevelRaw={coffee.roast_level_raw}
-                          roastStyleRaw={coffee.roast_style_raw}
-                        />
-                      )}
-                      {processLabel && (
-                        <div className="ml-auto flex flex-col items-end gap-1 text-right">
-                          <span className="text-label">Processing</span>
-                          <span className="text-overline">{processLabel}</span>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  {flavorLabels.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-2">
-                      {flavorLabels.map((flavor, idx) => (
-                        <Badge
-                          key={idx}
-                          variant="outline"
-                          className="text-overline"
-                        >
-                          {flavor}
-                        </Badge>
-                      ))}
-                      {extraFlavorCount > 0 && (
-                        <span className="text-overline text-muted-foreground">
-                          +{extraFlavorCount}
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
+  const hasRating = Boolean(coffee.rating_avg && coffee.rating_count);
+  const ratingCount = coffee.rating_count ?? 0;
 
-              {/* Price - small, muted, secondary, at bottom before rating zone */}
-              {formattedPrice && (
-                <p className="text-caption mt-auto pt-1 text-right">
-                  From ₹{formattedPrice} / 250g
-                </p>
-              )}
-            </Stack>
-          </div>
-        </Link>
-
-        {/* Bottom rating strip */}
-        <CardRatingFooter
-          entityType="coffee"
-          entityId={coffee.coffee_id}
-          entityName={displayName}
-          ratingAvg={coffee.rating_avg}
-          ratingCount={coffee.rating_count}
-          userRating={userRating}
-          size="lg"
-        />
-      </Card>
-    );
-  }
-
-  // Similar variant - compact vertical card with match chips
-  if (variant === "similar") {
-    return (
-      <Card
-        className={cn(
-          "group relative overflow-hidden cursor-pointer",
-          "surface-1 rounded-lg card-hover border-0 ring-1 ring-border/60 hover:ring-border",
-          "h-full flex flex-col",
-          "gap-0 p-0"
-        )}
-        aria-label={ariaLabel}
-      >
-        <WishlistButton
-          variant="icon"
-          coffeeId={coffee.coffee_id}
-          className="absolute top-2 right-2 z-10"
-        />
-        <Link href={detailHref} className="flex-1 flex flex-col">
-          {/* Image - 3:4 aspect ratio */}
-          <div className="relative aspect-[3/4] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
-            <Image
-              alt={imageAlt}
-              className="object-cover"
-              fill
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              src={imageUrl}
-              unoptimized
-            />
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 card-padding-compact transition-opacity duration-200 group-hover:opacity-90">
-            <Stack gap="1">
-              {/* Coffee name */}
-              <h3 className="text-heading text-balance line-clamp-2">
-                {displayName}
-              </h3>
-
-              {/* Roaster */}
-              {coffee.roaster_name && (
-                <p className="text-body-muted font-medium">
-                  {coffee.roaster_name}
-                </p>
-              )}
-
-              {/* Match chips row - max 3 badges */}
-              {matchInfo && matchInfo.chips.length > 0 && (
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {matchInfo.chips.slice(0, 3).map((chip, idx) => (
-                    <Badge
-                      key={idx}
-                      variant="outline"
-                      className="text-micro font-medium"
-                    >
-                      {chip}
-                    </Badge>
-                  ))}
-                </div>
-              )}
-            </Stack>
-          </div>
-        </Link>
-
-        {/* Minimal interactive rating row — capture without the full number block */}
-        <CardRatingFooter
-          entityType="coffee"
-          entityId={coffee.coffee_id}
-          entityName={displayName}
-          ratingAvg={coffee.rating_avg}
-          ratingCount={coffee.rating_count}
-          userRating={userRating}
-          size="sm"
-          variant="minimal"
-        />
-      </Card>
-    );
-  }
+  // Evidence line: community average and count at the left, price at the right.
+  // The rating footer below is the action; this line is the read-only evidence.
+  const evidence = (hasRating || formattedPrice) && (
+    <span className="mt-auto flex items-baseline justify-between gap-2 whitespace-nowrap pt-2 text-caption">
+      {hasRating ? (
+        <span className="text-foreground">
+          <span aria-hidden className="text-rating">
+            ★
+          </span>{" "}
+          <span className="font-medium">{coffee.rating_avg!.toFixed(1)}</span>
+          <span className="text-muted-foreground">
+            {" "}
+            · {ratingCount} {ratingCount === 1 ? "rating" : "ratings"}
+          </span>
+        </span>
+      ) : (
+        <span />
+      )}
+      {formattedPrice && (
+        <span>
+          From{" "}
+          <span className="font-medium text-foreground">₹{formattedPrice}</span>{" "}
+          / 250g
+        </span>
+      )}
+    </span>
+  );
 
   // Compact variant - dense, horizontal row card, display-only rating
   if (variant === "compact") {
@@ -384,11 +161,11 @@ export default function CoffeeCard({
           href={detailHref}
           className="flex flex-row items-center gap-3 card-padding-compact h-full"
         >
-          {/* Small image - fixed square */}
-          <div className="relative w-16 h-16 shrink-0 overflow-hidden rounded image-hover-zoom self-center transition-opacity duration-200 group-hover:opacity-90">
+          {/* Small packaging tile - fixed square */}
+          <div className="relative size-16 shrink-0 self-center overflow-hidden rounded-md border border-border bg-[#F6EFE3]">
             <Image
               alt={imageAlt}
-              className="object-cover"
+              className={TILE_IMAGE}
               fill
               sizes="64px"
               src={imageUrl}
@@ -397,7 +174,7 @@ export default function CoffeeCard({
           </div>
 
           {/* Content - 1-2 lines total */}
-          <div className="flex-1 min-w-0 flex flex-col justify-center transition-opacity duration-200 group-hover:opacity-90">
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
             <Stack gap="1">
               {/* Display-only rating (rendered only when a community rating exists) */}
               <StarRating
@@ -422,106 +199,98 @@ export default function CoffeeCard({
     );
   }
 
-  // Default variant - opinion-first hierarchy, magazine tile
+  // Hero, default and similar share one structure: framed packaging tile, then
+  // name, roaster, notes, specs, evidence line, and the in-place rating row.
+  const isHero = variant === "hero";
+  const isSimilar = variant === "similar";
+
   return (
-    <Card
-      className={cn(
-        "group relative overflow-hidden cursor-pointer",
-        "surface-1 rounded-lg card-hover border-0 ring-1 ring-border/60 hover:ring-border",
-        "h-full flex flex-col",
-        "max-w-[300px] w-full",
-        "gap-0 p-0"
-      )}
+    <article
       aria-label={ariaLabel}
+      className={cn(
+        "group relative flex h-full w-full flex-col",
+        isHero && "mx-auto max-w-[420px]",
+        variant === "default" && "max-w-[300px]"
+      )}
     >
       <WishlistButton
         variant="icon"
         coffeeId={coffee.coffee_id}
         className="absolute top-2 right-2 z-10"
       />
-      <Link href={detailHref} className="flex-1 flex flex-col">
-        {/* Image with title scrim */}
-        <div className="relative aspect-[4/5] w-full overflow-hidden image-hover-zoom transition-opacity duration-200 group-hover:opacity-90">
-          <Image
-            alt={imageAlt}
-            className="object-cover"
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
-            src={imageUrl}
-            unoptimized
-          />
-          {originBadge}
-          {/* Title scrim */}
-          <div
-            className="absolute inset-x-0 bottom-0 z-10 p-4 pt-16"
-            style={{ background: TITLE_SCRIM }}
-          >
-            <h3 className="text-heading text-white text-balance line-clamp-2 drop-shadow-md">
-              {displayName}
-            </h3>
-            {coffee.roaster_name && (
-              <p className="text-body font-medium text-white/85 line-clamp-1 drop-shadow">
-                {coffee.roaster_name}
+      <Link href={detailHref} className="flex flex-1 flex-col">
+        <span
+          className={cn(
+            TILE,
+            isHero
+              ? "aspect-square"
+              : isSimilar
+                ? "aspect-[3/4]"
+                : "aspect-[4/5]"
+          )}
+        >
+          <span className="relative block size-full overflow-hidden rounded-lg">
+            <Image
+              alt={imageAlt}
+              className={TILE_IMAGE}
+              fill
+              sizes={
+                isHero
+                  ? "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 420px"
+                  : isSimilar
+                    ? "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
+              }
+              src={imageUrl}
+              unoptimized
+            />
+          </span>
+          {!isSimilar && originBadge}
+        </span>
+
+        <h3
+          className={cn(
+            "mt-4 text-balance line-clamp-2 underline-offset-4 group-hover:underline",
+            isHero ? "text-title" : "text-heading"
+          )}
+        >
+          {displayName}
+        </h3>
+        {coffee.roaster_name && (
+          <p className="mt-0.5 text-caption line-clamp-1">
+            {coffee.roaster_name}
+          </p>
+        )}
+
+        {isSimilar ? (
+          matchInfo &&
+          matchInfo.chips.length > 0 && (
+            <span className="flex flex-wrap gap-2 pt-2">
+              {matchInfo.chips.slice(0, 3).map((chip, idx) => (
+                <Badge
+                  key={idx}
+                  variant="outline"
+                  className="text-micro font-medium"
+                >
+                  {chip}
+                </Badge>
+              ))}
+            </span>
+          )
+        ) : (
+          <>
+            {notes && (
+              <p className="mt-2 font-serif text-body text-foreground italic leading-snug line-clamp-2">
+                {notes}
               </p>
             )}
-          </div>
-        </div>
-
-        {/* Content - strict hierarchy */}
-        <div className="flex-1 card-padding-compact transition-opacity duration-200 group-hover:opacity-90">
-          <Stack gap="1" className="h-full">
-            {/* Metadata - roast indicator, process and flavor notes */}
-            {(roastLevel || processLabel || flavorLabels.length > 0) && (
-              <div className="flex flex-col gap-3">
-                {(roastLevel || processLabel) && (
-                  <div className="flex items-start justify-between gap-2">
-                    {roastLevel && (
-                      <RoastLevelIndicator
-                        roastLevel={coffee.roast_level}
-                        roastLevelRaw={coffee.roast_level_raw}
-                        roastStyleRaw={coffee.roast_style_raw}
-                      />
-                    )}
-                    {processLabel && (
-                      <div className="ml-auto flex flex-col items-end gap-1 text-right">
-                        <span className="text-label">Processing</span>
-                        <span className="text-overline">{processLabel}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {flavorLabels.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-2">
-                    {flavorLabels.map((flavor, idx) => (
-                      <Badge
-                        key={idx}
-                        variant="outline"
-                        className="text-overline"
-                      >
-                        {flavor}
-                      </Badge>
-                    ))}
-                    {extraFlavorCount > 0 && (
-                      <span className="text-overline text-muted-foreground">
-                        +{extraFlavorCount}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* 4. Price (small, muted, secondary) */}
-            {formattedPrice && (
-              <p className="text-caption mt-auto pt-1 text-right">
-                From ₹{formattedPrice} / 250g
-              </p>
-            )}
-          </Stack>
-        </div>
+            {specs && <p className="mt-1 text-label line-clamp-1">{specs}</p>}
+            {evidence}
+          </>
+        )}
       </Link>
 
-      {/* Opinion-first Footer */}
+      {/* In-place rating: interactive stars + prompt, flush with the text column */}
       <CardRatingFooter
         entityType="coffee"
         entityId={coffee.coffee_id}
@@ -529,8 +298,10 @@ export default function CoffeeCard({
         ratingAvg={coffee.rating_avg}
         ratingCount={coffee.rating_count}
         userRating={userRating}
-        size="md"
+        size={isHero ? "lg" : isSimilar ? "sm" : "md"}
+        variant="minimal"
+        flush
       />
-    </Card>
+    </article>
   );
 }

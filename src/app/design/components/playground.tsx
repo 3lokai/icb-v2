@@ -95,16 +95,18 @@ const VARIANTS = [
 ] as const;
 const SIZES = [
   ["sm", "36px"],
-  ["default", "40px"],
-  ["lg", "44px"],
+  ["default", "44px"],
+  ["lg", "48px"],
 ] as const;
 const ICON_SIZES = [
   ["icon-sm", "36px"],
-  ["icon", "40px"],
-  ["icon-lg", "44px"],
+  ["icon", "44px"],
+  ["icon-lg", "48px"],
 ] as const;
 // Mirrors the focus-visible classes so the focus ring is visible in static screenshots.
 const FOCUS_PREVIEW = "border-ring ring-[3px] ring-ring/50";
+// Fields use a softer ring than buttons (owner feedback 2026-11-13).
+const FIELD_FOCUS_PREVIEW = "border-ring ring-2 ring-ring/25";
 // PROPOSED (07 2026-11-10, 20 §5, 25 B9): Rate is an accent outline; Buy is filled. A composition
 // on the existing outline variant — no new Button variant until the role is approved.
 const RATE_OUTLINE =
@@ -230,56 +232,6 @@ const REAL_COFFEES: CoffeeSummary[] = [
     flavor_keys: ["orange_blossom", "pomegranate", "strawberry", "sun_melon"],
   },
 ];
-const NOTES = [
-  "blueberry, milk chocolate",
-  "dark chocolate, fig, roasted almond",
-  "jasmine, sweet lime, vanilla",
-  "orange blossom, pomegranate, strawberry",
-];
-
-// PROPOSED look from the approved HTML playground (docs/experience-redesign/playground): packaging
-// untouched on the paper tile (22 rule 1: no scrim on packaging), name below in Gambetta, notes in
-// italic, rating evidence and price on one line. Static mock, not the production component.
-function ProposedCoffeeCard({ c, notes }: { c: CoffeeSummary; notes: string }) {
-  const rated = Boolean(c.rating_count);
-  return (
-    <a className="group block" href="#coffee-cards">
-      <span className="block aspect-[4/5] rounded-xl border border-border bg-[#FBF6EC] p-[7%] shadow-[0_3px_8px_rgba(45,21,14,0.08)]">
-        {/* eslint-disable-next-line @next/next/no-img-element -- review mock; production uses the card's image pipeline */}
-        <img
-          alt={`${c.display_name} packaging`}
-          className="size-full object-contain"
-          loading="lazy"
-          src={`${c.image_url}?tr=w-480,f-auto`}
-        />
-      </span>
-      <span className="mt-3 block text-heading group-hover:underline">
-        {c.display_name}
-      </span>
-      <span className="block text-caption">{c.roaster_name}</span>
-      <span className="mt-1 block font-display text-caption text-foreground italic">
-        {notes}
-      </span>
-      <span className="mt-2 flex items-baseline justify-between gap-2 whitespace-nowrap text-caption text-foreground">
-        {rated ? (
-          <span>
-            <span aria-hidden className="text-rating">
-              ★
-            </span>{" "}
-            <span className="font-medium">{c.rating_avg?.toFixed(1)}</span>
-            <span className="text-muted-foreground">
-              {" "}
-              · {c.rating_count} ratings
-            </span>
-          </span>
-        ) : (
-          <span className="text-muted-foreground">Not yet rated</span>
-        )}
-        <span className="text-muted-foreground">₹{c.min_price_in_stock}</span>
-      </span>
-    </a>
-  );
-}
 
 const SECTIONS = [
   ["type", "Type & tokens"],
@@ -288,7 +240,8 @@ const SECTIONS = [
   ["cards", "Card"],
   ["icons", "Icons"],
   ["audit", "Overlays & controls"],
-  ["coffee-cards", "Real CoffeeCard"],
+  ["surfaces", "Surfaces & motif"],
+  ["coffee-cards", "CoffeeCard"],
 ] as const;
 
 function Section({
@@ -319,7 +272,7 @@ function Section({
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
-      <p className="mb-3 font-medium text-caption">{label}</p>
+      <p className="mb-3 text-eyebrow">{label}</p>
       <div className="flex flex-wrap items-center gap-3">{children}</div>
     </div>
   );
@@ -460,7 +413,7 @@ export function ComponentPlayground() {
 
         <Section
           id="buttons"
-          note="All existing variants and sizes. Default 40px, sm 36px, lg 44px. Use lg (44px) for the primary action on mobile. Press Tab to walk the real focus ring."
+          note="All existing variants. Pill shape; default 44px with 15px text, sm 36px for dense UI such as filters and tables, lg 48px with 16px text. Press Tab to walk the real focus ring."
           title="Button"
         >
           {SIZES.map(([size, px]) => (
@@ -626,7 +579,7 @@ export function ComponentPlayground() {
 
         <Section
           id="fields"
-          note="Input 40px, Textarea min 96px, both on the solid ground with the PROPOSED control edge (3.3:1). 16px text on mobile prevents iOS zoom."
+          note="Input and Select 44px to align with the default button, Textarea min 96px, modest radius, softer focus ring than buttons. Search fields are pills."
           title="Input & Textarea"
         >
           <div className="grid gap-8 lg:grid-cols-2">
@@ -636,6 +589,7 @@ export function ComponentPlayground() {
                   Default · header search (24 §6)
                 </FieldLabel>
                 <Input
+                  className="rounded-full px-5 rounded-full"
                   id="pg-default"
                   placeholder="Search coffees, roasters, origins…"
                 />
@@ -643,7 +597,7 @@ export function ComponentPlayground() {
               <Field>
                 <FieldLabel htmlFor="pg-focus">Static focus preview</FieldLabel>
                 <Input
-                  className={FOCUS_PREVIEW}
+                  className={FIELD_FOCUS_PREVIEW}
                   defaultValue="Kodagu"
                   id="pg-focus"
                 />
@@ -711,7 +665,7 @@ export function ComponentPlayground() {
                   value="Bright, citrusy on V60; heavier as a South Indian filter."
                 />
               </Field>
-              <Row label="Directory search (25 §2) — input + button align at 40px">
+              <Row label="Directory search (25 §2) — pill search field + button align at 44px">
                 <form
                   className="flex w-full gap-2"
                   onSubmit={(e) => e.preventDefault()}
@@ -724,7 +678,7 @@ export function ComponentPlayground() {
                     />
                     <Input
                       aria-label="Search coffees"
-                      className="pl-8"
+                      className="pl-8 rounded-full"
                       placeholder="Search coffees by name, roaster or note"
                       type="search"
                     />
@@ -966,7 +920,7 @@ export function ComponentPlayground() {
                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
               </TabsList>
               <TabsContent className="pt-3 text-caption" value="coffees">
-                Tabs list now aligns to 40px with default Input and Select.
+                Tabs list is 40px; Input and Select are 44px.
               </TabsContent>
               <TabsContent className="pt-3" value="roasters">
                 Roasters panel
@@ -1058,11 +1012,74 @@ export function ComponentPlayground() {
         </Section>
 
         <Section
-          id="coffee-cards"
-          title="Real CoffeeCard"
-          note="The first row is the real CoffeeCard and CardRatingFooter from src/components/cards, fed four real coffees. They carry live IDs, so submitting a rating or wishlist here writes real data. The second row is a static mock of the look approved in the HTML playground."
+          id="surfaces"
+          note="From docs/experience-redesign/system/icb-system.css, unchanged: Light + Contour for selected feature moments, and the three feature surfaces, each used on its own to break monotony by section intent. Everything else stays flat."
+          title="Surfaces & motif"
         >
-          <Row label="Current component with real coffees (Deep Roast tokens, Gambetta / Ranade)">
+          <div className="icb-ambient icb-terrain rounded-xl border border-border p-8 md:p-12">
+            <p className="text-eyebrow">Regions and estates</p>
+            <h3 className="mt-3 text-display">
+              Start from where it <em>grew.</em>
+            </h3>
+            <p className="mt-3 max-w-prose text-muted-foreground">
+              Browse coffees by the hills and estates they come from.
+            </p>
+            <Button className="mt-6">Browse by origin</Button>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="icb-surface icb-surface--weave">
+              <div>
+                <p
+                  className="text-eyebrow opacity-80"
+                  style={{ color: "inherit" }}
+                >
+                  Roasted Weave
+                </p>
+                <h3 className="mt-3 text-title">
+                  Every cup adds to the picture.
+                </h3>
+              </div>
+              <p
+                className="text-caption opacity-80"
+                style={{ color: "inherit" }}
+              >
+                Community and rating moments.
+              </p>
+            </div>
+            <div className="icb-surface icb-surface--contour">
+              <div>
+                <p
+                  className="text-eyebrow opacity-80"
+                  style={{ color: "inherit" }}
+                >
+                  Estate Contour
+                </p>
+                <h3 className="mt-3 text-title">Start from where it grew.</h3>
+              </div>
+              <p
+                className="text-caption opacity-80"
+                style={{ color: "inherit" }}
+              >
+                Regions and estates.
+              </p>
+            </div>
+            <div className="icb-surface icb-surface--paper">
+              <div>
+                <p className="text-eyebrow">Laid Paper</p>
+                <h3 className="mt-3 text-title">
+                  Good coffee opens questions.
+                </h3>
+              </div>
+              <p className="text-caption">Field guide and editorial.</p>
+            </div>
+          </div>
+        </Section>
+        <Section
+          id="coffee-cards"
+          title="CoffeeCard"
+          note="The real CoffeeCard and CardRatingFooter from src/components/cards, rebuilt to the approved look: packaging untouched on the paper tile, name below in Gambetta, notes in italic, evidence line, in-place rating. Fed four real coffees with live IDs, so submitting a rating or wishlist here writes real data."
+        >
+          <Row label="Default variant, real coffees — rated, your rating, rated, unrated">
             <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
               {REAL_COFFEES.map((c, i) => (
                 <CoffeeCard
@@ -1074,20 +1091,20 @@ export function ComponentPlayground() {
               ))}
             </div>
           </Row>
-          <Row label="PROPOSED look from the approved HTML playground — packaging on the paper tile, no overlay">
-            <div className="grid w-full grid-cols-2 gap-6 lg:grid-cols-4">
-              {REAL_COFFEES.map((c, i) => (
-                <ProposedCoffeeCard c={c} key={c.slug} notes={NOTES[i]} />
-              ))}
-            </div>
-          </Row>
-          <Row label="Similar-coffee variant (fictional data)">
+          <Row label="Similar and compact variants">
             <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
               <CoffeeCard
-                coffee={{ ...SAMPLE_COFFEE, slug: "sample-similar" }}
+                coffee={REAL_COFFEES[2]}
+                matchInfo={{
+                  matchType: "flavor",
+                  chips: ["Jasmine", "Light roast"],
+                }}
                 variant="similar"
-                matchInfo={{ matchType: "flavor", chips: ["Mango", "Natural"] }}
               />
+              <div className="col-span-2 space-y-3">
+                <CoffeeCard coffee={REAL_COFFEES[0]} variant="compact" />
+                <CoffeeCard coffee={REAL_COFFEES[1]} variant="compact" />
+              </div>
             </div>
           </Row>
         </Section>

@@ -402,9 +402,9 @@ const CTRL = [
   ['gx', 'Wash strength', 'range', 0, 1, 0.05], ['sx', 'Scrim strength', 'range', 0.3, 1, 0.05], ['ax', 'Ambient light strength', 'range', 0, 1, 0.05],
   ['View'], ['mobile', 'Mobile width (390)', 'check'],
 ];
-const BASE = { ground: '#F6EFE3', surface: '#FBF6EC', ink: '#1F130C', muted: '#5F5145', rule: '#D6C9B6', primary: '#3B2416', accent: '#9C4526', star: '#93701F', deepen: 4,
+const BASE = { ground: '#FBF6EC', surface: '#F6EFE3', ink: '#1F130C', muted: '#5F5145', rule: '#D6C9B6', primary: '#3B2416', accent: '#9C4526', star: '#93701F', deepen: 4,
   'f-hero': 'Same as heading', 'f-display': 'Gambetta', 'f-body': 'Ranade', 'f-label': 'Ranade', 'w-display': 400, hero: 60, track: -0.02, body: 16, 'label-size': 11, 'label-track': 0.1, 'label-case': 'uppercase',
-  radius: 12, 'btn-radius': 999, 'img-bg': '#FBF6EC', 'img-pad': 10, 'img-fit': 'contain', 'img-blend': 'normal', stagger: 0,
+  radius: 12, 'btn-radius': 999, 'img-bg': '#F6EFE3', 'img-pad': 10, 'img-fit': 'contain', 'img-blend': 'normal', stagger: 0,
   'm-contour': true, 'm-dots': false, 'm-rules': false, emph: 'm-italic', 't-grain': true, 't-frame': true, tx: 0.6, gx: 0.5, sx: 0.85, ax: 0.7, mobile: false, mono: false };
 const PRESETS = {
   // Colours are fixed: Deep Roast, light and dark. All text 4.5:1 or better on ground and card.
@@ -412,7 +412,7 @@ const PRESETS = {
   'Deep Roast · Dark': { ground: '#1E1510', surface: '#2A1E17', ink: '#F6EFE3', muted: '#BFAF9D', rule: '#43342A', primary: '#EBDCC6', accent: '#E28D66', star: '#D9A84A', 'img-bg': '#FBF6EC', deepen: 0 },
   'Live site today': { ground: '#FCF9F2', surface: '#F9F3E8', ink: '#26170D', muted: '#6A5B44', rule: '#DBD3C6', primary: '#995503', accent: '#ED855E', star: '#B08D3F', 'img-bg': '#F9F3E8', 't-grain': false, 't-frame': false, 'f-display': 'Fraunces', 'f-body': 'DM Sans', 'f-label': 'DM Sans', 'label-track': 0.18, 'm-contour': false, 'm-dots': true, emph: 'm-smear' },
 };
-let S = { ...BASE, ...JSON.parse(localStorage.icbPlay7 || '{}') };
+let S = { ...BASE, ...JSON.parse(localStorage.icbPlay8 || '{}') };
 if (location.hash === '#mobile') S.mobile = true;
 { const k = Object.keys(PRESETS).find(n => n.toLowerCase().includes(decodeURIComponent(location.hash.slice(1)).toLowerCase() || '\0')); if (k) Object.assign(S, BASE, PRESETS[k]); } // #dark, #live
 if (location.hash === '#mono') S.mono = true;
@@ -455,7 +455,7 @@ function apply() {
   $('#cr').innerHTML = [['Ink on ground', S.ink, S.ground, 4.5], ['Muted on ground', S.muted, S.ground, 4.5], ['Muted on surface', S.muted, S.surface, 4.5], ['Accent text on ground', S.accent, S.ground, 4.5], ['Accent text on surface', S.accent, S.surface, 4.5], ['Text on primary button', onp, S.primary, 4.5], ['Star on ground (needs 3)', S.star, S.ground, 3], ['Hairline on ground (needs 3 if it marks a control)', S.rule, S.ground, 3]]
     .map(([n, a, b, min]) => { const r = ratio(a, b); return `<div>${n} <b class="${r >= min ? 'ok' : 'bad'}">${r.toFixed(2)}</b></div>`; }).join('');
   stage.classList.toggle('mono', !!S.mono); $('#monoBtn').textContent = 'Monochrome: ' + (S.mono ? 'on' : 'off');
-  localStorage.icbPlay7 = JSON.stringify(S);
+  localStorage.icbPlay8 = JSON.stringify(S);
   requestAnimationFrame(gradients);
 }
 function build() {

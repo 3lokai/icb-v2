@@ -161,3 +161,47 @@ The playground copy and compositions follow [07](07-decisions.md), [20](20-direc
 - [ ] Regression review on live filter sheets, account dropdown, auth and review dialogs before rollout
 
 **Boundary:** No global palette/font migration, navigation rebuild, production routes, dataset or actual rating submissions were modified by this pass.
+
+## CoffeeCard rebuilt to the approved look (2026-11-13, in review)
+
+Owner instruction: rebuild the production `CoffeeCard` to the card approved in the HTML playground. API unchanged: same props and the four variants.
+
+| | Before | Now |
+|---|---|---|
+| Packaging | Image cropped to fill, dark gradient over its lower half, zoom on hover | Fixed paper tile (`#F6EFE3`) with the pressed frame and soft shadow; image `cover` with an 8px inset, multiplied into the paper; no gradient, no zoom (sanctioned exception in [22](22-visual-system.md) rule 1) |
+| Name and roaster | White text on the gradient | Below the tile; name in the heading face, underline on hover |
+| Flavour notes | Chips | One italic line |
+| Roast and process | Bean scale and labelled block | One muted line, e.g. "Light roast · Washed" |
+| Rating evidence | Footer count | "★ 4.5 · 6 ratings" with price on the same line |
+| Rating action | Footer: stars over "Tried this? Rate it." | In-place row: interactive stars and "Rate it" / "Your rating: 4" |
+| Container | Bordered card around everything | None; only the packaging tile is framed |
+
+Decisions taken as defaults (owner has not ruled on them): the wishlist heart stays at the top right of the tile; rating stays in place on the card; roast and process stay, as one line.
+
+`CardRatingFooter`: new `flush` prop for cards without an outer container; the rated prompt is shortened to "Rate it" for every caller (including `RoasterCard`) because the longer text wrapped beside the count in Ranade; the count no longer wraps.
+
+Checked: type-check, lint and 90 tests pass; playground at 1280px in light and dark; `/coffees?sort=rating_desc` at 1280px and 375px with no overflow or console errors. Not checked: homepage rails, roaster page grid, blog coffee blocks and the curator card by eye; `CoffeeCardSkeleton` still mirrors the old layout.
+
+**Update 2026-11-13 (owner feedback):** card text hierarchy strengthened — notes at body size in the display italic, roast and process as a small label, price figure in ink. Focus ring on Input, Textarea and Select softened from 3px at 50% to 2px at 25%; buttons keep the stronger ring.
+
+## Controls, type and colour pass (2026-11-13)
+
+Owner go-ahead to close the gaps between the React components and the approved HTML playground.
+
+| Area | Before | Now |
+|---|---|---|
+| Button shape | 8px corners | Pill |
+| Button sizes (sm / default / lg) | 36 / 40 / 44px, 14px text | 36 / 44 / 48px; 15px text at default, 16px at lg (first tried 40 / 48 / 52, judged too big by the owner) |
+| Icon buttons | 36 / 40 / 44px | 36 / 44 / 48px |
+| Input, Select | 40px, 8px corners | 44px, 10px corners; search fields are pills by `className` |
+| Textarea | 8px corners | 10px corners |
+| `text-title` | 24 / 30px, weight 500 | 24 / 30 / 36px, weight 400 |
+| `text-heading` | weight 500 | weight 400 |
+| Eyebrow | none | `text-eyebrow`: 12px uppercase, 0.14em tracking; `Section`'s eyebrow uses it |
+| Light ground / surface | `#F6EFE3` / `#FBF6EC` | `#FBF6EC` / `#F6EFE3` |
+
+- The playground gained a **Surfaces & motif** section that loads `system/icb-system.css` unchanged: Light + Contour and the three feature surfaces.
+- Callers that pass their own `h-*` still override button, input and select heights.
+- Checked: type-check, lint (where configured) and 90 tests pass. Seven real pages at 1280px and 375px have no horizontal overflow or error overlay; pages grew by 16–262px from taller controls and larger section titles. By eye: coffee detail and directory at desktop only.
+- Not checked: dense UIs that use default-size buttons (dashboard, tools, filters sheet, auth), dark theme on real pages, and mobile by eye. The colour flip is in the design tokens and playground only; production `globals.css` is unchanged.
+- Still not brought across from the HTML playground: alternating tinted sections, filter chips, and the homepage mosaic and hero compositions.

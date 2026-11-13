@@ -23,7 +23,7 @@ This is a design reference. Production `DESIGN.md` and production code are uncha
 | Area | Decision |
 |---|---|
 | Typography | Gambetta for headings, coffee names and editorial titles; Gambetta Italic for selective emphasis; Ranade for body and UI. |
-| Colour | Deep Roast, light and dark. Values in [20-direction.md](20-direction.md). No further palette work. |
+| Colour | Deep Roast, light and dark. Light: page `#FBF6EC` is the lightest tone, surfaces `#F6EFE3` the darker (swapped 2026-11-13). Values in [20-direction.md](20-direction.md). No further palette work. |
 | Texture | Subtle paper grain. Restrained image framing. |
 | Signature motif | Organic terrain contours, used sparingly. |
 | Editorial wash | Espresso wash, on editorial photography only. |
@@ -34,6 +34,7 @@ This is a design reference. Production `DESIGN.md` and production code are uncha
 ### Rules that follow from them
 
 1. **Packaging is never altered.** No wash, scrim, blend, filter, grain or motif on coffee packaging, roaster logos or evidence photos. Packaging sits on the paper tile in both themes.
+   - **Sanctioned exception (owner, 2026-11-13): the coffee card tile.** On `CoffeeCard` the pack image fills the tile (`cover`, 8px inset) and is multiplied into the paper so white pack-shot backgrounds disappear, with the pressed-frame shadow from the playground. This crops some packs and tints white areas cream. It applies to card tiles only; the coffee detail hero and evidence photos keep the rule.
 2. **Directory, coffee pages, filters, forms and review cards are flat.** No gradient and no motif.
 3. **One terrain motif per view or composition.** It is decoration and carries no information.
 4. **Never motif on a photograph, never motif behind packaging.**
@@ -60,7 +61,7 @@ All values live in `system/icb-system.css`. Colour tokens are the locked Deep Ro
 | Treatment | Class | Current implementation |
 |---|---|---|
 | Paper grain | `.icb-grain` | `icb-grain.svg` tiled behind content. Light: multiply at 13%. Dark: soft-light at 22%. |
-| Image frame | `.icb-frame` | Paper tile `#FBF6EC`, 1 px hairline, 7% inset, soft shadow, image `object-fit: contain`. |
+| Image frame | `.icb-frame` | Paper tile `#F6EFE3`, 1 px hairline, 7% inset, soft shadow, image `object-fit: contain`. |
 | Terrain motif | `.icb-terrain`, `.icb-terrain--left` | `icb-terrain.svg` as a mask over `--icb-contour` (ochre at about 50%). Right edge by default, up to 62% wide; 46% wide and fainter under 600 px. |
 | Ambient surface | `.icb-ambient` (+ `.icb-terrain`) | Radial light from the top left using `--icb-glow`: `#EAD9B4` in light, `#4A3020` in dark. `.icb-flat` is the plain surface. |
 | Feature surfaces | `.icb-surface` + `--weave`, `--contour`, `--paper` | Weave and Contour are espresso in both themes; Paper follows the theme. Starting assignment, not locked: Weave for community and rating, Contour for regions and estates, Paper for field guide and editorial. |
