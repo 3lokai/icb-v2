@@ -30,7 +30,7 @@ Use shared semantic colour, radius, typography and spacing tokens as we roll the
 
 ## First-pass file changes
 
-- `ui/button.tsx`: all variants and sizes preserved. Sizes: `sm` 36px, `default` 40px, `lg` 44px; `icon-sm`/`icon`/`icon-lg` 36/40/44px. Outline uses `border-input`. Transitions limited to colour/border/shadow/transform and disabled under `prefers-reduced-motion`.
+- `ui/button.tsx`: all variants and sizes preserved. Sizes: `sm` 32px, `default` 40px, `lg` 48px (16px label); `icon-sm`/`icon`/`icon-lg` 32/40/48px. The 36/40/44px scale read as one size. Outline uses `border-input`. Transitions limited to colour/border/shadow/transform and disabled under `prefers-reduced-motion`.
 - `ui/input.tsx`: 40px, solid `bg-background`, reduced-motion-safe focus transition.
 - `ui/textarea.tsx`: min 96px, solid `bg-background`, reduced-motion-safe focus transition.
 - `ui/card.tsx`: solid `border-border` (was `/60`); no coffee-specific layout or image rules.
@@ -231,13 +231,13 @@ Owner chose Compact after the Current / Compact comparison, with two exceptions.
 
 | Element | Adopted |
 |---|---|
-| Button sm / default / lg | 36 / 40 / 44px, pill, 14px labels |
-| Icon button sm / default / lg | 36 / 40 / 44px |
+| Button sm / default / lg | 32 / 40 / 48px, pill; 14px labels, 16px on lg |
+| Icon button sm / default / lg | 32 / 40 / 48px |
 | Input, Select | 40px, 10px corners |
 | `text-title` desktop | 32px, weight 400 |
 | CoffeeCard flavour notes | **16px italic kept** (exception: 14px Gambetta italic was too thin and flattened the card hierarchy) |
 
-**Rule: primary actions on mobile use `size="lg"` (44px)** — Buy, Rate, form submit — so the main touch target meets 44px. Default (40px) is for secondary and desktop actions.
+**Rule: primary actions on mobile use `size="lg"` (48px)** — Buy, Rate, form submit. Default (40px) is for secondary and desktop actions. Small (32px) is for compact inline actions.
 
 Fixed in the same pass: the CoffeeCard rating-and-price line now wraps instead of overflowing into the next card in two-column mobile grids.
 

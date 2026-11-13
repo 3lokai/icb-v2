@@ -95,14 +95,18 @@ const VARIANTS = [
 ] as const;
 const SIZES = [
   ["sm", "32px"],
-  ["default", "36px"],
-  ["lg", "40px"],
+  ["default", "40px"],
+  ["lg", "48px"],
 ] as const;
 const ICON_SIZES = [
   ["icon-sm", "32px"],
-  ["icon", "36px"],
-  ["icon-lg", "40px"],
+  ["icon", "40px"],
+  ["icon-lg", "48px"],
 ] as const;
+// Card titles sit a full step above the blurb. text-heading (20px) was the same colour and
+// almost the same size as the 16px paragraph, so the two read as one block.
+const CARD_TITLE =
+  "font-serif text-2xl font-normal leading-tight tracking-tight text-balance";
 // Mirrors the focus-visible classes so the focus ring is visible in static screenshots.
 const FOCUS_PREVIEW = "border-ring ring-[3px] ring-ring/50";
 // Fields use a softer ring than buttons (owner feedback 2026-11-13).
@@ -395,11 +399,12 @@ export function ComponentPlayground() {
               </a>
               .
             </p>
-            <p className="text-caption">
-              Caption 14px · Secondary copy
-            </p>
+            <p className="text-caption">Caption 14px · Secondary copy</p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Geist-inspired type role specimens">
+          <div
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            aria-label="Geist-inspired type role specimens"
+          >
             <div className="rounded-lg border border-border bg-card p-4">
               <p className="text-ui-meta mb-2">LABEL · 14/20 · RANADE 500</p>
               <p className="text-ui-label">Brew method</p>
@@ -411,18 +416,20 @@ export function ComponentPlayground() {
             <div className="rounded-lg border border-border bg-card p-4">
               <p className="text-ui-meta mb-2">COPY · 14/22 · RANADE 400</p>
               <p className="text-copy-compact">
-                Explore recently added coffees from Indian roasters, then
-                rate the ones you have actually brewed.
+                Explore recently added coffees from Indian roasters, then rate
+                the ones you have actually brewed.
               </p>
               <p className="text-ui-meta mt-3">
                 Multi-line explanations have more leading than UI labels.
               </p>
             </div>
             <div className="rounded-lg border border-border bg-card p-4">
-              <p className="text-ui-meta mb-2">DATA · 13/18 · TABULAR NUMERALS</p>
+              <p className="text-ui-meta mb-2">
+                DATA · 13/18 · TABULAR NUMERALS
+              </p>
               <p className="text-ui-meta">
-                <span className="font-medium text-foreground">4.3</span>
-                {" "}· 12 ratings · ₹650 / 250g
+                <span className="font-medium text-foreground">4.3</span> · 12
+                ratings · ₹650 / 250g
               </p>
               <p className="text-ui-meta mt-3">
                 Secondary rating and price evidence: aligned, never stretched.
@@ -445,7 +452,7 @@ export function ComponentPlayground() {
 
         <Section
           id="buttons"
-          note="Original shadcn size defaults from main: 32 / 36 / 40px with 14px labels. Pill styling stays. Mobile primary actions add an explicit 44px minimum hit area."
+          note="All existing variants. Pill shape; 32 / 40 / 48px. Small and default labels are 14px; large is 16px. Use lg for primary actions on mobile. Press Tab to walk the real focus ring."
           title="Button"
         >
           {SIZES.map(([size, px]) => (
@@ -580,8 +587,8 @@ export function ComponentPlayground() {
             </Button>
           </Row>
           <Row label="Caller overrides still win (regression check)">
-            <Button className="h-10" size="sm" variant="outline">
-              sm + h-10 → 40px
+            <Button className="h-7" size="sm" variant="outline">
+              sm + h-7 → 28px
             </Button>
             <Button className="h-6 px-2" size="sm" variant="outline">
               tag chip h-6
@@ -590,7 +597,7 @@ export function ComponentPlayground() {
               Form CTA h-14
             </Button>
           </Row>
-          <Row label="Mobile sticky Rate + Buy bar (25 B7) — shown in place, 44px targets">
+          <Row label="Mobile sticky Rate + Buy bar (25 B7) — shown in place, 48px targets">
             <div className="w-full max-w-md rounded-xl border border-border bg-background p-3">
               <p className="mb-2 text-caption">From ₹450 / 250g · In stock</p>
               <div className="flex gap-2">
@@ -746,7 +753,7 @@ export function ComponentPlayground() {
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle className="text-heading">
+                <CardTitle className={CARD_TITLE}>
                   Malnad Ridge Roasters
                 </CardTitle>
                 <CardDescription className="flex items-center gap-1">
@@ -754,7 +761,9 @@ export function ComponentPlayground() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="text-copy-compact">24 coffees listed, mostly washed and natural lots.</p>
+                <p className="text-copy-compact text-pretty text-muted-foreground">
+                  24 coffees listed, mostly washed and natural lots.
+                </p>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">Washed</Badge>
                   <Badge variant="secondary">Natural</Badge>
@@ -782,12 +791,12 @@ export function ComponentPlayground() {
                 <Badge className="mb-1" variant="outline">
                   <BookOpenIcon /> Field guide
                 </Badge>
-                <CardTitle className="text-heading">
+                <CardTitle className={CARD_TITLE}>
                   How altitude shapes Indian arabica
                 </CardTitle>
                 <CardDescription>8 min read</CardDescription>
               </CardHeader>
-              <CardContent className="text-copy-compact">
+              <CardContent>
                 From Araku’s valley floors to the high slopes of Kodagu,
                 elevation changes how a cherry ripens — and what ends up in your
                 cup.
@@ -796,7 +805,7 @@ export function ComponentPlayground() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base font-medium leading-snug">Profile details</CardTitle>
+                <CardTitle className={CARD_TITLE}>Profile details</CardTitle>
                 <CardDescription>
                   Settings (the relabelled dashboard)
                 </CardDescription>
