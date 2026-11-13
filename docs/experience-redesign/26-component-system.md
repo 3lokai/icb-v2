@@ -309,3 +309,31 @@ Read against [Geist Typography](https://vercel.com/geist/typography), specifical
 **Intentionally unchanged:** the global `text-caption`, `text-label`, `text-overline`, body-copy and page-heading utilities. Changing those globally would touch existing information-heavy pages before full visual QA. The approved Compact controls are still **36/40/44px**, main mobile actions 44px. Geist's Copy 14 being its most common style does **not** mean ICB article paragraphs or editorial introductions must all become 14px; longer reading passages remain 16px unless individually tested.
 
 **QA gate:** Render the type-role specimen at 375px and 1280px, light/dark. Verify button-label baseline, caption readability and rating/price alignment in two-column CoffeeCard grids. This was a code/documentation reconciliation, not an independently completed visual/browser pass.
+
+## Shadcn baseline restored & card type roles — 2026-11-14
+
+**Newest owner decision supersedes Compact.** Do not use earlier tables in this document as the current size contract. Verified against the existing `main` branch's shadcn source before updating:
+
+| Primitive | Current approved baseline | What remains from Deep Roast |
+|---|---|---|
+| Button sm / default / lg | **32 / 36 / 40px**, 14px labels | Pill corners, colour, focus and reduced-motion behavior |
+| Icon button sm / default / lg | **32 / 36 / 40px** | Same visual treatment |
+| Input | **36px** | Solid background, field border/focus, 16px text on mobile |
+| SelectTrigger default / sm | **36 / 32px** | Modest radius, neutral row focus and softer focus ring |
+| TabsList | **36px** | Accessibility and reduced-motion treatment |
+| Textarea minimum | **64px** | The field remains resizable and can be made larger per composition |
+
+`src/components/ui/card.tsx` already retains the main shadcn structure and padding (`gap-6`, `py-6`, `px-6`); it was **not resized**. More prominent or tap-friendly CTAs should be configured where needed (e.g. `min-h-11` for Buy/Rate in the mobile sticky bar preview), not by inflating every Button globally. Audit actual mobile CTA hit areas before rollout.
+
+**Domain card hierarchy now follows the Geist-inspired roles** rather than scaling everything up:
+
+- **CoffeeCard:** Gambetta entity name remains 18–20px; the 16px italic flavour note is an approved intentional distinction; roaster byline is 13px secondary metadata; specs remain compact; prices retain their approved visible size and tabular figures; ratings preserve their interactive contract.
+- **RoasterCard:** entity heading stays 18–20px; location and coffee counts are demoted from 16px paragraph copy to 13px secondary metadata. Roaster Card is still structurally an older bordered component, so a full visual treatment remains a separate owner-review item.
+- **RegionCard:** heading unchanged; elevations use tabular 13px metadata; short profile descriptions use 14px/22px multi-line supporting copy.
+- **CollectionCard:** headline and image treatment unchanged; tagline uses 14px/22px supporting copy; Explore is a 14px UI label, and coffee counts use tabular 13px metadata.
+- **Playground:** restores baseline size labels, fixed 36px field/tab descriptions and a 64px textarea minimum; its generic card examples now use explicit title / secondary copy / numerical evidence roles rather than assigning large editorial headings to forms.
+
+**Grid contract remains fixed as a design-system decision, not a fixed number of columns.** `PageShell` owns 16px mobile / 24px tablet / 32px desktop horizontal gutters and defaults to 1280px maximum width. `Section`, `Band`, `Stack` and `Cluster` still govern layout rhythm and full-bleed composition; individual responsive grids retain their page-specific column rules (coffee directory is two columns on mobile). The component scale changes above do not alter responsive grid definitions or the approved 4/8/12/16/24/32/48/64/96px spacing scale.
+
+**QA pending:** independent build/browser verification at 375px and 1280px in both themes, full card text wraps/overflow, selected/disabled/focus states, and explicit 44px mobile primary hit areas. These are code updates, not a claim that all visual QA is complete.
+
