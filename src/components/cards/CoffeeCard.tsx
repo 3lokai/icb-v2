@@ -258,7 +258,7 @@ export default function CoffeeCard({
               <p className="mt-auto flex items-baseline justify-between gap-2 pt-2">
                 <span className="min-w-0 truncate text-label">{specs}</span>
                 {formattedPrice && (
-                  <span className="whitespace-nowrap text-caption">
+                  <span className="whitespace-nowrap text-caption tabular-nums">
                     <span className="font-medium text-foreground">
                       ₹{formattedPrice}
                     </span>{" "}
