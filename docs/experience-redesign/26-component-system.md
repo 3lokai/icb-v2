@@ -205,3 +205,23 @@ Owner go-ahead to close the gaps between the React components and the approved H
 - Checked: type-check, lint (where configured) and 90 tests pass. Seven real pages at 1280px and 375px have no horizontal overflow or error overlay; pages grew by 16–262px from taller controls and larger section titles. By eye: coffee detail and directory at desktop only.
 - Not checked: dense UIs that use default-size buttons (dashboard, tools, filters sheet, auth), dark theme on real pages, and mobile by eye. The colour flip is in the design tokens and playground only; production `globals.css` is unchanged.
 - Still not brought across from the HTML playground: alternating tinted sections, filter chips, and the homepage mosaic and hero compositions.
+
+## Component scale comparison — CURRENT / COMPACT (2026-11-13)
+
+**Experimental, not approved for rollout.** The existing `/design/components` playground now has a Current / Compact toggle in its header. It uses the genuine shadcn Button/Input/Select and CoffeeCard components under the existing Deep Roast token bridge; `deep-roast.css` applies the compact changes **only when** `[data-icb-playground][data-ui-scale="compact"]` is present. Current mode leaves their committed classes unchanged. Dialog/Sheet buttons rendered through Radix portals are also scoped. No shared shadcn, production route, global token or typography source changes were made for this comparison.
+
+| Element | Existing `main` source | Current redesign | Compact preview |
+|---|---:|---:|---:|
+| Button sm / default / lg | 32 / 36 / 40px | 36 / 44 / 48px | 36 / 40 / 44px |
+| Button default and large text | 14 / 14px | 15 / 16px | 14 / 14px |
+| Icon button default / large | 36 / 40px | 44 / 48px | 40 / 44px |
+| Input / Select default | 36px | 44px | 40px |
+| Section H2 desktop | 30px | 36px | 32px |
+| CoffeeCard italic notes | earlier metadata treatment | 16px | 14px |
+
+**Unchanged in compact preview:** body prose, editorial display/hero typography, colours, grain/motifs, section spacing, fonts, small button and field text on mobile (16px prevents iOS input zoom), component APIs, variant behaviours and caller-defined height overrides. Test real interactive controls at 375px and 1280px in light/dark; compare the live site in a separate tab at the same viewport and 100% zoom. A 36–40px visible control is not by itself a 44px mobile touch target; verify actual hit areas before rollout.
+
+**Preview safety correction:** `REAL_COFFEES` retains actual coffee names/images and representative price/rating values, but all `coffee_id` values have been set to `null` in the playground. Consequently neither the wishlist action nor the rating submission can target a real coffee from this isolated page. The wishlist control is absent when there is no ID; final fidelity must be validated on a separate sandbox or with non-mutating previews. The previously committed text implying that this route can write live ratings is no longer true.
+
+**Review gate:** User chooses Current versus Compact after seeing identical real controls in both modes. Only then migrate the selected dimensions to the shadcn source and apply typographic adjustments through the shared type system; this toggle remains a review tool.
+
