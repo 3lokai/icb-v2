@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
 import { StarHalfIcon, StarIcon } from "@phosphor-icons/react/dist/ssr";
 import { Icon } from "./Icon";
+import { nextRatingFocus } from "@/lib/utils/rating-keyboard";
 
 type StarRatingProps = {
   rating: number; // 0-5, supports decimal for half stars
@@ -27,8 +28,10 @@ const sizeValues = {
  * Filled stars use the `rating` token; empty stars are muted outlines.
  *
  * Read-only mode renders fractional (half-star) fill. Interactive mode renders a
- * keyboard-operable `radiogroup` of star buttons (arrow keys move + select, Home/End
- * jump to 1/5, Enter/Space confirm) so a rating can be submitted without a pointer.
+ * keyboard-operable group of star action buttons: arrows/Home/End move focus
+ * without activating, and native Enter/Space or click opens the rating form.
+ * A group (not radiogroup) is intentional: these are modal launchers,
+ * not radio choices whose selection should change on arrow navigation.
  */
 export function StarRating({
   rating,
@@ -40,6 +43,7 @@ export function StarRating({
   ariaLabel,
 }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState<number | null>(null);
+  const [focusedValue, setFocusedValue] = useState<number | null>(null);
   const starRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const displayRating =
@@ -50,48 +54,19 @@ export function StarRating({
     return null;
   }
 
-  // ---- Interactive (radiogroup) path -------------------------------------
+  // ---- Interactive rating actions ----------------------------------------
   if (interactive) {
-    // Whole-star value the radiogroup treats as "selected" (1-5).
-    const selectedValue = Math.round(rating);
-    // Roving tabindex anchor: the selected star, or the first star when unrated.
-    const tabbableValue =
-      selectedValue >= 1 && selectedValue <= 5 ? selectedValue : 1;
-
-    const selectAndFocus = (value: number) => {
-      const next = Math.min(Math.max(value, 1), 5);
-      starRefs.current[next - 1]?.focus();
-      onRate?.(next);
-    };
+    // Preserve the former initial tab stop close to the displayed rating,
+    // but keep arrow navigation independent from modal activation.
+    const initialTabStop = Math.min(Math.max(Math.round(rating), 1), 5);
+    const tabbableValue = focusedValue ?? initialTabStop;
 
     const handleKeyDown = (e: React.KeyboardEvent, starValue: number) => {
-      switch (e.key) {
-        case "ArrowRight":
-        case "ArrowUp":
-          e.preventDefault();
-          selectAndFocus(starValue + 1);
-          break;
-        case "ArrowLeft":
-        case "ArrowDown":
-          e.preventDefault();
-          selectAndFocus(starValue - 1);
-          break;
-        case "Home":
-          e.preventDefault();
-          selectAndFocus(1);
-          break;
-        case "End":
-          e.preventDefault();
-          selectAndFocus(5);
-          break;
-        case "Enter":
-        case " ":
-          e.preventDefault();
-          onRate?.(starValue);
-          break;
-        default:
-          break;
-      }
+      const next = nextRatingFocus(e.key, starValue);
+      if (next === null) return; // Native Enter/Space button clicks activate once.
+      e.preventDefault();
+      setFocusedValue(next);
+      starRefs.current[next - 1]?.focus();
     };
 
     return (
@@ -100,7 +75,7 @@ export function StarRating({
         onMouseLeave={() => setHoverRating(null)}
       >
         <div
-          role="radiogroup"
+          role="group"
           aria-label={ariaLabel ?? "Rate"}
           className="flex items-center gap-0.5"
         >
@@ -112,7 +87,6 @@ export function StarRating({
             );
             const isHalf = fillPercentage > 0.25 && fillPercentage < 0.75;
             const isEmpty = fillPercentage <= 0.25;
-            const isChecked = selectedValue === starValue;
 
             return (
               <button
@@ -121,15 +95,14 @@ export function StarRating({
                   starRefs.current[index] = el;
                 }}
                 type="button"
-                role="radio"
-                aria-checked={isChecked}
-                aria-label={`${starValue} ${starValue === 1 ? "star" : "stars"}`}
+                aria-label={`Rate ${starValue} ${starValue === 1 ? "star" : "stars"}`}
                 tabIndex={starValue === tabbableValue ? 0 : -1}
                 className={cn(
                   "relative cursor-pointer rounded-sm",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                 )}
                 onClick={() => onRate?.(starValue)}
+                onFocus={() => setFocusedValue(starValue)}
                 onMouseEnter={() => setHoverRating(starValue)}
                 onKeyDown={(e) => handleKeyDown(e, starValue)}
               >
