@@ -49,7 +49,7 @@ export function RecipeCard({
           "surface-1 rounded-lg card-hover",
           "flex flex-row items-center gap-3 card-padding-compact",
           "h-[80px]",
-          isSelected && "ring-2 ring-border"
+          isSelected && "border-foreground ring-1 ring-foreground"
         )}
         onClick={onSelect}
         onKeyDown={handleKeyDown}
@@ -65,18 +65,12 @@ export function RecipeCard({
         <div className="flex-1 min-w-0 flex flex-col justify-center">
           <Stack gap="1">
             {/* Recipe title - primary */}
-            <h3 className="text-body line-clamp-1">{recipe.title}</h3>
+            <h3 className="text-ui-label line-clamp-1">{recipe.title}</h3>
 
             {/* Secondary info - expert name and key stat */}
             <div className="flex items-center gap-2 line-clamp-1">
-              <span className="text-caption">by {recipe.expert.name}</span>
-              <span className="text-caption text-muted-foreground">•</span>
-              <span className="text-caption text-muted-foreground">
-                {recipe.ratio}
-              </span>
-              <span className="text-caption text-muted-foreground">•</span>
-              <span className="text-caption text-muted-foreground">
-                {recipe.totalTime}
+              <span className="text-ui-meta">
+                by {recipe.expert.name} · {recipe.ratio} · {recipe.totalTime}
               </span>
             </div>
           </Stack>
@@ -85,10 +79,10 @@ export function RecipeCard({
         {/* Right indicator */}
         <div
           className={cn(
-            "flex items-center gap-2 text-caption transition-colors",
+            "flex items-center gap-2 text-ui-label transition-colors motion-reduce:transition-none",
             isSelected
-              ? "text-primary"
-              : "text-muted-foreground group-hover:text-accent"
+              ? "text-foreground"
+              : "text-muted-foreground group-hover:text-foreground"
           )}
         >
           {isSelected ? (
@@ -111,7 +105,8 @@ export function RecipeCard({
         "group relative cursor-pointer overflow-hidden",
         "surface-1 rounded-lg card-hover",
         "h-full flex flex-col p-0",
-        isSelected && "ring-2 ring-border"
+        // Selected is ink, not copper: a full-strength edge.
+        isSelected && "border-foreground ring-1 ring-foreground"
       )}
       onClick={onSelect}
       onKeyDown={handleKeyDown}
@@ -131,9 +126,9 @@ export function RecipeCard({
           <h3 className="line-clamp-2 text-heading text-balance leading-tight">
             {recipe.title}
           </h3>
-          <p className="text-body-muted font-medium">
+          <p className="text-ui-meta">
             by {recipe.expert.name}
-            {recipe.expert.year && ` • ${recipe.expert.year}`}
+            {recipe.expert.year && ` · ${recipe.expert.year}`}
           </p>
         </Stack>
       </div>
@@ -162,28 +157,28 @@ export function RecipeCard({
         {/* Key Technique Preview */}
         <div className="mt-4 rounded-md bg-background/30 p-2">
           <div className="mb-1 flex items-center gap-2">
-            <Icon className="h-3 w-3 text-accent" icon={LightbulbIcon} />
-            <span className="text-accent text-overline">Key Technique</span>
+            <Icon className="h-3 w-3" color="muted" icon={LightbulbIcon} />
+            <span className="text-ui-meta">Key technique</span>
           </div>
-          <p className="line-clamp-2 text-caption leading-relaxed">
+          <p className="line-clamp-2 text-copy-compact text-muted-foreground">
             {recipe.keyTechnique}
           </p>
         </div>
       </div>
 
       <CardFooter className="flex items-center justify-between border-t border-border/40 bg-muted/20 card-padding-compact">
-        <div className="text-caption text-muted-foreground">
+        <div className="text-ui-meta">
           {recipe.steps.length} step{recipe.steps.length !== 1 ? "s" : ""}
         </div>
         <div
           className={cn(
-            "flex items-center gap-2 text-caption transition-colors",
+            "flex items-center gap-2 text-ui-label transition-colors motion-reduce:transition-none",
             isSelected
-              ? "text-primary"
-              : "text-muted-foreground group-hover:text-accent"
+              ? "text-foreground"
+              : "text-muted-foreground group-hover:text-foreground"
           )}
         >
-          {isSelected ? "Selected" : "View Recipe"}
+          {isSelected ? "Selected" : "View recipe"}
           <Icon
             className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
             icon={ArrowRightIcon}

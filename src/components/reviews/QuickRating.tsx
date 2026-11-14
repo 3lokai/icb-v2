@@ -1,6 +1,5 @@
 "use client";
 
-import { Accent } from "@/components/primitives/accent";
 import {
   useState,
   useEffect,
@@ -335,25 +334,15 @@ export function QuickRating({
   return (
     <>
       <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-        <DialogContent
-          className={cn(
-            "surface-2 overflow-hidden rounded-[2.5rem] p-0 gap-0 sm:max-w-md"
-          )}
-        >
-          <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-destructive/60 via-destructive to-destructive/60 opacity-60 z-10" />
-          <DialogHeader className="p-8 pb-6 border-b border-border/10 pt-8">
-            <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60 mb-1 text-left">
-              Confirm Action
-            </p>
-            <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">
-              Remove your rating?
-            </DialogTitle>
-            <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
+        <DialogContent className="gap-0 p-0 sm:max-w-md">
+          <DialogHeader className="p-6">
+            <DialogTitle className="text-left">Remove your rating?</DialogTitle>
+            <DialogDescription className="mt-2 text-left">
               Your rating and review will be removed. You can always rate this{" "}
               {entityType} again later.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="p-8 pt-6 flex-row gap-3 justify-end sm:justify-end">
+          <DialogFooter className="flex-row justify-end gap-3 p-6 pt-0 sm:justify-end">
             <Button
               variant="outline"
               onClick={() => setShowDeleteConfirm(false)}
@@ -366,7 +355,7 @@ export function QuickRating({
               onClick={confirmDelete}
               disabled={isDeleting}
             >
-              {isDeleting ? "Deleting..." : "Delete Rating"}
+              {isDeleting ? "Deleting..." : "Delete rating"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -375,35 +364,17 @@ export function QuickRating({
       {/* Limit Content - Show in parent modal when limit reached */}
       {isLimitReached ? (
         <div className={paddingClass}>
-          {!isInline && (
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60 z-10" />
-          )}
-          <div
-            className={cn(
-              isInline
-                ? "pb-6"
-                : "p-8 md:p-8 pb-6 border-b border-border/10 pt-8"
-            )}
-          >
-            <p className="text-overline tracking-[0.1em] text-muted-foreground/60 mb-1 text-left">
-              Limit Reached
-            </p>
-            <h3 className="text-title text-primary leading-none text-left">
-              Unlock Unlimited Reviews
-            </h3>
-            <p className="text-body text-muted-foreground mt-2 text-left">
+          <div>
+            <h3 className="text-heading text-left">Sign in to keep rating</h3>
+            <p className="mt-2 text-copy-compact text-left text-muted-foreground">
               You&apos;ve reached the limit for anonymous reviews. Sign in to
               continue rating coffees, track your tasting journey, and share
               your reviews as well!
             </p>
           </div>
-          <div
-            className={cn(
-              isInline ? "pt-6" : "p-8 md:p-8 pt-6",
-              "flex flex-col gap-4"
-            )}
-          >
-            <Button asChild className="w-full" size="lg">
+          <div className="flex flex-col gap-4 pt-6">
+            {/* 44px by composition: primary action on mobile. */}
+            <Button asChild className="min-h-11 w-full" size="lg">
               <Link
                 href={`/auth?from=${encodeURIComponent(pathname)}`}
                 onClick={() =>
@@ -425,31 +396,14 @@ export function QuickRating({
             {/* Header */}
             {!isInline && (
               <Stack gap="2" className={headerAlignment}>
-                <div
-                  className={cn(
-                    "inline-flex items-center gap-3",
-                    isInline ? "" : "justify-center mx-auto"
-                  )}
-                >
-                  <span className="h-px w-6 bg-accent/60" />
-                  <span className="text-overline text-muted-foreground tracking-[0.1em]">
-                    {isSaved ? "Thank you" : `Rate this ${entityType}`}
-                  </span>
-                  <span className="h-px w-6 bg-accent/60" />
-                </div>
-                <h3 className="text-title text-balance leading-tight">
-                  {isSaved ? (
-                    "Rating has been submitted"
-                  ) : (
-                    <>
-                      How was your{" "}
-                      <Accent>
-                        {entityType === "coffee" ? "Brew?" : "Experience?"}
-                      </Accent>
-                    </>
-                  )}
+                <h3 className="text-heading text-balance">
+                  {isSaved
+                    ? "Rating submitted"
+                    : entityType === "coffee"
+                      ? "How was your brew?"
+                      : "How was your experience?"}
                 </h3>
-                <p className="text-body text-muted-foreground">
+                <p className="text-copy-compact text-muted-foreground">
                   {isSaved
                     ? entityType === "coffee"
                       ? "Share your thoughts to help others find their perfect cup."
@@ -465,8 +419,8 @@ export function QuickRating({
             <Stack gap="2">
               <div
                 className={cn(
-                  "flex items-center gap-3",
-                  isInline ? "justify-start" : "justify-center"
+                  "flex items-center gap-1",
+                  isInline ? "-ml-1 justify-start" : "justify-center"
                 )}
                 onMouseLeave={() => setHoveredStar(null)}
               >
@@ -483,31 +437,27 @@ export function QuickRating({
                       onClick={() => handleRatingClick(star)}
                       onMouseEnter={() => setHoveredStar(star)}
                       disabled={isSaving || isDeleting}
-                      className="transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                      // 36px star + 4px padding each side: a 44px target.
+                      className="rounded-md p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <Icon
+                        aria-hidden
+                        // Fill weight marks the on state; outline stars are muted.
+                        color={isFilled ? "rating" : "muted"}
                         icon={StarIcon}
                         size={36}
-                        aria-hidden
-                        className={cn(
-                          "transition-all duration-200",
-                          isFilled
-                            ? "text-rating fill-rating drop-shadow-sm"
-                            : "text-muted-foreground/30"
-                        )}
+                        weight={isFilled ? "fill" : "regular"}
                       />
                     </button>
                   );
                 })}
                 {rating > 0 && (
-                  <span className="text-body font-medium text-muted-foreground ml-2">
-                    {rating}/5
-                  </span>
+                  <span className="ml-2 text-ui-meta">{rating}/5</span>
                 )}
               </div>
               <p
                 className={cn(
-                  "text-micro",
+                  "text-ui-meta",
                   isInline ? "text-left" : "text-center"
                 )}
               >
@@ -517,44 +467,23 @@ export function QuickRating({
               </p>
             </Stack>
 
-            {/* Comment - always visible */}
-            <Stack gap="3">
-              <Textarea
-                aria-label={`Add a comment about this ${entityType}`}
-                placeholder={`Any notes to share about this ${entityType}?`}
-                value={comment}
-                onChange={(e) => {
-                  formTouchedRef.current = true;
-                  setComment(e.target.value);
-                }}
-                disabled={isSaving || isDeleting}
-                className="min-h-[80px] resize-none border-border/60 focus:border-primary/50 transition-colors bg-muted/5"
-                maxLength={500}
-              />
-              {comment && comment.length > 0 && (
-                <p className="text-caption text-muted-foreground text-right">
-                  {comment.length}/500
-                </p>
-              )}
-            </Stack>
-
             {entityType === "coffee" && (
-              <Stack gap="6" className="pt-6 border-t border-border/30">
+              <Stack gap="6" className="border-t border-border pt-6">
                 <p
                   className={cn(
-                    "text-body italic text-muted-foreground/80",
+                    "text-ui-meta",
                     isInline ? "text-left" : "text-center"
                   )}
                 >
-                  Help the community brew this better (optional)
+                  Optional. Helps the next drinker.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Stack gap="3">
                     <label
-                      className="text-label uppercase tracking-widest"
+                      className="text-ui-label"
                       htmlFor="quick-rating-brew-method"
                     >
-                      Brew method
+                      How did you brew it?
                     </label>
                     <Select
                       value={brewMethod ?? "none"}
@@ -569,7 +498,7 @@ export function QuickRating({
                       <SelectTrigger
                         id="quick-rating-brew-method"
                         aria-label="Brew method"
-                        className="w-full h-9 border-border/60 focus:border-primary/50 bg-muted/5"
+                        className="w-full"
                       >
                         <SelectValue placeholder="How did you brew this coffee?" />
                       </SelectTrigger>
@@ -586,68 +515,71 @@ export function QuickRating({
                     </Select>
                   </Stack>
                   <Stack gap="3">
-                    <label className="text-label uppercase tracking-widest">
-                      Black / Milk
-                    </label>
-                    <Cluster gap="2" className="flex-wrap">
-                      <Button
-                        type="button"
-                        variant={
-                          worksWithMilk === false ? "default" : "outline"
-                        }
-                        size="sm"
-                        onClick={() => {
-                          formTouchedRef.current = true;
-                          setWorksWithMilk(false);
-                        }}
-                        disabled={isSaving || isDeleting}
-                        className={cn(
-                          "h-9 px-4",
-                          worksWithMilk === false && "shadow-sm"
-                        )}
-                      >
-                        Black
-                      </Button>
-                      <Button
-                        type="button"
-                        variant={worksWithMilk === true ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => {
-                          formTouchedRef.current = true;
-                          setWorksWithMilk(true);
-                        }}
-                        disabled={isSaving || isDeleting}
-                        className={cn(
-                          "h-9 px-4",
-                          worksWithMilk === true && "shadow-sm"
-                        )}
-                      >
-                        Milk
-                      </Button>
-                      {worksWithMilk !== null && (
+                    <p className="text-ui-label" id="quick-rating-milk">
+                      With milk?
+                    </p>
+                    <div
+                      aria-labelledby="quick-rating-milk"
+                      className="flex flex-wrap gap-2"
+                      role="group"
+                    >
+                      {/* Selected is ink fill; pressing the selected chip again clears it. */}
+                      {(
+                        [
+                          ["Yes", true],
+                          ["No", false],
+                        ] as const
+                      ).map(([label, value]) => (
                         <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
+                          aria-pressed={worksWithMilk === value}
+                          disabled={isSaving || isDeleting}
+                          key={label}
                           onClick={() => {
                             formTouchedRef.current = true;
-                            setWorksWithMilk(null);
+                            setWorksWithMilk(
+                              worksWithMilk === value ? null : value
+                            );
                           }}
-                          disabled={isSaving || isDeleting}
-                          className="h-9 px-3 text-muted-foreground hover:text-foreground"
+                          size="sm"
+                          type="button"
+                          variant={
+                            worksWithMilk === value ? "default" : "outline"
+                          }
                         >
-                          Clear
+                          {label}
                         </Button>
-                      )}
-                    </Cluster>
+                      ))}
+                    </div>
                   </Stack>
                 </div>
               </Stack>
             )}
 
+            {/* Notes: last of the optional fields, as in the design */}
+            <Stack gap="3">
+              <label className="text-ui-label" htmlFor="quick-rating-notes">
+                Anything to add?
+              </label>
+              <Textarea
+                id="quick-rating-notes"
+                placeholder="What did it taste like to you?"
+                value={comment}
+                onChange={(e) => {
+                  formTouchedRef.current = true;
+                  setComment(e.target.value);
+                }}
+                disabled={isSaving || isDeleting}
+                className="min-h-24 resize-none"
+                maxLength={500}
+              />
+              {comment && comment.length > 0 && (
+                <p className="text-right text-ui-meta">{comment.length}/500</p>
+              )}
+            </Stack>
+
             {/* Status indicator */}
             {isSaving && (
-              <div className="flex items-center justify-center gap-2 text-caption text-muted-foreground">
+              <div className="flex items-center justify-center gap-2 text-ui-meta">
                 <Icon
                   icon={CircleNotchIcon}
                   size={14}
@@ -659,10 +591,7 @@ export function QuickRating({
 
             {isSaved && !isSaving && (
               <div className="flex items-center justify-center">
-                <Badge
-                  variant="secondary"
-                  className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-3 py-1"
-                >
+                <Badge variant="outline">
                   <Icon icon={CheckIcon} size={12} className="mr-2" />
                   Saved
                 </Badge>
@@ -674,7 +603,11 @@ export function QuickRating({
               <Button
                 onClick={handleSubmit}
                 disabled={rating === 0 || isSaving}
-                className={isInline ? "w-full sm:w-auto" : "w-full"}
+                // 44px by composition: primary action on mobile.
+                className={cn(
+                  "min-h-11",
+                  isInline ? "w-full sm:w-auto" : "w-full"
+                )}
                 size="lg"
               >
                 {isSaving ? (
@@ -687,17 +620,34 @@ export function QuickRating({
                     Saving...
                   </>
                 ) : (
-                  "Submit Rating"
+                  "Submit rating"
                 )}
               </Button>
             )}
 
+            {identityKey?.startsWith("anon:") && (
+              <p
+                className={cn(
+                  "text-ui-meta",
+                  isInline ? "text-left" : "text-center"
+                )}
+              >
+                {getReviewCount() ?? 0} of 3 ratings without an account ·{" "}
+                <Link
+                  className="underline underline-offset-4 hover:text-foreground"
+                  href={`/auth?from=${encodeURIComponent(pathname)}`}
+                >
+                  sign in to keep them
+                </Link>
+              </p>
+            )}
+
             {/* Post-save continuation — signed-in only (anon flow keeps limit / sign-up prompts) */}
             {isSaved && identityKey?.startsWith("user:") && !isSaving && (
-              <Stack gap="4" className="pt-4 border-t border-border/20">
+              <Stack gap="4" className="border-t border-border pt-4">
                 <p
                   className={cn(
-                    "text-caption text-muted-foreground",
+                    "text-copy-compact text-muted-foreground",
                     isInline ? "text-left" : "text-center"
                   )}
                 >
@@ -737,7 +687,7 @@ export function QuickRating({
                 className={cn(
                   identityKey?.startsWith("user:")
                     ? "pt-4"
-                    : "pt-2 border-t border-border/20"
+                    : "border-t border-border pt-2"
                 )}
               >
                 {entityType === "coffee" && rating > 0 && rating < 4 && (
@@ -746,7 +696,7 @@ export function QuickRating({
                       href={`/tools/coffee-compass?coffeeId=${encodeURIComponent(entityId)}`}
                     >
                       <Icon icon={CompassIcon} size={14} className="mr-2" />
-                      Fix Your Brew
+                      Fix your brew
                     </Link>
                   </Button>
                 )}

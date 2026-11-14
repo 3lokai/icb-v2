@@ -177,10 +177,10 @@ export function ProfileSelections({
             <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground mb-1 text-left">
               Confirm Action
             </p>
-            <DialogTitle className="font-serif italic text-title text-primary leading-tight text-left">
+            <DialogTitle className="font-serif italic text-primary leading-tight text-left">
               Remove from public recommendations?
             </DialogTitle>
-            <DialogDescription className="text-body text-muted-foreground mt-2 text-left">
+            <DialogDescription className="text-muted-foreground mt-2 text-left">
               {removingSelection ? (
                 <>
                   <span className="font-medium text-foreground">

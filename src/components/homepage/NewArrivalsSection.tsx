@@ -72,7 +72,7 @@ export default async function NewArrivalsSection() {
         <Button
           asChild
           variant="secondary"
-          className="group text-micro font-bold uppercase tracking-[0.15em] text-foreground hover:bg-transparent hover:text-accent transition-all"
+          className="group font-bold uppercase tracking-[0.15em] text-foreground hover:bg-transparent hover:text-accent transition-all"
         >
           <Link href={NEWEST_HREF}>
             Browse all new arrivals

@@ -59,7 +59,7 @@ export function MobileRecipeFilterDrawer({
           <SheetTitle className="text-heading text-balance leading-tight tracking-tight">
             Brewing filters
           </SheetTitle>
-          <SheetDescription className="text-body text-muted-foreground leading-relaxed">
+          <SheetDescription className="text-muted-foreground leading-relaxed">
             Combine method, difficulty, use case, and expert to find a recipe.
           </SheetDescription>
         </SheetHeader>

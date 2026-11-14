@@ -20,7 +20,7 @@ function Command({
   return (
     <CommandPrimitive
       className={cn(
-        "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
+        "flex h-full w-full flex-col overflow-hidden rounded-lg bg-popover text-popover-foreground",
         className
       )}
       data-slot="command"
@@ -82,7 +82,7 @@ function CommandInput({
       />
       <CommandPrimitive.Input
         className={cn(
-          "flex h-full w-full bg-transparent py-3 text-body text-popover-foreground outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-full w-full bg-transparent py-3 text-popover-foreground outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
         data-slot="command-input"

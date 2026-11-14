@@ -43,7 +43,7 @@ export function ProfileScrollspyTabBar({
               type="button"
               onClick={() => handleClick(section.id)}
               className={cn(
-                "relative px-4 py-3 text-caption font-medium rounded-full transition-all whitespace-nowrap shrink-0",
+                "relative px-4 py-3 font-medium rounded-full transition-all whitespace-nowrap shrink-0",
                 activeId === section.id
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"

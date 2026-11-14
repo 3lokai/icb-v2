@@ -114,10 +114,7 @@ export default function TermsPage() {
             </aside>
 
             <div className="md:col-span-12 lg:col-span-8">
-              <Stack
-                gap="12"
-                className="text-body-large text-muted-foreground leading-relaxed"
-              >
+              <Stack gap="12" className="text-muted-foreground leading-relaxed">
                 <section id="introduction">
                   <p className="text-foreground">
                     The website indiancoffeebeans.com (&quot;website&quot;) is

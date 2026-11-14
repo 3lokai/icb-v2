@@ -264,7 +264,7 @@ export function RoasterFacetedFilterBar({
             <Cluster gap="2">
               {filters.q && (
                 <Badge
-                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-accent"
                   variant="secondary"
                 >
                   Search: {filters.q}
@@ -282,7 +282,7 @@ export function RoasterFacetedFilterBar({
               )}
               {filters.countries?.length ? (
                 <Badge
-                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-accent"
                   variant="secondary"
                 >
                   {filters.countries.length} Countr
@@ -299,7 +299,7 @@ export function RoasterFacetedFilterBar({
               ) : null}
               {filters.states?.length ? (
                 <Badge
-                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-accent"
                   variant="secondary"
                 >
                   {filters.states.length} State
@@ -316,7 +316,7 @@ export function RoasterFacetedFilterBar({
               ) : null}
               {filters.cities?.length ? (
                 <Badge
-                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-accent"
                   variant="secondary"
                 >
                   {filters.cities.length} Cit
@@ -333,7 +333,7 @@ export function RoasterFacetedFilterBar({
               ) : null}
               {filters.active_only && (
                 <Badge
-                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-overline text-accent"
+                  className="gap-2 border-accent/20 bg-accent/10 px-3 py-1 text-accent"
                   variant="secondary"
                 >
                   Active Only

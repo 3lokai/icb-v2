@@ -163,7 +163,7 @@ export default function AboutPage() {
                   The <Accent>Platform</Accent>
                 </h2>
 
-                <Stack gap="6" className="text-body text-foreground">
+                <Stack gap="6" className="text-foreground">
                   <p>
                     IndianCoffeeBeans.com is India&apos;s first comprehensive,
                     independent directory for specialty coffee roasters and

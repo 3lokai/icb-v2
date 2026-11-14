@@ -106,7 +106,7 @@ export function Section({
           {description && (
             <p
               className={cn(
-                "text-body-large text-muted-foreground mt-4 max-w-2xl text-pretty",
+                "text-muted-foreground mt-4 max-w-2xl text-pretty",
                 align === "center" && "mx-auto"
               )}
             >

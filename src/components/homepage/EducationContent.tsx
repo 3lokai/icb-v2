@@ -132,7 +132,7 @@ export default function EducationSection({
                         <div className="pt-0.5">
                           <h3
                             className={cn(
-                              "text-subheading tracking-tight mb-1",
+                              "tracking-tight mb-1",
                               item.color === "accent"
                                 ? "text-accent"
                                 : "text-primary"

@@ -193,7 +193,7 @@ export function AddSelection() {
             <Button
               variant="ghost"
               size="sm"
-              className="text-micro text-muted-foreground hover:text-accent self-end h-auto p-0"
+              className="text-muted-foreground hover:text-accent self-end h-auto p-0"
               onClick={() => {
                 setSelectedRoasterId(null);
                 setSelectedRoasterName("");

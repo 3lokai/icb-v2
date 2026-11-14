@@ -18,6 +18,7 @@ import { Stack } from "@/components/primitives/stack";
 import { Cluster } from "@/components/primitives/cluster";
 import { PageShell } from "@/components/primitives/page-shell";
 import { Decor } from "@/components/primitives/decor";
+import { FOOTER_NAV, LEGAL_NAV } from "@/lib/navigation";
 import { FOUNDER } from "@/lib/seo/schema";
 
 export function Footer() {
@@ -114,169 +115,40 @@ export function Footer() {
               </Stack>
             </div>
 
-            {/* Link columns group - Spans 6 on md with reduced gap */}
-            <div className="grid grid-cols-1 gap-6 md:col-span-6 md:ml-8 md:grid-cols-2 lg:grid-cols-4">
-              {/* Column 2: Discover */}
-              <div>
-                <Stack gap="6">
-                  <h3 className="text-overline tracking-[0.15em] text-foreground font-bold">
-                    Discover
+            {/* Link columns: six groups, two across on mobile.
+                ponytail: no mobile accordions; add them if the footer proves too
+                long on phones. */}
+            <nav
+              aria-label="Footer"
+              className="grid grid-cols-2 gap-x-6 gap-y-8 md:col-span-6 md:ml-8 md:grid-cols-3"
+            >
+              {FOOTER_NAV.map((column) => (
+                <div key={column.label}>
+                  <h3 className="text-ui-label text-foreground">
+                    {column.label}
                   </h3>
-                  <ul className="space-y-3">
-                    {[
-                      { href: "/coffees", label: "Coffees" },
-                      { href: "/roasters", label: "Roasters" },
-                      { href: "/communities", label: "Communities" },
-                    ].map(({ href, label }) => (
-                      <li key={label}>
+                  <ul className="mt-3 space-y-2">
+                    {column.items.map(({ name, link }) => (
+                      <li key={name}>
                         <Link
-                          className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
-                          href={href}
+                          className="text-caption underline-offset-4 transition-colors hover:text-foreground hover:underline motion-reduce:transition-none"
+                          href={link}
                         >
-                          <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                          {label}
+                          {name}
                         </Link>
                       </li>
                     ))}
                   </ul>
-                </Stack>
-              </div>
-
-              {/* Column 3: Learn */}
-              <div>
-                <Stack gap="6">
-                  <h3 className="text-overline tracking-[0.15em] text-foreground font-bold">
-                    Learn
-                  </h3>
-                  <ul className="space-y-3">
-                    {[
-                      { href: "/learn", label: "Articles" },
-                      { href: "/learn/series", label: "Series" },
-                      { href: "/learn/glossary", label: "Glossary" },
-                    ].map(({ href, label }) => (
-                      <li key={label}>
-                        <Link
-                          className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
-                          href={href}
-                        >
-                          <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                          {label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </Stack>
-              </div>
-
-              {/* Column 4: Tools */}
-              <div>
-                <Stack gap="6">
-                  <h3 className="text-overline tracking-[0.15em] text-foreground font-bold">
-                    Tools
-                  </h3>
-                  <ul className="space-y-3">
-                    {[
-                      { href: "/tools/coffee-calculator", label: "Calculator" },
-                      { href: "/tools/expert-recipes", label: "Recipes" },
-                      {
-                        href: "/tools/coffee-compass",
-                        label: "Coffee Compass",
-                      },
-                      {
-                        href: "/tools/grind-size-converter",
-                        label: "Grind Size Converter",
-                      },
-                    ].map(({ href, label }) => (
-                      <li key={label}>
-                        <Link
-                          className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
-                          href={href}
-                        >
-                          <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                          {label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </Stack>
-              </div>
-
-              {/* Column 5: About ICB */}
-              <div>
-                <Stack gap="6">
-                  <h3 className="text-overline tracking-[0.15em] text-foreground font-bold">
-                    About ICB
-                  </h3>
-                  <ul className="space-y-3">
-                    <li>
-                      <Link
-                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
-                        href="/about"
-                      >
-                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                        About
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
-                        href="/contact"
-                      >
-                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                        Contact Us
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
-                        href="/press"
-                      >
-                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                        Press &amp; Media
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
-                        href="/how-icb-works"
-                      >
-                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                        How ICB Works
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
-                        href="/newsletter"
-                      >
-                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                        Newsletter Archive
-                      </Link>
-                    </li>
-                    {/* Separator */}
-                    <li className="pt-2">
-                      <div className="h-px w-full bg-border/60" />
-                    </li>
-                    <li>
-                      <Link
-                        className="group flex items-center gap-2 text-caption text-muted-foreground transition-colors hover:text-accent"
-                        href="/roasters/partner"
-                      >
-                        <span className="h-1 w-1 rounded-full bg-accent/40 opacity-0 transition-opacity group-hover:opacity-100" />
-                        For Roasters
-                      </Link>
-                    </li>
-                  </ul>
-                </Stack>
-              </div>
-            </div>
+                </div>
+              ))}
+            </nav>
 
             {/* Column 5: Newsletter - Spans 3 on md */}
             <div className="md:col-span-3">
               <div className="relative overflow-hidden rounded-2xl border border-border bg-background/40 p-6 transition-all hover:bg-background/60 hover:border-border/80">
                 <Stack gap="4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-overline tracking-[0.15em] text-foreground font-bold flex items-center gap-2">
+                    <h3 className="flex items-center gap-2 text-ui-label text-foreground">
                       <Icon
                         className="text-accent"
                         icon={EnvelopeSimpleIcon}
@@ -342,17 +214,13 @@ export function Footer() {
               </div>
 
               <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-                {[
-                  { href: "/privacy", label: "Privacy" },
-                  { href: "/terms", label: "Terms" },
-                  { href: "/data-deletion", label: "Data" },
-                ].map(({ href, label }) => (
+                {LEGAL_NAV.map(({ name, link }) => (
                   <Link
-                    key={label}
+                    key={name}
                     className="text-micro text-muted-foreground/60 uppercase tracking-widest font-medium transition-colors hover:text-accent"
-                    href={href}
+                    href={link}
                   >
-                    {label}
+                    {name}
                   </Link>
                 ))}
                 <CookieSettingsButton />

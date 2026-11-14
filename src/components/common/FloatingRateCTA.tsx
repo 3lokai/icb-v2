@@ -80,19 +80,21 @@ export function FloatingRateCTA({
         "fixed bottom-6 right-6 z-50",
         "flex items-center gap-2 px-6 py-3",
         "bg-primary text-primary-foreground",
-        "rounded-full shadow-xl",
+        "rounded-full shadow-lg",
         "font-medium text-sm",
-        "transition-all duration-300 ease-out",
-        "hover:scale-105 hover:shadow-2xl active:scale-95",
+        "transition-[opacity,transform,background-color] duration-300 ease-out motion-reduce:transition-none",
+        "hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
         visible
           ? "translate-y-0 opacity-100"
           : "translate-y-4 opacity-0 pointer-events-none"
       )}
     >
       <Icon
+        aria-hidden
+        // The class beats Icon's default fill so the star matches the label.
+        className="fill-primary-foreground"
         icon={StarIcon}
         size={18}
-        className="fill-amber-400 text-amber-400"
       />
       {label}
     </button>

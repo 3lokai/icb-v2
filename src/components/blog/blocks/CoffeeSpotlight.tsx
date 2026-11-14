@@ -123,7 +123,7 @@ function SpotlightCard({
                 <Badge
                   key={note}
                   variant="outline"
-                  className="text-micro font-bold uppercase tracking-widest bg-muted/30 border-border/50 text-muted-foreground/80"
+                  className="font-bold uppercase tracking-widest bg-muted/30 border-border/50 text-muted-foreground/80"
                 >
                   {note}
                 </Badge>

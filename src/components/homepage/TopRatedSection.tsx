@@ -80,7 +80,7 @@ export default function TopRatedSection({
               <Button
                 asChild
                 variant="secondary"
-                className="group text-micro font-bold uppercase tracking-[0.15em] text-foreground hover:bg-transparent hover:text-accent transition-all"
+                className="group font-bold uppercase tracking-[0.15em] text-foreground hover:bg-transparent hover:text-accent transition-all"
               >
                 <Link href={COFFEES_RATING_SORT_HREF}>
                   Browse all by rating

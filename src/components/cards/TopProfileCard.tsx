@@ -68,14 +68,14 @@ export function TopProfileCard({
         <CardContent className="relative z-10 flex h-full flex-1 flex-col gap-4 card-padding">
           <div className="flex items-start justify-between gap-3">
             <div className="relative">
-              <Avatar className="h-14 w-14 border border-border/50 transition-transform duration-500 ease-out group-hover:scale-105">
+              <Avatar className="h-14 w-14 border border-border">
                 <AvatarImage
                   alt={`${profile.full_name} avatar`}
                   className="object-cover"
                   itemProp="image"
                   src={profile.avatar_url ?? undefined}
                 />
-                <AvatarFallback className="text-caption font-semibold text-muted-foreground">
+                <AvatarFallback className="font-semibold text-muted-foreground">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -90,28 +90,24 @@ export function TopProfileCard({
               </div>
             </div>
 
-            <span className="shrink-0 text-label tabular-nums text-muted-foreground/70">
-              #{rank}
-            </span>
+            <span className="shrink-0 text-ui-meta">#{rank}</span>
           </div>
 
           <Stack gap="1">
             <h3
-              className="text-heading text-balance transition-colors duration-300 group-hover:text-accent line-clamp-1"
+              className="text-heading text-balance line-clamp-1 underline-offset-4 group-hover:underline"
               itemProp="name"
             >
               {profile.full_name}
             </h3>
-            <p className="text-label normal-case text-muted-foreground">
+            <p className="text-ui-meta line-clamp-1">
               @{profile.username}
-              {location ? (
-                <span className="text-muted-foreground/70"> · {location}</span>
-              ) : null}
+              {location ? ` · ${location}` : null}
             </p>
           </Stack>
 
           {profile.bio ? (
-            <p className="text-body leading-relaxed text-muted-foreground line-clamp-2">
+            <p className="text-copy-compact text-muted-foreground line-clamp-2">
               {profile.bio}
             </p>
           ) : null}
@@ -131,14 +127,13 @@ export function TopProfileCard({
               </div>
             ) : null}
 
-            <div className="flex items-baseline gap-2 border-t border-border/40 pt-4">
-              <span className="text-title tabular-nums text-foreground">
+            {/* Evidence, not a headline: the count is a label, not a display numeral. */}
+            <p className="border-t border-border pt-4 text-ui-meta">
+              <span className="text-ui-label text-foreground">
                 {profile.review_count}
-              </span>
-              <span className="text-label text-muted-foreground">
-                {profile.review_count === 1 ? "coffee rated" : "coffees rated"}
-              </span>
-            </div>
+              </span>{" "}
+              {profile.review_count === 1 ? "coffee rated" : "coffees rated"}
+            </p>
           </div>
         </CardContent>
       </Card>

@@ -168,12 +168,10 @@ export function ProfileTasteProfile({
               </p>
               {(isAnonymous || isOwner) && (
                 <Link href="/coffees" className="mt-2">
-                  <Tag
-                    variant="outline"
-                    className="px-8 py-6 rounded-full border-accent/40 text-accent hover:bg-accent hover:text-accent-foreground font-medium transition-all active:scale-95 cursor-pointer shadow-lg shadow-accent/5"
-                  >
+                  {/* A plain span, not Tag: Tag's 12px size role would apply here. */}
+                  <span className="inline-flex items-center rounded-full border border-accent/40 bg-background px-8 py-6 font-medium text-accent shadow-lg shadow-accent/5 transition-all hover:bg-accent hover:text-accent-foreground active:scale-95 cursor-pointer">
                     Begin the Journey
-                  </Tag>
+                  </span>
                 </Link>
               )}
             </Stack>

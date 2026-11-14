@@ -1,81 +1,55 @@
 "use client";
 
-import { StarIcon, ThumbsUpIcon } from "@phosphor-icons/react/dist/ssr";
-import { Icon } from "@/components/common/Icon";
-import { Cluster } from "@/components/primitives/cluster";
+import { StarRating } from "@/components/common/StarRating";
 import type { EntityReviewStats } from "@/types/review-types";
-import { cn } from "@/lib/utils";
 
 type ReviewStatsProps = {
   stats: EntityReviewStats | null;
   onReviewsClick?: () => void;
 };
 
+/**
+ * Rating summary: the average as a large numeral, stars, then the count. The stars
+ * are decorative; the number and the count carry the evidence.
+ * ponytail: no distribution bars, "with notes" or "brewed as" tally yet; those need
+ * the reviews list, which this component is not given.
+ */
 export function ReviewStats({ stats, onReviewsClick }: ReviewStatsProps) {
-  const hasStats = stats && stats.review_count && stats.review_count > 0;
-  const { review_count, avg_rating, recommend_pct } = stats || {};
+  const { review_count, avg_rating } = stats || {};
+  const hasStats = !!review_count && review_count > 0;
+  const count = `${review_count} ${review_count === 1 ? "rating" : "ratings"}`;
 
   return (
     <div>
-      <div className="mb-6">
-        <div className="inline-flex items-center gap-4 mb-3">
-          <span className="h-px w-8 md:w-12 bg-accent/60" />
-          <span className="text-overline text-muted-foreground tracking-[0.15em]">
-            Community Feedback
-          </span>
-        </div>
-        <h3 className="text-heading text-balance leading-[1.2] tracking-tight">
-          Ratings & Reviews.
-        </h3>
-      </div>
+      <h3 className="text-heading text-balance">What drinkers say</h3>
       {hasStats ? (
-        <Cluster gap="4" align="center" className="flex-wrap">
-          {/* Star Rating */}
+        <>
           {avg_rating != null && (
-            <div className="flex items-center gap-2 px-4 py-3 bg-muted/30 rounded-lg border border-border/40">
-              <div className="flex items-center gap-1">
-                <Icon
-                  icon={StarIcon}
-                  size={22}
-                  className="text-rating fill-rating drop-shadow-sm"
-                />
-                <span className="text-heading font-bold text-foreground">
-                  {avg_rating.toFixed(1)}
-                </span>
+            <>
+              <p className="mt-4 text-hero tabular-nums">
+                {avg_rating.toFixed(1)}
+              </p>
+              <div aria-hidden className="mt-2">
+                <StarRating rating={avg_rating} size="lg" />
               </div>
-              <span className="text-caption text-muted-foreground/60">
-                out of 5
-              </span>
-            </div>
+            </>
           )}
-
-          {/* Review Count */}
-          <button
-            onClick={onReviewsClick}
-            className={cn(
-              "text-body font-semibold transition-all px-4 py-3 rounded-lg border border-border/40",
-              onReviewsClick
-                ? "text-primary hover:text-primary/90 hover:bg-primary/5 hover:border-primary/30 active:scale-95"
-                : "text-foreground bg-muted/30"
+          <p className="mt-2 text-ui-meta">
+            {onReviewsClick ? (
+              <button
+                className="rounded-sm underline underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                onClick={onReviewsClick}
+                type="button"
+              >
+                {count}
+              </button>
+            ) : (
+              count
             )}
-          >
-            {review_count} {review_count === 1 ? "review" : "reviews"}
-          </button>
-
-          {/* Recommend % */}
-          {recommend_pct != null && recommend_pct > 0 && (
-            <div className="flex items-center gap-2 px-4 py-3 bg-muted/30 rounded-lg border border-border/40">
-              <Icon icon={ThumbsUpIcon} size={16} className="text-primary" />
-              <span className="text-body font-medium text-foreground">
-                {Math.round(recommend_pct)}% recommend
-              </span>
-            </div>
-          )}
-        </Cluster>
+          </p>
+        </>
       ) : (
-        <p className="text-body text-muted-foreground">
-          Be the first to review!
-        </p>
+        <p className="mt-2 text-ui-meta">No ratings yet · Tried it? Rate it</p>
       )}
     </div>
   );

@@ -212,7 +212,7 @@ function DiscoveryAccordionCard({
                     key={pill.href}
                     href={pill.href}
                     className={cn(
-                      "inline-flex max-w-full items-center rounded-full border border-white/25 bg-white/10 px-3 py-1 text-micro font-medium text-white/90",
+                      "inline-flex max-w-full items-center rounded-full border border-white/25 bg-white/10 px-3 py-1 font-medium text-white/90",
                       "transition-all duration-200 hover:border-white/50 hover:bg-white/20 hover:text-white"
                     )}
                   >

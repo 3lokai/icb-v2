@@ -24,7 +24,7 @@ import { CardRatingFooter } from "./CardRatingFooter";
 import { Stack } from "../primitives/stack";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
 import { WishlistButton } from "@/components/coffees/WishlistButton";
-import { TILE_FRAME } from "./tile";
+import { TILE_FRAME, TILE_PAPER } from "./tile";
 
 // Packaging tile: square paper tile with a pressed frame (see ./tile.ts). The pack is shown whole
 // (`contain`, 8px inset) and multiplied into the paper so white pack-shot backgrounds disappear;
@@ -32,7 +32,7 @@ import { TILE_FRAME } from "./tile";
 // would turn every multiplied pack muddy); in dark it is one step dimmer so it does not glow.
 // Multiply tints packaging, which 22-visual-system.md rule 1 otherwise forbids — recorded there as
 // the sanctioned exception. The 64px compact thumbnail still fills its square.
-const TILE = cn(TILE_FRAME, "bg-[#F6EFE3] dark:bg-[#E2D4BE]");
+const TILE = cn(TILE_FRAME, TILE_PAPER);
 const TILE_IMAGE = "object-contain mix-blend-multiply";
 const THUMB_IMAGE = "object-cover mix-blend-multiply";
 

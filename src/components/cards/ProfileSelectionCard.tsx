@@ -13,7 +13,9 @@ import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { coffeeImagePresets } from "@/lib/imagekit";
+import { cn } from "@/lib/utils";
 import { coffeeDetailHref } from "@/lib/utils/coffee-url";
+import { TILE_PAPER } from "./tile";
 
 export type ProfileSelectionListItem = {
   id: string;
@@ -40,15 +42,21 @@ export function ProfileSelectionCard({
   onRemoveFromRecommendations,
 }: ProfileSelectionCardProps) {
   return (
-    <Card className="relative group overflow-hidden border-border/40 rounded-[2rem] hover:border-accent/40 transition-all duration-500 flex flex-col sm:flex-row py-0 gap-0">
-      <div className="relative w-full sm:w-2/5 aspect-[4/3] min-h-[200px] bg-muted overflow-hidden">
+    <Card className="group card-hover relative flex flex-col gap-0 overflow-hidden rounded-xl py-0 sm:flex-row">
+      {/* Same paper as the CoffeeCard tile. Packaging is never zoomed or animated. */}
+      <div
+        className={cn(
+          "relative aspect-[4/3] min-h-[200px] w-full overflow-hidden sm:w-2/5",
+          TILE_PAPER
+        )}
+      >
         {selection.image ? (
           <Image
             src={coffeeImagePresets.coffeeCard(selection.image)}
             alt={selection.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
-            className="object-contain group-hover:scale-110 transition-transform duration-1000"
+            className="object-contain p-2 mix-blend-multiply"
             unoptimized
           />
         ) : (
@@ -62,7 +70,7 @@ export function ProfileSelectionCard({
         )}
       </div>
 
-      <CardContent className="p-8 flex-1 flex flex-col">
+      <CardContent className="flex flex-1 flex-col p-6">
         <Stack gap="4" className="h-full">
           <Stack gap="1">
             {selection.roasterSlug && selection.coffeeSlug ? (
@@ -71,16 +79,14 @@ export function ProfileSelectionCard({
                   selection.roasterSlug,
                   selection.coffeeSlug
                 )}
-                className="text-heading font-serif leading-[1.1] hover:text-accent transition-colors"
+                className="text-heading underline-offset-4 hover:underline"
               >
                 {selection.name}
               </Link>
             ) : (
-              <h3 className="text-heading font-serif leading-[1.1]">
-                {selection.name}
-              </h3>
+              <h3 className="text-heading">{selection.name}</h3>
             )}
-            <p className="text-label mt-1">{selection.roaster}</p>
+            <p className="text-ui-meta">{selection.roaster}</p>
           </Stack>
           <div className="relative mt-2">
             <Icon
@@ -88,7 +94,7 @@ export function ProfileSelectionCard({
               size={24}
               className="absolute -top-4 -left-3 text-accent/10 rotate-180"
             />
-            <p className="text-body italic text-muted-foreground/90 leading-relaxed font-serif">
+            <p className="font-serif text-body italic leading-snug">
               &quot;{selection.note}&quot;
             </p>
           </div>

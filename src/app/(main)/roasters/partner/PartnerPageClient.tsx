@@ -384,7 +384,7 @@ const PricingTiers = ({
                       </span>
                       <Badge
                         variant="outline"
-                        className="h-5 text-micro uppercase font-bold border-accent/20 text-accent bg-accent/5"
+                        className="h-5 uppercase font-bold border-accent/20 text-accent bg-accent/5"
                       >
                         SAVE {(100 - (3500 / 6000) * 100).toFixed(0)}%
                       </Badge>

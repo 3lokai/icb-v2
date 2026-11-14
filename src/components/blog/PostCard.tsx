@@ -65,7 +65,7 @@ export function PostCard({ article, featured = false }: PostCardProps) {
           <div className="absolute top-4 left-4">
             <span
               className={cn(
-                "rounded-full bg-background/90 px-3 py-1 text-overline text-foreground backdrop-blur-sm",
+                "rounded-full bg-background/90 px-3 py-1 text-foreground backdrop-blur-sm",
                 category.color === "badge-brown"
                   ? "bg-accent/90 text-white"
                   : ""

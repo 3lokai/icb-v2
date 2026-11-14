@@ -64,7 +64,7 @@ function DetailBlock({
 }
 
 const tabTriggerClass =
-  "flex-none shrink-0 snap-start inline-flex items-center gap-2 rounded-full px-4 py-3 text-caption font-medium transition-all duration-300 after:hidden sm:px-6 " +
+  "flex-none shrink-0 snap-start inline-flex items-center gap-2 rounded-full px-4 py-3 font-medium transition-all duration-300 after:hidden sm:px-6 " +
   "text-muted-foreground hover:text-foreground hover:bg-accent/5 " +
   "data-[state=active]:bg-primary/[0.08] data-[state=active]:text-primary data-[state=active]:shadow-sm";
 
@@ -251,7 +251,7 @@ export function RoastProfileTabbed({
                       <Badge
                         key={tag}
                         variant="secondary"
-                        className="rounded-lg border-accent/10 bg-accent/5 px-4 py-2 text-caption font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
+                        className="rounded-lg border-accent/10 bg-accent/5 px-4 py-2 font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
                       >
                         {tag}
                       </Badge>

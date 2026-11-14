@@ -24,7 +24,7 @@ export function ArticlePagination({
   if (totalPages <= 1) return null;
 
   const linkClass =
-    "inline-flex h-10 min-w-10 items-center justify-center gap-1 rounded-lg border border-border/60 px-3 text-caption transition-colors hover:border-border hover:bg-muted";
+    "inline-flex h-10 min-w-10 items-center justify-center gap-1 rounded-lg border border-border/60 px-3 text-copy-compact text-muted-foreground transition-colors hover:border-border hover:bg-muted";
 
   return (
     <nav

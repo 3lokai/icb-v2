@@ -713,7 +713,7 @@ export function RoasterCityChart({
           <div key={d.city} className="flex items-center gap-2">
             <span
               className={cn(
-                "text-micro inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full font-bold tracking-tighter tabular-nums",
+                "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full font-bold tracking-tighter tabular-nums",
                 i === 0
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted-foreground text-background"

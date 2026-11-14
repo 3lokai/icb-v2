@@ -287,7 +287,7 @@ export function ProfileHeader({
               asChild
               variant="ghost"
               size="sm"
-              className="text-micro text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground"
             >
               <Link href="/dashboard/profile">
                 <Icon icon={GearSixIcon} size={14} className="mr-2" />

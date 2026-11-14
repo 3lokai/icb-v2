@@ -224,10 +224,10 @@ export function BrewMethodProfileSection({
                   value={`item-${i}`}
                   className="rounded-xl border border-border/40 bg-card/30 px-6 data-[state=open]:bg-card/60 transition-colors"
                 >
-                  <AccordionTrigger className="text-left text-body font-bold text-foreground hover:no-underline py-4">
+                  <AccordionTrigger className="text-left font-bold text-foreground hover:no-underline py-4">
                     {item.mistake}
                   </AccordionTrigger>
-                  <AccordionContent className="text-body text-muted-foreground leading-relaxed pt-1 pb-6">
+                  <AccordionContent className="text-muted-foreground leading-relaxed pt-1 pb-6">
                     {item.fix}
                   </AccordionContent>
                 </AccordionItem>

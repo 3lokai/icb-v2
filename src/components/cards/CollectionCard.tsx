@@ -121,8 +121,12 @@ export function CollectionCard({
             {coffeeCount !== undefined && !isSmall && (
               <>
                 <span className="text-white/50">·</span>
-                <span className="text-[13px] leading-[18px] tabular-nums text-white/70">
-                  {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
+                {/* Colour sits on an inner span: the type role sets its own colour
+                    and, being unlayered CSS, would beat a utility on the same element. */}
+                <span className="text-ui-meta">
+                  <span className="text-white/70">
+                    {coffeeCount} {coffeeCount === 1 ? "coffee" : "coffees"}
+                  </span>
                 </span>
               </>
             )}

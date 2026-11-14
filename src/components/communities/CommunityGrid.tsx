@@ -278,7 +278,7 @@ function FilterChip({ active, onClick, icon, children }: FilterChipProps) {
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "inline-flex items-center gap-2 rounded-full border px-3 py-2 text-label transition-colors",
+        "inline-flex items-center gap-2 rounded-full border px-3 py-2 transition-colors",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         active
           ? "border-primary bg-primary text-primary-foreground"

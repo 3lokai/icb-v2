@@ -240,10 +240,10 @@ function ReviewItem({ review }: { review: MyReview }) {
             <Badge
               variant={review.recommend ? "default" : "secondary"}
               className={cn(
-                "text-label border",
+                "text-overline border",
                 review.recommend
                   ? "bg-primary/10 text-primary border-primary/20"
-                  : "bg-muted/50 border-border/40"
+                  : "bg-muted/50 text-muted-foreground border-border/40"
               )}
             >
               <Icon
@@ -294,11 +294,7 @@ function ReviewItem({ review }: { review: MyReview }) {
         )}
 
         {/* Meta */}
-        <Cluster
-          gap="2"
-          align="center"
-          className="text-caption text-muted-foreground"
-        >
+        <Cluster gap="2" align="center" className="text-muted-foreground">
           {timeAgo && <span>{timeAgo}</span>}
         </Cluster>
       </Stack>

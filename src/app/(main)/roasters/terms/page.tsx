@@ -114,10 +114,7 @@ export default function RoastersTermsPage() {
             </aside>
 
             <div className="md:col-span-12 lg:col-span-8">
-              <Stack
-                gap="12"
-                className="text-body-large text-muted-foreground leading-relaxed"
-              >
+              <Stack gap="12" className="text-muted-foreground leading-relaxed">
                 <section id="introduction">
                   <p className="text-foreground">
                     This Roaster Partnership Agreement (&quot;Agreement&quot;)

@@ -138,7 +138,7 @@ export function RoastScale({ currentRoastSlug, className }: RoastScaleProps) {
 
                       <span
                         className={cn(
-                          "text-caption font-bold transition-colors duration-300",
+                          "font-bold transition-colors duration-300",
                           isActive
                             ? "text-foreground"
                             : "text-muted-foreground group-hover:text-foreground"

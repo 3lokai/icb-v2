@@ -73,13 +73,13 @@ export function FAQBlock({ value, articleFaqs = [] }: FAQBlockProps) {
               value={itemId}
               className="bg-transparent"
             >
-              <AccordionTrigger className="text-left text-body font-bold text-foreground">
+              <AccordionTrigger className="text-left font-bold text-foreground">
                 {item.question}
               </AccordionTrigger>
               <AccordionContent
                 forceMount
                 contentClassName="data-[state=closed]:hidden"
-                className="text-body text-muted-foreground leading-relaxed"
+                className="text-muted-foreground leading-relaxed"
               >
                 {item.answer}
               </AccordionContent>

@@ -3,7 +3,12 @@
 import { Section as BaseSection } from "@/components/primitives/section";
 import { Stack } from "@/components/primitives/stack";
 import CoffeeCard from "@/components/cards/CoffeeCard";
+import { StarRating } from "@/components/common/StarRating";
+import { QuickRating } from "@/components/reviews/QuickRating";
+import { ReviewList } from "@/components/reviews/ReviewList";
+import { ReviewStats } from "@/components/reviews/ReviewStats";
 import type { CoffeeSummary } from "@/types/coffee-types";
+import type { EntityReviewStats } from "@/types/review-types";
 import {
   ArrowRightIcon,
   ArrowUpRightIcon,
@@ -245,6 +250,7 @@ const SECTIONS = [
   ["icons", "Icons"],
   ["audit", "Overlays & controls"],
   ["surfaces", "Surfaces & motif"],
+  ["ratings", "Ratings"],
   ["coffee-cards", "CoffeeCard"],
 ] as const;
 
@@ -270,6 +276,78 @@ function Section({
     >
       <Stack gap="8">{children}</Stack>
     </BaseSection>
+  );
+}
+
+// Fictional reviewers and notes; nothing here is read from or written to the database.
+const SAMPLE_STATS = {
+  avg_rating: 4.3,
+  review_count: 12,
+  rating_count: 12,
+  recommend_pct: 83,
+} as EntityReviewStats;
+
+const sampleReview = (
+  id: string,
+  name: string | null,
+  rating: number,
+  daysAgo: number,
+  comment: string | null,
+  extra: { brew_method?: "drip" | "aeropress"; milk?: boolean } = {}
+) => ({
+  id,
+  entity_id: null,
+  entity_type: "coffee" as const,
+  identity_key: name ? `user:${id}` : `anon:${id}`,
+  anon_id: null,
+  user_id: null,
+  rating,
+  recommend: rating >= 4,
+  comment,
+  brew_method: extra.brew_method ?? null,
+  works_with_milk: extra.milk ?? null,
+  value_for_money: null,
+  status: "active" as const,
+  created_at: new Date(Date.now() - daysAgo * 86_400_000).toISOString(),
+  updated_at: null,
+  user_profiles: name
+    ? { id, username: null, full_name: name, avatar_url: null }
+    : null,
+});
+
+const SAMPLE_REVIEWS = [
+  sampleReview(
+    "r1",
+    "Meera Iyer",
+    5,
+    2,
+    "Jackfruit and cacao up front, very clean as it cools. Best at 1:16 on a V60.",
+    { brew_method: "drip", milk: false }
+  ),
+  sampleReview("r2", "Arjun Rao", 4, 9, "Sweet and easy. Holds up with milk.", {
+    brew_method: "aeropress",
+    milk: true,
+  }),
+  sampleReview("r3", null, 3, 21, null),
+  sampleReview(
+    "r4",
+    "Farah Khan",
+    2,
+    40,
+    "Too roasty for the light roast on the label."
+  ),
+] as Parameters<typeof ReviewList>[0]["reviews"];
+
+function InteractiveStars() {
+  const [rating, setRating] = useState(0);
+  return (
+    <StarRating
+      ariaLabel="Rate the sample coffee"
+      interactive
+      onRate={setRating}
+      rating={rating}
+      size="lg"
+    />
   );
 }
 
@@ -1117,6 +1195,38 @@ export function ComponentPlayground() {
               </div>
               <p className="text-caption">Field guide and editorial.</p>
             </div>
+          </div>
+        </Section>
+        <Section
+          id="ratings"
+          note="The production rating components with fictional reviewers. The form is inert here, so it cannot submit; it points at an all-zero ID that matches no coffee."
+          title="Ratings"
+        >
+          <Row label="Stars: read-only sm / md / lg, then interactive (arrow keys work)">
+            <StarRating count={6} rating={4.5} size="sm" />
+            <StarRating count={12} rating={4.3} size="md" />
+            <StarRating rating={3} size="lg" />
+            <InteractiveStars />
+          </Row>
+          <div className="grid w-full gap-8 md:grid-cols-2">
+            <ReviewStats stats={SAMPLE_STATS} />
+            <ReviewStats stats={null} />
+          </div>
+          <div className="grid w-full items-start gap-8 lg:grid-cols-2">
+            <div>
+              <p className="mb-3 font-medium text-caption">
+                Rating form, inline (RatingPanel surface)
+              </p>
+              <div className="surface-1 rounded-xl p-6 md:p-8" inert>
+                <QuickRating
+                  entityId="00000000-0000-0000-0000-000000000000"
+                  entityType="coffee"
+                  initialRating={4}
+                  variant="inline"
+                />
+              </div>
+            </div>
+            <ReviewList entityType="coffee" reviews={SAMPLE_REVIEWS} />
           </div>
         </Section>
         <Section

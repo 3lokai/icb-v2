@@ -75,7 +75,7 @@ export function StepList({ value }: StepListProps) {
           <div className="relative shrink-0">
             <div
               className={cn(
-                "flex size-10 items-center justify-center rounded-2xl font-bold text-body shadow-md border-2 border-white/10 dark:border-black/10 transition-transform hover:scale-105",
+                "flex size-10 items-center justify-center rounded-2xl font-bold shadow-md border-2 border-white/10 dark:border-black/10 transition-transform hover:scale-105",
                 isBrewing ? "bg-primary text-white" : "bg-accent text-white"
               )}
             >

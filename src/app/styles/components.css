@@ -8,7 +8,7 @@
 
 .surface-1 {
   /* Card depth */
-  @apply bg-card text-card-foreground border border-border/60;
+  @apply bg-card text-card-foreground border border-border;
 }
 
 .surface-2 {
@@ -23,11 +23,12 @@
 
 /* Cards */
 .card-base {
-  @apply bg-card text-card-foreground border border-border/60 rounded-lg;
+  @apply bg-card text-card-foreground border border-border rounded-lg;
 }
 
+/* Neutral hover: the edge darkens, no fill, lift or accent (same as TILE_FRAME). */
 .card-hover {
-  @apply transition-colors duration-500 hover:border-border;
+  @apply transition-colors hover:border-foreground/30 motion-reduce:transition-none;
 }
 
 /* Glossary Terms

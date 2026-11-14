@@ -181,7 +181,7 @@ export function RecipeSidebar({
           <Cluster gap="2">
             {selectedMethod && (
               <Badge
-                className="shrink-0 gap-2 px-3 py-1 text-overline bg-accent/10 text-accent border-accent/20"
+                className="shrink-0 gap-2 px-3 py-1 bg-accent/10 text-accent border-accent/20"
                 variant="secondary"
               >
                 {methods.find((m) => m.value === selectedMethod)?.label ||
@@ -198,7 +198,7 @@ export function RecipeSidebar({
             )}
             {selectedDifficulty && (
               <Badge
-                className="shrink-0 gap-2 px-3 py-1 text-overline bg-accent/10 text-accent border-accent/20"
+                className="shrink-0 gap-2 px-3 py-1 bg-accent/10 text-accent border-accent/20"
                 variant="secondary"
               >
                 {selectedDifficulty}
@@ -214,7 +214,7 @@ export function RecipeSidebar({
             )}
             {selectedUse && (
               <Badge
-                className="shrink-0 gap-2 px-3 py-1 text-overline bg-accent/10 text-accent border-accent/20"
+                className="shrink-0 gap-2 px-3 py-1 bg-accent/10 text-accent border-accent/20"
                 variant="secondary"
               >
                 {selectedUse}
@@ -230,7 +230,7 @@ export function RecipeSidebar({
             )}
             {selectedExpert && (
               <Badge
-                className="shrink-0 gap-2 px-3 py-1 text-overline bg-accent/10 text-accent border-accent/20"
+                className="shrink-0 gap-2 px-3 py-1 bg-accent/10 text-accent border-accent/20"
                 variant="secondary"
               >
                 {selectedExpert}

@@ -6,7 +6,8 @@ import Link from "next/link";
 import { memo, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
+import { Icon } from "@/components/common/Icon";
 import { Stack } from "../primitives/stack";
 import { cn } from "@/lib/utils";
 import type { Curator } from "@/components/curations/types";
@@ -41,13 +42,8 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
     return null;
   }, [curator.quote, curator.philosophy, curator.story]);
 
-  const picks = useMemo(
-    () =>
-      curator.recentPicks?.length
-        ? curator.recentPicks
-        : ["Heritage Blend", "Single Origin"],
-    [curator.recentPicks]
-  );
+  // No invented fallback: a curator with no picks shows no picks.
+  const picks = curator.recentPicks ?? [];
 
   const initials = useMemo(() => curatorInitials(curator.name), [curator.name]);
 
@@ -71,12 +67,10 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
         itemScope
         itemType="https://schema.org/Person"
       >
-        <div className="bg-noise pointer-events-none absolute inset-0 z-0 opacity-[0.03]" />
-
         <CardContent className="relative z-10 flex h-full flex-1 flex-col gap-6 card-padding">
           <div className="flex items-start justify-between gap-3">
-            <div className="relative overflow-hidden rounded border border-border/40 p-0.5 shadow-sm transition-colors duration-500 group-hover:border-accent/40">
-              <div className="relative h-14 w-14 overflow-hidden rounded-sm grayscale transition-all duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0">
+            <div className="relative overflow-hidden rounded border border-border p-0.5">
+              <div className="relative h-14 w-14 overflow-hidden rounded-sm">
                 {!logoError ? (
                   <Image
                     alt={`${curator.name} logo`}
@@ -107,50 +101,42 @@ function CuratorCardComponent({ curator, className }: CuratorCardProps) {
 
           <Stack gap="2">
             <h3
-              className="text-heading transition-colors duration-300 group-hover:text-accent text-balance line-clamp-2"
+              className="text-heading text-balance line-clamp-2 underline-offset-4 group-hover:underline"
               itemProp="name"
             >
               {curator.name}
             </h3>
-            <p className="text-label">{curator.location}</p>
+            <p className="text-ui-meta">{curator.location}</p>
           </Stack>
 
           {quoteText ? (
-            <p className="text-body font-serif italic leading-relaxed text-muted-foreground line-clamp-3">
+            <p className="font-serif text-body italic leading-snug line-clamp-3">
               &quot;{quoteText}&quot;
             </p>
           ) : null}
 
-          <div className="mt-auto pt-4">
-            <Stack gap="4">
-              <div className="flex items-center justify-between border-t border-border/10 pt-6">
-                <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60">
-                  CURATOR PICKS
-                </span>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {picks.map((pick, i) => (
-                  <Badge
-                    key={`${pick}-${i}`}
-                    variant="outline"
-                    className="max-w-full text-overline line-clamp-1 normal-case"
-                  >
-                    {pick}
-                  </Badge>
-                ))}
-              </div>
-
-              <span
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "lg" }),
-                  "w-full shadow-sm transition-all duration-500",
-                  "group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground"
-                )}
-              >
-                View Selections
-              </span>
-            </Stack>
+          <div className="mt-auto flex flex-col gap-3 border-t border-border pt-4">
+            {picks.length > 0 && (
+              <>
+                <p className="text-ui-meta">Curator picks</p>
+                <div className="flex flex-wrap gap-2">
+                  {picks.map((pick, i) => (
+                    <Badge
+                      key={`${pick}-${i}`}
+                      variant="outline"
+                      className="max-w-full text-overline line-clamp-1 normal-case"
+                    >
+                      {pick}
+                    </Badge>
+                  ))}
+                </div>
+              </>
+            )}
+            {/* The whole card is the link; this is its label, not a second button. */}
+            <span className="flex items-center gap-1 text-ui-label">
+              View selections
+              <Icon icon={ArrowRightIcon} size={16} />
+            </span>
           </div>
         </CardContent>
 

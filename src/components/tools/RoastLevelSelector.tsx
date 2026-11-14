@@ -40,7 +40,7 @@ export function RoastLevelSelector({
             <button
               aria-pressed={value === option.value}
               className={cn(
-                "flex h-10 flex-1 items-center justify-center gap-2 rounded-lg border font-medium text-caption transition-colors duration-150",
+                "flex h-10 flex-1 items-center justify-center gap-2 rounded-lg border font-medium transition-colors duration-150",
                 value === option.value
                   ? "border-accent bg-accent text-accent-foreground"
                   : "border-border/50 bg-background text-foreground hover:bg-muted/50"

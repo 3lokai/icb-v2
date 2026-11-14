@@ -195,7 +195,7 @@ export function ProcessProfileSection({
                       <Badge
                         key={tag}
                         variant="secondary"
-                        className="rounded-lg border-accent/10 bg-accent/5 px-4 py-2 text-caption font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
+                        className="rounded-lg border-accent/10 bg-accent/5 px-4 py-2 font-medium text-accent transition-all hover:border-accent/20 hover:bg-accent/10"
                       >
                         {tag}
                       </Badge>

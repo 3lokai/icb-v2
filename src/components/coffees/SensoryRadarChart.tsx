@@ -249,7 +249,7 @@ export function SensoryRadarChart({
               <Badge
                 variant="outline"
                 className={cn(
-                  "px-3 py-1 text-caption uppercase tracking-wide",
+                  "px-3 py-1 uppercase tracking-wide",
                   sourceMeta[source].badgeClassName
                 )}
               >

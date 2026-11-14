@@ -199,10 +199,10 @@ export function DeveloperPortal({
         <DialogContent className="max-w-lg p-0 gap-0 overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60" />
           <DialogHeader className="px-8 pt-8 pb-4 text-left border-b border-border/10">
-            <DialogTitle className="font-serif italic text-title text-primary leading-none">
+            <DialogTitle className="font-serif italic text-primary leading-none">
               Create API key
             </DialogTitle>
-            <DialogDescription className="text-micro font-bold uppercase tracking-widest text-muted-foreground/40 mt-2">
+            <DialogDescription className="font-bold uppercase tracking-widest text-muted-foreground/40 mt-2">
               Give this key a name so you can identify it later
             </DialogDescription>
           </DialogHeader>
@@ -210,7 +210,7 @@ export function DeveloperPortal({
             <div className="space-y-2">
               <Label
                 htmlFor="key-name"
-                className="text-micro font-bold uppercase tracking-widest text-muted-foreground/60"
+                className="font-bold uppercase tracking-widest text-muted-foreground/60"
               >
                 Name
               </Label>
@@ -254,10 +254,10 @@ export function DeveloperPortal({
         <DialogContent className="max-w-lg p-0 gap-0 overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-accent to-primary/60 opacity-60" />
           <DialogHeader className="px-8 pt-8 pb-4 text-left border-b border-border/10">
-            <DialogTitle className="font-serif italic text-title text-primary leading-none">
+            <DialogTitle className="font-serif italic text-primary leading-none">
               Copy your API key
             </DialogTitle>
-            <DialogDescription className="text-micro font-bold uppercase tracking-widest text-muted-foreground/40 mt-2">
+            <DialogDescription className="font-bold uppercase tracking-widest text-muted-foreground/40 mt-2">
               Store it securely — you won&apos;t see it again
             </DialogDescription>
           </DialogHeader>

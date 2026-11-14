@@ -63,7 +63,7 @@ export function HeroSegmentDevToggle({
       <div className="flex flex-wrap gap-2">
         <button
           className={cn(
-            "rounded-md border px-3 py-2 text-caption transition-colors",
+            "rounded-md border px-3 py-2 transition-colors",
             !searchParams.get("heroSegment")
               ? "border-amber-400 bg-amber-500/20 text-amber-50"
               : "border-white/20 bg-black/20 text-white/90 hover:bg-black/30"
@@ -76,7 +76,7 @@ export function HeroSegmentDevToggle({
         {HERO_SEGMENT_OPTIONS.map(({ value, label }) => (
           <button
             className={cn(
-              "rounded-md border px-3 py-2 text-caption transition-colors",
+              "rounded-md border px-3 py-2 transition-colors",
               querySeg === value
                 ? "border-amber-400 bg-amber-500/20 text-amber-50"
                 : "border-white/20 bg-black/20 text-white/90 hover:bg-black/30"

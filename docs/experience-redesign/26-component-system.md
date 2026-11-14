@@ -366,6 +366,84 @@ Checked: type-check and lint pass; playground at 1280px light and live `/coffees
 
 Owner chose the smaller production card above. The Minimal preview (`minimal-coffee-card.tsx`) and the Current vs Minimal comparison were removed from the playground; the "Current vs Minimal CoffeeCard experiment" section above is history. Name stays one line so cards in a row keep equal height.
 
+## Navigation, overlays and remaining cards (2026-11-14, in review)
+
+Owner instruction: carry on past the playground, decide from the existing decisions, ask where they run out. Phase C step 3 plus the parts of the 2026-11-14 PROPOSED review row ([07](07-decisions.md)) that could be applied without a new ruling.
+
+**Navigation (24 §6, owner-approved 2026-11-11).** Config is now separate from rendering: `src/lib/navigation/index.ts` holds `HEADER_NAV`, `FOOTER_NAV` and `LEGAL_NAV`; `header.tsx`, `ui/resizable-navbar.tsx` and `Footer.tsx` render them.
+
+- Header: Coffees · Roasters · Origins · Learn · Tools · More. Every label is a link; Coffees, Origins, Learn and More also open a panel on hover or keyboard focus (Escape closes). The Coffees panel is Browse / Roast / Brew method / Process / Bean type / Price, all existing landing URLs. `/explore` (a dead link on the old Explore label), the top-level Profile item and the "Coming Soon" Estates entry are gone.
+- Search reads as a field ("Search coffees, roasters, origins…") at 1280px and wider, and as an icon below that and when the bar compacts on scroll.
+- Account: Profile, Settings (`/dashboard`), Sign out. Signed out: Sign in, plus "Your profile" (`/profile/anon`) when the browser has an anonymous rating count. "For Roasters" left the header for the footer.
+- Mobile menu: search field, the six destinations (the caret beside a label expands its groups, the label still navigates), Rate a coffee (opens search in rating mode), then account. The menu scrolls inside itself.
+- Footer: the six approved columns and the legal row.
+- Hover and active are neutral (`bg-muted`), not copper.
+
+**Overlays (PROPOSED row, item 2).** Dialog, AlertDialog and Sheet moved from the page ground to the card colour (`bg-popover`); AlertDialog radius 10 → 14px to match Dialog; Popover, DropdownMenu, Select content and Command 8 → 10px. No Radix behaviour touched.
+
+**Cards (PROPOSED row, items 4 and 6; 22 rule 2).**
+
+- `.surface-1` / `.card-base` use the solid `border-border` (was `/60`), matching `ui/card.tsx`. `.card-hover` darkens the edge to `foreground/30` like `TILE_FRAME`. Both are shared utilities (about 50 files).
+- RegionCard, RecipeCard, CuratorCard, CommunityCard, TopProfileCard, ProfileSelectionCard: hover is an underline on the name and the darker edge; copper hover fills, lifts, zooms and the per-card noise overlay are removed; secondary lines use `text-ui-meta` / `text-copy-compact`; uppercase tracked labels ("CURATOR PICKS", "MODERATED BY") are plain captions. They keep their bordered card: only CoffeeCard and RoasterCard were ruled to drop it.
+- RecipeCard selected state is an ink edge. CuratorCard and CommunityCard end in a text label with an arrow (→ internal, ↗ for the external invite) instead of a button shape inside a card that is already one link.
+- ProfileSelectionCard shows the pack on the CoffeeCard paper (`TILE_PAPER`, now exported from `tile.ts`), multiplied, with no hover zoom (22 rule 1); radius 32 → 14px.
+- TopProfileCard's rating count is a label, not a `text-title` numeral.
+- **Content fix:** CuratorCard no longer shows the invented picks "Heritage Blend" and "Single Origin" when a curator has none; the picks block is hidden instead.
+- CollectionCard is unchanged apart from a lint fix.
+
+**Trap found, fixed below.** `cn()` was plain `tailwind-merge`, which read the custom type roles (`text-ui-label`, `text-caption`, `text-body`, …) as text colours and dropped them when a colour followed.
+
+Checked: type-check, lint and 91 tests pass (one new: every `/coffees/<slug>` nav link is a real landing page). In a browser: header and Coffees panel at 1280px in dark; compacted bar; mobile menu at 375px with Coffees expanded; `/curations` and `/communities` in dark; `/tools/expert-recipes` and the footer in light; no horizontal overflow on those pages.
+
+Not checked: keyboard use of the panels; the signed-in account menu; "Your profile" for a visitor with anonymous ratings; Dialog, Sheet and AlertDialog on real pages after the colour change; `/regions`, the leaderboard and profile selections by eye; pages that use `surface-1` beyond those above; 1024–1279px widths.
+
+## Owner rulings, `cn()` fix and rating components (2026-11-14, in review)
+
+**Rulings applied.**
+
+- **Profile ▸ submenu:** Taste Foundations, Selections, Wishlist, Ratings, Gear — the profile page's own sections, linked by anchor (`PROFILE_SECTIONS` in `src/lib/navigation/`). Desktop uses `DropdownMenuSub`; mobile uses the same expandable row as the main destinations.
+- **Theme toggle** stays in the bar.
+- **Footer** link rows are tighter (8px between links, 12px under the column label).
+
+**`cn()` fix.** `src/lib/utils.ts` now registers the 17 type roles with `tailwind-merge` as their own group, so a role only replaces another role and survives a following colour. Test: `src/lib/utils/cn.test.ts`.
+
+The fix alone would have changed pages: roles that had been silently dropped would come back, and because the role classes are **unlayered CSS** a returning role overrides the colour, weight and tracking utilities beside it. So the already-dead roles were removed instead, keeping today's rendering:
+
+- 27 inside `cn()` calls and 65 in `className` strings passed to components that merge classes (Badge, Button, Accordion, Dialog, Stack, …), about 60 files.
+- Three rewritten rather than removed: `ArticlePagination` (colourless role plus an explicit colour, so the current page keeps its light text), the recommend chip in `ReviewList` and `MyReviewsClient`, and the "Begin the Journey" pill in `ProfileTasteProfile` (a plain span instead of `Tag`).
+
+Intended changes the fix does make: Badge, Tag and Button now keep their variant text colour when a caller passes a type role (it was being dropped); the brew-method chips on discovery pages are 12px everywhere (they were 12px in one section and inherited size in the rest).
+
+Method: a temporary logger compared old and new merge output while 35 page types were server-rendered; the remaining differences were reviewed one by one and the logger removed. **Not covered:** signed-in pages, dialogs and client-only states, which were never rendered in that crawl.
+
+**Still open, not fixed:** the unlayered type roles themselves. About 575 colour, 531 weight, 412 tracking and 242 leading utilities across 210 files sit beside a role that overrides them (`text-caption text-foreground` renders muted; `text-micro font-bold tracking-widest` renders medium at 0.02em). Moving the roles into `@layer components` would make all of those take effect at once, which is a site-wide visual change and needs its own decision.
+
+**Rating components** (styling and copy only; no data or submit logic changed).
+
+- `QuickRating`: no gradient bars, 40px dialog radius, eyebrows or brush accent; headings are `text-heading`; labels are `text-ui-label`; selected stars use the fill weight and empty ones are muted outlines; each star is a 44px target; no hover zoom; Black / Milk is a labelled group with `aria-pressed`; "Saved" is a neutral badge; Submit is 44px tall. Limit state reads "Sign in to keep rating".
+- `ReviewStats`: one evidence line, "★ 4.3 · 12 ratings · 83% recommend", instead of three tiles; empty state "No ratings yet · Tried it? Rate it".
+- `ReviewList`: plain heading, no row hover or comment box, stars from the shared `StarRating`, brew method shown by its label ("AeroPress", not `aeropress`), counts say "ratings".
+- `StarRating`: no hover zoom. `RatingPanel`: card surface with a neutral edge. `FloatingRateCTA`: no hover zoom, token star colour.
+- Playground: new **Ratings** section with fictional reviewers. The form is `inert` and points at an all-zero ID, so it cannot submit.
+
+Checked: type-check, lint and 94 tests pass. Playground Ratings section at 1280px in light and dark, and at 375px for overflow and the 44px star target (measured). A live coffee page renders the new Ratings block without error.
+
+Not checked: the Profile submenu and anchors while signed in; the rating form's saved, limit and delete states; the modal variant; roaster pages; keyboard.
+
+Left for the owner: "Just added" (the directory has no time filter in its URL; only the homepage strip uses a two-week window), the footer "Badge kit" link (the page is per roaster, `/roasters/<slug>/badges`, so a site-wide link has no slug to point at), the five Learn categories in the Learn panel, footer accordions on mobile, and the unlayered type roles.
+
+## Rating components moved to the designed look, presentation only (2026-11-14, in review)
+
+Owner ruling: match `playground/index.html` ("reviews · rating") and `samples/reviews-rate-*.png` at the presentation layer; no flow or data changes. This supersedes the `ReviewStats` and `ReviewList` descriptions in the section above, and the 2026-11-12 note that form placeholders match the old `QuickRating`.
+
+- `ReviewStats`: "What drinkers say", the average as a large numeral, stars, then the count. "% recommend" is no longer shown.
+- `ReviewList`: the reviewer's avatar, stars and a "name · method · milk · date" line, then the note as an italic serif quote (owner: keep the avatar). Anonymous ratings read "A drinker". The recommend and value badges, the heading and the one-option sort control are gone.
+- `QuickRating`: optional fields reordered to brew, milk, notes; labels "How did you brew it?", "With milk?" (Yes / No chips; pressing the selected chip clears it) and "Anything to add?" with the placeholder "What did it taste like to you?"; anonymous visitors see "N of 3 ratings without an account · sign in to keep them" under the button.
+
+Not built, by ruling: save-on-star with the "Saved — thank you" sheet and Done / Skip, the five-chip brew list, distribution bars, "with notes" and "Brewed as" tallies, the "Had any of these?" rail and the mobile bottom sheet.
+
+Checked: type-check, lint and tests pass; playground Ratings section at 1280px in light. Not checked: dark, 375px, a live coffee or roaster page, the anonymous count after a real rating.
+
 ## Backlog (not blocking the next step)
 
 - **CoffeeCard image load failure.** `coffeeImagePresets` already falls back to `/images/placeholder-coffee.avif` when a coffee has no image path. A path that exists but fails to load (deleted or broken ImageKit file) still shows an empty tile, because the card is server-rendered with no `onError`. Fix: a small client image wrapper like `RoasterLogo`. Frequency in the catalogue not measured. Added 2026-11-14.

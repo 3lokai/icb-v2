@@ -198,7 +198,7 @@ export function GrindConverterClient() {
               aria-pressed={active}
               onClick={() => setMethodKey(key)}
               className={cn(
-                "rounded-full border px-4 py-2 text-caption font-medium transition-colors",
+                "rounded-full border px-4 py-2 font-medium transition-colors",
                 active
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border/60 bg-background text-muted-foreground hover:bg-muted/50 hover:text-foreground"
@@ -234,7 +234,7 @@ export function GrindConverterClient() {
                 variant="outline"
                 size="sm"
                 onClick={handleCopyLink}
-                className="group border-border/50 text-caption text-muted-foreground hover:text-foreground"
+                className="group border-border/50 text-muted-foreground hover:text-foreground"
               >
                 <Icon className="mr-1 h-3 w-3" icon={LinkIcon} />
                 Copy link

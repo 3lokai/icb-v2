@@ -47,7 +47,7 @@ export function CopyLink({ method, strength, roast, grams }: CopyLinkProps) {
 
   return (
     <Button
-      className="group border-border/50 bg-background text-caption text-muted-foreground transition-colors duration-200 hover:bg-muted/50 hover:text-foreground"
+      className="group border-border/50 bg-background text-muted-foreground transition-colors duration-200 hover:bg-muted/50 hover:text-foreground"
       onClick={handleCopyLink}
       size="sm"
       variant="outline"

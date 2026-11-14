@@ -34,7 +34,7 @@ export function StrengthSelector({
             <button
               aria-pressed={value === option.value}
               className={cn(
-                "h-10 flex-1 rounded-lg border font-medium text-caption transition-colors duration-150",
+                "h-10 flex-1 rounded-lg border font-medium transition-colors duration-150",
                 value === option.value
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border/50 bg-background text-foreground hover:bg-muted/50"

@@ -152,7 +152,7 @@ export default async function HowItWorksSection() {
                       {/* Step Number Badge */}
                       <div
                         className={cn(
-                          "absolute -top-3 -right-3 h-8 w-8 flex-center rounded-full text-caption font-bold shadow-sm",
+                          "absolute -top-3 -right-3 h-8 w-8 flex-center rounded-full font-bold shadow-sm",
                           step.color === "accent"
                             ? "bg-accent text-accent-foreground"
                             : "bg-primary text-primary-foreground"

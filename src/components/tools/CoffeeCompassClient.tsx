@@ -526,7 +526,7 @@ export function CoffeeCompassClient({
                           key={key}
                           onClick={() => toggleChip(key)}
                           className={cn(
-                            "rounded-full border px-3 py-1 text-overline font-medium transition-all duration-200",
+                            "rounded-full border px-3 py-1 font-medium transition-all duration-200",
                             isActive
                               ? style.active
                               : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/30"
@@ -839,7 +839,7 @@ export function CoffeeCompassClient({
               legibility (AA) so the wheel never reads as decorative. */}
           <div
             className={cn(
-              "mt-3 flex flex-col items-center justify-center gap-1 text-caption transition-colors duration-300",
+              "mt-3 flex flex-col items-center justify-center gap-1 transition-colors duration-300",
               wheelFocused || wheelHovered
                 ? "text-foreground"
                 : "text-muted-foreground"

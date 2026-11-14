@@ -123,7 +123,6 @@ export function RegionCard({
       <Link
         className={cn(
           "group surface-1 card-hover flex items-center gap-3 overflow-hidden rounded-lg pr-4",
-          "transition-colors duration-300 hover:border-accent/40",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           className
         )}
@@ -136,10 +135,10 @@ export function RegionCard({
           sizes="44px"
         />
         <span className="min-w-0 py-2">
-          <span className="block truncate text-body font-medium transition-colors group-hover:text-accent">
+          <span className="block truncate text-ui-label underline-offset-4 group-hover:underline">
             {region.display_name}
           </span>
-          <span className="block text-micro tabular-nums">{tally}</span>
+          <span className="block text-ui-meta">{tally}</span>
         </span>
       </Link>
     );
@@ -151,9 +150,6 @@ export function RegionCard({
     <Link
       className={cn(
         "group surface-1 card-hover flex flex-col overflow-hidden rounded-xl",
-        "transition-[border-color,box-shadow,transform] duration-300",
-        "hover:border-accent/40 hover:shadow-md hover:-translate-y-0.5",
-        "motion-reduce:transition-none motion-reduce:hover:translate-y-0",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className
       )}
@@ -166,7 +162,7 @@ export function RegionCard({
 
       <div className="flex flex-1 flex-col gap-2 p-4">
         <Stack gap="1">
-          <h3 className="text-heading text-balance transition-colors group-hover:text-accent">
+          <h3 className="text-heading text-balance underline-offset-4 group-hover:underline">
             {region.display_name}
           </h3>
           {elevation ? <p className="text-ui-meta">{elevation}</p> : null}
@@ -178,8 +174,8 @@ export function RegionCard({
           </p>
         ) : null}
 
-        <p className="text-micro mt-auto pt-2 font-normal opacity-70">
-          <span className="tabular-nums">{tally}</span>
+        <p className="text-ui-meta mt-auto pt-2">
+          <span>{tally}</span>
           {region.district ? <span>{` · ${region.district}`}</span> : null}
         </p>
       </div>

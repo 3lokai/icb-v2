@@ -35,7 +35,7 @@ export function MethodSelector({
               <button
                 aria-pressed={active}
                 className={cn(
-                  "h-10 whitespace-nowrap rounded-full border px-4 text-caption transition-colors duration-150",
+                  "h-10 whitespace-nowrap rounded-full border px-4 transition-colors duration-150",
                   active
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border/50 bg-background text-foreground hover:bg-muted/50"

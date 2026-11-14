@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { useScrolledPast } from "@/hooks/use-scrolled-past";
+import type { NavItem } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 // ponytail: motion/react removed — this component sits in the global header, so
@@ -22,14 +23,6 @@ type NavBodyProps = {
   children: React.ReactNode;
   className?: string;
   visible?: boolean;
-};
-
-type NavItem = {
-  name: string;
-  link: string;
-  disabled?: boolean;
-  badge?: string;
-  children?: NavItem[];
 };
 
 type NavItemsProps = {
@@ -102,209 +95,130 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => (
   </div>
 );
 
-type NavItemComponentProps = {
-  item: NavItem;
-  idx: number;
-  hovered: number | null;
-  openDropdown: number | null;
-  isActive: (link: string) => boolean;
-  hasActiveChild: (item: NavItem) => boolean;
-  onHover: (idx: number) => void;
-  onLeave: () => void;
-  onItemClick?: () => void;
-};
+const isActive = (pathname: string, link: string) =>
+  link === "/" ? pathname === "/" : pathname.startsWith(link);
 
-const NavItemComponent = ({
-  item,
-  idx,
-  hovered,
-  openDropdown,
-  isActive,
-  hasActiveChild,
-  onHover,
-  onLeave,
-  onItemClick,
-}: NavItemComponentProps) => {
-  const active = isActive(item.link) || hasActiveChild(item);
-  const showPill = hovered === idx || (active && hovered === null);
-  const hasDropdown = item.children && item.children.length > 0;
-  const isDropdownOpen = openDropdown === idx;
+// Panel rows match DropdownMenu: neutral bg-muted on hover and focus, no copper fill.
+const panelLink =
+  "block rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none motion-reduce:transition-none";
 
-  const handleMouseEnter = () => {
-    onHover(idx);
-  };
-
-  const renderButton = () => (
-    <button
-      aria-expanded={isDropdownOpen}
-      aria-haspopup="true"
-      aria-label={`${item.name} menu`}
-      className={cn(
-        "relative flex cursor-pointer items-center gap-1 border-0 bg-transparent px-4 py-2 font-inherit text-inherit transition-colors",
-        active
-          ? "font-medium text-accent-foreground"
-          : "text-muted-foreground hover:text-accent-foreground"
-      )}
-      type="button"
-    >
-      {showPill && (
-        <span
-          className={cn(
-            "absolute inset-0 h-full w-full rounded-full",
-            active ? "bg-accent/80" : "bg-accent/40"
-          )}
-        />
-      )}
-      <span className="relative z-20">{item.name}</span>
-      <Icon
-        className={cn(
-          "relative z-20 transition-transform",
-          isDropdownOpen && "rotate-180"
-        )}
-        icon={CaretDownIcon}
-        size={12}
-      />
-    </button>
-  );
-
-  const renderLink = () => (
-    <Link
-      className={cn(
-        "relative px-4 py-2 transition-colors",
-        active
-          ? "font-medium text-accent-foreground"
-          : "text-muted-foreground hover:text-accent-foreground"
-      )}
-      href={item.link}
-      onClick={onItemClick}
-    >
-      {showPill && (
-        <span
-          className={cn(
-            "absolute inset-0 h-full w-full rounded-full",
-            active ? "bg-accent/80" : "bg-accent/40"
-          )}
-        />
-      )}
-      <span className="relative z-20">{item.name}</span>
-    </Link>
-  );
-
-  return (
-    <div
-      className="relative"
-      key={item.link}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={onLeave}
-    >
-      {hasDropdown ? renderButton() : renderLink()}
-
-      {hasDropdown && isDropdownOpen && (
-        // pt-2 (not mt-2) keeps the trigger→menu gap inside the hover hit area
-        <div className="-translate-x-1/2 absolute top-full left-1/2 z-50 pt-2 min-w-[200px]">
-          <div className="rounded-xl bg-background/90 px-2 py-2 shadow-lg backdrop-blur-lg duration-200 animate-in fade-in slide-in-from-top-2 dark:bg-background/90">
-            {item.children?.map((child) => {
-              const childActive = isActive(child.link);
-
-              if (child.disabled) {
-                return (
-                  <span
-                    className="relative flex items-center justify-between gap-2 rounded-full px-4 py-2 text-body text-muted-foreground/50 cursor-not-allowed"
-                    key={child.link}
-                  >
-                    <span className="relative z-20">{child.name}</span>
-                    {child.badge && (
-                      <span className="relative z-20 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                        {child.badge}
-                      </span>
-                    )}
-                  </span>
-                );
-              }
-
-              return (
-                <Link
-                  className={cn(
-                    "relative block rounded-full px-4 py-2 text-body transition-colors",
-                    childActive
-                      ? "font-medium text-accent-foreground"
-                      : "text-muted-foreground hover:bg-accent/40 hover:text-accent-foreground"
-                  )}
-                  href={child.link}
-                  key={child.link}
-                  onClick={onItemClick}
-                >
-                  {childActive && (
-                    <span className="absolute inset-0 h-full w-full rounded-full bg-accent/80" />
-                  )}
-                  <span className="relative z-20">{child.name}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
+/**
+ * Desktop nav. Every label is a link; a label with `groups` also opens a panel on
+ * hover or keyboard focus (Escape closes it). A multi-group panel is centred under
+ * the whole bar, a single list under its own label.
+ */
 export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
-  const [hovered, setHovered] = useState<number | null>(null);
-  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(null);
   const pathname = usePathname();
-
-  const isActive = (link: string) => {
-    if (link === "/") {
-      return pathname === "/";
-    }
-    return pathname.startsWith(link);
-  };
-
-  const hasActiveChild = (item: NavItem): boolean => {
-    if (!item.children) {
-      return false;
-    }
-    return item.children.some((child) => isActive(child.link));
-  };
-
-  const handleHover = (idx: number) => {
-    setHovered(idx);
-    const item = items[idx];
-    if (item.children && item.children.length > 0) {
-      setOpenDropdown(idx);
-    } else {
-      setOpenDropdown(null);
-    }
-  };
-
-  const handleLeave = () => {
-    setHovered(null);
-    setOpenDropdown(null);
-  };
+  const close = () => setOpen(null);
 
   return (
-    <div
+    <nav
+      aria-label="Main"
       className={cn(
-        "hidden min-w-0 flex-1 flex-row items-center justify-center gap-2 pr-6 font-medium text-muted-foreground text-body transition-colors hover:text-foreground lg:flex",
+        "hidden min-w-0 flex-1 flex-row items-center justify-center gap-1 pr-6 lg:flex",
         className
       )}
-      onMouseLeave={handleLeave}
+      onMouseLeave={close}
     >
-      {items.map((item, idx) => (
-        <NavItemComponent
-          hasActiveChild={hasActiveChild}
-          hovered={hovered}
-          idx={idx}
-          isActive={isActive}
-          item={item}
-          key={item.link}
-          onHover={handleHover}
-          onItemClick={onItemClick}
-          onLeave={handleLeave}
-          openDropdown={openDropdown}
-        />
-      ))}
-    </div>
+      {items.map((item, idx) => {
+        const { groups } = item;
+        const wide = !!groups && groups.length > 1;
+        const expanded = !!groups && open === idx;
+
+        return (
+          <div
+            // A wide panel positions against NavBody, so its wrapper stays static.
+            className={cn(!wide && "relative")}
+            key={item.name}
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget)) close();
+            }}
+            onFocus={() => setOpen(idx)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") close();
+            }}
+            onMouseEnter={() => setOpen(idx)}
+          >
+            <Link
+              aria-current={pathname === item.link ? "page" : undefined}
+              aria-expanded={groups ? expanded : undefined}
+              className={cn(
+                "flex items-center gap-1 rounded-full px-3 py-2 text-ui-label transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
+                isActive(pathname, item.link)
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground"
+              )}
+              href={item.link}
+              onClick={() => {
+                close();
+                onItemClick?.();
+              }}
+            >
+              {item.name}
+              {groups && (
+                <Icon
+                  className={cn(
+                    "transition-transform motion-reduce:transition-none",
+                    expanded && "rotate-180"
+                  )}
+                  icon={CaretDownIcon}
+                  size={12}
+                />
+              )}
+            </Link>
+
+            {expanded && (
+              // The padding (not a margin) keeps the label-to-panel gap inside the
+              // hover area. The wide panel starts 8px up to meet the labels across
+              // NavBody's bottom padding.
+              <div
+                className={cn(
+                  "-translate-x-1/2 absolute left-1/2 z-50",
+                  wide
+                    ? "top-[calc(100%-0.5rem)] w-max max-w-[calc(100vw-2rem)] pt-4"
+                    : "top-full min-w-48 pt-2"
+                )}
+              >
+                <div
+                  className={cn(
+                    "rounded-lg border border-border bg-popover p-2 text-popover-foreground shadow-md duration-200 animate-in fade-in slide-in-from-top-2 motion-reduce:animate-none",
+                    wide && "flex gap-2 p-4"
+                  )}
+                >
+                  {groups.map((group, i) => (
+                    <div className="min-w-32" key={group.label ?? i}>
+                      {group.label && (
+                        <p className="px-3 pb-1 text-ui-meta">{group.label}</p>
+                      )}
+                      <ul>
+                        {group.items.map((child) => (
+                          <li key={child.link}>
+                            <Link
+                              aria-current={
+                                pathname === child.link ? "page" : undefined
+                              }
+                              className={panelLink}
+                              href={child.link}
+                              onClick={() => {
+                                close();
+                                onItemClick?.();
+                              }}
+                            >
+                              {child.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </nav>
   );
 };
 
@@ -362,7 +276,8 @@ export const MobileNavMenu = ({
   return (
     <div
       className={cn(
-        "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-card px-4 py-8 shadow-lg duration-200 animate-in fade-in dark:bg-card",
+        // Scrolls inside itself: with Coffees expanded the menu is taller than the screen.
+        "absolute inset-x-0 top-16 z-50 flex max-h-[calc(100dvh-6rem)] w-full flex-col items-start justify-start gap-4 overflow-y-auto rounded-lg border [&>*]:shrink-0 border-border bg-popover px-4 py-6 text-popover-foreground shadow-md duration-200 animate-in fade-in motion-reduce:animate-none",
         className
       )}
     >
@@ -376,6 +291,10 @@ type MobileNavDropdownProps = {
   onItemClick?: () => void;
 };
 
+export const mobileNavLink =
+  "font-medium text-base text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none";
+
+/** Mobile row: the label navigates, the caret beside it expands the same groups. */
 export const MobileNavDropdown = ({
   item,
   onItemClick,
@@ -383,70 +302,57 @@ export const MobileNavDropdown = ({
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  const isActive = (link: string) => {
-    if (link === "/") {
-      return pathname === "/";
-    }
-    return pathname.startsWith(link);
-  };
-
-  const hasActiveChild = item.children?.some((child) => isActive(child.link));
-  const active = isActive(item.link) || hasActiveChild;
-
   return (
     <div className="w-full">
-      <button
-        aria-expanded={isOpen}
-        aria-label={`${item.name} menu`}
-        className={cn(
-          "flex w-full items-center justify-between text-muted-foreground hover:text-foreground",
-          active && "font-medium text-accent-foreground"
-        )}
-        onClick={() => setIsOpen(!isOpen)}
-        type="button"
-      >
-        <span>{item.name}</span>
-        <Icon
-          className={cn("transition-transform", isOpen && "rotate-180")}
-          icon={CaretDownIcon}
-          size={16}
-        />
-      </button>
+      <div className="flex items-center justify-between">
+        <Link
+          className={cn(
+            mobileNavLink,
+            isActive(pathname, item.link) && "text-foreground"
+          )}
+          href={item.link}
+          onClick={onItemClick}
+        >
+          {item.name}
+        </Link>
+        <button
+          aria-expanded={isOpen}
+          aria-label={`${item.name} menu`}
+          // 44px target; -my-2 keeps the row at the height of its neighbours.
+          className="-my-2 flex size-11 items-center justify-center text-muted-foreground"
+          onClick={() => setIsOpen(!isOpen)}
+          type="button"
+        >
+          <Icon
+            className={cn(
+              "transition-transform motion-reduce:transition-none",
+              isOpen && "rotate-180"
+            )}
+            color="muted"
+            icon={CaretDownIcon}
+            size={16}
+          />
+        </button>
+      </div>
       {isOpen && (
-        <div className="mt-2 flex flex-col gap-2 pl-4 duration-200 animate-in fade-in slide-in-from-top-1">
-          {item.children?.map((child) => {
-            const childActive = isActive(child.link);
-
-            if (child.disabled) {
-              return (
-                <span
-                  className="flex items-center justify-between gap-2 text-muted-foreground/50 text-body cursor-not-allowed"
+        <div className="mt-2 flex flex-col gap-4 pl-4 duration-200 animate-in fade-in slide-in-from-top-1 motion-reduce:animate-none">
+          {item.groups?.map((group, i) => (
+            <div key={group.label ?? i}>
+              {group.label && (
+                <p className="pb-1 text-ui-meta">{group.label}</p>
+              )}
+              {group.items.map((child) => (
+                <Link
+                  className="block py-2 text-muted-foreground text-sm transition-colors hover:text-foreground motion-reduce:transition-none"
+                  href={child.link}
                   key={child.link}
+                  onClick={onItemClick}
                 >
-                  <span>{child.name}</span>
-                  {child.badge && (
-                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                      {child.badge}
-                    </span>
-                  )}
-                </span>
-              );
-            }
-
-            return (
-              <Link
-                className={cn(
-                  "block text-muted-foreground text-body transition-colors hover:text-foreground",
-                  childActive && "font-medium text-accent-foreground"
-                )}
-                href={child.link}
-                key={child.link}
-                onClick={onItemClick}
-              >
-                {child.name}
-              </Link>
-            );
-          })}
+                  {child.name}
+                </Link>
+              ))}
+            </div>
+          ))}
         </div>
       )}
     </div>

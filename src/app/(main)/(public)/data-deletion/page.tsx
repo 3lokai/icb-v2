@@ -56,10 +56,7 @@ Thank you,
 
       <Section spacing="default">
         <div className="mx-auto max-w-3xl">
-          <Stack
-            gap="16"
-            className="text-body-large text-muted-foreground leading-relaxed"
-          >
+          <Stack gap="16" className="text-muted-foreground leading-relaxed">
             {/* Intro */}
             <Stack gap="6">
               <h2 className="text-title text-primary font-serif italic text-pretty leading-tight">

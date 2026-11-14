@@ -90,7 +90,7 @@ export default function CuratorSpotlight({ curator }: CuratorSpotlightProps) {
               {/* Clean Overlays (Name and Location only) — Bottom Left Aligned */}
               <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end items-start gap-3">
                 <Reveal delay={0.5}>
-                  <Badge className="bg-white/20 backdrop-blur-md border-white/30 text-overline uppercase tracking-widest text-white px-3 py-1 rounded-full mb-3">
+                  <Badge className="bg-white/20 backdrop-blur-md border-white/30 uppercase tracking-widest text-white px-3 py-1 rounded-full mb-3">
                     Featured Curator
                   </Badge>
                   <h3 className="text-title font-bold text-white mb-1 leading-none">

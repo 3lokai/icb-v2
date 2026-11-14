@@ -1,22 +1,14 @@
 "use client";
 
-import { Accent } from "@/components/primitives/accent";
 import { useState } from "react";
-import {
-  CaretDownIcon,
-  StarIcon,
-  ThumbsDownIcon,
-  ThumbsUpIcon,
-} from "@phosphor-icons/react/dist/ssr";
+import { CaretDownIcon } from "@phosphor-icons/react/dist/ssr";
+import { format } from "date-fns";
 import { Icon } from "@/components/common/Icon";
-import { Stack } from "@/components/primitives/stack";
-import { Cluster } from "@/components/primitives/cluster";
+import { StarRating } from "@/components/common/StarRating";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { cn } from "@/lib/utils";
+import { GRIND_TYPES } from "@/lib/utils/coffee-constants";
 import type { LatestReviewPerIdentity } from "@/types/review-types";
-import { formatDistanceToNow } from "date-fns";
 
 type ReviewWithProfile = LatestReviewPerIdentity & {
   user_profiles: {
@@ -44,70 +36,46 @@ export function ReviewList({
     ? reviews
     : reviews.slice(0, INITIAL_DISPLAY_COUNT);
 
-  const hasMore = reviews.length > INITIAL_DISPLAY_COUNT;
-
   return (
-    <Stack gap="6">
-      <div className="flex items-end justify-between">
-        <div>
-          <div className="inline-flex items-center gap-4 mb-3">
-            <span className="h-px w-8 md:w-12 bg-accent/60" />
-            <span className="text-overline text-muted-foreground tracking-[0.15em]">
-              Community Voices
-            </span>
-          </div>
-          <h3 className="text-title text-balance leading-[1.1] tracking-tight">
-            What Others Are <Accent>Saying.</Accent>
-          </h3>
-          <p className="text-caption text-muted-foreground mt-2">
-            {reviews.length} {reviews.length === 1 ? "review" : "reviews"}
-          </p>
-        </div>
-        {reviews.length > 1 && (
-          <select
-            aria-label="Sort reviews"
-            className="text-caption text-foreground bg-background border border-input/60 rounded-md px-3 py-2 hover:border-primary/50 focus:border-primary/50 transition-colors"
-            defaultValue="latest"
-          >
-            <option value="latest">Latest first</option>
-          </select>
-        )}
-      </div>
-
-      <Stack gap="6">
+    <div>
+      <ul aria-label="Ratings from drinkers" className="flex flex-col gap-6">
         {displayReviews.map((review) => (
           <ReviewItem key={review.id} review={review} />
         ))}
-      </Stack>
+      </ul>
 
-      {hasMore && !showAll && (
+      {reviews.length > INITIAL_DISPLAY_COUNT && !showAll && (
         <Button
-          variant="outline"
+          className="mt-6 w-full"
           onClick={() => setShowAll(true)}
-          className="w-full border-border/60 hover:border-primary/50 hover:bg-accent/30 transition-all"
+          variant="outline"
         >
-          Show all {reviews.length} reviews
+          Show all {reviews.length} ratings
           <Icon icon={CaretDownIcon} size={14} className="ml-2" />
         </Button>
       )}
-    </Stack>
+    </div>
   );
 }
 
-function ReviewItem({ review }: { review: ReviewWithProfile }) {
-  const isAnonymous = review.identity_key?.startsWith("anon:");
-  const timeAgo = review.created_at
-    ? formatDistanceToNow(new Date(review.created_at), { addSuffix: true })
-    : "";
+/** "20 Sep", with the year once it is no longer this one. */
+function formatReviewDate(iso: string): string {
+  const date = new Date(iso);
+  return format(
+    date,
+    date.getFullYear() === new Date().getFullYear() ? "d MMM" : "d MMM yyyy"
+  );
+}
 
-  // Get user display info
-  const userProfile = review.user_profiles;
-  const displayName = userProfile
-    ? userProfile.username || userProfile.full_name
-    : null;
-  const avatarUrl = userProfile?.avatar_url || null;
-  const initials = userProfile
-    ? userProfile.full_name
+/**
+ * One rating: the reviewer's avatar, stars and a quiet "name · method · date" line,
+ * then the note as a quote. Anonymous ratings show as "A drinker".
+ */
+function ReviewItem({ review }: { review: ReviewWithProfile }) {
+  const profile = review.user_profiles;
+  const name = profile ? profile.username || profile.full_name : "A drinker";
+  const initials = profile
+    ? profile.full_name
         .split(" ")
         .map((n) => n[0])
         .join("")
@@ -115,114 +83,43 @@ function ReviewItem({ review }: { review: ReviewWithProfile }) {
         .slice(0, 2)
     : "?";
 
+  const meta = [
+    name,
+    review.brew_method &&
+      (GRIND_TYPES.find((g) => g.value === review.brew_method)?.label ??
+        review.brew_method),
+    review.works_with_milk === true && "With milk",
+    review.works_with_milk === false && "Black",
+    review.created_at && formatReviewDate(review.created_at),
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
   return (
-    <div className="group relative py-6 border-b border-border/40 last:border-0 transition-colors hover:bg-muted/20 rounded-lg px-3 -mx-3">
-      <Stack gap="4">
-        {/* Rating & Recommend Badge */}
-        <Cluster gap="3" align="center" className="flex-wrap">
-          {review.rating && (
-            <div className="flex items-center gap-2">
-              {[...Array(5)].map((_, i) => (
-                <Icon
-                  key={i}
-                  icon={StarIcon}
-                  size={16}
-                  className={cn(
-                    "transition-colors",
-                    i < review.rating!
-                      ? "text-rating fill-rating"
-                      : "text-muted-foreground/30"
-                  )}
-                />
-              ))}
-              <span className="text-body font-medium ml-1 text-muted-foreground">
-                {review.rating.toFixed(1)}
-              </span>
-            </div>
-          )}
-          {review.recommend !== null && (
-            <Badge
-              variant={review.recommend ? "default" : "secondary"}
-              className={cn(
-                "text-label border",
-                review.recommend
-                  ? "bg-primary/10 text-primary border-primary/20"
-                  : "bg-muted/50 border-border/40"
-              )}
-            >
-              <Icon
-                icon={review.recommend ? ThumbsUpIcon : ThumbsDownIcon}
-                size={12}
-                className="mr-2"
-              />
-              {review.recommend ? "Recommends" : "Doesn't recommend"}
-            </Badge>
-          )}
-        </Cluster>
-
-        {/* Comment */}
-        {review.comment && (
-          <div className="bg-muted/30 rounded-lg p-4 border border-border/30">
-            <p className="text-body leading-relaxed whitespace-pre-line text-foreground">
-              {review.comment}
-            </p>
-          </div>
+    <li>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <Avatar className="size-8">
+          {/* Decorative: the name is in the line beside it. */}
+          <AvatarImage alt="" src={profile?.avatar_url || undefined} />
+          <AvatarFallback>
+            <span className="text-ui-meta">{initials}</span>
+          </AvatarFallback>
+        </Avatar>
+        {review.rating != null && (
+          <>
+            <span aria-hidden>
+              <StarRating rating={review.rating} size="md" />
+            </span>
+            <span className="sr-only">Rated {review.rating} out of 5</span>
+          </>
         )}
-
-        {/* Additional Details */}
-        {(review.value_for_money !== null ||
-          review.works_with_milk !== null ||
-          review.brew_method) && (
-          <Cluster gap="2" className="flex-wrap">
-            {review.value_for_money !== null && (
-              <Badge variant="outline" className="text-caption bg-muted/40">
-                <Icon
-                  icon={review.value_for_money ? ThumbsUpIcon : ThumbsDownIcon}
-                  size={11}
-                  className="mr-2"
-                />
-                {review.value_for_money ? "Good value" : "Not great value"}
-              </Badge>
-            )}
-            {review.works_with_milk !== null && (
-              <Badge variant="outline" className="text-caption bg-muted/40">
-                {review.works_with_milk ? "Works with milk" : "Better black"}
-              </Badge>
-            )}
-            {review.brew_method && (
-              <Badge variant="outline" className="text-caption bg-muted/40">
-                {review.brew_method}
-              </Badge>
-            )}
-          </Cluster>
-        )}
-
-        {/* Meta */}
-        <Cluster
-          gap="2"
-          align="center"
-          className="text-caption text-muted-foreground"
-        >
-          <Avatar className="size-6">
-            <AvatarImage
-              src={avatarUrl || undefined}
-              alt={displayName || "Anonymous"}
-            />
-            <AvatarFallback className="text-caption font-medium">
-              {isAnonymous ? "?" : initials}
-            </AvatarFallback>
-          </Avatar>
-          <span className="font-medium">
-            {isAnonymous ? "Anonymous" : displayName || "Reviewer"}
-          </span>
-          {timeAgo && (
-            <>
-              <span className="opacity-40">·</span>
-              <span>{timeAgo}</span>
-            </>
-          )}
-        </Cluster>
-      </Stack>
-    </div>
+        <span className="text-ui-meta">{meta}</span>
+      </div>
+      {review.comment && (
+        <p className="mt-2 max-w-prose font-serif text-body italic whitespace-pre-line">
+          “{review.comment}”
+        </p>
+      )}
+    </li>
   );
 }

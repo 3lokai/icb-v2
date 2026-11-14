@@ -126,8 +126,7 @@ export function StarRating({
                 aria-label={`${starValue} ${starValue === 1 ? "star" : "stars"}`}
                 tabIndex={starValue === tabbableValue ? 0 : -1}
                 className={cn(
-                  "relative cursor-pointer rounded-sm transition-transform duration-150",
-                  "hover:scale-110 active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100",
+                  "relative cursor-pointer rounded-sm",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                 )}
                 onClick={() => onRate?.(starValue)}
@@ -140,7 +139,7 @@ export function StarRating({
                   color={isEmpty ? "muted" : "rating"}
                   weight={isEmpty ? "regular" : "fill"}
                   aria-hidden
-                  className="transition-colors duration-300"
+                  className="transition-colors motion-reduce:transition-none"
                 />
               </button>
             );
@@ -148,7 +147,7 @@ export function StarRating({
         </div>
 
         {count !== undefined && count > 0 && (
-          <span className="text-caption text-muted-foreground">({count})</span>
+          <span className="text-ui-meta">({count})</span>
         )}
       </div>
     );
@@ -171,7 +170,7 @@ export function StarRating({
                 size={sizeValues[size]}
                 color={isEmpty ? "muted" : "rating"}
                 weight={isEmpty ? "regular" : "fill"}
-                className="transition-colors duration-300"
+                className="transition-colors motion-reduce:transition-none"
               />
             </div>
           );
@@ -180,7 +179,7 @@ export function StarRating({
 
       {/* Review count */}
       {count !== undefined && count > 0 && (
-        <span className="text-caption text-muted-foreground">({count})</span>
+        <span className="text-ui-meta">({count})</span>
       )}
     </div>
   );

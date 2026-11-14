@@ -28,7 +28,7 @@ export function RatingPanel({
   const [hasUserRating, setHasUserRating] = useState(false);
 
   return (
-    <div className="surface-2 rounded-xl p-8 border border-accent/20">
+    <div className="surface-1 rounded-xl p-6 md:p-8">
       <QuickRating
         entityType={entityType}
         entityId={entityId}

@@ -134,7 +134,7 @@ export function TableOfContents({ body, toc }: TableOfContentsProps) {
               <a
                 href={`#${heading.id}`}
                 className={cn(
-                  "text-caption block transition-colors hover:text-primary rounded-r-md py-1 pr-2 border-l-2 pl-3 -ml-[2px]",
+                  "block transition-colors hover:text-primary rounded-r-md py-1 pr-2 border-l-2 pl-3 -ml-[2px]",
                   activeId === heading.id
                     ? "text-primary font-bold border-primary bg-primary/5"
                     : heading.level === 2

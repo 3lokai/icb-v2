@@ -8,6 +8,7 @@ import {
   ListIcon,
   MagnifyingGlassIcon,
   SignOutIcon,
+  StarIcon,
   UserIcon,
   XIcon,
 } from "@phosphor-icons/react/dist/ssr";
@@ -23,6 +24,9 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -30,11 +34,14 @@ import {
   MobileNavDropdown,
   MobileNavHeader,
   MobileNavMenu,
+  mobileNavLink,
   NavBody,
   Navbar,
   NavItems,
 } from "@/components/ui/resizable-navbar";
 import { useUserProfile } from "@/hooks/use-user-profile";
+import { HEADER_NAV, type NavItem, PROFILE_SECTIONS } from "@/lib/navigation";
+import { getReviewCount } from "@/lib/reviews/anon-id";
 import { cn } from "@/lib/utils";
 import { useSearchContext } from "@/providers/SearchProvider";
 
@@ -73,56 +80,24 @@ function MobileNavLogo({ visible }: { visible?: boolean }) {
   );
 }
 
-// Base nav items (without Profile - it's added conditionally)
-const baseNavItems = [
-  {
-    name: "Explore",
-    link: "/explore",
-    children: [
-      { name: "Coffees", link: "/coffees" },
-      { name: "Roasters", link: "/roasters" },
-      { name: "Communities", link: "/communities" },
-      {
-        name: "Estates",
-        link: "/estates",
-        disabled: true,
-        badge: "Coming Soon",
-      },
-      { name: "Regions", link: "/regions" },
-    ],
-  },
-  {
-    name: "Learn",
-    link: "/learn",
-    children: [
-      { name: "Articles", link: "/learn" },
-      { name: "Series", link: "/learn/series" },
-      { name: "Glossary", link: "/learn/glossary" },
-    ],
-  },
-  {
-    name: "Tools",
-    link: "/tools",
-    children: [
-      { name: "All Tools", link: "/tools" },
-      { name: "Brew Calculator", link: "/tools/coffee-calculator" },
-      { name: "Expert Recipes", link: "/tools/expert-recipes" },
-      { name: "Coffee Compass", link: "/tools/coffee-compass" },
-      { name: "Grind Size Converter", link: "/tools/grind-size-converter" },
-    ],
-  },
-];
+const SEARCH_PLACEHOLDER = "Search coffees, roasters, origins…";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // Shortcut hint matches the handler (Meta+K on Mac, Ctrl+K elsewhere).
   // Default to the non-Mac label so SSR/first client render agree; correct after mount.
   const [isMac, setIsMac] = useState(false);
+  // Signed-out visitors who have rated keep a way back to their anonymous profile.
+  const [hasAnonRatings, setHasAnonRatings] = useState(false);
   useEffect(() => {
     const mac = /mac|iphone|ipad|ipod/i.test(
       navigator.platform || navigator.userAgent
     );
-    startTransition(() => setIsMac(mac));
+    const rated = (getReviewCount() ?? 0) > 0;
+    startTransition(() => {
+      setIsMac(mac);
+      setHasAnonRatings(rated);
+    });
   }, []);
   const { user, signOut, isLoading: authLoading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useUserProfile();
@@ -156,29 +131,23 @@ export function Header() {
   const avatarUrl = profile?.avatar_url ?? null;
   const initials = getInitials(profile?.full_name ?? user?.email ?? null);
 
-  // Build nav items with conditional Profile link
-  type NavItem = {
-    name: string;
-    link: string;
-    disabled?: boolean;
-    badge?: string;
-    children?: {
-      name: string;
-      link: string;
-      disabled?: boolean;
-      badge?: string;
-    }[];
+  // Profile ▸ lists the profile page's own sections. /profile redirects to the
+  // member's page; the username path is used when known so the anchor survives.
+  const profileBase = profile?.username
+    ? `/profile/${profile.username}`
+    : "/profile";
+  const profileNav: NavItem = {
+    name: "Profile",
+    link: profileBase,
+    groups: [
+      {
+        items: PROFILE_SECTIONS.map((section) => ({
+          name: section.name,
+          link: `${profileBase}${section.link}`,
+        })),
+      },
+    ],
   };
-
-  const navItems: NavItem[] = [
-    {
-      name: "Profile",
-      link: user
-        ? "/profile" // Will redirect to /profile/[username] via page.tsx
-        : "/profile/anon", // Direct link to anon profile
-    },
-    ...baseNavItems,
-  ];
 
   return (
     <Navbar className="top-0">
@@ -186,21 +155,23 @@ export function Header() {
         <NavLogo />
 
         {/* Desktop Navigation Items */}
-        <NavItems items={navItems} />
+        <NavItems items={HEADER_NAV} />
 
         {/* Desktop Actions */}
         <div className="relative z-20 ml-auto flex shrink-0 items-center gap-2">
+          {/* Reads as a field, opens the command search. Collapses to the icon
+              below xl and when the bar compacts on scroll. */}
           <button
             aria-label="Search"
-            className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "h-9 gap-2 px-3 text-muted-foreground"
-            )}
+            className="flex h-9 items-center gap-2 rounded-full border border-input bg-background px-3 text-caption transition-colors hover:border-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
             onClick={() => openSearch()}
             type="button"
           >
-            <Icon color="muted" icon={MagnifyingGlassIcon} size={20} />
-            <kbd className="hidden items-center gap-0.5 rounded border border-border/70 bg-muted/60 px-2 py-0.5 font-medium text-overline text-muted-foreground lg:inline-flex">
+            <Icon color="muted" icon={MagnifyingGlassIcon} size={16} />
+            <span className="hidden xl:inline [.navbar-compact_&]:hidden">
+              {SEARCH_PLACEHOLDER}
+            </span>
+            <kbd className="hidden items-center rounded border border-border bg-muted px-1.5 text-micro xl:inline-flex [.navbar-compact_&]:hidden">
               {isMac ? "⌘K" : "Ctrl K"}
             </kbd>
           </button>
@@ -243,22 +214,26 @@ export function Header() {
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link className="flex items-center" href="/profile">
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
                         <Icon
                           className="mr-2"
                           color="muted"
                           icon={UserIcon}
                           size={16}
                         />
-                        My Profile
-                      </Link>
-                    </DropdownMenuItem>
+                        Profile
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        {profileNav.groups?.[0]?.items.map((section) => (
+                          <DropdownMenuItem asChild key={section.link}>
+                            <Link href={section.link}>{section.name}</Link>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
                     <DropdownMenuItem asChild>
-                      <Link
-                        className="flex items-center"
-                        href="/dashboard/profile"
-                      >
+                      <Link className="flex items-center" href="/dashboard">
                         <Icon
                           className="mr-2"
                           color="muted"
@@ -280,7 +255,7 @@ export function Header() {
                         icon={SignOutIcon}
                         size={16}
                       />
-                      Log out
+                      Sign out
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -288,11 +263,13 @@ export function Header() {
             }
             return (
               <>
-                <Button asChild size="sm" variant="outline">
-                  <Link href="/roasters/partner">For Roasters</Link>
-                </Button>
+                {hasAnonRatings && (
+                  <Button asChild size="sm" variant="ghost">
+                    <Link href="/profile/anon">Your profile</Link>
+                  </Button>
+                )}
                 <Button asChild size="sm" variant="default">
-                  <Link href="/auth">Login</Link>
+                  <Link href="/auth">Sign in</Link>
                 </Button>
               </>
             );
@@ -350,24 +327,47 @@ export function Header() {
           </div>
         </MobileNavHeader>
         <MobileNavMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu}>
-          {navItems.map((item) =>
-            "children" in item && item.children && item.children.length > 0 ? (
+          <button
+            className="flex h-11 w-full items-center gap-2 rounded-full border border-input bg-background px-4 text-left text-caption"
+            onClick={() => {
+              closeMobileMenu();
+              openSearch();
+            }}
+            type="button"
+          >
+            <Icon color="muted" icon={MagnifyingGlassIcon} size={16} />
+            {SEARCH_PLACEHOLDER}
+          </button>
+          {HEADER_NAV.map((item) =>
+            item.groups ? (
               <MobileNavDropdown
                 item={item}
-                key={item.link}
+                key={item.name}
                 onItemClick={closeMobileMenu}
               />
             ) : (
               <Link
-                className="font-medium text-muted-foreground text-body transition-colors hover:text-foreground"
+                className={mobileNavLink}
                 href={item.link}
-                key={item.link}
+                key={item.name}
                 onClick={closeMobileMenu}
               >
                 {item.name}
               </Link>
             )
           )}
+          {/* Rating is an action, not a page: it opens search in rating mode. */}
+          <button
+            className={cn(mobileNavLink, "flex items-center gap-2")}
+            onClick={() => {
+              closeMobileMenu();
+              openSearch(undefined, true);
+            }}
+            type="button"
+          >
+            <Icon color="muted" icon={StarIcon} size={16} />
+            Rate a coffee
+          </button>
           {(() => {
             if (authLoading || profileLoading) {
               return (
@@ -398,40 +398,16 @@ export function Header() {
                       )}
                     </div>
                   </div>
+                  <MobileNavDropdown
+                    item={profileNav}
+                    onItemClick={closeMobileMenu}
+                  />
                   <Link
-                    className="font-medium text-muted-foreground text-body transition-colors hover:text-foreground"
+                    className={mobileNavLink}
                     href="/dashboard"
                     onClick={closeMobileMenu}
                   >
-                    Dashboard
-                  </Link>
-                  <Link
-                    className="font-medium text-muted-foreground text-body transition-colors hover:text-foreground"
-                    href="/dashboard/profile"
-                    onClick={closeMobileMenu}
-                  >
-                    Profile
-                  </Link>
-                  <Link
-                    className="font-medium text-muted-foreground text-body transition-colors hover:text-foreground"
-                    href="/dashboard/preferences"
-                    onClick={closeMobileMenu}
-                  >
-                    Coffee Preferences
-                  </Link>
-                  <Link
-                    className="font-medium text-muted-foreground text-body transition-colors hover:text-foreground"
-                    href="/dashboard/notifications"
-                    onClick={closeMobileMenu}
-                  >
-                    Notifications
-                  </Link>
-                  <Link
-                    className="font-medium text-muted-foreground text-body transition-colors hover:text-foreground"
-                    href="/dashboard/privacy"
-                    onClick={closeMobileMenu}
-                  >
-                    Privacy & Data
+                    Settings
                   </Link>
                   <button
                     className="font-medium text-destructive text-body transition-colors hover:text-destructive/80"
@@ -441,21 +417,26 @@ export function Header() {
                     }}
                     type="button"
                   >
-                    Log out
+                    Sign out
                   </button>
                 </>
               );
             }
             return (
-              <div className="flex flex-col gap-2 w-full">
-                <Button asChild className="w-full" variant="outline">
-                  <Link href="/roasters/partner" onClick={closeMobileMenu}>
-                    For Roasters
+              <div className="flex w-full flex-col gap-2">
+                {hasAnonRatings && (
+                  <Link
+                    className={mobileNavLink}
+                    href="/profile/anon"
+                    onClick={closeMobileMenu}
+                  >
+                    Your profile
                   </Link>
-                </Button>
-                <Button asChild className="w-full" variant="default">
+                )}
+                {/* 44px by composition: primary action on mobile (doc 26). */}
+                <Button asChild className="min-h-11 w-full" variant="default">
                   <Link href="/auth" onClick={closeMobileMenu}>
-                    Login
+                    Sign in
                   </Link>
                 </Button>
               </div>

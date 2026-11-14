@@ -225,7 +225,7 @@ export function ProfileGearStation({
                       value={category}
                       className="border-border/20"
                     >
-                      <AccordionTrigger className="text-label text-muted-foreground uppercase tracking-widest font-medium hover:no-underline py-3">
+                      <AccordionTrigger className="text-muted-foreground uppercase tracking-widest font-medium hover:no-underline py-3">
                         {categoryLabel} ({items.length})
                       </AccordionTrigger>
                       <AccordionContent>
