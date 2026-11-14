@@ -33,18 +33,25 @@ Branch inspection on Nov 14:
 
 - `CoffeeCard.tsx` already composes `WishlistButton` and `CardRatingFooter`. The approved card spec in [25 §1](25-page-hierarchy.md) explicitly keeps both and **no Buy button on cards**.
 - `WishlistButton.tsx`, `use-wishlist.ts`, `src/app/actions/wishlist.ts` and `wishlists` support signed-in wishlist saving. Current signed-out behavior is a sign-in toast; the server action requires authentication; `wishlist_added` and `wishlist_removed` are already captured server-side. **Do not claim anonymous wishlist persistence exists.**
+- `supabase/migrations/20260211000000_create_user_coffees.sql` **already defines** `user_coffees` as a tried/tasted lifecycle table with one row per member+coffee and statuses `logged`, `brewing`, `finished`, `rated`. `src/types/profile-types.ts` includes `UserCoffee`, and the profile RPC/fetch code exposes `user_coffees`. This is a significant **reuse-first opportunity**; do not propose a duplicate Tried table. A usable current write action or visible entry control was **not established** in this code inspection (the historical `src/app/actions/user-coffees.ts` referenced in an old analytics report is absent on this branch). Verify the real path and whether/how rows are populated.
 - Quick rating, anonymous three-distinct-entity allowance and member profile/rating history exist. The approved coffee detail has a sticky **Buy + Rate** bar on mobile, and the existing exit-intent rating popup is slated for removal.
 - [24](24-information-architecture.md) and [25](25-page-hierarchy.md) already specify a neutral homepage, returning-user state, clickable attributes, profile-based private wishlist, no separate `/rate` or `/search` pages, and no extra global bottom tab bar.
 
-**Actual gap:** there is no approved **explicit, independent “Tried” state** or end-to-end saved → tried → rated profile/return flow. Existing interactions and statuses need a read-only source/data audit before any schema proposal.
+**Actual gap:** a **Tried schema already exists**, but its live UX and write flow are not established here, and the saved → tried → rated journey is not an approved end-to-end interaction. Audit real usage and potentially reuse `user_coffees`; do not start by inventing a new status table.
+
+### Privacy and reuse warning from repository audit (2026-11-14)
+
+The checked-in migrations for **both** `user_coffees` (Feb 11) and `wishlists` (Jul 15) define SELECT policies that allow reads when the linked `user_profiles.is_public_profile` is true, **as well as** owner reads. This does **not** prove the deployed database has those exact policies now, but it means **“private by default” cannot be asserted from the current schema evidence**. The approved profile design expects owner-only Wishlist. Before building any personal lifecycle UI or exposing personal endpoints, verify the **effective deployed RLS**, RPC security and row visibility to other users (including public-profile users); tighten policies via separately reviewed migration if necessary. Never pass the existing profile-public setting through to personal wishlist/tried data by accident.
+
+`user_coffees.status` historically tracks a **bag progression** (`logged/brewing/finished/rated`), not merely a boolean “ever tried” flag. Before reusing it, decide whether “logged” implies actually tasted, whether a second bag needs a separate log record (currently `UNIQUE(user_id, coffee_id)`), and how a review affects status. **Avoid mapping saved wishlist → logged → rated automatically.**
 
 ## 4. Proposed semantics — orthogonal signals, not one mutable status
 
 | Concept | Created by | What it DOES mean | What it DOES NOT mean | Privacy |
 |---|---|---|---|---|
 | Viewed | page/event (consent-aware) | Looked at this item | Saved, bought or tasted | Browsing context, according to consent |
-| Want to Try / Wishlist | explicit save | Interested, would like to remember | Purchased or tried; not guaranteed future sale | **Private by default** |
-| Tried | explicit “I tried this”, or a self-submitted rating logically linked to tasting | User reports having tasted it | Purchase verified, review submitted, positive opinion | Private profile by default until sharing is explicitly chosen |
+| Want to Try / Wishlist | explicit save | Interested, would like to remember | Purchased or tried; not guaranteed future sale | **Target: private; current migration needs RLS review** |
+| Tried | explicit “I tried this”, or a self-submitted rating logically linked to tasting | User reports having tasted it | Purchase verified, review submitted, positive opinion | **Target: owner-only; existing RLS policy needs review** |
 | Rating | user-entered score | Personal opinion of a tasted coffee | Multiple independent reviewers from repeated brews | Existing review publication/moderation rules |
 | Review | user-authored notes on a rating | Additional independent context | Roaster marketing description | Existing publication/moderation rules |
 | Brew/tasting log (later) | repeated explicit dated entries | One brewing session; multiple possible per coffee | An extra independent rating in the public average | Private by default |
@@ -119,7 +126,7 @@ No paid positive ratings, no suppression of criticism, no hidden sponsored recom
 ## 10. Execution boundary while component agents work
 
 - **Now:** docs/decisions, interaction state definitions, validation plan and references; no edits to `src/components/ui`, global tokens, playground, Penpot files or production routes.
-- **Next (read-only audit):** inspect `wishlists`, `user_coffees`, reviews, current onboarding, anon-to-member merge, duplicate-policy, GDPR/India privacy handling, PostHog naming and referral events. Proposed schema comes *after* evidence.
+- **Next (read-only audit):** inspect **deployed RLS first**, then existing `user_coffees` writes/status usage and `wishlists` reads, reviews, onboarding, anon-to-member merge, duplicate-policy, India privacy obligations, PostHog naming and referral events. Reuse existing tables where safe; any migration comes *after* evidence.
 - **Prototype after the UI foundation review:** a branch-only stateful scenario using genuine domain components, with fake clearly labelled data and no writes to production.
 - **Owner acceptance gate:** decide whether an explicit Tried state merits implementation; anonymous save policy; profile grouping; analytics taxonomy; partner attribution and any disclosure text.
 - **No unapproved production change.**
