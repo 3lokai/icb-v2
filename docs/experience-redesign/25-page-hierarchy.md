@@ -549,4 +549,6 @@ Other rules: sign-in is asked for when it is needed (fourth rating, wishlist), w
 | Sold out/discontinued | Honest availability | Follow approved Buy suppression/alternative rules; Rate remains | History preserved; alternative suggestions aren't same item |
 | Signed out | Save currently requests sign-in; existing rating allowance applies | No promise of cross-device saved state | Anonymous ratings remain separate from authenticated personal collection |
 
+**Data reuse / privacy caveat (2026-11-14):** `user_coffees` already has `logged / brewing / finished / rated` statuses and is included in the profile RPC, but this does not prove a working current “Mark as tried” action. Both `user_coffees` and `wishlists` creation migrations allow SELECT for public-profile owners: verify **effective deployed RLS** and public-profile RPC before shipping the owner-private views assumed by this design. Do not introduce a duplicate Tried table or expose private user collections by accident.
+
 **Review QA:** show mobile 375px and desktop in both themes; focus/hover/tap, no extra card height, no CTA crowding, no forced modal, no inferred purchase, no fake “verified tasting”, and accessible labels. Real persistence/schema only after an audit of current `wishlists`, `user_coffees`, anonymous review merge and moderation.
