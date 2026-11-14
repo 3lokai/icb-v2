@@ -447,3 +447,15 @@ Checked: type-check, lint and tests pass; playground Ratings section at 1280px i
 ## Backlog (not blocking the next step)
 
 - **CoffeeCard image load failure.** `coffeeImagePresets` already falls back to `/images/placeholder-coffee.avif` when a coffee has no image path. A path that exists but fails to load (deleted or broken ImageKit file) still shows an empty tile, because the card is server-rendered with no `onError`. Fix: a small client image wrapper like `RoasterLogo`. Frequency in the catalogue not measured. Added 2026-11-14.
+
+## Typography cascade and rating interaction fixes (2026-11-14)
+
+**Working-branch changes, visual rollout gate remains open.**
+
+- **Typography cascade:** `src/app/styles/typography.css` now places the existing role declarations in the *real* Tailwind `@layer components { ... }` block. The former bare `@layer components;` was only a layer declaration: all following selectors were unlayered and overrode utilities irrespective of source order. Explicit utility classes can now override role defaults for **colour, font weight, tracking and line-height**, without changing the size declarations or default roles. The `cn()` custom role merge configuration and its tests remain intact. This may visibly change many pages where roles and utilities had conflicted before; verify those changes rather than papering over them.
+- **Rating notes:** `QuickRating` now uses `maxLength={1000}` and a /1,000 counter, agreeing with `isValidComment` in `src/types/review-types.ts`. Saving and validation logic are otherwise unchanged.
+- **Keyboard stars:** `StarRating`'s five stars are modal-launching **buttons**, not radio choices, so they now use an accessible action group. Tab enters once, arrows/Home/End move focus only, and native Enter/Space/click activate the focused star exactly once. The prior `role="radiogroup"` plus `aria-checked` inferred from the community average was semantically wrong, and arrow keys unexpectedly opened the rating modal. Shared read-only star rendering is unchanged.
+- **Focused regressions added:** `src/lib/utils/typography-layer.test.ts` checks stylesheet layering and existing compact role sizes; `src/lib/utils/rating-keyboard.test.ts` checks focus navigation and non-activation for Enter/Space/Tab. Existing `cn.test.ts` continues guarding text-role merges.
+
+**Validation status:** source-level checks completed; no Next.js build, full npm test suite or independent browser QA has been run in this environment. The branch has no available GitHub Actions run for this iteration. Test 375px / 1280px in both themes and inspect at least the home, coffee directory/detail, roaster directory/detail, profile, article, review dialog, and signed-in navigation. Explicitly compare affected role-plus-utility combinations (e.g. `text-caption text-foreground`, `text-micro font-bold tracking-widest`) and keyboard star focus, activation and focus return. This is a **visual regression review**: approved shadcn controls (32/36/40px), grid widths, Gambetta/Ranade and Deep Roast tokens remain unchanged.
+
