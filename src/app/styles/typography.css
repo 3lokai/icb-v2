@@ -1,4 +1,8 @@
-@layer components;
+/* Type roles belong to Tailwind's components layer. This lets an explicit
+ * utility like text-foreground, font-bold or tracking-wide override a role
+ * on the same element, instead of an unlayered class silently winning.
+ * Role dimensions, family and defaults are unchanged. */
+@layer components {
 
 /* Typography Hierarchy */
 
@@ -117,4 +121,6 @@
 /* Utility: Prevent orphans in paragraphs */
 .text-pretty {
   text-wrap: pretty;
+}
+
 }
