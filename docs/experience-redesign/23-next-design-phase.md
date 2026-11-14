@@ -1,6 +1,6 @@
 # 23 — Next Design Phase: Information Architecture → Components → Copy
 
-**Status (2026-11-11): PROPOSED execution sequence; not an approval to change routes or production.** This is the single handoff for the next chat. The visual identity phase is closed.
+**Status (2026-11-14): HISTORICAL PHASE PLAN, now in Phase C.** The IA in [24](24-information-architecture.md) and content hierarchy in [25](25-page-hierarchy.md) were approved; component work is underway in [26](26-component-system.md). The visual identity is closed. This phase plan is retained for continuity, not as an instruction to restart Phase A. No production/route change is authorized.
 
 ## Starting point — locked
 
@@ -65,6 +65,23 @@ Polish editorial voice, CTAs, labels, source disclosures, tutorials, FAQ, access
 - Estate timing and data gate, variety/flavour canonical pages and editorial reverse links.
 - Signed-in personalization and optional grounded Concierge are future templates, not a reason to delay the core flows.
 
-## First message for the next chat
+## 2026-11-14 research-driven interaction gate (parallel to Phase C; PROPOSED)
+
+The research in [28](28-research-lifecycle-and-future-cafes.md) strengthens the existing Find/Rate/Buy interaction model by distinguishing **Want to Try**, **explicit Tried**, **independent Rating/Review**, optional repeated **Brew logs**, and **external referral clicks**. It does not reopen the approved navigation, typography, palette, homepage concept, shadcn foundations, or production routes.
+
+**While the component/UI agents work:** keep `src/components/ui`, the Next.js component playground, and Penpot boards untouched from this research track. Review current `wishlists` (signed-in only), `user_coffees`, review entities, anonymous merge, profile sections and existing PostHog events as read-only evidence. Treat the current 'Tried' proposal as **not yet a persisted feature**.
+
+**Next UX-design gate (after UI component verification):**
+1. Approve or reject an explicit independent “Tried” state, its interaction/copy and its precedence relative to existing ratings.
+2. Choose an anonymous Wishlist approach (existing sign-in vs clearly temporary session save); inspect migration, abuse/privacy concerns.
+3. Prototype mobile-first flows: save→return→tried→optional rate; directly rate; buy out→return with no purchase assumption; return to personal collection.
+4. Validate the unchanged compact card contract, the Buy+Rate mobile sticky bar, Profile grouping, and genuine state/empty/stock cases.
+5. Agree on measurement and attribution taxonomy only after existing events have been audited.
+
+Do not promise affiliate revenue, paid roaster intelligence, an online café menu, or cross-device anonymous saves during this phase. Cafés remain a future contextual relationship model, not a launch requirement.
+
+## Earlier handoff (archived; superseded by current phase status)
+
+
 
 > Continue ICB's redesign on `3lokai/icb-v2`, branch `design/experience-redesign`. Read `docs/experience-redesign/23-next-design-phase.md`, `20-direction.md`, `22-visual-system.md`, `07-decisions.md`, the existing public-route inventory in `current-state-audit.md`, and the current `src/app` routes. **Start with Phase A only: audit current URLs, nav, site structure and indexable entity templates; propose a current-versus-future sitemap and page-template inventory, with explicit changes and SEO implications.** Do not reopen typography/colours/motifs, do not rebuild the playground, do not change production code, and do not go straight to detailed cards or copy. Ask for sign-off on IA before component design.
