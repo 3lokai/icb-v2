@@ -570,10 +570,10 @@ export function QuickRating({
                 }}
                 disabled={isSaving || isDeleting}
                 className="min-h-24 resize-none"
-                maxLength={500}
+                maxLength={1000}
               />
               {comment && comment.length > 0 && (
-                <p className="text-right text-ui-meta">{comment.length}/500</p>
+                <p className="text-right text-ui-meta">{comment.length}/1,000</p>
               )}
             </Stack>
 
