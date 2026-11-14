@@ -29,6 +29,19 @@ Familiar functionality, delivered through an exceptional experience.
 
 The reasons and dates for each are in [07-decisions.md](07-decisions.md).
 
+### Research integration: personal coffee lifecycle (PROPOSED, 2026-11-14)
+
+The **two primary conversion outcomes remain Rate and Buy**. Research on Letterboxd, Untappd and Artsy suggests a supporting personal progression: **Discover → Want to Try (wishlist) → Tried → Optional Rating/Review → Return**. This is *not* a required funnel: people must still be able to rate something they already tried, or buy directly, without saving or logging anything.
+
+- **Save** is personal interest and may be private; **Tried** is an explicit self-reported experience; **Rate/Review** is an optional independent public contribution; **Buy click** is an outbound referral, not purchase proof. An optional repeated brew diary is a later feature and must not inflate the independent rating count.
+- **Keep cards light:** the existing wishlist heart and in-place rating footer remain; no additional row of lifecycle buttons on cards. Explore one quiet Tried control on the coffee detail and/or personal collection, without replacing the approved Buy + Rate mobile bar.
+- **Returning homepage/profile:** show actual saved/tried/rated context, never infer tried from a view or outbound link. Anonymous wishlist persistence does *not* exist in the current implementation; test its auth friction separately before adopting session-local saves.
+- **Commercial and café boundaries:** pilot transparent merchant attribution before affiliate forecasts; defer generic café directory/menus/orders. The future niche is coffee → roaster → **freshly verified coffee on bar at a café**, not restaurant discovery.
+
+This is a **PROPOSED behaviour extension** requiring an audited data contract and owner acceptance, not permission to alter the locked visual identity, approved IA, source components or production. Full evidence, state matrix and prototype acceptance are in [28 — Research integration](28-research-lifecycle-and-future-cafes.md).
+
+
+
 ## Samples
 
 These are frozen Penpot reference exports, **not a live data feed**. Real catalogue assets and dated database values were used in the storyboards, but some example labels, product placement, review text, simulated rating states and returning-user history are illustrative. Specifically, the I-v2 `Just Added` rail contains older filler cards and is **not a production-ready chronological feed**. Recheck counts, coffee/roaster identities, review data, recency and prices against the live site before implementation. See [21](21-penpot-design-workspace.md).
