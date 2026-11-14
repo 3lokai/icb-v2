@@ -143,3 +143,17 @@ Every proposed redesign must be evaluated for five jobs:
 Read this document with `16-alignment-review-and-next-session.md` and `07-decisions.md` **before** proposing coding. Treat the commercial north star and review contribution flow as first-class acceptance requirements; do not bury them under UI refinement or claim instant ownership of data that ICB may not have the rights to license.
 
 **Next step:** a read-only source-of-truth check for current review UX/data/events and a bounded browser prototype plan. No code changes to the production app until explicitly approved.
+
+## 9. Research-driven lifecycle and attributable commerce (PROPOSED 2026-11-14)
+
+The product research in [28](28-research-lifecycle-and-future-cafes.md) supports separating **Want to Try / wishlist**, **Tried**, **Rating / Review**, optional repeat **Brew log**, and **Referral click**. These are independent, observable signals: a wishlist save is not proof of purchase, a tried flag is not necessarily a rating, multiple brew entries are not multiple independent reviewers, and a merchant click is not a sale.
+
+**Existing code reality:** `CoffeeCard` already shows a wishlist heart and rating footer; `use-wishlist.ts` and `src/app/actions/wishlist.ts` currently demand sign-in and persist to `wishlists`. The server already logs `wishlist_added` and `wishlist_removed`. Keep them and audit data/event semantics before changing the account or storage model. Keep the existing three-anonymous-rating rule; do not conflate it with wishlist limits.
+
+**Proposed additional measurement:** unique users who save, explicit Tried events (if implemented), Tried → Rate within properly defined cohorts, independently published distinct-coffee ratings, user return/rediscovery, and outbound merchant clicks. Use only confirmed merchant-side orders for paid commission accounting. Reconcile `rating_started` and `rating_form_submitted` definitions and duplication before claiming conversion. No raw review content or private user taste lists in general analytics.
+
+**Attribution pilot:** a small set of consenting roaster partners; explicit disclosure of any commercial relationship, privacy-safe tracked links/codes, agreement on commissionable sales and attribution limits. ICB continues to rank products and publish reviews independently. Wishlist demand is **not** a roaster lead list for sale. Aggregated insights require sufficiently large, privacy-protected samples, legitimate data rights and buyer validation.
+
+**Deferred niche café option:** study a curated `café serves roaster` relationship and time-stamped `coffee on bar` information only when partner updates can be trusted. No generic cafés, menus, reservations, delivery or primary-nav expansion now.
+
+**Approval gate:** do not set a new “Tried” field, change `wishlists`, infer tasting from existing `user_coffees`, or claim conversion from outbound clicks without the read-only implementation audit and an explicit feature decision. Keep the Phase C UI agents' scope untouched.
