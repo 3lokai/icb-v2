@@ -4,123 +4,123 @@
  * Role dimensions, family and defaults are unchanged. */
 @layer components {
 
-/* Typography Hierarchy */
+  /* Typography Hierarchy */
 
-/* Hero/Display - For landing page heroes */
-.text-hero {
-  /* Quiet authority: Editorial size, normal weight */
-  @apply font-serif text-4xl md:text-5xl lg:text-6xl font-normal leading-tight tracking-tight;
-}
+  /* Hero/Display - For landing page heroes */
+  .text-hero {
+    /* Quiet authority: Editorial size, normal weight */
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-normal leading-tight tracking-tight;
+  }
 
-/* Display - For page headers */
-.text-display {
-  @apply font-serif text-3xl md:text-4xl lg:text-5xl font-normal leading-tight tracking-tight;
-}
+  /* Display - For page headers */
+  .text-display {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-normal leading-tight tracking-tight;
+  }
 
-/* Heading-level contract (Sprints 2-4 apply this):
- *   h1 (page hero)        -> .text-hero / .text-display
- *   h2 (section headers)  -> .text-title
- *   h3 (cards/subsections)-> .text-heading  (one clear step below .text-title)
- *   h4 (minor headers)    -> .text-subheading
- * Never use .text-title and .text-heading for the same heading level. */
+  /* Heading-level contract (Sprints 2-4 apply this):
+   *   h1 (page hero)        -> .text-hero / .text-display
+   *   h2 (section headers)  -> .text-title
+   *   h3 (cards/subsections)-> .text-heading  (one clear step below .text-title)
+   *   h4 (minor headers)    -> .text-subheading
+   * Never use .text-title and .text-heading for the same heading level. */
 
-/* Title - For section headers (h2) */
-.text-title {
-  @apply font-serif text-2xl md:text-3xl lg:text-[2rem] font-normal leading-tight tracking-tight;
-}
+  /* Title - For section headers (h2) */
+  .text-title {
+    @apply font-serif text-2xl md:text-3xl lg:text-[2rem] font-normal leading-tight tracking-tight;
+  }
 
-/* Heading - For card headers, subsections (h3) — one clear step below
- * .text-title (~25% smaller at base: 18px vs 24px, ~33% smaller at md: 20px vs 30px) */
-.text-heading {
-  @apply font-serif text-lg md:text-xl font-normal leading-snug tracking-tight;
-}
+  /* Heading - For card headers, subsections (h3) — one clear step below
+   * .text-title (~25% smaller at base: 18px vs 24px, ~33% smaller at md: 20px vs 30px) */
+  .text-heading {
+    @apply font-serif text-lg md:text-xl font-normal leading-snug tracking-tight;
+  }
 
-/* Subheading - For smaller headers */
-.text-subheading {
-  /* Stricter rules: Medium only, no semibold */
-  @apply font-sans text-lg md:text-xl font-medium leading-snug;
-}
+  /* Subheading - For smaller headers */
+  .text-subheading {
+    /* Stricter rules: Medium only, no semibold */
+    @apply font-sans text-lg md:text-xl font-medium leading-snug;
+  }
 
-/* Body text variants */
-.text-body {
-  /* Stricter rules: Normal weight for body */
-  @apply text-base font-normal leading-relaxed;
-}
+  /* Body text variants */
+  .text-body {
+    /* Stricter rules: Normal weight for body */
+    @apply text-base font-normal leading-relaxed;
+  }
 
-.text-body-large {
-  @apply text-lg font-normal leading-relaxed;
-}
+  .text-body-large {
+    @apply text-lg font-normal leading-relaxed;
+  }
 
-.text-body-muted {
-  /* Prevent "unreadable trifecta": Keep normal weight even if muted */
-  @apply text-base font-normal leading-relaxed text-muted-foreground;
-}
+  .text-body-muted {
+    /* Prevent "unreadable trifecta": Keep normal weight even if muted */
+    @apply text-base font-normal leading-relaxed text-muted-foreground;
+  }
 
-/* Small text */
-.text-caption {
-  @apply text-sm text-muted-foreground font-normal;
-}
+  /* Small text */
+  .text-caption {
+    @apply text-sm text-muted-foreground font-normal;
+  }
 
-.text-overline {
-  /* Refined tracking: Print UI feel, not SaaS dashboard */
-  @apply text-xs capitalize font-medium tracking-wide;
-}
+  .text-overline {
+    /* Refined tracking: Print UI feel, not SaaS dashboard */
+    @apply text-xs capitalize font-medium tracking-wide;
+  }
 
-/* Eyebrow - small uppercase tracked label above headings and beside sections (Deep Roast) */
-.text-eyebrow {
-  @apply text-xs uppercase font-medium tracking-[0.14em] text-muted-foreground;
-}
+  /* Eyebrow - small uppercase tracked label above headings and beside sections (Deep Roast) */
+  .text-eyebrow {
+    @apply text-xs uppercase font-medium tracking-[0.14em] text-muted-foreground;
+  }
 
-/* Label - For metadata, tags, small caps */
-.text-label {
-  @apply text-xs capitalize font-medium tracking-wide text-muted-foreground;
-}
+  /* Label - For metadata, tags, small caps */
+  .text-label {
+    @apply text-xs capitalize font-medium tracking-wide text-muted-foreground;
+  }
 
-/* Label-large - Emphasized labels / step titles between caption and subheading */
-.text-label-large {
-  @apply text-sm font-semibold tracking-wide text-foreground;
-}
+  /* Label-large - Emphasized labels / step titles between caption and subheading */
+  .text-label-large {
+    @apply text-sm font-semibold tracking-wide text-foreground;
+  }
 
-/* Micro text - For minimal background elements */
-.text-micro {
-  font-size: 0.75rem; /* 12px */
-  line-height: 1.2;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  @apply text-muted-foreground;
-}
+  /* Micro text - For minimal background elements */
+  .text-micro {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    @apply text-muted-foreground;
+  }
 
-/* Geist-inspired functional roles for ICB: type is specified by its job, not
- * a uniform size multiplier. These augment the approved Gambetta/Ranade system;
- * existing long-form body and coffee-card flavour treatments remain intact. */
-.text-ui-label {
-  /* Single-line menus, field labels and compact control captions. */
-  @apply font-sans text-sm leading-5 font-medium tracking-normal;
-}
+  /* Geist-inspired functional roles for ICB: type is specified by its job, not
+   * a uniform size multiplier. These augment the approved Gambetta/Ranade system;
+   * existing long-form body and coffee-card flavour treatments remain intact. */
+  .text-ui-label {
+    /* Single-line menus, field labels and compact control captions. */
+    @apply font-sans text-sm leading-5 font-medium tracking-normal;
+  }
 
-.text-ui-meta {
-  /* Secondary numbers, rating counts, amounts and compact tabular evidence. */
-  font-size: 0.8125rem; /* 13px */
-  line-height: 1.125rem; /* 18px */
-  font-variant-numeric: tabular-nums;
-  @apply font-sans font-normal tracking-normal text-muted-foreground;
-}
+  .text-ui-meta {
+    /* Secondary numbers, rating counts, amounts and compact tabular evidence. */
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.125rem; /* 18px */
+    font-variant-numeric: tabular-nums;
+    @apply font-sans font-normal tracking-normal text-muted-foreground;
+  }
 
-.text-copy-compact {
-  /* Multi-line UI explanation: more leading than a one-line label at 14px. */
-  font-size: 0.875rem; /* 14px */
-  line-height: 1.375rem; /* 22px */
-  @apply font-sans font-normal tracking-normal;
-}
+  .text-copy-compact {
+    /* Multi-line UI explanation: more leading than a one-line label at 14px. */
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.375rem; /* 22px */
+    @apply font-sans font-normal tracking-normal;
+  }
 
-/* Utility: Balanced text wrapping for titles */
-.text-balance {
-  text-wrap: balance;
-}
+  /* Utility: Balanced text wrapping for titles */
+  .text-balance {
+    text-wrap: balance;
+  }
 
-/* Utility: Prevent orphans in paragraphs */
-.text-pretty {
-  text-wrap: pretty;
-}
+  /* Utility: Prevent orphans in paragraphs */
+  .text-pretty {
+    text-wrap: pretty;
+  }
 
 }
