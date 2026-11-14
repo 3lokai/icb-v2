@@ -156,4 +156,6 @@ The product research in [28](28-research-lifecycle-and-future-cafes.md) supports
 
 **Deferred niche café option:** study a curated `café serves roaster` relationship and time-stamped `coffee on bar` information only when partner updates can be trusted. No generic cafés, menus, reservations, delivery or primary-nav expansion now.
 
-**Approval gate:** do not set a new “Tried” field, change `wishlists`, infer tasting from existing `user_coffees`, or claim conversion from outbound clicks without the read-only implementation audit and an explicit feature decision. Keep the Phase C UI agents' scope untouched.
+**Repository evidence, 2026-11-14:** `user_coffees` already exists for a tried/tasted lifecycle (`logged/brewing/finished/rated`), while `wishlists` is separate. Reuse-first: audit the actual writes, status meanings, profile RPC and repeat-brew constraints before proposing any new field/table. Importantly, both table-creation migrations allow SELECT for public-profile owners as well as the owner; **verify effective deployed RLS and restrict personal wishlist/tried access as intended before promising privacy**. This is a trust gate, not approval to migrate data.
+
+**Approval gate:** do not repurpose `user_coffees`, change `wishlists`, infer tasting from a `logged` row, or claim conversion from outbound clicks without the read-only implementation audit and an explicit feature decision. Keep the Phase C UI agents' scope untouched.
