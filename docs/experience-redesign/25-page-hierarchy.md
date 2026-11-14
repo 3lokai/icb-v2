@@ -8,6 +8,8 @@ Field sources: **R** roaster's own listing · **I** ICB-derived (normalised, com
 
 ## 1. Coffee card (shared by every grid)
 
+**Research addendum (PROPOSED 2026-11-14):** The existing wishlist heart and rating footer already provide two distinct actions; preserve both without adding a third full-size Tried button to cards. Consider clearer accessible labelling for the save intent (“Want to try” / “Saved”). A save is not a purchase or a tasting. See [28](28-research-lifecycle-and-future-cafes.md).
+
 **Revised 2026-11-11 after reading `CoffeeCard.tsx` and `CardRatingFooter.tsx` and owner feedback.** The existing card already captures ratings in place, on purpose. That stays. The redesign changes the look, not this contract.
 
 ### What the card shows (existing behaviour, kept)
@@ -150,6 +152,8 @@ The top organic template, mostly reached on mobile. Today the order is: breadcru
 
 ## 5. Coffee detail — `/roasters/<slug>/coffees/<coffeeSlug>`
 
+**Research addendum (PROPOSED 2026-11-14):** Test a *secondary*, explicit “Mark as tried” state near personal actions or review evidence. It must **not** displace the already approved Buy + Rate mobile sticky bar, require a rating, infer a purchase, or generate an extra public review. The rating flow remains directly usable for people who already tried a coffee.
+
 The centre of Find, Rate, Buy. Today's order: section tabs, hero (name, roaster, wishlist, Buy), story and production details, flavour, pricing and availability, rate and review, FAQ, more from roaster, similar coffees, plus a floating Rate button and an exit-intent rating pop-up.
 
 ### Order (mobile sequence; desktop places 2 beside 3–6)
@@ -285,6 +289,8 @@ Each band demonstrates the breadth of what ICB covers through real data, not thr
 - No paid placement anywhere on the page.
 
 ### Returning visitors (same URL, band 1 changes; bands 2–8 do not)
+
+**Research addendum (PROPOSED):** For authenticated visitors, consider separate “Want to try” and explicit “Tried but not rated” continuations. Never prompt “rate the coffee you bought” from an outbound click. Homepage search, neutral catalogue facts and standard navigation remain unchanged.
 
 | Visitor | Band 1 shows |
 |---|---|
@@ -452,6 +458,8 @@ The `/tools` hub stays a simple list of the four tools with one line each.
 
 ### 8.3 Profile and Settings — two separate things (owner direction, 2026-11-11)
 
+**Research addendum (PROPOSED):** Extend the owner's coffee-history composition to distinguish private *Want to Try*, self-marked *Tried*, and independent *Rated*. This should reuse the existing Profile rather than introducing a separate “My Coffee” app or moving things back into Settings. Keep public ratings and private personal signals distinct; final tab/grouping design is an approval item.
+
 Revised after reading `ProfilePage.tsx` and the dashboard. They stay separate, with different purposes. **The profile is the one place a member sees everything about their coffees. The dashboard is labelled "Settings"** everywhere a visitor sees it; its `/dashboard/*` URLs can stay, since they are not indexed.
 
 | | **Profile** | **Settings** (today's dashboard) |
@@ -526,3 +534,19 @@ Other rules: sign-in is asked for when it is needed (fourth rating, wishlist), w
 | B24 | Profile holds members' coffee activity including private Wishlist; dashboard is labelled Settings. Avatar menu: expandable Profile (children TBD), Settings, Sign out | **Approved 2026-11-11**; submenu children OPEN until component phase |
 | B26 | My reviews folds into the profile's Ratings section (full list, coffees and roasters) | **Accepted 2026-11-11** |
 | B25 | 404 gains a search field | Approved design requirement; not implemented |
+
+## 9. Lifecycle acceptance and edge-state matrix (PROPOSED 2026-11-14)
+
+**This supplements, rather than supersedes, the approved page sequence and component sizes.** Detail is in [28](28-research-lifecycle-and-future-cafes.md). Component agents should not apply it before the next interaction gate.
+
+| Condition | Coffee card | Coffee detail | Owner Profile / returning Home |
+|---|---|---|---|
+| Visitor has no history | Neutral pack + wishlist heart + honest rating footer | Buy, Rate; proposed quiet Tried | Ordinary neutral discovery |
+| Wishlisted, not tried | Heart filled; no implied check-in | “Saved” + optional Mark as tried | Private Want to Try; resume coffee |
+| Tried, not rated | Card still presents neutral public rating | Tried state; optional Add rating, dismissible | Private Tried list and optional reminder |
+| Rated | Existing “Your rating: N” footer | Edit rating; Tried is implied by actual self-rating | Ratings remain distinct from individual brew logs |
+| Saved and tried | Both retained unless user explicitly un-saves | Both indicators can coexist | May appear in both personal views |
+| Sold out/discontinued | Honest availability | Follow approved Buy suppression/alternative rules; Rate remains | History preserved; alternative suggestions aren't same item |
+| Signed out | Save currently requests sign-in; existing rating allowance applies | No promise of cross-device saved state | Anonymous ratings remain separate from authenticated personal collection |
+
+**Review QA:** show mobile 375px and desktop in both themes; focus/hover/tap, no extra card height, no CTA crowding, no forced modal, no inferred purchase, no fake “verified tasting”, and accessible labels. Real persistence/schema only after an audit of current `wishlists`, `user_coffees`, anonymous review merge and moderation.
