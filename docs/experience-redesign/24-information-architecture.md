@@ -362,3 +362,32 @@ Phase B order: discovery landing and directory, coffee detail, homepage, then ro
 | 15 | `/learn/insights` becomes the home for research, with no separate section | Yes |
 | 16 | `/gear` takes the Tools slot as Brew ▾ when it ships; Compare and Concierge stay out | Yes |
 | 17 | Urgent production defects in §0 | Owner is working on a separate PR to `main`. Historical local sitemap pagination test reported 1,678 coffee URLs; merge/deployment and other fixes must be verified through that PR, not claimed complete here |
+
+## 12. Personal coffee lifecycle — research integration (PROPOSED 2026-11-14)
+
+This is an interaction/state extension within the **approved IA**, not a navigation or URL change. See [28](28-research-lifecycle-and-future-cafes.md) for research and evidence.
+
+**The existing routes remain the destinations:** coffee detail under `/roasters/<slug>/coffees/<coffeeSlug>`, `/coffees` directory, `/profile` for the owner's private Wishlist / future Tried / existing Ratings, and the same `/` for returning-user content. No `/rate`, `/search`, `/wishlist` or `/cafes` primary routes are authorized.
+
+### Journey additions
+
+```text
+DISCOVER  Homepage / deep link / directory / article / search
+   ├──► BUY ↗ roaster — exits ICB; never implies purchase or tasting
+   ├──► RATE — direct route for someone who has already tried the coffee
+   └──► WANT TO TRY (private saved coffee)
+               ├──► Return to coffee / profile (owner)
+               ├──► Mark TRIED — explicit self-report, no mandatory rating
+               │        └──► Optional rating/review → independent contribution
+               └──► Continue browsing / buy externally
+```
+
+**Cross-surface navigation:** A coffee may remain on Want to Try after being marked Tried (for a new bag, roast or harvest). Profile should distinguish saved vs tried vs rated and must not imply a purchase. A discontinued coffee remains in saved/tried history and can still be rated; related available coffees are suggested as **alternatives**, not exact replacements. Preserve back navigation, canonical routes, facet query state and SEO.
+
+**No extra buttons on cards:** existing wishlist heart plus quiet rating footer are sufficient. A separate Tried action belongs in coffee detail or the owner's collection, pending UX testing. Keep the mobile coffee page's approved sticky Buy/Rate bar; do not create a global bottom app tab bar.
+
+**Anonymous state:** wishlist is presently sign-in-gated. Explore optional temporary saving/merge only after security, privacy and anon-ID review. Do not silently promise persistence. The three-entity anonymous rating rule stays.
+
+**Café adjacency remains DEFERRED:** future verified `coffee ↔ served at café` may be contextual on coffee/roaster pages with explicit update timestamps; not a new directory, generic menu, payment, reservations or primary-nav item. Freshness and partner maintenance must be validated before any route discussion.
+
+**Acceptance:** four flows—new save/try/review, immediate Rate, external Buy with no assumed purchase, and returning saved/tried user—work with existing URL structure and neutral ranking.
