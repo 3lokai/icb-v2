@@ -138,3 +138,18 @@ IDs below extend the Phase 0 requirement inventory; validate current DB/events a
 | BIZ-006 | Monetization does not influence organic rank, review sentiment/removal, factual edges or AI answers | Owner 2026-11-09; 17 | Independent directory model; commercial policies not yet implemented | Commercial policy review and separation/disclosure of paid inventory | CONFIRMED principle |
 | BIZ-007 | Explore aggregated roaster intelligence, permitted data APIs and research reports as revenue tracks | Owner 2026-11-09; 17 | API infrastructure present; commercial demand, rights and feasibility unverified | Buyer interviews, paid pilots, rights/privacy/sample-size review | PROPOSED products |
 | BIZ-008 | Anonymous contribution, review authenticity, moderation, identity/consent and privacy preserve first-party trust | 17; ADR-012; existing auth/merge | 3-entity cap, review merge and consent exist; moderation specifics need audit | Audit duplicate/abuse detection, moderation, erasure and data rights | CONFIRMED trust / OPEN implementation |
+
+## Research integration requirements (2026-11-14)
+
+These are **PROPOSED** and trace to [28 — Product research integration](28-research-lifecycle-and-future-cafes.md). Nothing here changes already CONFIRMED visual tokens, navigation, component contracts, SEO or production.
+
+| ID | Requirement | Existing evidence | Validation | Status |
+|---|---|---|---|---|
+| LIFE-001 | Want to Try / Wishlist is distinct from Tried and Review, including repeat-interest coexistence | `wishlists` table and signed-in `use-wishlist`; CoffeeCard already has heart | Save, revisit, un-save; no inferred taste; anonymous state explicitly disclosed | PROPOSED UX / exists partially |
+| LIFE-002 | Explicit Tried without requiring a rating | `user_coffees` table (Feb 2026) has `logged/brewing/finished/rated`; profile RPC returns it, but active writes not verified | Read-only action audit; test mark, unmark, rate, edited rating and history semantics | PROPOSED UX / OPEN implementation |
+| LIFE-003 | Direct rating remains available without Save/Tried prerequisite | Existing quick-rating flow; approved Find/Rate/Buy | Deep-link → Rate, including anonymous 3-entity limit; no extra mandatory step | CONFIRMED existing behaviour |
+| LIFE-004 | Coffee cards stay lightweight (wishlist heart + subtle rating footer) | Existing `CoffeeCard` and [25 §1](25-page-hierarchy.md) | Mobile card density, focus/tap, no action-row height inflation | CONFIRMED core / PROPOSED microcopy |
+| LIFE-005 | Returning profile/home reflects accurate saved, explicitly tried and rated signals | Profile Wishlist and Rating specs; `user_coffees` structure | Avoid false “purchased”/“tried” from views or merchant click; privacy test | PROPOSED |
+| LIFE-006 | Private Wishlist / Tried requires **deployed RLS and RPC** verification | Migration SELECT policy checks `is_public_profile` on both tables; actual deployed policy not verified | Cross-account tests on public/private profiles; tighten separately before release | OPEN — security/privacy gate |
+| LIFE-007 | Merchant attribution does not imply paid order or affect ranking | Existing outbound Buy; transparent referral pilot proposal | Verify outbound clicks vs partner-confirmed transactions and disclosures | PROPOSED |
+| LIFE-008 | Cafés only as future fresh, verified contextual relationships; no menus/booking/directory in this redesign | External Specialty Atlas / European Coffee Trip research | Only after pilot partner freshness and user demand tests | PROPOSED / DEFER |
