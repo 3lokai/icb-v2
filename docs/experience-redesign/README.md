@@ -1,6 +1,6 @@
 # ICB Experience Redesign
 
-**Status (2026-11-12):** **Find, Rate, Buy** experience and the **visual identity are locked for design**: Gambetta + Ranade, Deep Roast light/dark, texture/terrain motif and gradient rules ([22](22-visual-system.md)). IA and page hierarchy are approved ([24](24-information-architecture.md), [25](25-page-hierarchy.md)). **NOW: Phase C component foundations** per [26](26-component-system.md), reviewed in the React playground at `/design/components` (dev/preview only). CoffeeCard and product components wait for foundation approval. Production remains unchanged pending an approved ADR.
+**Status (2026-11-14):** Find/Rate/Buy, the Gambetta/Ranade + Deep Roast identity, IA and page hierarchy remain **approved**. Phase C shadcn/domain component review continues per [26](26-component-system.md). Product research has been integrated as **PROPOSED lifecycle/monetization UX**, documented in [28](28-research-lifecycle-and-future-cafes.md), without modifying component code, the playground, routes or production. This branch is not a production approval.
 
 **Branch:** `design/experience-redesign` in `3lokai/icb-v2`. Production stays on `main`.
 
@@ -18,6 +18,7 @@
 | [27-static-imagery.md](27-static-imagery.md) | **Static photo triage:** keep/reframe/repoint, four branch-only collection image mapping changes and one staged fruit-filter WebP candidate. (Renumbered from a duplicate 26 on 2026-11-12.) |
 | [07-decisions.md](07-decisions.md) | Decision log with statuses and dates. |
 | [17-review-intelligence-and-monetization.md](17-review-intelligence-and-monetization.md) | Business north star: independent reviews and coffee intelligence. |
+| [28-research-lifecycle-and-future-cafes.md](28-research-lifecycle-and-future-cafes.md) | **New (2026-11-14):** Verified reference research; Save/Tried/Review lifecycle states, UX contracts, event taxonomy, affiliate pilot boundaries and deferred café relationships. Research proposals only. |
 | [05-technical-guardrails.md](05-technical-guardrails.md) | Architecture, SEO, performance and accessibility constraints. |
 | [current-state-audit.md](current-state-audit.md) | Evidence-backed inventory of the live site and traffic baseline. |
 | [requirements-traceability.md](requirements-traceability.md) | Requirement IDs traced to source and status. |
@@ -29,6 +30,7 @@
 ## Rules that hold throughout
 
 - ICB stays independent and neutral. No paid manipulation of reviews or organic rankings.
+- The approved direct Find → Buy and Find → Rate paths remain fast. The new Save → Tried → Optional Review loop is supplementary; proposed states require a persistence, privacy and review audit before shipping.
 - Coffee discovery stays fast and precise. Existing SEO equity and canonical URLs are protected.
 - Real information stays accessible without complex animation. Mobile is critical.
 - Accessibility and performance are not traded for spectacle.
